@@ -14,58 +14,41 @@ import java.util.Collection;
  * tokenizer.
  */
 public final class RegexFlags extends ExpandableStringEnum<RegexFlags> {
-    /**
-     * Enables canonical equivalence.
-     */
+    /** Enables canonical equivalence. */
     public static final RegexFlags CANON_EQ = fromString("CANON_EQ");
 
-    /**
-     * Enables case-insensitive matching.
-     */
+    /** Enables case-insensitive matching. */
     public static final RegexFlags CASE_INSENSITIVE = fromString("CASE_INSENSITIVE");
 
-    /**
-     * Permits whitespace and comments in the pattern.
-     */
+    /** Permits whitespace and comments in the pattern. */
     public static final RegexFlags COMMENTS = fromString("COMMENTS");
 
-    /**
-     * Enables dotall mode.
-     */
+    /** Enables dotall mode. */
     public static final RegexFlags DOT_ALL = fromString("DOTALL");
 
-    /**
-     * Enables literal parsing of the pattern.
-     */
+    /** Enables literal parsing of the pattern. */
     public static final RegexFlags LITERAL = fromString("LITERAL");
 
-    /**
-     * Enables multiline mode.
-     */
+    /** Enables multiline mode. */
     public static final RegexFlags MULTILINE = fromString("MULTILINE");
 
-    /**
-     * Enables Unicode-aware case folding.
-     */
+    /** Enables Unicode-aware case folding. */
     public static final RegexFlags UNICODE_CASE = fromString("UNICODE_CASE");
 
-    /**
-     * Enables Unix lines mode.
-     */
+    /** Enables Unix lines mode. */
     public static final RegexFlags UNIX_LINES = fromString("UNIX_LINES");
 
     /**
      * Creates a new instance of RegexFlags value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public RegexFlags() {
-    }
+    public RegexFlags() {}
 
     /**
      * Creates or finds a RegexFlags from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding RegexFlags.
      */
@@ -75,7 +58,7 @@ public final class RegexFlags extends ExpandableStringEnum<RegexFlags> {
 
     /**
      * Gets known RegexFlags values.
-     * 
+     *
      * @return known RegexFlags values.
      */
     public static Collection<RegexFlags> values() {

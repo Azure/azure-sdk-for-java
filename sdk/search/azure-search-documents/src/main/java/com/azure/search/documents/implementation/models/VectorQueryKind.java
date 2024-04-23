@@ -9,32 +9,22 @@ package com.azure.search.documents.implementation.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/**
- * The kind of vector query being performed.
- */
+/** The kind of vector query being performed. */
 public final class VectorQueryKind extends ExpandableStringEnum<VectorQueryKind> {
-    /**
-     * Vector query where a raw vector value is provided.
-     */
+    /** Vector query where a raw vector value is provided. */
     public static final VectorQueryKind VECTOR = fromString("vector");
 
     /**
-     * Vector query where a text value that needs to be vectorized is provided.
-     */
-    public static final VectorQueryKind TEXT = fromString("text");
-
-    /**
      * Creates a new instance of VectorQueryKind value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public VectorQueryKind() {
-    }
+    public VectorQueryKind() {}
 
     /**
      * Creates or finds a VectorQueryKind from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding VectorQueryKind.
      */
@@ -44,7 +34,7 @@ public final class VectorQueryKind extends ExpandableStringEnum<VectorQueryKind>
 
     /**
      * Gets known VectorQueryKind values.
-     * 
+     *
      * @return known VectorQueryKind values.
      */
     public static Collection<VectorQueryKind> values() {

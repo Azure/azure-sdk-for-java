@@ -14,12 +14,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Container object for various projection selectors.
- */
+/** Container object for various projection selectors. */
 @Fluent
 public final class SearchIndexerKnowledgeStoreProjection
-    implements JsonSerializable<SearchIndexerKnowledgeStoreProjection> {
+        implements JsonSerializable<SearchIndexerKnowledgeStoreProjection> {
     /*
      * Projections to Azure Table storage.
      */
@@ -35,15 +33,12 @@ public final class SearchIndexerKnowledgeStoreProjection
      */
     private List<SearchIndexerKnowledgeStoreFileProjectionSelector> files;
 
-    /**
-     * Creates an instance of SearchIndexerKnowledgeStoreProjection class.
-     */
-    public SearchIndexerKnowledgeStoreProjection() {
-    }
+    /** Creates an instance of SearchIndexerKnowledgeStoreProjection class. */
+    public SearchIndexerKnowledgeStoreProjection() {}
 
     /**
      * Get the tables property: Projections to Azure Table storage.
-     * 
+     *
      * @return the tables value.
      */
     public List<SearchIndexerKnowledgeStoreTableProjectionSelector> getTables() {
@@ -52,19 +47,19 @@ public final class SearchIndexerKnowledgeStoreProjection
 
     /**
      * Set the tables property: Projections to Azure Table storage.
-     * 
+     *
      * @param tables the tables value to set.
      * @return the SearchIndexerKnowledgeStoreProjection object itself.
      */
-    public SearchIndexerKnowledgeStoreProjection
-        setTables(List<SearchIndexerKnowledgeStoreTableProjectionSelector> tables) {
+    public SearchIndexerKnowledgeStoreProjection setTables(
+            List<SearchIndexerKnowledgeStoreTableProjectionSelector> tables) {
         this.tables = tables;
         return this;
     }
 
     /**
      * Get the objects property: Projections to Azure Blob storage.
-     * 
+     *
      * @return the objects value.
      */
     public List<SearchIndexerKnowledgeStoreObjectProjectionSelector> getObjects() {
@@ -73,19 +68,19 @@ public final class SearchIndexerKnowledgeStoreProjection
 
     /**
      * Set the objects property: Projections to Azure Blob storage.
-     * 
+     *
      * @param objects the objects value to set.
      * @return the SearchIndexerKnowledgeStoreProjection object itself.
      */
-    public SearchIndexerKnowledgeStoreProjection
-        setObjects(List<SearchIndexerKnowledgeStoreObjectProjectionSelector> objects) {
+    public SearchIndexerKnowledgeStoreProjection setObjects(
+            List<SearchIndexerKnowledgeStoreObjectProjectionSelector> objects) {
         this.objects = objects;
         return this;
     }
 
     /**
      * Get the files property: Projections to Azure File storage.
-     * 
+     *
      * @return the files value.
      */
     public List<SearchIndexerKnowledgeStoreFileProjectionSelector> getFiles() {
@@ -94,12 +89,12 @@ public final class SearchIndexerKnowledgeStoreProjection
 
     /**
      * Set the files property: Projections to Azure File storage.
-     * 
+     *
      * @param files the files value to set.
      * @return the SearchIndexerKnowledgeStoreProjection object itself.
      */
-    public SearchIndexerKnowledgeStoreProjection
-        setFiles(List<SearchIndexerKnowledgeStoreFileProjectionSelector> files) {
+    public SearchIndexerKnowledgeStoreProjection setFiles(
+            List<SearchIndexerKnowledgeStoreFileProjectionSelector> files) {
         this.files = files;
         return this;
     }
@@ -115,38 +110,48 @@ public final class SearchIndexerKnowledgeStoreProjection
 
     /**
      * Reads an instance of SearchIndexerKnowledgeStoreProjection from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SearchIndexerKnowledgeStoreProjection if the JsonReader was pointing to an instance of it,
-     * or null if it was pointing to JSON null.
+     *     or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SearchIndexerKnowledgeStoreProjection.
      */
     public static SearchIndexerKnowledgeStoreProjection fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            SearchIndexerKnowledgeStoreProjection deserializedSearchIndexerKnowledgeStoreProjection
-                = new SearchIndexerKnowledgeStoreProjection();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    SearchIndexerKnowledgeStoreProjection deserializedSearchIndexerKnowledgeStoreProjection =
+                            new SearchIndexerKnowledgeStoreProjection();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("tables".equals(fieldName)) {
-                    List<SearchIndexerKnowledgeStoreTableProjectionSelector> tables = reader
-                        .readArray(reader1 -> SearchIndexerKnowledgeStoreTableProjectionSelector.fromJson(reader1));
-                    deserializedSearchIndexerKnowledgeStoreProjection.tables = tables;
-                } else if ("objects".equals(fieldName)) {
-                    List<SearchIndexerKnowledgeStoreObjectProjectionSelector> objects = reader
-                        .readArray(reader1 -> SearchIndexerKnowledgeStoreObjectProjectionSelector.fromJson(reader1));
-                    deserializedSearchIndexerKnowledgeStoreProjection.objects = objects;
-                } else if ("files".equals(fieldName)) {
-                    List<SearchIndexerKnowledgeStoreFileProjectionSelector> files = reader
-                        .readArray(reader1 -> SearchIndexerKnowledgeStoreFileProjectionSelector.fromJson(reader1));
-                    deserializedSearchIndexerKnowledgeStoreProjection.files = files;
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("tables".equals(fieldName)) {
+                            List<SearchIndexerKnowledgeStoreTableProjectionSelector> tables =
+                                    reader.readArray(
+                                            reader1 ->
+                                                    SearchIndexerKnowledgeStoreTableProjectionSelector.fromJson(
+                                                            reader1));
+                            deserializedSearchIndexerKnowledgeStoreProjection.tables = tables;
+                        } else if ("objects".equals(fieldName)) {
+                            List<SearchIndexerKnowledgeStoreObjectProjectionSelector> objects =
+                                    reader.readArray(
+                                            reader1 ->
+                                                    SearchIndexerKnowledgeStoreObjectProjectionSelector.fromJson(
+                                                            reader1));
+                            deserializedSearchIndexerKnowledgeStoreProjection.objects = objects;
+                        } else if ("files".equals(fieldName)) {
+                            List<SearchIndexerKnowledgeStoreFileProjectionSelector> files =
+                                    reader.readArray(
+                                            reader1 ->
+                                                    SearchIndexerKnowledgeStoreFileProjectionSelector.fromJson(
+                                                            reader1));
+                            deserializedSearchIndexerKnowledgeStoreProjection.files = files;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedSearchIndexerKnowledgeStoreProjection;
-        });
+                    return deserializedSearchIndexerKnowledgeStoreProjection;
+                });
     }
 }

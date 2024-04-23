@@ -17,11 +17,9 @@ import com.azure.search.documents.indexes.implementation.models.LuceneStandardTo
 import com.azure.search.documents.indexes.implementation.models.LuceneStandardTokenizerV2;
 import java.io.IOException;
 
-/**
- * Base type for tokenizers.
- */
+/** Base type for tokenizers. */
 @Immutable
-public class LexicalTokenizer implements JsonSerializable<LexicalTokenizer> {
+public abstract class LexicalTokenizer implements JsonSerializable<LexicalTokenizer> {
     /*
      * The name of the tokenizer. It must only contain letters, digits, spaces, dashes or underscores, can only start
      * and end with alphanumeric characters, and is limited to 128 characters.
@@ -30,7 +28,7 @@ public class LexicalTokenizer implements JsonSerializable<LexicalTokenizer> {
 
     /**
      * Creates an instance of LexicalTokenizer class.
-     * 
+     *
      * @param name the name value to set.
      */
     public LexicalTokenizer(String name) {
@@ -40,7 +38,7 @@ public class LexicalTokenizer implements JsonSerializable<LexicalTokenizer> {
     /**
      * Get the name property: The name of the tokenizer. It must only contain letters, digits, spaces, dashes or
      * underscores, can only start and end with alphanumeric characters, and is limited to 128 characters.
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -56,80 +54,71 @@ public class LexicalTokenizer implements JsonSerializable<LexicalTokenizer> {
 
     /**
      * Reads an instance of LexicalTokenizer from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of LexicalTokenizer if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the LexicalTokenizer.
      */
     public static LexicalTokenizer fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String discriminatorValue = null;
-            JsonReader readerToUse = reader.bufferObject();
+        return jsonReader.readObject(
+                reader -> {
+                    String discriminatorValue = null;
+                    JsonReader readerToUse = reader.bufferObject();
 
-            readerToUse.nextToken(); // Prepare for reading
-            while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = readerToUse.getFieldName();
-                readerToUse.nextToken();
-                if ("@odata.type".equals(fieldName)) {
-                    discriminatorValue = readerToUse.getString();
-                    break;
-                } else {
-                    readerToUse.skipChildren();
-                }
-            }
-            // Use the discriminator value to determine which subtype should be deserialized.
-            if ("#Microsoft.Azure.Search.ClassicTokenizer".equals(discriminatorValue)) {
-                return ClassicTokenizer.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Azure.Search.EdgeNGramTokenizer".equals(discriminatorValue)) {
-                return EdgeNGramTokenizer.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Azure.Search.KeywordTokenizerV2".equals(discriminatorValue)) {
-                return KeywordTokenizerV2.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Azure.Search.MicrosoftLanguageTokenizer".equals(discriminatorValue)) {
-                return MicrosoftLanguageTokenizer.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Azure.Search.MicrosoftLanguageStemmingTokenizer".equals(discriminatorValue)) {
-                return MicrosoftLanguageStemmingTokenizer.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Azure.Search.NGramTokenizer".equals(discriminatorValue)) {
-                return NGramTokenizer.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Azure.Search.PatternTokenizer".equals(discriminatorValue)) {
-                return PatternTokenizer.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Azure.Search.StandardTokenizerV2".equals(discriminatorValue)) {
-                return LuceneStandardTokenizerV2.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Azure.Search.UaxUrlEmailTokenizer".equals(discriminatorValue)) {
-                return UaxUrlEmailTokenizer.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Azure.Search.PathHierarchyTokenizerV2".equals(discriminatorValue)) {
-                return PathHierarchyTokenizer.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Azure.Search.StandardTokenizer".equals(discriminatorValue)) {
-                return LuceneStandardTokenizerV1.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Azure.Search.KeywordTokenizer".equals(discriminatorValue)) {
-                return KeywordTokenizerV1.fromJson(readerToUse.reset());
-            } else {
-                return fromJsonKnownDiscriminator(readerToUse.reset());
-            }
-        });
-    }
+                    readerToUse.nextToken(); // Prepare for reading
+                    while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = readerToUse.getFieldName();
+                        readerToUse.nextToken();
+                        if ("@odata.type".equals(fieldName)) {
+                            discriminatorValue = readerToUse.getString();
+                            break;
+                        } else {
+                            readerToUse.skipChildren();
+                        }
+                    }
 
-    static LexicalTokenizer fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (nameFound) {
-                return new LexicalTokenizer(name);
-            }
-            throw new IllegalStateException("Missing required property: name");
-        });
+                    if (discriminatorValue != null) {
+                        readerToUse = readerToUse.reset();
+                    }
+                    // Use the discriminator value to determine which subtype should be deserialized.
+                    if ("#Microsoft.Azure.Search.ClassicTokenizer".equals(discriminatorValue)) {
+                        return ClassicTokenizer.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.EdgeNGramTokenizer".equals(discriminatorValue)) {
+                        return EdgeNGramTokenizer.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.KeywordTokenizerV2".equals(discriminatorValue)) {
+                        KeywordTokenizerV2 codegen = KeywordTokenizerV2.fromJson(readerToUse);
+                        return (codegen == null) ? null : new KeywordTokenizer(codegen);
+                    } else if ("#Microsoft.Azure.Search.MicrosoftLanguageTokenizer".equals(discriminatorValue)) {
+                        return MicrosoftLanguageTokenizer.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.MicrosoftLanguageStemmingTokenizer"
+                            .equals(discriminatorValue)) {
+                        return MicrosoftLanguageStemmingTokenizer.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.NGramTokenizer".equals(discriminatorValue)) {
+                        return NGramTokenizer.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.PatternTokenizer".equals(discriminatorValue)) {
+                        return PatternTokenizer.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.StandardTokenizerV2".equals(discriminatorValue)) {
+                        LuceneStandardTokenizerV2 codegen = LuceneStandardTokenizerV2.fromJson(readerToUse);
+                        return (codegen == null) ? null : new LuceneStandardTokenizer(codegen);
+                    } else if ("#Microsoft.Azure.Search.UaxUrlEmailTokenizer".equals(discriminatorValue)) {
+                        return UaxUrlEmailTokenizer.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.PathHierarchyTokenizerV2".equals(discriminatorValue)) {
+                        return PathHierarchyTokenizer.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.StandardTokenizer".equals(discriminatorValue)) {
+                        LuceneStandardTokenizerV1 codegen = LuceneStandardTokenizerV1.fromJson(readerToUse);
+                        return (codegen == null) ? null : new LuceneStandardTokenizer(codegen);
+                    } else if ("#Microsoft.Azure.Search.KeywordTokenizer".equals(discriminatorValue)) {
+                        KeywordTokenizerV1 codegen = KeywordTokenizerV1.fromJson(readerToUse);
+                        return (codegen == null) ? null : new KeywordTokenizer(codegen);
+                    } else {
+                        throw new IllegalStateException(
+                                "Discriminator field '@odata.type' didn't match one of the expected values '#Microsoft.Azure.Search.ClassicTokenizer', '#Microsoft.Azure.Search.EdgeNGramTokenizer', '#Microsoft.Azure.Search.KeywordTokenizerV2', '#Microsoft.Azure.Search.MicrosoftLanguageTokenizer', '#Microsoft.Azure.Search.MicrosoftLanguageStemmingTokenizer', '#Microsoft.Azure.Search.NGramTokenizer', '#Microsoft.Azure.Search.PatternTokenizer', '#Microsoft.Azure.Search.StandardTokenizerV2', '#Microsoft.Azure.Search.UaxUrlEmailTokenizer', '#Microsoft.Azure.Search.PathHierarchyTokenizerV2', '#Microsoft.Azure.Search.StandardTokenizer', or '#Microsoft.Azure.Search.KeywordTokenizer'. It was: '"
+                                        + discriminatorValue
+                                        + "'.");
+                    }
+                });
     }
 }

@@ -8,7 +8,6 @@ import com.azure.autorest.customization.PackageCustomization;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.NodeList;
-import com.github.javaparser.ast.body.BodyDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
@@ -18,7 +17,6 @@ import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.javadoc.Javadoc;
 import org.slf4j.Logger;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.Locale;
 import java.util.function.Consumer;
@@ -55,20 +53,6 @@ public class SearchIndexCustomizations extends Customization {
                 clazz.getMethodsByName("autocompleteGetWithResponse").forEach(MethodDeclaration::remove);
                 clazz.getMethodsByName("autocompleteGetAsync").forEach(MethodDeclaration::remove);
                 clazz.getMethodsByName("autocompleteGet").forEach(MethodDeclaration::remove);
-
-                clazz.getMembers().stream()
-                    .filter(BodyDeclaration::isClassOrInterfaceDeclaration)
-                    .filter(member -> "DocumentsService".equals(member.asClassOrInterfaceDeclaration().getNameAsString()))
-                    .map(BodyDeclaration::asClassOrInterfaceDeclaration)
-                    .findFirst()
-                    .ifPresent(interfaceClazz -> {
-                        interfaceClazz.getMethodsByName("searchGet").forEach(MethodDeclaration::remove);
-                        interfaceClazz.getMethodsByName("searchGetSync").forEach(MethodDeclaration::remove);
-                        interfaceClazz.getMethodsByName("suggestGet").forEach(MethodDeclaration::remove);
-                        interfaceClazz.getMethodsByName("suggestGetSync").forEach(MethodDeclaration::remove);
-                        interfaceClazz.getMethodsByName("autocompleteGet").forEach(MethodDeclaration::remove);
-                        interfaceClazz.getMethodsByName("autocompleteGetSync").forEach(MethodDeclaration::remove);
-                    });
             });
     }
 
@@ -78,7 +62,6 @@ public class SearchIndexCustomizations extends Customization {
         customizeIndexingResult(packageCustomization.getClass("IndexingResult"));
         customizeVectorQuery(packageCustomization.getClass("VectorQuery"));
         customizeVectorizedQuery(packageCustomization.getClass("VectorizedQuery"));
-        customizeVectorizableTextQuery(packageCustomization.getClass("VectorizableTextQuery"));
 
         packageCustomization.getClass("QueryAnswerResult").removeMethod("setAdditionalProperties");
         packageCustomization.getClass("QueryCaptionResult").removeMethod("setAdditionalProperties");
@@ -104,7 +87,6 @@ public class SearchIndexCustomizations extends Customization {
     private void customizeImplementationModelsPackage(PackageCustomization packageCustomization) {
         customizeSearchOptions(packageCustomization.getClass("SearchOptions"));
         customizeIndexAction(packageCustomization.getClass("IndexAction"));
-        // customizeSearchError(packageCustomization.getClass("SearchError"));
     }
 
     private void customizeSearchOptions(ClassCustomization classCustomization) {
@@ -147,11 +129,6 @@ private void customizeVectorQuery(ClassCustomization classCustomization) {
 }
 
     private void customizeVectorizedQuery(ClassCustomization classCustomization) {
-        customizeAst(classCustomization, clazz -> clazz.getMethodsByName("setFields").get(0)
-            .setParameters(new NodeList<>(new Parameter().setType("String").setName("fields").setVarArgs(true))));
-    }
-
-    private void customizeVectorizableTextQuery(ClassCustomization classCustomization) {
         customizeAst(classCustomization, clazz -> clazz.getMethodsByName("setFields").get(0)
             .setParameters(new NodeList<>(new Parameter().setType("String").setName("fields").setVarArgs(true))));
     }
@@ -201,45 +178,6 @@ private void customizeVectorQuery(ClassCustomization classCustomization) {
 
             field = clazz.getFieldByName("statusCode").get();
             field.setJavadocComment(field.getComment().get().asBlockComment().getContent());
-        });
-    }
-
-    private void customizeSearchError(ClassCustomization classCustomization) {
-        customizeAst(classCustomization, clazz -> {
-            MethodDeclaration fromJson = clazz.getMethodsByName("fromJson").get(0);
-
-            clazz.addMethod("readSearchError", Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC)
-                .setType("SearchError")
-                .addParameter("JsonReader", "jsonReader")
-                .addThrownException(IOException.class)
-                .setBody(fromJson.getBody().get());
-
-            fromJson.setBody(StaticJavaParser.parseBlock(joinWithNewline(
-                "{",
-                "return jsonReader.readObject(reader -> {",
-                "    // Buffer the next JSON object as SearchError can take two forms:",
-                "    //",
-                "    // - A SearchError object",
-                "    // - A SearchError object wrapped in an \"error\" node.",
-                "    JsonReader bufferedReader = reader.bufferObject();",
-                "    bufferedReader.nextToken(); // Get to the START_OBJECT token.",
-                "    while (bufferedReader.nextToken() != JsonToken.END_OBJECT) {",
-                "        String fieldName = bufferedReader.getFieldName();",
-                "        bufferedReader.nextToken();",
-                "",
-                "        if (\"error\".equals(fieldName)) {",
-                "            // If the SearchError was wrapped in the \"error\" node begin reading it now.",
-                "            return readSearchError(bufferedReader);",
-                "        } else {",
-                "            bufferedReader.skipChildren();",
-                "        }",
-                "    }",
-                "",
-                "    // Otherwise reset the JsonReader and read the whole JSON object.",
-                "    return readSearchError(bufferedReader.reset());",
-                "});",
-                "}"
-            )));
         });
     }
 

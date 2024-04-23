@@ -11,11 +11,10 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Input field mapping for a skill.
- */
+/** Input field mapping for a skill. */
 @Fluent
 public final class InputFieldMappingEntry implements JsonSerializable<InputFieldMappingEntry> {
 
@@ -132,42 +131,48 @@ public final class InputFieldMappingEntry implements JsonSerializable<InputField
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of InputFieldMappingEntry if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     *     was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the InputFieldMappingEntry.
      */
     public static InputFieldMappingEntry fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
-            String source = null;
-            String sourceContext = null;
-            List<InputFieldMappingEntry> inputs = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
-                } else if ("source".equals(fieldName)) {
-                    source = reader.getString();
-                } else if ("sourceContext".equals(fieldName)) {
-                    sourceContext = reader.getString();
-                } else if ("inputs".equals(fieldName)) {
-                    inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (nameFound) {
-                InputFieldMappingEntry deserializedInputFieldMappingEntry = new InputFieldMappingEntry(name);
-                deserializedInputFieldMappingEntry.source = source;
-                deserializedInputFieldMappingEntry.sourceContext = sourceContext;
-                deserializedInputFieldMappingEntry.inputs = inputs;
-                return deserializedInputFieldMappingEntry;
-            }
-            throw new IllegalStateException("Missing required property: name");
-        });
+        return jsonReader.readObject(
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    String source = null;
+                    String sourceContext = null;
+                    List<InputFieldMappingEntry> inputs = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                            nameFound = true;
+                        } else if ("source".equals(fieldName)) {
+                            source = reader.getString();
+                        } else if ("sourceContext".equals(fieldName)) {
+                            sourceContext = reader.getString();
+                        } else if ("inputs".equals(fieldName)) {
+                            inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (nameFound) {
+                        InputFieldMappingEntry deserializedInputFieldMappingEntry = new InputFieldMappingEntry(name);
+                        deserializedInputFieldMappingEntry.source = source;
+                        deserializedInputFieldMappingEntry.sourceContext = sourceContext;
+                        deserializedInputFieldMappingEntry.inputs = inputs;
+                        return deserializedInputFieldMappingEntry;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 
     /**
