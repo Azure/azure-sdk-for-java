@@ -94,7 +94,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs</artifactId>
-    <version>5.18.1</version>
+    <version>5.18.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -137,7 +137,7 @@ platform. First, add the package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.11.4</version>
+    <version>1.11.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
