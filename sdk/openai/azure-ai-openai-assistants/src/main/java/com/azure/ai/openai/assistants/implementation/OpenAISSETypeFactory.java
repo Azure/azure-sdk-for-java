@@ -1,6 +1,7 @@
 package com.azure.ai.openai.assistants.implementation;
 
 import com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent;
+import com.azure.ai.openai.assistants.models.MessageDeltaChunk;
 import com.azure.ai.openai.assistants.models.MessageDeltaContent;
 import com.azure.ai.openai.assistants.models.RunStep;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
@@ -24,7 +25,7 @@ import static com.azure.ai.openai.assistants.implementation.models.AssistantStre
 public class OpenAISSETypeFactory {
 
     public <T extends JsonSerializable<T>> deserializeEvent(BinaryData event, AssistantStreamEvent eventType) {
-        return switch (eventType) {
+        return switch (eventType.toString()) {
             case THREAD_CREATED -> event.toObject(ThreadRun.class);
             case THREAD_RUN_CREATED -> event.toObject(ThreadRun.class);
             case THEARD_RUN_QUEUED -> event.toObject(ThreadRun.class);
@@ -33,8 +34,8 @@ public class OpenAISSETypeFactory {
             case THREAD_RUN_STEP_IN_PROGRESS -> event.toObject(RunStep.class);
             case THREAD_MESSAGE_CREATED -> event.toObject(ThreadMessage.class);
             case THREAD_MESSAGE_IN_PROGRESS -> event.toObject(ThreadMessage.class);
-            case THREAD_MESSAGE_DELTA -> event.toObject(.class);
-            case THREAD_MESSAGE_COMPLETED -> event.toObject(ThreadRunCompleted.class);
+            case THREAD_MESSAGE_DELTA -> event.toObject(MessageDeltaChunk.class);
+            case THREAD_MESSAGE_COMPLETED -> event.toObject(ThreadMessage.class);
             case THREAD_RUN_COMPLETED -> event.toObject(ThreadRun.class);
             default -> throw new IllegalArgumentException("Unknown event type: " + eventType);
         };
