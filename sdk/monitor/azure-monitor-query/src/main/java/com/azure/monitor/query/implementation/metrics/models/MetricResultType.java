@@ -5,6 +5,7 @@
 package com.azure.monitor.query.implementation.metrics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,6 +38,7 @@ public final class MetricResultType extends ExpandableStringEnum<MetricResultTyp
      * @param name a name to look for.
      * @return the corresponding MetricResultType.
      */
+    @JsonCreator
     public static MetricResultType fromString(String name) {
         return fromString(name, MetricResultType.class);
     }

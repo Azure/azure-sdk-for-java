@@ -4,6 +4,9 @@
 
 package com.azure.monitor.query.implementation.metrics.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Defines values for ResultType.
  */
@@ -33,6 +36,7 @@ public enum ResultType {
      * @param value the serialized value to parse.
      * @return the parsed ResultType object, or null if unable to parse.
      */
+    @JsonCreator
     public static ResultType fromString(String value) {
         if (value == null) {
             return null;
@@ -49,6 +53,7 @@ public enum ResultType {
     /**
      * {@inheritDoc}
      */
+    @JsonValue
     @Override
     public String toString() {
         return this.value;
