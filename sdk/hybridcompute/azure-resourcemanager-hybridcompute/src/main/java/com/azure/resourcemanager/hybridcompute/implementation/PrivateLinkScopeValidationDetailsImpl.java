@@ -16,8 +16,7 @@ public final class PrivateLinkScopeValidationDetailsImpl implements PrivateLinkS
 
     private final com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager;
 
-    PrivateLinkScopeValidationDetailsImpl(
-        PrivateLinkScopeValidationDetailsInner innerObject,
+    PrivateLinkScopeValidationDetailsImpl(PrivateLinkScopeValidationDetailsInner innerObject,
         com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
