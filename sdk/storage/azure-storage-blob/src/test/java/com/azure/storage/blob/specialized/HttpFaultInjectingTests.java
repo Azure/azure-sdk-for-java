@@ -4,13 +4,11 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpClientProvider;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
 import com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
-import com.azure.core.http.vertx.VertxAsyncHttpClientProvider;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
@@ -49,6 +47,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -121,7 +120,7 @@ public class HttpFaultInjectingTests {
 
         List<File> files = new ArrayList<>(500);
         for (int i = 0; i < 500; i++) {
-            File file = File.createTempFile(CoreUtils.randomUuid().toString() + i, ".txt");
+            File file = File.createTempFile(UUID.randomUUID().toString() + i, ".txt");
             file.deleteOnExit();
             files.add(file);
         }
@@ -140,15 +139,12 @@ public class HttpFaultInjectingTests {
                     null, Context.NONE);
                 byte[] actualFileBytes = Files.readAllBytes(it.toPath());
                 TestUtils.assertArraysEqual(realFileBytes, actualFileBytes);
-                LOGGER.atVerbose()
-                    .addKeyValue("successCount", successCount.incrementAndGet())
-                    .log("Download completed successfully.");
+                successCount.incrementAndGet();
                 Files.deleteIfExists(it.toPath());
             } catch (Exception ex) {
                 // Don't let network exceptions fail the download
                 LOGGER.atWarning()
-                    .addKeyValue("downloadFile", it.getAbsolutePath())
-                    .log("Failed to complete download.", ex);
+                    .log(() -> "Failed to complete download, target download file: " + it.getAbsolutePath(), ex);
             }
 
             return null;
@@ -163,14 +159,11 @@ public class HttpFaultInjectingTests {
             try {
                 Files.deleteIfExists(it.toPath());
             } catch (IOException e) {
-                LOGGER.atWarning()
-                    .addKeyValue("file", it.getAbsolutePath())
-                    .log("Failed to delete file.", e);
+                LOGGER.atWarning().log(() -> "Failed to delete file: " + it.getAbsolutePath(), e);
             }
         });
     }
 
-    @SuppressWarnings("unchecked")
     private HttpClient getFaultInjectingWrappedHttpClient() {
         switch (ENVIRONMENT.getHttpClientType()) {
             case NETTY:
@@ -183,21 +176,6 @@ public class HttpFaultInjectingTests {
                     .readTimeout(Duration.ofSeconds(2))
                     .responseTimeout(Duration.ofSeconds(2))
                     .setHttpClientProvider(OkHttpAsyncClientProvider.class));
-            case VERTX:
-                return HttpClient.createDefault(new HttpClientOptions()
-                    .readTimeout(Duration.ofSeconds(2))
-                    .responseTimeout(Duration.ofSeconds(2))
-                    .setHttpClientProvider(VertxAsyncHttpClientProvider.class));
-            case JDK_HTTP:
-                try {
-                    return HttpClient.createDefault(new HttpClientOptions()
-                        .readTimeout(Duration.ofSeconds(2))
-                        .responseTimeout(Duration.ofSeconds(2))
-                        .setHttpClientProvider((Class<? extends HttpClientProvider>) Class.forName(
-                            "com.azure.core.http.jdk.httpclient.JdkHttpClientProvider")));
-                } catch (ClassNotFoundException e) {
-                    throw new IllegalStateException(e);
-                }
 
             default:
                 throw new IllegalArgumentException("Unknown http client type: " + ENVIRONMENT.getHttpClientType());

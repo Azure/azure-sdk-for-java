@@ -23,8 +23,6 @@ public final class AppendBlobAppendBlockFromUrlOptions {
     private HttpAuthorization sourceAuthorization;
 
     /**
-     * Creates a new instance of {@link AppendBlobAppendBlockFromUrlOptions}.
-     *
      * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      */
     public AppendBlobAppendBlockFromUrlOptions(String sourceUrl) {
@@ -32,8 +30,6 @@ public final class AppendBlobAppendBlockFromUrlOptions {
     }
 
     /**
-     * Gets the source URL to copy from.
-     *
      * @return Source URL to copy from.
      */
     public String getSourceUrl() {
@@ -41,8 +37,6 @@ public final class AppendBlobAppendBlockFromUrlOptions {
     }
 
     /**
-     * Gets the range of bytes to read from the source.
-     *
      * @return Range of bytes to read from the source.
      */
     public BlobRange getSourceRange() {
@@ -50,8 +44,6 @@ public final class AppendBlobAppendBlockFromUrlOptions {
     }
 
     /**
-     * Sets the range of bytes to read from the source.
-     *
      * @param sourceRange Range of bytes to read from the source.
      * @return The updated options.
      */
@@ -61,8 +53,6 @@ public final class AppendBlobAppendBlockFromUrlOptions {
     }
 
     /**
-     * Gets the MD5 of the source content to be appended.
-     *
      * @return MD5 of the source content to be appended.
      */
     public byte[] getSourceContentMd5() {
@@ -70,8 +60,6 @@ public final class AppendBlobAppendBlockFromUrlOptions {
     }
 
     /**
-     * Sets the MD5 of the source content to be appended.
-     *
      * @param sourceContentMd5 MD5 of the source content to be appended.
      * @return The updated options.
      */
@@ -81,8 +69,6 @@ public final class AppendBlobAppendBlockFromUrlOptions {
     }
 
     /**
-     * Gets the {@link AppendBlobRequestConditions} for writing to destination.
-     *
      * @return {@link AppendBlobRequestConditions} for writing to destination.
      */
     public AppendBlobRequestConditions getDestinationRequestConditions() {
@@ -90,8 +76,6 @@ public final class AppendBlobAppendBlockFromUrlOptions {
     }
 
     /**
-     * Sets the {@link AppendBlobRequestConditions} for writing to destination.
-     *
      * @param destinationRequestConditions {@link AppendBlobRequestConditions} for writing to destination.
      * @return The updated options.
      */
@@ -101,8 +85,6 @@ public final class AppendBlobAppendBlockFromUrlOptions {
     }
 
     /**
-     * Gets the {@link BlobRequestConditions} for accessing source.
-     *
      * @return {@link BlobRequestConditions} for accessing source.
      */
     public BlobRequestConditions getSourceRequestConditions() {
@@ -110,8 +92,6 @@ public final class AppendBlobAppendBlockFromUrlOptions {
     }
 
     /**
-     * Sets the {@link BlobRequestConditions} for accessing source.
-     *
      * @param sourceRequestConditions {@link BlobRequestConditions} for accessing source.
      * @return The updated options.
      */
@@ -121,8 +101,6 @@ public final class AppendBlobAppendBlockFromUrlOptions {
     }
 
     /**
-     * Gets the auth header for accessing source.
-     *
      * @return auth header for accessing source.
      */
     public HttpAuthorization getSourceAuthorization() {
