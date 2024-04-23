@@ -9,37 +9,28 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/**
- * The similarity metric to use for vector comparisons.
- */
+/** The similarity metric to use for vector comparisons. */
 public final class VectorSearchAlgorithmMetric extends ExpandableStringEnum<VectorSearchAlgorithmMetric> {
-    /**
-     * Static value cosine for VectorSearchAlgorithmMetric.
-     */
+    /** Static value cosine for VectorSearchAlgorithmMetric. */
     public static final VectorSearchAlgorithmMetric COSINE = fromString("cosine");
 
-    /**
-     * Static value euclidean for VectorSearchAlgorithmMetric.
-     */
+    /** Static value euclidean for VectorSearchAlgorithmMetric. */
     public static final VectorSearchAlgorithmMetric EUCLIDEAN = fromString("euclidean");
 
-    /**
-     * Static value dotProduct for VectorSearchAlgorithmMetric.
-     */
+    /** Static value dotProduct for VectorSearchAlgorithmMetric. */
     public static final VectorSearchAlgorithmMetric DOT_PRODUCT = fromString("dotProduct");
 
     /**
      * Creates a new instance of VectorSearchAlgorithmMetric value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public VectorSearchAlgorithmMetric() {
-    }
+    public VectorSearchAlgorithmMetric() {}
 
     /**
      * Creates or finds a VectorSearchAlgorithmMetric from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding VectorSearchAlgorithmMetric.
      */
@@ -49,7 +40,7 @@ public final class VectorSearchAlgorithmMetric extends ExpandableStringEnum<Vect
 
     /**
      * Gets known VectorSearchAlgorithmMetric values.
-     * 
+     *
      * @return known VectorSearchAlgorithmMetric values.
      */
     public static Collection<VectorSearchAlgorithmMetric> values() {

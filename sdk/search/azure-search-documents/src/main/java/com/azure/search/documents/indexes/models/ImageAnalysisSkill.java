@@ -12,10 +12,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-/**
- * A skill that analyzes image files. It extracts a rich set of visual features based on the image content.
- */
+/** A skill that analyzes image files. It extracts a rich set of visual features based on the image content. */
 @Fluent
 public final class ImageAnalysisSkill extends SearchIndexerSkill {
 
@@ -104,27 +103,21 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ImageAnalysisSkill setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ImageAnalysisSkill setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ImageAnalysisSkill setContext(String context) {
         super.setContext(context);
@@ -140,12 +133,13 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeStringField("context", getContext());
-        jsonWriter.writeStringField("defaultLanguageCode",
-            this.defaultLanguageCode == null ? null : this.defaultLanguageCode.toString());
-        jsonWriter.writeArrayField("visualFeatures", this.visualFeatures,
-            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
-        jsonWriter.writeArrayField("details", this.details,
-            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField("defaultLanguageCode", Objects.toString(this.defaultLanguageCode, null));
+        jsonWriter.writeArrayField(
+                "visualFeatures",
+                this.visualFeatures,
+                (writer, element) -> writer.writeString(Objects.toString(element, null)));
+        jsonWriter.writeArrayField(
+                "details", this.details, (writer, element) -> writer.writeString(Objects.toString(element, null)));
         return jsonWriter.writeEndObject();
     }
 
@@ -154,75 +148,77 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ImageAnalysisSkill if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the ImageAnalysisSkill.
      */
     public static ImageAnalysisSkill fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean inputsFound = false;
-            List<InputFieldMappingEntry> inputs = null;
-            boolean outputsFound = false;
-            List<OutputFieldMappingEntry> outputs = null;
-            String name = null;
-            String description = null;
-            String context = null;
-            ImageAnalysisSkillLanguage defaultLanguageCode = null;
-            List<VisualFeature> visualFeatures = null;
-            List<ImageDetail> details = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Skills.Vision.ImageAnalysisSkill".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Vision.ImageAnalysisSkill'. The found '@odata.type' was '"
-                                + odataType + "'.");
+        return jsonReader.readObject(
+                reader -> {
+                    boolean inputsFound = false;
+                    List<InputFieldMappingEntry> inputs = null;
+                    boolean outputsFound = false;
+                    List<OutputFieldMappingEntry> outputs = null;
+                    String name = null;
+                    String description = null;
+                    String context = null;
+                    ImageAnalysisSkillLanguage defaultLanguageCode = null;
+                    List<VisualFeature> visualFeatures = null;
+                    List<ImageDetail> details = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("@odata.type".equals(fieldName)) {
+                            String odataType = reader.getString();
+                            if (!"#Microsoft.Skills.Vision.ImageAnalysisSkill".equals(odataType)) {
+                                throw new IllegalStateException(
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Vision.ImageAnalysisSkill'. The found '@odata.type' was '"
+                                                + odataType
+                                                + "'.");
+                            }
+                        } else if ("inputs".equals(fieldName)) {
+                            inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
+                            inputsFound = true;
+                        } else if ("outputs".equals(fieldName)) {
+                            outputs = reader.readArray(reader1 -> OutputFieldMappingEntry.fromJson(reader1));
+                            outputsFound = true;
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                        } else if ("description".equals(fieldName)) {
+                            description = reader.getString();
+                        } else if ("context".equals(fieldName)) {
+                            context = reader.getString();
+                        } else if ("defaultLanguageCode".equals(fieldName)) {
+                            defaultLanguageCode = ImageAnalysisSkillLanguage.fromString(reader.getString());
+                        } else if ("visualFeatures".equals(fieldName)) {
+                            visualFeatures = reader.readArray(reader1 -> VisualFeature.fromString(reader1.getString()));
+                        } else if ("details".equals(fieldName)) {
+                            details = reader.readArray(reader1 -> ImageDetail.fromString(reader1.getString()));
+                        } else {
+                            reader.skipChildren();
+                        }
                     }
-                } else if ("inputs".equals(fieldName)) {
-                    inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
-                    inputsFound = true;
-                } else if ("outputs".equals(fieldName)) {
-                    outputs = reader.readArray(reader1 -> OutputFieldMappingEntry.fromJson(reader1));
-                    outputsFound = true;
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                } else if ("description".equals(fieldName)) {
-                    description = reader.getString();
-                } else if ("context".equals(fieldName)) {
-                    context = reader.getString();
-                } else if ("defaultLanguageCode".equals(fieldName)) {
-                    defaultLanguageCode = ImageAnalysisSkillLanguage.fromString(reader.getString());
-                } else if ("visualFeatures".equals(fieldName)) {
-                    visualFeatures = reader.readArray(reader1 -> VisualFeature.fromString(reader1.getString()));
-                } else if ("details".equals(fieldName)) {
-                    details = reader.readArray(reader1 -> ImageDetail.fromString(reader1.getString()));
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (inputsFound && outputsFound) {
-                ImageAnalysisSkill deserializedImageAnalysisSkill = new ImageAnalysisSkill(inputs, outputs);
-                deserializedImageAnalysisSkill.setName(name);
-                deserializedImageAnalysisSkill.setDescription(description);
-                deserializedImageAnalysisSkill.setContext(context);
-                deserializedImageAnalysisSkill.defaultLanguageCode = defaultLanguageCode;
-                deserializedImageAnalysisSkill.visualFeatures = visualFeatures;
-                deserializedImageAnalysisSkill.details = details;
-                return deserializedImageAnalysisSkill;
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!inputsFound) {
-                missingProperties.add("inputs");
-            }
-            if (!outputsFound) {
-                missingProperties.add("outputs");
-            }
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
-        });
+                    if (inputsFound && outputsFound) {
+                        ImageAnalysisSkill deserializedImageAnalysisSkill = new ImageAnalysisSkill(inputs, outputs);
+                        deserializedImageAnalysisSkill.setName(name);
+                        deserializedImageAnalysisSkill.setDescription(description);
+                        deserializedImageAnalysisSkill.setContext(context);
+                        deserializedImageAnalysisSkill.defaultLanguageCode = defaultLanguageCode;
+                        deserializedImageAnalysisSkill.visualFeatures = visualFeatures;
+                        deserializedImageAnalysisSkill.details = details;
+                        return deserializedImageAnalysisSkill;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!inputsFound) {
+                        missingProperties.add("inputs");
+                    }
+                    if (!outputsFound) {
+                        missingProperties.add("outputs");
+                    }
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 
     /**

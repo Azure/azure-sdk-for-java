@@ -12,11 +12,10 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Contains a batch of document write actions to send to the index.
- */
+/** Contains a batch of document write actions to send to the index. */
 @Immutable
 public final class IndexBatch implements JsonSerializable<IndexBatch> {
     /*
@@ -26,7 +25,7 @@ public final class IndexBatch implements JsonSerializable<IndexBatch> {
 
     /**
      * Creates an instance of IndexBatch class.
-     * 
+     *
      * @param actions the actions value to set.
      */
     public IndexBatch(List<IndexAction> actions) {
@@ -35,7 +34,7 @@ public final class IndexBatch implements JsonSerializable<IndexBatch> {
 
     /**
      * Get the actions property: The actions in the batch.
-     * 
+     *
      * @return the actions value.
      */
     public List<IndexAction> getActions() {
@@ -51,32 +50,41 @@ public final class IndexBatch implements JsonSerializable<IndexBatch> {
 
     /**
      * Reads an instance of IndexBatch from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of IndexBatch if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
+     *     to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the IndexBatch.
      */
     public static IndexBatch fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean actionsFound = false;
-            List<IndexAction> actions = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    boolean actionsFound = false;
+                    List<IndexAction> actions = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("value".equals(fieldName)) {
-                    actions = reader.readArray(reader1 -> IndexAction.fromJson(reader1));
-                    actionsFound = true;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (actionsFound) {
-                return new IndexBatch(actions);
-            }
-            throw new IllegalStateException("Missing required property: value");
-        });
+                        if ("value".equals(fieldName)) {
+                            actions = reader.readArray(reader1 -> IndexAction.fromJson(reader1));
+                            actionsFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (actionsFound) {
+                        IndexBatch deserializedIndexBatch = new IndexBatch(actions);
+
+                        return deserializedIndexBatch;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!actionsFound) {
+                        missingProperties.add("value");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

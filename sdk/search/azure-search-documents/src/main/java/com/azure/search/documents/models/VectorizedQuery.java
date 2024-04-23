@@ -11,11 +11,11 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.implementation.models.VectorQueryKind;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-/**
- * The query parameters to use for vector search when a raw vector value is provided.
- */
+/** The query parameters to use for vector search when a raw vector value is provided. */
 @Fluent
 public final class VectorizedQuery extends VectorQuery {
 
@@ -42,50 +42,34 @@ public final class VectorizedQuery extends VectorQuery {
         return this.vector;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public VectorizedQuery setKNearestNeighborsCount(Integer kNearestNeighborsCount) {
         super.setKNearestNeighborsCount(kNearestNeighborsCount);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public VectorizedQuery setFields(String... fields) {
         super.setFields(fields);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public VectorizedQuery setExhaustive(Boolean exhaustive) {
         super.setExhaustive(exhaustive);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public VectorizedQuery setOversampling(Double oversampling) {
-        super.setOversampling(oversampling);
-        return this;
-    }
-
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", VectorQueryKind.VECTOR == null ? null : VectorQueryKind.VECTOR.toString());
+        jsonWriter.writeStringField("kind", Objects.toString(VectorQueryKind.VECTOR, null));
         jsonWriter.writeNumberField("k", getKNearestNeighborsCount());
         jsonWriter.writeStringField("fields", getFields());
         jsonWriter.writeBooleanField("exhaustive", isExhaustive());
-        jsonWriter.writeNumberField("oversampling", getOversampling());
         jsonWriter.writeArrayField("vector", this.vector, (writer, element) -> writer.writeFloat(element));
         return jsonWriter.writeEndObject();
     }
@@ -95,53 +79,56 @@ public final class VectorizedQuery extends VectorQuery {
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of VectorizedQuery if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the VectorizedQuery.
      */
     public static VectorizedQuery fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            Integer kNearestNeighborsCount = null;
-            String fields = null;
-            Boolean exhaustive = null;
-            Double oversampling = null;
-            boolean vectorFound = false;
-            List<Float> vector = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    String kind = reader.getString();
-                    if (!"vector".equals(kind)) {
-                        throw new IllegalStateException(
-                            "'kind' was expected to be non-null and equal to 'vector'. The found 'kind' was '" + kind
-                                + "'.");
+        return jsonReader.readObject(
+                reader -> {
+                    Integer kNearestNeighborsCount = null;
+                    String fields = null;
+                    Boolean exhaustive = null;
+                    boolean vectorFound = false;
+                    List<Float> vector = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("kind".equals(fieldName)) {
+                            String kind = reader.getString();
+                            if (!"vector".equals(kind)) {
+                                throw new IllegalStateException(
+                                        "'kind' was expected to be non-null and equal to 'vector'. The found 'kind' was '"
+                                                + kind
+                                                + "'.");
+                            }
+                        } else if ("k".equals(fieldName)) {
+                            kNearestNeighborsCount = reader.getNullable(JsonReader::getInt);
+                        } else if ("fields".equals(fieldName)) {
+                            fields = reader.getString();
+                        } else if ("exhaustive".equals(fieldName)) {
+                            exhaustive = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("vector".equals(fieldName)) {
+                            vector = reader.readArray(reader1 -> reader1.getFloat());
+                            vectorFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
                     }
-                } else if ("k".equals(fieldName)) {
-                    kNearestNeighborsCount = reader.getNullable(JsonReader::getInt);
-                } else if ("fields".equals(fieldName)) {
-                    fields = reader.getString();
-                } else if ("exhaustive".equals(fieldName)) {
-                    exhaustive = reader.getNullable(JsonReader::getBoolean);
-                } else if ("oversampling".equals(fieldName)) {
-                    oversampling = reader.getNullable(JsonReader::getDouble);
-                } else if ("vector".equals(fieldName)) {
-                    vector = reader.readArray(reader1 -> reader1.getFloat());
-                    vectorFound = true;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (vectorFound) {
-                VectorizedQuery deserializedVectorizedQuery = new VectorizedQuery(vector);
-                deserializedVectorizedQuery.setKNearestNeighborsCount(kNearestNeighborsCount);
-                deserializedVectorizedQuery.setFields(fields);
-                deserializedVectorizedQuery.setExhaustive(exhaustive);
-                deserializedVectorizedQuery.setOversampling(oversampling);
-                return deserializedVectorizedQuery;
-            }
-            throw new IllegalStateException("Missing required property: vector");
-        });
+                    if (vectorFound) {
+                        VectorizedQuery deserializedVectorizedQuery = new VectorizedQuery(vector);
+                        deserializedVectorizedQuery.setKNearestNeighborsCount(kNearestNeighborsCount);
+                        deserializedVectorizedQuery.setFields(fields);
+                        deserializedVectorizedQuery.setExhaustive(exhaustive);
+                        return deserializedVectorizedQuery;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!vectorFound) {
+                        missingProperties.add("vector");
+                    }
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }
