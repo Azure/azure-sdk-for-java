@@ -45,25 +45,6 @@ abstract class SparkE2EQueryITestBase
   // "spark.cosmos.read.partitioning.strategy" -> "Restrictive" is added to the query tests
   // to ensure we don't do sub-range feed-range
   // once emulator fixed switch back to default partitioning.
-
-  "spark query" can "basic nested query with AAD" in {
-    val cfg = Map("spark.cosmos.accountEndpoint" -> "https://fabianm-synapse-01-cdb.documents.azure.com",
-      "spark.cosmos.database" -> "FabianmDB",
-      "spark.cosmos.auth.type" -> "ManagedIdentity",
-      "spark.cosmos.account.tenantId" -> "72f988bf-86f1-41af-91ab-2d7cd011db47",
-      "spark.cosmos.account.resourceGroupName" -> "fabianm-synapse-01",
-      "spark.cosmos.account.subscriptionId" -> "8fba6d4f-7c37-4d13-9063-fd58ad2b86e2",
-      "spark.cosmos.container" -> "Dummy",
-      "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
-      "spark.cosmos.diagnostics" -> "feed_details"
-    )
-
-    val df = spark.read.format("cosmos.oltp").options(cfg).load()
-    val rowsArray = df.collect()
-    rowsArray should have size 1
-
-  }
-
   "spark items DataSource version" can "be determined" in {
     CosmosItemsDataSource.version shouldEqual CosmosConstants.currentVersion
   }

@@ -388,8 +388,13 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
 
   private[this] def createTokenCredential(authConfig: CosmosManagedIdentityAuthConfig): CosmosManagedIdentityTokenCredential = {
     val tokenProvider: (List[String] => Mono[CosmosAccessToken]) = CosmosConfig.accountDataResolverCls match {
-      case Some(accountDataResolver) => accountDataResolver.getManagedIdentityTokenProvider
-
+      case Some(accountDataResolver) =>
+        // @TODO fabianm - leaving this commented out for now. Below is how I would envision
+        // exposing the option to use linked service tokens eventually when the LinkedService for
+        // Cosmos DB supports ManagedIdentity authentication
+        // accountDataResolver.getManagedIdentityTokenProvider
+        throw new IllegalStateException(
+          "ManagedIdentity authentication is not supported in Synapse/Fabric for LinkedServices yet.")
       case None =>
         val tokenCredentialBuilder = new ManagedIdentityCredentialBuilder()
         if (authConfig.clientId.isDefined) {
@@ -516,7 +521,8 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                                                         useGatewayMode: Boolean,
                                                         // Intentionally not looking at proactive connection
                                                         // initialization to distinguish cache key
-                                                        // You would never want to clients just for the diffs
+                                                        // You would never want separate clients just for this
+                                                        // difference
                                                         httpConnectionPoolSize: Int,
                                                         useEventualConsistency: Boolean,
                                                         preferredRegionsList: String)

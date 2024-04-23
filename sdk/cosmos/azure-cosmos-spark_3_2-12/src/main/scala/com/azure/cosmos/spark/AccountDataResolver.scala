@@ -8,5 +8,8 @@ import reactor.core.publisher.Mono
 trait AccountDataResolver {
     def getAccountDataConfig(configs : Map[String, String]): Map[String, String]
 
-    def getManagedIdentityTokenProvider: List[String] => Mono[CosmosAccessToken]
+    // @TODO fabianm - leaving this commented out for now. Below is how I would envision
+    // exposing the option to use linked service tokens eventually when the LinkedService for
+    // Cosmos DB supports ManagedIdentity authentication
+    // def getManagedIdentityTokenProvider: List[String] => Mono[CosmosAccessToken]
 }
