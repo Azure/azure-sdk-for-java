@@ -32,23 +32,28 @@ import com.azure.resourcemanager.devcenter.fluent.models.EnvironmentDefinitionIn
 import com.azure.resourcemanager.devcenter.models.EnvironmentDefinitionListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in EnvironmentDefinitionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in EnvironmentDefinitionsClient.
+ */
 public final class EnvironmentDefinitionsClientImpl implements EnvironmentDefinitionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final EnvironmentDefinitionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DevCenterManagementClientImpl client;
 
     /**
      * Initializes an instance of EnvironmentDefinitionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     EnvironmentDefinitionsClientImpl(DevCenterManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(EnvironmentDefinitionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(EnvironmentDefinitionsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -59,68 +64,386 @@ public final class EnvironmentDefinitionsClientImpl implements EnvironmentDefini
     @Host("{$host}")
     @ServiceInterface(name = "DevCenterManagementC")
     public interface EnvironmentDefinitionsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}/environmentDefinitions")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/catalogs/{catalogName}/environmentDefinitions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EnvironmentDefinitionListResult>> listByCatalog(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("devCenterName") String devCenterName,
-            @PathParam("catalogName") String catalogName,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<EnvironmentDefinitionListResult>> listByProjectCatalog(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("projectName") String projectName,
+            @PathParam("catalogName") String catalogName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}/environmentDefinitions/{environmentDefinitionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/catalogs/{catalogName}/environmentDefinitions/{environmentDefinitionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EnvironmentDefinitionInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("devCenterName") String devCenterName,
+        Mono<Response<EnvironmentDefinitionInner>> getByProjectCatalog(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("projectName") String projectName,
             @PathParam("catalogName") String catalogName,
             @PathParam("environmentDefinitionName") String environmentDefinitionName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}/environmentDefinitions/{environmentDefinitionName}/getErrorDetails")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}/environmentDefinitions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CatalogResourceValidationErrorDetailsInner>> getErrorDetails(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("devCenterName") String devCenterName,
+        Mono<Response<EnvironmentDefinitionListResult>> listByCatalog(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("devCenterName") String devCenterName,
+            @PathParam("catalogName") String catalogName, @QueryParam("$top") Integer top,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}/environmentDefinitions/{environmentDefinitionName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<EnvironmentDefinitionInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("devCenterName") String devCenterName,
             @PathParam("catalogName") String catalogName,
             @PathParam("environmentDefinitionName") String environmentDefinitionName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}/environmentDefinitions/{environmentDefinitionName}/getErrorDetails")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<CatalogResourceValidationErrorDetailsInner>> getErrorDetails(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("devCenterName") String devCenterName,
+            @PathParam("catalogName") String catalogName,
+            @PathParam("environmentDefinitionName") String environmentDefinitionName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<EnvironmentDefinitionListResult>> listByProjectCatalogNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EnvironmentDefinitionListResult>> listByCatalogNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+    }
+
+    /**
+     * Lists the environment definitions in this project catalog.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param projectName The name of the project.
+     * @param catalogName The name of the Catalog.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return results of the environment definition list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<EnvironmentDefinitionInner>>
+        listByProjectCatalogSinglePageAsync(String resourceGroupName, String projectName, String catalogName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (projectName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
+        }
+        if (catalogName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter catalogName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listByProjectCatalog(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, projectName, catalogName, accept, context))
+            .<PagedResponse<EnvironmentDefinitionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Lists the environment definitions in this project catalog.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param projectName The name of the project.
+     * @param catalogName The name of the Catalog.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return results of the environment definition list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<EnvironmentDefinitionInner>> listByProjectCatalogSinglePageAsync(
+        String resourceGroupName, String projectName, String catalogName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (projectName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
+        }
+        if (catalogName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter catalogName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listByProjectCatalog(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, projectName, catalogName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Lists the environment definitions in this project catalog.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param projectName The name of the project.
+     * @param catalogName The name of the Catalog.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return results of the environment definition list operation as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<EnvironmentDefinitionInner> listByProjectCatalogAsync(String resourceGroupName,
+        String projectName, String catalogName) {
+        return new PagedFlux<>(() -> listByProjectCatalogSinglePageAsync(resourceGroupName, projectName, catalogName),
+            nextLink -> listByProjectCatalogNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists the environment definitions in this project catalog.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param projectName The name of the project.
+     * @param catalogName The name of the Catalog.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return results of the environment definition list operation as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<EnvironmentDefinitionInner> listByProjectCatalogAsync(String resourceGroupName,
+        String projectName, String catalogName, Context context) {
+        return new PagedFlux<>(
+            () -> listByProjectCatalogSinglePageAsync(resourceGroupName, projectName, catalogName, context),
+            nextLink -> listByProjectCatalogNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Lists the environment definitions in this project catalog.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param projectName The name of the project.
+     * @param catalogName The name of the Catalog.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return results of the environment definition list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<EnvironmentDefinitionInner> listByProjectCatalog(String resourceGroupName, String projectName,
+        String catalogName) {
+        return new PagedIterable<>(listByProjectCatalogAsync(resourceGroupName, projectName, catalogName));
+    }
+
+    /**
+     * Lists the environment definitions in this project catalog.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param projectName The name of the project.
+     * @param catalogName The name of the Catalog.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return results of the environment definition list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<EnvironmentDefinitionInner> listByProjectCatalog(String resourceGroupName, String projectName,
+        String catalogName, Context context) {
+        return new PagedIterable<>(listByProjectCatalogAsync(resourceGroupName, projectName, catalogName, context));
+    }
+
+    /**
+     * Gets an environment definition from the catalog.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param projectName The name of the project.
+     * @param catalogName The name of the Catalog.
+     * @param environmentDefinitionName The name of the Environment Definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an environment definition from the catalog along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<EnvironmentDefinitionInner>> getByProjectCatalogWithResponseAsync(String resourceGroupName,
+        String projectName, String catalogName, String environmentDefinitionName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (projectName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
+        }
+        if (catalogName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter catalogName is required and cannot be null."));
+        }
+        if (environmentDefinitionName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter environmentDefinitionName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getByProjectCatalog(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, projectName, catalogName, environmentDefinitionName,
+                accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets an environment definition from the catalog.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param projectName The name of the project.
+     * @param catalogName The name of the Catalog.
+     * @param environmentDefinitionName The name of the Environment Definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an environment definition from the catalog along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<EnvironmentDefinitionInner>> getByProjectCatalogWithResponseAsync(String resourceGroupName,
+        String projectName, String catalogName, String environmentDefinitionName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (projectName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
+        }
+        if (catalogName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter catalogName is required and cannot be null."));
+        }
+        if (environmentDefinitionName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter environmentDefinitionName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.getByProjectCatalog(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, projectName, catalogName, environmentDefinitionName,
+            accept, context);
+    }
+
+    /**
+     * Gets an environment definition from the catalog.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param projectName The name of the project.
+     * @param catalogName The name of the Catalog.
+     * @param environmentDefinitionName The name of the Environment Definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an environment definition from the catalog on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<EnvironmentDefinitionInner> getByProjectCatalogAsync(String resourceGroupName, String projectName,
+        String catalogName, String environmentDefinitionName) {
+        return getByProjectCatalogWithResponseAsync(resourceGroupName, projectName, catalogName,
+            environmentDefinitionName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets an environment definition from the catalog.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param projectName The name of the project.
+     * @param catalogName The name of the Catalog.
+     * @param environmentDefinitionName The name of the Environment Definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an environment definition from the catalog along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<EnvironmentDefinitionInner> getByProjectCatalogWithResponse(String resourceGroupName,
+        String projectName, String catalogName, String environmentDefinitionName, Context context) {
+        return getByProjectCatalogWithResponseAsync(resourceGroupName, projectName, catalogName,
+            environmentDefinitionName, context).block();
+    }
+
+    /**
+     * Gets an environment definition from the catalog.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param projectName The name of the project.
+     * @param catalogName The name of the Catalog.
+     * @param environmentDefinitionName The name of the Environment Definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an environment definition from the catalog.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EnvironmentDefinitionInner getByProjectCatalog(String resourceGroupName, String projectName,
+        String catalogName, String environmentDefinitionName) {
+        return getByProjectCatalogWithResponse(resourceGroupName, projectName, catalogName, environmentDefinitionName,
+            Context.NONE).getValue();
     }
 
     /**
      * List environment definitions in the catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -129,22 +452,18 @@ public final class EnvironmentDefinitionsClientImpl implements EnvironmentDefini
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of the environment definition list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EnvironmentDefinitionInner>> listByCatalogSinglePageAsync(
-        String resourceGroupName, String devCenterName, String catalogName, Integer top) {
+    private Mono<PagedResponse<EnvironmentDefinitionInner>> listByCatalogSinglePageAsync(String resourceGroupName,
+        String devCenterName, String catalogName, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -158,34 +477,16 @@ public final class EnvironmentDefinitionsClientImpl implements EnvironmentDefini
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByCatalog(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            devCenterName,
-                            catalogName,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<EnvironmentDefinitionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByCatalog(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, devCenterName, catalogName, top, accept, context))
+            .<PagedResponse<EnvironmentDefinitionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List environment definitions in the catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -195,22 +496,18 @@ public final class EnvironmentDefinitionsClientImpl implements EnvironmentDefini
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of the environment definition list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EnvironmentDefinitionInner>> listByCatalogSinglePageAsync(
-        String resourceGroupName, String devCenterName, String catalogName, Integer top, Context context) {
+    private Mono<PagedResponse<EnvironmentDefinitionInner>> listByCatalogSinglePageAsync(String resourceGroupName,
+        String devCenterName, String catalogName, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -225,30 +522,15 @@ public final class EnvironmentDefinitionsClientImpl implements EnvironmentDefini
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByCatalog(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                devCenterName,
-                catalogName,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByCatalog(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, devCenterName, catalogName, top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List environment definitions in the catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -259,16 +541,15 @@ public final class EnvironmentDefinitionsClientImpl implements EnvironmentDefini
      * @return results of the environment definition list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EnvironmentDefinitionInner> listByCatalogAsync(
-        String resourceGroupName, String devCenterName, String catalogName, Integer top) {
-        return new PagedFlux<>(
-            () -> listByCatalogSinglePageAsync(resourceGroupName, devCenterName, catalogName, top),
+    private PagedFlux<EnvironmentDefinitionInner> listByCatalogAsync(String resourceGroupName, String devCenterName,
+        String catalogName, Integer top) {
+        return new PagedFlux<>(() -> listByCatalogSinglePageAsync(resourceGroupName, devCenterName, catalogName, top),
             nextLink -> listByCatalogNextSinglePageAsync(nextLink));
     }
 
     /**
      * List environment definitions in the catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -278,17 +559,16 @@ public final class EnvironmentDefinitionsClientImpl implements EnvironmentDefini
      * @return results of the environment definition list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EnvironmentDefinitionInner> listByCatalogAsync(
-        String resourceGroupName, String devCenterName, String catalogName) {
+    private PagedFlux<EnvironmentDefinitionInner> listByCatalogAsync(String resourceGroupName, String devCenterName,
+        String catalogName) {
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listByCatalogSinglePageAsync(resourceGroupName, devCenterName, catalogName, top),
+        return new PagedFlux<>(() -> listByCatalogSinglePageAsync(resourceGroupName, devCenterName, catalogName, top),
             nextLink -> listByCatalogNextSinglePageAsync(nextLink));
     }
 
     /**
      * List environment definitions in the catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -300,8 +580,8 @@ public final class EnvironmentDefinitionsClientImpl implements EnvironmentDefini
      * @return results of the environment definition list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EnvironmentDefinitionInner> listByCatalogAsync(
-        String resourceGroupName, String devCenterName, String catalogName, Integer top, Context context) {
+    private PagedFlux<EnvironmentDefinitionInner> listByCatalogAsync(String resourceGroupName, String devCenterName,
+        String catalogName, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listByCatalogSinglePageAsync(resourceGroupName, devCenterName, catalogName, top, context),
             nextLink -> listByCatalogNextSinglePageAsync(nextLink, context));
@@ -309,7 +589,7 @@ public final class EnvironmentDefinitionsClientImpl implements EnvironmentDefini
 
     /**
      * List environment definitions in the catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -319,15 +599,15 @@ public final class EnvironmentDefinitionsClientImpl implements EnvironmentDefini
      * @return results of the environment definition list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EnvironmentDefinitionInner> listByCatalog(
-        String resourceGroupName, String devCenterName, String catalogName) {
+    public PagedIterable<EnvironmentDefinitionInner> listByCatalog(String resourceGroupName, String devCenterName,
+        String catalogName) {
         final Integer top = null;
         return new PagedIterable<>(listByCatalogAsync(resourceGroupName, devCenterName, catalogName, top));
     }
 
     /**
      * List environment definitions in the catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -339,14 +619,14 @@ public final class EnvironmentDefinitionsClientImpl implements EnvironmentDefini
      * @return results of the environment definition list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EnvironmentDefinitionInner> listByCatalog(
-        String resourceGroupName, String devCenterName, String catalogName, Integer top, Context context) {
+    public PagedIterable<EnvironmentDefinitionInner> listByCatalog(String resourceGroupName, String devCenterName,
+        String catalogName, Integer top, Context context) {
         return new PagedIterable<>(listByCatalogAsync(resourceGroupName, devCenterName, catalogName, top, context));
     }
 
     /**
      * Gets an environment definition from the catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -354,23 +634,19 @@ public final class EnvironmentDefinitionsClientImpl implements EnvironmentDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment definition from the catalog along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an environment definition from the catalog along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EnvironmentDefinitionInner>> getWithResponseAsync(
-        String resourceGroupName, String devCenterName, String catalogName, String environmentDefinitionName) {
+    private Mono<Response<EnvironmentDefinitionInner>> getWithResponseAsync(String resourceGroupName,
+        String devCenterName, String catalogName, String environmentDefinitionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -383,32 +659,20 @@ public final class EnvironmentDefinitionsClientImpl implements EnvironmentDefini
             return Mono.error(new IllegalArgumentException("Parameter catalogName is required and cannot be null."));
         }
         if (environmentDefinitionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter environmentDefinitionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter environmentDefinitionName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            devCenterName,
-                            catalogName,
-                            environmentDefinitionName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, devCenterName, catalogName,
+                environmentDefinitionName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets an environment definition from the catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -417,27 +681,19 @@ public final class EnvironmentDefinitionsClientImpl implements EnvironmentDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment definition from the catalog along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an environment definition from the catalog along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EnvironmentDefinitionInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String devCenterName,
-        String catalogName,
-        String environmentDefinitionName,
-        Context context) {
+    private Mono<Response<EnvironmentDefinitionInner>> getWithResponseAsync(String resourceGroupName,
+        String devCenterName, String catalogName, String environmentDefinitionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -450,29 +706,18 @@ public final class EnvironmentDefinitionsClientImpl implements EnvironmentDefini
             return Mono.error(new IllegalArgumentException("Parameter catalogName is required and cannot be null."));
         }
         if (environmentDefinitionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter environmentDefinitionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter environmentDefinitionName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                devCenterName,
-                catalogName,
-                environmentDefinitionName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, devCenterName, catalogName, environmentDefinitionName, accept, context);
     }
 
     /**
      * Gets an environment definition from the catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -483,15 +728,15 @@ public final class EnvironmentDefinitionsClientImpl implements EnvironmentDefini
      * @return an environment definition from the catalog on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EnvironmentDefinitionInner> getAsync(
-        String resourceGroupName, String devCenterName, String catalogName, String environmentDefinitionName) {
+    private Mono<EnvironmentDefinitionInner> getAsync(String resourceGroupName, String devCenterName,
+        String catalogName, String environmentDefinitionName) {
         return getWithResponseAsync(resourceGroupName, devCenterName, catalogName, environmentDefinitionName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets an environment definition from the catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -503,19 +748,15 @@ public final class EnvironmentDefinitionsClientImpl implements EnvironmentDefini
      * @return an environment definition from the catalog along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EnvironmentDefinitionInner> getWithResponse(
-        String resourceGroupName,
-        String devCenterName,
-        String catalogName,
-        String environmentDefinitionName,
-        Context context) {
+    public Response<EnvironmentDefinitionInner> getWithResponse(String resourceGroupName, String devCenterName,
+        String catalogName, String environmentDefinitionName, Context context) {
         return getWithResponseAsync(resourceGroupName, devCenterName, catalogName, environmentDefinitionName, context)
             .block();
     }
 
     /**
      * Gets an environment definition from the catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -526,15 +767,15 @@ public final class EnvironmentDefinitionsClientImpl implements EnvironmentDefini
      * @return an environment definition from the catalog.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EnvironmentDefinitionInner get(
-        String resourceGroupName, String devCenterName, String catalogName, String environmentDefinitionName) {
+    public EnvironmentDefinitionInner get(String resourceGroupName, String devCenterName, String catalogName,
+        String environmentDefinitionName) {
         return getWithResponse(resourceGroupName, devCenterName, catalogName, environmentDefinitionName, Context.NONE)
             .getValue();
     }
 
     /**
      * Gets Environment Definition error details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -542,23 +783,19 @@ public final class EnvironmentDefinitionsClientImpl implements EnvironmentDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return environment Definition error details along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return environment Definition error details along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CatalogResourceValidationErrorDetailsInner>> getErrorDetailsWithResponseAsync(
         String resourceGroupName, String devCenterName, String catalogName, String environmentDefinitionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -571,32 +808,20 @@ public final class EnvironmentDefinitionsClientImpl implements EnvironmentDefini
             return Mono.error(new IllegalArgumentException("Parameter catalogName is required and cannot be null."));
         }
         if (environmentDefinitionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter environmentDefinitionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter environmentDefinitionName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getErrorDetails(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            devCenterName,
-                            catalogName,
-                            environmentDefinitionName,
-                            accept,
-                            context))
+            .withContext(context -> service.getErrorDetails(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, devCenterName, catalogName,
+                environmentDefinitionName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets Environment Definition error details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -605,27 +830,20 @@ public final class EnvironmentDefinitionsClientImpl implements EnvironmentDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return environment Definition error details along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return environment Definition error details along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CatalogResourceValidationErrorDetailsInner>> getErrorDetailsWithResponseAsync(
-        String resourceGroupName,
-        String devCenterName,
-        String catalogName,
-        String environmentDefinitionName,
+        String resourceGroupName, String devCenterName, String catalogName, String environmentDefinitionName,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -638,29 +856,19 @@ public final class EnvironmentDefinitionsClientImpl implements EnvironmentDefini
             return Mono.error(new IllegalArgumentException("Parameter catalogName is required and cannot be null."));
         }
         if (environmentDefinitionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter environmentDefinitionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter environmentDefinitionName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getErrorDetails(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                devCenterName,
-                catalogName,
-                environmentDefinitionName,
-                accept,
-                context);
+        return service.getErrorDetails(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, devCenterName, catalogName, environmentDefinitionName,
+            accept, context);
     }
 
     /**
      * Gets Environment Definition error details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -671,16 +879,15 @@ public final class EnvironmentDefinitionsClientImpl implements EnvironmentDefini
      * @return environment Definition error details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CatalogResourceValidationErrorDetailsInner> getErrorDetailsAsync(
-        String resourceGroupName, String devCenterName, String catalogName, String environmentDefinitionName) {
-        return getErrorDetailsWithResponseAsync(
-                resourceGroupName, devCenterName, catalogName, environmentDefinitionName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<CatalogResourceValidationErrorDetailsInner> getErrorDetailsAsync(String resourceGroupName,
+        String devCenterName, String catalogName, String environmentDefinitionName) {
+        return getErrorDetailsWithResponseAsync(resourceGroupName, devCenterName, catalogName,
+            environmentDefinitionName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets Environment Definition error details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -692,20 +899,15 @@ public final class EnvironmentDefinitionsClientImpl implements EnvironmentDefini
      * @return environment Definition error details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CatalogResourceValidationErrorDetailsInner> getErrorDetailsWithResponse(
-        String resourceGroupName,
-        String devCenterName,
-        String catalogName,
-        String environmentDefinitionName,
-        Context context) {
-        return getErrorDetailsWithResponseAsync(
-                resourceGroupName, devCenterName, catalogName, environmentDefinitionName, context)
-            .block();
+    public Response<CatalogResourceValidationErrorDetailsInner> getErrorDetailsWithResponse(String resourceGroupName,
+        String devCenterName, String catalogName, String environmentDefinitionName, Context context) {
+        return getErrorDetailsWithResponseAsync(resourceGroupName, devCenterName, catalogName,
+            environmentDefinitionName, context).block();
     }
 
     /**
      * Gets Environment Definition error details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -716,23 +918,83 @@ public final class EnvironmentDefinitionsClientImpl implements EnvironmentDefini
      * @return environment Definition error details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CatalogResourceValidationErrorDetailsInner getErrorDetails(
-        String resourceGroupName, String devCenterName, String catalogName, String environmentDefinitionName) {
-        return getErrorDetailsWithResponse(
-                resourceGroupName, devCenterName, catalogName, environmentDefinitionName, Context.NONE)
-            .getValue();
+    public CatalogResourceValidationErrorDetailsInner getErrorDetails(String resourceGroupName, String devCenterName,
+        String catalogName, String environmentDefinitionName) {
+        return getErrorDetailsWithResponse(resourceGroupName, devCenterName, catalogName, environmentDefinitionName,
+            Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of the environment definition list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<EnvironmentDefinitionInner>> listByProjectCatalogNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.listByProjectCatalogNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<EnvironmentDefinitionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return results of the environment definition list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<EnvironmentDefinitionInner>> listByProjectCatalogNextSinglePageAsync(String nextLink,
+        Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listByProjectCatalogNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return results of the environment definition list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EnvironmentDefinitionInner>> listByCatalogNextSinglePageAsync(String nextLink) {
@@ -740,62 +1002,44 @@ public final class EnvironmentDefinitionsClientImpl implements EnvironmentDefini
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByCatalogNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<EnvironmentDefinitionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<EnvironmentDefinitionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of the environment definition list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EnvironmentDefinitionInner>> listByCatalogNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<EnvironmentDefinitionInner>> listByCatalogNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByCatalogNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByCatalogNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

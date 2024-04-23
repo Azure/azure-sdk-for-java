@@ -9,8 +9,7 @@ package com.azure.resourcemanager.support.generated;
  */
 public final class CommunicationsListSamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/
-     * ListCommunicationsForSubscriptionSupportTicket.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListCommunicationsForSubscriptionSupportTicket.json
      */
     /**
      * Sample code: List communications for a subscription support ticket.
@@ -23,8 +22,7 @@ public final class CommunicationsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/
-     * ListWebCommunicationsForSubscriptionSupportTicket.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListWebCommunicationsForSubscriptionSupportTicket.json
      */
     /**
      * Sample code: List web communications for a subscription support ticket.
@@ -33,13 +31,12 @@ public final class CommunicationsListSamples {
      */
     public static void
         listWebCommunicationsForASubscriptionSupportTicket(com.azure.resourcemanager.support.SupportManager manager) {
-        manager.communications().list("testticket", null, "communicationType eq 'web'",
-            com.azure.core.util.Context.NONE);
+        manager.communications()
+            .list("testticket", null, "communicationType eq 'web'", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/
-     * ListWebCommunicationsForSubscriptionSupportTicketCreatedOnOrAfter.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListWebCommunicationsForSubscriptionSupportTicketCreatedOnOrAfter.json
      */
     /**
      * Sample code: List web communication created on or after a specific date for a subscription support ticket.
@@ -48,7 +45,8 @@ public final class CommunicationsListSamples {
      */
     public static void listWebCommunicationCreatedOnOrAfterASpecificDateForASubscriptionSupportTicket(
         com.azure.resourcemanager.support.SupportManager manager) {
-        manager.communications().list("testticket", null,
-            "communicationType eq 'web' and createdDate ge 2020-03-10T22:08:51Z", com.azure.core.util.Context.NONE);
+        manager.communications()
+            .list("testticket", null, "communicationType eq 'web' and createdDate ge 2020-03-10T22:08:51Z",
+                com.azure.core.util.Context.NONE);
     }
 }

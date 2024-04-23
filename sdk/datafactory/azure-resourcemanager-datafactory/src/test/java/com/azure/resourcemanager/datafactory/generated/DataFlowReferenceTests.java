@@ -15,21 +15,22 @@ public final class DataFlowReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataFlowReference model = BinaryData.fromString(
-            "{\"type\":\"DataFlowReference\",\"referenceName\":\"sbede\",\"datasetParameters\":\"dataexkxbhx\",\"parameters\":{\"mnhjevdyzn\":\"datanul\",\"kmq\":\"dataajsvk\",\"iizjixlqfhefkwa\":\"datazzkivyhjr\",\"nlqxsjxtele\":\"datasolronqqlm\"},\"\":{\"oolzqocarkuzl\":\"datauqbo\",\"t\":\"datacnn\"}}")
+            "{\"type\":\"DataFlowReference\",\"referenceName\":\"dqaolfylnkk\",\"datasetParameters\":\"datapjvlywltmfwo\",\"parameters\":{\"fnqzocr\":\"datawhlwy\"},\"\":{\"ncaqttiekoifu\":\"dataczeuntgx\",\"yri\":\"datanyttzgix\",\"lqtxnrflkndrn\":\"datalgmgbe\"}}")
             .toObject(DataFlowReference.class);
         Assertions.assertEquals(DataFlowReferenceType.DATA_FLOW_REFERENCE, model.type());
-        Assertions.assertEquals("sbede", model.referenceName());
+        Assertions.assertEquals("dqaolfylnkk", model.referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataFlowReference model = new DataFlowReference().withType(DataFlowReferenceType.DATA_FLOW_REFERENCE)
-            .withReferenceName("sbede").withDatasetParameters("dataexkxbhx").withParameters(mapOf("mnhjevdyzn",
-                "datanul", "kmq", "dataajsvk", "iizjixlqfhefkwa", "datazzkivyhjr", "nlqxsjxtele", "datasolronqqlm"))
+            .withReferenceName("dqaolfylnkk")
+            .withDatasetParameters("datapjvlywltmfwo")
+            .withParameters(mapOf("fnqzocr", "datawhlwy"))
             .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(DataFlowReference.class);
         Assertions.assertEquals(DataFlowReferenceType.DATA_FLOW_REFERENCE, model.type());
-        Assertions.assertEquals("sbede", model.referenceName());
+        Assertions.assertEquals("dqaolfylnkk", model.referenceName());
     }
 
     // Use "Map.of" if available

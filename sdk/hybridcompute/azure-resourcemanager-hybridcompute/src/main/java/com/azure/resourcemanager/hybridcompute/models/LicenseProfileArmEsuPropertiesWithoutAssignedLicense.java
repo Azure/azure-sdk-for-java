@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hybridcompute.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the properties of a License Profile ARM model. */
+/**
+ * Describes the properties of a License Profile ARM model.
+ */
 @Immutable
 public class LicenseProfileArmEsuPropertiesWithoutAssignedLicense extends LicenseProfileStorageModelEsuProperties {
     /*
@@ -28,13 +30,15 @@ public class LicenseProfileArmEsuPropertiesWithoutAssignedLicense extends Licens
     @JsonProperty(value = "esuKeyState", access = JsonProperty.Access.WRITE_ONLY)
     private EsuKeyState esuKeyState;
 
-    /** Creates an instance of LicenseProfileArmEsuPropertiesWithoutAssignedLicense class. */
+    /**
+     * Creates an instance of LicenseProfileArmEsuPropertiesWithoutAssignedLicense class.
+     */
     public LicenseProfileArmEsuPropertiesWithoutAssignedLicense() {
     }
 
     /**
      * Get the serverType property: The type of the Esu servers.
-     *
+     * 
      * @return the serverType value.
      */
     public EsuServerType serverType() {
@@ -43,7 +47,7 @@ public class LicenseProfileArmEsuPropertiesWithoutAssignedLicense extends Licens
 
     /**
      * Get the esuEligibility property: Indicates the eligibility state of Esu.
-     *
+     * 
      * @return the esuEligibility value.
      */
     public EsuEligibility esuEligibility() {
@@ -52,7 +56,7 @@ public class LicenseProfileArmEsuPropertiesWithoutAssignedLicense extends Licens
 
     /**
      * Get the esuKeyState property: Indicates whether there is an ESU Key currently active for the machine.
-     *
+     * 
      * @return the esuKeyState value.
      */
     public EsuKeyState esuKeyState() {
@@ -61,7 +65,7 @@ public class LicenseProfileArmEsuPropertiesWithoutAssignedLicense extends Licens
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -275,6 +275,7 @@ stages:
                         artifact: ${{parameters.ArtifactName}}
 
                       - template: /eng/pipelines/templates/steps/mvn-linux-repository-settings.yml
+
                       - template: /eng/pipelines/templates/steps/install-rex-validation-tool.yml
 
                       - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
@@ -460,6 +461,7 @@ stages:
             displayName: Show visible artifacts
 
           - template: /eng/pipelines/templates/steps/mvn-linux-repository-settings.yml
+
           - template: /eng/pipelines/templates/steps/install-rex-validation-tool.yml
 
           - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml

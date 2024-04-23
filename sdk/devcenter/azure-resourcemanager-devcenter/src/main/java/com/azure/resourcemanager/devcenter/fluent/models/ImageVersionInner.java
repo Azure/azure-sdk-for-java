@@ -11,7 +11,9 @@ import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Represents an image version. */
+/**
+ * Represents an image version.
+ */
 @Immutable
 public final class ImageVersionInner extends ProxyResource {
     /*
@@ -26,13 +28,15 @@ public final class ImageVersionInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ImageVersionInner class. */
+    /**
+     * Creates an instance of ImageVersionInner class.
+     */
     public ImageVersionInner() {
     }
 
     /**
      * Get the innerProperties property: Image version properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ImageVersionProperties innerProperties() {
@@ -41,7 +45,7 @@ public final class ImageVersionInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -50,7 +54,7 @@ public final class ImageVersionInner extends ProxyResource {
 
     /**
      * Get the name property: The semantic version string.
-     *
+     * 
      * @return the name value.
      */
     public String namePropertiesName() {
@@ -59,7 +63,7 @@ public final class ImageVersionInner extends ProxyResource {
 
     /**
      * Get the publishedDate property: The datetime that the backing image version was published.
-     *
+     * 
      * @return the publishedDate value.
      */
     public OffsetDateTime publishedDate() {
@@ -68,7 +72,7 @@ public final class ImageVersionInner extends ProxyResource {
 
     /**
      * Get the excludeFromLatest property: If the version should be excluded from being treated as the latest version.
-     *
+     * 
      * @return the excludeFromLatest value.
      */
     public Boolean excludeFromLatest() {
@@ -77,7 +81,7 @@ public final class ImageVersionInner extends ProxyResource {
 
     /**
      * Get the osDiskImageSizeInGb property: The size of the OS disk image, in GB.
-     *
+     * 
      * @return the osDiskImageSizeInGb value.
      */
     public Integer osDiskImageSizeInGb() {
@@ -86,7 +90,7 @@ public final class ImageVersionInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -95,7 +99,7 @@ public final class ImageVersionInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

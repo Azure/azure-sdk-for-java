@@ -20,49 +20,54 @@ public final class UpdateSupportTicketTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateSupportTicket model = BinaryData.fromString(
-            "{\"severity\":\"critical\",\"status\":\"closed\",\"contactDetails\":{\"firstName\":\"lqlfm\",\"lastName\":\"n\",\"preferredContactMethod\":\"phone\",\"primaryEmailAddress\":\"zpswiydmc\",\"additionalEmailAddresses\":[\"zdxss\",\"dbzm\",\"vdfznudaodvxzb\"],\"phoneNumber\":\"blylpstdbh\",\"preferredTimeZone\":\"srzdzucerscdn\",\"country\":\"evfiwjmygt\",\"preferredSupportLanguage\":\"slswtm\"},\"advancedDiagnosticConsent\":\"No\",\"secondaryConsent\":[{\"userConsent\":\"No\",\"type\":\"yqsemwa\"}]}")
+            "{\"severity\":\"highestcriticalimpact\",\"status\":\"open\",\"contactDetails\":{\"firstName\":\"ooxdjebwpuc\",\"lastName\":\"fvovbvmeuecivy\",\"preferredContactMethod\":\"email\",\"primaryEmailAddress\":\"uojgj\",\"additionalEmailAddresses\":[\"ueiotwmcdyt\",\"x\",\"it\",\"nrjawgqwg\"],\"phoneNumber\":\"ni\",\"preferredTimeZone\":\"x\",\"country\":\"kpycgklwndnhjd\",\"preferredSupportLanguage\":\"whvylw\"},\"advancedDiagnosticConsent\":\"No\",\"secondaryConsent\":[{\"userConsent\":\"Yes\",\"type\":\"znbmpowuwprzq\"}]}")
             .toObject(UpdateSupportTicket.class);
-        Assertions.assertEquals(SeverityLevel.CRITICAL, model.severity());
-        Assertions.assertEquals(Status.CLOSED, model.status());
-        Assertions.assertEquals("lqlfm", model.contactDetails().firstName());
-        Assertions.assertEquals("n", model.contactDetails().lastName());
-        Assertions.assertEquals(PreferredContactMethod.PHONE, model.contactDetails().preferredContactMethod());
-        Assertions.assertEquals("zpswiydmc", model.contactDetails().primaryEmailAddress());
-        Assertions.assertEquals("zdxss", model.contactDetails().additionalEmailAddresses().get(0));
-        Assertions.assertEquals("blylpstdbh", model.contactDetails().phoneNumber());
-        Assertions.assertEquals("srzdzucerscdn", model.contactDetails().preferredTimeZone());
-        Assertions.assertEquals("evfiwjmygt", model.contactDetails().country());
-        Assertions.assertEquals("slswtm", model.contactDetails().preferredSupportLanguage());
+        Assertions.assertEquals(SeverityLevel.HIGHESTCRITICALIMPACT, model.severity());
+        Assertions.assertEquals(Status.OPEN, model.status());
+        Assertions.assertEquals("ooxdjebwpuc", model.contactDetails().firstName());
+        Assertions.assertEquals("fvovbvmeuecivy", model.contactDetails().lastName());
+        Assertions.assertEquals(PreferredContactMethod.EMAIL, model.contactDetails().preferredContactMethod());
+        Assertions.assertEquals("uojgj", model.contactDetails().primaryEmailAddress());
+        Assertions.assertEquals("ueiotwmcdyt", model.contactDetails().additionalEmailAddresses().get(0));
+        Assertions.assertEquals("ni", model.contactDetails().phoneNumber());
+        Assertions.assertEquals("x", model.contactDetails().preferredTimeZone());
+        Assertions.assertEquals("kpycgklwndnhjd", model.contactDetails().country());
+        Assertions.assertEquals("whvylw", model.contactDetails().preferredSupportLanguage());
         Assertions.assertEquals(Consent.NO, model.advancedDiagnosticConsent());
-        Assertions.assertEquals(UserConsent.NO, model.secondaryConsent().get(0).userConsent());
-        Assertions.assertEquals("yqsemwa", model.secondaryConsent().get(0).type());
+        Assertions.assertEquals(UserConsent.YES, model.secondaryConsent().get(0).userConsent());
+        Assertions.assertEquals("znbmpowuwprzq", model.secondaryConsent().get(0).type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateSupportTicket model = new UpdateSupportTicket().withSeverity(SeverityLevel.CRITICAL)
-            .withStatus(Status.CLOSED)
-            .withContactDetails(new UpdateContactProfile().withFirstName("lqlfm").withLastName("n")
-                .withPreferredContactMethod(PreferredContactMethod.PHONE).withPrimaryEmailAddress("zpswiydmc")
-                .withAdditionalEmailAddresses(Arrays.asList("zdxss", "dbzm", "vdfznudaodvxzb"))
-                .withPhoneNumber("blylpstdbh").withPreferredTimeZone("srzdzucerscdn").withCountry("evfiwjmygt")
-                .withPreferredSupportLanguage("slswtm"))
-            .withAdvancedDiagnosticConsent(Consent.NO).withSecondaryConsent(
-                Arrays.asList(new SecondaryConsent().withUserConsent(UserConsent.NO).withType("yqsemwa")));
+        UpdateSupportTicket model = new UpdateSupportTicket().withSeverity(SeverityLevel.HIGHESTCRITICALIMPACT)
+            .withStatus(Status.OPEN)
+            .withContactDetails(new UpdateContactProfile().withFirstName("ooxdjebwpuc")
+                .withLastName("fvovbvmeuecivy")
+                .withPreferredContactMethod(PreferredContactMethod.EMAIL)
+                .withPrimaryEmailAddress("uojgj")
+                .withAdditionalEmailAddresses(Arrays.asList("ueiotwmcdyt", "x", "it", "nrjawgqwg"))
+                .withPhoneNumber("ni")
+                .withPreferredTimeZone("x")
+                .withCountry("kpycgklwndnhjd")
+                .withPreferredSupportLanguage("whvylw"))
+            .withAdvancedDiagnosticConsent(Consent.NO)
+            .withSecondaryConsent(
+                Arrays.asList(new SecondaryConsent().withUserConsent(UserConsent.YES).withType("znbmpowuwprzq")));
         model = BinaryData.fromObject(model).toObject(UpdateSupportTicket.class);
-        Assertions.assertEquals(SeverityLevel.CRITICAL, model.severity());
-        Assertions.assertEquals(Status.CLOSED, model.status());
-        Assertions.assertEquals("lqlfm", model.contactDetails().firstName());
-        Assertions.assertEquals("n", model.contactDetails().lastName());
-        Assertions.assertEquals(PreferredContactMethod.PHONE, model.contactDetails().preferredContactMethod());
-        Assertions.assertEquals("zpswiydmc", model.contactDetails().primaryEmailAddress());
-        Assertions.assertEquals("zdxss", model.contactDetails().additionalEmailAddresses().get(0));
-        Assertions.assertEquals("blylpstdbh", model.contactDetails().phoneNumber());
-        Assertions.assertEquals("srzdzucerscdn", model.contactDetails().preferredTimeZone());
-        Assertions.assertEquals("evfiwjmygt", model.contactDetails().country());
-        Assertions.assertEquals("slswtm", model.contactDetails().preferredSupportLanguage());
+        Assertions.assertEquals(SeverityLevel.HIGHESTCRITICALIMPACT, model.severity());
+        Assertions.assertEquals(Status.OPEN, model.status());
+        Assertions.assertEquals("ooxdjebwpuc", model.contactDetails().firstName());
+        Assertions.assertEquals("fvovbvmeuecivy", model.contactDetails().lastName());
+        Assertions.assertEquals(PreferredContactMethod.EMAIL, model.contactDetails().preferredContactMethod());
+        Assertions.assertEquals("uojgj", model.contactDetails().primaryEmailAddress());
+        Assertions.assertEquals("ueiotwmcdyt", model.contactDetails().additionalEmailAddresses().get(0));
+        Assertions.assertEquals("ni", model.contactDetails().phoneNumber());
+        Assertions.assertEquals("x", model.contactDetails().preferredTimeZone());
+        Assertions.assertEquals("kpycgklwndnhjd", model.contactDetails().country());
+        Assertions.assertEquals("whvylw", model.contactDetails().preferredSupportLanguage());
         Assertions.assertEquals(Consent.NO, model.advancedDiagnosticConsent());
-        Assertions.assertEquals(UserConsent.NO, model.secondaryConsent().get(0).userConsent());
-        Assertions.assertEquals("yqsemwa", model.secondaryConsent().get(0).type());
+        Assertions.assertEquals(UserConsent.YES, model.secondaryConsent().get(0).userConsent());
+        Assertions.assertEquals("znbmpowuwprzq", model.secondaryConsent().get(0).type());
     }
 }

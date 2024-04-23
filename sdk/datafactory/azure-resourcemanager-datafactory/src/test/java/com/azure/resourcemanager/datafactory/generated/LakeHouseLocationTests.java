@@ -11,14 +11,14 @@ public final class LakeHouseLocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LakeHouseLocation model = BinaryData.fromString(
-            "{\"type\":\"LakeHouseLocation\",\"folderPath\":\"datadivznl\",\"fileName\":\"dataslkskhjqjpvbai\",\"\":{\"ywbqgroigbsfsgs\":\"datatgzgta\",\"fmhl\":\"dataenwl\",\"tryldsxebuhsxr\":\"dataqlxspmrj\"}}")
+            "{\"type\":\"lznfhkqytkztado\",\"folderPath\":\"datafzdgjfcycrsvloy\",\"fileName\":\"dataigqkzjuqwqa\",\"\":{\"pnfdbgsosciene\":\"datazxpixhyo\"}}")
             .toObject(LakeHouseLocation.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LakeHouseLocation model
-            = new LakeHouseLocation().withFolderPath("datadivznl").withFileName("dataslkskhjqjpvbai");
+            = new LakeHouseLocation().withFolderPath("datafzdgjfcycrsvloy").withFileName("dataigqkzjuqwqa");
         model = BinaryData.fromObject(model).toObject(LakeHouseLocation.class);
     }
 }

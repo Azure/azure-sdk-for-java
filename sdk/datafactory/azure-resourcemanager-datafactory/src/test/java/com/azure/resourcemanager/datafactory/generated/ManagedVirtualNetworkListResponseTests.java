@@ -17,21 +17,26 @@ public final class ManagedVirtualNetworkListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedVirtualNetworkListResponse model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"vNetId\":\"o\",\"alias\":\"vmfqhppubo\",\"\":{\"juahokqto\":\"datapdfgkmtdherngbt\",\"hfphwpnulaiywze\":\"datakauxof\",\"wrpqafgfugsnnf\":\"dataywhslwkojpllndnp\",\"coc\":\"datayetefyp\"}},\"name\":\"jgtixr\",\"type\":\"zuyt\",\"etag\":\"mlmuowol\",\"id\":\"uir\"}],\"nextLink\":\"ionszonwp\"}")
+            "{\"value\":[{\"properties\":{\"vNetId\":\"klmtkhlowkx\",\"alias\":\"vbrdfjmzsyzfho\",\"\":{\"unsjlpjrtwszhvvu\":\"dataikcyyc\"}},\"name\":\"phvtrrmhwrb\",\"type\":\"pyf\",\"etag\":\"bhvjglr\",\"id\":\"uyzlw\"},{\"properties\":{\"vNetId\":\"memhooclutnpq\",\"alias\":\"mczjkm\",\"\":{\"jylmbkzudnigr\":\"datayujxsglhsrrry\",\"refqy\":\"dataihotjewlpxuzzjg\",\"kwpzdqtvh\":\"dataqotoihiqakydiwfb\",\"ipietgbe\":\"dataspodaqax\"}},\"name\":\"fulbmoichdl\",\"type\":\"fpubntnbatz\",\"etag\":\"qs\",\"id\":\"saaelca\"}],\"nextLink\":\"cjuhplrvkm\"}")
             .toObject(ManagedVirtualNetworkListResponse.class);
-        Assertions.assertEquals("uir", model.value().get(0).id());
-        Assertions.assertEquals("ionszonwp", model.nextLink());
+        Assertions.assertEquals("uyzlw", model.value().get(0).id());
+        Assertions.assertEquals("cjuhplrvkm", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedVirtualNetworkListResponse model = new ManagedVirtualNetworkListResponse()
-            .withValue(Arrays.asList(new ManagedVirtualNetworkResourceInner().withId("uir").withProperties(
-                new ManagedVirtualNetwork().withAdditionalProperties(mapOf("vNetId", "o", "alias", "vmfqhppubo")))))
-            .withNextLink("ionszonwp");
+            .withValue(Arrays.asList(
+                new ManagedVirtualNetworkResourceInner().withId("uyzlw")
+                    .withProperties(new ManagedVirtualNetwork()
+                        .withAdditionalProperties(mapOf("vNetId", "klmtkhlowkx", "alias", "vbrdfjmzsyzfho"))),
+                new ManagedVirtualNetworkResourceInner().withId("saaelca")
+                    .withProperties(new ManagedVirtualNetwork()
+                        .withAdditionalProperties(mapOf("vNetId", "memhooclutnpq", "alias", "mczjkm")))))
+            .withNextLink("cjuhplrvkm");
         model = BinaryData.fromObject(model).toObject(ManagedVirtualNetworkListResponse.class);
-        Assertions.assertEquals("uir", model.value().get(0).id());
-        Assertions.assertEquals("ionszonwp", model.nextLink());
+        Assertions.assertEquals("uyzlw", model.value().get(0).id());
+        Assertions.assertEquals("cjuhplrvkm", model.nextLink());
     }
 
     // Use "Map.of" if available

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.support.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Object that represents a Service resource.
@@ -124,15 +123,6 @@ public final class ServiceInner {
         }
         this.innerProperties().withResourceTypes(resourceTypes);
         return this;
-    }
-
-    /**
-     * Get the metadata property: Metadata about the service, only visible for 1P clients.
-     * 
-     * @return the metadata value.
-     */
-    public Map<String, String> metadata() {
-        return this.innerProperties() == null ? null : this.innerProperties().metadata();
     }
 
     /**

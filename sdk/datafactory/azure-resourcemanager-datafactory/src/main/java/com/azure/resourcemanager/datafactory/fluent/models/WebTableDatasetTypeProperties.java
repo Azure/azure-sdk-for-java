@@ -14,15 +14,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class WebTableDatasetTypeProperties {
     /*
-     * The zero-based index of the table in the web page. Type: integer (or Expression with resultType integer),
-     * minimum: 0.
+     * The zero-based index of the table in the web page. Type: integer (or Expression with resultType integer), minimum: 0.
      */
     @JsonProperty(value = "index", required = true)
     private Object index;
 
     /*
-     * The relative URL to the web page from the linked service URL. Type: string (or Expression with resultType
-     * string).
+     * The relative URL to the web page from the linked service URL. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "path")
     private Object path;
@@ -84,8 +82,9 @@ public final class WebTableDatasetTypeProperties {
      */
     public void validate() {
         if (index() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property index in model WebTableDatasetTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property index in model WebTableDatasetTypeProperties"));
         }
     }
 

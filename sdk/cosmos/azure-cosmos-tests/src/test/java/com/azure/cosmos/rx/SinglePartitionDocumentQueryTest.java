@@ -71,7 +71,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
         CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems(query, options, InternalObjectNode.class);
 
-        List<InternalObjectNode> expectedDocs = createdDocuments.stream().filter(d -> 99 == ModelBridgeInternal.getIntFromJsonSerializable(d,"prop") ).collect(Collectors.toList());
+        List<InternalObjectNode> expectedDocs = createdDocuments.stream().filter(d -> 99 == d.getInt("prop") ).collect(Collectors.toList());
         assertThat(expectedDocs).isNotEmpty();
 
         int expectedPageSize = (expectedDocs.size() + maxItemCount - 1) / maxItemCount;
@@ -134,7 +134,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
         CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems(sqs, options, InternalObjectNode.class);
 
-        List<InternalObjectNode> expectedDocs = createdDocuments.stream().filter(d -> (3 == ModelBridgeInternal.getIntFromJsonSerializable(d,"prop") || 4 == ModelBridgeInternal.getIntFromJsonSerializable(d,"prop"))).collect(Collectors.toList());
+        List<InternalObjectNode> expectedDocs = createdDocuments.stream().filter(d -> (3 == d.getInt("prop") || 4 == d.getInt("prop"))).collect(Collectors.toList());
         assertThat(expectedDocs).isNotEmpty();
 
         int expectedPageSize = (expectedDocs.size() + maxItemCount - 1) / maxItemCount;
@@ -160,7 +160,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
         CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems(sqs, options, InternalObjectNode.class);
 
-        List<InternalObjectNode> expectedDocs = createdDocuments.stream().filter(d -> 3 == ModelBridgeInternal.getIntFromJsonSerializable(d,"prop")).collect(Collectors.toList());
+        List<InternalObjectNode> expectedDocs = createdDocuments.stream().filter(d -> 3 == d.getInt("prop")).collect(Collectors.toList());
         assertThat(expectedDocs).isNotEmpty();
 
         int expectedPageSize = (expectedDocs.size() + maxItemCount - 1) / maxItemCount;
@@ -233,8 +233,8 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
         FeedResponseListValidator<InternalObjectNode> validator = new FeedResponseListValidator.Builder<InternalObjectNode>()
                 .containsExactly(createdDocuments.stream()
-                        .sorted((e1, e2) -> Integer.compare(ModelBridgeInternal.getIntFromJsonSerializable(e1, "prop"),
-                            ModelBridgeInternal.getIntFromJsonSerializable(e2, "prop")))
+                        .sorted((e1, e2) -> Integer.compare(e1.getInt("prop"),
+                            e2.getInt("prop")))
                         .map(d -> d.getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<InternalObjectNode>()
@@ -267,15 +267,15 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
         queryObservable = createdCollection.queryItems(query, options, InternalObjectNode.class);
 
-        List<InternalObjectNode> expectedDocs = createdDocuments.stream().filter(d -> (ModelBridgeInternal.getIntFromJsonSerializable(d,"prop") > 2)).collect(Collectors.toList());
+        List<InternalObjectNode> expectedDocs = createdDocuments.stream().filter(d -> (d.getInt("prop") > 2)).collect(Collectors.toList());
         int expectedPageSize = (expectedDocs.size() + maxItemCount - 1) / maxItemCount;
 
         assertThat(expectedDocs).hasSize(createdDocuments.size() -3);
 
         FeedResponseListValidator<InternalObjectNode> validator = new FeedResponseListValidator.Builder<InternalObjectNode>()
                 .containsExactly(expectedDocs.stream()
-                        .sorted((e1, e2) -> Integer.compare(ModelBridgeInternal.getIntFromJsonSerializable(e1,"prop"),
-                            ModelBridgeInternal.getIntFromJsonSerializable(e2, "prop")))
+                        .sorted((e1, e2) -> Integer.compare(e1.getInt("prop"),
+                            e2.getInt("prop")))
                         .map(d -> d.getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<InternalObjectNode>()

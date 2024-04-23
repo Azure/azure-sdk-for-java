@@ -10,11 +10,9 @@ import com.azure.resourcemanager.devcenter.fluent.models.HealthCheckStatusDetail
 public final class HealthCheckStatusDetailsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HealthCheckStatusDetailsProperties model =
-            BinaryData
-                .fromString(
-                    "{\"startDateTime\":\"2021-10-18T05:41:27Z\",\"endDateTime\":\"2021-05-29T05:18:31Z\",\"healthChecks\":[{\"status\":\"Warning\",\"displayName\":\"av\",\"startDateTime\":\"2021-06-09T06:42:10Z\",\"endDateTime\":\"2021-02-23T17:29:03Z\",\"errorType\":\"vazivjlfr\",\"recommendedAction\":\"tbajlkatn\",\"additionalDetails\":\"yiopi\"},{\"status\":\"Warning\",\"displayName\":\"fku\",\"startDateTime\":\"2021-02-24T16:53:48Z\",\"endDateTime\":\"2021-01-14T02:24:47Z\",\"errorType\":\"mligov\",\"recommendedAction\":\"rxkpmloazuruoc\",\"additionalDetails\":\"oorb\"},{\"status\":\"Unknown\",\"displayName\":\"bfhjxakvvjgsl\",\"startDateTime\":\"2021-09-04T03:37:27Z\",\"endDateTime\":\"2021-01-13T10:59:26Z\",\"errorType\":\"yw\",\"recommendedAction\":\"kgkxn\",\"additionalDetails\":\"dabg\"}]}")
-                .toObject(HealthCheckStatusDetailsProperties.class);
+        HealthCheckStatusDetailsProperties model = BinaryData.fromString(
+            "{\"startDateTime\":\"2021-12-02T19:30Z\",\"endDateTime\":\"2021-02-22T04:35:52Z\",\"healthChecks\":[{\"status\":\"Passed\",\"displayName\":\"npjhlfzswpchwahf\",\"startDateTime\":\"2021-07-25T08:18:30Z\",\"endDateTime\":\"2021-04-23T04:46:24Z\",\"errorType\":\"epgfew\",\"recommendedAction\":\"wlyxgncxyk\",\"additionalDetails\":\"djhlimm\"},{\"status\":\"Unknown\",\"displayName\":\"h\",\"startDateTime\":\"2021-05-04T19:01:44Z\",\"endDateTime\":\"2021-08-24T02:48:56Z\",\"errorType\":\"vxcjzhqizxfpxtgq\",\"recommendedAction\":\"javftjuhdqa\",\"additionalDetails\":\"mtggu\"}]}")
+            .toObject(HealthCheckStatusDetailsProperties.class);
     }
 
     @org.junit.jupiter.api.Test

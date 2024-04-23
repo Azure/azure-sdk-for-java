@@ -1,5 +1,11 @@
 # Release History
 
+## 2.39.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Supported disabling public network access in `SqlServer` via `disablePublicNetworkAccess()`, for private link feature.
+
 ## 2.38.0 (2024-04-16)
 
 ### Other Changes

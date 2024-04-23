@@ -6,7 +6,8 @@ package com.azure.cosmos.kafka.connect;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkTask;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
-import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceOffsetStorageReader;
+import com.azure.cosmos.kafka.connect.implementation.source.IMetadataReader;
+import com.azure.cosmos.kafka.connect.implementation.source.MetadataKafkaStorageManager;
 import com.azure.cosmos.kafka.connect.implementation.source.MetadataMonitorThread;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.kafka.connect.sink.SinkTaskContext;
@@ -38,10 +39,16 @@ public class KafkaCosmosReflectionUtils {
         set(sourceConnector, sourceConfig,"config");
     }
 
-    public static void setOffsetStorageReader(
+    public static void setMetadataReader(
         CosmosSourceConnector sourceConnector,
-        CosmosSourceOffsetStorageReader storageReader) {
-        set(sourceConnector, storageReader,"offsetStorageReader");
+        IMetadataReader metadataReader) {
+        set(sourceConnector, metadataReader,"metadataReader");
+    }
+
+    public static void setKafkaOffsetStorageReader(
+        CosmosSourceConnector sourceConnector,
+        MetadataKafkaStorageManager kafkaOffsetStorageReader) {
+        set(sourceConnector, kafkaOffsetStorageReader,"kafkaOffsetStorageReader");
     }
 
     public static void setMetadataMonitorThread(
@@ -54,11 +61,11 @@ public class KafkaCosmosReflectionUtils {
         return get(sourceConnector,"cosmosClient");
     }
 
-    public static CosmosSourceOffsetStorageReader getSourceOffsetStorageReader(CosmosSourceConnector sourceConnector) {
-        return get(sourceConnector,"offsetStorageReader");
+    public static MetadataKafkaStorageManager getKafkaOffsetStorageReader(CosmosSourceConnector sourceConnector) {
+        return get(sourceConnector,"kafkaOffsetStorageReader");
     }
 
-    public static OffsetStorageReader getOffsetStorageReader(CosmosSourceOffsetStorageReader sourceOffsetStorageReader) {
+    public static OffsetStorageReader getOffsetStorageReader(MetadataKafkaStorageManager sourceOffsetStorageReader) {
         return get(sourceOffsetStorageReader,"offsetStorageReader");
     }
 

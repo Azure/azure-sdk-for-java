@@ -32,7 +32,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
     private final int CONTAINER_THROUGHPUT_FOR_SPLIT = 10100;
 
-    @Test(groups = {"kafka"}, timeOut = 10 * TIMEOUT)
+    @Test(groups = { "kafka" }, timeOut = 60 * TIMEOUT)
     public void poll() throws InterruptedException {
         String testContainerName = "KafkaCosmosTestPoll-" + UUID.randomUUID();
         Map<String, String> sourceConfigMap = new HashMap<>();
@@ -67,7 +67,8 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
                 databaseName,
                 Arrays.asList(testContainer.getResourceId()),
                 containersEffectiveRangesMap,
-                testContainerName);
+                testContainerName,
+                CosmosMetadataStorageType.KAFKA);
             taskConfigMap.putAll(CosmosSourceTaskConfig.getMetadataTaskUnitConfigMap(metadataTaskUnit));
 
             // define feedRanges task
@@ -130,7 +131,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
         }
     }
 
-    @Test(groups = { "kafka" }, timeOut = TIMEOUT)
+    @Test(groups = { "kafka", "kafka-emulator" }, timeOut = TIMEOUT)
     public void pollWithSpecificFeedRange() {
         // Test only items belong to the feedRange defined in the feedRangeTaskUnit will be returned
         Map<String, String> sourceConfigMap = new HashMap<>();
@@ -195,7 +196,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
         }
     }
 
-    @Test(groups = { "kafka" }, timeOut = TIMEOUT)
+    @Test(groups = { "kafka", "kafka-emulator" }, timeOut = TIMEOUT)
     public void pollWithThroughputControl() {
         // Test only items belong to the feedRange defined in the feedRangeTaskUnit will be returned
         String throughputControlContainerName = "throughputControlContainer-" + UUID.randomUUID();

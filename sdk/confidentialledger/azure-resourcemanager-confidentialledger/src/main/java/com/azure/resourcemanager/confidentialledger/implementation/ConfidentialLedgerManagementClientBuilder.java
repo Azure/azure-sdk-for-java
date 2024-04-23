@@ -14,8 +14,10 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the ConfidentialLedgerManagementClientImpl type. */
-@ServiceClientBuilder(serviceClients = {ConfidentialLedgerManagementClientImpl.class})
+/**
+ * A builder for creating a new instance of the ConfidentialLedgerManagementClientImpl type.
+ */
+@ServiceClientBuilder(serviceClients = { ConfidentialLedgerManagementClientImpl.class })
 public final class ConfidentialLedgerManagementClientBuilder {
     /*
      * The ID of the target subscription.
@@ -24,7 +26,7 @@ public final class ConfidentialLedgerManagementClientBuilder {
 
     /**
      * Sets The ID of the target subscription.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the ConfidentialLedgerManagementClientBuilder.
      */
@@ -40,7 +42,7 @@ public final class ConfidentialLedgerManagementClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the ConfidentialLedgerManagementClientBuilder.
      */
@@ -56,7 +58,7 @@ public final class ConfidentialLedgerManagementClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the ConfidentialLedgerManagementClientBuilder.
      */
@@ -72,7 +74,7 @@ public final class ConfidentialLedgerManagementClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the ConfidentialLedgerManagementClientBuilder.
      */
@@ -88,7 +90,7 @@ public final class ConfidentialLedgerManagementClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the ConfidentialLedgerManagementClientBuilder.
      */
@@ -104,7 +106,7 @@ public final class ConfidentialLedgerManagementClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the ConfidentialLedgerManagementClientBuilder.
      */
@@ -115,30 +117,22 @@ public final class ConfidentialLedgerManagementClientBuilder {
 
     /**
      * Builds an instance of ConfidentialLedgerManagementClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of ConfidentialLedgerManagementClientImpl.
      */
     public ConfidentialLedgerManagementClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline =
-            (pipeline != null)
-                ? pipeline
-                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        Duration localDefaultPollInterval =
-            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter =
-            (serializerAdapter != null)
-                ? serializerAdapter
-                : SerializerFactory.createDefaultManagementSerializerAdapter();
-        ConfidentialLedgerManagementClientImpl client =
-            new ConfidentialLedgerManagementClientImpl(
-                localPipeline,
-                localSerializerAdapter,
-                localDefaultPollInterval,
-                localEnvironment,
-                subscriptionId,
-                localEndpoint);
+        HttpPipeline localPipeline = (pipeline != null)
+            ? pipeline
+            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval
+            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
+            ? serializerAdapter
+            : SerializerFactory.createDefaultManagementSerializerAdapter();
+        ConfidentialLedgerManagementClientImpl client = new ConfidentialLedgerManagementClientImpl(localPipeline,
+            localSerializerAdapter, localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }

@@ -83,7 +83,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.58.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.59.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
 
     <!-- Added this provided dependency to include necessary annotations used by "reactor-core".
@@ -132,19 +132,6 @@ Licensed under the MIT License.
         <exclusion>
           <groupId>com.azure</groupId>
           <artifactId>azure-core</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.kafka</groupId>
-      <artifactId>connect-runtime</artifactId>
-      <version>3.6.0</version> <!-- {x-version-update;cosmos_org.apache.kafka:connect-runtime;external_dependency} -->
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>jackson-jaxrs-json-provider</artifactId>
-          <groupId>com.fasterxml.jackson.jaxrs</groupId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -528,7 +515,28 @@ Licensed under the MIT License.
       </build>
     </profile>
     <profile>
-      <!-- integration tests, requires Cosmos DB Emulator Endpoint -->
+      <!-- integration tests with cosmos emulator endpoint -->
+      <id>kafka-emulator</id>
+      <properties>
+        <test.groups>kafka-emulator</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <configuration>
+              <suiteXmlFiles>
+                <suiteXmlFile>src/test/resources/kafka-emulator-testng.xml</suiteXmlFile>
+              </suiteXmlFiles>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <!-- integration tests with cosmos prod endpoint -->
       <id>kafka</id>
       <properties>
         <test.groups>kafka</test.groups>
@@ -542,6 +550,27 @@ Licensed under the MIT License.
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/kafka-testng.xml</suiteXmlFile>
+              </suiteXmlFiles>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <!-- integration tests with test container, also requires cosmosdb prod endpoints -->
+      <id>kafka-integration</id>
+      <properties>
+        <test.groups>kafka-integration</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <configuration>
+              <suiteXmlFiles>
+                <suiteXmlFile>src/test/resources/kafka-integration-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
             </configuration>
           </plugin>

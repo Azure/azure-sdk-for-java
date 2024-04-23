@@ -8,6 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.ManagedIntegrationRuntimeStatusTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
@@ -16,10 +17,21 @@ import java.util.List;
 /**
  * Managed integration runtime status.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = ManagedIntegrationRuntimeStatus.class,
+    visible = true)
 @JsonTypeName("Managed")
 @Immutable
 public final class ManagedIntegrationRuntimeStatus extends IntegrationRuntimeStatus {
+    /*
+     * Type of integration runtime.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private IntegrationRuntimeType type = IntegrationRuntimeType.MANAGED;
+
     /*
      * Managed integration runtime status type properties.
      */
@@ -31,6 +43,16 @@ public final class ManagedIntegrationRuntimeStatus extends IntegrationRuntimeSta
      * Creates an instance of ManagedIntegrationRuntimeStatus class.
      */
     public ManagedIntegrationRuntimeStatus() {
+    }
+
+    /**
+     * Get the type property: Type of integration runtime.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public IntegrationRuntimeType type() {
+        return this.type;
     }
 
     /**
@@ -87,8 +109,9 @@ public final class ManagedIntegrationRuntimeStatus extends IntegrationRuntimeSta
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model ManagedIntegrationRuntimeStatus"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model ManagedIntegrationRuntimeStatus"));
         } else {
             innerTypeProperties().validate();
         }

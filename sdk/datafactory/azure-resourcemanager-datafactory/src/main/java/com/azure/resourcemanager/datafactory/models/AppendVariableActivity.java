@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AppendVariableActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,10 +16,17 @@ import java.util.List;
 /**
  * Append value for a Variable of type Array.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = AppendVariableActivity.class, visible = true)
 @JsonTypeName("AppendVariable")
 @Fluent
 public final class AppendVariableActivity extends ControlActivity {
+    /*
+     * Type of activity.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "AppendVariable";
+
     /*
      * Append Variable activity properties.
      */
@@ -29,6 +37,16 @@ public final class AppendVariableActivity extends ControlActivity {
      * Creates an instance of AppendVariableActivity class.
      */
     public AppendVariableActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -118,8 +136,8 @@ public final class AppendVariableActivity extends ControlActivity {
     }
 
     /**
-     * Get the value property: Value to be appended. Type: could be a static value matching type of the variable item
-     * or Expression with resultType matching type of the variable item.
+     * Get the value property: Value to be appended. Type: could be a static value matching type of the variable item or
+     * Expression with resultType matching type of the variable item.
      * 
      * @return the value value.
      */
@@ -128,8 +146,8 @@ public final class AppendVariableActivity extends ControlActivity {
     }
 
     /**
-     * Set the value property: Value to be appended. Type: could be a static value matching type of the variable item
-     * or Expression with resultType matching type of the variable item.
+     * Set the value property: Value to be appended. Type: could be a static value matching type of the variable item or
+     * Expression with resultType matching type of the variable item.
      * 
      * @param value the value value to set.
      * @return the AppendVariableActivity object itself.
@@ -151,8 +169,9 @@ public final class AppendVariableActivity extends ControlActivity {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model AppendVariableActivity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model AppendVariableActivity"));
         } else {
             innerTypeProperties().validate();
         }

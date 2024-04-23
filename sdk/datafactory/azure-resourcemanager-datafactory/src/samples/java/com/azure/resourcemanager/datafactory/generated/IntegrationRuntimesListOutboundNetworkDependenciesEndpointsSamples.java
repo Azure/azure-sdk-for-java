@@ -9,8 +9,7 @@ package com.azure.resourcemanager.datafactory.generated;
  */
 public final class IntegrationRuntimesListOutboundNetworkDependenciesEndpointsSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
-     * IntegrationRuntimes_ListOutboundNetworkDependenciesEndpoints.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_ListOutboundNetworkDependenciesEndpoints.json
      */
     /**
      * Sample code: IntegrationRuntimes_OutboundNetworkDependenciesEndpoints.
@@ -19,7 +18,8 @@ public final class IntegrationRuntimesListOutboundNetworkDependenciesEndpointsSa
      */
     public static void integrationRuntimesOutboundNetworkDependenciesEndpoints(
         com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimes().listOutboundNetworkDependenciesEndpointsWithResponse("exampleResourceGroup",
-            "exampleFactoryName", "exampleIntegrationRuntime", com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes()
+            .listOutboundNetworkDependenciesEndpointsWithResponse("exampleResourceGroup", "exampleFactoryName",
+                "exampleIntegrationRuntime", com.azure.core.util.Context.NONE);
     }
 }
