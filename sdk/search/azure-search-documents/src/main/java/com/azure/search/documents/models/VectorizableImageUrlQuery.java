@@ -62,7 +62,7 @@ public final class VectorizableImageUrlQuery extends VectorQuery {
     /**
      * {@inheritDoc}
      */
-    public VectorizableImageUrlQuery setFields(String fields) {
+    public VectorizableImageUrlQuery setFields(String... fields) {
         super.setFields(fields);
         return this;
     }

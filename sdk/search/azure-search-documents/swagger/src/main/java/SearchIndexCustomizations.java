@@ -247,10 +247,22 @@ private void customizeVectorQuery(ClassCustomization classCustomization) {
 
     private void customizeVectorizableImageUrlQuery(ClassCustomization classCustomization) {
         classCustomization.getMethod("setFields").removeAnnotation("@Override");
+        customizeAst(classCustomization, clazz -> clazz.getMethodsByName("setFields").get(0)
+            .setParameters(new NodeList<>(new Parameter().setType("String").setName("fields").setVarArgs(true)))
+            .setBody(StaticJavaParser.parseBlock("{\n" +
+                "        super.setFields(fields);\n" +
+                "        return this;\n" +
+                "    }")));
     }
 
     private void customizeVectorizableImageBinaryQuery(ClassCustomization classCustomization) {
         classCustomization.getMethod("setFields").removeAnnotation("@Override");
+        customizeAst(classCustomization, clazz -> clazz.getMethodsByName("setFields").get(0)
+            .setParameters(new NodeList<>(new Parameter().setType("String").setName("fields").setVarArgs(true)))
+            .setBody(StaticJavaParser.parseBlock("{\n" +
+                "        super.setFields(fields);\n" +
+                "        return this;\n" +
+                "    }")));
     }
 
     private static void customizeAst(ClassCustomization classCustomization, Consumer<ClassOrInterfaceDeclaration> consumer) {
