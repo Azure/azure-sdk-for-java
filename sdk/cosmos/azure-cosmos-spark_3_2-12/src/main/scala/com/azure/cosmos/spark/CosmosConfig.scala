@@ -60,6 +60,7 @@ private[spark] object CosmosConfigNames {
   val DisableTcpConnectionEndpointRediscovery = "spark.cosmos.disableTcpConnectionEndpointRediscovery"
   val ApplicationName = "spark.cosmos.applicationName"
   val UseGatewayMode = "spark.cosmos.useGatewayMode"
+  val EnforceNativeTransport = "spark.cosmos.enforceNativeTransport"
   val ProactiveConnectionInitialization = "spark.cosmos.proactiveConnectionInitialization"
   val ProactiveConnectionInitializationDurationInSeconds = "spark.cosmos.proactiveConnectionInitializationDurationInSeconds"
   val GatewayConnectionPoolSize = "spark.cosmos.http.connectionPoolSize"
@@ -153,6 +154,7 @@ private[spark] object CosmosConfigNames {
     DisableTcpConnectionEndpointRediscovery,
     ApplicationName,
     UseGatewayMode,
+    EnforceNativeTransport,
     ProactiveConnectionInitialization,
     ProactiveConnectionInitializationDurationInSeconds,
     GatewayConnectionPoolSize,
@@ -335,6 +337,7 @@ private case class CosmosAccountConfig(endpoint: String,
                                        accountName: String,
                                        applicationName: Option[String],
                                        useGatewayMode: Boolean,
+                                       enforceNativeTransport: Boolean,
                                        proactiveConnectionInitialization: Option[String],
                                        proactiveConnectionInitializationDurationInSeconds: Int,
                                        httpConnectionPoolSize: Int,
@@ -414,6 +417,12 @@ private object CosmosAccountConfig {
     defaultValue = Some(false),
     parseFromStringFunction = useGatewayMode => useGatewayMode.toBoolean,
     helpMessage = "Use gateway mode for the client operations")
+
+  private val EnforceNativeTransport = CosmosConfigEntry[Boolean](key = CosmosConfigNames.EnforceNativeTransport,
+    mandatory = false,
+    defaultValue = Some(false),
+    parseFromStringFunction = enforceNativeTransport => enforceNativeTransport.toBoolean,
+    helpMessage = "Flag indicating whether native Netty transport availability should be enforced.")
 
   private val ProactiveConnectionInitialization = CosmosConfigEntry[String](key = CosmosConfigNames.ProactiveConnectionInitialization,
     mandatory = false,
@@ -509,6 +518,7 @@ private object CosmosAccountConfig {
     val accountName = CosmosConfigEntry.parse(cfg, CosmosAccountName)
     val applicationName = CosmosConfigEntry.parse(cfg, ApplicationName)
     val useGatewayMode = CosmosConfigEntry.parse(cfg, UseGatewayMode)
+    val enforceNativeTransport = CosmosConfigEntry.parse(cfg, EnforceNativeTransport)
     val proactiveConnectionInitialization = CosmosConfigEntry.parse(cfg, ProactiveConnectionInitialization)
     val proactiveConnectionInitializationDurationInSeconds = CosmosConfigEntry.parse(cfg, ProactiveConnectionInitializationDurationInSeconds)
     val httpConnectionPoolSize = CosmosConfigEntry.parse(cfg, HttpConnectionPoolSize)
@@ -569,6 +579,7 @@ private object CosmosAccountConfig {
       accountName.get,
       applicationName,
       useGatewayMode.get,
+      enforceNativeTransport.get,
       proactiveConnectionInitialization,
       proactiveConnectionInitializationDurationInSeconds.get,
       httpConnectionPoolSize.get,

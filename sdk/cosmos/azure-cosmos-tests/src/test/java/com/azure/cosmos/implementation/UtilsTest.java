@@ -7,6 +7,10 @@ import com.azure.cosmos.implementation.apachecommons.lang.RandomStringUtils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
+import com.fasterxml.jackson.module.blackbird.BlackbirdModule;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.testng.annotations.Test;
 
 import java.nio.charset.StandardCharsets;
@@ -58,15 +62,27 @@ public class UtilsTest {
     }
 
     @Test(groups = {"unit"})
-    public void afterBurnerChanges() {
+    public void afterburnerBlackbirdChanges() {
         ObjectMapper objectMapper = Utils.getSimpleObjectMapper();
-        for (Object moduleName : objectMapper.getRegisteredModuleIds()) {
-            if (moduleName.toString().contains("AfterburnerModule")) {
-                int javaVersion = getJavaVersion();
-                if (javaVersion == -1 || javaVersion >= 16) {
-                    fail("AfterBurner should not be register for java " + javaVersion);
-                }
-            }
+
+        List<String> moduleNames = objectMapper.getRegisteredModuleIds().stream()
+            .map(Object::toString)
+            .collect(Collectors.toList());
+
+        int javaVersion = getJavaVersion();
+        if (javaVersion == -1) {
+            assertThat(moduleNames)
+                .doesNotContain(AfterburnerModule.class.getName(), BlackbirdModule.class.getName());
+        }
+        else if (javaVersion < 11) {
+            assertThat(moduleNames)
+                .contains(AfterburnerModule.class.getName())
+                .doesNotContain(BlackbirdModule.class.getName());
+        }
+        else {
+            assertThat(moduleNames)
+                .contains(BlackbirdModule.class.getName())
+                .doesNotContain(AfterburnerModule.class.getName());
         }
     }
 

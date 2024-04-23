@@ -10,11 +10,9 @@ import com.azure.resourcemanager.devcenter.fluent.models.ImageVersionInner;
 public final class ImageVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageVersionInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"name\":\"ea\",\"publishedDate\":\"2021-02-05T10:28:18Z\",\"excludeFromLatest\":true,\"osDiskImageSizeInGb\":1864604101,\"provisioningState\":\"Updating\"},\"id\":\"keyyi\",\"name\":\"nj\",\"type\":\"dlwtgrhpdj\"}")
-                .toObject(ImageVersionInner.class);
+        ImageVersionInner model = BinaryData.fromString(
+            "{\"properties\":{\"name\":\"u\",\"publishedDate\":\"2021-05-30T12:28:52Z\",\"excludeFromLatest\":true,\"osDiskImageSizeInGb\":1508312014,\"provisioningState\":\"Updating\"},\"id\":\"hl\",\"name\":\"qj\",\"type\":\"hckfrlhrx\"}")
+            .toObject(ImageVersionInner.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -11,8 +11,7 @@ import com.azure.resourcemanager.support.models.UploadFile;
  */
 public final class FilesUploadSamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/
-     * UploadFileForSubscription.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/UploadFileForSubscription.json
      */
     /**
      * Sample code: UploadFileForSubscription.
@@ -20,8 +19,9 @@ public final class FilesUploadSamples {
      * @param manager Entry point to SupportManager.
      */
     public static void uploadFileForSubscription(com.azure.resourcemanager.support.SupportManager manager) {
-        manager.files().uploadWithResponse("testworkspaceName", "test.txt", new UploadFile().withContent(
-            "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABd")
-            .withChunkIndex(0), com.azure.core.util.Context.NONE);
+        manager.files()
+            .uploadWithResponse("testworkspaceName", "test.txt", new UploadFile().withContent(
+                "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABd")
+                .withChunkIndex(0), com.azure.core.util.Context.NONE);
     }
 }

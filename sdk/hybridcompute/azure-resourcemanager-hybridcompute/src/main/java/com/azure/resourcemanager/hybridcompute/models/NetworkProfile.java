@@ -7,18 +7,20 @@ package com.azure.resourcemanager.hybridcompute.models;
 import com.azure.resourcemanager.hybridcompute.fluent.models.NetworkProfileInner;
 import java.util.List;
 
-/** An immutable client-side representation of NetworkProfile. */
+/**
+ * An immutable client-side representation of NetworkProfile.
+ */
 public interface NetworkProfile {
     /**
      * Gets the networkInterfaces property: The list of network interfaces.
-     *
+     * 
      * @return the networkInterfaces value.
      */
     List<NetworkInterface> networkInterfaces();
 
     /**
      * Gets the inner com.azure.resourcemanager.hybridcompute.fluent.models.NetworkProfileInner object.
-     *
+     * 
      * @return the inner object.
      */
     NetworkProfileInner innerModel();

@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.devcenter.fluent.models.PoolInner;
 import com.azure.resourcemanager.devcenter.models.PoolUpdate;
 
-/** An instance of this class provides access to all the operations defined in PoolsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PoolsClient.
+ */
 public interface PoolsClient {
     /**
      * Lists pools for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,7 +33,7 @@ public interface PoolsClient {
 
     /**
      * Lists pools for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -46,7 +48,7 @@ public interface PoolsClient {
 
     /**
      * Gets a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -61,7 +63,7 @@ public interface PoolsClient {
 
     /**
      * Gets a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -75,7 +77,7 @@ public interface PoolsClient {
 
     /**
      * Creates or updates a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -86,12 +88,12 @@ public interface PoolsClient {
      * @return the {@link SyncPoller} for polling of a pool of Virtual Machines.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PoolInner>, PoolInner> beginCreateOrUpdate(
-        String resourceGroupName, String projectName, String poolName, PoolInner body);
+    SyncPoller<PollResult<PoolInner>, PoolInner> beginCreateOrUpdate(String resourceGroupName, String projectName,
+        String poolName, PoolInner body);
 
     /**
      * Creates or updates a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -103,12 +105,12 @@ public interface PoolsClient {
      * @return the {@link SyncPoller} for polling of a pool of Virtual Machines.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PoolInner>, PoolInner> beginCreateOrUpdate(
-        String resourceGroupName, String projectName, String poolName, PoolInner body, Context context);
+    SyncPoller<PollResult<PoolInner>, PoolInner> beginCreateOrUpdate(String resourceGroupName, String projectName,
+        String poolName, PoolInner body, Context context);
 
     /**
      * Creates or updates a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -123,7 +125,7 @@ public interface PoolsClient {
 
     /**
      * Creates or updates a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -135,12 +137,12 @@ public interface PoolsClient {
      * @return a pool of Virtual Machines.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PoolInner createOrUpdate(
-        String resourceGroupName, String projectName, String poolName, PoolInner body, Context context);
+    PoolInner createOrUpdate(String resourceGroupName, String projectName, String poolName, PoolInner body,
+        Context context);
 
     /**
      * Partially updates a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -151,12 +153,12 @@ public interface PoolsClient {
      * @return the {@link SyncPoller} for polling of a pool of Virtual Machines.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PoolInner>, PoolInner> beginUpdate(
-        String resourceGroupName, String projectName, String poolName, PoolUpdate body);
+    SyncPoller<PollResult<PoolInner>, PoolInner> beginUpdate(String resourceGroupName, String projectName,
+        String poolName, PoolUpdate body);
 
     /**
      * Partially updates a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -168,12 +170,12 @@ public interface PoolsClient {
      * @return the {@link SyncPoller} for polling of a pool of Virtual Machines.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PoolInner>, PoolInner> beginUpdate(
-        String resourceGroupName, String projectName, String poolName, PoolUpdate body, Context context);
+    SyncPoller<PollResult<PoolInner>, PoolInner> beginUpdate(String resourceGroupName, String projectName,
+        String poolName, PoolUpdate body, Context context);
 
     /**
      * Partially updates a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -188,7 +190,7 @@ public interface PoolsClient {
 
     /**
      * Partially updates a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -204,7 +206,7 @@ public interface PoolsClient {
 
     /**
      * Deletes a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -218,7 +220,7 @@ public interface PoolsClient {
 
     /**
      * Deletes a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -229,12 +231,12 @@ public interface PoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String projectName, String poolName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String projectName, String poolName,
+        Context context);
 
     /**
      * Deletes a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -247,7 +249,7 @@ public interface PoolsClient {
 
     /**
      * Deletes a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -261,7 +263,7 @@ public interface PoolsClient {
 
     /**
      * Triggers a refresh of the pool status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -271,12 +273,12 @@ public interface PoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRunHealthChecks(
-        String resourceGroupName, String projectName, String poolName);
+    SyncPoller<PollResult<Void>, Void> beginRunHealthChecks(String resourceGroupName, String projectName,
+        String poolName);
 
     /**
      * Triggers a refresh of the pool status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -287,12 +289,12 @@ public interface PoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRunHealthChecks(
-        String resourceGroupName, String projectName, String poolName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginRunHealthChecks(String resourceGroupName, String projectName,
+        String poolName, Context context);
 
     /**
      * Triggers a refresh of the pool status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -305,7 +307,7 @@ public interface PoolsClient {
 
     /**
      * Triggers a refresh of the pool status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.

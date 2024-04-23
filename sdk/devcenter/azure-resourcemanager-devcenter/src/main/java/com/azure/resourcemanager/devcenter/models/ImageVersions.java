@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ImageVersions. */
+/**
+ * Resource collection API of ImageVersions.
+ */
 public interface ImageVersions {
     /**
      * Lists versions for an image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
@@ -22,12 +24,12 @@ public interface ImageVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of the image version list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ImageVersion> listByImage(
-        String resourceGroupName, String devCenterName, String galleryName, String imageName);
+    PagedIterable<ImageVersion> listByImage(String resourceGroupName, String devCenterName, String galleryName,
+        String imageName);
 
     /**
      * Lists versions for an image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
@@ -38,12 +40,12 @@ public interface ImageVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of the image version list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ImageVersion> listByImage(
-        String resourceGroupName, String devCenterName, String galleryName, String imageName, Context context);
+    PagedIterable<ImageVersion> listByImage(String resourceGroupName, String devCenterName, String galleryName,
+        String imageName, Context context);
 
     /**
      * Gets an image version.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
@@ -55,17 +57,12 @@ public interface ImageVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an image version along with {@link Response}.
      */
-    Response<ImageVersion> getWithResponse(
-        String resourceGroupName,
-        String devCenterName,
-        String galleryName,
-        String imageName,
-        String versionName,
-        Context context);
+    Response<ImageVersion> getWithResponse(String resourceGroupName, String devCenterName, String galleryName,
+        String imageName, String versionName, Context context);
 
     /**
      * Gets an image version.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
@@ -76,6 +73,6 @@ public interface ImageVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an image version.
      */
-    ImageVersion get(
-        String resourceGroupName, String devCenterName, String galleryName, String imageName, String versionName);
+    ImageVersion get(String resourceGroupName, String devCenterName, String galleryName, String imageName,
+        String versionName);
 }

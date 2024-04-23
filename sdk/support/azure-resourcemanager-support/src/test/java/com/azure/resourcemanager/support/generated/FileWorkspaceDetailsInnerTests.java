@@ -11,7 +11,7 @@ public final class FileWorkspaceDetailsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileWorkspaceDetailsInner model = BinaryData.fromString(
-            "{\"properties\":{\"createdOn\":\"2021-10-11T05:43:38Z\",\"expirationTime\":\"2021-09-02T16:03:41Z\"},\"id\":\"lpichk\",\"name\":\"ymkcdyhb\",\"type\":\"kkpwdreqnovvq\"}")
+            "{\"properties\":{\"createdOn\":\"2021-11-23T06:55:57Z\",\"expirationTime\":\"2021-04-22T09:32:34Z\"},\"id\":\"hhszh\",\"name\":\"d\",\"type\":\"lvwiwubmwmbesl\"}")
             .toObject(FileWorkspaceDetailsInner.class);
     }
 

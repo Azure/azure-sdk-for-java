@@ -42,7 +42,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
         };
     }
 
-    @BeforeClass(groups = {"kafka"}, timeOut = TIMEOUT)
+    @BeforeClass(groups = { "kafka", "kafka-emulator" }, timeOut = TIMEOUT)
     public void before_MetadataMonitorThreadTest() {
         CosmosAccountConfig accountConfig = new CosmosAccountConfig(
             TestConfigurations.HOST,
@@ -53,14 +53,14 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
         this.client = CosmosClientStore.getCosmosClient(accountConfig);
     }
 
-    @AfterClass(groups = {"kafka"}, timeOut = TIMEOUT)
+    @AfterClass(groups = { "kafka", "kafka-emulator" }, timeOut = TIMEOUT)
     public void after_MetadataMonitorThreadTest() {
         if (this.client != null) {
             this.client.close();
         }
     }
 
-    @Test(groups = "{ kafka }", dataProvider = "metadataStorageTypeParameterProvider", timeOut = TIMEOUT)
+    @Test(groups = { "kafka", "kafka-emulator" }, dataProvider = "metadataStorageTypeParameterProvider", timeOut = TIMEOUT)
     public void requestTaskReconfigurationOnContainersChange(CosmosMetadataStorageType metadataStorageType) throws InterruptedException {
         String metadataStorageName = "_cosmos.metadata.topic";
         try {
@@ -110,7 +110,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
         }
     }
 
-    @Test(groups = "{ kafka }", dataProvider = "metadataStorageTypeParameterProvider", timeOut = TIMEOUT)
+    @Test(groups = { "kafka", "kafka-emulator" }, dataProvider = "metadataStorageTypeParameterProvider", timeOut = TIMEOUT)
     public void requestTaskReconfigurationOnSplit(CosmosMetadataStorageType metadataStorageType) throws InterruptedException {
 
         String metadataStorageName = "_cosmos.metadata.topic";
@@ -178,7 +178,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
         }
     }
 
-    @Test(groups = "{ kafka }", dataProvider = "metadataStorageTypeParameterProvider", timeOut = TIMEOUT)
+    @Test(groups = { "kafka", "kafka-emulator" }, dataProvider = "metadataStorageTypeParameterProvider", timeOut = TIMEOUT)
     public void requestTaskReconfigurationOnMerge(CosmosMetadataStorageType metadataStorageType) throws InterruptedException {
         String metadataStorageName = "_cosmos.metadata.topic";
         try {
