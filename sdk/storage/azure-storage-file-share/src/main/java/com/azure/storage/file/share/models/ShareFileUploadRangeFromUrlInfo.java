@@ -22,17 +22,16 @@ public final class ShareFileUploadRangeFromUrlInfo {
      * @param eTag The entity tag that corresponds to the directory.
      * @param lastModified The last time the share was modified.
      * @param isServerEncrypted The value of this header is true if the directory metadata is completely encrypted using
-     * the specified algorithm.
+     *   the specified algorithm.
      */
-    public ShareFileUploadRangeFromUrlInfo(String eTag, OffsetDateTime lastModified, Boolean isServerEncrypted) {
+    public ShareFileUploadRangeFromUrlInfo(final String eTag, final OffsetDateTime lastModified,
+                                           final Boolean isServerEncrypted) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.isServerEncrypted = isServerEncrypted;
     }
 
     /**
-     * Get the entity tag that corresponds to the directory.
-     *
      * @return The entity tag that corresponds to the directory.
      */
     public String getETag() {
@@ -40,8 +39,6 @@ public final class ShareFileUploadRangeFromUrlInfo {
     }
 
     /**
-     * Get the last time the share was modified.
-     *
      * @return The last time the share was modified.
      */
     public OffsetDateTime getLastModified() {
@@ -49,9 +46,6 @@ public final class ShareFileUploadRangeFromUrlInfo {
     }
 
     /**
-     * Get the value of this header is true if the directory metadata is completely encrypted using the specified
-     * algorithm. Otherwise, the value is false.
-     *
      * @return The value of this header is true if the directory metadata is completely encrypted using the specified
      * algorithm. Otherwise, the value is false.
      */

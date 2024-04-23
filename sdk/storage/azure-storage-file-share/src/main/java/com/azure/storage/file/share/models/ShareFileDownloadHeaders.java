@@ -8,6 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaders;
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFileDownloadHeadersConstructorProxy;
 import com.azure.storage.file.share.implementation.models.FilesDownloadHeaders;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -15,8 +18,10 @@ import java.util.Map;
 /**
  * Defines headers for Download operation.
  */
+@JacksonXmlRootElement(localName = "Share-File-Download-Headers")
 @Fluent
 public final class ShareFileDownloadHeaders {
+    @JsonUnwrapped
     private final FilesDownloadHeaders internalHeaders;
 
     static {
@@ -38,6 +43,7 @@ public final class ShareFileDownloadHeaders {
     /*
      * The errorCode property.
      */
+    @JsonProperty(value = "x-ms-error-code")
     private String errorCode;
 
     /**

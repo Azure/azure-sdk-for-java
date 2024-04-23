@@ -8,89 +8,103 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
-/**
- * The FilesSetHttpHeadersHeaders model.
- */
+/** The FilesSetHttpHeadersHeaders model. */
+@JacksonXmlRootElement(localName = "null")
 @Fluent
 public final class FilesSetHttpHeadersHeaders {
     /*
      * The x-ms-version property.
      */
+    @JsonProperty(value = "x-ms-version")
     private String xMsVersion;
 
     /*
      * The x-ms-file-permission-key property.
      */
+    @JsonProperty(value = "x-ms-file-permission-key")
     private String xMsFilePermissionKey;
 
     /*
      * The x-ms-file-id property.
      */
+    @JsonProperty(value = "x-ms-file-id")
     private String xMsFileId;
 
     /*
      * The x-ms-file-creation-time property.
      */
+    @JsonProperty(value = "x-ms-file-creation-time")
     private OffsetDateTime xMsFileCreationTime;
 
     /*
      * The Last-Modified property.
      */
+    @JsonProperty(value = "Last-Modified")
     private DateTimeRfc1123 lastModified;
 
     /*
      * The x-ms-request-server-encrypted property.
      */
+    @JsonProperty(value = "x-ms-request-server-encrypted")
     private Boolean xMsRequestServerEncrypted;
 
     /*
      * The Date property.
      */
+    @JsonProperty(value = "Date")
     private DateTimeRfc1123 date;
 
     /*
      * The ETag property.
      */
+    @JsonProperty(value = "ETag")
     private String eTag;
 
     /*
      * The x-ms-file-attributes property.
      */
+    @JsonProperty(value = "x-ms-file-attributes")
     private String xMsFileAttributes;
 
     /*
      * The x-ms-file-change-time property.
      */
+    @JsonProperty(value = "x-ms-file-change-time")
     private OffsetDateTime xMsFileChangeTime;
 
     /*
      * The x-ms-file-parent-id property.
      */
+    @JsonProperty(value = "x-ms-file-parent-id")
     private String xMsFileParentId;
 
     /*
      * The x-ms-request-id property.
      */
+    @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
 
     /*
      * The x-ms-file-last-write-time property.
      */
+    @JsonProperty(value = "x-ms-file-last-write-time")
     private OffsetDateTime xMsFileLastWriteTime;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
-    private static final HttpHeaderName X_MS_FILE_PERMISSION_KEY
-        = HttpHeaderName.fromString("x-ms-file-permission-key");
+    private static final HttpHeaderName X_MS_FILE_PERMISSION_KEY =
+            HttpHeaderName.fromString("x-ms-file-permission-key");
 
     private static final HttpHeaderName X_MS_FILE_ID = HttpHeaderName.fromString("x-ms-file-id");
 
     private static final HttpHeaderName X_MS_FILE_CREATION_TIME = HttpHeaderName.fromString("x-ms-file-creation-time");
 
-    private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED
-        = HttpHeaderName.fromString("x-ms-request-server-encrypted");
+    private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED =
+            HttpHeaderName.fromString("x-ms-request-server-encrypted");
 
     private static final HttpHeaderName X_MS_FILE_ATTRIBUTES = HttpHeaderName.fromString("x-ms-file-attributes");
 
@@ -98,13 +112,15 @@ public final class FilesSetHttpHeadersHeaders {
 
     private static final HttpHeaderName X_MS_FILE_PARENT_ID = HttpHeaderName.fromString("x-ms-file-parent-id");
 
-    private static final HttpHeaderName X_MS_FILE_LAST_WRITE_TIME
-        = HttpHeaderName.fromString("x-ms-file-last-write-time");
+    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+
+    private static final HttpHeaderName X_MS_FILE_LAST_WRITE_TIME =
+            HttpHeaderName.fromString("x-ms-file-last-write-time");
 
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of FilesSetHttpHeadersHeaders class.
-     * 
+     *
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public FilesSetHttpHeadersHeaders(HttpHeaders rawHeaders) {
@@ -134,7 +150,7 @@ public final class FilesSetHttpHeadersHeaders {
             this.xMsFileChangeTime = OffsetDateTime.parse(xMsFileChangeTime);
         }
         this.xMsFileParentId = rawHeaders.getValue(X_MS_FILE_PARENT_ID);
-        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
         String xMsFileLastWriteTime = rawHeaders.getValue(X_MS_FILE_LAST_WRITE_TIME);
         if (xMsFileLastWriteTime != null) {
             this.xMsFileLastWriteTime = OffsetDateTime.parse(xMsFileLastWriteTime);
@@ -143,7 +159,7 @@ public final class FilesSetHttpHeadersHeaders {
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
-     * 
+     *
      * @return the xMsVersion value.
      */
     public String getXMsVersion() {
@@ -152,7 +168,7 @@ public final class FilesSetHttpHeadersHeaders {
 
     /**
      * Set the xMsVersion property: The x-ms-version property.
-     * 
+     *
      * @param xMsVersion the xMsVersion value to set.
      * @return the FilesSetHttpHeadersHeaders object itself.
      */
@@ -163,7 +179,7 @@ public final class FilesSetHttpHeadersHeaders {
 
     /**
      * Get the xMsFilePermissionKey property: The x-ms-file-permission-key property.
-     * 
+     *
      * @return the xMsFilePermissionKey value.
      */
     public String getXMsFilePermissionKey() {
@@ -172,7 +188,7 @@ public final class FilesSetHttpHeadersHeaders {
 
     /**
      * Set the xMsFilePermissionKey property: The x-ms-file-permission-key property.
-     * 
+     *
      * @param xMsFilePermissionKey the xMsFilePermissionKey value to set.
      * @return the FilesSetHttpHeadersHeaders object itself.
      */
@@ -183,7 +199,7 @@ public final class FilesSetHttpHeadersHeaders {
 
     /**
      * Get the xMsFileId property: The x-ms-file-id property.
-     * 
+     *
      * @return the xMsFileId value.
      */
     public String getXMsFileId() {
@@ -192,7 +208,7 @@ public final class FilesSetHttpHeadersHeaders {
 
     /**
      * Set the xMsFileId property: The x-ms-file-id property.
-     * 
+     *
      * @param xMsFileId the xMsFileId value to set.
      * @return the FilesSetHttpHeadersHeaders object itself.
      */
@@ -203,7 +219,7 @@ public final class FilesSetHttpHeadersHeaders {
 
     /**
      * Get the xMsFileCreationTime property: The x-ms-file-creation-time property.
-     * 
+     *
      * @return the xMsFileCreationTime value.
      */
     public OffsetDateTime getXMsFileCreationTime() {
@@ -212,7 +228,7 @@ public final class FilesSetHttpHeadersHeaders {
 
     /**
      * Set the xMsFileCreationTime property: The x-ms-file-creation-time property.
-     * 
+     *
      * @param xMsFileCreationTime the xMsFileCreationTime value to set.
      * @return the FilesSetHttpHeadersHeaders object itself.
      */
@@ -223,7 +239,7 @@ public final class FilesSetHttpHeadersHeaders {
 
     /**
      * Get the lastModified property: The Last-Modified property.
-     * 
+     *
      * @return the lastModified value.
      */
     public OffsetDateTime getLastModified() {
@@ -235,7 +251,7 @@ public final class FilesSetHttpHeadersHeaders {
 
     /**
      * Set the lastModified property: The Last-Modified property.
-     * 
+     *
      * @param lastModified the lastModified value to set.
      * @return the FilesSetHttpHeadersHeaders object itself.
      */
@@ -250,7 +266,7 @@ public final class FilesSetHttpHeadersHeaders {
 
     /**
      * Get the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
-     * 
+     *
      * @return the xMsRequestServerEncrypted value.
      */
     public Boolean isXMsRequestServerEncrypted() {
@@ -259,7 +275,7 @@ public final class FilesSetHttpHeadersHeaders {
 
     /**
      * Set the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
-     * 
+     *
      * @param xMsRequestServerEncrypted the xMsRequestServerEncrypted value to set.
      * @return the FilesSetHttpHeadersHeaders object itself.
      */
@@ -270,7 +286,7 @@ public final class FilesSetHttpHeadersHeaders {
 
     /**
      * Get the date property: The Date property.
-     * 
+     *
      * @return the date value.
      */
     public OffsetDateTime getDate() {
@@ -282,7 +298,7 @@ public final class FilesSetHttpHeadersHeaders {
 
     /**
      * Set the date property: The Date property.
-     * 
+     *
      * @param date the date value to set.
      * @return the FilesSetHttpHeadersHeaders object itself.
      */
@@ -297,7 +313,7 @@ public final class FilesSetHttpHeadersHeaders {
 
     /**
      * Get the eTag property: The ETag property.
-     * 
+     *
      * @return the eTag value.
      */
     public String getETag() {
@@ -306,7 +322,7 @@ public final class FilesSetHttpHeadersHeaders {
 
     /**
      * Set the eTag property: The ETag property.
-     * 
+     *
      * @param eTag the eTag value to set.
      * @return the FilesSetHttpHeadersHeaders object itself.
      */
@@ -317,7 +333,7 @@ public final class FilesSetHttpHeadersHeaders {
 
     /**
      * Get the xMsFileAttributes property: The x-ms-file-attributes property.
-     * 
+     *
      * @return the xMsFileAttributes value.
      */
     public String getXMsFileAttributes() {
@@ -326,7 +342,7 @@ public final class FilesSetHttpHeadersHeaders {
 
     /**
      * Set the xMsFileAttributes property: The x-ms-file-attributes property.
-     * 
+     *
      * @param xMsFileAttributes the xMsFileAttributes value to set.
      * @return the FilesSetHttpHeadersHeaders object itself.
      */
@@ -337,7 +353,7 @@ public final class FilesSetHttpHeadersHeaders {
 
     /**
      * Get the xMsFileChangeTime property: The x-ms-file-change-time property.
-     * 
+     *
      * @return the xMsFileChangeTime value.
      */
     public OffsetDateTime getXMsFileChangeTime() {
@@ -346,7 +362,7 @@ public final class FilesSetHttpHeadersHeaders {
 
     /**
      * Set the xMsFileChangeTime property: The x-ms-file-change-time property.
-     * 
+     *
      * @param xMsFileChangeTime the xMsFileChangeTime value to set.
      * @return the FilesSetHttpHeadersHeaders object itself.
      */
@@ -357,7 +373,7 @@ public final class FilesSetHttpHeadersHeaders {
 
     /**
      * Get the xMsFileParentId property: The x-ms-file-parent-id property.
-     * 
+     *
      * @return the xMsFileParentId value.
      */
     public String getXMsFileParentId() {
@@ -366,7 +382,7 @@ public final class FilesSetHttpHeadersHeaders {
 
     /**
      * Set the xMsFileParentId property: The x-ms-file-parent-id property.
-     * 
+     *
      * @param xMsFileParentId the xMsFileParentId value to set.
      * @return the FilesSetHttpHeadersHeaders object itself.
      */
@@ -377,7 +393,7 @@ public final class FilesSetHttpHeadersHeaders {
 
     /**
      * Get the xMsRequestId property: The x-ms-request-id property.
-     * 
+     *
      * @return the xMsRequestId value.
      */
     public String getXMsRequestId() {
@@ -386,7 +402,7 @@ public final class FilesSetHttpHeadersHeaders {
 
     /**
      * Set the xMsRequestId property: The x-ms-request-id property.
-     * 
+     *
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the FilesSetHttpHeadersHeaders object itself.
      */
@@ -397,7 +413,7 @@ public final class FilesSetHttpHeadersHeaders {
 
     /**
      * Get the xMsFileLastWriteTime property: The x-ms-file-last-write-time property.
-     * 
+     *
      * @return the xMsFileLastWriteTime value.
      */
     public OffsetDateTime getXMsFileLastWriteTime() {
@@ -406,7 +422,7 @@ public final class FilesSetHttpHeadersHeaders {
 
     /**
      * Set the xMsFileLastWriteTime property: The x-ms-file-last-write-time property.
-     * 
+     *
      * @param xMsFileLastWriteTime the xMsFileLastWriteTime value to set.
      * @return the FilesSetHttpHeadersHeaders object itself.
      */

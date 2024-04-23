@@ -14,6 +14,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.file.share.ShareFileAsyncClient;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.share.implementation.AzureFileStorageImplBuilder;
 import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.file.share.options.ShareAcquireLeaseOptions;
 import com.azure.storage.file.share.options.ShareBreakLeaseOptions;
@@ -63,8 +64,14 @@ public final class ShareLeaseAsyncClient {
         boolean allowTrailingDot, boolean allowSourceTrailingDot, ShareTokenIntent shareTokenIntent) {
         this.isShareFile = isShareFile;
         this.leaseId = leaseId;
-        this.client = new AzureFileStorageImpl(pipeline, serviceVersion, shareTokenIntent, url, allowTrailingDot,
-            allowSourceTrailingDot);
+        this.client = new AzureFileStorageImplBuilder()
+            .pipeline(pipeline)
+            .url(url)
+            .version(serviceVersion)
+            .fileRequestIntent(shareTokenIntent)
+            .allowTrailingDot(allowTrailingDot)
+            .allowSourceTrailingDot(allowSourceTrailingDot)
+            .buildClient();
         this.accountName = accountName;
         this.shareName = shareName;
         this.shareSnapshot = shareSnapshot;
@@ -72,8 +79,6 @@ public final class ShareLeaseAsyncClient {
     }
 
     /**
-     * Gets the URL of the lease client.
-     *
      * @return URL of the lease client.
      * @deprecated Please use {@link #getResourceUrl()}
      */

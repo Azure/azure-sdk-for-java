@@ -31,8 +31,6 @@ public final class ShareSnapshotInfo {
     }
 
     /**
-     * Gets the identifier of the snapshot.
-     *
      * @return the identifier of the snapshot
      */
     public String getSnapshot() {
@@ -40,8 +38,6 @@ public final class ShareSnapshotInfo {
     }
 
     /**
-     * Gets the entity tag that corresponds to the snapshot.
-     *
      * @return the entity tag that corresponds to the snapshot
      */
     public String getETag() {
@@ -49,9 +45,6 @@ public final class ShareSnapshotInfo {
     }
 
     /**
-     * Gets the last time the share was modified if the snapshot was created without metadata, otherwise this is the
-     * time that the snapshot was created.
-     *
      * @return the last time the share was modified if the snapshot was created without metadata, otherwise this is the
      * time that the snapshot was created.
      */
