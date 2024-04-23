@@ -73,8 +73,8 @@ public class RadiologyInsightsAgeMismatchTest extends RadiologyInsightsClientTes
 
                 AgeMismatchInference ageMismatchInference = (AgeMismatchInference) inference;
                 List<FhirR4Extension> extensions = ageMismatchInference.getExtension();
-                //TODO (hvanhoe) recorded json needs to be manually adapted for this to work 
-                //assertEquals("20 - year - old ", extractEvidence(extensions));
+                //Recorded json needs to be manually adapted for this to work 
+                assertEquals("20 - year - old ", extractEvidence(extensions));
 
             });
 
