@@ -5,10 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.regex.Pattern;
 
 /**
  * The request payload for adding participant to the call.
@@ -24,7 +21,7 @@ public final class AddParticipantRequestInternal {
 
     /*
      * (Optional) The display name of the source that is associated with this invite operation when
-     * adding a PSTN participant or teams user.  Note: Will not update the display name in the roster.
+     * adding a PSTN participant or teams user. Note: Will not update the display name in the roster.
      */
     @JsonProperty(value = "sourceDisplayName")
     private String sourceDisplayName;
@@ -95,7 +92,7 @@ public final class AddParticipantRequestInternal {
     /**
      * Get the sourceDisplayName property: (Optional) The display name of the source that is associated with this
      * invite operation when
-     * adding a PSTN participant or teams user.  Note: Will not update the display name in the roster.
+     * adding a PSTN participant or teams user. Note: Will not update the display name in the roster.
      * 
      * @return the sourceDisplayName value.
      */
@@ -106,7 +103,7 @@ public final class AddParticipantRequestInternal {
     /**
      * Set the sourceDisplayName property: (Optional) The display name of the source that is associated with this
      * invite operation when
-     * adding a PSTN participant or teams user.  Note: Will not update the display name in the roster.
+     * adding a PSTN participant or teams user. Note: Will not update the display name in the roster.
      * 
      * @param sourceDisplayName the sourceDisplayName value to set.
      * @return the AddParticipantRequestInternal object itself.

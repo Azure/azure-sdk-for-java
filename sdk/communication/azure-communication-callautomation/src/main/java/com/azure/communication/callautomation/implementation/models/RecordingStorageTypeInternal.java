@@ -51,4 +51,3 @@ public final class RecordingStorageTypeInternal extends ExpandableStringEnum<Rec
         return values(RecordingStorageTypeInternal.class);
     }
 }
-

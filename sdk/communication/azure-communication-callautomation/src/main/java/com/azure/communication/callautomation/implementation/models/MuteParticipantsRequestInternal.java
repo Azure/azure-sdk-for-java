@@ -5,11 +5,8 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * The request payload for muting participants from the call.
@@ -52,7 +49,8 @@ public final class MuteParticipantsRequestInternal {
      * @param targetParticipants the targetParticipants value to set.
      * @return the MuteParticipantsRequestInternal object itself.
      */
-    public MuteParticipantsRequestInternal setTargetParticipants(List<CommunicationIdentifierModel> targetParticipants) {
+    public MuteParticipantsRequestInternal
+        setTargetParticipants(List<CommunicationIdentifierModel> targetParticipants) {
         this.targetParticipants = targetParticipants;
         return this;
     }

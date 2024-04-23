@@ -5,10 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.regex.Pattern;
 
 /**
  * The ContinuousDtmfRecognitionRequestInternal model.
@@ -56,7 +53,8 @@ public final class ContinuousDtmfRecognitionRequestInternal {
      * @param targetParticipant the targetParticipant value to set.
      * @return the ContinuousDtmfRecognitionRequestInternal object itself.
      */
-    public ContinuousDtmfRecognitionRequestInternal setTargetParticipant(CommunicationIdentifierModel targetParticipant) {
+    public ContinuousDtmfRecognitionRequestInternal
+        setTargetParticipant(CommunicationIdentifierModel targetParticipant) {
         this.targetParticipant = targetParticipant;
         return this;
     }

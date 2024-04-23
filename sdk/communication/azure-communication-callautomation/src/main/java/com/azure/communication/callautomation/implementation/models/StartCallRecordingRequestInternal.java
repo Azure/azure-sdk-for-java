@@ -5,12 +5,8 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * The request payload start for call recording operation with call locator.
@@ -51,7 +47,7 @@ public final class StartCallRecordingRequestInternal {
      * The sequential order in which audio channels are assigned to participants in the unmixed recording.
      * When 'recordingChannelType' is set to 'unmixed' and `audioChannelParticipantOrdering is not specified,
      * the audio channel to participant mapping will be automatically assigned based on the order in which participant
-     * first audio was detected.  Channel to participant mapping details can be found in the metadata of the recording.
+     * first audio was detected. Channel to participant mapping details can be found in the metadata of the recording.
      */
     @JsonProperty(value = "audioChannelParticipantOrdering")
     private List<CommunicationIdentifierModel> audioChannelParticipantOrdering;
@@ -189,7 +185,7 @@ public final class StartCallRecordingRequestInternal {
      * participants in the unmixed recording.
      * When 'recordingChannelType' is set to 'unmixed' and `audioChannelParticipantOrdering is not specified,
      * the audio channel to participant mapping will be automatically assigned based on the order in which participant
-     * first audio was detected.  Channel to participant mapping details can be found in the metadata of the recording.
+     * first audio was detected. Channel to participant mapping details can be found in the metadata of the recording.
      * 
      * @return the audioChannelParticipantOrdering value.
      */
@@ -202,12 +198,13 @@ public final class StartCallRecordingRequestInternal {
      * participants in the unmixed recording.
      * When 'recordingChannelType' is set to 'unmixed' and `audioChannelParticipantOrdering is not specified,
      * the audio channel to participant mapping will be automatically assigned based on the order in which participant
-     * first audio was detected.  Channel to participant mapping details can be found in the metadata of the recording.
+     * first audio was detected. Channel to participant mapping details can be found in the metadata of the recording.
      * 
      * @param audioChannelParticipantOrdering the audioChannelParticipantOrdering value to set.
      * @return the StartCallRecordingRequestInternal object itself.
      */
-    public StartCallRecordingRequestInternal setAudioChannelParticipantOrdering(List<CommunicationIdentifierModel> audioChannelParticipantOrdering) {
+    public StartCallRecordingRequestInternal
+        setAudioChannelParticipantOrdering(List<CommunicationIdentifierModel> audioChannelParticipantOrdering) {
         this.audioChannelParticipantOrdering = audioChannelParticipantOrdering;
         return this;
     }
