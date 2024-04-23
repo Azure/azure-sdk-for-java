@@ -8,7 +8,7 @@ New-Item -Path "$PSScriptRoot/src/test/connectorPlugins" -ItemType "directory" -
 
 Write-Host "Rebuilding Cosmos DB connectors..."
 mvn clean package -DskipTests -Dmaven.javadoc.skip
-copy target\*-jar-with-dependencies.jar $PSScriptRoot/src/test/connectorPlugins/connectors
+copy target/components/azure-cosmos-kafka-connect-*.jar $PSScriptRoot/src/test/connectorPlugins/connectors
 cd $PSScriptRoot/src/test/connectorPlugins
 
 Write-Host "Adding custom Insert UUID SMT"
