@@ -13,8 +13,7 @@ public final class CheckNameAvailabilityResponseImpl implements CheckNameAvailab
 
     private final com.azure.resourcemanager.confidentialledger.ConfidentialLedgerManager serviceManager;
 
-    CheckNameAvailabilityResponseImpl(
-        CheckNameAvailabilityResponseInner innerObject,
+    CheckNameAvailabilityResponseImpl(CheckNameAvailabilityResponseInner innerObject,
         com.azure.resourcemanager.confidentialledger.ConfidentialLedgerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

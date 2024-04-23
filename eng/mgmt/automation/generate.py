@@ -225,6 +225,7 @@ def sdk_automation_typespec(config: dict) -> List[dict]:
 
     return packages
 
+
 def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
 
     # TODO(xiaofei) support changelog, etc
@@ -280,6 +281,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
             ],
             'result': 'failed',
         }
+
 
 def main():
     (parser, args) = parse_args()

@@ -4,6 +4,7 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
@@ -62,7 +63,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                 updatedResource = this.writeClient.upsertUser(createdDatabase.getSelfLink(), (User) writeResource, null).block().getResource();
             } else if (resourceToWorkWith instanceof Document) {
                 RequestOptions options = new RequestOptions();
-                options.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(resourceToWorkWith, "mypk")));
+                options.setPartitionKey(new PartitionKey(resourceToWorkWith.get("mypk")));
                 updatedResource = this.writeClient.upsertDocument(createdCollection.getSelfLink(), (Document) writeResource, options, false).block().getResource();
             }
             assertThat(updatedResource.getTimestamp().isAfter(sourceTimestamp)).isTrue();
@@ -75,7 +76,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
     void validateConsistentLSN() {
         Document documentDefinition = getDocumentDefinition();
         RequestOptions options = new RequestOptions();
-        options.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(documentDefinition, "mypk")));
+        options.setPartitionKey(new PartitionKey(documentDefinition.get("mypk")));
         Document document = createDocument(this.writeClient, createdDatabase.getId(), createdCollection.getId(), documentDefinition);
         ResourceResponse<Document> response = this.writeClient.deleteDocument(document.getSelfLink(), options).block();
         assertThat(response.getStatusCode()).isEqualTo(204);
@@ -90,7 +91,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
     void validateConsistentLSNAndQuorumAckedLSN() {
         Document documentDefinition = getDocumentDefinition();
         RequestOptions options = new RequestOptions();
-        options.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(documentDefinition, "mypk")));
+        options.setPartitionKey(new PartitionKey(documentDefinition.get("mypk")));
         Document document = createDocument(this.writeClient, createdDatabase.getId(), createdCollection.getId(), documentDefinition);
         ResourceResponse<Document> response = this.writeClient.deleteDocument(document.getSelfLink(), options).block();
         assertThat(response.getStatusCode()).isEqualTo(204);
@@ -156,7 +157,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             Instant sourceTimestamp = writeDocument.getTimestamp();
             Thread.sleep(1000);//Timestamp is in granularity of seconds.
             RequestOptions options = new RequestOptions();
-            options.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(documentToWorkWith, "mypk")));
+            options.setPartitionKey(new PartitionKey(documentToWorkWith.get("mypk")));
             Document updatedDocument = this.writeClient.replaceDocument(writeDocument, options).block().getResource();
             assertThat(updatedDocument.getTimestamp().isAfter(sourceTimestamp)).isTrue();
 
@@ -222,7 +223,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             {
                 Document document2 = new Document();
                 document2.setId("test" + UUID.randomUUID().toString());
-                BridgeInternal.setProperty(document2, "customerid", 2);
+                document2.set("customerid", 2, CosmosItemSerializer.DEFAULT_SERIALIZER);
                 // name link
                 ResourceResponse<Document> document = writeClient.createDocument(BridgeInternal.getAltLink(coll),
                                                                                  document2, null, false)
@@ -236,7 +237,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             {
                 Document document2 = new Document();
                 document2.setId("test" + UUID.randomUUID().toString());
-                BridgeInternal.setProperty(document2, "customerid", 3);
+                document2.set("customerid", 3, CosmosItemSerializer.DEFAULT_SERIALIZER);
                 // name link
                 ResourceResponse<Document> document = writeClient.createDocument(BridgeInternal.getAltLink(coll),
                                                                                  document2, null, false)
@@ -283,7 +284,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .getResource();
             } else if (resourceToWorkWith instanceof Document) {
                 RequestOptions options = new RequestOptions();
-                options.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(resourceToWorkWith, "mypk")));
+                options.setPartitionKey(new PartitionKey(resourceToWorkWith.get("mypk")));
                 readResource = this.readClient.readDocument(resourceToWorkWith.getSelfLink(), options)
                         .block()
                         .getResource();
@@ -318,7 +319,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
 
             Resource readResource = null;
             RequestOptions requestOptions = new RequestOptions();
-            requestOptions.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(resourceToWorkWith, "mypk")));
+            requestOptions.setPartitionKey(new PartitionKey(resourceToWorkWith.get("mypk")));
             if (resourceToWorkWith instanceof Document) {
                 readResource = this.readClient.readDocument(resourceToWorkWith.getSelfLink(), requestOptions).block().getResource();
             }
@@ -350,7 +351,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
 
             Resource readResource = null;
             RequestOptions requestOptions = new RequestOptions();
-            requestOptions.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(resourceToWorkWith, "mypk")));
+            requestOptions.setPartitionKey(new PartitionKey(resourceToWorkWith.get("mypk")));
             if (resourceToWorkWith instanceof Document) {
                 readResource =
                         this.readClient.readDocument(resourceToWorkWith.getSelfLink(), requestOptions)
@@ -429,7 +430,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                 documentDefinition.setId(documentId);
                 Document documentCreated = client2.createDocument(collection.getSelfLink(), documentDefinition, null, true).block().getResource();
                 RequestOptions requestOptions = new RequestOptions();
-                requestOptions.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(documentCreated, "mypk")));
+                requestOptions.setPartitionKey(new PartitionKey(documentCreated.get("mypk")));
                 client2.readDocument(BridgeInternal.getAltLink(documentCreated), requestOptions).block();
                 client2.readDocument(documentCreated.getSelfLink(), requestOptions).block();
             }
@@ -462,7 +463,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             documentDefinition2.setId(documentId1);
             Document createdDocument = client1.createDocument(collectionSameName.getSelfLink(), documentDefinition2, null, true).block().getResource();
             RequestOptions requestOptions = new RequestOptions();
-            requestOptions.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(createdDocument, "mypk")));
+            requestOptions.setPartitionKey(new PartitionKey(createdDocument.get("mypk")));
             ResourceResponseValidator<Document> successValidator = new ResourceResponseValidator.Builder<Document>()
                     .withId(createdDocument.getId())
                     .build();
@@ -481,7 +482,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                 String higherLsnToken = this.getDifferentLSNToken(token, 2000);
                 RequestOptions requestOptions1 = new RequestOptions();
                 requestOptions1.setSessionToken(higherLsnToken);
-                requestOptions1.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(createdDocument, "mypk")));
+                requestOptions1.setPartitionKey(new PartitionKey(createdDocument.get("mypk")));
                 readObservable = client2.readDocument(BridgeInternal.getAltLink(createdDocument), requestOptions1);
                 FailureValidator failureValidator = new FailureValidator.Builder().subStatusCode(1002).build();
                 validateFailure(readObservable, failureValidator);
@@ -504,7 +505,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                 Document documentTest =
                         client1.createDocument(BridgeInternal.getAltLink(collectionSameName), getDocumentDefinition(), null, true).block().getResource();
                 RequestOptions options = new RequestOptions();
-                options.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(documentTest, "mypk")));
+                options.setPartitionKey(new PartitionKey(documentTest.get("mypk")));
                 successValidator = new ResourceResponseValidator.Builder<Document>()
                         .withId(documentTest.getId())
                         .build();
@@ -560,13 +561,13 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             // write a document, and upsert to it to update etag.
             ResourceResponse<Document> documentResponse = writeClient.createDocument(BridgeInternal.getAltLink(createdCollection), getDocumentDefinition(), null, true).block();
             RequestOptions requestOptions = new RequestOptions();
-            requestOptions.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(documentResponse.getResource(), "mypk")));
+            requestOptions.setPartitionKey(new PartitionKey(documentResponse.getResource().get("mypk")));
             ResourceResponse<Document> upsertResponse =
                     writeClient.upsertDocument(BridgeInternal.getAltLink(createdCollection), documentResponse.getResource(), requestOptions, true).block();
 
             // create a conditioned read request, with first write request's etag, so the read fails with PreconditionFailure
             RequestOptions requestOptions1 = new RequestOptions();
-            requestOptions.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(documentResponse.getResource(), "mypk")));
+            requestOptions.setPartitionKey(new PartitionKey(documentResponse.getResource().get("mypk")));
             requestOptions1.setIfMatchETag(documentResponse.getResource().getETag());
             Mono<ResourceResponse<Document>> preConditionFailureResponseObservable = validationClient.upsertDocument(BridgeInternal.getAltLink(createdCollection),
                     documentResponse.getResource(), requestOptions1, true);
@@ -619,7 +620,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
 
             FailureValidator failureValidator = new FailureValidator.Builder().statusCode(HttpConstants.StatusCodes.NOTFOUND).build();
             RequestOptions requestOptions = new RequestOptions();
-            requestOptions.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(documentResponse.getResource(), "mypk")));
+            requestOptions.setPartitionKey(new PartitionKey(documentResponse.getResource().get("mypk")));
             // try to read a non existent document in the same partition that we previously wrote to
             Mono<ResourceResponse<Document>> readObservable = validationClient.readDocument(BridgeInternal.getAltLink(documentResponse.getResource()) + "dummy", requestOptions);
             validateFailure(readObservable, failureValidator);
@@ -658,7 +659,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             String higherLsnToken = this.getDifferentLSNToken(token, 2000);
             FailureValidator failureValidator = new FailureValidator.Builder().subStatusCode(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE).build();
             RequestOptions requestOptions = new RequestOptions();
-            requestOptions.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(documentResponse.getResource(), "mypk")));
+            requestOptions.setPartitionKey(new PartitionKey(documentResponse.getResource().get(("mypk"))));
             requestOptions.setSessionToken(higherLsnToken);
             // try to read a non existent document in the same partition that we previously wrote to
             Mono<ResourceResponse<Document>> readObservable = writeClient.readDocument(BridgeInternal.getAltLink(documentResponse.getResource()),
@@ -747,7 +748,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             // Document to lock pause/resume clients
             Document document1 = new Document();
             document1.setId("test" + UUID.randomUUID().toString());
-            BridgeInternal.setProperty(document1, "mypk", 1);
+            document1.set("mypk", 1, CosmosItemSerializer.DEFAULT_SERIALIZER);
             ResourceResponse<Document> childResource1 = writeClient.createDocument(createdCollection.getSelfLink(), document1, null, true).block();
             logger.info("Created {} child resource", childResource1.getResource().getResourceId());
             assertThat(childResource1.getSessionToken()).isNotNull();
@@ -758,7 +759,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             // Document to lock pause/resume clients
             Document document2 = new Document();
             document2.setId("test" + UUID.randomUUID().toString());
-            BridgeInternal.setProperty(document2, "mypk", 2);
+            document2.set("mypk", 2, CosmosItemSerializer.DEFAULT_SERIALIZER);
             ResourceResponse<Document> childResource2 = writeClient.createDocument(createdCollection.getSelfLink(), document2, null, true).block();
             assertThat(childResource2).isNotNull();
             assertThat(childResource2.getSessionToken()).isNotNull();
@@ -827,7 +828,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         try {
             Document doc = client1.createDocument(createdCollection.getSelfLink(), getDocumentDefinition(), null, true).block().getResource();
             RequestOptions requestOptions = new RequestOptions();
-            requestOptions.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(doc, "mypk")));
+            requestOptions.setPartitionKey(new PartitionKey(doc.get("mypk")));
             Document doc1 = client1.readDocument(BridgeInternal.getAltLink(doc), requestOptions).block().getResource();
 
             String token1 = client1.getSession().getSessionToken(createdCollection.getSelfLink());

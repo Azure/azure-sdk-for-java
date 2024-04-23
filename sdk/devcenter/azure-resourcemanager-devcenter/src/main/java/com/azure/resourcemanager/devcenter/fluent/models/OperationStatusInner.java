@@ -11,93 +11,98 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The current status of an async operation. */
+/**
+ * The current status of an async operation.
+ */
 @Fluent
 public final class OperationStatusInner extends OperationStatusResult {
-    /*
-     * The id of the resource.
-     */
-    @JsonProperty(value = "resourceId", access = JsonProperty.Access.WRITE_ONLY)
-    private String resourceId;
-
     /*
      * Custom operation properties, populated only for a successful operation.
      */
     @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private Object properties;
 
-    /** Creates an instance of OperationStatusInner class. */
+    /**
+     * Creates an instance of OperationStatusInner class.
+     */
     public OperationStatusInner() {
     }
 
     /**
-     * Get the resourceId property: The id of the resource.
-     *
-     * @return the resourceId value.
-     */
-    public String resourceId() {
-        return this.resourceId;
-    }
-
-    /**
      * Get the properties property: Custom operation properties, populated only for a successful operation.
-     *
+     * 
      * @return the properties value.
      */
     public Object properties() {
         return this.properties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationStatusInner withId(String id) {
         super.withId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationStatusInner withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationStatusInner withStatus(String status) {
         super.withStatus(status);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationStatusInner withPercentComplete(Float percentComplete) {
         super.withPercentComplete(percentComplete);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationStatusInner withStartTime(OffsetDateTime startTime) {
         super.withStartTime(startTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationStatusInner withEndTime(OffsetDateTime endTime) {
         super.withEndTime(endTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationStatusInner withOperations(List<OperationStatusResult> operations) {
         super.withOperations(operations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationStatusInner withError(ManagementError error) {
         super.withError(error);
@@ -106,7 +111,7 @@ public final class OperationStatusInner extends OperationStatusResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

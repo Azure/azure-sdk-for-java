@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Health status indicating whether a pool is available to create Dev Boxes. */
+/**
+ * Health status indicating whether a pool is available to create Dev Boxes.
+ */
 public final class HealthStatus extends ExpandableStringEnum<HealthStatus> {
-    /** Static value Unknown for HealthStatus. */
+    /**
+     * Static value Unknown for HealthStatus.
+     */
     public static final HealthStatus UNKNOWN = fromString("Unknown");
 
-    /** Static value Pending for HealthStatus. */
+    /**
+     * Static value Pending for HealthStatus.
+     */
     public static final HealthStatus PENDING = fromString("Pending");
 
-    /** Static value Healthy for HealthStatus. */
+    /**
+     * Static value Healthy for HealthStatus.
+     */
     public static final HealthStatus HEALTHY = fromString("Healthy");
 
-    /** Static value Warning for HealthStatus. */
+    /**
+     * Static value Warning for HealthStatus.
+     */
     public static final HealthStatus WARNING = fromString("Warning");
 
-    /** Static value Unhealthy for HealthStatus. */
+    /**
+     * Static value Unhealthy for HealthStatus.
+     */
     public static final HealthStatus UNHEALTHY = fromString("Unhealthy");
 
     /**
      * Creates a new instance of HealthStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class HealthStatus extends ExpandableStringEnum<HealthStatus> {
 
     /**
      * Creates or finds a HealthStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HealthStatus.
      */
@@ -47,7 +59,7 @@ public final class HealthStatus extends ExpandableStringEnum<HealthStatus> {
 
     /**
      * Gets known HealthStatus values.
-     *
+     * 
      * @return known HealthStatus values.
      */
     public static Collection<HealthStatus> values() {

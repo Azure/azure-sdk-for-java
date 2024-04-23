@@ -3,11 +3,11 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
@@ -286,7 +286,10 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
         List<Document> documents = new ArrayList<>();
         for (int i = 0; i < 1000; i++) {
             Document documentDefinition = getDocumentDefinition();
-            BridgeInternal.setProperty(documentDefinition, UUID.randomUUID().toString(), UUID.randomUUID().toString());
+            documentDefinition.set(
+                UUID.randomUUID().toString(),
+                UUID.randomUUID().toString(),
+                CosmosItemSerializer.DEFAULT_SERIALIZER);
             documents.add(documentDefinition);
         }
 

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.devcenter.fluent.models.DevBoxDefinitionUpdateP
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Partial update of a Dev Box definition resource. */
+/**
+ * Partial update of a Dev Box definition resource.
+ */
 @Fluent
 public final class DevBoxDefinitionUpdate extends TrackedResourceUpdate {
     /*
@@ -18,27 +20,33 @@ public final class DevBoxDefinitionUpdate extends TrackedResourceUpdate {
     @JsonProperty(value = "properties")
     private DevBoxDefinitionUpdateProperties innerProperties;
 
-    /** Creates an instance of DevBoxDefinitionUpdate class. */
+    /**
+     * Creates an instance of DevBoxDefinitionUpdate class.
+     */
     public DevBoxDefinitionUpdate() {
     }
 
     /**
      * Get the innerProperties property: Properties of a Dev Box definition to be updated.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DevBoxDefinitionUpdateProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DevBoxDefinitionUpdate withTags(Map<String, String> tags) {
         super.withTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DevBoxDefinitionUpdate withLocation(String location) {
         super.withLocation(location);
@@ -47,7 +55,7 @@ public final class DevBoxDefinitionUpdate extends TrackedResourceUpdate {
 
     /**
      * Get the imageReference property: Image reference information.
-     *
+     * 
      * @return the imageReference value.
      */
     public ImageReference imageReference() {
@@ -56,7 +64,7 @@ public final class DevBoxDefinitionUpdate extends TrackedResourceUpdate {
 
     /**
      * Set the imageReference property: Image reference information.
-     *
+     * 
      * @param imageReference the imageReference value to set.
      * @return the DevBoxDefinitionUpdate object itself.
      */
@@ -70,7 +78,7 @@ public final class DevBoxDefinitionUpdate extends TrackedResourceUpdate {
 
     /**
      * Get the sku property: The SKU for Dev Boxes created using this definition.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -79,7 +87,7 @@ public final class DevBoxDefinitionUpdate extends TrackedResourceUpdate {
 
     /**
      * Set the sku property: The SKU for Dev Boxes created using this definition.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the DevBoxDefinitionUpdate object itself.
      */
@@ -94,7 +102,7 @@ public final class DevBoxDefinitionUpdate extends TrackedResourceUpdate {
     /**
      * Get the osStorageType property: The storage type used for the Operating System disk of Dev Boxes created using
      * this definition.
-     *
+     * 
      * @return the osStorageType value.
      */
     public String osStorageType() {
@@ -104,7 +112,7 @@ public final class DevBoxDefinitionUpdate extends TrackedResourceUpdate {
     /**
      * Set the osStorageType property: The storage type used for the Operating System disk of Dev Boxes created using
      * this definition.
-     *
+     * 
      * @param osStorageType the osStorageType value to set.
      * @return the DevBoxDefinitionUpdate object itself.
      */
@@ -120,7 +128,7 @@ public final class DevBoxDefinitionUpdate extends TrackedResourceUpdate {
      * Get the hibernateSupport property: Indicates whether Dev Boxes created with this definition are capable of
      * hibernation. Not all images are capable of supporting hibernation. To find out more see
      * https://aka.ms/devbox/hibernate.
-     *
+     * 
      * @return the hibernateSupport value.
      */
     public HibernateSupport hibernateSupport() {
@@ -131,7 +139,7 @@ public final class DevBoxDefinitionUpdate extends TrackedResourceUpdate {
      * Set the hibernateSupport property: Indicates whether Dev Boxes created with this definition are capable of
      * hibernation. Not all images are capable of supporting hibernation. To find out more see
      * https://aka.ms/devbox/hibernate.
-     *
+     * 
      * @param hibernateSupport the hibernateSupport value to set.
      * @return the DevBoxDefinitionUpdate object itself.
      */
@@ -145,7 +153,7 @@ public final class DevBoxDefinitionUpdate extends TrackedResourceUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

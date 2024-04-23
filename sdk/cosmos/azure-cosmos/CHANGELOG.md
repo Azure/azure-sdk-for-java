@@ -3,6 +3,7 @@
 ### 4.59.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added public APIs `getCustomeSerializer` and `setCustomSerializer` to allow customers to specify custom payload transformations or serialization settings. - See [PR 38997](https://github.com/Azure/azure-sdk-for-java/pull/38997)
 * Added the capability to regionally scope session tokens used for operations scoped to a logical partition. - See[PR 38003](https://github.com/Azure/azure-sdk-for-java/pull/38003)
 
 #### Breaking Changes

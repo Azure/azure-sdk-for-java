@@ -25,8 +25,7 @@ public final class CheckNameAvailabilityResponseInner {
     private String reason;
 
     /*
-     * Gets an error message explaining the 'reason' value with more details. This field is returned iif nameAvailable
-     * is false.
+     * Gets an error message explaining the 'reason' value with more details. This field is returned iif nameAvailable is false.
      */
     @JsonProperty(value = "message")
     private String message;
@@ -58,8 +57,7 @@ public final class CheckNameAvailabilityResponseInner {
     }
 
     /**
-     * Get the reason property: Reason for why value is not available. This field is returned if nameAvailable is
-     * false.
+     * Get the reason property: Reason for why value is not available. This field is returned if nameAvailable is false.
      * 
      * @return the reason value.
      */
@@ -68,8 +66,7 @@ public final class CheckNameAvailabilityResponseInner {
     }
 
     /**
-     * Set the reason property: Reason for why value is not available. This field is returned if nameAvailable is
-     * false.
+     * Set the reason property: Reason for why value is not available. This field is returned if nameAvailable is false.
      * 
      * @param reason the reason value to set.
      * @return the CheckNameAvailabilityResponseInner object itself.

@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * DeploymentType
- *
- * <p>Object representing DeploymentType for Managed CCF.
+ * 
+ * Object representing DeploymentType for Managed CCF.
  */
 @Fluent
 public final class DeploymentType {
@@ -26,13 +26,15 @@ public final class DeploymentType {
     @JsonProperty(value = "appSourceUri")
     private String appSourceUri;
 
-    /** Creates an instance of DeploymentType class. */
+    /**
+     * Creates an instance of DeploymentType class.
+     */
     public DeploymentType() {
     }
 
     /**
      * Get the languageRuntime property: Unique name for the Managed CCF.
-     *
+     * 
      * @return the languageRuntime value.
      */
     public LanguageRuntime languageRuntime() {
@@ -41,7 +43,7 @@ public final class DeploymentType {
 
     /**
      * Set the languageRuntime property: Unique name for the Managed CCF.
-     *
+     * 
      * @param languageRuntime the languageRuntime value to set.
      * @return the DeploymentType object itself.
      */
@@ -52,7 +54,7 @@ public final class DeploymentType {
 
     /**
      * Get the appSourceUri property: Source Uri containing ManagedCCF code.
-     *
+     * 
      * @return the appSourceUri value.
      */
     public String appSourceUri() {
@@ -61,7 +63,7 @@ public final class DeploymentType {
 
     /**
      * Set the appSourceUri property: Source Uri containing ManagedCCF code.
-     *
+     * 
      * @param appSourceUri the appSourceUri value to set.
      * @return the DeploymentType object itself.
      */
@@ -72,7 +74,7 @@ public final class DeploymentType {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
