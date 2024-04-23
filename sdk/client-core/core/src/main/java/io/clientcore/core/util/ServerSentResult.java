@@ -31,15 +31,27 @@ public final class ServerSentResult {
         return data;
     }
 
-    String getLastEventId() {
+    /**
+     * Get the exception that occurred during the request.
+     * @return The exception that occurred during the request.
+     */
+    public IOException getException() {
+        return ioException;
+    }
+
+    /**
+     * Get the last event id from the text event stream.
+     * @return The last event id from the text event stream.
+     */
+    public String getLastEventId() {
         return lastEventId;
     }
 
-    Duration getRetryAfter() {
+    /**
+     * Get the retry time duration.
+     * @return The retry time duration.
+     */
+    public Duration getRetryAfter() {
         return retryAfter;
-    }
-
-    IOException getException() {
-        return ioException;
     }
 }

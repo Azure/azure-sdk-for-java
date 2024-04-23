@@ -41,7 +41,6 @@ public class HttpRequest {
     private URL url;
     private HttpHeaders headers;
     private BinaryData body;
-    private ServerSentEventListener serverSentEventListener;
     private RequestOptions requestOptions;
     private int retryCount;
 
@@ -219,28 +218,6 @@ public class HttpRequest {
      */
     public HttpRequest setRequestOptions(RequestOptions requestOptions) {
         this.requestOptions = requestOptions;
-
-        return this;
-    }
-
-    /**
-     * Get the specified event stream {@link ServerSentEventListener listener} for this request.
-     *
-     * @return The {@link ServerSentEventListener listener} for this request.
-     */
-    public ServerSentEventListener getServerSentEventListener() {
-        return serverSentEventListener;
-    }
-
-    /**
-     * Set an event stream {@link ServerSentEventListener listener} for this request.
-     *
-     * @param serverSentEventListener The {@link ServerSentEventListener listener} to set for this request.
-     *
-     * @return The updated {@link HttpRequest}.
-     */
-    public HttpRequest setServerSentEventListener(ServerSentEventListener serverSentEventListener) {
-        this.serverSentEventListener = serverSentEventListener;
 
         return this;
     }

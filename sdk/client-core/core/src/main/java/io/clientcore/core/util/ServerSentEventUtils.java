@@ -61,44 +61,42 @@ public final class ServerSentEventUtils {
      * @throws IOException If an error occurs while reading the data.
      */
     public static ServerSentResult processTextEventStream(InputStream inputStream,
-                                                          ServerSentEventListener listener) throws IOException {
+        ServerSentEventListener listener) throws IOException {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
             return processBuffer(reader, listener);
         }
     }
 
     /**
-     * Retries the {@link HttpRequest} if the listener allows it.
-     *
+     * Retries reconnect to the {@link HttpRequest} if the {@link ServerSentResult#getRetryAfter()}
+     * and {@link ServerSentResult#getLastEventId()} are not null.
+     * <p>
+     * The method will retry the request with the last event id set and after the retry time.
+     * </p>
      * @param serverSentResult The {@link ServerSentResult result} of the retry.
-     * @param listener The listener object attached with the {@link HttpRequest}.
      * @param httpRequest The {@link HttpRequest} to send.
-     * @return {@code true} if the request should be retried.
+     * @return {@code true} if the request was retried; {@code false} otherwise.
      */
-    public static boolean shouldRetry(ServerSentResult serverSentResult, ServerSentEventListener listener,
-        HttpRequest httpRequest) {
-        if (Thread.currentThread().isInterrupted() || !listener.shouldRetry(serverSentResult.getException(),
-            serverSentResult.getRetryAfter(), serverSentResult.getLastEventId())) {
-
-            listener.onError(serverSentResult.getException());
-
-            return true;
-        }
-
-        if (serverSentResult.getLastEventId() != null) {
+    public static boolean retryReconnect(ServerSentResult serverSentResult, HttpRequest httpRequest) {
+        if (!shouldDefaultRetry(serverSentResult.getRetryAfter(), serverSentResult.getLastEventId())) {
+            // Retry the request with the last event id set
             httpRequest.getHeaders()
                 .add(LAST_EVENT_ID, serverSentResult.getLastEventId());
-        }
 
-        try {
-            if (serverSentResult.getRetryAfter() != null) {
+            // Retry the request after the retry time
+            try {
                 Thread.sleep(serverSentResult.getRetryAfter().toMillis());
+            } catch (InterruptedException ignored) {
+                // ignored
             }
-        } catch (InterruptedException ignored) {
             return true;
+        } else {
+            return false;
         }
+    }
 
-        return false;
+    private static boolean shouldDefaultRetry(Duration retryAfter, String lastEventId) {
+        return retryAfter == null || lastEventId == null;
     }
 
     private static boolean isEndOfBlock(StringBuilder sb) {
@@ -124,7 +122,8 @@ public final class ServerSentEventUtils {
                 collectedData.append(line).append("\n");
 
                 if (isEndOfBlock(collectedData)) {
-                    allCollectedData.add(collectedData.toString().replace("data: ", "")); // Add the collected data block to the list
+                    String temp = collectedData.toString();
+                    allCollectedData.add(temp.trim().replace("data: ", "")); // Add the collected data block to the list
                     event = processLines(collectedData.toString().split("\n"));
 
                     if (!Objects.equals(event.getEvent(), DEFAULT_EVENT) || event.getData() != null) {
@@ -153,7 +152,6 @@ public final class ServerSentEventUtils {
 
             if (idx == 0) {
                 ServerSentEventHelper.setComment(event, line.substring(1).trim());
-
                 continue;
             }
 

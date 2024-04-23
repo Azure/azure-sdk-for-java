@@ -13,6 +13,7 @@ import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.ServerSentEventUtils;
+import io.clientcore.core.util.ServerSentResult;
 import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.http.jdk.httpclient.implementation.InputStreamTimeoutResponseSubscriber;
 import io.clientcore.http.jdk.httpclient.implementation.JdkHttpRequest;
@@ -31,7 +32,9 @@ import static io.clientcore.core.http.models.HttpMethod.HEAD;
 import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
 import static io.clientcore.core.http.models.ResponseBodyMode.IGNORE;
 import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
+import static io.clientcore.core.util.ServerSentEventUtils.isTextEventStreamContentType;
 import static io.clientcore.core.util.ServerSentEventUtils.processTextEventStream;
+import static io.clientcore.core.util.ServerSentEventUtils.retryReconnect;
 import static io.clientcore.http.jdk.httpclient.implementation.JdkHttpUtils.fromJdkHttpHeaders;
 
 /**
@@ -137,25 +140,29 @@ class JdkHttpClient implements HttpClient {
 
     private Response<?> toResponse(HttpRequest request, HttpResponse<InputStream> response) throws IOException {
         HttpHeaders coreHeaders = fromJdkHttpHeaders(response.headers());
+        ServerSentResult serverSentResult = null;
 
         String contentType = coreHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
         if (ServerSentEventUtils.isTextEventStreamContentType(contentType)) {
-            ServerSentEventListener listener = request.getServerSentEventListener();
-
+            ServerSentEventListener listener = request.getRequestOptions().getServerSentEventListener();
             if (listener != null) {
-                processTextEventStream(response.body(), listener);
+                serverSentResult = processTextEventStream(response.body(), listener);
+
+                if (Thread.currentThread().isInterrupted() || !retryReconnect(serverSentResult, request)) {
+                    listener.onError(serverSentResult.getException());
+                } else {
+                    this.send(request).close();
+                }
             } else {
                 throw LOGGER.logThrowableAsError(new RuntimeException(ServerSentEventUtils.NO_LISTENER_ERROR_MESSAGE));
             }
-
-            return new JdkHttpResponse(request, response.statusCode(), coreHeaders, BinaryData.EMPTY);
         }
 
-        return processResponse(request, response, coreHeaders, contentType);
+        return processResponse(request, response, serverSentResult, coreHeaders, contentType);
     }
 
     private Response<?> processResponse(HttpRequest request, HttpResponse<InputStream> response,
-        HttpHeaders coreHeaders, String contentType) throws IOException {
+        ServerSentResult serverSentResult, HttpHeaders coreHeaders, String contentType) throws IOException {
         RequestOptions options = request.getRequestOptions();
         ResponseBodyMode responseBodyMode = null;
 
@@ -163,17 +170,7 @@ class JdkHttpClient implements HttpClient {
             responseBodyMode = options.getResponseBodyMode();
         }
 
-        if (responseBodyMode == null) {
-            if (request.getHttpMethod() == HEAD) {
-                responseBodyMode = IGNORE;
-            } else if (contentType != null
-                && APPLICATION_OCTET_STREAM.regionMatches(true, 0, contentType, 0, APPLICATION_OCTET_STREAM.length())) {
-
-                responseBodyMode = STREAM;
-            } else {
-                responseBodyMode = BUFFER;
-            }
-        }
+        responseBodyMode = getResponseBodyMode(request, contentType, responseBodyMode);
 
         BinaryData body = null;
 
@@ -189,7 +186,19 @@ class JdkHttpClient implements HttpClient {
                 break;
 
             case BUFFER:
-            case DESERIALIZE: // Deserialization will occur at a later point in HttpResponseBodyDecoder.
+            case DESERIALIZE:
+                // Deserialization will occur at a later point in HttpResponseBodyDecoder.
+                if (isTextEventStreamContentType(contentType)) {
+                    String bodyContent = (serverSentResult != null && serverSentResult.getData() != null)
+                        ? String.join("\n", serverSentResult.getData())
+                        : "";
+                    body = BinaryData.fromString(bodyContent);
+                } else {
+                    try (InputStream responseBody = response.body()) { // Use try-with-resources to close the stream.
+                        body = BinaryData.fromBytes(responseBody.readAllBytes());
+                    }
+                }
+                break;
             default:
                 try (InputStream responseBody = response.body()) { // Use try-with-resources to close the stream.
                     body = BinaryData.fromBytes(responseBody.readAllBytes());
@@ -197,5 +206,20 @@ class JdkHttpClient implements HttpClient {
         }
 
         return new JdkHttpResponse(request, response.statusCode(), coreHeaders, body == null ? BinaryData.EMPTY : body);
+    }
+
+    private static ResponseBodyMode getResponseBodyMode(HttpRequest request, String contentType, ResponseBodyMode responseBodyMode) {
+        if (responseBodyMode == null) {
+            if (request.getHttpMethod() == HEAD) {
+                responseBodyMode = IGNORE;
+            } else if (contentType != null
+                && APPLICATION_OCTET_STREAM.regionMatches(true, 0, contentType, 0, APPLICATION_OCTET_STREAM.length())) {
+
+                responseBodyMode = STREAM;
+            } else {
+                responseBodyMode = BUFFER;
+            }
+        }
+        return responseBodyMode;
     }
 }

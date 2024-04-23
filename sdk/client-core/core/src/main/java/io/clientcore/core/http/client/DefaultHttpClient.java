@@ -17,8 +17,8 @@ import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
 import io.clientcore.core.util.ClientLogger;
-import io.clientcore.core.util.ServerSentResult;
 import io.clientcore.core.util.ServerSentEventUtils;
+import io.clientcore.core.util.ServerSentResult;
 import io.clientcore.core.util.binarydata.BinaryData;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -52,7 +52,7 @@ import static io.clientcore.core.http.models.ResponseBodyMode.IGNORE;
 import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
 import static io.clientcore.core.util.ServerSentEventUtils.NO_LISTENER_ERROR_MESSAGE;
 import static io.clientcore.core.util.ServerSentEventUtils.processTextEventStream;
-import static io.clientcore.core.util.ServerSentEventUtils.shouldRetry;
+import static io.clientcore.core.util.ServerSentEventUtils.retryReconnect;
 
 /**
  * HttpClient implementation using {@link HttpURLConnection} to send requests and receive responses.
@@ -203,6 +203,7 @@ class DefaultHttpClient implements HttpClient {
         HttpResponse<?> httpResponse = createHttpResponse(httpRequest, connection);
         RequestOptions options = httpRequest.getRequestOptions();
         ServerSentResult serverSentResult = null;
+
         // First check if we've gotten back an error response. If so, handle it now and ignore everything else.
         if (connection.getErrorStream() != null) {
             // Read the error stream to completion to ensure the connection is released back to the pool and set it as
@@ -213,10 +214,6 @@ class DefaultHttpClient implements HttpClient {
 
         if (isTextEventStream(responseHeaders)) {
             ServerSentEventListener listener = options.getServerSentEventListener();
-            // REMOVE, once confirmed
-            if (listener == null) {
-                listener = httpRequest.getServerSentEventListener();
-            }
 
             if (listener == null) {
                 connection.getInputStream().close();
@@ -224,11 +221,14 @@ class DefaultHttpClient implements HttpClient {
             }
 
             serverSentResult = processTextEventStream(connection.getInputStream(), listener);
-            if (!shouldRetry(serverSentResult, listener, httpRequest)
-                && !Thread.currentThread().isInterrupted()) {
-                this.send(httpRequest);
+
+            if (Thread.currentThread().isInterrupted() || !retryReconnect(serverSentResult, httpRequest)) {
+                listener.onError(serverSentResult.getException());
+            } else {
+                this.send(httpRequest).close();
             }
         }
+
         ResponseBodyMode responseBodyMode = null;
 
         if (options != null) {
@@ -236,17 +236,7 @@ class DefaultHttpClient implements HttpClient {
         }
 
         if (responseBodyMode == null) {
-            HttpHeader contentType = httpResponse.getHeaders().get(CONTENT_TYPE);
-
-            if (httpRequest.getHttpMethod() == HEAD) {
-                responseBodyMode = IGNORE;
-            } else if (contentType != null && APPLICATION_OCTET_STREAM
-                .regionMatches(true, 0, contentType.getValue(), 0, APPLICATION_OCTET_STREAM.length())) {
-
-                responseBodyMode = STREAM;
-            } else {
-                responseBodyMode = BUFFER;
-            }
+            responseBodyMode = determineResponseBodyMode(httpRequest, httpResponse.getHeaders());
         }
 
         switch (responseBodyMode) {
@@ -264,19 +254,19 @@ class DefaultHttpClient implements HttpClient {
                 break;
             case BUFFER:
             case DESERIALIZE:
+                // Deserialization will occur at a later point in HttpResponseBodyDecoder.
                 if (isTextEventStream(responseHeaders)) {
-                    if (serverSentResult != null && serverSentResult.getData() != null) {
-                        HttpResponseAccessHelper.setBody(httpResponse, BinaryData.fromString(String.join("\n", serverSentResult.getData())));
-                    } else {
-                        HttpResponseAccessHelper.setBody(httpResponse, BinaryData.EMPTY);
-                    }
-
+                    String bodyContent = (serverSentResult != null && serverSentResult.getData() != null)
+                        ? String.join("\n", serverSentResult.getData())
+                        : "";
+                    HttpResponseAccessHelper.setBody(httpResponse, BinaryData.fromString(bodyContent));
                 } else {
                     eagerlyBufferResponseBody(httpResponse, connection.getInputStream());
                 }
                 break;
             default:
                 eagerlyBufferResponseBody(httpResponse, connection.getInputStream());
+                break;
         }
         return httpResponse;
     }
@@ -347,6 +337,20 @@ class DefaultHttpClient implements HttpClient {
             return Integer.parseInt(contentLength);
         } catch (NumberFormatException e) {
             return -1;
+        }
+    }
+
+    private ResponseBodyMode determineResponseBodyMode(HttpRequest httpRequest, HttpHeaders responseHeaders) {
+        HttpHeader contentType = responseHeaders.get(CONTENT_TYPE);
+
+        if (httpRequest.getHttpMethod() == HEAD) {
+            return IGNORE;
+        } else if (contentType != null && APPLICATION_OCTET_STREAM
+            .regionMatches(true, 0, contentType.getValue(), 0, APPLICATION_OCTET_STREAM.length())) {
+
+            return STREAM;
+        } else {
+            return BUFFER;
         }
     }
 
