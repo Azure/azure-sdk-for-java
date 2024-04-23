@@ -12,11 +12,77 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.fluent.models.CatalogResourceValidationErrorDetailsInner;
 import com.azure.resourcemanager.devcenter.fluent.models.EnvironmentDefinitionInner;
 
-/** An instance of this class provides access to all the operations defined in EnvironmentDefinitionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in EnvironmentDefinitionsClient.
+ */
 public interface EnvironmentDefinitionsClient {
     /**
+     * Lists the environment definitions in this project catalog.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param projectName The name of the project.
+     * @param catalogName The name of the Catalog.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return results of the environment definition list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<EnvironmentDefinitionInner> listByProjectCatalog(String resourceGroupName, String projectName,
+        String catalogName);
+
+    /**
+     * Lists the environment definitions in this project catalog.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param projectName The name of the project.
+     * @param catalogName The name of the Catalog.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return results of the environment definition list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<EnvironmentDefinitionInner> listByProjectCatalog(String resourceGroupName, String projectName,
+        String catalogName, Context context);
+
+    /**
+     * Gets an environment definition from the catalog.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param projectName The name of the project.
+     * @param catalogName The name of the Catalog.
+     * @param environmentDefinitionName The name of the Environment Definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an environment definition from the catalog along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<EnvironmentDefinitionInner> getByProjectCatalogWithResponse(String resourceGroupName, String projectName,
+        String catalogName, String environmentDefinitionName, Context context);
+
+    /**
+     * Gets an environment definition from the catalog.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param projectName The name of the project.
+     * @param catalogName The name of the Catalog.
+     * @param environmentDefinitionName The name of the Environment Definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an environment definition from the catalog.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    EnvironmentDefinitionInner getByProjectCatalog(String resourceGroupName, String projectName, String catalogName,
+        String environmentDefinitionName);
+
+    /**
      * List environment definitions in the catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -26,12 +92,12 @@ public interface EnvironmentDefinitionsClient {
      * @return results of the environment definition list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EnvironmentDefinitionInner> listByCatalog(
-        String resourceGroupName, String devCenterName, String catalogName);
+    PagedIterable<EnvironmentDefinitionInner> listByCatalog(String resourceGroupName, String devCenterName,
+        String catalogName);
 
     /**
      * List environment definitions in the catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -43,12 +109,12 @@ public interface EnvironmentDefinitionsClient {
      * @return results of the environment definition list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EnvironmentDefinitionInner> listByCatalog(
-        String resourceGroupName, String devCenterName, String catalogName, Integer top, Context context);
+    PagedIterable<EnvironmentDefinitionInner> listByCatalog(String resourceGroupName, String devCenterName,
+        String catalogName, Integer top, Context context);
 
     /**
      * Gets an environment definition from the catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -60,16 +126,12 @@ public interface EnvironmentDefinitionsClient {
      * @return an environment definition from the catalog along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EnvironmentDefinitionInner> getWithResponse(
-        String resourceGroupName,
-        String devCenterName,
-        String catalogName,
-        String environmentDefinitionName,
-        Context context);
+    Response<EnvironmentDefinitionInner> getWithResponse(String resourceGroupName, String devCenterName,
+        String catalogName, String environmentDefinitionName, Context context);
 
     /**
      * Gets an environment definition from the catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -80,12 +142,12 @@ public interface EnvironmentDefinitionsClient {
      * @return an environment definition from the catalog.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EnvironmentDefinitionInner get(
-        String resourceGroupName, String devCenterName, String catalogName, String environmentDefinitionName);
+    EnvironmentDefinitionInner get(String resourceGroupName, String devCenterName, String catalogName,
+        String environmentDefinitionName);
 
     /**
      * Gets Environment Definition error details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -97,16 +159,12 @@ public interface EnvironmentDefinitionsClient {
      * @return environment Definition error details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CatalogResourceValidationErrorDetailsInner> getErrorDetailsWithResponse(
-        String resourceGroupName,
-        String devCenterName,
-        String catalogName,
-        String environmentDefinitionName,
-        Context context);
+    Response<CatalogResourceValidationErrorDetailsInner> getErrorDetailsWithResponse(String resourceGroupName,
+        String devCenterName, String catalogName, String environmentDefinitionName, Context context);
 
     /**
      * Gets Environment Definition error details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -117,6 +175,6 @@ public interface EnvironmentDefinitionsClient {
      * @return environment Definition error details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CatalogResourceValidationErrorDetailsInner getErrorDetails(
-        String resourceGroupName, String devCenterName, String catalogName, String environmentDefinitionName);
+    CatalogResourceValidationErrorDetailsInner getErrorDetails(String resourceGroupName, String devCenterName,
+        String catalogName, String environmentDefinitionName);
 }
