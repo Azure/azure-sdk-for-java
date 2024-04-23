@@ -5,24 +5,21 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The TargetRelation model. */
 @Fluent
-public final class TargetRelation implements JsonSerializable<TargetRelation> {
+public final class TargetRelation {
     /*
      * The type related to the target.
      */
+    @JsonProperty(value = "relationType", required = true)
     private TargetRelationType relationType;
 
     /*
      * The JSON pointer indicating the linked object.
      */
+    @JsonProperty(value = "ref", required = true)
     private String ref;
 
     /** Creates an instance of TargetRelation class. */
@@ -66,43 +63,5 @@ public final class TargetRelation implements JsonSerializable<TargetRelation> {
     public TargetRelation setRef(String ref) {
         this.ref = ref;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("relationType", Objects.toString(this.relationType, null));
-        jsonWriter.writeStringField("ref", this.ref);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of TargetRelation from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of TargetRelation if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the TargetRelation.
-     */
-    public static TargetRelation fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    TargetRelation deserializedTargetRelation = new TargetRelation();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("relationType".equals(fieldName)) {
-                            deserializedTargetRelation.relationType = TargetRelationType.fromString(reader.getString());
-                        } else if ("ref".equals(fieldName)) {
-                            deserializedTargetRelation.ref = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedTargetRelation;
-                });
     }
 }

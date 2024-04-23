@@ -5,10 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ClassificationDocumentResult model. */
@@ -17,6 +14,7 @@ public class ClassificationDocumentResult extends DocumentResult {
     /*
      * The class property.
      */
+    @JsonProperty(value = "class", required = true)
     private List<ClassificationResult> classProperty;
 
     /** Creates an instance of ClassificationDocumentResult class. */
@@ -61,54 +59,5 @@ public class ClassificationDocumentResult extends DocumentResult {
     public ClassificationDocumentResult setStatistics(DocumentStatistics statistics) {
         super.setStatistics(statistics);
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", getId());
-        jsonWriter.writeArrayField("warnings", getWarnings(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("statistics", getStatistics());
-        jsonWriter.writeArrayField("class", this.classProperty, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ClassificationDocumentResult from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ClassificationDocumentResult if the JsonReader was pointing to an instance of it, or null
-     *     if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ClassificationDocumentResult.
-     */
-    public static ClassificationDocumentResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    ClassificationDocumentResult deserializedClassificationDocumentResult =
-                            new ClassificationDocumentResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("id".equals(fieldName)) {
-                            deserializedClassificationDocumentResult.setId(reader.getString());
-                        } else if ("warnings".equals(fieldName)) {
-                            List<DocumentWarning> warnings =
-                                    reader.readArray(reader1 -> DocumentWarning.fromJson(reader1));
-                            deserializedClassificationDocumentResult.setWarnings(warnings);
-                        } else if ("statistics".equals(fieldName)) {
-                            deserializedClassificationDocumentResult.setStatistics(DocumentStatistics.fromJson(reader));
-                        } else if ("class".equals(fieldName)) {
-                            List<ClassificationResult> classProperty =
-                                    reader.readArray(reader1 -> ClassificationResult.fromJson(reader1));
-                            deserializedClassificationDocumentResult.classProperty = classProperty;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedClassificationDocumentResult;
-                });
     }
 }
