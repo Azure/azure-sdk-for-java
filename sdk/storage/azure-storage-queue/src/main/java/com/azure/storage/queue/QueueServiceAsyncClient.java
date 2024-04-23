@@ -91,8 +91,6 @@ public final class QueueServiceAsyncClient {
     }
 
     /**
-     * Gets the URL of the storage queue.
-     *
      * @return the URL of the storage queue
      */
     public String getQueueServiceUrl() {
@@ -189,12 +187,18 @@ public final class QueueServiceAsyncClient {
     public Mono<Response<QueueAsyncClient>> createQueueWithResponse(String queueName, Map<String, String> metadata) {
         try {
             Objects.requireNonNull(queueName, "'queueName' cannot be null.");
-            QueueAsyncClient queueAsyncClient = getQueueAsyncClient(queueName);
-            return queueAsyncClient.createWithResponse(metadata)
-                .map(response -> new SimpleResponse<>(response, queueAsyncClient));
+            return withContext(context -> createQueueWithResponse(queueName, metadata, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
+    }
+
+    Mono<Response<QueueAsyncClient>> createQueueWithResponse(String queueName, Map<String, String> metadata,
+        Context context) {
+        QueueAsyncClient queueAsyncClient = getQueueAsyncClient(queueName);
+
+        return queueAsyncClient.createWithResponse(metadata, context)
+            .map(response -> new SimpleResponse<>(response, queueAsyncClient));
     }
 
     /**
@@ -243,10 +247,15 @@ public final class QueueServiceAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteQueueWithResponse(String queueName) {
         try {
-            return getQueueAsyncClient(queueName).deleteWithResponse();
+            return withContext(context -> deleteQueueWithResponse(queueName, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
+    }
+
+    Mono<Response<Void>> deleteQueueWithResponse(String queueName, Context context) {
+        QueueAsyncClient queueAsyncClient = getQueueAsyncClient(queueName);
+        return queueAsyncClient.deleteWithResponse(context);
     }
 
     /**
