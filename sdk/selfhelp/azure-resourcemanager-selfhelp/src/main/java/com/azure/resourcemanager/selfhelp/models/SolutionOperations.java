@@ -40,6 +40,34 @@ public interface SolutionOperations {
     SolutionResource get(String scope, String solutionResourceName);
 
     /**
+     * Warm up the solution resource by preloading asynchronous diagnostics results into cache.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
+     * @param solutionResourceName Solution resource Name.
+     * @param solutionWarmUpRequestBody The required request body for warming up a solution resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> warmUpWithResponse(String scope, String solutionResourceName,
+        SolutionWarmUpRequestBody solutionWarmUpRequestBody, Context context);
+
+    /**
+     * Warm up the solution resource by preloading asynchronous diagnostics results into cache.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
+     * @param solutionResourceName Solution resource Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void warmUp(String scope, String solutionResourceName);
+
+    /**
      * Get the solution using the applicable solutionResourceName while creating the solution.
      * 
      * @param id the resource ID.
