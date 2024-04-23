@@ -2213,10 +2213,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         boolean isRequestHedged) {
 
         return response.doOnError(throwable -> {
-            if (throwable instanceof OperationCancelledException) {
-                this.globalPartitionEndpointManager.tryMarkRegionAsUnavailableForPartitionKeyRange(requestReference.get());
-            } else if (throwable instanceof ServiceUnavailableException) {
-                this.globalPartitionEndpointManager.tryMarkRegionAsUnavailableForPartitionKeyRange(requestReference.get());
+
+            if (!isRequestHedged) {
+                if (throwable instanceof OperationCancelledException) {
+                    this.globalPartitionEndpointManager.tryMarkRegionAsUnavailableForPartitionKeyRange(requestReference.get());
+                } else if (throwable instanceof ServiceUnavailableException) {
+                    this.globalPartitionEndpointManager.tryMarkRegionAsUnavailableForPartitionKeyRange(requestReference.get());
+                }
             }
         });
     }
