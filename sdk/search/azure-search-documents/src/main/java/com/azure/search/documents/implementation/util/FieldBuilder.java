@@ -13,7 +13,12 @@ import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.search.documents.indexes.FieldBuilderIgnore;
 import com.azure.search.documents.indexes.SearchableField;
 import com.azure.search.documents.indexes.SimpleField;
-import com.azure.search.documents.indexes.models.*;
+import com.azure.search.documents.indexes.models.FieldBuilderOptions;
+import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
+import com.azure.search.documents.indexes.models.LexicalNormalizerName;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
+import com.azure.search.documents.indexes.models.VectorEncodingFormat;
 import reactor.util.annotation.Nullable;
 
 import java.lang.annotation.Annotation;

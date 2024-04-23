@@ -64,6 +64,7 @@ public final class VectorizableImageBinaryQuery extends VectorQuery {
     /**
      * {@inheritDoc}
      */
+    @Override
     public VectorizableImageBinaryQuery setFields(String... fields) {
         super.setFields(fields);
         return this;
