@@ -24,12 +24,6 @@ public class ResponseValidationPolicyBuilder {
     private final List<BiConsumer<HttpResponse, ClientLogger>> assertions = new ArrayList<>();
 
     /**
-     * Creates a new instance of {@link ResponseValidationPolicyBuilder}.
-     */
-    public ResponseValidationPolicyBuilder() {
-    }
-
-    /**
      * Builds the policy described by this builder.
      *
      * @return The policy.
