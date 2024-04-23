@@ -209,7 +209,7 @@ public class ShareFileClientBuilder implements
             endpoint, retryOptions, coreRetryOptions, logOptions,
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, audience, LOGGER);
 
-        return new AzureFileStorageImpl(pipeline, this.version.getVersion(), shareTokenIntent, endpoint,
+        return new AzureFileStorageImpl(pipeline, getServiceVersion().getVersion(), shareTokenIntent, endpoint,
             allowTrailingDot, allowSourceTrailingDot);
     }
 

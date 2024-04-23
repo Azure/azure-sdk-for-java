@@ -102,6 +102,7 @@ public class ShareDirectoryClient {
     private final String accountName;
     private final ShareServiceVersion serviceVersion;
     private final AzureSasCredential sasToken;
+    private final String directoryUrl;
 
     /**
      * Creates a ShareDirectoryClient.
@@ -124,6 +125,13 @@ public class ShareDirectoryClient {
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
         this.sasToken = sasToken;
+
+        StringBuilder directoryUrlString = new StringBuilder(azureFileStorageClient.getUrl()).append("/")
+            .append(shareName).append("/").append(directoryPath);
+        if (snapshot != null) {
+            directoryUrlString.append("?sharesnapshot=").append(snapshot);
+        }
+        this.directoryUrl = directoryUrlString.toString();
     }
 
     /**
@@ -132,7 +140,7 @@ public class ShareDirectoryClient {
      * @return the URL of the storage directory client.
      */
     public String getDirectoryUrl() {
-        return this.azureFileStorageClient.getUrl();
+        return this.directoryUrl;
     }
 
     /**
@@ -225,9 +233,6 @@ public class ShareDirectoryClient {
                 return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), false);
             } else {
-                if (e.getCause() instanceof ShareStorageException) {
-                    throw e;
-                }
                 throw LOGGER.logExceptionAsError(e);
             }
         }
@@ -686,19 +691,19 @@ public class ShareDirectoryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareDirectoryInfo> setPropertiesWithResponse(FileSmbProperties smbProperties,
         String filePermission, Duration timeout, Context context) {
-            Context finalContext = context == null ? Context.NONE : context;
-            smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
+        Context finalContext = context == null ? Context.NONE : context;
+        smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
-            // Checks that file permission and file permission key are valid
-            ModelHelper.validateFilePermissionAndKey(filePermission, smbProperties.getFilePermissionKey());
+        // Checks that file permission and file permission key are valid
+        ModelHelper.validateFilePermissionAndKey(filePermission, smbProperties.getFilePermissionKey());
 
-            // If file permission and file permission key are both not set then set default value
-            String filePermissionKey = smbProperties.getFilePermissionKey();
+        // If file permission and file permission key are both not set then set default value
+        String filePermissionKey = smbProperties.getFilePermissionKey();
 
-            String fileAttributes = smbProperties.setNtfsFileAttributes(FileConstants.PRESERVE);
-            String fileCreationTime = smbProperties.setFileCreationTime(FileConstants.PRESERVE);
-            String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.PRESERVE);
-            String fileChangeTime = smbProperties.getFileChangeTimeString();
+        String fileAttributes = smbProperties.setNtfsFileAttributes(FileConstants.PRESERVE);
+        String fileCreationTime = smbProperties.setFileCreationTime(FileConstants.PRESERVE);
+        String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.PRESERVE);
+        String fileChangeTime = smbProperties.getFileChangeTimeString();
         Callable<ResponseBase<DirectoriesSetPropertiesHeaders, Void>> operation = () ->
             this.azureFileStorageClient.getDirectories().setPropertiesWithResponse(shareName, directoryPath,
                 fileAttributes, null, filePermission, filePermissionKey, fileCreationTime, fileLastWriteTime,
@@ -707,7 +712,6 @@ public class ShareDirectoryClient {
         ResponseBase<DirectoriesSetPropertiesHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
 
         return ModelHelper.mapSetPropertiesResponse(response);
-
     }
 
     /**

@@ -326,7 +326,7 @@ public class ShareFileClient {
             Response<ShareFileProperties> response = getPropertiesWithResponse(timeout, context);
             return new SimpleResponse<>(response, true);
         } catch (RuntimeException e) {
-            if (ModelHelper.checkDoesNotExistStatusCode(e)) {
+            if (ModelHelper.checkDoesNotExistStatusCode(e) && e instanceof HttpResponseException) {
                 HttpResponse response = ((HttpResponseException) e).getResponse();
                 return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), false);

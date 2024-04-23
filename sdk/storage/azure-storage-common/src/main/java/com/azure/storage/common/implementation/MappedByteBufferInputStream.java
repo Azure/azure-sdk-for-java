@@ -13,33 +13,33 @@ import java.nio.ByteBuffer;
  */
 public class MappedByteBufferInputStream extends InputStream {
 
-    private final ByteBuffer buf;
+    private ByteBuffer byteBuffer;
 
     /**
      * Creates a new input stream from the given {@link ByteBuffer}.
      *
-     * @param buf The buffer to wrap.
+     * @param buffer The buffer to wrap.
      */
-    public MappedByteBufferInputStream(ByteBuffer buf) {
-        this.buf = buf;
+    public MappedByteBufferInputStream(ByteBuffer buffer) {
+        this.byteBuffer = buffer;
     }
 
     @Override
     public int read() throws IOException {
-        if (!buf.hasRemaining()) {
+        if (!byteBuffer.hasRemaining()) {
             return -1;
         }
-        return buf.get() & 0xFF;
+        return byteBuffer.get() & 0xFF;
     }
 
     @Override
     public int read(byte[] bytes, int off, int len) throws IOException {
-        if (!buf.hasRemaining()) {
+        if (!byteBuffer.hasRemaining()) {
             return -1;
         }
 
-        len = Math.min(len, buf.remaining());
-        buf.get(bytes, off, len);
+        len = Math.min(len, byteBuffer.remaining());
+        byteBuffer.get(bytes, off, len);
         return len;
     }
 }

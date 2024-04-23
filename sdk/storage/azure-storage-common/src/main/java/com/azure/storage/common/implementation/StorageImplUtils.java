@@ -513,9 +513,17 @@ public class StorageImplUtils {
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             Throwable cause = e.getCause();
             if (exceptionType.isInstance(cause)) {
+                // Safe to cast since we checked with isInstance
                 throw exceptionType.cast(cause);
+            } else if (cause instanceof RuntimeException) {
+                // Throw as is if it's already a RuntimeException
+                throw (RuntimeException) cause;
+            } else if (cause instanceof Error) {
+                // Propagate if it's an Error
+                throw (Error) cause;
             } else {
-                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+                // Wrap in RuntimeException if it's neither Error nor RuntimeException
+                throw LOGGER.logExceptionAsError(new RuntimeException("Exception during async operation", cause));
             }
         }
     }
