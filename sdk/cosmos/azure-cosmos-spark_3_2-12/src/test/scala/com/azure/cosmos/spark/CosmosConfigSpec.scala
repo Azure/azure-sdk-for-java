@@ -64,12 +64,12 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
 
           endpointConfig.endpoint shouldEqual sampleProdEndpoint
 
-          val aadAuthConfig = endpointConfig.authConfig.asInstanceOf[CosmosServicePrincipalAuthConfig]
+          val servicePrincipalAuthConfig = endpointConfig.authConfig.asInstanceOf[CosmosServicePrincipalAuthConfig]
           endpointConfig.subscriptionId.get shouldEqual testAccountSubscriptionId
-          aadAuthConfig.tenantId shouldEqual testAccountTenantId
+          servicePrincipalAuthConfig.tenantId shouldEqual testAccountTenantId
           endpointConfig.resourceGroupName.get shouldEqual testAccountResourceGroupName
-          aadAuthConfig.clientId shouldEqual testServicePrincipalClientId
-          aadAuthConfig.clientSecret shouldEqual testServicePrincipalClientSecret
+          servicePrincipalAuthConfig.clientId shouldEqual testServicePrincipalClientId
+          servicePrincipalAuthConfig.clientSecret shouldEqual testServicePrincipalClientSecret
           new AzureEnvironment(endpointConfig.azureEnvironmentEndpoints).getActiveDirectoryEndpoint shouldEqual AzureEnvironment.AZURE.getActiveDirectoryEndpoint
           endpointConfig.accountName shouldEqual "boson-test"
       }
@@ -102,20 +102,20 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
 
       endpointConfig.endpoint shouldEqual sampleProdEndpoint
 
-      val aadAuthConfig = endpointConfig.authConfig.asInstanceOf[CosmosManagedIdentityAuthConfig]
+      val managedIdentityAuthConfig = endpointConfig.authConfig.asInstanceOf[CosmosManagedIdentityAuthConfig]
       endpointConfig.subscriptionId.get shouldEqual testAccountSubscriptionId
-      aadAuthConfig.tenantId shouldEqual testAccountTenantId
+      managedIdentityAuthConfig.tenantId shouldEqual testAccountTenantId
       endpointConfig.resourceGroupName.get shouldEqual testAccountResourceGroupName
       if (managedIdentitySelector == "clientId" || managedIdentitySelector == "clientIdAndResourceId") {
-        aadAuthConfig.clientId shouldEqual Some(randomId)
+        managedIdentityAuthConfig.clientId shouldEqual Some(randomId)
       } else {
-        aadAuthConfig.clientId shouldEqual None
+        managedIdentityAuthConfig.clientId shouldEqual None
       }
 
       if (managedIdentitySelector == "resourceId" || managedIdentitySelector == "clientIdAndResourceId") {
-        aadAuthConfig.resourceId shouldEqual Some(randomId)
+        managedIdentityAuthConfig.resourceId shouldEqual Some(randomId)
       } else {
-        aadAuthConfig.resourceId shouldEqual None
+        managedIdentityAuthConfig.resourceId shouldEqual None
       }
 
       new AzureEnvironment(endpointConfig.azureEnvironmentEndpoints).getActiveDirectoryEndpoint shouldEqual AzureEnvironment.AZURE.getActiveDirectoryEndpoint
@@ -140,12 +140,12 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
 
           endpointConfig.endpoint shouldEqual sampleProdEndpoint
 
-          val aadAuthConfig = endpointConfig.authConfig.asInstanceOf[CosmosServicePrincipalAuthConfig]
+          val servicePrincipalAuthConfig = endpointConfig.authConfig.asInstanceOf[CosmosServicePrincipalAuthConfig]
           endpointConfig.subscriptionId.get shouldEqual testAccountSubscriptionId
-          aadAuthConfig.tenantId shouldEqual testAccountTenantId
+          servicePrincipalAuthConfig.tenantId shouldEqual testAccountTenantId
           endpointConfig.resourceGroupName.get shouldEqual testAccountResourceGroupName
-          aadAuthConfig.clientId shouldEqual testServicePrincipalClientId
-          aadAuthConfig.clientSecret shouldEqual testServicePrincipalClientSecret
+          servicePrincipalAuthConfig.clientId shouldEqual testServicePrincipalClientId
+          servicePrincipalAuthConfig.clientSecret shouldEqual testServicePrincipalClientSecret
           new AzureEnvironment(endpointConfig.azureEnvironmentEndpoints).getActiveDirectoryEndpoint shouldEqual AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint
           endpointConfig.accountName shouldEqual "boson-test"
       }
