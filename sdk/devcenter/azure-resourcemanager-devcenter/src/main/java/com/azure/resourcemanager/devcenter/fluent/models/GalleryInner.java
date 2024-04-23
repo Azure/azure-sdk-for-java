@@ -10,7 +10,9 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents a gallery. */
+/**
+ * Represents a gallery.
+ */
 @Fluent
 public final class GalleryInner extends ProxyResource {
     /*
@@ -25,13 +27,15 @@ public final class GalleryInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of GalleryInner class. */
+    /**
+     * Creates an instance of GalleryInner class.
+     */
     public GalleryInner() {
     }
 
     /**
      * Get the innerProperties property: Gallery properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private GalleryProperties innerProperties() {
@@ -40,7 +44,7 @@ public final class GalleryInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -49,7 +53,7 @@ public final class GalleryInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -58,7 +62,7 @@ public final class GalleryInner extends ProxyResource {
 
     /**
      * Get the galleryResourceId property: The resource ID of the backing Azure Compute Gallery.
-     *
+     * 
      * @return the galleryResourceId value.
      */
     public String galleryResourceId() {
@@ -67,7 +71,7 @@ public final class GalleryInner extends ProxyResource {
 
     /**
      * Set the galleryResourceId property: The resource ID of the backing Azure Compute Gallery.
-     *
+     * 
      * @param galleryResourceId the galleryResourceId value to set.
      * @return the GalleryInner object itself.
      */
@@ -81,7 +85,7 @@ public final class GalleryInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

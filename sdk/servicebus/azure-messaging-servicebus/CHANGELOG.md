@@ -1,6 +1,16 @@
 # Release History
 
-## 7.16.0 (2024-04-19)
+## 7.17.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 7.16.0 (2024-04-22)
 
 ### Features Added
 
@@ -9,6 +19,7 @@
 ### Bugs Fixed
 
 - Fixes the ServiceBusProcessorClient to signal intermediate errors to the processor handler. ([#39669](https://github.com/Azure/azure-sdk-for-java/issues/39669))
+- Fixes the issue of not creating default rule when creating subscription. ([37856](https://github.com/Azure/azure-sdk-for-java/issues/37856))
 
 ### Other Changes
 

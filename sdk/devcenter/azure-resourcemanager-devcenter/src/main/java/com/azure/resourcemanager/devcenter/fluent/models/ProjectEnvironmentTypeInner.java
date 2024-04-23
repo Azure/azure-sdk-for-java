@@ -16,7 +16,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Represents an environment type. */
+/**
+ * Represents an environment type.
+ */
 @Fluent
 public final class ProjectEnvironmentTypeInner extends ProxyResource {
     /*
@@ -50,13 +52,15 @@ public final class ProjectEnvironmentTypeInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ProjectEnvironmentTypeInner class. */
+    /**
+     * Creates an instance of ProjectEnvironmentTypeInner class.
+     */
     public ProjectEnvironmentTypeInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of an environment type.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ProjectEnvironmentTypeProperties innerProperties() {
@@ -65,7 +69,7 @@ public final class ProjectEnvironmentTypeInner extends ProxyResource {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -74,7 +78,7 @@ public final class ProjectEnvironmentTypeInner extends ProxyResource {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ProjectEnvironmentTypeInner object itself.
      */
@@ -85,7 +89,7 @@ public final class ProjectEnvironmentTypeInner extends ProxyResource {
 
     /**
      * Get the identity property: Managed identity properties.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -94,7 +98,7 @@ public final class ProjectEnvironmentTypeInner extends ProxyResource {
 
     /**
      * Set the identity property: Managed identity properties.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the ProjectEnvironmentTypeInner object itself.
      */
@@ -105,7 +109,7 @@ public final class ProjectEnvironmentTypeInner extends ProxyResource {
 
     /**
      * Get the location property: The geo-location for the environment type.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -114,7 +118,7 @@ public final class ProjectEnvironmentTypeInner extends ProxyResource {
 
     /**
      * Set the location property: The geo-location for the environment type.
-     *
+     * 
      * @param location the location value to set.
      * @return the ProjectEnvironmentTypeInner object itself.
      */
@@ -125,7 +129,7 @@ public final class ProjectEnvironmentTypeInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -134,7 +138,7 @@ public final class ProjectEnvironmentTypeInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -142,31 +146,8 @@ public final class ProjectEnvironmentTypeInner extends ProxyResource {
     }
 
     /**
-     * Get the displayName property: The display name of the project environment type.
-     *
-     * @return the displayName value.
-     */
-    public String displayName() {
-        return this.innerProperties() == null ? null : this.innerProperties().displayName();
-    }
-
-    /**
-     * Set the displayName property: The display name of the project environment type.
-     *
-     * @param displayName the displayName value to set.
-     * @return the ProjectEnvironmentTypeInner object itself.
-     */
-    public ProjectEnvironmentTypeInner withDisplayName(String displayName) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ProjectEnvironmentTypeProperties();
-        }
-        this.innerProperties().withDisplayName(displayName);
-        return this;
-    }
-
-    /**
      * Get the environmentCount property: The number of environments of this type.
-     *
+     * 
      * @return the environmentCount value.
      */
     public Integer environmentCount() {
@@ -176,7 +157,7 @@ public final class ProjectEnvironmentTypeInner extends ProxyResource {
     /**
      * Get the deploymentTargetId property: Id of a subscription that the environment type will be mapped to. The
      * environment's resources will be deployed into this subscription.
-     *
+     * 
      * @return the deploymentTargetId value.
      */
     public String deploymentTargetId() {
@@ -186,7 +167,7 @@ public final class ProjectEnvironmentTypeInner extends ProxyResource {
     /**
      * Set the deploymentTargetId property: Id of a subscription that the environment type will be mapped to. The
      * environment's resources will be deployed into this subscription.
-     *
+     * 
      * @param deploymentTargetId the deploymentTargetId value to set.
      * @return the ProjectEnvironmentTypeInner object itself.
      */
@@ -199,8 +180,31 @@ public final class ProjectEnvironmentTypeInner extends ProxyResource {
     }
 
     /**
+     * Get the displayName property: The display name of the project environment type.
+     * 
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
+    }
+
+    /**
+     * Set the displayName property: The display name of the project environment type.
+     * 
+     * @param displayName the displayName value to set.
+     * @return the ProjectEnvironmentTypeInner object itself.
+     */
+    public ProjectEnvironmentTypeInner withDisplayName(String displayName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProjectEnvironmentTypeProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
+        return this;
+    }
+
+    /**
      * Get the status property: Defines whether this Environment Type can be used in this Project.
-     *
+     * 
      * @return the status value.
      */
     public EnvironmentTypeEnableStatus status() {
@@ -209,7 +213,7 @@ public final class ProjectEnvironmentTypeInner extends ProxyResource {
 
     /**
      * Set the status property: Defines whether this Environment Type can be used in this Project.
-     *
+     * 
      * @param status the status value to set.
      * @return the ProjectEnvironmentTypeInner object itself.
      */
@@ -224,7 +228,7 @@ public final class ProjectEnvironmentTypeInner extends ProxyResource {
     /**
      * Get the creatorRoleAssignment property: The role definition assigned to the environment creator on backing
      * resources.
-     *
+     * 
      * @return the creatorRoleAssignment value.
      */
     public ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment creatorRoleAssignment() {
@@ -234,12 +238,12 @@ public final class ProjectEnvironmentTypeInner extends ProxyResource {
     /**
      * Set the creatorRoleAssignment property: The role definition assigned to the environment creator on backing
      * resources.
-     *
+     * 
      * @param creatorRoleAssignment the creatorRoleAssignment value to set.
      * @return the ProjectEnvironmentTypeInner object itself.
      */
-    public ProjectEnvironmentTypeInner withCreatorRoleAssignment(
-        ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment creatorRoleAssignment) {
+    public ProjectEnvironmentTypeInner
+        withCreatorRoleAssignment(ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment creatorRoleAssignment) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ProjectEnvironmentTypeProperties();
         }
@@ -250,7 +254,7 @@ public final class ProjectEnvironmentTypeInner extends ProxyResource {
     /**
      * Get the userRoleAssignments property: Role Assignments created on environment backing resources. This is a
      * mapping from a user object ID to an object of role definition IDs.
-     *
+     * 
      * @return the userRoleAssignments value.
      */
     public Map<String, UserRoleAssignmentValue> userRoleAssignments() {
@@ -260,12 +264,12 @@ public final class ProjectEnvironmentTypeInner extends ProxyResource {
     /**
      * Set the userRoleAssignments property: Role Assignments created on environment backing resources. This is a
      * mapping from a user object ID to an object of role definition IDs.
-     *
+     * 
      * @param userRoleAssignments the userRoleAssignments value to set.
      * @return the ProjectEnvironmentTypeInner object itself.
      */
-    public ProjectEnvironmentTypeInner withUserRoleAssignments(
-        Map<String, UserRoleAssignmentValue> userRoleAssignments) {
+    public ProjectEnvironmentTypeInner
+        withUserRoleAssignments(Map<String, UserRoleAssignmentValue> userRoleAssignments) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ProjectEnvironmentTypeProperties();
         }
@@ -275,7 +279,7 @@ public final class ProjectEnvironmentTypeInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The supported types for a scheduled task. */
+/**
+ * The supported types for a scheduled task.
+ */
 public final class ScheduledType extends ExpandableStringEnum<ScheduledType> {
-    /** Static value StopDevBox for ScheduledType. */
+    /**
+     * Static value StopDevBox for ScheduledType.
+     */
     public static final ScheduledType STOP_DEV_BOX = fromString("StopDevBox");
 
     /**
      * Creates a new instance of ScheduledType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,7 +28,7 @@ public final class ScheduledType extends ExpandableStringEnum<ScheduledType> {
 
     /**
      * Creates or finds a ScheduledType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ScheduledType.
      */
@@ -35,7 +39,7 @@ public final class ScheduledType extends ExpandableStringEnum<ScheduledType> {
 
     /**
      * Gets known ScheduledType values.
-     *
+     * 
      * @return known ScheduledType values.
      */
     public static Collection<ScheduledType> values() {
