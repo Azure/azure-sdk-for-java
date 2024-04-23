@@ -5,8 +5,12 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Properties of a call connection.
@@ -155,8 +159,7 @@ public final class CallConnectionPropertiesInternal {
      * @param callConnectionState the callConnectionState value to set.
      * @return the CallConnectionPropertiesInternal object itself.
      */
-    public CallConnectionPropertiesInternal
-        setCallConnectionState(CallConnectionStateModelInternal callConnectionState) {
+    public CallConnectionPropertiesInternal setCallConnectionState(CallConnectionStateModelInternal callConnectionState) {
         this.callConnectionState = callConnectionState;
         return this;
     }

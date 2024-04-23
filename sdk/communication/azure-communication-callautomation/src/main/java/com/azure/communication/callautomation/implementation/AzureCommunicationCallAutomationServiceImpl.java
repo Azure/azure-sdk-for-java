@@ -27,13 +27,17 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
@@ -149,9 +153,8 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @param endpoint The endpoint of the Azure Communication resource.
      * @param apiVersion Api Version.
      */
-    AzureCommunicationCallAutomationServiceImpl(String endpoint, String apiVersion) {
-        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
-            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
+     AzureCommunicationCallAutomationServiceImpl(String endpoint, String apiVersion) {
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(), JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
     }
 
     /**
@@ -161,7 +164,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @param endpoint The endpoint of the Azure Communication resource.
      * @param apiVersion Api Version.
      */
-    AzureCommunicationCallAutomationServiceImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
+     AzureCommunicationCallAutomationServiceImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
     }
 
@@ -173,8 +176,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @param endpoint The endpoint of the Azure Communication resource.
      * @param apiVersion Api Version.
      */
-    AzureCommunicationCallAutomationServiceImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
-        String endpoint, String apiVersion) {
+     AzureCommunicationCallAutomationServiceImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
@@ -182,8 +184,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
         this.callConnections = new CallConnectionsImpl(this);
         this.callMedias = new CallMediasImpl(this);
         this.callRecordings = new CallRecordingsImpl(this);
-        this.service = RestProxy.create(AzureCommunicationCallAutomationServiceService.class, this.httpPipeline,
-            this.getSerializerAdapter());
+        this.service = RestProxy.create(AzureCommunicationCallAutomationServiceService.class, this.httpPipeline, this.getSerializerAdapter());
     }
 
     /**
@@ -194,44 +195,24 @@ public final class AzureCommunicationCallAutomationServiceImpl {
     @ServiceInterface(name = "AzureCommunicationCa")
     public interface AzureCommunicationCallAutomationServiceService {
         @Post("/calling/callConnections")
-        @ExpectedResponses({ 201 })
+        @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<CallConnectionPropertiesInternal>> createCall(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") CreateCallRequestInternal createCallRequest,
-            @HeaderParam("Accept") String accept,
-            @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
-            @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent, Context context);
+        Mono<Response<CallConnectionPropertiesInternal>> createCall(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") CreateCallRequestInternal createCallRequest, @HeaderParam("Accept") String accept, @HeaderParam("repeatability-request-id") String repeatabilityRequestId, @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent, Context context);
 
         @Post("/calling/callConnections:answer")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<CallConnectionPropertiesInternal>> answerCall(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") AnswerCallRequestInternal answerCallRequest,
-            @HeaderParam("Accept") String accept,
-            @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
-            @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent, Context context);
+        Mono<Response<CallConnectionPropertiesInternal>> answerCall(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") AnswerCallRequestInternal answerCallRequest, @HeaderParam("Accept") String accept, @HeaderParam("repeatability-request-id") String repeatabilityRequestId, @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent, Context context);
 
         @Post("/calling/callConnections:redirect")
-        @ExpectedResponses({ 204 })
+        @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<Void>> redirectCall(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") RedirectCallRequestInternal redirectCallRequest,
-            @HeaderParam("Accept") String accept,
-            @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
-            @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent, Context context);
+        Mono<Response<Void>> redirectCall(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") RedirectCallRequestInternal redirectCallRequest, @HeaderParam("Accept") String accept, @HeaderParam("repeatability-request-id") String repeatabilityRequestId, @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent, Context context);
 
         @Post("/calling/callConnections:reject")
-        @ExpectedResponses({ 204 })
+        @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<Void>> rejectCall(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") RejectCallRequestInternal rejectCallRequest,
-            @HeaderParam("Accept") String accept,
-            @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
-            @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent, Context context);
+        Mono<Response<Void>> rejectCall(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") RejectCallRequestInternal rejectCallRequest, @HeaderParam("Accept") String accept, @HeaderParam("repeatability-request-id") String repeatabilityRequestId, @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent, Context context);
     }
 
     /**
@@ -244,13 +225,11 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return properties of a call connection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallConnectionPropertiesInternal>>
-        createCallWithResponseAsync(CreateCallRequestInternal createCallRequest) {
+    public Mono<Response<CallConnectionPropertiesInternal>> createCallWithResponseAsync(CreateCallRequestInternal createCallRequest) {
         final String accept = "application/json";
         String repeatabilityRequestId = UUID.randomUUID().toString();
         String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
-        return FluxUtil.withContext(context -> service.createCall(this.getEndpoint(), this.getApiVersion(),
-            createCallRequest, accept, repeatabilityRequestId, repeatabilityFirstSent, context));
+        return FluxUtil.withContext(context -> service.createCall(this.getEndpoint(), this.getApiVersion(), createCallRequest, accept, repeatabilityRequestId, repeatabilityFirstSent, context));
     }
 
     /**
@@ -264,13 +243,11 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return properties of a call connection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallConnectionPropertiesInternal>>
-        createCallWithResponseAsync(CreateCallRequestInternal createCallRequest, Context context) {
+    public Mono<Response<CallConnectionPropertiesInternal>> createCallWithResponseAsync(CreateCallRequestInternal createCallRequest, Context context) {
         final String accept = "application/json";
         String repeatabilityRequestId = UUID.randomUUID().toString();
         String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
-        return service.createCall(this.getEndpoint(), this.getApiVersion(), createCallRequest, accept,
-            repeatabilityRequestId, repeatabilityFirstSent, context);
+        return service.createCall(this.getEndpoint(), this.getApiVersion(), createCallRequest, accept, repeatabilityRequestId, repeatabilityFirstSent, context);
     }
 
     /**
@@ -284,8 +261,8 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CallConnectionPropertiesInternal> createCallAsync(CreateCallRequestInternal createCallRequest) {
-        return createCallWithResponseAsync(createCallRequest).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
+        return createCallWithResponseAsync(createCallRequest)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));}
 
     /**
      * Create an outbound call.
@@ -298,10 +275,9 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return properties of a call connection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallConnectionPropertiesInternal> createCallAsync(CreateCallRequestInternal createCallRequest,
-        Context context) {
-        return createCallWithResponseAsync(createCallRequest, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
+    public Mono<CallConnectionPropertiesInternal> createCallAsync(CreateCallRequestInternal createCallRequest, Context context) {
+        return createCallWithResponseAsync(createCallRequest, context)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));}
 
     /**
      * Create an outbound call.
@@ -314,8 +290,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return properties of a call connection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallConnectionPropertiesInternal>
-        createCallWithResponse(CreateCallRequestInternal createCallRequest, Context context) {
+    public Response<CallConnectionPropertiesInternal> createCallWithResponse(CreateCallRequestInternal createCallRequest, Context context) {
         return createCallWithResponseAsync(createCallRequest, context).block();
     }
 
@@ -345,13 +320,11 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return properties of a call connection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallConnectionPropertiesInternal>>
-        answerCallWithResponseAsync(AnswerCallRequestInternal answerCallRequest) {
+    public Mono<Response<CallConnectionPropertiesInternal>> answerCallWithResponseAsync(AnswerCallRequestInternal answerCallRequest) {
         final String accept = "application/json";
         String repeatabilityRequestId = UUID.randomUUID().toString();
         String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
-        return FluxUtil.withContext(context -> service.answerCall(this.getEndpoint(), this.getApiVersion(),
-            answerCallRequest, accept, repeatabilityRequestId, repeatabilityFirstSent, context));
+        return FluxUtil.withContext(context -> service.answerCall(this.getEndpoint(), this.getApiVersion(), answerCallRequest, accept, repeatabilityRequestId, repeatabilityFirstSent, context));
     }
 
     /**
@@ -367,13 +340,11 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return properties of a call connection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallConnectionPropertiesInternal>>
-        answerCallWithResponseAsync(AnswerCallRequestInternal answerCallRequest, Context context) {
+    public Mono<Response<CallConnectionPropertiesInternal>> answerCallWithResponseAsync(AnswerCallRequestInternal answerCallRequest, Context context) {
         final String accept = "application/json";
         String repeatabilityRequestId = UUID.randomUUID().toString();
         String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
-        return service.answerCall(this.getEndpoint(), this.getApiVersion(), answerCallRequest, accept,
-            repeatabilityRequestId, repeatabilityFirstSent, context);
+        return service.answerCall(this.getEndpoint(), this.getApiVersion(), answerCallRequest, accept, repeatabilityRequestId, repeatabilityFirstSent, context);
     }
 
     /**
@@ -389,8 +360,8 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CallConnectionPropertiesInternal> answerCallAsync(AnswerCallRequestInternal answerCallRequest) {
-        return answerCallWithResponseAsync(answerCallRequest).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
+        return answerCallWithResponseAsync(answerCallRequest)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));}
 
     /**
      * Answer a Call.
@@ -405,10 +376,9 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return properties of a call connection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallConnectionPropertiesInternal> answerCallAsync(AnswerCallRequestInternal answerCallRequest,
-        Context context) {
-        return answerCallWithResponseAsync(answerCallRequest, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
+    public Mono<CallConnectionPropertiesInternal> answerCallAsync(AnswerCallRequestInternal answerCallRequest, Context context) {
+        return answerCallWithResponseAsync(answerCallRequest, context)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));}
 
     /**
      * Answer a Call.
@@ -423,8 +393,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return properties of a call connection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallConnectionPropertiesInternal>
-        answerCallWithResponse(AnswerCallRequestInternal answerCallRequest, Context context) {
+    public Response<CallConnectionPropertiesInternal> answerCallWithResponse(AnswerCallRequestInternal answerCallRequest, Context context) {
         return answerCallWithResponseAsync(answerCallRequest, context).block();
     }
 
@@ -458,8 +427,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
         final String accept = "application/json";
         String repeatabilityRequestId = UUID.randomUUID().toString();
         String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
-        return FluxUtil.withContext(context -> service.redirectCall(this.getEndpoint(), this.getApiVersion(),
-            redirectCallRequest, accept, repeatabilityRequestId, repeatabilityFirstSent, context));
+        return FluxUtil.withContext(context -> service.redirectCall(this.getEndpoint(), this.getApiVersion(), redirectCallRequest, accept, repeatabilityRequestId, repeatabilityFirstSent, context));
     }
 
     /**
@@ -473,13 +441,11 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> redirectCallWithResponseAsync(RedirectCallRequestInternal redirectCallRequest,
-        Context context) {
+    public Mono<Response<Void>> redirectCallWithResponseAsync(RedirectCallRequestInternal redirectCallRequest, Context context) {
         final String accept = "application/json";
         String repeatabilityRequestId = UUID.randomUUID().toString();
         String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
-        return service.redirectCall(this.getEndpoint(), this.getApiVersion(), redirectCallRequest, accept,
-            repeatabilityRequestId, repeatabilityFirstSent, context);
+        return service.redirectCall(this.getEndpoint(), this.getApiVersion(), redirectCallRequest, accept, repeatabilityRequestId, repeatabilityFirstSent, context);
     }
 
     /**
@@ -493,8 +459,8 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> redirectCallAsync(RedirectCallRequestInternal redirectCallRequest) {
-        return redirectCallWithResponseAsync(redirectCallRequest).flatMap(ignored -> Mono.empty());
-    }
+        return redirectCallWithResponseAsync(redirectCallRequest)
+            .flatMap(ignored -> Mono.empty());}
 
     /**
      * Redirect a call.
@@ -508,8 +474,8 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> redirectCallAsync(RedirectCallRequestInternal redirectCallRequest, Context context) {
-        return redirectCallWithResponseAsync(redirectCallRequest, context).flatMap(ignored -> Mono.empty());
-    }
+        return redirectCallWithResponseAsync(redirectCallRequest, context)
+            .flatMap(ignored -> Mono.empty());}
 
     /**
      * Redirect a call.
@@ -553,8 +519,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
         final String accept = "application/json";
         String repeatabilityRequestId = UUID.randomUUID().toString();
         String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
-        return FluxUtil.withContext(context -> service.rejectCall(this.getEndpoint(), this.getApiVersion(),
-            rejectCallRequest, accept, repeatabilityRequestId, repeatabilityFirstSent, context));
+        return FluxUtil.withContext(context -> service.rejectCall(this.getEndpoint(), this.getApiVersion(), rejectCallRequest, accept, repeatabilityRequestId, repeatabilityFirstSent, context));
     }
 
     /**
@@ -568,13 +533,11 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> rejectCallWithResponseAsync(RejectCallRequestInternal rejectCallRequest,
-        Context context) {
+    public Mono<Response<Void>> rejectCallWithResponseAsync(RejectCallRequestInternal rejectCallRequest, Context context) {
         final String accept = "application/json";
         String repeatabilityRequestId = UUID.randomUUID().toString();
         String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
-        return service.rejectCall(this.getEndpoint(), this.getApiVersion(), rejectCallRequest, accept,
-            repeatabilityRequestId, repeatabilityFirstSent, context);
+        return service.rejectCall(this.getEndpoint(), this.getApiVersion(), rejectCallRequest, accept, repeatabilityRequestId, repeatabilityFirstSent, context);
     }
 
     /**
@@ -588,8 +551,8 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> rejectCallAsync(RejectCallRequestInternal rejectCallRequest) {
-        return rejectCallWithResponseAsync(rejectCallRequest).flatMap(ignored -> Mono.empty());
-    }
+        return rejectCallWithResponseAsync(rejectCallRequest)
+            .flatMap(ignored -> Mono.empty());}
 
     /**
      * Reject the call.
@@ -603,8 +566,8 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> rejectCallAsync(RejectCallRequestInternal rejectCallRequest, Context context) {
-        return rejectCallWithResponseAsync(rejectCallRequest, context).flatMap(ignored -> Mono.empty());
-    }
+        return rejectCallWithResponseAsync(rejectCallRequest, context)
+            .flatMap(ignored -> Mono.empty());}
 
     /**
      * Reject the call.
