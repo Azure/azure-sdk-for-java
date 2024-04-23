@@ -4,6 +4,7 @@
 package com.azure.cosmos.encryption.implementation;
 
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
 import com.azure.cosmos.encryption.EncryptionAsyncApiCrudTest;
 import com.azure.cosmos.encryption.implementation.keyprovider.EncryptionKeyStoreProviderImpl;
@@ -267,7 +268,9 @@ public class EncryptionProcessorAndSettingsTest {
         encryptionProcessor.setClientEncryptionPolicy(new ClientEncryptionPolicy(paths));
 
         JsonNode document = OBJECT_MAPPER.readValue(json, ObjectNode.class);
-        String output = new String(encryptionProcessor.decrypt(encryptionProcessor.encryptObjectNode(document).block()).block().getLeft());
+        String output = new String(encryptionProcessor.decrypt(
+            encryptionProcessor.encryptObjectNode(document).block(),
+            CosmosItemSerializer.DEFAULT_SERIALIZER).block().getLeft());
         assertThat(output).isEqualTo(json);
     }
 }
