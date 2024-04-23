@@ -19,19 +19,25 @@ import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase {
     private KeyVaultBackupAsyncClient asyncClient;
 
     private void getAsyncClient(HttpClient httpClient, boolean forCleanup) {
-        asyncClient = getClientBuilder(buildAsyncAssertingClient(
+        asyncClient = spy(getClientBuilder(buildAsyncAssertingClient(
             interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), forCleanup)
-            .buildAsyncClient();
+            .buildAsyncClient());
+        if (interceptorManager.isPlaybackMode()) {
+            when(asyncClient.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
+        }
     }
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
@@ -50,7 +56,7 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
         getAsyncClient(httpClient, false);
 
         AsyncPollResponse<KeyVaultBackupOperation, String> backupPollResponse =
-            setPlaybackPollerFluxPollInterval(asyncClient.beginBackup(blobStorageUrl, sasToken)).blockLast();
+            asyncClient.beginBackup(blobStorageUrl, sasToken).blockLast();
 
         String backupBlobUri = backupPollResponse.getFinalResult().block();
 
