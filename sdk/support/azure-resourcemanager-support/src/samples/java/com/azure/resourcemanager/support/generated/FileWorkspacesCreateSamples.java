@@ -9,16 +9,14 @@ package com.azure.resourcemanager.support.generated;
  */
 public final class FileWorkspacesCreateSamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/
-     * CreateFileWorkspaceForSubscription.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/CreateFileWorkspaceForSubscription.json
      */
     /**
-     * Sample code: Create a subscription scoped file workspace.
+     * Sample code: Create a file workspace for a subscription.
      * 
      * @param manager Entry point to SupportManager.
      */
-    public static void
-        createASubscriptionScopedFileWorkspace(com.azure.resourcemanager.support.SupportManager manager) {
+    public static void createAFileWorkspaceForASubscription(com.azure.resourcemanager.support.SupportManager manager) {
         manager.fileWorkspaces().createWithResponse("testworkspace", com.azure.core.util.Context.NONE);
     }
 }

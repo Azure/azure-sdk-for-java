@@ -6,16 +6,14 @@ package com.azure.resourcemanager.support.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.support.models.SecondaryConsentEnabled;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Details about a problem classification available for an Azure service.
  */
 @Fluent
-public final class ProblemClassificationPropertiesInner {
+public final class ProblemClassificationProperties {
     /*
      * Localized name of problem classification.
      */
@@ -28,23 +26,10 @@ public final class ProblemClassificationPropertiesInner {
     @JsonProperty(value = "secondaryConsentEnabled")
     private List<SecondaryConsentEnabled> secondaryConsentEnabled;
 
-    /*
-     * String-to-string dictionary for additional metadata.
-     */
-    @JsonProperty(value = "metadata", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> metadata;
-
-    /*
-     * Reference to the parent problem classification which has same structure as problem classification
-     */
-    @JsonProperty(value = "parentProblemClassification")
-    private ProblemClassificationInner parentProblemClassification;
-
     /**
-     * Creates an instance of ProblemClassificationPropertiesInner class.
+     * Creates an instance of ProblemClassificationProperties class.
      */
-    public ProblemClassificationPropertiesInner() {
+    public ProblemClassificationProperties() {
     }
 
     /**
@@ -60,9 +45,9 @@ public final class ProblemClassificationPropertiesInner {
      * Set the displayName property: Localized name of problem classification.
      * 
      * @param displayName the displayName value to set.
-     * @return the ProblemClassificationPropertiesInner object itself.
+     * @return the ProblemClassificationProperties object itself.
      */
-    public ProblemClassificationPropertiesInner withDisplayName(String displayName) {
+    public ProblemClassificationProperties withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -82,43 +67,11 @@ public final class ProblemClassificationPropertiesInner {
      * problem classification.
      * 
      * @param secondaryConsentEnabled the secondaryConsentEnabled value to set.
-     * @return the ProblemClassificationPropertiesInner object itself.
+     * @return the ProblemClassificationProperties object itself.
      */
-    public ProblemClassificationPropertiesInner
+    public ProblemClassificationProperties
         withSecondaryConsentEnabled(List<SecondaryConsentEnabled> secondaryConsentEnabled) {
         this.secondaryConsentEnabled = secondaryConsentEnabled;
-        return this;
-    }
-
-    /**
-     * Get the metadata property: String-to-string dictionary for additional metadata.
-     * 
-     * @return the metadata value.
-     */
-    public Map<String, String> metadata() {
-        return this.metadata;
-    }
-
-    /**
-     * Get the parentProblemClassification property: Reference to the parent problem classification which has same
-     * structure as problem classification.
-     * 
-     * @return the parentProblemClassification value.
-     */
-    public ProblemClassificationInner parentProblemClassification() {
-        return this.parentProblemClassification;
-    }
-
-    /**
-     * Set the parentProblemClassification property: Reference to the parent problem classification which has same
-     * structure as problem classification.
-     * 
-     * @param parentProblemClassification the parentProblemClassification value to set.
-     * @return the ProblemClassificationPropertiesInner object itself.
-     */
-    public ProblemClassificationPropertiesInner
-        withParentProblemClassification(ProblemClassificationInner parentProblemClassification) {
-        this.parentProblemClassification = parentProblemClassification;
         return this;
     }
 
@@ -130,9 +83,6 @@ public final class ProblemClassificationPropertiesInner {
     public void validate() {
         if (secondaryConsentEnabled() != null) {
             secondaryConsentEnabled().forEach(e -> e.validate());
-        }
-        if (parentProblemClassification() != null) {
-            parentProblemClassification().validate();
         }
     }
 }
