@@ -15,6 +15,7 @@ public class CosmosParameter extends Parameter {
      *
      * @param parameter must not be {@literal null}.
      */
+    @SuppressWarnings("removal")
     public CosmosParameter(MethodParameter parameter) {
         super(parameter);
     }

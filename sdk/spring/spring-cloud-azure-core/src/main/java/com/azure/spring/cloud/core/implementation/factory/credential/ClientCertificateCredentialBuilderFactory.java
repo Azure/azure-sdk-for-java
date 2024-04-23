@@ -27,6 +27,7 @@ public class ClientCertificateCredentialBuilderFactory extends AzureAadCredentia
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     protected void configureService(ClientCertificateCredentialBuilder builder) {
         super.configureService(builder);
 

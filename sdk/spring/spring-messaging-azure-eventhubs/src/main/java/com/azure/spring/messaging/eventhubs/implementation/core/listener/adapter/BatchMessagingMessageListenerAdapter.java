@@ -47,6 +47,7 @@ public class BatchMessagingMessageListenerAdapter extends MessagingMessageListen
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public AzureMessageConverter<EventBatchContext, EventData> getMessageConverter() {
         return (AzureMessageConverter<EventBatchContext, EventData>) super.getMessageConverter();
     }
