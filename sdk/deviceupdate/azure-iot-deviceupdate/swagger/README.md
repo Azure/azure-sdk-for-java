@@ -20,12 +20,9 @@ autorest --java --use=C:/work/autorest.java
 
 ## Generate autorest code
 ```yaml
-use: '@autorest/java@4.1.17'
-input-file: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/deviceupdate/data-plane/Microsoft.DeviceUpdate/stable/2022-10-01/deviceupdate.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/d7c9be23749467be1aea18f02ba2f4948a39db6a/specification/deviceupdate/data-plane/Microsoft.DeviceUpdate/stable/2022-10-01/deviceupdate.json
 java: true
-output-folder: ./
-enable-sync-stack: true
-generate-tests: true
+output-folder: ../
 regenerate-pom: false
 title: DeviceUpdateClient
 generate-sync-async-clients: true
@@ -45,9 +42,9 @@ azure-arm: false
 credential-types: tokencredential
 credential-scopes: https://api.adu.microsoft.com/.default
 service-versions:
-    - '2022-10-01'
+  - '2022-10-01'
 polling:
     default:
         strategy: >-
-            new OperationResourcePollingStrategyWithEndpoint<>({httpPipeline}, "https://" + this.client.getEndpoint(), null, null, {context})
+                  new OperationResourcePollingStrategyWithEndpoint<>({httpPipeline}, "https://" + this.client.getEndpoint(), null, null, {context})
 ```
