@@ -19,13 +19,9 @@ import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.ProgressReceiver;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.test.shared.extensions.LiveOnly;
-import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy;
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy;
-import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
 import com.azure.storage.file.datalake.models.AccessTier;
-import com.azure.storage.file.datalake.models.DataLakeAudience;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
@@ -33,7 +29,6 @@ import com.azure.storage.file.datalake.models.FileExpirationOffset;
 import com.azure.storage.file.datalake.models.FileQueryArrowField;
 import com.azure.storage.file.datalake.models.FileQueryArrowFieldType;
 import com.azure.storage.file.datalake.models.FileQueryArrowSerialization;
-import com.azure.storage.file.datalake.models.FileQueryAsyncResponse;
 import com.azure.storage.file.datalake.models.FileQueryDelimitedSerialization;
 import com.azure.storage.file.datalake.models.FileQueryError;
 import com.azure.storage.file.datalake.models.FileQueryJsonSerialization;
@@ -41,16 +36,13 @@ import com.azure.storage.file.datalake.models.FileQueryParquetSerialization;
 import com.azure.storage.file.datalake.models.FileQueryProgress;
 import com.azure.storage.file.datalake.models.FileQuerySerialization;
 import com.azure.storage.file.datalake.models.FileRange;
-import com.azure.storage.file.datalake.models.FileReadAsyncResponse;
 import com.azure.storage.file.datalake.models.LeaseAction;
 import com.azure.storage.file.datalake.models.LeaseDurationType;
 import com.azure.storage.file.datalake.models.LeaseStateType;
 import com.azure.storage.file.datalake.models.LeaseStatusType;
 import com.azure.storage.file.datalake.models.ListPathsOptions;
-import com.azure.storage.file.datalake.models.PathAccessControl;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
-import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
@@ -62,8 +54,6 @@ import com.azure.storage.file.datalake.options.DataLakePathScheduleDeletionOptio
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions;
-import com.azure.storage.file.datalake.options.PathGetPropertiesOptions;
-import com.azure.storage.file.datalake.options.ReadToFileOptions;
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import com.azure.storage.file.datalake.sas.FileSystemSasPermission;
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient;
@@ -71,6 +61,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIf;
+import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -81,7 +73,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Hooks;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-import reactor.util.function.Tuple2;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -117,6 +108,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -184,19 +176,17 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
     @Test
     public void createOverwrite() {
-        Mono<PathInfo> response = dataLakeFileSystemAsyncClient.createFile(generatePathName())
-            .flatMap(r -> r.create(false));
+        fc = dataLakeFileSystemAsyncClient.createFile(generatePathName()).block();
 
-        StepVerifier.create(response)
+        StepVerifier.create(fc.create(false))
             .verifyError(DataLakeStorageException.class);
     }
 
     @Test
     public void exists() {
-        Mono<Boolean> response = dataLakeFileSystemAsyncClient.createFile(generatePathName())
-            .flatMap(DataLakePathAsyncClient::exists);
+        fc = dataLakeFileSystemAsyncClient.createFile(generatePathName()).block();
 
-        StepVerifier.create(response)
+        StepVerifier.create(fc.exists())
             .expectNext(true)
             .verifyComplete();
     }
@@ -224,12 +214,14 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
 
         contentType = (contentType == null) ? "application/octet-stream" : contentType;
-        String finalContentType = contentType;
+        fc.createWithResponse(null, null, headers, null, null).block();
 
-        StepVerifier.create(fc.createWithResponse(null, null, headers, null, null)
-            .then(fc.getPropertiesWithResponse(null)))
-            .assertNext(r -> validatePathProperties(r, cacheControl, contentDisposition, contentEncoding, contentLanguage,
-                null, finalContentType))
+        String finalContentType = contentType;
+        StepVerifier.create(fc.getPropertiesWithResponse(null))
+            .assertNext(r -> {
+                validatePathProperties(r, cacheControl, contentDisposition, contentEncoding, contentLanguage,
+                    null, finalContentType);
+            })
             .verifyComplete();
     }
 
@@ -243,41 +235,35 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         if (key2 != null) {
             metadata.put(key2, value2);
         }
+        fc.createWithResponse(null, null, null, metadata, null).block();
 
-        StepVerifier.create(fc.createWithResponse(null, null, null, metadata, null)
-            .then(fc.getProperties()))
+        StepVerifier.create(fc.getProperties())
             .assertNext(r -> assertEquals(metadata, r.getMetadata()))
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-04-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210410ServiceVersion")
     @Test
     public void createEncryptionContext() {
         dataLakeFileSystemAsyncClient = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
+        dataLakeFileSystemAsyncClient.create().block();
+        dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName()).create().block();
+        fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
 
-        Mono<PathInfo> step = dataLakeFileSystemAsyncClient.create()
-            .then(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName()).create());
-
-        Mono<DataLakeFileAsyncClient> getClient = Mono.just(dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName()));
-
+        // testing encryption context with create()
         String encryptionContext = "encryptionContext";
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setEncryptionContext(encryptionContext);
+        fc.createWithResponse(options, Context.NONE).block();
 
-        Mono<PathProperties> response1 = step
-            .then(getClient)
-            .flatMap(r -> r.createWithResponse(options, Context.NONE).then(r.getProperties()));
-
-        StepVerifier.create(response1)
+        StepVerifier.create(fc.getProperties())
             .assertNext(r -> assertEquals(encryptionContext, r.getEncryptionContext()))
             .verifyComplete();
 
-        Mono<FileReadAsyncResponse> response2 = getClient
-            .flatMap(r -> r.readWithResponse(null, null, null, false));
-
-        StepVerifier.create(response2)
+        StepVerifier.create(fc.readWithResponse(null, null, null, false))
             .assertNext(r -> assertEquals(encryptionContext, r.getDeserializedHeaders().getEncryptionContext()))
             .verifyComplete();
 
+        // testing encryption context with listPaths()
         StepVerifier.create(dataLakeFileSystemAsyncClient.listPaths(new ListPathsOptions().setRecursive(true)))
             .expectNextCount(1)
             .assertNext(r -> assertEquals(encryptionContext, r.getEncryptionContext()))
@@ -288,28 +274,14 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void createAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                          String leaseID) {
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(fc, leaseID))
+            .setIfMatch(setupPathMatchCondition(fc, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseConditionAsync(fc, leaseID),
-            setupPathMatchConditionAsync(fc, match))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(newLease)
-                        .setIfMatch(newMatch)
-                        .setIfNoneMatch(noneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                return fc.createWithResponse(null, null, null, null, drc);
-            });
-
-        assertAsyncResponseStatusCode(response, 201);
+        assertAsyncResponseStatusCode(fc.createWithResponse(null, null, null, null, drc), 201);
     }
 
     private static Stream<Arguments> modifiedMatchAndLeaseIdSupplier() {
@@ -328,23 +300,15 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void createACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                              String leaseID) {
-        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseConditionAsync(fc, leaseID),
-            setupPathMatchConditionAsync(fc, noneMatch))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(leaseID)
-                        .setIfMatch(match)
-                        .setIfNoneMatch(newNoneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                return fc.createWithResponse(null, null, null, null, drc);
-            });
+        setupPathLeaseCondition(fc, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(response)
+        StepVerifier.create(fc.createWithResponse(null, null, null, null, drc))
             .verifyError(DataLakeStorageException.class);
     }
 
@@ -365,13 +329,15 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             "0777", "0057", null, null, null), 201);
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @Test
     public void createOptionsWithACL() {
         List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx");
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setAccessControlList(pathAccessControlEntries);
 
-        StepVerifier.create(fc.createWithResponse(options, null).then(fc.getAccessControl()))
+        fc.createWithResponse(options, null).block();
+
+        StepVerifier.create(fc.getAccessControl())
             .assertNext(r -> {
                 assertEquals(pathAccessControlEntries.get(0), r.getAccessControlList().get(0)); // testing if owner is set the same
                 assertEquals(pathAccessControlEntries.get(1), r.getAccessControlList().get(1)); // testing if owner is set the same
@@ -379,14 +345,16 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @Test
     public void createOptionsWithOwnerAndGroup() {
         String ownerName = testResourceNamer.randomUuid();
         String groupName = testResourceNamer.randomUuid();
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setOwner(ownerName).setGroup(groupName);
 
-        StepVerifier.create(fc.createWithResponse(options, null).then(fc.getAccessControl()))
+        fc.createWithResponse(options, null).block();
+
+        StepVerifier.create(fc.getAccessControl())
             .assertNext(r -> {
                 assertEquals(ownerName, r.getOwner());
                 assertEquals(groupName, r.getGroup());
@@ -396,7 +364,9 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
     @Test
     public void createOptionsWithNullOwnerAndGroup() {
-        StepVerifier.create(fc.createWithResponse(null, null).then(fc.getAccessControl()))
+        fc.createWithResponse(null, null);
+
+        StepVerifier.create(fc.getAccessControl())
             .assertNext(r -> {
                 assertEquals("$superuser", r.getOwner());
                 assertEquals("$superuser", r.getGroup());
@@ -449,19 +419,20 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     public void createOptionsWithPermissionsAndUmask() {
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions("0777").setUmask("0057");
 
-        StepVerifier.create(fc.createWithResponse(options, null).then(fc.getAccessControlWithResponse(
-            true, null, null)))
+        fc.createWithResponse(options, null).block();
+
+        StepVerifier.create(fc.getAccessControlWithResponse(
+            true, null, null))
             .assertNext(r -> assertEquals(PathPermissions.parseSymbolic("rwx-w----").toString(),
-                r.getValue().getPermissions().toString()))
+            r.getValue().getPermissions().toString()))
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @Test
     public void createOptionsWithLeaseId() {
         String leaseId = CoreUtils.randomUuid().toString();
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setProposedLeaseId(leaseId)
-            .setLeaseDuration(15);
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setProposedLeaseId(leaseId).setLeaseDuration(15);
 
         assertAsyncResponseStatusCode(fc.createWithResponse(options, null), 201);
     }
@@ -476,7 +447,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyError(DataLakeStorageException.class);
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @Test
     public void createOptionsWithLeaseDuration() {
         String leaseId = CoreUtils.randomUuid().toString();
@@ -493,7 +464,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @ParameterizedTest
     @MethodSource("timeExpiresOnOptionsSupplier")
     public void createOptionsWithTimeExpiresOn(DataLakePathScheduleDeletionOptions deletionOptions) {
@@ -506,7 +477,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         return Stream.of(new DataLakePathScheduleDeletionOptions(OffsetDateTime.now().plusDays(1)), null);
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @Test
     public void createOptionsWithTimeToExpireRelativeToNow() {
         DataLakePathScheduleDeletionOptions deletionOptions = new DataLakePathScheduleDeletionOptions(Duration.ofDays(6));
@@ -523,8 +494,9 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     @Test
     public void createIfNotExistsMin() {
         fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
+        fc.createIfNotExists().block();
 
-        StepVerifier.create(fc.createIfNotExists().then(fc.exists()))
+        StepVerifier.create(fc.exists())
             .expectNext(true)
             .verifyComplete();
     }
@@ -559,10 +531,9 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     @Test
     public void createIfNotExistsExists() {
         fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
+        fc.createIfNotExists().block();
 
-        StepVerifier.create(fc.createIfNotExists().then(fc.exists()))
-            .assertNext(Assertions::assertTrue)
-            .verifyComplete();
+        assertTrue(fc.exists().block());
     }
 
     @ParameterizedTest
@@ -578,11 +549,10 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
 
         contentType = (contentType == null) ? "application/octet-stream" : contentType;
-        String finalContentType = contentType;
+        fc.createIfNotExistsWithResponse(new DataLakePathCreateOptions().setPathHttpHeaders(headers), null).block();
 
-        StepVerifier.create(fc.createIfNotExistsWithResponse(new DataLakePathCreateOptions().setPathHttpHeaders(headers),
-            null)
-            .then(fc.getPropertiesWithResponse(null)))
+        String finalContentType = contentType;
+        StepVerifier.create(fc.getPropertiesWithResponse(null))
             .assertNext(r -> validatePathProperties(r, cacheControl, contentDisposition, contentEncoding,
             contentLanguage, null, finalContentType))
             .verifyComplete();
@@ -600,10 +570,9 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         }
 
         fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
+        fc.createIfNotExistsWithResponse(new DataLakePathCreateOptions().setMetadata(metadata), Context.NONE).block();
 
-        StepVerifier.create(fc.createIfNotExistsWithResponse(new DataLakePathCreateOptions().setMetadata(metadata),
-            Context.NONE)
-            .then(fc.getProperties()))
+        StepVerifier.create(fc.getProperties())
             .assertNext(r -> assertEquals(metadata, r.getMetadata()))
             .verifyComplete();
     }
@@ -616,31 +585,23 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .setPermissions("0777").setUmask("0057"), Context.NONE), 201);
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-04-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210410ServiceVersion")
     @Test
     public void createIfNotExistsEncryptionContext() {
         dataLakeFileSystemAsyncClient = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
-
-        Mono<PathInfo> step = dataLakeFileSystemAsyncClient.create()
-            .then(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName()).create());
-
-        Mono<DataLakeFileAsyncClient> getClient = Mono.just(dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName()));
+        dataLakeFileSystemAsyncClient.create().block();
+        dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName()).create().block();
+        fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
 
         String encryptionContext = "encryptionContext";
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setEncryptionContext(encryptionContext);
+        fc.createIfNotExistsWithResponse(options, Context.NONE).block();
 
-        Mono<PathProperties> response1 = step
-            .then(getClient)
-            .flatMap(r -> r.createIfNotExistsWithResponse(options, Context.NONE).then(r.getProperties()));
-
-        StepVerifier.create(response1)
+        StepVerifier.create(fc.getProperties())
             .assertNext(r -> assertEquals(encryptionContext, r.getEncryptionContext()))
             .verifyComplete();
 
-        Mono<FileReadAsyncResponse> response2 = getClient
-            .flatMap(r -> r.readWithResponse(null, null, null, false));
-
-        StepVerifier.create(response2)
+        StepVerifier.create(fc.readWithResponse(null, null, null, false))
             .assertNext(r -> assertEquals(encryptionContext, r.getDeserializedHeaders().getEncryptionContext()))
             .verifyComplete();
 
@@ -650,7 +611,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @Test
     public void createIfNotExistsOptionsWithACL() {
         fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
@@ -658,7 +619,9 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx");
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setAccessControlList(pathAccessControlEntries);
 
-        StepVerifier.create(fc.createIfNotExistsWithResponse(options, null).then(fc.getAccessControl()))
+        fc.createIfNotExistsWithResponse(options, null).block();
+
+        StepVerifier.create(fc.getAccessControl())
             .assertNext(r -> {
                 assertEquals(pathAccessControlEntries.get(0), r.getAccessControlList().get(0));
                 assertEquals(pathAccessControlEntries.get(1), r.getAccessControlList().get(1));
@@ -666,7 +629,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @Test
     public void createIfNotExistsOptionsWithOwnerAndGroup() {
         fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
@@ -675,7 +638,9 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         String groupName = testResourceNamer.randomUuid();
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setOwner(ownerName).setGroup(groupName);
 
-        StepVerifier.create(fc.createIfNotExistsWithResponse(options, null).then(fc.getAccessControl()))
+        fc.createIfNotExistsWithResponse(options, null).block();
+
+        StepVerifier.create(fc.getAccessControl())
             .assertNext(r -> {
                 assertEquals(ownerName, r.getOwner());
                 assertEquals(groupName, r.getGroup());
@@ -688,7 +653,9 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setOwner(null).setGroup(null);
 
-        StepVerifier.create(fc.createIfNotExistsWithResponse(options, null).then(fc.getAccessControl()))
+        fc.createIfNotExistsWithResponse(options, null).block();
+
+        StepVerifier.create(fc.getAccessControl())
             .assertNext(r -> {
                 assertEquals("$superuser", r.getOwner());
                 assertEquals("$superuser", r.getGroup());
@@ -746,22 +713,22 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     public void createIfNotExistsOptionsWithPermissionsAndUmask() {
         fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions("0777").setUmask("0057");
+        fc.createIfNotExistsWithResponse(options, null).block();
 
-        StepVerifier.create(fc.createIfNotExistsWithResponse(options, null).then(fc.getAccessControlWithResponse(
-            true, null, null)))
+        StepVerifier.create(fc.getAccessControlWithResponse(
+            true, null, null))
             .assertNext(r -> assertEquals(PathPermissions.parseSymbolic("rwx-w----").toString(),
             r.getValue().getPermissions().toString()))
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @Test
     public void createIfNotExistsOptionsWithLeaseId() {
         fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
 
         String leaseId = testResourceNamer.randomUuid();
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setProposedLeaseId(leaseId)
-            .setLeaseDuration(15);
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setProposedLeaseId(leaseId).setLeaseDuration(15);
 
         assertAsyncResponseStatusCode(fc.createIfNotExistsWithResponse(options, null), 201);
     }
@@ -777,7 +744,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyError(DataLakeStorageException.class);
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @Test
     public void createIfNotExistsOptionsWithLeaseDuration() {
         fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
@@ -796,7 +763,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @ParameterizedTest
     @MethodSource("timeExpiresOnOptionsSupplier")
     public void createIfNotExistsOptionsWithTimeExpiresOn(DataLakePathScheduleDeletionOptions deletionOptions) {
@@ -807,7 +774,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         assertAsyncResponseStatusCode(fc.createIfNotExistsWithResponse(options, null), 201);
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @Test
     public void createIfNotExistsOptionsWithTimeToExpireRelativeToNow() {
         fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
@@ -830,8 +797,9 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
     @Test
     public void deleteFileDoesNotExistAnymore() {
-        StepVerifier.create(fc.deleteWithResponse(null, null, null)
-            .then(fc.getPropertiesWithResponse(null)))
+        fc.deleteWithResponse(null, null, null).block();
+
+        StepVerifier.create(fc.getPropertiesWithResponse(null))
             .verifyErrorSatisfies(r -> DataLakeTestBase.assertExceptionStatusCodeAndMessage(r, 404,
             BlobErrorCode.BLOB_NOT_FOUND));
     }
@@ -840,50 +808,29 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void deleteAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                        String leaseID) {
-        Mono<Response<Void>> response = Mono.zip(setupPathLeaseConditionAsync(fc, leaseID),
-            setupPathMatchConditionAsync(fc, match))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(newLease)
-                        .setIfMatch(newMatch)
-                        .setIfNoneMatch(noneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                return fc.deleteWithResponse(drc);
-            });
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(fc, leaseID))
+            .setIfMatch(setupPathMatchCondition(fc, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        assertAsyncResponseStatusCode(response, 200);
+        assertAsyncResponseStatusCode(fc.deleteWithResponse(drc), 200);
     }
 
     @ParameterizedTest
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void deleteACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                              String leaseID) {
-        Mono<Response<Void>> response = Mono.zip(setupPathLeaseConditionAsync(fc, leaseID),
-            setupPathMatchConditionAsync(fc, noneMatch))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(leaseID)
-                        .setIfMatch(match)
-                        .setIfNoneMatch(newNoneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                return fc.deleteWithResponse(drc);
-            });
+        setupPathLeaseCondition(fc, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(response)
+        StepVerifier.create(fc.deleteWithResponse(drc))
             .verifyError(DataLakeStorageException.class);
     }
 
@@ -917,29 +864,15 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void deleteIfExistsAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                  String leaseID) {
-        Mono<Response<Boolean>> response = Mono.zip(setupPathLeaseConditionAsync(fc, leaseID),
-            setupPathMatchConditionAsync(fc, match))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(newLease)
-                        .setIfMatch(newMatch)
-                        .setIfNoneMatch(noneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setIsRecursive(false)
-                    .setRequestConditions(drc);
-                return fc.deleteIfExistsWithResponse(options, null);
-            });
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(fc, leaseID))
+            .setIfMatch(setupPathMatchCondition(fc, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+        DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setIsRecursive(false).setRequestConditions(drc);
 
-        assertAsyncResponseStatusCode(response, 200);
+        assertAsyncResponseStatusCode(fc.deleteIfExistsWithResponse(options, null), 200);
 
     }
 
@@ -947,24 +880,16 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void deleteIfExistsACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                      String leaseID) {
-        Mono<Response<Boolean>> response = Mono.zip(setupPathLeaseConditionAsync(fc, leaseID),
-            setupPathMatchConditionAsync(fc, noneMatch))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(leaseID)
-                        .setIfMatch(match)
-                        .setIfNoneMatch(newNoneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc);
-                return fc.deleteIfExistsWithResponse(options, null);
-            });
+        setupPathLeaseCondition(fc, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+        DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc);
 
-        StepVerifier.create(response)
+        StepVerifier.create(fc.deleteIfExistsWithResponse(options, null))
             .verifyError(DataLakeStorageException.class);
     }
 
@@ -988,50 +913,29 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void setPermissionsAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                  String leaseID) {
-        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseConditionAsync(fc, leaseID),
-            setupPathMatchConditionAsync(fc, match))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(newLease)
-                        .setIfMatch(newMatch)
-                        .setIfNoneMatch(noneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                return fc.setPermissionsWithResponse(PERMISSIONS, GROUP, OWNER, drc);
-            });
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(fc, leaseID))
+            .setIfMatch(setupPathMatchCondition(fc, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        assertAsyncResponseStatusCode(response, 200);
+        assertAsyncResponseStatusCode(fc.setPermissionsWithResponse(PERMISSIONS, GROUP, OWNER, drc), 200);
     }
 
     @ParameterizedTest
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void setPermissionsACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                      String leaseID) {
-        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseConditionAsync(fc, leaseID),
-            setupPathMatchConditionAsync(fc, noneMatch))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(leaseID)
-                        .setIfMatch(match)
-                        .setIfNoneMatch(newNoneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                return fc.setPermissionsWithResponse(PERMISSIONS, GROUP, OWNER, drc);
-            });
+        setupPathLeaseCondition(fc, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(response)
+        StepVerifier.create(fc.setPermissionsWithResponse(PERMISSIONS, GROUP, OWNER, drc))
             .verifyError(DataLakeStorageException.class);
     }
 
@@ -1063,50 +967,30 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void setAclAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                          String leaseID) {
-        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseConditionAsync(fc, leaseID),
-            setupPathMatchConditionAsync(fc, match))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(newLease)
-                        .setIfMatch(newMatch)
-                        .setIfNoneMatch(noneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                return fc.setAccessControlListWithResponse(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER, drc);
-            });
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(fc, leaseID))
+            .setIfMatch(setupPathMatchCondition(fc, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        assertAsyncResponseStatusCode(response, 200);
+        assertAsyncResponseStatusCode(fc.setAccessControlListWithResponse(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER, drc),
+            200);
     }
 
     @ParameterizedTest
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void setAclACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                              String leaseID) {
-        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseConditionAsync(fc, leaseID),
-            setupPathMatchConditionAsync(fc, noneMatch))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(leaseID)
-                        .setIfMatch(match)
-                        .setIfNoneMatch(newNoneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                return fc.setAccessControlListWithResponse(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER, drc);
-            });
+        setupPathLeaseCondition(fc, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(response)
+        StepVerifier.create(fc.setAccessControlListWithResponse(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER, drc))
             .verifyError(DataLakeStorageException.class);
     }
 
@@ -1118,7 +1002,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyError(DataLakeStorageException.class);
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void setACLRecursive() {
         StepVerifier.create(fc.setAccessControlRecursive(PATH_ACCESS_CONTROL_ENTRIES))
@@ -1130,7 +1014,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void updateACLRecursive() {
         StepVerifier.create(fc.updateAccessControlRecursive(PATH_ACCESS_CONTROL_ENTRIES))
@@ -1142,7 +1026,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void removeACLRecursive() {
         List<PathRemoveAccessControlEntry> removeAccessControlEntries = PathRemoveAccessControlEntry.parseList(
@@ -1187,27 +1071,15 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void getAccessControlAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                    String leaseID) {
-        Mono<Response<PathAccessControl>> response = Mono.zip(setupPathLeaseConditionAsync(fc, leaseID),
-            setupPathMatchConditionAsync(fc, match))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(newLease)
-                        .setIfMatch(newMatch)
-                        .setIfNoneMatch(noneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                return fc.getAccessControlWithResponse(false, drc, null);
-            });
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(fc, leaseID))
+            .setIfMatch(setupPathMatchCondition(fc, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        assertAsyncResponseStatusCode(response, 200);
+        assertAsyncResponseStatusCode(fc.getAccessControlWithResponse(
+            false, drc, null), 200);
     }
 
     @ParameterizedTest
@@ -1218,23 +1090,15 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             return; // known bug in DFS endpoint
         }
 
-        Mono<Response<PathAccessControl>> response = Mono.zip(setupPathLeaseConditionAsync(fc, leaseID),
-            setupPathMatchConditionAsync(fc, noneMatch))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(leaseID)
-                        .setIfMatch(match)
-                        .setIfNoneMatch(newNoneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                return fc.getAccessControlWithResponse(false, drc, null);
-            });
+        setupPathLeaseCondition(fc, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(response)
+        StepVerifier.create(fc.getAccessControlWithResponse(false, drc, null))
             .verifyError(DataLakeStorageException.class);
     }
 
@@ -1287,54 +1151,28 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void getPropertiesAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                 String leaseID) {
-        Mono<Response<PathProperties>> response = Mono.zip(setupPathLeaseConditionAsync(fc, leaseID),
-            setupPathMatchConditionAsync(fc, match))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(newLease)
-                        .setIfMatch(newMatch)
-                        .setIfNoneMatch(noneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                return fc.getPropertiesWithResponse(drc);
-            });
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(fc, leaseID))
+            .setIfMatch(setupPathMatchCondition(fc, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        assertAsyncResponseStatusCode(response, 200);
+        assertAsyncResponseStatusCode(fc.getPropertiesWithResponse(drc), 200);
     }
 
     @ParameterizedTest
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void getPropertiesACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                     String leaseID) {
-        Mono<Response<PathProperties>> response = Mono.zip(setupPathLeaseConditionAsync(fc, leaseID),
-            setupPathMatchConditionAsync(fc, noneMatch))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(newLease)
-                        .setIfMatch(match)
-                        .setIfNoneMatch(newNoneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                return fc.getPropertiesWithResponse(drc);
-            });
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(fc, leaseID))
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(response)
+        StepVerifier.create(fc.getPropertiesWithResponse(drc))
             .verifyError(DataLakeStorageException.class);
     }
 
@@ -1361,25 +1199,18 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
     @Test
     public void setHTTPHeadersMin() throws NoSuchAlgorithmException {
-        Mono<PathProperties> response = fc.getProperties()
-            .flatMap(r -> {
-                PathHttpHeaders headers;
-                try {
-                    headers = new PathHttpHeaders()
-                        .setContentEncoding(r.getContentEncoding())
-                        .setContentDisposition(r.getContentDisposition())
-                        .setContentType("type")
-                        .setCacheControl(r.getCacheControl())
-                        .setContentLanguage(r.getContentLanguage())
-                        .setContentMd5(Base64.getEncoder().encode(MessageDigest.getInstance("MD5")
-                            .digest(DATA.getDefaultBytes())));
-                } catch (NoSuchAlgorithmException e) {
-                    throw new RuntimeException(e);
-                }
-                return fc.setHttpHeaders(headers).then(fc.getProperties());
-            });
+        PathProperties properties = fc.getProperties().block();
+        PathHttpHeaders headers = new PathHttpHeaders()
+            .setContentEncoding(properties.getContentEncoding())
+            .setContentDisposition(properties.getContentDisposition())
+            .setContentType("type")
+            .setCacheControl(properties.getCacheControl())
+            .setContentLanguage(properties.getContentLanguage())
+            .setContentMd5(Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(DATA.getDefaultBytes())));
 
-        StepVerifier.create(response)
+        fc.setHttpHeaders(headers).block();
+
+        StepVerifier.create(fc.getProperties())
             .assertNext(r -> assertEquals("type", r.getContentType()))
             .verifyComplete();
     }
@@ -1387,6 +1218,9 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     @MethodSource("setHTTPHeadersHeadersSupplier")
     public void setHTTPHeadersHeaders(String cacheControl, String contentDisposition, String contentEncoding,
                                       String contentLanguage, byte[] contentMD5, String contentType) {
+
+        fc.append(DATA.getDefaultBinaryData(), 0);
+        fc.flush(DATA.getDefaultDataSizeLong(), true);
         PathHttpHeaders putHeaders = new PathHttpHeaders()
             .setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
@@ -1395,12 +1229,9 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .setContentMd5(contentMD5)
             .setContentType(contentType);
 
-        Mono<Response<PathProperties>> response = fc.append(DATA.getDefaultBinaryData(), 0)
-            .then(fc.flush(DATA.getDefaultDataSizeLong(), true))
-            .then(fc.setHttpHeaders(putHeaders))
-            .then(fc.getPropertiesWithResponse(null));
+        fc.setHttpHeaders(putHeaders).block();
 
-        StepVerifier.create(response)
+        StepVerifier.create(fc.getPropertiesWithResponse(null))
             .assertNext(r -> validatePathProperties(r, cacheControl, contentDisposition, contentEncoding, contentLanguage,
             contentMD5, contentType))
                 .verifyComplete();
@@ -1419,50 +1250,29 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void setHttpHeadersAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                  String leaseID) {
-        Mono<Response<Void>> response = Mono.zip(setupPathLeaseConditionAsync(fc, leaseID),
-            setupPathMatchConditionAsync(fc, match))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(newLease)
-                        .setIfMatch(newMatch)
-                        .setIfNoneMatch(noneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                return fc.setHttpHeadersWithResponse(null, drc);
-            });
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(fc, leaseID))
+            .setIfMatch(setupPathMatchCondition(fc, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        assertAsyncResponseStatusCode(response, 200);
+        assertAsyncResponseStatusCode(fc.setHttpHeadersWithResponse(null, drc), 200);
     }
 
     @ParameterizedTest
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void setHttpHeadersACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                      String leaseID) {
-        Mono<Response<Void>> response = Mono.zip(setupPathLeaseConditionAsync(fc, leaseID),
-            setupPathMatchConditionAsync(fc, noneMatch))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(leaseID)
-                        .setIfMatch(match)
-                        .setIfNoneMatch(newNoneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                return fc.setHttpHeadersWithResponse(null, drc);
-            });
+        setupPathLeaseCondition(fc, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(response)
+        StepVerifier.create(fc.setHttpHeadersWithResponse(null, drc))
             .verifyError(DataLakeStorageException.class);
     }
 
@@ -1477,8 +1287,9 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     @Test
     public void setMetadataMin() {
         Map<String, String> metadata = Collections.singletonMap("foo", "bar");
+        fc.setMetadata(metadata).block();
 
-        StepVerifier.create(fc.setMetadata(metadata).then(fc.getProperties()))
+        StepVerifier.create(fc.getProperties())
             .assertNext(r -> assertEquals(metadata, r.getMetadata()))
             .verifyComplete();
     }
@@ -1504,50 +1315,29 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void setMetadataAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                               String leaseID) {
-        Mono<Response<Void>> response = Mono.zip(setupPathLeaseConditionAsync(fc, leaseID),
-            setupPathMatchConditionAsync(fc, match))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(newLease)
-                        .setIfMatch(newMatch)
-                        .setIfNoneMatch(noneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                return fc.setMetadataWithResponse(null, drc);
-            });
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(fc, leaseID))
+            .setIfMatch(setupPathMatchCondition(fc, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        assertAsyncResponseStatusCode(response, 200);
+        assertAsyncResponseStatusCode(fc.setMetadataWithResponse(null, drc), 200);
     }
 
     @ParameterizedTest
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void setMetadataACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                   String leaseID) {
-        Mono<Response<Void>> response = Mono.zip(setupPathLeaseConditionAsync(fc, leaseID),
-            setupPathMatchConditionAsync(fc, noneMatch))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(leaseID)
-                        .setIfMatch(match)
-                        .setIfNoneMatch(newNoneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                return fc.setMetadataWithResponse(null, drc);
-            });
+        setupPathLeaseCondition(fc, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(response)
+        StepVerifier.create(fc.setMetadataWithResponse(null, drc))
             .verifyError(DataLakeStorageException.class);
     }
     @Test
@@ -1560,51 +1350,49 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
     @Test
     public void readAllNull() {
-        Mono<byte[]> response = fc.append(DATA.getDefaultBinaryData(), 0)
-            .then(fc.flush(DATA.getDefaultDataSizeLong(), true))
-            .then(fc.readWithResponse(null, null, null, false))
-                .flatMap(r -> {
-                    HttpHeaders headers = r.getHeaders();
-
-                    assertFalse(headers.stream().anyMatch(h -> h.getName().startsWith("x-ms-meta-")));
-                    assertNotNull(headers.getValue(HttpHeaderName.CONTENT_LENGTH));
-                    assertNotNull(headers.getValue(HttpHeaderName.CONTENT_TYPE));
-                    assertNull(headers.getValue(HttpHeaderName.CONTENT_RANGE));
-                    assertNull(headers.getValue(HttpHeaderName.CONTENT_ENCODING));
-                    assertNull(headers.getValue(HttpHeaderName.CACHE_CONTROL));
-                    assertNull(headers.getValue(HttpHeaderName.CONTENT_DISPOSITION));
-                    assertNull(headers.getValue(HttpHeaderName.CONTENT_LANGUAGE));
-                    assertNull(headers.getValue(X_MS_BLOB_SEQUENCE_NUMBER));
-                    assertNull(headers.getValue(X_MS_COPY_COMPLETION_TIME));
-                    assertNull(headers.getValue(X_MS_COPY_STATUS_DESCRIPTION));
-                    assertNull(headers.getValue(X_MS_COPY_ID));
-                    assertNull(headers.getValue(X_MS_COPY_PROGRESS));
-                    assertNull(headers.getValue(X_MS_COPY_SOURCE));
-                    assertNull(headers.getValue(X_MS_COPY_STATUS));
-                    assertNull(headers.getValue(X_MS_LEASE_DURATION));
-                    assertEquals(LeaseStateType.AVAILABLE.toString(), headers.getValue(X_MS_LEASE_STATE));
-                    assertEquals(LeaseStatusType.UNLOCKED.toString(), headers.getValue(X_MS_LEASE_STATUS));
-                    assertEquals("bytes", headers.getValue(HttpHeaderName.ACCEPT_RANGES));
-                    assertNull(headers.getValue(X_MS_BLOB_COMMITTED_BLOCK_COUNT));
-                    assertNotNull(headers.getValue(X_MS_SERVER_ENCRYPTED));
-                    assertNull(headers.getValue(X_MS_BLOB_CONTENT_MD5));
-                    assertNotNull(headers.getValue(X_MS_CREATION_TIME));
-                    assertNotNull(r.getDeserializedHeaders().getCreationTime());
-                    return FluxUtil.collectBytesInByteBufferStream(r.getValue());
-                });
+        fc.append(DATA.getDefaultBinaryData(), 0).block();
+        fc.flush(DATA.getDefaultDataSizeLong(), true).block();
 
 
-        StepVerifier.create(response)
+        StepVerifier.create(fc.readWithResponse(null, null, null, false)
+            .flatMap(r -> {
+                HttpHeaders headers = r.getHeaders();
+
+                assertFalse(headers.stream().anyMatch(h -> h.getName().startsWith("x-ms-meta-")));
+                assertNotNull(headers.getValue(HttpHeaderName.CONTENT_LENGTH));
+                assertNotNull(headers.getValue(HttpHeaderName.CONTENT_TYPE));
+                assertNull(headers.getValue(HttpHeaderName.CONTENT_RANGE));
+                assertNull(headers.getValue(HttpHeaderName.CONTENT_ENCODING));
+                assertNull(headers.getValue(HttpHeaderName.CACHE_CONTROL));
+                assertNull(headers.getValue(HttpHeaderName.CONTENT_DISPOSITION));
+                assertNull(headers.getValue(HttpHeaderName.CONTENT_LANGUAGE));
+                assertNull(headers.getValue(X_MS_BLOB_SEQUENCE_NUMBER));
+                assertNull(headers.getValue(X_MS_COPY_COMPLETION_TIME));
+                assertNull(headers.getValue(X_MS_COPY_STATUS_DESCRIPTION));
+                assertNull(headers.getValue(X_MS_COPY_ID));
+                assertNull(headers.getValue(X_MS_COPY_PROGRESS));
+                assertNull(headers.getValue(X_MS_COPY_SOURCE));
+                assertNull(headers.getValue(X_MS_COPY_STATUS));
+                assertNull(headers.getValue(X_MS_LEASE_DURATION));
+                assertEquals(LeaseStateType.AVAILABLE.toString(), headers.getValue(X_MS_LEASE_STATE));
+                assertEquals(LeaseStatusType.UNLOCKED.toString(), headers.getValue(X_MS_LEASE_STATUS));
+                assertEquals("bytes", headers.getValue(HttpHeaderName.ACCEPT_RANGES));
+                assertNull(headers.getValue(X_MS_BLOB_COMMITTED_BLOCK_COUNT));
+                assertNotNull(headers.getValue(X_MS_SERVER_ENCRYPTED));
+                assertNull(headers.getValue(X_MS_BLOB_CONTENT_MD5));
+                assertNotNull(headers.getValue(X_MS_CREATION_TIME));
+                assertNotNull(r.getDeserializedHeaders().getCreationTime());
+                return FluxUtil.collectBytesInByteBufferStream(r.getValue());
+            }))
             .assertNext(bytes -> TestUtils.assertArraysEqual(DATA.getDefaultBytes(), bytes))
             .verifyComplete();
     }
 
     @Test
     public void readEmptyFile() {
-        Flux<ByteBuffer> response = dataLakeFileSystemAsyncClient.createFile("emptyFile")
-            .flatMapMany(DataLakeFileAsyncClient::read);
+        fc = dataLakeFileSystemAsyncClient.createFile("emptyFile").block();
 
-        StepVerifier.create(response)
+        StepVerifier.create(fc.read())
             .assertNext(r -> assertEquals(0, r.array().length))
             .verifyComplete();
 
@@ -1623,26 +1411,24 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         DataLakeFileAsyncClient fileAsyncClient = getFileAsyncClient(getDataLakeCredential(), fc.getPathUrl(),
             new MockRetryRangeResponsePolicy("bytes=2-6"));
 
+        fc.append(DATA.getDefaultBinaryData(), 0).block();
+        fc.flush(DATA.getDefaultDataSizeLong(), true).block();
+
         // Because the dummy Flux always throws an error. This will also validate that an IllegalArgumentException is
         // NOT thrown because the types would not match.
 
-        Mono<byte[]> response = fc.append(DATA.getDefaultBinaryData(), 0)
-            .then(fc.flush(DATA.getDefaultDataSizeLong(), true))
-            .then(fileAsyncClient.readWithResponse(new FileRange(2, 5L),
-                new DownloadRetryOptions().setMaxRetryRequests(3), null, false))
-                .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue()));
-
-        StepVerifier.create(response)
+        StepVerifier.create(fileAsyncClient.readWithResponse(new FileRange(2, 5L),
+                new DownloadRetryOptions().setMaxRetryRequests(3), null, false)
+            .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
             .verifyError(IOException.class);
     }
 
     @Test
     public void readMin() {
-        Mono<byte[]> response = fc.append(DATA.getDefaultBinaryData(), 0)
-            .then(fc.flush(DATA.getDefaultDataSizeLong(), true))
-            .then(FluxUtil.collectBytesInByteBufferStream(fc.read()));
+        fc.append(DATA.getDefaultBinaryData(), 0).block();
+        fc.flush(DATA.getDefaultDataSizeLong(), true).block();
 
-        StepVerifier.create(response)
+        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(fc.read()))
             .assertNext(r -> TestUtils.assertArraysEqual(DATA.getDefaultBytes(), r))
             .verifyComplete();
     }
@@ -1651,13 +1437,13 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     @MethodSource("readRangeSupplier")
     public void readRange(long offset, Long count, String expectedData) {
         FileRange range = (count == null) ? new FileRange(offset) : new FileRange(offset, count);
+        fc.append(DATA.getDefaultBinaryData(), 0).block();
+        fc.flush(DATA.getDefaultDataSizeLong(), true).block();
 
-        Mono<byte[]> response = fc.append(DATA.getDefaultBinaryData(), 0)
-            .then(fc.flush(DATA.getDefaultDataSizeLong(), true))
-            .then(fc.readWithResponse(range, null, null, false))
-                .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue()));
+        ByteArrayOutputStream readData = new ByteArrayOutputStream();
 
-        StepVerifier.create(response)
+        StepVerifier.create(fc.readWithResponse(range, null, null, false)
+            .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
             .assertNext(bytes -> assertArrayEquals(expectedData.getBytes(), bytes))
             .verifyComplete();
     }
@@ -1672,30 +1458,17 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("modifiedMatchAndLeaseIdSupplier")
+    @MethodSource("modifiedMatchAndLeaseIdSupplier") //hang
     public void readAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                        String leaseID) {
-        Mono<FileReadAsyncResponse> response = Mono.zip(setupPathLeaseConditionAsync(fc, leaseID),
-            setupPathMatchConditionAsync(fc, match))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(newLease)
-                        .setIfMatch(newMatch)
-                        .setIfNoneMatch(noneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                return fc.readWithResponse(null, null, drc, false);
-            });
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(fc, leaseID))
+            .setIfMatch(setupPathMatchCondition(fc, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(response)
+        StepVerifier.create(fc.readWithResponse(null, null, drc, false))
             .assertNext(r -> assertEquals(200, r.getStatusCode()))
             .verifyComplete();
     }
@@ -1704,34 +1477,26 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void readACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                            String leaseID) {
-        Mono<FileReadAsyncResponse> response = Mono.zip(setupPathLeaseConditionAsync(fc, leaseID),
-            setupPathMatchConditionAsync(fc, noneMatch))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(leaseID)
-                        .setIfMatch(match)
-                        .setIfNoneMatch(newNoneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                return fc.readWithResponse(null, null, drc, false);
-            });
+        setupPathLeaseCondition(fc, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(response)
+
+        StepVerifier.create(fc.readWithResponse(null, null, drc, false))
             .verifyError(DataLakeStorageException.class);
     }
 
     @Test
-    public void readMd5() {
-        Mono<FileReadAsyncResponse> response = fc.append(DATA.getDefaultBinaryData(), 0)
-            .then(fc.flush(DATA.getDefaultDataSizeLong(), true))
-            .then(fc.readWithResponse(new FileRange(0, 3L), null, null,
-                true));
+    public void readMd5() throws NoSuchAlgorithmException {
+        fc.append(DATA.getDefaultBinaryData(), 0).block();
+        fc.flush(DATA.getDefaultDataSizeLong(), true).block();
 
-        StepVerifier.create(response)
+        StepVerifier.create(fc.readWithResponse(new FileRange(0, 3L),
+        null, null, true))
             .assertNext(r -> {
                 byte[] contentMD5 = r.getHeaders().getValue(HttpHeaderName.CONTENT_MD5).getBytes();
                 try {
@@ -1748,15 +1513,14 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
     @Test
     public void readRetryDefault() {
-        Mono<byte[]> response = fc.append(DATA.getDefaultBinaryData(), 0)
-            .then(fc.flush(DATA.getDefaultDataSizeLong(), true))
-                .flatMap(r -> {
-                    DataLakeFileAsyncClient failureFileAsyncClient = getFileAsyncClient(getDataLakeCredential(),
-                        fc.getFileUrl(), new MockFailureResponsePolicy(5));
-                    return FluxUtil.collectBytesInByteBufferStream(failureFileAsyncClient.read());
-                });
+        fc.append(DATA.getDefaultBinaryData(), 0).block();
+        fc.flush(DATA.getDefaultDataSizeLong(), true).block();
+        DataLakeFileAsyncClient failureFileAsyncClient = getFileAsyncClient(getDataLakeCredential(), fc.getFileUrl(),
+            new MockFailureResponsePolicy(5));
 
-        StepVerifier.create(response)
+        ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
+
+        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(failureFileAsyncClient.read()))
             .assertNext(r -> TestUtils.assertArraysEqual(DATA.getDefaultBytes(), r))
             .verifyComplete();
     }
@@ -1771,12 +1535,11 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             assertTrue(testFile.createNewFile());
         }
 
-        Mono<PathProperties> response = fc.append(DATA.getDefaultBinaryData(), 0)
-            .then(fc.flush(DATA.getDefaultDataSizeLong(), true))
-            .then(fc.readToFile(testFile.getPath()));
+        fc.append(DATA.getDefaultBinaryData(), 0);
+        fc.flush(DATA.getDefaultDataSizeLong(), true);
 
         // Default overwrite is false so this should fail
-        StepVerifier.create(response)
+        StepVerifier.create(fc.readToFile(testFile.getPath()))
             .verifyErrorSatisfies(r -> {
                 UncheckedIOException ex = assertInstanceOf(UncheckedIOException.class, r);
                 assertInstanceOf(FileAlreadyExistsException.class, ex.getCause());
@@ -1793,11 +1556,10 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             assertTrue(testFile.createNewFile());
         }
 
-        Mono<PathProperties> response = fc.append(DATA.getDefaultBinaryData(), 0)
-            .then(fc.flush(DATA.getDefaultDataSizeLong(), true))
-            .then(fc.readToFile(testFile.getPath(), true));
+        fc.append(DATA.getDefaultBinaryData(), 0).block();
+        fc.flush(DATA.getDefaultDataSizeLong(), true).block();
 
-        StepVerifier.create(response)
+        StepVerifier.create(fc.readToFile(testFile.getPath(), true))
             .assertNext(Assertions::assertNotNull)
             .verifyComplete();
 
@@ -1815,11 +1577,10 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             assertTrue(testFile.delete());
         }
 
-        Mono<PathProperties> response = fc.append(DATA.getDefaultBinaryData(), 0)
-            .then(fc.flush(DATA.getDefaultDataSizeLong(), true))
-            .then(fc.readToFile(testFile.getPath(), true));
+        fc.append(DATA.getDefaultBinaryData(), 0).block();
+        fc.flush(DATA.getDefaultDataSizeLong(), true).block();
 
-        StepVerifier.create(response)
+        StepVerifier.create(fc.readToFile(testFile.getPath(), true))
             .assertNext(Assertions::assertNotNull)
             .verifyComplete();
 
@@ -1837,19 +1598,17 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             assertTrue(testFile.createNewFile());
         }
 
+        fc.append(DATA.getDefaultBinaryData(), 0).block();
+        fc.flush(DATA.getDefaultDataSizeLong(), true).block();
+
         Set<OpenOption> openOptions = new HashSet<>(Arrays.asList(
             StandardOpenOption.CREATE, StandardOpenOption.READ, StandardOpenOption.WRITE));
 
-        Mono<Response<PathProperties>> response = fc.append(DATA.getDefaultBinaryData(), 0)
-            .then(fc.flush(DATA.getDefaultDataSizeLong(), true))
-            .then(fc.readToFileWithResponse(testFile.getPath(), null, null,
-                null, null, false, openOptions));
-
-        StepVerifier.create(response)
+        StepVerifier.create(fc.readToFileWithResponse(testFile.getPath(), null, null,
+        null, null, false, openOptions))
             .assertNext(r -> {
                 try {
-                    assertEquals(DATA.getDefaultText(), new String(Files.readAllBytes(testFile.toPath()),
-                        StandardCharsets.UTF_8));
+                    assertEquals(DATA.getDefaultText(), new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -1867,19 +1626,17 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             assertTrue(testFile.createNewFile());
         }
 
+        fc.append(DATA.getDefaultBinaryData(), 0).block();
+        fc.flush(DATA.getDefaultDataSizeLong(), true).block();
+
         Set<OpenOption> openOptions = new HashSet<>(Arrays.asList(StandardOpenOption.CREATE,
             StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.READ, StandardOpenOption.WRITE));
 
-        Mono<Response<PathProperties>> response = fc.append(DATA.getDefaultBinaryData(), 0)
-            .then(fc.flush(DATA.getDefaultDataSizeLong(), true))
-            .then(fc.readToFileWithResponse(testFile.getPath(), null, null,
-                null, null, false, openOptions));
-
-        StepVerifier.create(response)
+        StepVerifier.create(fc.readToFileWithResponse(testFile.getPath(), null, null,
+        null, null, false, openOptions))
             .assertNext(r -> {
                 try {
-                    assertEquals(DATA.getDefaultText(), new String(Files.readAllBytes(testFile.toPath()),
-                        StandardCharsets.UTF_8));
+                    assertEquals(DATA.getDefaultText(), new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -1887,7 +1644,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("downloadFileSupplier")
     public void downloadFile(int fileSize) {
@@ -1895,6 +1652,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         file.deleteOnExit();
         createdFiles.add(file);
 
+        fc.uploadFromFile(file.toPath().toString(), true).block();
         File outFile = new File(testResourceNamer.randomName("", 60) + ".txt");
         outFile.deleteOnExit();
         createdFiles.add(outFile);
@@ -1903,11 +1661,12 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             assertTrue(outFile.delete());
         }
 
-        StepVerifier.create(fc.uploadFromFile(file.toPath().toString(), true)
-            .then(fc.readToFileWithResponse(outFile.toPath().toString(), null,
-                new ParallelTransferOptions().setBlockSizeLong(4L * 1024 * 1024),
-            null, null, false, null)))
-            .assertNext(r -> assertEquals(fileSize, r.getValue().getFileSize()))
+        StepVerifier.create(fc.readToFileWithResponse(outFile.toPath().toString(), null,
+            new ParallelTransferOptions().setBlockSizeLong(4L * 1024 * 1024),
+            null, null, false, null))
+            .assertNext(r -> {
+                assertEquals(fileSize, r.getValue().getFileSize());
+            })
             .verifyComplete();
 
         compareFiles(file, outFile, 0, fileSize);
@@ -1924,7 +1683,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         );
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("downloadFileSupplier")
     public void downloadFileAsyncBufferCopy(int fileSize) {
@@ -1934,10 +1693,16 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .credential(getDataLakeCredential())
             .buildAsyncClient();
 
+        DataLakeFileAsyncClient fileAsyncClient = datalakeServiceAsyncClient.createFileSystem(fileSystemName)
+            .blockOptional()
+            .orElseThrow(() -> new IllegalStateException("Expected file system to be created."))
+            .getFileAsyncClient(generatePathName());
+
         File file = getRandomFile(fileSize);
         file.deleteOnExit();
         createdFiles.add(file);
 
+        fileAsyncClient.uploadFromFile(file.toPath().toString(), true).block();
         File outFile = new File(testResourceNamer.randomName("", 60) + ".txt");
         outFile.deleteOnExit();
         createdFiles.add(outFile);
@@ -1946,16 +1711,10 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             assertTrue(outFile.delete());
         }
 
-        Mono<Response<PathProperties>> response = datalakeServiceAsyncClient.createFileSystem(fileSystemName)
-                .flatMap(r -> {
-                    DataLakeFileAsyncClient fileAsyncClient = r.getFileAsyncClient(generatePathName());
-                    return fileAsyncClient.uploadFromFile(file.toPath().toString(), true)
-                        .then(fileAsyncClient.readToFileWithResponse(outFile.toPath().toString(), null,
-                            new ParallelTransferOptions().setBlockSizeLong(4L * 1024 * 1024),
-                        null, null, false, null));
-                });
-
-        StepVerifier.create(response.map(Response::getValue))
+        StepVerifier.create(fileAsyncClient.readToFileWithResponse(outFile.toPath().toString(), null,
+            new ParallelTransferOptions().setBlockSizeLong(4L * 1024 * 1024),
+            null, null, false, null)
+            .map(Response::getValue))
             .assertNext(properties -> assertEquals(fileSize, properties.getFileSize()))
             .verifyComplete();
 
@@ -1969,6 +1728,8 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         file.deleteOnExit();
         createdFiles.add(file);
 
+        fc.uploadFromFile(file.toPath().toString(), true).block();
+
         File outFile = new File(testResourceNamer.randomName("", 60));
         outFile.deleteOnExit();
         createdFiles.add(outFile);
@@ -1977,9 +1738,8 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             assertTrue(outFile.delete());
         }
 
-        StepVerifier.create(fc.uploadFromFile(file.toPath().toString(), true)
-            .then(fc.readToFileWithResponse(outFile.toPath().toString(), range, null,
-            null, null, false, null)))
+        StepVerifier.create(fc.readToFileWithResponse(outFile.toPath().toString(), range, null,
+            null, null, false, null))
             .assertNext(r -> compareFiles(file, outFile, range.getOffset(), range.getCount()))
             .verifyComplete();
     }
@@ -2002,6 +1762,8 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         file.deleteOnExit();
         createdFiles.add(file);
 
+        fc.uploadFromFile(file.toPath().toString(), true).block();
+
         File outFile = new File(prefix);
         outFile.deleteOnExit();
         createdFiles.add(outFile);
@@ -2010,10 +1772,9 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             assertTrue(outFile.delete());
         }
 
-        StepVerifier.create(fc.uploadFromFile(file.toPath().toString(), true)
-            .then(fc.readToFileWithResponse(outFile.toPath().toString(),
-                new FileRange(DATA.getDefaultDataSizeLong() + 1), null, null,
-                null, false, null)))
+        StepVerifier.create(fc.readToFileWithResponse(outFile.toPath().toString(),
+            new FileRange(DATA.getDefaultDataSizeLong() + 1), null, null,
+            null, false, null))
             .verifyError(DataLakeStorageException.class);
     }
 
@@ -2023,6 +1784,8 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         file.deleteOnExit();
         createdFiles.add(file);
 
+        fc.uploadFromFile(file.toPath().toString(), true).block();
+
         File outFile = new File(prefix);
         outFile.deleteOnExit();
         createdFiles.add(outFile);
@@ -2031,9 +1794,8 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             assertTrue(outFile.delete());
         }
 
-        StepVerifier.create(fc.uploadFromFile(file.toPath().toString(), true)
-            .then(fc.readToFileWithResponse(outFile.toPath().toString(), new FileRange(0),
-            null, null, null, false, null)))
+        StepVerifier.create(fc.readToFileWithResponse(outFile.toPath().toString(), new FileRange(0),
+            null, null, null, false, null))
             .assertNext(r ->  compareFiles(file, outFile, 0, DATA.getDefaultDataSizeLong()))
             .verifyComplete();
     }
@@ -2046,6 +1808,8 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         file.deleteOnExit();
         createdFiles.add(file);
 
+        fc.uploadFromFile(file.toPath().toString(), true).block();
+
         File outFile = new File(testResourceNamer.randomName("", 60));
         outFile.deleteOnExit();
         createdFiles.add(outFile);
@@ -2054,30 +1818,15 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             assertTrue(outFile.delete());
         }
 
-        Mono<Response<PathProperties>> response = fc.uploadFromFile(file.toPath().toString(), true)
-            .then(Mono.zip(setupPathMatchConditionAsync(fc, match), setupPathLeaseConditionAsync(fc, leaseID)))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT2();
-                String newMatch = tuple.getT1();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                DataLakeRequestConditions bro = new DataLakeRequestConditions()
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified)
-                    .setIfMatch(newMatch)
-                    .setIfNoneMatch(noneMatch)
-                    .setLeaseId(newLease);
-                return fc.readToFileWithResponse(outFile.toPath().toString(), null,
-                    null, null, bro, false, null);
-            });
+        DataLakeRequestConditions bro = new DataLakeRequestConditions()
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setIfMatch(setupPathMatchCondition(fc, match))
+            .setIfNoneMatch(noneMatch)
+            .setLeaseId(setupPathLeaseCondition(fc, leaseID));
 
-        StepVerifier.create(response)
-            .assertNext(Assertions::assertNotNull)
-            .verifyComplete();
+        assertDoesNotThrow(() -> fc.readToFileWithResponse(outFile.toPath().toString(), null,
+            null, null, bro, false, null).block());
     }
 
     @ParameterizedTest
@@ -2088,6 +1837,8 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         file.deleteOnExit();
         createdFiles.add(file);
 
+        fc.uploadFromFile(file.toPath().toString(), true).block();
+
         File outFile = new File(prefix);
         outFile.deleteOnExit();
         createdFiles.add(outFile);
@@ -2096,38 +1847,31 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             assertTrue(outFile.delete());
         }
 
-        Mono<Response<PathProperties>> response = fc.uploadFromFile(file.toPath().toString(), true)
-                .then(Mono.zip(setupPathMatchConditionAsync(fc, noneMatch), setupPathLeaseConditionAsync(fc, leaseID)))
-                .flatMap(tuple -> {
-                    String newNoneMatch = tuple.getT1();
-                    if ("null".equals(newNoneMatch)) {
-                        newNoneMatch = null;
-                    }
-                    DataLakeRequestConditions bro = new DataLakeRequestConditions()
-                            .setIfModifiedSince(modified)
-                            .setIfUnmodifiedSince(unmodified)
-                            .setIfMatch(match)
-                            .setIfNoneMatch(newNoneMatch)
-                            .setLeaseId(leaseID);
-                    return fc.readToFileWithResponse(outFile.toPath().toString(), null,
-                            null, null, bro, false, null);
-                });
+        setupPathLeaseCondition(fc, leaseID);
+        DataLakeRequestConditions bro = new DataLakeRequestConditions()
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch))
+            .setLeaseId(leaseID);
 
-        StepVerifier.create(response)
+        StepVerifier.create(fc.readToFileWithResponse(outFile.toPath().toString(), null, null,
+            null, bro, false, null))
             .verifyErrorSatisfies(r -> {
                 DataLakeStorageException e = assertInstanceOf(DataLakeStorageException.class, r);
                 assertTrue(Objects.equals(e.getErrorCode(), "ConditionNotMet") || Objects.equals(e.getErrorCode(),
-                        "LeaseIdMismatchWithBlobOperation"));
+                    "LeaseIdMismatchWithBlobOperation"));
             });
-
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @Test
     public void downloadFileEtagLock() throws IOException {
         File file = getRandomFile(Constants.MB);
         file.deleteOnExit();
         createdFiles.add(file);
+
+        fc.uploadFromFile(file.toPath().toString(), true).block();
 
         File outFile = new File(prefix);
         Files.deleteIfExists(outFile.toPath());
@@ -2168,9 +1912,8 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         // dropped.
         Hooks.onErrorDropped(ignored -> { /* do nothing with it */ });
 
-        StepVerifier.create(fc.uploadFromFile(file.toPath().toString(), true)
-            .then(facDownloading.readToFileWithResponse(outFile.toPath().toString(), null, options,
-            null, null, false, null)))
+        StepVerifier.create(facDownloading.readToFileWithResponse(outFile.toPath().toString(), null, options,
+            null, null, false, null))
             .verifyErrorSatisfies(ex -> {
                 // If an operation is running on multiple threads and multiple return an exception Reactor will combine
                 // them into a CompositeException which needs to be unwrapped. If there is only a single exception
@@ -2195,13 +1938,15 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     }
 
     @SuppressWarnings("deprecation")
-    @LiveOnly
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @ValueSource(ints = {100, 8 * 1026 * 1024 + 10})
     public void downloadFileProgressReceiver(int fileSize) {
         File file = getRandomFile(fileSize);
         file.deleteOnExit();
         createdFiles.add(file);
+
+        fc.uploadFromFile(file.toPath().toString(), true).block();
 
         File outFile = new File(prefix);
         outFile.deleteOnExit();
@@ -2213,29 +1958,25 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
         MockReceiver mockReceiver = new MockReceiver();
 
-        StepVerifier.create(fc.uploadFromFile(file.toPath().toString(), true)
-            .then(fc.readToFileWithResponse(outFile.toPath().toString(), null,
-                new ParallelTransferOptions().setProgressReceiver(mockReceiver),
-                new DownloadRetryOptions().setMaxRetryRequests(3), null, false,
-                    null)))
-            .assertNext(r -> {
-                // Should receive at least one notification indicating completed progress, multiple notifications may be
-                // received if there are empty buffers in the stream.
-                assertTrue(mockReceiver.progresses.stream().anyMatch(progress -> progress == fileSize));
+        fc.readToFileWithResponse(outFile.toPath().toString(), null,
+            new ParallelTransferOptions().setProgressReceiver(mockReceiver),
+            new DownloadRetryOptions().setMaxRetryRequests(3), null, false, null).block();
 
-                // There should be NO notification with a larger than expected size.
-                assertFalse(mockReceiver.progresses.stream().anyMatch(progress -> progress > fileSize));
+        // Should receive at least one notification indicating completed progress, multiple notifications may be
+        // received if there are empty buffers in the stream.
+        assertTrue(mockReceiver.progresses.stream().anyMatch(progress -> progress == fileSize));
 
-                // We should receive at least one notification reporting an intermediary value per block, but possibly more
-                // notifications will be received depending on the implementation. We specify numBlocks - 1 because the last
-                // block will be the total size as above. Finally, we assert that the number reported monotonically increases.
-                long prevCount = -1;
-                for (long progress : mockReceiver.progresses) {
-                    assertTrue(progress >= prevCount, "Reported progress should monotonically increase");
-                    prevCount = progress;
-                }
-            })
-            .verifyComplete();
+        // There should be NO notification with a larger than expected size.
+        assertFalse(mockReceiver.progresses.stream().anyMatch(progress -> progress > fileSize));
+
+        // We should receive at least one notification reporting an intermediary value per block, but possibly more
+        // notifications will be received depending on the implementation. We specify numBlocks - 1 because the last
+        // block will be the total size as above. Finally, we assert that the number reported monotonically increases.
+        long prevCount = -1;
+        for (long progress : mockReceiver.progresses) {
+            assertTrue(progress >= prevCount, "Reported progress should monotonically increase");
+            prevCount = progress;
+        }
     }
 
     @SuppressWarnings("deprecation")
@@ -2248,13 +1989,15 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         }
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @ValueSource(ints = {100, 8 * 1026 * 1024 + 10})
     public void downloadFileProgressListener(int fileSize) {
         File file = getRandomFile(fileSize);
         file.deleteOnExit();
         createdFiles.add(file);
+
+        fc.uploadFromFile(file.toPath().toString(), true).block();
 
         File outFile = new File(prefix);
         outFile.deleteOnExit();
@@ -2266,29 +2009,25 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
         MockProgressListener mockListener = new MockProgressListener();
 
-        StepVerifier.create(fc.uploadFromFile(file.toPath().toString(), true)
-            .then(fc.readToFileWithResponse(outFile.toPath().toString(), null,
-                new ParallelTransferOptions().setProgressListener(mockListener),
-                new DownloadRetryOptions().setMaxRetryRequests(3), null, false,
-                    null)))
-            .assertNext(r -> {
-                // Should receive at least one notification indicating completed progress, multiple notifications may be
-                // received if there are empty buffers in the stream.
-                assertTrue(mockListener.progresses.stream().anyMatch(progress -> progress == fileSize));
+        fc.readToFileWithResponse(outFile.toPath().toString(), null,
+            new ParallelTransferOptions().setProgressListener(mockListener),
+            new DownloadRetryOptions().setMaxRetryRequests(3), null, false, null).block();
 
-                // There should be NO notification with a larger than expected size.
-                assertFalse(mockListener.progresses.stream().anyMatch(progress -> progress > fileSize));
+        // Should receive at least one notification indicating completed progress, multiple notifications may be
+        // received if there are empty buffers in the stream.
+        assertTrue(mockListener.progresses.stream().anyMatch(progress -> progress == fileSize));
 
-                // We should receive at least one notification reporting an intermediary value per block, but possibly more
-                // notifications will be received depending on the implementation. We specify numBlocks - 1 because the last
-                // block will be the total size as above. Finally, we assert that the number reported monotonically increases.
-                long prevCount = -1;
-                for (long progress : mockListener.progresses) {
-                    assertTrue(progress >= prevCount, "Reported progress should monotonically increase");
-                    prevCount = progress;
-                }
-            })
-            .verifyComplete();
+        // There should be NO notification with a larger than expected size.
+        assertFalse(mockListener.progresses.stream().anyMatch(progress -> progress > fileSize));
+
+        // We should receive at least one notification reporting an intermediary value per block, but possibly more
+        // notifications will be received depending on the implementation. We specify numBlocks - 1 because the last
+        // block will be the total size as above. Finally, we assert that the number reported monotonically increases.
+        long prevCount = -1;
+        for (long progress : mockListener.progresses) {
+            assertTrue(progress >= prevCount, "Reported progress should monotonically increase");
+            prevCount = progress;
+        }
     }
 
     private static final class MockProgressListener implements ProgressListener {
@@ -2315,22 +2054,25 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
 
         StepVerifier.create(fc.getProperties())
-            .verifyErrorSatisfies(r -> assertInstanceOf(DataLakeStorageException.class, r));
+            .verifyErrorSatisfies(r -> {
+                assertInstanceOf(DataLakeStorageException.class, r);
+            });
     }
 
     @Test
     public void renameFilesystemWithResponse() {
-        Mono<Response<PathProperties>> response = primaryDataLakeServiceAsyncClient.createFileSystem(generateFileSystemName())
-            .flatMap(r -> fc.renameWithResponse(r.getFileSystemName(), generatePathName(),
-                null, null, null))
-            .flatMap(r -> r.getValue().getPropertiesWithResponse(null));
+        DataLakeFileSystemAsyncClient newFileSystem = primaryDataLakeServiceAsyncClient.createFileSystem(generateFileSystemName()).block();
 
-        StepVerifier.create(response)
+        StepVerifier.create(fc.renameWithResponse(newFileSystem.getFileSystemName(), generatePathName(),
+            null, null, null)
+            .flatMap(r -> r.getValue().getPropertiesWithResponse(null)))
             .assertNext(p -> assertEquals(p.getStatusCode(), 200))
             .verifyComplete();
 
         StepVerifier.create(fc.getProperties())
-            .verifyErrorSatisfies(r -> assertInstanceOf(DataLakeStorageException.class, r));
+            .verifyErrorSatisfies(r -> {
+                assertInstanceOf(DataLakeStorageException.class, r);
+            });
     }
 
     @Test
@@ -2346,68 +2088,50 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     @CsvSource({",", "%20%25,%20%25", "%20%25,", ",%20%25"})
     public void renameUrlEncoded(String source, String destination) {
         fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName() + source);
+        fc.create().block();
 
-        Mono<Response<PathProperties>> response = fc.create()
-            .then(fc.renameWithResponse(null, generatePathName() + destination,
-                null, null, null))
+        StepVerifier.create(fc.renameWithResponse(null, generatePathName() + destination, null, null, null)
             .flatMap(r -> {
                 assertEquals(201, r.getStatusCode());
                 return r.getValue().getPropertiesWithResponse(null);
-            });
-
-        StepVerifier.create(response)
+            }))
             .assertNext(piece -> assertEquals(200, piece.getStatusCode()))
             .verifyComplete();
+
+
     }
 
     @ParameterizedTest
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void renameSourceAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                String leaseID) {
-        Mono<Response<DataLakePathAsyncClient>> response = Mono.zip(setupPathLeaseConditionAsync(fc, leaseID),
-            setupPathMatchConditionAsync(fc, match))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(newLease)
-                        .setIfMatch(newMatch)
-                        .setIfNoneMatch(noneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                return fc.renameWithResponse(null, generatePathName(), drc, null, null);
-            });
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(fc, leaseID))
+            .setIfMatch(setupPathMatchCondition(fc, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        assertAsyncResponseStatusCode(response, 201);
+        assertAsyncResponseStatusCode(fc.renameWithResponse(null, generatePathName(), drc,
+            null, null), 201);
     }
 
     @ParameterizedTest
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void renameSourceACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                    String leaseID) {
-        Mono<Response<DataLakePathAsyncClient>> response = Mono.zip(setupPathLeaseConditionAsync(fc, leaseID),
-            setupPathMatchConditionAsync(fc, noneMatch))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(leaseID)
-                    .setIfMatch(match)
-                    .setIfNoneMatch(newNoneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                return fc.renameWithResponse(null, generatePathName(), drc, null, null);
-            });
+        fc = dataLakeFileSystemAsyncClient.createFile(generatePathName()).block();
 
-        StepVerifier.create(response)
+        setupPathLeaseCondition(fc, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+
+        StepVerifier.create(fc.renameWithResponse(null, generatePathName(), drc,
+            null, null))
             .verifyError(DataLakeStorageException.class);
     }
     @ParameterizedTest
@@ -2415,28 +2139,17 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     public void renameDestAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                              String leaseID) {
         String pathName = generatePathName();
+        DataLakeFileAsyncClient destFile = dataLakeFileSystemAsyncClient.createFile(pathName).block();
 
-        Mono<Response<DataLakePathAsyncClient>> response = dataLakeFileSystemAsyncClient.createFile(pathName)
-            .flatMap(r -> Mono.zip(setupPathLeaseConditionAsync(r, leaseID), setupPathMatchConditionAsync(r, match)))
-            .flatMap(r -> {
-                String newLease = r.getT1();
-                String newMatch = r.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(newLease)
-                    .setIfMatch(newMatch)
-                    .setIfNoneMatch(noneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                return fc.renameWithResponse(null, pathName, null, drc, null);
-            });
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(destFile, leaseID))
+            .setIfMatch(setupPathMatchCondition(destFile, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        assertAsyncResponseStatusCode(response, 201);
+        assertAsyncResponseStatusCode(fc.renameWithResponse(null, pathName, null,
+            drc, null), 201);
     }
 
     @ParameterizedTest
@@ -2444,24 +2157,17 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     public void renameDestACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                  String leaseID) {
         String pathName = generatePathName();
+        DataLakeFileAsyncClient destFile = dataLakeFileSystemAsyncClient.createFile(pathName).block();
 
-        Mono<Response<DataLakePathAsyncClient>> response = dataLakeFileSystemAsyncClient.createFile(pathName)
-            .flatMap(r -> Mono.zip(setupPathLeaseConditionAsync(r, leaseID), setupPathMatchConditionAsync(r, noneMatch)))
-            .flatMap(r -> {
-                String newNoneMatch = r.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(leaseID)
-                    .setIfMatch(match)
-                    .setIfNoneMatch(newNoneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                return fc.renameWithResponse(null, pathName, null, drc, null);
-            });
+        setupPathLeaseCondition(destFile, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(destFile, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(response)
+        StepVerifier.create(fc.renameWithResponse(null, pathName, null, drc, null))
             .verifyError(DataLakeStorageException.class);
     }
 
@@ -2475,16 +2181,14 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .setAddPermission(true)
             .setDeletePermission(true);
 
-        String sas = dataLakeFileSystemAsyncClient
-            .generateSas(new DataLakeServiceSasSignatureValues(testResourceNamer.now().plusDays(1), permissions));
-        DataLakeFileAsyncClient client = getFileAsyncClient(sas, dataLakeFileSystemAsyncClient.getFileSystemUrl(),
-            fc.getFilePath());
+        String sas = dataLakeFileSystemAsyncClient.generateSas(new DataLakeServiceSasSignatureValues(testResourceNamer.now().plusDays(1), permissions));
+        DataLakeFileAsyncClient client = getFileAsyncClient(sas, dataLakeFileSystemAsyncClient.getFileSystemUrl(), fc.getFilePath());
 
-        Mono<Response<PathProperties>> response = client.rename(dataLakeFileSystemAsyncClient.getFileSystemName(),
-            generatePathName())
-            .flatMap(r -> r.getPropertiesWithResponse(null));
+        DataLakeFileAsyncClient destClient = client.rename(dataLakeFileSystemAsyncClient.getFileSystemName(), generatePathName()).block();
 
-        assertAsyncResponseStatusCode(response, 200);
+        StepVerifier.create(destClient.getPropertiesWithResponse(null))
+            .assertNext(r -> assertEquals(r.getStatusCode(), 200))
+            .verifyComplete();
     }
 
     @Test
@@ -2497,22 +2201,19 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .setAddPermission(true)
             .setDeletePermission(true);
 
-        String sas = "?" + dataLakeFileSystemAsyncClient
-            .generateSas(new DataLakeServiceSasSignatureValues(testResourceNamer.now().plusDays(1), permissions));
-        DataLakeFileAsyncClient client = getFileAsyncClient(sas, dataLakeFileSystemAsyncClient.getFileSystemUrl(),
-            fc.getFilePath());
+        String sas = "?" + dataLakeFileSystemAsyncClient.generateSas(new DataLakeServiceSasSignatureValues(testResourceNamer.now().plusDays(1), permissions));
+        DataLakeFileAsyncClient client = getFileAsyncClient(sas, dataLakeFileSystemAsyncClient.getFileSystemUrl(), fc.getFilePath());
 
-        Mono<Response<PathProperties>> response = client.rename(dataLakeFileSystemAsyncClient.getFileSystemName(),
-            generatePathName())
-            .flatMap(r -> r.getPropertiesWithResponse(null));
+        DataLakeFileAsyncClient destClient = client.rename(dataLakeFileSystemAsyncClient.getFileSystemName(), generatePathName()).block();
 
-        assertAsyncResponseStatusCode(response, 200);
+        StepVerifier.create(destClient.getPropertiesWithResponse(null))
+            .assertNext(r -> assertEquals(r.getStatusCode(), 200))
+            .verifyComplete();
     }
 
     @Test
     public void appendDataMin() {
-        StepVerifier.create(fc.append(DATA.getDefaultBinaryData(), 0))
-            .verifyComplete();
+        assertDoesNotThrow(() -> fc.append(DATA.getDefaultBinaryData(), 0).block());
     }
 
     @Test
@@ -2531,12 +2232,10 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
     @Test
     public void appendDataMd5() throws NoSuchAlgorithmException {
+        fc = dataLakeFileSystemAsyncClient.createFile(generatePathName()).block();
         byte[] md5 = MessageDigest.getInstance("MD5").digest(DATA.getDefaultText().getBytes());
 
-        Mono<Response<Void>> response = dataLakeFileSystemAsyncClient.createFile(generatePathName())
-            .flatMap(r -> r.appendWithResponse(DATA.getDefaultBinaryData(), 0, md5, null));
-
-        StepVerifier.create(response)
+        StepVerifier.create(fc.appendWithResponse(DATA.getDefaultBinaryData(), 0, md5, null))
             .assertNext(r -> {
                 HttpHeaders headers = r.getHeaders();
                 assertEquals(202, r.getStatusCode());
@@ -2566,34 +2265,31 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
     @Test
     public void appendDataEmptyBody() {
-        Mono<Void> response = dataLakeFileSystemAsyncClient.createFile(generatePathName())
-            .flatMap(r -> r.append(BinaryData.fromBytes(new byte[0]), 0));
+        fc = dataLakeFileSystemAsyncClient.createFile(generatePathName()).block();
 
-        StepVerifier.create(response)
+        StepVerifier.create(fc.append(BinaryData.fromBytes(new byte[0]), 0))
             .verifyError(DataLakeStorageException.class);
     }
 
     @Test
     public void appendDataNullBody() {
-        Mono<Void> response = dataLakeFileSystemAsyncClient.createFile(generatePathName())
-            .flatMap(r -> r.append(null, 0, 0));
+        fc = dataLakeFileSystemAsyncClient.createFile(generatePathName()).block();
 
-        StepVerifier.create(response)
+        StepVerifier.create(fc.append(null, 0, 0))
             .verifyError(NullPointerException.class);
     }
 
     @Test
     public void appendDataLease() {
-        Mono<Response<Void>> response = setupPathLeaseConditionAsync(fc, RECEIVED_LEASE_ID)
-            .flatMap(r -> fc.appendWithResponse(DATA.getDefaultBinaryData(), 0, null, r));
-
-        assertAsyncResponseStatusCode(response, 202);
+        assertAsyncResponseStatusCode(fc.appendWithResponse(DATA.getDefaultBinaryData(), 0,
+            null, setupPathLeaseCondition(fc, RECEIVED_LEASE_ID)), 202);
     }
 
     @Test
     public void appendDataLeaseFail() {
-        StepVerifier.create(setupPathLeaseConditionAsync(fc, RECEIVED_LEASE_ID)
-            .then(fc.appendWithResponse(DATA.getDefaultBinaryData(), 0, null, GARBAGE_LEASE_ID)))
+        setupPathLeaseCondition(fc, RECEIVED_LEASE_ID);
+
+        StepVerifier.create(fc.appendWithResponse(DATA.getDefaultBinaryData(), 0, null, GARBAGE_LEASE_ID))
             .verifyErrorSatisfies(r -> {
                 DataLakeStorageException e = assertInstanceOf(DataLakeStorageException.class, r);
                 assertEquals(412, e.getResponse().getStatusCode());
@@ -2601,24 +2297,20 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     }
 
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-08-04")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200804ServiceVersion")
     @Test
     public void appendDataLeaseAcquire() {
-        Mono<DataLakeFileAsyncClient> client = dataLakeFileSystemAsyncClient.createFileIfNotExists(generatePathName());
+        fc = dataLakeFileSystemAsyncClient.createFileIfNotExists(generatePathName()).block();
 
-        Mono<Response<Void>> response1 = client.flatMap(r -> {
-            DataLakeFileAppendOptions appendOptions = new DataLakeFileAppendOptions()
-                .setLeaseAction(LeaseAction.ACQUIRE)
-                .setProposedLeaseId(CoreUtils.randomUuid().toString())
-                .setLeaseDuration(15);
-            return r.appendWithResponse(DATA.getDefaultBinaryData(), 0, appendOptions);
-        });
+        DataLakeFileAppendOptions appendOptions = new DataLakeFileAppendOptions()
+            .setLeaseAction(LeaseAction.ACQUIRE)
+            .setProposedLeaseId(CoreUtils.randomUuid().toString())
+            .setLeaseDuration(15);
 
-        assertAsyncResponseStatusCode(response1, 202);
+        assertAsyncResponseStatusCode(fc.appendWithResponse(DATA.getDefaultBinaryData(), 0, appendOptions),
+            202);
 
-        Mono<PathProperties> response2 = client.flatMap(DataLakePathAsyncClient::getProperties);
-
-        StepVerifier.create(response2)
+        StepVerifier.create(fc.getProperties())
             .assertNext(r -> {
                 assertEquals(LeaseStatusType.LOCKED, r.getLeaseStatus());
                 assertEquals(LeaseStateType.LEASED, r.getLeaseState());
@@ -2627,70 +2319,59 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-08-04")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200804ServiceVersion")
     @Test
     public void appendDataLeaseAutoRenew() {
-        Mono<Tuple2<Response<Void>, PathProperties>> response = dataLakeFileSystemAsyncClient
-            .createFileIfNotExists(generatePathName())
-            .flatMap(file -> {
-                String leaseId = CoreUtils.randomUuid().toString();
-                DataLakeLeaseAsyncClient leaseClient = createLeaseAsyncClient(file, leaseId);
+        fc = dataLakeFileSystemAsyncClient.createFileIfNotExists(generatePathName()).block();
+        String leaseId = CoreUtils.randomUuid().toString();
 
-                return Mono.zip(leaseClient.acquireLease(15), Mono.just(file), Mono.just(leaseId));
-            })
-            .flatMap(r -> {
-                DataLakeFileAppendOptions appendOptions = new DataLakeFileAppendOptions()
-                    .setLeaseAction(LeaseAction.AUTO_RENEW)
-                    .setLeaseId(r.getT3());
-                return Mono.zip(r.getT2().appendWithResponse(DATA.getDefaultBinaryData(), 0, appendOptions),
-                    Mono.just(r.getT2()));
-            }).flatMap(tuple -> Mono.zip(Mono.just(tuple.getT1()), tuple.getT2().getProperties()));
+        DataLakeLeaseAsyncClient leaseClient = createLeaseAsyncClient(fc, leaseId);
+        leaseClient.acquireLease(15).block();
 
-        StepVerifier.create(response)
+        DataLakeFileAppendOptions appendOptions = new DataLakeFileAppendOptions()
+            .setLeaseAction(LeaseAction.AUTO_RENEW)
+            .setLeaseId(leaseId);
+
+        assertAsyncResponseStatusCode(fc.appendWithResponse(DATA.getDefaultBinaryData(), 0, appendOptions),
+            202);
+
+        StepVerifier.create(fc.getProperties())
             .assertNext(r -> {
-                assertEquals(202, r.getT1().getStatusCode());
-                assertEquals(LeaseStatusType.LOCKED, r.getT2().getLeaseStatus());
-                assertEquals(LeaseStateType.LEASED, r.getT2().getLeaseState());
-                assertEquals(LeaseDurationType.FIXED, r.getT2().getLeaseDuration());
-            });
+                assertEquals(LeaseStatusType.LOCKED, r.getLeaseStatus());
+                assertEquals(LeaseStateType.LEASED, r.getLeaseState());
+                assertEquals(LeaseDurationType.FIXED, r.getLeaseDuration());
+            })
+            .verifyComplete();
     }
 
     @Test
     public void appendDataLeaseRelease() {
+        fc = dataLakeFileSystemAsyncClient.createFileIfNotExists(generatePathName()).block();
         String leaseId = CoreUtils.randomUuid().toString();
+
+        DataLakeLeaseAsyncClient leaseClient = createLeaseAsyncClient(fc, leaseId);
+        leaseClient.acquireLease(15).block();
+
         DataLakeFileAppendOptions appendOptions = new DataLakeFileAppendOptions()
             .setLeaseAction(LeaseAction.RELEASE)
             .setLeaseId(leaseId)
             .setFlush(true);
 
-        Mono<Tuple2<Response<Void>, PathProperties>> response = dataLakeFileSystemAsyncClient
-            .createFileIfNotExists(generatePathName())
-            .flatMap(r -> {
-                DataLakeLeaseAsyncClient leaseClient = createLeaseAsyncClient(r, leaseId);
+        assertAsyncResponseStatusCode(fc.appendWithResponse(DATA.getDefaultBinaryData(), 0, appendOptions),
+            202);
 
-                Mono<Response<Void>> response1 = leaseClient.acquireLease(15)
-                    .then(r.appendWithResponse(DATA.getDefaultBinaryData(), 0, appendOptions));
-
-                return Mono.zip(response1, Mono.just(r));
-            })
-            .flatMap(tuple -> {
-                Mono<PathProperties> response2 = tuple.getT2().getProperties();
-                return Mono.zip(Mono.just(tuple.getT1()), response2);
-            });
-
-        StepVerifier.create(response)
+        StepVerifier.create(fc.getProperties())
             .assertNext(r -> {
-                assertEquals(202, r.getT1().getStatusCode());
-                assertEquals(LeaseStatusType.UNLOCKED, r.getT2().getLeaseStatus());
-                assertEquals(LeaseStateType.AVAILABLE, r.getT2().getLeaseState());
+                assertEquals(LeaseStatusType.UNLOCKED, r.getLeaseStatus());
+                assertEquals(LeaseStateType.AVAILABLE, r.getLeaseState());
             })
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-08-04")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200804ServiceVersion")
     @Test
     public void appendDataLeaseAcquireRelease() {
-        Mono<DataLakeFileAsyncClient> client = dataLakeFileSystemAsyncClient.createFileIfNotExists(generatePathName());
+        fc = dataLakeFileSystemAsyncClient.createFileIfNotExists(generatePathName()).block();
 
         DataLakeFileAppendOptions appendOptions = new DataLakeFileAppendOptions()
             .setLeaseAction(LeaseAction.ACQUIRE_RELEASE)
@@ -2698,14 +2379,10 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .setLeaseDuration(15)
             .setFlush(true);
 
-        Mono<Response<Void>> response1 = client.flatMap(r -> r.appendWithResponse(DATA.getDefaultBinaryData(),
-            0, appendOptions));
+        assertAsyncResponseStatusCode(fc.appendWithResponse(DATA.getDefaultBinaryData(), 0, appendOptions),
+            202);
 
-        assertAsyncResponseStatusCode(response1, 202);
-
-        Mono<PathProperties> response2 = client.flatMap(DataLakePathAsyncClient::getProperties);
-
-        StepVerifier.create(response2)
+        StepVerifier.create(fc.getProperties())
             .assertNext(r -> {
                 assertEquals(LeaseStatusType.UNLOCKED, r.getLeaseStatus());
                 assertEquals(LeaseStateType.AVAILABLE, r.getLeaseState());
@@ -2729,16 +2406,15 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         DataLakeFileAsyncClient clientWithFailure = getFileAsyncClient(getDataLakeCredential(), fc.getFileUrl(),
             new TransientFailureInjectingHttpPipelinePolicy());
 
-        Mono<byte[]> response = clientWithFailure.append(DATA.getDefaultBinaryData(), 0)
-            .then(fc.flush(DATA.getDefaultDataSizeLong(), true))
-            .then(FluxUtil.collectBytesInByteBufferStream(fc.read()));
+        clientWithFailure.append(DATA.getDefaultBinaryData(), 0).block();
+        fc.flush(DATA.getDefaultDataSizeLong(), true).block();
 
-        StepVerifier.create(response)
+        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(fc.read()))
             .assertNext(r -> TestUtils.assertArraysEqual(DATA.getDefaultBytes(), r))
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void appendDataFlush() {
         DataLakeFileAppendOptions appendOptions = new DataLakeFileAppendOptions().setFlush(true);
@@ -2761,8 +2437,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     }
     @Test
     public void appendBinaryDataMin() {
-        StepVerifier.create(fc.append(DATA.getDefaultBinaryData(), 0))
-            .verifyComplete();
+        assertDoesNotThrow(() -> fc.append(DATA.getDefaultBinaryData(), 0).block());
     }
 
     @Test
@@ -2779,7 +2454,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void appendBinaryDataFlush() {
         DataLakeFileAppendOptions appendOptions = new DataLakeFileAppendOptions().setFlush(true);
@@ -2798,52 +2473,40 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
     @Test
     public void flushDataMin() {
-        Mono<PathInfo> response = fc.append(DATA.getDefaultBinaryData(), 0)
-            .then(fc.flush(DATA.getDefaultDataSizeLong(), true));
+        fc.append(DATA.getDefaultBinaryData(), 0).block();
 
-        StepVerifier.create(response)
-            .assertNext(Assertions::assertNotNull)
-            .verifyComplete();
+        assertDoesNotThrow(() -> fc.flush(DATA.getDefaultDataSizeLong(), true).block());
     }
 
     @Test
     public void flushClose() {
         fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
+        fc.create().block();
+        fc.append(DATA.getDefaultBinaryData(), 0).block();
 
-        Mono<Response<PathInfo>> response = fc.create()
-            .then(fc.append(DATA.getDefaultBinaryData(), 0))
-            .then(fc.flushWithResponse(DATA.getDefaultDataSizeLong(), false,
-                true, null, null));
-
-        StepVerifier.create(response)
-            .assertNext(Assertions::assertNotNull)
-            .verifyComplete();
+        assertDoesNotThrow(() -> fc.flushWithResponse(DATA.getDefaultDataSizeLong(), false,
+            true, null, null).block());
     }
 
     @Test
     public void flushRetainUncommittedData() {
         fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
+        fc.create().block();
+        fc.append(DATA.getDefaultBinaryData(), 0).block();
 
-        Mono<Response<PathInfo>> response = fc.create()
-            .then(fc.append(DATA.getDefaultBinaryData(), 0))
-            .then(fc.flushWithResponse(DATA.getDefaultDataSizeLong(), true,
-                false, null, null));
-
-        StepVerifier.create(response)
-            .assertNext(Assertions::assertNotNull)
-            .verifyComplete();
+        assertDoesNotThrow(() -> fc.flushWithResponse(DATA.getDefaultDataSizeLong(), true,
+            false, null, null).block());
     }
 
     @Test
     public void flushIA() {
         fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
+        fc.create().block();
+        fc.append(DATA.getDefaultBinaryData(), 0).block();
 
-        Mono<Response<PathInfo>> response = fc.create()
-            .then(fc.append(DATA.getDefaultBinaryData(), 0))
-            .then(fc.flushWithResponse(4, false, false, null,
-                null));
 
-        StepVerifier.create(response)
+        StepVerifier.create(fc.flushWithResponse(4, false, false, null,
+        null))
             .verifyError(DataLakeStorageException.class);
     }
 
@@ -2851,22 +2514,21 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     @CsvSource(value = {"null,null,null,null,null", "control,disposition,encoding,language,type"})
     public void flushHeaders(String cacheControl, String contentDisposition, String contentEncoding,
                              String contentLanguage, String contentType) {
+        fc = dataLakeFileSystemAsyncClient.createFile(generatePathName()).block();
+        fc.append(DATA.getDefaultBinaryData(), 0).block();
+
         PathHttpHeaders headers = new PathHttpHeaders().setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
             .setContentLanguage(contentLanguage)
             .setContentType(contentType);
 
-        Mono<Response<PathProperties>> response = dataLakeFileSystemAsyncClient.createFile(generatePathName())
-            .flatMap(r -> fc.append(DATA.getDefaultBinaryData(), 0)
-                .then(fc.flushWithResponse(DATA.getDefaultDataSizeLong(), false, false, headers,
-                    null)
-                .then(fc.getPropertiesWithResponse(null))));
+        fc.flushWithResponse(DATA.getDefaultDataSizeLong(), false, false, headers, null).block();
 
         contentType = (contentType == null) ? "application/octet-stream" : contentType;
-        String finalContentType = contentType;
 
-        StepVerifier.create(response)
+        String finalContentType = contentType;
+        StepVerifier.create(fc.getPropertiesWithResponse(null))
             .assertNext(r -> validatePathProperties(r, cacheControl, contentDisposition, contentEncoding, contentLanguage,
                 null, finalContentType))
             .verifyComplete();
@@ -2876,56 +2538,37 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void flushAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                         String leaseID) {
-        Mono<Response<PathInfo>> response = dataLakeFileSystemAsyncClient.createFile(generatePathName())
-            .flatMap(r -> r.append(DATA.getDefaultBinaryData(), 0)
-                .then(Mono.zip(setupPathLeaseConditionAsync(r, leaseID),
-                    setupPathMatchConditionAsync(r, match), Mono.just(r))))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(newLease)
-                    .setIfMatch(newMatch)
-                    .setIfNoneMatch(noneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                return tuple.getT3().flushWithResponse(DATA.getDefaultDataSizeLong(), false,
-                    false, null, drc);
-            });
+        fc = dataLakeFileSystemAsyncClient.createFile(generatePathName()).block();
+        fc.append(DATA.getDefaultBinaryData(), 0).block();
 
-        assertAsyncResponseStatusCode(response, 200);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(fc, leaseID))
+            .setIfMatch(setupPathMatchCondition(fc, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+
+        assertAsyncResponseStatusCode(fc.flushWithResponse(DATA.getDefaultDataSizeLong(), false,
+            false, null, drc), 200);
     }
 
     @ParameterizedTest
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void flushACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                             String leaseID) {
-        Mono<Response<PathInfo>> response = dataLakeFileSystemAsyncClient.createFile(generatePathName())
-            .flatMap(r -> r.append(DATA.getDefaultBinaryData(), 0)
-                .then(Mono.zip(setupPathLeaseConditionAsync(r, leaseID), setupPathMatchConditionAsync(r, noneMatch),
-                    Mono.just(r))))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(leaseID)
-                    .setIfMatch(match)
-                    .setIfNoneMatch(newNoneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                return tuple.getT3().flushWithResponse(DATA.getDefaultDataSize(), false, false,
-                    null, drc);
-            });
+        fc = dataLakeFileSystemAsyncClient.createFile(generatePathName()).block();
+        fc.append(DATA.getDefaultBinaryData(), 0).block();
 
-        StepVerifier.create(response)
+        setupPathLeaseCondition(fc, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+
+        StepVerifier.create(fc.flushWithResponse(DATA.getDefaultDataSize(), false, false,
+        null, drc))
             .verifyError(DataLakeStorageException.class);
 
     }
@@ -2940,23 +2583,19 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
     @Test
     public void flushDataOverwrite() {
-        Mono<PathInfo> response1 = fc.append(DATA.getDefaultBinaryData(), 0)
-                .then(fc.flush(DATA.getDefaultDataSizeLong(), true));
+        fc.append(DATA.getDefaultBinaryData(), 0).block();
+        assertDoesNotThrow(() -> fc.flush(DATA.getDefaultDataSizeLong(), true).block());
 
-        StepVerifier.create((response1))
-            .assertNext(Assertions::assertNotNull)
-            .verifyComplete();
+        fc.append(DATA.getDefaultBinaryData(), 0).block();
 
-        Mono<PathInfo> response2 = fc.append(DATA.getDefaultBinaryData(), 0)
-            .then(fc.flush(DATA.getDefaultDataSizeLong(), false));
         // Attempt to write data without overwrite enabled
-        StepVerifier.create(response2)
+        StepVerifier.create(fc.flush(DATA.getDefaultDataSizeLong(), false))
             .verifyError(DataLakeStorageException.class);
     }
 
     @ParameterizedTest
-    @CsvSource({"file,file", "path/to]a file,path/to]a file", "path%2Fto%5Da%20file,path%2Fto%5Da%20file", "斑點,斑點",
-        "%E6%96%91%E9%BB%9E,%E6%96%91%E9%BB%9E"})
+    @CsvSource({"file,file", "path/to]a file,path/to]a file", "path%2Fto%5Da%20file,path/to]a file", "斑點,斑點",
+        "%E6%96%91%E9%BB%9E,斑點"})
     public void getFileNameAndBuildClient(String originalFileName, String finalFileName) {
         DataLakeFileAsyncClient client = dataLakeFileSystemAsyncClient.getFileAsyncClient(originalFileName);
 
@@ -2977,7 +2616,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
     // "No overwrite interrupted" tests were not ported over for datalake. This is because the access condition check
     // occurs on the create method, so simple access conditions tests suffice.
-    @LiveOnly // Test uploads large amount of data
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode") // Test uploads large amount of data
     @ParameterizedTest
     @MethodSource("uploadFromFileSupplier")
     public void uploadFromFile(int fileSize, Long blockSize) throws IOException {
@@ -3014,15 +2653,15 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void uploadFromFileWithMetadata() {
+    public void uploadFromFileWithMetadata() throws IOException {
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         File file = getRandomFile(Constants.KB);
         file.deleteOnExit();
         createdFiles.add(file);
 
-        StepVerifier.create(fc.uploadFromFile(file.getPath(), null, null, metadata,
-            null)
-            .then(fc.getProperties()))
+        fc.uploadFromFile(file.getPath(), null, null, metadata, null).block();
+
+        StepVerifier.create(fc.getProperties())
             .assertNext(r -> assertEquals(metadata, r.getMetadata()))
             .verifyComplete();
 
@@ -3039,6 +2678,9 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
     @Test
     public void uploadFromFileDefaultNoOverwrite() {
+        DataLakeFileAsyncClient fac = dataLakeFileSystemAsyncClient.createFile(generatePathName()).blockOptional()
+            .orElseThrow(() -> new RuntimeException("File was not created"));
+
         File file = getRandomFile(50);
         file.deleteOnExit();
         createdFiles.add(file);
@@ -3046,26 +2688,22 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         StepVerifier.create(fc.uploadFromFile(file.toPath().toString()))
             .verifyError(DataLakeStorageException.class);
 
-        Mono<Void> response = dataLakeFileSystemAsyncClient.createFile(generatePathName())
-            .flatMap(r -> r.uploadFromFile(getRandomFile(50).toPath().toString()));
-
-        StepVerifier.create(response)
+        StepVerifier.create(fac.uploadFromFile(getRandomFile(50).toPath().toString()))
             .verifyError(DataLakeStorageException.class);
     }
 
     @Test
     public void uploadFromFileOverwrite() {
+        DataLakeFileAsyncClient fac = dataLakeFileSystemAsyncClient.createFile(generatePathName()).blockOptional()
+            .orElseThrow(() -> new RuntimeException("File was not created"));
+
         File file = getRandomFile(50);
         file.deleteOnExit();
         createdFiles.add(file);
 
-        StepVerifier.create(fc.uploadFromFile(file.toPath().toString(), true))
-            .verifyComplete();
+        assertDoesNotThrow(() -> fc.uploadFromFile(file.toPath().toString(), true).block());
 
-        Mono<Void> response = dataLakeFileSystemAsyncClient.createFile(generatePathName())
-            .flatMap(r -> r.uploadFromFile(getRandomFile(50).toPath().toString(), true));
-
-        StepVerifier.create(response)
+        StepVerifier.create(fac.uploadFromFile(getRandomFile(50).toPath().toString(), true))
             .verifyComplete();
     }
 
@@ -3102,7 +2740,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     }
 
     @SuppressWarnings("deprecation")
-    @LiveOnly
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("uploadFromFileWithProgressSupplier")
     public void uploadFromFileReporter(int size, long blockSize, int bufferCount) {
@@ -3135,7 +2773,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         );
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("uploadFromFileWithProgressSupplier")
     public void uploadFromFileListener(int size, long blockSize, int bufferCount) {
@@ -3166,9 +2804,11 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         createdFiles.add(file);
 
 
-        StepVerifier.create(fc.uploadFromFile(file.toPath().toString(),
+        fc.uploadFromFile(file.toPath().toString(),
             new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(singleUploadSize),
-            null, null, null).then(fc.getProperties()))
+            null, null, null).block();
+
+        StepVerifier.create(fc.getProperties())
             .assertNext(r -> assertEquals(dataSize, r.getFileSize()))
             .verifyComplete();
     }
@@ -3203,28 +2843,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @Test
-    public void uploadFromFileEmptyFile() {
-        File file = getRandomFile(0);
-        file.deleteOnExit();
-        createdFiles.add(file);
-
-        StepVerifier.create(fc.uploadFromFileWithResponse(file.toPath().toString(), null, null,
-            null, null))
-            .assertNext(r -> {
-                // uploadFromFileWithResponse will return 200 for a non-empty file, but since we are uploading an empty
-                // file, it will return 201 since only createWithResponse gets called
-                assertEquals(201, r.getStatusCode());
-                assertNotNull(r.getValue().getETag());
-            })
-            .verifyComplete();
-
-        StepVerifier.create(fc.getProperties())
-            .assertNext(r -> assertEquals(0, r.getFileSize()))
-            .verifyComplete();
-    }
-
-    @LiveOnly
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @Test
     public void asyncBufferedUploadEmpty() {
         DataLakeFileAsyncClient fac = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
@@ -3233,7 +2852,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyError(DataLakeStorageException.class);
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("asyncBufferedUploadEmptyBuffersSupplier")
     public void asyncBufferedUploadEmptyBuffers(ByteBuffer buffer1, ByteBuffer buffer2, ByteBuffer buffer3,
@@ -3264,28 +2883,27 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         );
     }
 
-    @LiveOnly // Test uploads large amount of data
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode") // Test uploads large amount of data
     @ParameterizedTest
     @MethodSource("asyncBufferedUploadSupplier")
     public void asyncBufferedUpload(int dataSize, long bufferSize, int numBuffs) {
+        DataLakeFileAsyncClient facWrite = getPrimaryServiceClientForWrites(bufferSize)
+            .getFileSystemAsyncClient(dataLakeFileSystemAsyncClient.getFileSystemName())
+            .createFile(generatePathName()).blockOptional()
+            .orElseThrow(() -> new RuntimeException("File was not created"));
+        DataLakeFileAsyncClient facRead = dataLakeFileSystemAsyncClient.getFileAsyncClient(facWrite.getFileName());
+
         byte[] data = getRandomByteArray(dataSize);
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSizeLong(bufferSize)
             .setMaxConcurrency(numBuffs)
             .setMaxSingleUploadSizeLong(4L * Constants.MB);
 
-        Mono<byte[]> response = getPrimaryServiceClientForWrites(bufferSize)
-            .getFileSystemAsyncClient(dataLakeFileSystemAsyncClient.getFileSystemName())
-            .createFile(generatePathName())
-            .flatMap(r -> {
-                DataLakeFileAsyncClient facRead = dataLakeFileSystemAsyncClient.getFileAsyncClient(r.getFileName());
-                return r.upload(Flux.just(ByteBuffer.wrap(data)), parallelTransferOptions, true)
-                    .then(FluxUtil.collectBytesInByteBufferStream(facRead.read(), dataSize));
-            });
+        facWrite.upload(Flux.just(ByteBuffer.wrap(data)), parallelTransferOptions, true).block();
 
         // Due to memory issues, this check only runs on small to medium-sized data sets.
         if (dataSize < 100 * 1024 * 1024) {
-            StepVerifier.create(response)
+            StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(facRead.read(), dataSize))
                 .assertNext(bytes -> TestUtils.assertArraysEqual(data, bytes))
                 .verifyComplete();
         }
@@ -3353,7 +2971,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     }
 
     @SuppressWarnings("deprecation")
-    @LiveOnly
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("bufferedUploadWithProgressSupplier")
     public void bufferedUploadWithReporter(int size, long blockSize, int bufferCount) {
@@ -3387,7 +3005,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         );
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("bufferedUploadWithProgressSupplier")
     public void bufferedUploadWithListener(int size, long blockSize, int bufferCount) {
@@ -3410,10 +3028,16 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @LiveOnly // Test uploads large amount of data
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode") // Test uploads large amount of data
     @ParameterizedTest
     @MethodSource("bufferedUploadChunkedSourceSupplier")
     public void bufferedUploadChunkedSource(List<Integer> dataSizeList, long bufferSize, int numBuffers) {
+        DataLakeFileAsyncClient facWrite = getPrimaryServiceClientForWrites(bufferSize)
+            .getFileSystemAsyncClient(dataLakeFileSystemAsyncClient.getFileSystemName())
+            .createFile(generatePathName()).blockOptional()
+            .orElseThrow(() -> new RuntimeException("File was not created."));
+        DataLakeFileAsyncClient facRead = dataLakeFileSystemAsyncClient.getFileAsyncClient(facWrite.getFileName());
+
         // This test should validate that the upload should work regardless of what format the passed data is in because
         // it will be chunked appropriately.
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
@@ -3424,14 +3048,8 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .map(size -> getRandomData(size * Constants.MB))
             .collect(Collectors.toList());
 
-        Mono<byte[]> uploadOperation = getPrimaryServiceClientForWrites(bufferSize)
-            .getFileSystemAsyncClient(dataLakeFileSystemAsyncClient.getFileSystemName())
-            .createFile(generatePathName())
-            .flatMap(r -> {
-                DataLakeFileAsyncClient facRead = dataLakeFileSystemAsyncClient.getFileAsyncClient(r.getFileName());
-                return r.upload(Flux.fromIterable(dataList), parallelTransferOptions, true)
-                        .then(FluxUtil.collectBytesInByteBufferStream(facRead.read()));
-            });
+        Mono<byte[]> uploadOperation = facWrite.upload(Flux.fromIterable(dataList), parallelTransferOptions, true)
+            .then(FluxUtil.collectBytesInByteBufferStream(facRead.read()));
 
         StepVerifier.create(uploadOperation)
             .assertNext(bytes -> compareListToBuffer(dataList, ByteBuffer.wrap(bytes)))
@@ -3449,7 +3067,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     }
 
     // These two tests are to test optimizations in buffered upload for small files.
-    @LiveOnly
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("bufferedUploadHandlePathingSupplier")
     public void bufferedUploadHandlePathing(List<Integer> dataSizeList) {
@@ -3465,7 +3083,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("bufferedUploadHandlePathingSupplier")
     public void bufferedUploadHandlePathingHotFlux(List<Integer> dataSizeList) {
@@ -3486,7 +3104,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             Arrays.asList(4 * Constants.MB, 4 * Constants.MB), Collections.singletonList(4 * Constants.MB));
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("bufferedUploadHandlePathingHotFluxWithTransientFailureSupplier")
     public void bufferedUploadHandlePathingHotFluxWithTransientFailure(List<Integer> dataSizeList) {
@@ -3511,7 +3129,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     }
 
     @SuppressWarnings("deprecation")
-    @LiveOnly
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @ValueSource(ints = {11110, 2 * Constants.MB + 11})
     public void bufferedUploadAsyncHandlePathingWithTransientFailure(int dataSize) {
@@ -3521,27 +3139,25 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             new TransientFailureInjectingHttpPipelinePolicy());
 
         byte[] data = getRandomByteArray(dataSize);
-
-        Mono<byte[]> response = clientWithFailure.uploadWithResponse(new FileParallelUploadOptions(new ByteArrayInputStream(data), dataSize)
+        clientWithFailure.uploadWithResponse(new FileParallelUploadOptions(new ByteArrayInputStream(data), dataSize)
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong(2L * Constants.MB)
-                .setBlockSizeLong(2L * Constants.MB))).then(FluxUtil.collectBytesInByteBufferStream(fc.read()));
+                .setBlockSizeLong(2L * Constants.MB))).block();
 
-        StepVerifier.create(response)
-            .assertNext(r -> TestUtils.assertArraysEqual(data, r))
-            .verifyComplete();
+        byte[] readArray = FluxUtil.collectBytesInByteBufferStream(fc.read()).block();
+        TestUtils.assertArraysEqual(data, readArray);
     }
 
     @Test
     public void bufferedUploadIllegalArgumentsNull() {
-        Mono<PathInfo> response = dataLakeFileSystemAsyncClient.createFile(generatePathName())
-            .flatMap(r -> r.upload((Flux<ByteBuffer>) null,
-                    new ParallelTransferOptions().setBlockSizeLong(4L).setMaxConcurrency(4), true));
+        DataLakeFileAsyncClient fac = dataLakeFileSystemAsyncClient.createFile(generatePathName()).blockOptional()
+            .orElseThrow(() -> new RuntimeException("Cannot create file."));
 
-        StepVerifier.create(response)
+        StepVerifier.create(fac.upload((Flux<ByteBuffer>) null,
+            new ParallelTransferOptions().setBlockSizeLong(4L).setMaxConcurrency(4), true))
             .verifyError(NullPointerException.class);
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("bufferedUploadHeadersSupplier")
     public void bufferedUploadHeaders(int dataSize, String cacheControl, String contentDisposition,
@@ -3579,7 +3195,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         );
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @CsvSource(value = {"null,null,null,null", "foo,bar,fizz,buzz"}, nullValues = "null")
     public void bufferedUploadMetadata(String key1, String value1, String key2, String value2) {
@@ -3606,7 +3222,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("uploadNumberOfAppendsSupplier")
     public void bufferedUploadOptions(int dataSize, Long singleUploadSize, Long blockSize, int numAppends) {
@@ -3650,67 +3266,46 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void bufferedUploadAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                  String leaseID) {
-        Mono<Response<PathInfo>> response = dataLakeFileSystemAsyncClient.createFile(generatePathName())
-            .flatMap(fac -> Mono.zip(setupPathLeaseConditionAsync(fac, leaseID), setupPathMatchConditionAsync(fac, match),
-                Mono.just(fac)))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(newLease)
-                        .setIfMatch(newMatch)
-                        .setIfNoneMatch(noneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(10L);
-                return tuple.getT3().uploadWithResponse(Flux.just(getRandomData(10)),
-                        parallelTransferOptions, null, null, drc);
-            });
+        DataLakeFileAsyncClient fac = dataLakeFileSystemAsyncClient.createFile(generatePathName()).blockOptional()
+            .orElseThrow(() -> new RuntimeException("Could not create file"));
 
-        assertAsyncResponseStatusCode(response, 200);
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(fac, leaseID))
+            .setIfMatch(setupPathMatchCondition(fac, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(10L);
+
+        StepVerifier.create(fac.uploadWithResponse(Flux.just(getRandomData(10)),
+            parallelTransferOptions, null, null, requestConditions))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void bufferedUploadACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                      String leaseID) {
-        Mono<Response<PathInfo>> response = dataLakeFileSystemAsyncClient.createFile(generatePathName())
-            .flatMap(fac -> Mono.zip(setupPathLeaseConditionAsync(fac, leaseID), setupPathMatchConditionAsync(fac, noneMatch),
-                Mono.just(fac)))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(newLease)
-                        .setIfMatch(match)
-                        .setIfNoneMatch(newNoneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(10L);
+        DataLakeFileAsyncClient fac = dataLakeFileSystemAsyncClient.createFile(generatePathName()).blockOptional()
+            .orElseThrow(() -> new RuntimeException("Could not create file"));
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(fac, leaseID))
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(fac, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(10L);
 
-                return tuple.getT3().uploadWithResponse(Flux.just(getRandomData(10)),
-                        parallelTransferOptions, null, null, drc);
-            });
-
-        StepVerifier.create(response)
+        StepVerifier.create(fac.uploadWithResponse(Flux.just(getRandomData(10)),
+            parallelTransferOptions, null, null, requestConditions))
             .verifyErrorSatisfies(ex -> {
                 DataLakeStorageException exception = assertInstanceOf(DataLakeStorageException.class, ex);
                 assertEquals(412, exception.getStatusCode());
@@ -3719,37 +3314,35 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
     // UploadBufferPool used to lock when the number of failed stageblocks exceeded the maximum number of buffers
     // (discovered when a leaseId was invalid)
-    @LiveOnly
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @CsvSource({"7,2", "5,2"})
     public void uploadBufferPoolLockThreeOrMoreBuffers(long blockSize, int numBuffers) {
+        DataLakeFileAsyncClient fac = dataLakeFileSystemAsyncClient.createFile(generatePathName()).blockOptional()
+            .orElseThrow(() -> new RuntimeException("Could not create file"));
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().
+            setLeaseId(setupPathLeaseCondition(fac, GARBAGE_LEASE_ID));
+
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize)
             .setMaxConcurrency(numBuffers);
 
-        Mono<Response<PathInfo>> response = dataLakeFileSystemAsyncClient.createFile(generatePathName())
-            .flatMap(fac -> Mono.zip(setupPathLeaseConditionAsync(fac, GARBAGE_LEASE_ID), Mono.just(fac)))
-            .flatMap(tuple -> {
-                DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().
-                    setLeaseId(tuple.getT1());
-                return tuple.getT2().uploadWithResponse(Flux.just(getRandomData(10)),
-                    parallelTransferOptions, null, null, requestConditions);
-            });
 
-        StepVerifier.create(response)
+        StepVerifier.create(fac.uploadWithResponse(Flux.just(getRandomData(10)),
+            parallelTransferOptions, null, null, requestConditions))
             .verifyError(DataLakeStorageException.class);
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @Test
     public void bufferedUploadDefaultNoOverwrite() {
         DataLakeFileAsyncClient fac = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
+        fac.upload(DATA.getDefaultFlux(), null).block();
 
-        StepVerifier.create(fac.upload(DATA.getDefaultFlux(), null).then(fac.upload(DATA.getDefaultFlux(),
-            null)))
+        StepVerifier.create(fac.upload(DATA.getDefaultFlux(), null))
             .verifyError(IllegalArgumentException.class);
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @Test
     public void bufferedUploadOverwrite() {
         DataLakeFileAsyncClient fac = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
@@ -3758,8 +3351,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         file.deleteOnExit();
         createdFiles.add(file);
 
-        StepVerifier.create(fc.uploadFromFile(file.toPath().toString(), true))
-            .verifyComplete();
+        assertDoesNotThrow(() -> fc.uploadFromFile(file.toPath().toString(), true));
 
         StepVerifier.create(fac.uploadFromFile(getRandomFile(50).toPath().toString(), true))
             .verifyComplete();
@@ -3777,19 +3369,16 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
         Flux<ByteBuffer> stream = FluxUtil.readFile(AsynchronousFileChannel.open(file.toPath()), 0, file.length());
 
-        StepVerifier.create(fc.upload(stream, null, true)
-            .then(fc.readToFile(outFile.toPath().toString(), true)))
-            .assertNext(Assertions::assertNotNull)
-            .verifyComplete();
+        fc.upload(stream, null, true).block();
 
+        fc.readToFile(outFile.toPath().toString(), true).block();
         compareFiles(file, outFile, 0, file.length());
     }
 
     @Test
     public void uploadInputStreamNoLength() {
-        StepVerifier.create(fc.uploadWithResponse(new FileParallelUploadOptions(DATA.getDefaultInputStream())))
-            .assertNext(Assertions::assertNotNull)
-            .verifyComplete();
+        assertDoesNotThrow(() ->
+            fc.uploadWithResponse(new FileParallelUploadOptions(DATA.getDefaultInputStream())).block());
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(fc.read()))
             .assertNext(r -> TestUtils.assertArraysEqual(DATA.getDefaultBytes(), r))
@@ -3813,10 +3402,8 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         DataLakeFileAsyncClient clientWithFailure = getFileAsyncClient(getDataLakeCredential(), fc.getFileUrl(),
             new TransientFailureInjectingHttpPipelinePolicy());
 
-        StepVerifier.create(clientWithFailure.uploadWithResponse(
-            new FileParallelUploadOptions(DATA.getDefaultInputStream())))
-            .assertNext(Assertions::assertNotNull)
-            .verifyComplete();
+        assertDoesNotThrow(() -> clientWithFailure.uploadWithResponse(
+            new FileParallelUploadOptions(DATA.getDefaultInputStream())).block());
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(fc.read()))
             .assertNext(r -> TestUtils.assertArraysEqual(DATA.getDefaultBytes(), r))
@@ -3827,9 +3414,8 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     public void uploadBinaryData() {
         DataLakeFileAsyncClient client = getFileAsyncClient(getDataLakeCredential(), fc.getFileUrl());
 
-        StepVerifier.create(client.uploadWithResponse(new FileParallelUploadOptions(DATA.getDefaultBinaryData())))
-            .assertNext(Assertions::assertNotNull)
-            .verifyComplete();
+        assertDoesNotThrow(
+            () -> client.uploadWithResponse(new FileParallelUploadOptions(DATA.getDefaultBinaryData())).block());
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(fc.read()))
             .assertNext(r -> TestUtils.assertArraysEqual(DATA.getDefaultBytes(), r))
@@ -3840,23 +3426,23 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     public void uploadBinaryDataOverwrite() {
         DataLakeFileAsyncClient client = getFileAsyncClient(getDataLakeCredential(), fc.getFileUrl());
 
-        StepVerifier.create(client.upload(DATA.getDefaultBinaryData(), null, true))
-            .assertNext(Assertions::assertNotNull)
-            .verifyComplete();
+        assertDoesNotThrow(() -> client.upload(DATA.getDefaultBinaryData(), null, true).block());
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(fc.read()))
             .assertNext(r -> TestUtils.assertArraysEqual(DATA.getDefaultBytes(), r))
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-04-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210410ServiceVersion")
     @Test
     public void uploadEncryptionContext() {
         String encryptionContext = "encryptionContext";
         FileParallelUploadOptions options = new FileParallelUploadOptions(DATA.getDefaultInputStream())
             .setEncryptionContext(encryptionContext);
 
-        StepVerifier.create(fc.uploadWithResponse(options).then(fc.getProperties()))
+        fc.uploadWithResponse(options).block();
+
+        StepVerifier.create(fc.getProperties())
             .assertNext(r -> assertEquals(encryptionContext, r.getEncryptionContext()))
             .verifyComplete();
     }
@@ -3864,7 +3450,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     /* Quick Query Tests. */
 
     // Generates and uploads a CSV file
-    private Mono<PathInfo> uploadCsv(FileQueryDelimitedSerialization s, int numCopies) {
+    private void uploadCsv(FileQueryDelimitedSerialization s, int numCopies) {
         String columnSeparator = Character.toString(s.getColumnSeparator());
         String header = "rn1" + columnSeparator + "rn2" + columnSeparator + "rn3" + columnSeparator + "rn4"
             + s.getRecordSeparator();
@@ -3887,11 +3473,12 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             System.arraycopy(csvData, 0, data, o, csvData.length);
         }
 
-        return fc.create(true).then(fc.append(BinaryData.fromBytes(data), 0)).then(fc.flush(data.length,
-            true));
+        fc.create(true).block();
+        fc.append(BinaryData.fromBytes(data), 0).block();
+        fc.flush(data.length, true).block();
     }
 
-    private Mono<PathInfo> uploadSmallJson(int numCopies) {
+    private void uploadSmallJson(int numCopies) {
         StringBuilder b = new StringBuilder();
         b.append("{\n");
         for (int i = 0; i < numCopies; i++) {
@@ -3899,11 +3486,12 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         }
         b.append('}');
 
-        return fc.create(true).then(fc.append(BinaryData.fromString(b.toString()), 0)).then(fc.flush(b.length(),
-            true));
+        fc.create(true).block();
+        fc.append(BinaryData.fromString(b.toString()), 0).block();
+        fc.flush(b.length(), true).block();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @ValueSource(ints = {
         1, // 32 bytes
@@ -3919,29 +3507,28 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .setEscapeChar('\0')
             .setFieldQuote('\0')
             .setHeadersPresent(false);
+        uploadCsv(ser, numCopies);
         String expression = "SELECT * from BlobStorage";
+
+        byte[] readArray = FluxUtil.collectBytesInByteBufferStream(fc.read()).block();
 
         liveTestScenarioWithRetry(() -> {
 
-            Mono<byte[]> readArray = FluxUtil.collectBytesInByteBufferStream(fc.read());
+            ByteArrayOutputStream queryData = fc.query(expression).reduce(new ByteArrayOutputStream(), (outputStream, piece) -> {
+                try {
+                    outputStream.write(piece.array());
+                } catch (IOException ex) {
+                    throw new UncheckedIOException(ex);
+                }
+                return outputStream;
+            }).block();
+            byte[] queryArray = queryData.toByteArray();
 
-            Mono<ByteArrayOutputStream> queryResponse = fc.query(expression).reduce(new ByteArrayOutputStream(),
-                (outputStream, piece) -> {
-                    try {
-                        outputStream.write(piece.array());
-                    } catch (IOException ex) {
-                        throw new UncheckedIOException(ex);
-                    }
-                    return outputStream;
-                });
-
-            StepVerifier.create(uploadCsv(ser, numCopies).then(Mono.zip(readArray, queryResponse)))
-                .assertNext(r -> TestUtils.assertArraysEqual(r.getT1(), r.getT2().toByteArray()))
-                .verifyComplete();
+            TestUtils.assertArraysEqual(readArray, queryArray);
         });
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("queryCsvSerializationSeparatorSupplier")
     public void queryCsvSerializationSeparator(char recordSeparator, char columnSeparator, boolean headersPresentIn,
@@ -3958,29 +3545,26 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .setEscapeChar('\0')
             .setFieldQuote('\0')
             .setHeadersPresent(headersPresentOut);
+        uploadCsv(serIn, 32);
         String expression = "SELECT * from BlobStorage";
+
+        byte[] readArray = FluxUtil.collectBytesInByteBufferStream(fc.read()).block();
 
         liveTestScenarioWithRetry(() -> {
             ByteArrayOutputStream queryData = new ByteArrayOutputStream();
 
-            Mono<byte[]> readArray = FluxUtil.collectBytesInByteBufferStream(fc.read());
+            byte[] queryArray = fc.queryWithResponse(new FileQueryOptions(expression, queryData)
+                .setInputSerialization(serIn).setOutputSerialization(serOut))
+                .flatMap(piece -> FluxUtil.collectBytesInByteBufferStream(piece.getValue())).block();
 
-            Mono<byte[]> queryArray = fc.queryWithResponse(new FileQueryOptions(expression, queryData)
-                    .setInputSerialization(serIn).setOutputSerialization(serOut))
-                .flatMap(piece -> FluxUtil.collectBytesInByteBufferStream(piece.getValue()));
+            if (headersPresentIn && !headersPresentOut) {
+                assertEquals(readArray.length - 16, queryArray.length);
 
-            StepVerifier.create(uploadCsv(serIn, 32).then(Mono.zip(readArray, queryArray)))
-                .assertNext(r -> {
-                    if (headersPresentIn && !headersPresentOut) {
-                        assertEquals(r.getT1().length - 16, r.getT2().length);
-
-                        /* Account for 16 bytes of header. */
-                        TestUtils.assertArraysEqual(r.getT1(), 16, r.getT2(), 0, r.getT1().length - 16);
-                    } else {
-                        TestUtils.assertArraysEqual(r.getT1(), r.getT2());
-                    }
-                })
-                .verifyComplete();
+                /* Account for 16 bytes of header. */
+                TestUtils.assertArraysEqual(readArray, 16, queryArray, 0, readArray.length - 16);
+            } else {
+                TestUtils.assertArraysEqual(readArray, queryArray);
+            }
         });
     }
 
@@ -4008,7 +3592,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         );
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryCsvSerializationEscapeAndFieldQuote() {
         FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
@@ -4017,51 +3601,46 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .setEscapeChar('\\') /* Escape set here. */
             .setFieldQuote('"')  /* Field quote set here*/
             .setHeadersPresent(false);
+        uploadCsv(ser, 32);
 
         String expression = "SELECT * from BlobStorage";
+
+        byte[] readArray = FluxUtil.collectBytesInByteBufferStream(fc.read()).block();
 
         liveTestScenarioWithRetry(() -> {
             ByteArrayOutputStream queryData = new ByteArrayOutputStream();
 
-            Mono<byte[]> readArray = FluxUtil.collectBytesInByteBufferStream(fc.read());
-
-            Mono<byte[]> queryArray = fc.queryWithResponse(new FileQueryOptions(expression, queryData)
+            byte[] queryArray = fc.queryWithResponse(new FileQueryOptions(expression, queryData)
                 .setInputSerialization(ser).setOutputSerialization(ser))
-                .flatMap(piece -> FluxUtil.collectBytesInByteBufferStream(piece.getValue()));
+                .flatMap(piece -> FluxUtil.collectBytesInByteBufferStream(piece.getValue())).block();
 
-            StepVerifier.create(uploadCsv(ser, 32).then(Mono.zip(readArray, queryArray)))
-                .assertNext(r -> TestUtils.assertArraysEqual(r.getT1(), r.getT2()))
-                .verifyComplete();
+            TestUtils.assertArraysEqual(readArray, queryArray);
         });
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("queryInputJsonSupplier")
     public void queryInputJson(int numCopies, char recordSeparator) {
         FileQueryJsonSerialization ser = new FileQueryJsonSerialization()
             .setRecordSeparator(recordSeparator);
+        uploadSmallJson(numCopies);
         String expression = "SELECT * from BlobStorage";
 
-        liveTestScenarioWithRetry(() -> {
-            ByteArrayOutputStream readData = new ByteArrayOutputStream();
-            Mono<Void> read = uploadSmallJson(numCopies)
-                .then(FluxUtil.writeToOutputStream(fc.read(), readData));
+        ByteArrayOutputStream readData = new ByteArrayOutputStream();
+        FluxUtil.writeToOutputStream(fc.read(), readData).block();
+        readData.write(10);
+        byte[] readArray = readData.toByteArray();
 
+        liveTestScenarioWithRetry(() -> {
             ByteArrayOutputStream queryData = new ByteArrayOutputStream();
             FileQueryOptions optionsOs = new FileQueryOptions(expression, queryData)
                 .setInputSerialization(ser).setOutputSerialization(ser);
 
-            Mono<byte[]> queryArray = fc.queryWithResponse(optionsOs)
-                .flatMap(piece -> FluxUtil.collectBytesInByteBufferStream(piece.getValue()));
+            byte[] queryArray = fc.queryWithResponse(optionsOs)
+                .flatMap(piece -> FluxUtil.collectBytesInByteBufferStream(piece.getValue())).block();
 
-            StepVerifier.create(read.then(queryArray))
-                .assertNext(r -> {
-                    readData.write(10);
-                    byte[] readArray = readData.toByteArray();
-                    TestUtils.assertArraysEqual(readArray, r);
-                })
-                .verifyComplete();
+            TestUtils.assertArraysEqual(readArray, queryArray);
         });
     }
 
@@ -4075,7 +3654,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         );
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryInputCsvOutputJson() {
         liveTestScenarioWithRetry(() -> {
@@ -4085,6 +3664,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
                 .setEscapeChar('\0')
                 .setFieldQuote('\0')
                 .setHeadersPresent(false);
+            uploadCsv(inSer, 1);
             FileQueryJsonSerialization outSer = new FileQueryJsonSerialization().setRecordSeparator('\n');
             String expression = "SELECT * from BlobStorage";
             byte[] expectedData = "{\"_1\":\"100\",\"_2\":\"200\",\"_3\":\"300\",\"_4\":\"400\"}".getBytes();
@@ -4093,18 +3673,19 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             FileQueryOptions optionsOs = new FileQueryOptions(expression, queryData).setInputSerialization(inSer)
                 .setOutputSerialization(outSer);
 
-            StepVerifier.create(uploadCsv(inSer, 1).then(fc.queryWithResponse(optionsOs)
-                .flatMap(piece -> FluxUtil.collectBytesInByteBufferStream(piece.getValue()))))
-                .assertNext(r -> TestUtils.assertArraysEqual(expectedData, 0, r, 0, expectedData.length))
-                .verifyComplete();
+            byte[] queryArray = fc.queryWithResponse(optionsOs)
+                .flatMap(piece -> FluxUtil.collectBytesInByteBufferStream(piece.getValue())).block();
+
+            TestUtils.assertArraysEqual(expectedData, 0, queryArray, 0, expectedData.length);
         });
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryInputJsonOutputCsv() {
         liveTestScenarioWithRetry(() -> {
             FileQueryJsonSerialization inSer = new FileQueryJsonSerialization().setRecordSeparator('\n');
+            uploadSmallJson(2);
 
             FileQueryDelimitedSerialization outSer = new FileQueryDelimitedSerialization()
                 .setRecordSeparator('\n')
@@ -4119,15 +3700,15 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             FileQueryOptions optionsOs = new FileQueryOptions(expression, queryData).setInputSerialization(inSer)
                 .setOutputSerialization(outSer);
 
-            StepVerifier.create(uploadSmallJson(2).then(fc.queryWithResponse(optionsOs)
-                .flatMap(piece -> FluxUtil.collectBytesInByteBufferStream(piece.getValue()))))
-                .assertNext(r -> TestUtils.assertArraysEqual(expectedData, r))
-                .verifyComplete();
+            byte[] queryArray = fc.queryWithResponse(optionsOs)
+                .flatMap(piece -> FluxUtil.collectBytesInByteBufferStream(piece.getValue())).block();
+
+            TestUtils.assertArraysEqual(expectedData, queryArray);
         });
     }
 
     @SuppressWarnings("resource")
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryInputCsvOutputArrow() {
         FileQueryDelimitedSerialization inSer = new FileQueryDelimitedSerialization()
@@ -4136,6 +3717,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .setEscapeChar('\0')
             .setFieldQuote('\0')
             .setHeadersPresent(false);
+        uploadCsv(inSer, 32);
         List<FileQueryArrowField> schema = Collections.singletonList(
             new FileQueryArrowField(FileQueryArrowFieldType.DECIMAL).setName("Name").setPrecision(4).setScale(2));
         FileQueryArrowSerialization outSer = new FileQueryArrowSerialization().setSchema(schema);
@@ -4145,13 +3727,11 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             OutputStream queryData = new ByteArrayOutputStream();
             FileQueryOptions options = new FileQueryOptions(expression, queryData).setOutputSerialization(outSer);
 
-            StepVerifier.create(uploadCsv(inSer, 32).then(fc.queryWithResponse(options)))
-                .assertNext(Assertions::assertNotNull)
-                .verifyComplete();
+            assertDoesNotThrow(() -> fc.queryWithResponse(options).block());
         });
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryNonFatalError() {
         FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
@@ -4159,24 +3739,21 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .setEscapeChar('\0')
             .setFieldQuote('\0')
             .setHeadersPresent(false);
+        uploadCsv(base.setColumnSeparator('.'), 32);
         String expression = "SELECT _1 from BlobStorage WHERE _2 > 250";
 
         liveTestScenarioWithRetry(() -> {
             MockErrorReceiver receiver2 = new FileAsyncApiTests.MockErrorReceiver("InvalidColumnOrdinal");
 
-            StepVerifier.create(uploadCsv(base.setColumnSeparator('.'), 32)
-                .thenMany(fc.queryWithResponse(new FileQueryOptions(expression, new ByteArrayOutputStream())
+            assertDoesNotThrow(() -> fc.queryWithResponse(new FileQueryOptions(expression, new ByteArrayOutputStream())
                 .setInputSerialization(base.setColumnSeparator(','))
                 .setOutputSerialization(base.setColumnSeparator(','))
-                .setErrorConsumer(receiver2)).flatMapMany(r -> r.getValue())))
-                .assertNext(Assertions::assertNotNull)
-                .verifyComplete();
-
+                .setErrorConsumer(receiver2)).block().getValue().blockLast());
             assertTrue(receiver2.numErrors > 0);
         });
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryFatalError() {
         FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
@@ -4184,17 +3761,20 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .setEscapeChar('\0')
             .setFieldQuote('\0')
             .setHeadersPresent(true);
+        uploadCsv(base.setColumnSeparator('.'), 32);
         String expression = "SELECT * from BlobStorage";
 
         liveTestScenarioWithRetry(() -> {
-            StepVerifier.create(uploadCsv(base.setColumnSeparator('.'), 32)
-                .then(fc.queryWithResponse(new FileQueryOptions(expression, new ByteArrayOutputStream())
-                .setInputSerialization(new FileQueryJsonSerialization()))).flatMapMany(r -> r.getValue().thenMany(r.getValue())))
-                .verifyError(IOException.class);
+            StepVerifier.create(fc.queryWithResponse(new FileQueryOptions(expression,
+                new ByteArrayOutputStream()).setInputSerialization(new FileQueryJsonSerialization())))
+                .assertNext(r -> {
+                    assertThrows(RuntimeException.class, () -> r.getValue().blockLast());
+                })
+                .verifyComplete();
         });
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryProgressReceiver() {
         FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
@@ -4203,12 +3783,14 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .setFieldQuote('\0')
             .setHeadersPresent(false);
 
+        uploadCsv(base.setColumnSeparator('.'), 32);
+
+        long sizeofBlobToRead = fc.getProperties().block().getFileSize();
         String expression = "SELECT * from BlobStorage";
 
         liveTestScenarioWithRetry(() -> {
             MockProgressReceiver mockReceiver = new com.azure.storage.file.datalake.FileAsyncApiTests.MockProgressReceiver();
-            FileQueryOptions options = new FileQueryOptions(expression, new ByteArrayOutputStream()).
-                setProgressConsumer(mockReceiver);
+            FileQueryOptions options = new FileQueryOptions(expression, new ByteArrayOutputStream()).setProgressConsumer(mockReceiver);
             // The Avro stream has the following pattern
             // (data record -> progress record) -> end record
             //
@@ -4216,20 +3798,15 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             //
             // Pretend to read more data because the input stream will not parse records following the data record if it
             // doesn't need to.
-            StepVerifier.create(uploadCsv(base.setColumnSeparator('.'), 32)
-                .then(fc.queryWithResponse(options))
-                .flatMapMany(r -> r.getValue())
-                .then(fc.getProperties()))
-                .assertNext(r -> {
-                    // At least the size of blob to read will be in the progress list
-                    assertTrue(mockReceiver.progressList.contains(r.getFileSize()));
-                })
-                .verifyComplete();
+            fc.queryWithResponse(options).block().getValue().blockLast();
+
+            // At least the size of blob to read will be in the progress list
+            assertTrue(mockReceiver.progressList.contains(sizeofBlobToRead));
         });
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
-    @LiveOnly // Large amount of data.
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode") // Large amount of data.
     @Test
     public void queryMultipleRecordsWithProgressReceiver() {
         FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
@@ -4240,17 +3817,13 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .setHeadersPresent(false);
         String expression = "SELECT * from BlobStorage";
 
+        uploadCsv(ser, 512000);
+
         liveTestScenarioWithRetry(() -> {
             MockProgressReceiver mockReceiver = new com.azure.storage.file.datalake.FileAsyncApiTests.MockProgressReceiver();
             long temp = 0;
-            FileQueryOptions options = new FileQueryOptions(expression, new ByteArrayOutputStream())
-                .setProgressConsumer(mockReceiver);
-
-            StepVerifier.create(uploadCsv(ser, 512000)
-                .then(fc.queryWithResponse(options))
-                .flatMapMany(r -> r.getValue()))
-                .thenConsumeWhile(r -> true)
-                .verifyComplete();
+            FileQueryOptions options = new FileQueryOptions(expression, new ByteArrayOutputStream()).setProgressConsumer(mockReceiver);
+            fc.queryWithResponse(options).block().getValue().blockLast();
 
             // Make sure they're all increasingly bigger
             for (long progress : mockReceiver.progressList) {
@@ -4260,7 +3833,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         });
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @CsvSource(value = {"true,false", "false,true"})
     public void queryInputOutputIA(boolean input, boolean output) {
@@ -4272,15 +3845,14 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         String expression = "SELECT * from BlobStorage";
 
         liveTestScenarioWithRetry(() -> {
-            StepVerifier.create(fc.queryWithResponse(
+            assertThrows(IllegalArgumentException.class, () -> fc.queryWithResponse(
                 new FileQueryOptions(expression, new ByteArrayOutputStream())
-                .setInputSerialization(inSer)
-                .setOutputSerialization(outSer)))
-                .verifyError(IllegalArgumentException.class);
+                    .setInputSerialization(inSer)
+                    .setOutputSerialization(outSer)).block());
         });
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryArrowInputIA() {
         FileQueryArrowSerialization inSer = new FileQueryArrowSerialization();
@@ -4294,7 +3866,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         });
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-10-02")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201002ServiceVersion")
     @Test
     public void queryParquetOutputIA() {
         FileQueryParquetSerialization outSer = new FileQueryParquetSerialization();
@@ -4308,7 +3880,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     }
 
     @SuppressWarnings("resource")
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryError() {
         fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
@@ -4319,40 +3891,31 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         });
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void queryAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                         String leaseID) {
+        DataLakeRequestConditions bac = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(fc, leaseID))
+            .setIfMatch(setupPathMatchCondition(fc, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
         String expression = "SELECT * from BlobStorage";
-        Mono<FileQueryAsyncResponse> response = Mono.zip(setupPathLeaseConditionAsync(fc, leaseID),
-            setupPathMatchConditionAsync(fc, match))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(newLease)
-                        .setIfMatch(newMatch)
-                        .setIfNoneMatch(noneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                return fc.queryWithResponse(new FileQueryOptions(expression, new ByteArrayOutputStream())
-                        .setRequestConditions(drc));
-            });
+
         liveTestScenarioWithRetry(() -> {
-            StepVerifier.create(response)
-                .assertNext(Assertions::assertNotNull)
-                .verifyComplete();
+            assertDoesNotThrow(() -> fc.queryWithResponse(new FileQueryOptions(expression, new ByteArrayOutputStream())
+                .setRequestConditions(bac)).block());
         });
     }
 
     private void liveTestScenarioWithRetry(Runnable runnable) {
+        if (!interceptorManager.isLiveMode()) {
+            runnable.run();
+            return;
+        }
+
         int retry = 0;
         while (retry < 5) {
             try {
@@ -4360,50 +3923,40 @@ public class FileAsyncApiTests extends DataLakeTestBase {
                 break;
             } catch (Exception ex) {
                 retry++;
-                sleepIfLiveTesting(5000);
+                sleepIfRunningAgainstService(5000);
             }
         }
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void queryACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                             String leaseID) {
+        setupPathLeaseCondition(fc, leaseID);
+        DataLakeRequestConditions bac = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
         String expression = "SELECT * from BlobStorage";
-        Mono<FileQueryAsyncResponse> response = Mono.zip(setupPathLeaseConditionAsync(fc, leaseID),
-            setupPathMatchConditionAsync(fc, noneMatch))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(leaseID)
-                        .setIfMatch(match)
-                        .setIfNoneMatch(newNoneMatch)
-                        .setIfModifiedSince(modified)
-                        .setIfUnmodifiedSince(unmodified);
-                return fc.queryWithResponse(new FileQueryOptions(expression, new ByteArrayOutputStream()).setRequestConditions(drc));
-            });
 
-        StepVerifier.create(response)
-                .verifyError(DataLakeStorageException.class);
+        StepVerifier.create(fc.queryWithResponse(
+            new FileQueryOptions(expression, new ByteArrayOutputStream()).setRequestConditions(bac)))
+            .verifyError(DataLakeStorageException.class);
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("scheduleDeletionSupplier")
     public void scheduleDeletion(FileScheduleDeletionOptions fileScheduleDeletionOptions, boolean hasExpiry) {
         DataLakeFileAsyncClient fileAsyncClient = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
+        fileAsyncClient.create().block();
 
-        Mono<PathProperties> response = fileAsyncClient.create()
-            .then(fileAsyncClient.scheduleDeletionWithResponse(fileScheduleDeletionOptions))
-            .then(fileAsyncClient.getProperties());
+        fileAsyncClient.scheduleDeletionWithResponse(fileScheduleDeletionOptions).block();
 
-        StepVerifier.create(response)
-            .assertNext(r -> assertEquals(hasExpiry, r.getExpiresOn() != null))
-            .verifyComplete();
+        assertEquals(hasExpiry, fileAsyncClient.getProperties().block().getExpiresOn() != null);
     }
 
     private static Stream<Arguments> scheduleDeletionSupplier() {
@@ -4416,20 +3969,17 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         );
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void scheduleDeletionTime() {
         OffsetDateTime now = testResourceNamer.now();
         FileScheduleDeletionOptions fileScheduleDeletionOptions = new FileScheduleDeletionOptions(now.plusDays(1));
         DataLakeFileAsyncClient fileAsyncClient = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
+        fileAsyncClient.create().block();
 
-        Mono<PathProperties> response = fileAsyncClient.create()
-            .then(fileAsyncClient.scheduleDeletionWithResponse(fileScheduleDeletionOptions))
-            .then(fileAsyncClient.getProperties());
+        fileAsyncClient.scheduleDeletionWithResponse(fileScheduleDeletionOptions).block();
 
-        StepVerifier.create(response)
-            .assertNext(r -> assertEquals(now.plusDays(1).truncatedTo(ChronoUnit.SECONDS), r.getExpiresOn()))
-            .verifyComplete();
+        assertEquals(now.plusDays(1).truncatedTo(ChronoUnit.SECONDS), fileAsyncClient.getProperties().block().getExpiresOn());
     }
 
     @Test
@@ -4478,28 +4028,27 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
     @Test
     public void uploadInputStreamOverwrite() {
-        StepVerifier.create(fc.upload(DATA.getDefaultBinaryData(), null, true)
-            .then(FluxUtil.collectBytesInByteBufferStream(fc.read())))
-            .assertNext(r -> TestUtils.assertArraysEqual(DATA.getDefaultBytes(), r))
-            .verifyComplete();
+        fc.upload(DATA.getDefaultBinaryData(), null, true).block();
+
+        byte[] readArray = FluxUtil.collectBytesInByteBufferStream(fc.read()).block();
+
+        TestUtils.assertArraysEqual(DATA.getDefaultBytes(), readArray);
     }
 
     @SuppressWarnings("deprecation")
-    @LiveOnly /* Flaky in playback. */
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode") /* Flaky in playback. */
     @Test
     public void uploadInputStreamLargeData() {
         ByteArrayInputStream input = new ByteArrayInputStream(getRandomByteArray(20 * Constants.MB));
         ParallelTransferOptions pto = new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) Constants.MB);
 
         // Uses blob output stream under the hood.
-        StepVerifier.create(fc.uploadWithResponse(new FileParallelUploadOptions(input, 20 * Constants.MB)
-            .setParallelTransferOptions(pto)))
-            .assertNext(Assertions::assertNotNull)
-            .verifyComplete();
+        assertDoesNotThrow(() -> fc.uploadWithResponse(new FileParallelUploadOptions(input, 20 * Constants.MB)
+            .setParallelTransferOptions(pto)).block());
     }
 
     @SuppressWarnings("deprecation")
-    @LiveOnly /* Flaky in playback. */
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode") /* Flaky in playback. */
     @ParameterizedTest
     @MethodSource("uploadNumberOfAppendsSupplier")
     public void uploadNumAppends(int dataSize, Long singleUploadSize, Long blockSize, int numAppends) {
@@ -4542,10 +4091,9 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     @SuppressWarnings("deprecation")
     @Test
     public void uploadReturnValue() {
-        StepVerifier.create(fc.uploadWithResponse(
-            new FileParallelUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong())))
-            .assertNext(r -> assertNotNull(r.getValue().getETag()))
-            .verifyComplete();
+        assertNotNull(fc.uploadWithResponse(
+            new FileParallelUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong())).block()
+            .getValue().getETag());
     }
 
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
@@ -4557,164 +4105,12 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .buildFileAsyncClient();
 
         // blob endpoint
-        StepVerifier.create(fileAsyncClient.getPropertiesWithResponse(null))
-            .assertNext(r -> assertEquals("2019-02-02", r.getHeaders().getValue(X_MS_VERSION)))
-            .verifyComplete();
+        assertEquals("2019-02-02", fileAsyncClient.getPropertiesWithResponse(null).block().getHeaders()
+            .getValue(X_MS_VERSION));
 
         // dfs endpoint
-        StepVerifier.create(fileAsyncClient.getAccessControlWithResponse(false, null))
-            .assertNext(r -> assertEquals("2019-02-02", r.getHeaders().getValue(X_MS_VERSION)))
-            .verifyComplete();
-    }
-
-    @Test
-    public void defaultAudience() {
-        DataLakeFileAsyncClient aadFileClient = getPathClientBuilderWithTokenCredential(
-            dataLakeFileSystemAsyncClient.getFileSystemUrl(), fc.getFilePath())
-            .fileSystemName(dataLakeFileSystemAsyncClient.getFileSystemName())
-            .audience(null) // should default to "https://storage.azure.com/"
-            .buildFileAsyncClient();
-
-        StepVerifier.create(aadFileClient.exists())
-            .expectNext(true)
-            .verifyComplete();
-    }
-
-
-    @Test
-    public void storageAccountAudience() {
-        DataLakeFileAsyncClient aadFileClient = getPathClientBuilderWithTokenCredential(
-            ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), fc.getFilePath())
-            .fileSystemName(dataLakeFileSystemAsyncClient.getFileSystemName())
-            .audience(DataLakeAudience.createDataLakeServiceAccountAudience(dataLakeFileSystemAsyncClient.getAccountName()))
-            .buildFileAsyncClient();
-
-        StepVerifier.create(aadFileClient.exists())
-            .expectNext(true)
-            .verifyComplete();
-    }
-
-    @Test
-    public void audienceError() {
-        DataLakeFileAsyncClient aadFileClient = getPathClientBuilderWithTokenCredential(
-            ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), fc.getFilePath())
-            .fileSystemName(dataLakeFileSystemAsyncClient.getFileSystemName())
-            .audience(DataLakeAudience.createDataLakeServiceAccountAudience("badAudience"))
-            .buildFileAsyncClient();
-
-        StepVerifier.create(aadFileClient.exists())
-            .verifyErrorSatisfies(r -> {
-                DataLakeStorageException e = assertInstanceOf(DataLakeStorageException.class, r);
-                assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO.toString(), e.getErrorCode());
-            });
-    }
-
-    @Test
-    public void audienceFromString() {
-        String url = String.format("https://%s.blob.core.windows.net/", dataLakeFileSystemAsyncClient.getAccountName());
-        DataLakeAudience audience = DataLakeAudience.fromString(url);
-
-        DataLakeFileAsyncClient aadFileClient = getPathClientBuilderWithTokenCredential(
-            ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), fc.getFilePath())
-            .fileSystemName(dataLakeFileSystemAsyncClient.getFileSystemName())
-            .audience(audience)
-            .buildFileAsyncClient();
-
-        StepVerifier.create(aadFileClient.exists())
-            .expectNext(true)
-            .verifyComplete();
-    }
-
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2024-05-04")
-    @Test
-    public void aclHeaderTests() {
-        dataLakeFileSystemClient = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName());
-        dataLakeFileSystemClient.create();
-        dataLakeFileSystemClient.getDirectoryClient(generatePathName()).create();
-        fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
-
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
-            .setAccessControlList(PATH_ACCESS_CONTROL_ENTRIES);
-
-        //getProperties
-        StepVerifier.create(fc.createWithResponse(options).then(fc.getProperties()))
-            .assertNext(r -> assertTrue(PATH_ACCESS_CONTROL_ENTRIES.containsAll(r.getAccessControlList())))
-            .verifyComplete();
-
-        //readWithResponse
-        StepVerifier.create(fc.readWithResponse(null, null, null, false))
-            .assertNext(r -> assertTrue(PATH_ACCESS_CONTROL_ENTRIES.containsAll(r.getDeserializedHeaders().getAccessControlList())))
-            .verifyComplete();
-
-        //readToFileWithResponse
-        File outFile = new File(testResourceNamer.randomName("", 60) + ".txt");
-        outFile.deleteOnExit();
-        createdFiles.add(outFile);
-
-        if (outFile.exists()) {
-            assertTrue(outFile.delete());
-        }
-
-        StepVerifier.create(fc.readToFileWithResponse(outFile.getPath(), null,
-            null, null, null, false, null))
-            .assertNext(r -> assertTrue(PATH_ACCESS_CONTROL_ENTRIES.containsAll(r.getValue().getAccessControlList())))
-            .verifyComplete();
-
-    }
-
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2024-05-04")
-    @ParameterizedTest
-    @MethodSource("upnHeaderTestSupplier")
-    public void upnHeaderTest(Boolean upnHeader) {
-        //feature currently doesn't work in preprod - test uses methods that send the request header. verified in fiddler
-        //that the header is being sent and is properly assigned.
-        dataLakeFileSystemAsyncClient = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
-        dataLakeFileSystemAsyncClient.create().block();
-        dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName()).create().block();
-        fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
-
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
-            .setAccessControlList(PATH_ACCESS_CONTROL_ENTRIES);
-        fc.createWithResponse(options).block();
-
-        //getProperties
-        PathGetPropertiesOptions propertiesOptions = new PathGetPropertiesOptions().setUserPrincipalName(upnHeader);
-
-        StepVerifier.create(fc.getProperties(propertiesOptions))
-            .assertNext(r -> assertNotNull(r.getAccessControlList()))
-            .verifyComplete();
-
-        //readToFile
-        File outFile = new File(testResourceNamer.randomName("", 60) + ".txt");
-        outFile.deleteOnExit();
-        createdFiles.add(outFile);
-
-        if (outFile.exists()) {
-            assertTrue(outFile.delete());
-        }
-        ReadToFileOptions readToFileOptions = new ReadToFileOptions();
-        readToFileOptions.setUserPrincipalName(upnHeader).setFilePath(outFile.getPath()).setRange(null)
-            .setParallelTransferOptions(null).setDownloadRetryOptions(null).setDataLakeRequestConditions(null)
-            .setRangeGetContentMd5(false).setOpenOptions(null);
-
-        StepVerifier.create(fc.readToFile(readToFileOptions))
-            .assertNext(r -> assertNotNull(r.getAccessControlList()))
-            .verifyComplete();
-
-        if (outFile.exists()) {
-            assertTrue(outFile.delete());
-        }
-
-        StepVerifier.create(fc.readToFileWithResponse(readToFileOptions))
-            .assertNext(r -> assertNotNull(r.getValue().getAccessControlList()))
-            .verifyComplete();
-    }
-
-    private static Stream<Arguments> upnHeaderTestSupplier() {
-        return Stream.of(
-            Arguments.of(false),
-            Arguments.of(true),
-            Arguments.of((Boolean) null));
+        assertEquals("2019-02-02", fileAsyncClient.getAccessControlWithResponse(false, null).block().getHeaders()
+            .getValue(X_MS_VERSION));
     }
 
 

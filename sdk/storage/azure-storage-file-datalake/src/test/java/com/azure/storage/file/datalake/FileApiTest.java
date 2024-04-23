@@ -17,15 +17,11 @@ import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.ProgressReceiver;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.test.shared.extensions.LiveOnly;
-import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy;
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy;
-import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
 import com.azure.storage.file.datalake.models.AccessTier;
 import com.azure.storage.file.datalake.models.DataLakeAudience;
-import com.azure.storage.file.datalake.models.DataLakeFileOpenInputStreamResult;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
@@ -56,21 +52,20 @@ import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.RolePermissions;
 import com.azure.storage.file.datalake.options.DataLakeFileAppendOptions;
-import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.DataLakePathScheduleDeletionOptions;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions;
-import com.azure.storage.file.datalake.options.PathGetPropertiesOptions;
-import com.azure.storage.file.datalake.options.ReadToFileOptions;
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import com.azure.storage.file.datalake.sas.FileSystemSasPermission;
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClient;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIf;
+import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -227,7 +222,7 @@ public class FileApiTest extends DataLakeTestBase {
         assertEquals(metadata, fc.getProperties().getMetadata());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-04-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210410ServiceVersion")
     @Test
     public void createEncryptionContext() {
         dataLakeFileSystemClient = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName());
@@ -314,7 +309,7 @@ public class FileApiTest extends DataLakeTestBase {
         assertEquals(201, fc.createWithResponse("0777", "0057", null, null, null, null, Context.NONE).getStatusCode());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @Test
     public void createOptionsWithACL() {
         List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx");
@@ -326,7 +321,7 @@ public class FileApiTest extends DataLakeTestBase {
         assertEquals(pathAccessControlEntries.get(1), acl.get(1)); // testing if group is set the same
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @Test
     public void createOptionsWithOwnerAndGroup() {
         String ownerName = testResourceNamer.randomUuid();
@@ -397,7 +392,7 @@ public class FileApiTest extends DataLakeTestBase {
         assertEquals(PathPermissions.parseSymbolic("rwx-w----").toString(), acl.getPermissions().toString());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @Test
     public void createOptionsWithLeaseId() {
         String leaseId = CoreUtils.randomUuid().toString();
@@ -415,7 +410,7 @@ public class FileApiTest extends DataLakeTestBase {
         assertThrows(DataLakeStorageException.class, () -> fc.createWithResponse(options, null, null));
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @Test
     public void createOptionsWithLeaseDuration() {
         String leaseId = CoreUtils.randomUuid().toString();
@@ -430,7 +425,7 @@ public class FileApiTest extends DataLakeTestBase {
         assertEquals(LeaseDurationType.FIXED, fileProps.getLeaseDuration());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @ParameterizedTest
     @MethodSource("timeExpiresOnOptionsSupplier")
     public void createOptionsWithTimeExpiresOn(DataLakePathScheduleDeletionOptions deletionOptions) {
@@ -443,7 +438,7 @@ public class FileApiTest extends DataLakeTestBase {
         return Stream.of(new DataLakePathScheduleDeletionOptions(OffsetDateTime.now().plusDays(1)), null);
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @Test
     public void createOptionsWithTimeToExpireRelativeToNow() {
         DataLakePathScheduleDeletionOptions deletionOptions = new DataLakePathScheduleDeletionOptions(Duration.ofDays(6));
@@ -539,7 +534,7 @@ public class FileApiTest extends DataLakeTestBase {
             .setPermissions("0777").setUmask("0057"), null, Context.NONE).getStatusCode());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-04-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210410ServiceVersion")
     @Test
     public void createIfNotExistsEncryptionContext() {
         dataLakeFileSystemClient = primaryDataLakeServiceClient.createFileSystem(generateFileSystemName());
@@ -553,7 +548,7 @@ public class FileApiTest extends DataLakeTestBase {
         assertEquals(encryptionContext, fc.getProperties().getEncryptionContext());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @Test
     public void createIfNotExistsOptionsWithACL() {
         fc = dataLakeFileSystemClient.getFileClient(generatePathName());
@@ -566,7 +561,7 @@ public class FileApiTest extends DataLakeTestBase {
         assertEquals(pathAccessControlEntries.get(1), acl.get(1)); // testing if group is set the same
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @Test
     public void createIfNotExistsOptionsWithOwnerAndGroup() {
         fc = dataLakeFileSystemClient.getFileClient(generatePathName());
@@ -643,7 +638,7 @@ public class FileApiTest extends DataLakeTestBase {
         assertEquals(PathPermissions.parseSymbolic("rwx-w----").toString(), acl.getPermissions().toString());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @Test
     public void createIfNotExistsOptionsWithLeaseId() {
         fc = dataLakeFileSystemClient.getFileClient(generatePathName());
@@ -663,7 +658,7 @@ public class FileApiTest extends DataLakeTestBase {
         assertThrows(DataLakeStorageException.class, () -> fc.createIfNotExistsWithResponse(options, null, null));
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @Test
     public void createIfNotExistsOptionsWithLeaseDuration() {
         fc = dataLakeFileSystemClient.getFileClient(generatePathName());
@@ -679,7 +674,7 @@ public class FileApiTest extends DataLakeTestBase {
         assertEquals(LeaseDurationType.FIXED, fileProps.getLeaseDuration());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @ParameterizedTest
     @MethodSource("timeExpiresOnOptionsSupplier")
     public void createIfNotExistsOptionsWithTimeExpiresOn(DataLakePathScheduleDeletionOptions deletionOptions) {
@@ -690,7 +685,7 @@ public class FileApiTest extends DataLakeTestBase {
         assertEquals(201, fc.createIfNotExistsWithResponse(options, null, null).getStatusCode());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @Test
     public void createIfNotExistsOptionsWithTimeToExpireRelativeToNow() {
         fc = dataLakeFileSystemClient.getFileClient(generatePathName());
@@ -904,7 +899,7 @@ public class FileApiTest extends DataLakeTestBase {
             () -> fc.setAccessControlList(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER));
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void setACLRecursive() {
         AccessControlChangeResult response = fc.setAccessControlRecursive(PATH_ACCESS_CONTROL_ENTRIES);
@@ -914,7 +909,7 @@ public class FileApiTest extends DataLakeTestBase {
         assertEquals(0L, response.getCounters().getFailedChangesCount());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void updateACLRecursive() {
         AccessControlChangeResult response = fc.updateAccessControlRecursive(PATH_ACCESS_CONTROL_ENTRIES);
@@ -924,7 +919,7 @@ public class FileApiTest extends DataLakeTestBase {
         assertEquals(0L, response.getCounters().getFailedChangesCount());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void removeACLRecursive() {
         List<PathRemoveAccessControlEntry> removeAccessControlEntries = PathRemoveAccessControlEntry.parseList(
@@ -1482,7 +1477,7 @@ public class FileApiTest extends DataLakeTestBase {
         assertEquals(DATA.getDefaultText(), new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8));
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("downloadFileSupplier")
     public void downloadFile(int fileSize) {
@@ -1517,7 +1512,7 @@ public class FileApiTest extends DataLakeTestBase {
         );
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("downloadFileSupplier")
     public void downloadFileSyncBufferCopy(int fileSize) {
@@ -1691,7 +1686,7 @@ public class FileApiTest extends DataLakeTestBase {
 
 
     @SuppressWarnings("deprecation")
-    @LiveOnly
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @ValueSource(ints = {
         100,
@@ -1720,7 +1715,10 @@ public class FileApiTest extends DataLakeTestBase {
 
         // Should receive at least one notification indicating completed progress, multiple notifications may be
         // received if there are empty buffers in the stream.
-        assertTrue(mockReceiver.progresses.stream().anyMatch(progress -> progress == fileSize));
+        assertTrue(mockReceiver.progresses.stream().anyMatch(progress -> {
+            System.out.println("progress is: " + progress + " and equal: " + (progress == fileSize));
+            return progress == fileSize;
+        }));
 
         // There should be NO notification with a larger than expected size.
         assertFalse(mockReceiver.progresses.stream().anyMatch(progress -> progress > fileSize));
@@ -1745,7 +1743,7 @@ public class FileApiTest extends DataLakeTestBase {
         }
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @ValueSource(ints = {100, 8 * 1026 * 1024 + 10})
     public void downloadFileProgressListener(int fileSize) {
@@ -1804,7 +1802,7 @@ public class FileApiTest extends DataLakeTestBase {
     public void renameWithResponse() {
         DataLakeFileClient renamedClient = fc.renameWithResponse(null, generatePathName(), null, null, null, null).getValue();
 
-        assertDoesNotThrow(() -> renamedClient.getProperties());
+        assertDoesNotThrow(renamedClient::getProperties);
         assertThrows(DataLakeStorageException.class, fc::getProperties);
     }
 
@@ -1815,7 +1813,7 @@ public class FileApiTest extends DataLakeTestBase {
         DataLakeFileClient renamedClient = fc.renameWithResponse(newFileSystem.getFileSystemName(), generatePathName(),
             null, null, null, null).getValue();
 
-        assertDoesNotThrow(() -> renamedClient.getProperties());
+        assertDoesNotThrow(renamedClient::getProperties);
         assertThrows(DataLakeStorageException.class, fc::getProperties);
     }
 
@@ -1921,7 +1919,7 @@ public class FileApiTest extends DataLakeTestBase {
 
         DataLakeFileClient destClient = client.rename(dataLakeFileSystemClient.getFileSystemName(), generatePathName());
 
-        assertDoesNotThrow(() -> destClient.getProperties());
+        assertDoesNotThrow(destClient::getProperties);
     }
 
     @Test
@@ -1940,7 +1938,7 @@ public class FileApiTest extends DataLakeTestBase {
 
         DataLakeFileClient destClient = client.rename(dataLakeFileSystemClient.getFileSystemName(), generatePathName());
 
-        assertDoesNotThrow(() -> destClient.getProperties());
+        assertDoesNotThrow(destClient::getProperties);
     }
 
     @Test
@@ -2018,7 +2016,7 @@ public class FileApiTest extends DataLakeTestBase {
         assertEquals(412, e.getResponse().getStatusCode());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-08-04")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200804ServiceVersion")
     @Test
     public void appendDataLeaseAcquire() {
         fc = dataLakeFileSystemClient.createFileIfNotExists(generatePathName());
@@ -2036,7 +2034,7 @@ public class FileApiTest extends DataLakeTestBase {
         assertEquals(LeaseDurationType.FIXED, fileProperties.getLeaseDuration());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-08-04")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200804ServiceVersion")
     @Test
     public void appendDataLeaseAutoRenew() {
         fc = dataLakeFileSystemClient.createFileIfNotExists(generatePathName());
@@ -2057,7 +2055,7 @@ public class FileApiTest extends DataLakeTestBase {
         assertEquals(LeaseDurationType.FIXED, fileProperties.getLeaseDuration());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-08-04")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200804ServiceVersion")
     @Test
     public void appendDataLeaseRelease() {
         fc = dataLakeFileSystemClient.createFileIfNotExists(generatePathName());
@@ -2079,7 +2077,7 @@ public class FileApiTest extends DataLakeTestBase {
         assertEquals(LeaseStateType.AVAILABLE, fileProperties.getLeaseState());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-08-04")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200804ServiceVersion")
     @Test
     public void appendDataLeaseAcquireRelease() {
         fc = dataLakeFileSystemClient.createFileIfNotExists(generatePathName());
@@ -2120,7 +2118,7 @@ public class FileApiTest extends DataLakeTestBase {
         TestUtils.assertArraysEqual(DATA.getDefaultBytes(), os.toByteArray());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void appendDataFlush() {
         DataLakeFileAppendOptions appendOptions = new DataLakeFileAppendOptions().setFlush(true);
@@ -2158,7 +2156,7 @@ public class FileApiTest extends DataLakeTestBase {
 
 
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void appendBinaryDataFlush() {
         DataLakeFileAppendOptions appendOptions = new DataLakeFileAppendOptions().setFlush(true);
@@ -2285,8 +2283,8 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource({"file,file", "path/to]a file,path/to]a file", "path%2Fto%5Da%20file,path%2Fto%5Da%20file", "斑點,斑點",
-        "%E6%96%91%E9%BB%9E,%E6%96%91%E9%BB%9E"})
+    @CsvSource({"file,file", "path/to]a file,path/to]a file", "path%2Fto%5Da%20file,path/to]a file", "斑點,斑點",
+        "%E6%96%91%E9%BB%9E,斑點"})
     public void getFileNameAndBuildClient(String originalFileName, String finalFileName) {
         DataLakeFileClient client = dataLakeFileSystemClient.getFileClient(originalFileName);
 
@@ -2379,22 +2377,6 @@ public class FileApiTest extends DataLakeTestBase {
         assertEquals(dataSize, fc.getProperties().getFileSize());
     }
 
-    @Test
-    public void uploadFromFileEmptyFile() {
-        File file = getRandomFile(0);
-        file.deleteOnExit();
-        createdFiles.add(file);
-
-        Response<PathInfo> response = fc.uploadFromFileWithResponse(file.toPath().toString(), null, null, null, null,
-            null, null);
-        // uploadFromFileWithResponse will return 200 for a non-empty file, but since we are uploading an empty file,
-        // it will return 201 since only createWithResponse gets called
-        assertEquals(201, response.getStatusCode());
-        assertNotNull(response.getValue().getETag());
-
-        assertEquals(0, fc.getProperties().getFileSize());
-    }
-
     private static void compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {
         result.position(0);
         for (ByteBuffer buffer : buffers) {
@@ -2428,7 +2410,7 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     @SuppressWarnings("deprecation")
-    @LiveOnly
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @ValueSource(ints = {11110, 2 * Constants.MB + 11})
     public void bufferedUploadSyncHandlePathingWithTransientFailure(int dataSize) {
@@ -2527,7 +2509,7 @@ public class FileApiTest extends DataLakeTestBase {
         TestUtils.assertArraysEqual(DATA.getDefaultBytes(), os.toByteArray());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-04-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210410ServiceVersion")
     @Test
     public void uploadEncryptionContext() {
         String encryptionContext = "encryptionContext";
@@ -2604,7 +2586,7 @@ public class FileApiTest extends DataLakeTestBase {
         return queryData;
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @ValueSource(ints = {
         1, // 32 bytes
@@ -2641,7 +2623,7 @@ public class FileApiTest extends DataLakeTestBase {
         });
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("queryCsvSerializationSeparatorSupplier")
     public void queryCsvSerializationSeparator(char recordSeparator, char columnSeparator, boolean headersPresentIn,
@@ -2722,7 +2704,7 @@ public class FileApiTest extends DataLakeTestBase {
         );
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryCsvSerializationEscapeAndFieldQuote() {
         FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
@@ -2753,7 +2735,7 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     /* Note: Input delimited tested everywhere else. */
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("queryInputJsonSupplier")
     public void queryInputJson(int numCopies, char recordSeparator) {
@@ -2792,7 +2774,7 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     @SuppressWarnings("DataFlowIssue")
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-10-02")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201002ServiceVersion")
     @Test
     public void queryInputParquet() {
         String fileName = "parquet.parquet";
@@ -2818,7 +2800,7 @@ public class FileApiTest extends DataLakeTestBase {
         });
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryInputCsvOutputJson() {
         liveTestScenarioWithRetry(() -> {
@@ -2847,7 +2829,7 @@ public class FileApiTest extends DataLakeTestBase {
         });
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryInputJsonOutputCsv() {
         liveTestScenarioWithRetry(() -> {
@@ -2878,7 +2860,7 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     @SuppressWarnings("resource")
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryInputCsvOutputArrow() {
         FileQueryDelimitedSerialization inSer = new FileQueryDelimitedSerialization()
@@ -2903,7 +2885,7 @@ public class FileApiTest extends DataLakeTestBase {
         });
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryNonFatalError() {
         FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
@@ -2934,7 +2916,7 @@ public class FileApiTest extends DataLakeTestBase {
         });
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryFatalError() {
         FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
@@ -2955,7 +2937,7 @@ public class FileApiTest extends DataLakeTestBase {
         });
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryProgressReceiver() {
         FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
@@ -2997,8 +2979,8 @@ public class FileApiTest extends DataLakeTestBase {
         });
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
-    @LiveOnly // Large amount of data.
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode") // Large amount of data.
     @Test
     public void queryMultipleRecordsWithProgressReceiver() {
         FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
@@ -3046,7 +3028,7 @@ public class FileApiTest extends DataLakeTestBase {
         });
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @CsvSource(value = {"true,false", "false,true"})
     public void queryInputOutputIA(boolean input, boolean output) {
@@ -3070,7 +3052,7 @@ public class FileApiTest extends DataLakeTestBase {
         });
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryArrowInputIA() {
         FileQueryArrowSerialization inSer = new FileQueryArrowSerialization();
@@ -3087,7 +3069,7 @@ public class FileApiTest extends DataLakeTestBase {
         });
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-10-02")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201002ServiceVersion")
     @Test
     public void queryParquetOutputIA() {
         FileQueryParquetSerialization outSer = new FileQueryParquetSerialization();
@@ -3105,7 +3087,7 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     @SuppressWarnings("resource")
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryError() {
         fc = dataLakeFileSystemClient.getFileClient(generatePathName());
@@ -3120,7 +3102,7 @@ public class FileApiTest extends DataLakeTestBase {
         });
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void queryAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -3164,7 +3146,7 @@ public class FileApiTest extends DataLakeTestBase {
         }
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void queryACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -3185,7 +3167,7 @@ public class FileApiTest extends DataLakeTestBase {
             new FileQueryOptions(expression, new ByteArrayOutputStream()).setRequestConditions(bac), null, null));
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("scheduleDeletionSupplier")
     public void scheduleDeletion(FileScheduleDeletionOptions fileScheduleDeletionOptions, boolean hasExpiry) {
@@ -3207,7 +3189,7 @@ public class FileApiTest extends DataLakeTestBase {
         );
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void scheduleDeletionTime() {
         OffsetDateTime now = testResourceNamer.now();
@@ -3301,7 +3283,7 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     @SuppressWarnings("deprecation")
-    @LiveOnly /* Flaky in playback. */
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode") /* Flaky in playback. */
     @Test
     public void uploadInputStreamLargeData() {
         ByteArrayInputStream input = new ByteArrayInputStream(getRandomByteArray(20 * Constants.MB));
@@ -3331,7 +3313,7 @@ public class FileApiTest extends DataLakeTestBase {
 
     // Reading from recordings will not allow for the timing of the test to work correctly.
     @SuppressWarnings("deprecation")
-    @LiveOnly
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @Test
     public void uploadTimeout() {
         int size = 1024;
@@ -3406,100 +3388,5 @@ public class FileApiTest extends DataLakeTestBase {
             .buildFileClient();
 
         assertTrue(aadFileClient.exists());
-    }
-
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2024-05-04")
-    @Test
-    public void aclHeaderTests() {
-        dataLakeFileSystemClient = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName());
-        dataLakeFileSystemClient.create();
-        dataLakeFileSystemClient.getDirectoryClient(generatePathName()).create();
-        fc = dataLakeFileSystemClient.getFileClient(generatePathName());
-
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
-            .setAccessControlList(PATH_ACCESS_CONTROL_ENTRIES);
-        fc.createWithResponse(options, null, Context.NONE);
-
-        //getProperties
-        PathProperties getPropertiesResponse = fc.getProperties();
-        assertTrue(PATH_ACCESS_CONTROL_ENTRIES.containsAll(getPropertiesResponse.getAccessControlList()));
-
-        //readWithResponse
-        FileReadResponse readWithResponse = fc.readWithResponse(new ByteArrayOutputStream(), null,
-            null, null, false, null, Context.NONE);
-        assertTrue(PATH_ACCESS_CONTROL_ENTRIES.containsAll(readWithResponse.getDeserializedHeaders().getAccessControlList()));
-
-        //readToFileWithResponse
-        File outFile = new File(testResourceNamer.randomName("", 60) + ".txt");
-        outFile.deleteOnExit();
-        createdFiles.add(outFile);
-
-        if (outFile.exists()) {
-            assertTrue(outFile.delete());
-        }
-
-        Response<PathProperties> readToFileResponse = fc.readToFileWithResponse(outFile.getPath(), null,
-            null, null, null, false, null, null,
-            null);
-        assertTrue(PATH_ACCESS_CONTROL_ENTRIES.containsAll(readToFileResponse.getValue().getAccessControlList()));
-    }
-
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2024-05-04")
-    @ParameterizedTest
-    @MethodSource("upnHeaderTestSupplier")
-    public void upnHeaderTest(Boolean upnHeader) {
-        //feature currently doesn't work in preprod - test uses methods that send the request header. verified in fiddler
-        //that the header is being sent and is properly assigned.
-        dataLakeFileSystemClient = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName());
-        dataLakeFileSystemClient.create();
-        dataLakeFileSystemClient.getDirectoryClient(generatePathName()).create();
-        fc = dataLakeFileSystemClient.getFileClient(generatePathName());
-
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
-            .setAccessControlList(PATH_ACCESS_CONTROL_ENTRIES);
-        fc.createWithResponse(options, null, Context.NONE);
-
-        //getProperties
-        PathGetPropertiesOptions propertiesOptions = new PathGetPropertiesOptions().setUserPrincipalName(upnHeader);
-
-        PathProperties getPropertiesResponse = fc.getProperties(propertiesOptions);
-        assertNotNull(getPropertiesResponse.getAccessControlList());
-
-        //readToFile
-        File outFile = new File(testResourceNamer.randomName("", 60) + ".txt");
-        outFile.deleteOnExit();
-        createdFiles.add(outFile);
-
-        if (outFile.exists()) {
-            assertTrue(outFile.delete());
-        }
-        ReadToFileOptions readToFileOptions = new ReadToFileOptions();
-        readToFileOptions.setUserPrincipalName(upnHeader).setFilePath(outFile.getPath()).setRange(null)
-            .setParallelTransferOptions(null).setDownloadRetryOptions(null).setDataLakeRequestConditions(null)
-            .setRangeGetContentMd5(false).setOpenOptions(null);
-
-        PathProperties readToFileResponse = fc.readToFile(readToFileOptions);
-        assertNotNull(readToFileResponse.getAccessControlList());
-
-        if (outFile.exists()) {
-            assertTrue(outFile.delete());
-        }
-        Response<PathProperties> readToFileWithResponse = fc.readToFileWithResponse(readToFileOptions, null, null);
-        assertNotNull(readToFileWithResponse.getValue().getAccessControlList());
-
-        //openInputStream
-        DataLakeFileInputStreamOptions openInputStreamOptions = new DataLakeFileInputStreamOptions().setUserPrincipalName(upnHeader);
-
-        DataLakeFileOpenInputStreamResult openInputStreamResponse = fc.openInputStream(openInputStreamOptions);
-        //no way to pull acl from properties in openInputStream
-        //assertNotNull(openInputStreamResponse.getProperties().getAccessControlList());
-
-    }
-
-    private static Stream<Arguments> upnHeaderTestSupplier() {
-        return Stream.of(
-            Arguments.of(true),
-            Arguments.of(true),
-            Arguments.of((Boolean) null));
     }
 }
