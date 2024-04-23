@@ -65,6 +65,8 @@ public final class TestConstants {
     public static final String ID_3 = "id-3";
     public static final String ID_4 = "id-4";
     public static final String ID_5 = "id-5";
+
+    public static final String ID_6 = "id-6";
     public static final String NEW_FIRST_NAME = "new_first_name";
     public static final String NEW_LAST_NAME = "new_last_name";
 

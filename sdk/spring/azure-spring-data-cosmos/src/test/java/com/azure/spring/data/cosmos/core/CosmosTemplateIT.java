@@ -34,6 +34,8 @@ import com.azure.spring.data.cosmos.domain.BasicItem;
 import com.azure.spring.data.cosmos.domain.GenIdEntity;
 import com.azure.spring.data.cosmos.domain.IntegerIdDomain;
 import com.azure.spring.data.cosmos.domain.Person;
+import com.azure.spring.data.cosmos.domain.PersonWithTransientId;
+import com.azure.spring.data.cosmos.domain.PersonWithTransientPartitionKey;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.StubAuditorProvider;
 import com.azure.spring.data.cosmos.repository.StubDateTimeProvider;
@@ -85,6 +87,8 @@ import static com.azure.spring.data.cosmos.common.TestConstants.ID_1;
 import static com.azure.spring.data.cosmos.common.TestConstants.ID_2;
 import static com.azure.spring.data.cosmos.common.TestConstants.ID_3;
 import static com.azure.spring.data.cosmos.common.TestConstants.ID_4;
+import static com.azure.spring.data.cosmos.common.TestConstants.ID_5;
+import static com.azure.spring.data.cosmos.common.TestConstants.ID_6;
 import static com.azure.spring.data.cosmos.common.TestConstants.LAST_NAME;
 import static com.azure.spring.data.cosmos.common.TestConstants.NEW_FIRST_NAME;
 import static com.azure.spring.data.cosmos.common.TestConstants.NEW_LAST_NAME;
@@ -120,6 +124,12 @@ public class CosmosTemplateIT {
         ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
 
     private static final Person TEST_PERSON_4 = new Person(ID_4, NEW_FIRST_NAME, NEW_LAST_NAME, TRANSIENT_PROPERTY, HOBBIES,
+        ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
+
+    private static final PersonWithTransientId TEST_PERSON_TRANSIENT_ID = new PersonWithTransientId(ID_5, NEW_FIRST_NAME, NEW_LAST_NAME, TRANSIENT_PROPERTY, HOBBIES,
+        ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
+
+    private static final PersonWithTransientPartitionKey TEST_PERSON_TRANSIENT_PARTITION_KEY = new PersonWithTransientPartitionKey(ID_6, NEW_FIRST_NAME, NEW_LAST_NAME, TRANSIENT_PROPERTY, HOBBIES,
         ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
 
     private static final AuditableEntity TEST_AUDITABLE_ENTITY_1 = new AuditableEntity();
@@ -166,9 +176,11 @@ public class CosmosTemplateIT {
     private static CosmosAsyncClient client;
     private static CosmosTemplate cosmosTemplate;
     private static CosmosEntityInformation<Person, String> personInfo;
+    private static CosmosEntityInformation<PersonWithTransientId, String> personWithTransientIdInfo;
+
+    private static CosmosEntityInformation<PersonWithTransientPartitionKey, String> personWithTransientPartitionKeyInfo;
     private static CosmosEntityInformation<AuditableEntity, String> auditableEntityInfo;
     private static String containerName;
-
     private MappingCosmosConverter cosmosConverter;
 
     private Person insertedPerson;
@@ -197,6 +209,8 @@ public class CosmosTemplateIT {
         if (cosmosTemplate == null) {
             client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
             personInfo = new CosmosEntityInformation<>(Person.class);
+            personWithTransientIdInfo = new CosmosEntityInformation<>(PersonWithTransientId.class);
+            personWithTransientPartitionKeyInfo = new CosmosEntityInformation<>(PersonWithTransientPartitionKey.class);
             TEST_AUDITABLE_ENTITY_1.setId(UUID_1);
             TEST_AUDITABLE_ENTITY_2.setId(UUID_2);
             TEST_AUDITABLE_ENTITY_3.setId(UUID_3);
@@ -205,7 +219,7 @@ public class CosmosTemplateIT {
             cosmosTemplate = createCosmosTemplate(cosmosConfig, TestConstants.DB_NAME);
         }
 
-        collectionManager.ensureContainersCreatedAndEmpty(cosmosTemplate, Person.class,
+        collectionManager.ensureContainersCreatedAndEmpty(cosmosTemplate, Person.class, PersonWithTransientId.class, PersonWithTransientPartitionKey.class,
                                                           GenIdEntity.class, AuditableEntity.class, BasicItem.class);
         insertedPerson = cosmosTemplate.insert(Person.class.getSimpleName(), TEST_PERSON,
             new PartitionKey(TEST_PERSON.getLastName()));
@@ -249,13 +263,29 @@ public class CosmosTemplateIT {
     }
 
     @Test
+    public void testInsertDocWithIdDeclaredTransient() {
+        final PersonWithTransientId personWithTransientId = TEST_PERSON_TRANSIENT_ID;
+        final PersonWithTransientId insertedPerson = cosmosTemplate.insert(personWithTransientIdInfo.getContainerName(), personWithTransientId, new PartitionKey(personWithTransientIdInfo.getPartitionKeyFieldValue(TEST_PERSON_TRANSIENT_ID)));
+        Assert.assertEquals(personWithTransientId.getId(), insertedPerson.getId());
+        final PersonWithTransientId retrievedPerson = cosmosTemplate.findById(personWithTransientIdInfo.getContainerName(), insertedPerson.getId(), PersonWithTransientId.class);
+        Assert.assertEquals(personWithTransientId.getId(), retrievedPerson.getId());
+    }
+
+    @Test
+    public void testInsertDocWithPartitionKeyDeclaredTransient() {
+        final PersonWithTransientPartitionKey personWithTransientPartitionKey = TEST_PERSON_TRANSIENT_PARTITION_KEY;
+        final PersonWithTransientPartitionKey insertedPerson = cosmosTemplate.insert(PersonWithTransientPartitionKey.class.getSimpleName(), personWithTransientPartitionKey, new PartitionKey(personWithTransientPartitionKeyInfo.getPartitionKeyFieldValue(TEST_PERSON_TRANSIENT_PARTITION_KEY)));
+        Assert.assertEquals(personWithTransientPartitionKey.getId(), insertedPerson.getId());
+        final PersonWithTransientPartitionKey retrievedPerson = cosmosTemplate.findById(PersonWithTransientPartitionKey.class.getSimpleName(), insertedPerson.getId(), PersonWithTransientPartitionKey.class);
+        Assert.assertEquals(personWithTransientPartitionKey.getId(), retrievedPerson.getId());
+    }
+
+    @Test
     public void testInsertAllAndFindAllWithTransientField() {
         final Iterable<Person> entitiesToSave = Collections.singleton(TEST_PERSON_4);
         for (Person entity : entitiesToSave) {
             assertThat(entity.getTransientProperty()).isNotNull();
         }
-        final CosmosEntityInformation<Person, String> personInfo =
-            new CosmosEntityInformation<>(Person.class);
 
         Iterable<Person> insertAllResponse = cosmosTemplate.insertAll(personInfo, entitiesToSave);
         //check that the transient field is retained in the response

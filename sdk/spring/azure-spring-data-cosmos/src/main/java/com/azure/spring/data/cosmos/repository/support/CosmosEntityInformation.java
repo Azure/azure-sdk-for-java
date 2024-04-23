@@ -21,6 +21,8 @@ import com.azure.spring.data.cosmos.core.mapping.CosmosUniqueKeyPolicy;
 import com.azure.spring.data.cosmos.core.mapping.GeneratedValue;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.annotation.Version;
@@ -33,6 +35,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
@@ -47,6 +50,8 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
 
     private static final Function<Class<?>, CosmosEntityInformation<?, ?>> ENTITY_INFORMATION_CREATOR =
         Memoizer.memoize(CosmosEntityInformation::getCosmosEntityInformation);
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosEntityInformation.class);
 
     private static CosmosEntityInformation<?, ?> getCosmosEntityInformation(Class<?> domainClass) {
         return new CosmosEntityInformation<>(domainClass);
@@ -506,8 +511,20 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         }
 
         private static List<String> getTransientFields(Class<?> domainType) {
+            final Field partitionKeyField = getPartitionKeyField(domainType);
             final List<Field> fields = FieldUtils.getFieldsListWithAnnotation(domainType, Transient.class);
-            return fields.stream().map(Field::getName).collect(Collectors.toList());
+            List<String> transientFieldNames = new ArrayList<>();
+            Iterator<Field> iterator = fields.iterator();
+            while (iterator.hasNext()) {
+                Field field = iterator.next();
+                if (field.equals(partitionKeyField) || field.getName().equals("id")) {
+                    LOGGER.warn("Field declared Transient but must be persisted: {}", field);
+                    continue;
+                }
+                LOGGER.warn("Transient field will not be persisted: {}", field);
+                transientFieldNames.add(field.getName());
+            }
+            return transientFieldNames;
         }
 
         /**
