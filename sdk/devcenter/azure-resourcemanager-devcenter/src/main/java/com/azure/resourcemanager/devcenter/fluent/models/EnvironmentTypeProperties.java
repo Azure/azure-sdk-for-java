@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of an environment type. */
+/**
+ * Properties of an environment type.
+ */
 @Fluent
 public final class EnvironmentTypeProperties extends EnvironmentTypeUpdateProperties {
     /*
@@ -17,20 +19,24 @@ public final class EnvironmentTypeProperties extends EnvironmentTypeUpdateProper
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of EnvironmentTypeProperties class. */
+    /**
+     * Creates an instance of EnvironmentTypeProperties class.
+     */
     public EnvironmentTypeProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EnvironmentTypeProperties withDisplayName(String displayName) {
         super.withDisplayName(displayName);
@@ -39,7 +45,7 @@ public final class EnvironmentTypeProperties extends EnvironmentTypeUpdateProper
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -6,62 +6,32 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
 import com.azure.resourcemanager.devcenter.models.HealthCheckStatusDetails;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class NetworkConnectionsListHealthDetailsMockTests {
     @Test
     public void testListHealthDetails() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"startDateTime\":\"2021-03-08T04:04:59Z\",\"endDateTime\":\"2021-09-27T22:32:56Z\",\"healthChecks\":[{\"status\":\"Failed\",\"displayName\":\"hf\",\"startDateTime\":\"2021-08-21T02:34:59Z\",\"endDateTime\":\"2021-12-04T02:32:58Z\",\"errorType\":\"xj\",\"recommendedAction\":\"gcm\",\"additionalDetails\":\"qjhhhqxuwyvc\"}]},\"id\":\"oyvivbsiz\",\"name\":\"sjsz\",\"type\":\"bscm\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"startDateTime\":\"2021-11-05T05:11:44Z\",\"endDateTime\":\"2021-09-16T16:13:51Z\",\"healthChecks\":[{\"status\":\"Running\",\"displayName\":\"hmwffplfmuv\",\"startDateTime\":\"2021-03-20T18:52:11Z\",\"endDateTime\":\"2021-10-24T12:17:10Z\",\"errorType\":\"rrvwey\",\"recommendedAction\":\"oy\",\"additionalDetails\":\"k\"}]},\"id\":\"aimmoiroqb\",\"name\":\"shbraga\",\"type\":\"yyrmfsvbp\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DevCenterManager manager = DevCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<HealthCheckStatusDetails> response = manager.networkConnections()
+            .listHealthDetails("wrlohapqinfszpyg", "qdhmrjzralcxpjby", 391224209, com.azure.core.util.Context.NONE);
 
-        DevCenterManager manager =
-            DevCenterManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<HealthCheckStatusDetails> response =
-            manager
-                .networkConnections()
-                .listHealthDetails("napqo", "yuicdhzbdy", 1574570662, com.azure.core.util.Context.NONE);
     }
 }

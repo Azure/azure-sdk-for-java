@@ -12,7 +12,9 @@ import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.azure.resourcemanager.devcenter.models.RecommendedMachineConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents an image. */
+/**
+ * Represents an image.
+ */
 @Immutable
 public final class ImageInner extends ProxyResource {
     /*
@@ -27,13 +29,15 @@ public final class ImageInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ImageInner class. */
+    /**
+     * Creates an instance of ImageInner class.
+     */
     public ImageInner() {
     }
 
     /**
      * Get the innerProperties property: Image properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ImageProperties innerProperties() {
@@ -42,7 +46,7 @@ public final class ImageInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -51,7 +55,7 @@ public final class ImageInner extends ProxyResource {
 
     /**
      * Get the description property: The description of the image.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -60,7 +64,7 @@ public final class ImageInner extends ProxyResource {
 
     /**
      * Get the publisher property: The publisher of the image.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -69,7 +73,7 @@ public final class ImageInner extends ProxyResource {
 
     /**
      * Get the offer property: The name of the image offer.
-     *
+     * 
      * @return the offer value.
      */
     public String offer() {
@@ -78,7 +82,7 @@ public final class ImageInner extends ProxyResource {
 
     /**
      * Get the sku property: The SKU name for the image.
-     *
+     * 
      * @return the sku value.
      */
     public String sku() {
@@ -87,7 +91,7 @@ public final class ImageInner extends ProxyResource {
 
     /**
      * Get the recommendedMachineConfiguration property: The recommended machine configuration to use with the image.
-     *
+     * 
      * @return the recommendedMachineConfiguration value.
      */
     public RecommendedMachineConfiguration recommendedMachineConfiguration() {
@@ -96,7 +100,7 @@ public final class ImageInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -106,7 +110,7 @@ public final class ImageInner extends ProxyResource {
     /**
      * Get the hibernateSupport property: Indicates whether this image has hibernate enabled. Not all images are capable
      * of supporting hibernation. To find out more see https://aka.ms/devbox/hibernate.
-     *
+     * 
      * @return the hibernateSupport value.
      */
     public HibernateSupport hibernateSupport() {
@@ -115,7 +119,7 @@ public final class ImageInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

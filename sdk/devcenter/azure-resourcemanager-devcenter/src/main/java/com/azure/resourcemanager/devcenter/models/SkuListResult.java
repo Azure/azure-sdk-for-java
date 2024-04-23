@@ -9,7 +9,9 @@ import com.azure.resourcemanager.devcenter.fluent.models.DevCenterSkuInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Results of the Microsoft.DevCenter SKU list operation. */
+/**
+ * Results of the Microsoft.DevCenter SKU list operation.
+ */
 @Immutable
 public final class SkuListResult {
     /*
@@ -24,13 +26,15 @@ public final class SkuListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of SkuListResult class. */
+    /**
+     * Creates an instance of SkuListResult class.
+     */
     public SkuListResult() {
     }
 
     /**
      * Get the value property: Current page of results.
-     *
+     * 
      * @return the value value.
      */
     public List<DevCenterSkuInner> value() {
@@ -39,7 +43,7 @@ public final class SkuListResult {
 
     /**
      * Get the nextLink property: URL to get the next set of results if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class SkuListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,11 +5,14 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.devcenter.models.DevCenterProjectCatalogSettings;
 import com.azure.resourcemanager.devcenter.models.Encryption;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of the devcenter. */
+/**
+ * Properties of the devcenter.
+ */
 @Fluent
 public final class DevCenterProperties extends DevCenterUpdateProperties {
     /*
@@ -24,13 +27,15 @@ public final class DevCenterProperties extends DevCenterUpdateProperties {
     @JsonProperty(value = "devCenterUri", access = JsonProperty.Access.WRITE_ONLY)
     private String devCenterUri;
 
-    /** Creates an instance of DevCenterProperties class. */
+    /**
+     * Creates an instance of DevCenterProperties class.
+     */
     public DevCenterProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -39,21 +44,25 @@ public final class DevCenterProperties extends DevCenterUpdateProperties {
 
     /**
      * Get the devCenterUri property: The URI of the Dev Center.
-     *
+     * 
      * @return the devCenterUri value.
      */
     public String devCenterUri() {
         return this.devCenterUri;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DevCenterProperties withEncryption(Encryption encryption) {
         super.withEncryption(encryption);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DevCenterProperties withDisplayName(String displayName) {
         super.withDisplayName(displayName);
@@ -61,8 +70,17 @@ public final class DevCenterProperties extends DevCenterUpdateProperties {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DevCenterProperties withProjectCatalogSettings(DevCenterProjectCatalogSettings projectCatalogSettings) {
+        super.withProjectCatalogSettings(projectCatalogSettings);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
