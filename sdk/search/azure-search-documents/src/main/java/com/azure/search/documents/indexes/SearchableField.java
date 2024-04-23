@@ -5,7 +5,6 @@ package com.azure.search.documents.indexes;
 
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
-import com.azure.search.documents.indexes.models.LexicalNormalizerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SynonymMap;
 
@@ -50,13 +49,6 @@ public @interface SearchableField {
     boolean isSortable() default false;
 
     /**
-     * Indicates if whether the field will be persisted separately on disk to be returned in a search result.
-     *
-     * @return A flag indicating if the field or method should generate as a stored {@link SearchField field}.
-     */
-    boolean isStored() default true;
-
-    /**
      * Indicates if the field or method should generate as a filterable {@link SearchField field}.
      *
      * @return A flag indicating if the field or method should generate as a filterable {@link SearchField field}.
@@ -88,14 +80,6 @@ public @interface SearchableField {
     String indexAnalyzerName() default "";
 
     /**
-     * A {@link LexicalNormalizerName} to associate as the normalizer for the {@link SearchField field}.
-     *
-     * @return The {@link LexicalNormalizerName} that will be associated as the normalizer for the
-     * {@link SearchField field}.
-     */
-    String normalizerName() default "";
-
-    /**
      * A list of {@link SynonymMap} names to be associated with the {@link SearchField field}.
      * <p>
      * Assigning a synonym map to a field ensures that query terms targeting that field are expanded at query-time using
@@ -125,5 +109,4 @@ public @interface SearchableField {
      * {@link SearchField field}.
      */
     String vectorSearchProfileName() default "";
-
 }

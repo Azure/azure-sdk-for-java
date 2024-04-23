@@ -6,33 +6,21 @@
 
 package com.azure.search.documents.indexes.models;
 
-/**
- * Scripts that can be ignored by CjkBigramTokenFilter.
- */
+/** Scripts that can be ignored by CjkBigramTokenFilter. */
 public enum CjkBigramTokenFilterScripts {
-    /**
-     * Ignore Han script when forming bigrams of CJK terms.
-     */
+    /** Ignore Han script when forming bigrams of CJK terms. */
     HAN("han"),
 
-    /**
-     * Ignore Hiragana script when forming bigrams of CJK terms.
-     */
+    /** Ignore Hiragana script when forming bigrams of CJK terms. */
     HIRAGANA("hiragana"),
 
-    /**
-     * Ignore Katakana script when forming bigrams of CJK terms.
-     */
+    /** Ignore Katakana script when forming bigrams of CJK terms. */
     KATAKANA("katakana"),
 
-    /**
-     * Ignore Hangul script when forming bigrams of CJK terms.
-     */
+    /** Ignore Hangul script when forming bigrams of CJK terms. */
     HANGUL("hangul");
 
-    /**
-     * The actual serialized value for a CjkBigramTokenFilterScripts instance.
-     */
+    /** The actual serialized value for a CjkBigramTokenFilterScripts instance. */
     private final String value;
 
     CjkBigramTokenFilterScripts(String value) {
@@ -41,7 +29,7 @@ public enum CjkBigramTokenFilterScripts {
 
     /**
      * Parses a serialized value to a CjkBigramTokenFilterScripts instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed CjkBigramTokenFilterScripts object, or null if unable to parse.
      */
@@ -58,9 +46,7 @@ public enum CjkBigramTokenFilterScripts {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return this.value;

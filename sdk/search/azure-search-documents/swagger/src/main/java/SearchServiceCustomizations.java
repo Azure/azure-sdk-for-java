@@ -8,7 +8,6 @@ import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
@@ -16,7 +15,7 @@ import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import org.slf4j.Logger;
 
-import java.io.IOException;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
@@ -46,6 +45,11 @@ public class SearchServiceCustomizations extends Customization {
         // Customize implementation models.
 
         // Customize models.
+        // Change class modifiers to 'public abstract'.
+        bulkSetClassModifier(publicCustomization, Modifier.PUBLIC | Modifier.ABSTRACT, "ScoringFunction",
+            "DataChangeDetectionPolicy", "DataDeletionDetectionPolicy", "CharFilter", "CognitiveServicesAccount",
+            "LexicalAnalyzer", "SearchIndexerKnowledgeStoreProjectionSelector", "SimilarityAlgorithm",
+            "SearchIndexerKnowledgeStoreBlobProjectionSelector"); //, "SearchIndexerDataIdentity");
 
         // Add vararg overloads to list setters.
         customizeAst(publicCustomization.getClass("InputFieldMappingEntry"),
@@ -66,7 +70,7 @@ public class SearchServiceCustomizations extends Customization {
         customizeOcrSkill(publicCustomization.getClass("OcrSkill"));
         customizeImageAnalysisSkill(publicCustomization.getClass("ImageAnalysisSkill"));
         customizeCustomEntityLookupSkill(publicCustomization.getClass("CustomEntityLookupSkill"));
-        customizeCustomNormalizer(publicCustomization.getClass("CustomNormalizer"));
+        // customizeCustomNormalizer(publicCustomization.getClass("CustomNormalizer"));
         customizeSearchField(publicCustomization.getClass("SearchField"));
         customizeSynonymMap(publicCustomization.getClass("SynonymMap"));
         customizeSearchResourceEncryptionKey(publicCustomization.getClass("SearchResourceEncryptionKey"),
@@ -95,7 +99,6 @@ public class SearchServiceCustomizations extends Customization {
         customizeSearchIndexerDataSourceConnection(publicCustomization.getClass("SearchIndexerDataSourceConnection"));
         customizeSemanticPrioritizedFields(publicCustomization.getClass("SemanticPrioritizedFields"));
         customizeVectorSearch(publicCustomization.getClass("VectorSearch"));
-        // customizeSearchError(implCustomization.getClass("SearchError"));
 
         bulkRemoveFromJsonMethods(publicCustomization.getClass("SearchIndexerKnowledgeStoreProjectionSelector"),
             publicCustomization.getClass("SearchIndexerKnowledgeStoreBlobProjectionSelector"));
@@ -130,7 +133,6 @@ public class SearchServiceCustomizations extends Customization {
             addVarArgsOverload(clazz, "tokenizers", "LexicalTokenizer");
             addVarArgsOverload(clazz, "tokenFilters", "TokenFilter");
             addVarArgsOverload(clazz, "charFilters", "CharFilter");
-            addVarArgsOverload(clazz, "normalizers", "LexicalNormalizer");
         });
     }
 
@@ -180,6 +182,8 @@ public class SearchServiceCustomizations extends Customization {
     }
 
     private void customizeSearchIndexerSkill(ClassCustomization classCustomization, Editor editor) {
+        classCustomization.setModifier(Modifier.PUBLIC | Modifier.ABSTRACT);
+
         String fileContents = editor.getFileContent(classCustomization.getFileName());
 
         fileContents = updateVersionedDeserialization(fileContents, "EntityRecognitionSkillV1", "EntityRecognitionSkill");
@@ -191,6 +195,8 @@ public class SearchServiceCustomizations extends Customization {
     }
 
     private void customizeTokenFilter(ClassCustomization classCustomization, Editor editor) {
+        classCustomization.setModifier(Modifier.PUBLIC | Modifier.ABSTRACT);
+
         String fileContents = editor.getFileContent(classCustomization.getFileName());
 
         fileContents = updateVersionedDeserialization(fileContents, "EdgeNGramTokenFilterV1", "EdgeNGramTokenFilter");
@@ -202,6 +208,8 @@ public class SearchServiceCustomizations extends Customization {
     }
 
     private void customizeLexicalTokenizer(ClassCustomization classCustomization, Editor editor) {
+        classCustomization.setModifier(Modifier.PUBLIC | Modifier.ABSTRACT);
+
         String fileContents = editor.getFileContent(classCustomization.getFileName());
 
         fileContents = updateVersionedDeserialization(fileContents, "KeywordTokenizerV1", "KeywordTokenizer");
@@ -765,49 +773,25 @@ public class SearchServiceCustomizations extends Customization {
         });
     }
 
-    private void customizeSearchError(ClassCustomization classCustomization) {
-        customizeAst(classCustomization, clazz -> {
-            MethodDeclaration fromJson = clazz.getMethodsByName("fromJson").get(0);
-
-            clazz.addMethod("readSearchError", Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC)
-                .setType("SearchError")
-                .addParameter("JsonReader", "jsonReader")
-                .addThrownException(IOException.class)
-                .setBody(fromJson.getBody().get());
-
-            fromJson.setBody(StaticJavaParser.parseBlock(joinWithNewline(
-                "{",
-                "return jsonReader.readObject(reader -> {",
-                "    // Buffer the next JSON object as SearchError can take two forms:",
-                "    //",
-                "    // - A SearchError object",
-                "    // - A SearchError object wrapped in an \"error\" node.",
-                "    JsonReader bufferedReader = reader.bufferObject();",
-                "    bufferedReader.nextToken(); // Get to the START_OBJECT token.",
-                "    while (bufferedReader.nextToken() != JsonToken.END_OBJECT) {",
-                "        String fieldName = bufferedReader.getFieldName();",
-                "        bufferedReader.nextToken();",
-                "",
-                "        if (\"error\".equals(fieldName)) {",
-                "            // If the SearchError was wrapped in the \"error\" node begin reading it now.",
-                "            return readSearchError(bufferedReader);",
-                "        } else {",
-                "            bufferedReader.skipChildren();",
-                "        }",
-                "    }",
-                "",
-                "    // Otherwise reset the JsonReader and read the whole JSON object.",
-                "    return readSearchError(bufferedReader.reset());",
-                "});",
-                "}"
-            )));
-        });
-    }
-
     private static void bulkRemoveFromJsonMethods(ClassCustomization... classCustomizations) {
         for (ClassCustomization classCustomization : classCustomizations) {
             classCustomization.removeMethod("fromJson(JsonReader jsonReader)");
         }
+    }
+
+    private static void bulkSetClassModifier(PackageCustomization packageCustomization, int modifier,
+        String... classNames) {
+        if (classNames == null) {
+            return;
+        }
+
+        for (String className : classNames) {
+            setClassModifier(packageCustomization.getClass(className), modifier);
+        }
+    }
+
+    private static void setClassModifier(ClassCustomization classCustomization, int modifier) {
+        classCustomization.setModifier(modifier);
     }
 
     /*

@@ -21,7 +21,6 @@
     <Bug pattern="EI_EXPOSE_REP" />
     <Or>
       <Class name="com.azure.search.documents.GeographyPointTests$SimpleDocument" />
-      <Class name="com.azure.search.documents.implementation.models.ErrorDetail" />
       <Class name="com.azure.search.documents.implementation.models.IndexAction" />
       <Class name="com.azure.search.documents.implementation.models.IndexBatch" />
       <Class name="com.azure.search.documents.implementation.models.SearchDocumentsResult" />
@@ -37,7 +36,6 @@
       <Class name="com.azure.search.documents.indexes.implementation.models.DocumentKeysOrIds" />
       <Class name="com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkillV1" />
       <Class name="com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkillV3" />
-      <Class name="com.azure.search.documents.indexes.implementation.models.ErrorDetail" />
       <Class name="com.azure.search.documents.indexes.implementation.models.ListAliasesResult" />
       <Class name="com.azure.search.documents.indexes.implementation.models.ListDataSourcesResult" />
       <Class name="com.azure.search.documents.indexes.implementation.models.ListIndexersResult" />
@@ -132,8 +130,8 @@
   <Match>
     <Bug pattern="EI_EXPOSE_REP2" />
     <Or>
-      <Class name="com.azure.search.documents.GeographyPointTests$SimpleDocument" />
       <Class name="com.azure.search.documents.SearchClientBuilder" />
+      <Class name="com.azure.search.documents.GeographyPointTests$SimpleDocument" />
       <Class name="com.azure.search.documents.implementation.models.IndexAction" />
       <Class name="com.azure.search.documents.implementation.models.IndexBatch" />
       <Class name="com.azure.search.documents.implementation.models.SearchDocumentsResult" />
@@ -244,6 +242,10 @@
   <Match>
     <Bug pattern="NP_BOOLEAN_RETURN_NULL" />
     <Class name="com.azure.search.documents.indexes.models.EntityRecognitionSkill" />
+  </Match>
+  <Match>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC" />
+    <Class name="com.azure.search.documents.ReadmeSamples$Hotel" />
   </Match>
   <Match>
     <Bug pattern="SS_SHOULD_BE_STATIC" />
