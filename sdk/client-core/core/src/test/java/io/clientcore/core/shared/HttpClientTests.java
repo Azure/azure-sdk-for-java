@@ -1700,9 +1700,8 @@ public abstract class HttpClientTests {
     public void canReceiveServerSentEvents() throws IOException {
         final int[] i = { 0 };
         ServerSentEventService service = createService(ServerSentEventService.class);
-        RequestOptions requestOptions = new RequestOptions();
 
-        service.get(getServerUri(isSecure()), requestOptions.setServerSentEventListener(
+        service.get(getServerUri(isSecure()),
             sse -> {
                 String expected;
                 String id;
@@ -1722,7 +1721,7 @@ public abstract class HttpClientTests {
                 if (++i[0] > 2) {
                     fail("Should not have received more than two messages.");
                 }
-            })).close();
+            }).close();
 
         assertEquals(2, i[0]);
     }
@@ -1734,12 +1733,10 @@ public abstract class HttpClientTests {
     public void canRecognizeServerSentEvent() throws IOException {
         BinaryData requestBody = BinaryData.fromString("test body");
         ServerSentEventService service = createService(ServerSentEventService.class);
-        RequestOptions requestOptions = new RequestOptions();
         List<String> expected = Arrays.asList("YHOO", "+2", "10");
 
         try (Response<BinaryData> response =
-                 service.post(getServerUri(isSecure()), requestBody,
-                     requestOptions.setServerSentEventListener(sse -> assertEquals(expected, sse.getData())))) {
+                 service.post(getServerUri(isSecure()), requestBody, sse -> assertEquals(expected, sse.getData()))) {
             assertNotNull(response.getBody());
             assertNotEquals(0, response.getBody().getLength());
             assertNotNull(response.getValue());
@@ -1750,22 +1747,20 @@ public abstract class HttpClientTests {
     @Test
     public void onErrorServerSentEvents() throws IOException {
         ServerSentEventService service = createService(ServerSentEventService.class);
-        RequestOptions requestOptions = new RequestOptions();
 
         final int[] i = { 0 };
-        service.get(getServerUri(isSecure()), requestOptions.setServerSentEventListener(
-            new ServerSentEventListener() {
-                @Override
-                public void onEvent(ServerSentEvent sse) throws IOException {
-                    throw new IOException("test exception");
-                }
+        service.get(getServerUri(isSecure()), new ServerSentEventListener() {
+            @Override
+            public void onEvent(ServerSentEvent sse) throws IOException {
+                throw new IOException("test exception");
+            }
 
-                @Override
-                public void onError(Throwable throwable) {
-                    assertEquals("test exception", throwable.getMessage());
-                    i[0]++;
-                }
-            })).close();
+            @Override
+            public void onError(Throwable throwable) {
+                assertEquals("test exception", throwable.getMessage());
+                i[0]++;
+            }
+        }).close();
 
         assertEquals(1, i[0]);
     }
@@ -1773,40 +1768,26 @@ public abstract class HttpClientTests {
     @Test
     public void onRetryWithLastEventIdReceiveServerSentEvents() throws IOException {
         ServerSentEventService service = createService(ServerSentEventService.class);
-        RequestOptions requestOptions = new RequestOptions();
 
         final int[] i = { 0 };
-        service.get(getServerUri(isSecure()), requestOptions.setServerSentEventListener(
-            new ServerSentEventListener() {
-                @Override
-                public void onEvent(ServerSentEvent sse) throws IOException {
-                    if (++i[0] == 1) {
-                        assertEquals("test stream", sse.getComment());
-                        assertEquals("first event", sse.getData().get(0));
-                        assertEquals("1", sse.getId());
-                        throw new IOException("test exception");
-                    } else {
-                        assertTimeout(Duration.ofMillis(100L), () -> assertEquals("2", sse.getId()));
-                        assertEquals("This is the second message, it", sse.getData().get(0));
-                        assertEquals("has two lines.", sse.getData().get(1));
-                    }
-                    if (++i[0] > 3) {
-                        fail("Should not have received more than two messages.");
-                    }
+        service.get(getServerUri(isSecure()), new ServerSentEventListener() {
+            @Override
+            public void onEvent(ServerSentEvent sse) throws IOException {
+                if (++i[0] == 1) {
+                    assertEquals("test stream", sse.getComment());
+                    assertEquals("first event", sse.getData().get(0));
+                    assertEquals("1", sse.getId());
+                    throw new IOException("test exception");
+                } else {
+                    assertTimeout(Duration.ofMillis(100L), () -> assertEquals("2", sse.getId()));
+                    assertEquals("This is the second message, it", sse.getData().get(0));
+                    assertEquals("has two lines.", sse.getData().get(1));
                 }
-
-                @Override
-                public boolean shouldRetry(Throwable throwable, Duration retryAfter, String lastEventId) {
-                    if (i[0] == 1) {
-                        assertEquals("test exception", throwable.getMessage());
-                        assertEquals(100, retryAfter.toMillis());
-                        assertEquals("1", lastEventId);
-                        return true;
-                    } else {
-                        return false;
-                    }
+                if (++i[0] > 3) {
+                    fail("Should not have received more than two messages.");
                 }
-            })).close();
+            }
+        }).close();
 
         assertEquals(3, i[0]);
     }
@@ -1818,10 +1799,9 @@ public abstract class HttpClientTests {
     public void throwsExceptionForNoListener() {
         ServerSentEventService service = createService(ServerSentEventService.class);
         BinaryData requestBody = BinaryData.fromString("test body");
-        RequestOptions requestOptions = new RequestOptions();
 
         assertThrows(RuntimeException.class,
-            () -> service.put(getServerUri(isSecure()), requestBody, requestOptions).close());
+            () -> service.put(getServerUri(isSecure()), requestBody, null).close());
     }
 
     @Test
@@ -1831,8 +1811,7 @@ public abstract class HttpClientTests {
         List<String> expected = Arrays.asList("YHOO", "+2", "10");
 
         try (Response<BinaryData> response =
-                 service.post(getServerUri(isSecure()), BinaryData.EMPTY,
-                     requestOptions.setServerSentEventListener(sse -> assertEquals(expected, sse.getData())))) {
+                 service.post(getServerUri(isSecure()), BinaryData.EMPTY, sse -> assertEquals(expected, sse.getData()))) {
             assertNotNull(response.getBody());
             assertNotEquals(0, response.getBody().getLength());
             assertNotNull(response.getValue());
@@ -1868,14 +1847,16 @@ public abstract class HttpClientTests {
     interface ServerSentEventService {
         @HttpRequestInformation(method = HttpMethod.PUT, path = "serversentevent", expectedStatusCodes = { 200 })
         Response<BinaryData> put(@HostParam("url") String url,
-            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) BinaryData putBody, RequestOptions requestOptions);
+            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) BinaryData putBody,
+            ServerSentEventListener serverSentEventListener);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "serversentevent", expectedStatusCodes = { 200 })
-        BinaryData get(@HostParam("url") String url, RequestOptions requestOptions);
+        BinaryData get(@HostParam("url") String url,  ServerSentEventListener serverSentEventListener);
 
         @HttpRequestInformation(method = HttpMethod.POST, path = "serversentevent", expectedStatusCodes = { 200 })
         Response<BinaryData> post(@HostParam("url") String url,
-            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) BinaryData postBody, RequestOptions requestOptions);
+            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) BinaryData postBody,
+            ServerSentEventListener serverSentEventListener);
     }
 
     @Test

@@ -213,7 +213,7 @@ class DefaultHttpClient implements HttpClient {
         }
 
         if (isTextEventStream(responseHeaders)) {
-            ServerSentEventListener listener = options.getServerSentEventListener();
+            ServerSentEventListener listener = httpRequest.getServerSentEventListener();
 
             if (listener == null) {
                 connection.getInputStream().close();

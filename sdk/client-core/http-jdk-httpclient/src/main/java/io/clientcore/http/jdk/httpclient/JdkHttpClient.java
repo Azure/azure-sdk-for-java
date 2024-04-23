@@ -144,7 +144,7 @@ class JdkHttpClient implements HttpClient {
 
         String contentType = coreHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
         if (ServerSentEventUtils.isTextEventStreamContentType(contentType)) {
-            ServerSentEventListener listener = request.getRequestOptions().getServerSentEventListener();
+            ServerSentEventListener listener = request.getServerSentEventListener();
             if (listener != null) {
                 serverSentResult = processTextEventStream(response.body(), listener);
 
@@ -208,7 +208,8 @@ class JdkHttpClient implements HttpClient {
         return new JdkHttpResponse(request, response.statusCode(), coreHeaders, body == null ? BinaryData.EMPTY : body);
     }
 
-    private static ResponseBodyMode getResponseBodyMode(HttpRequest request, String contentType, ResponseBodyMode responseBodyMode) {
+    private static ResponseBodyMode getResponseBodyMode(HttpRequest request, String contentType,
+        ResponseBodyMode responseBodyMode) {
         if (responseBodyMode == null) {
             if (request.getHttpMethod() == HEAD) {
                 responseBodyMode = IGNORE;

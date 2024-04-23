@@ -60,7 +60,8 @@ public abstract class RestProxyBase {
     public final Object invoke(Object proxy, RequestOptions options, SwaggerMethodParser methodParser, Object[] args) {
         try {
             HttpRequest request = createHttpRequest(methodParser, serializer, args)
-                .setRequestOptions(options);
+                .setRequestOptions(options)
+                .setServerSentEventListener(methodParser.setServerSentEventListener(args));
 
             return invoke(proxy, methodParser, request);
         } catch (IOException e) {

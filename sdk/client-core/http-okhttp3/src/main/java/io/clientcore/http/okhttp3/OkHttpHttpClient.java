@@ -144,7 +144,7 @@ class OkHttpHttpClient implements HttpClient {
         okhttp3.Headers responseHeaders = response.headers();
         ServerSentResult serverSentResult = null;
         if (isTextEventStream(responseHeaders) && response.body() != null) {
-            ServerSentEventListener listener = request.getRequestOptions().getServerSentEventListener();
+            ServerSentEventListener listener = request.getServerSentEventListener();
 
             if (listener != null) {
                 serverSentResult = processTextEventStream(response.body().byteStream(), listener);

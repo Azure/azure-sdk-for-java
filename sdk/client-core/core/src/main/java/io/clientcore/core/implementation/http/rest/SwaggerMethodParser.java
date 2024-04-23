@@ -19,6 +19,7 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
@@ -87,6 +88,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private final int requestOptionsPosition;
     private final boolean returnTypeDecodable;
     private final boolean headersEagerlyConverted;
+    private final int serverSentEventListenerPosition;
 
     private Map<Integer, UnexpectedExceptionInformation> exceptionMapping;
     private UnexpectedExceptionInformation defaultException;
@@ -224,17 +226,20 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         this.bodyJavaType = bodyJavaType;
         Class<?>[] parameterTypes = swaggerMethod.getParameterTypes();
         int requestOptionsPosition = -1;
-
+        int serverSentEventListenerPosition = -1;
         for (int i = 0; i < parameterTypes.length; i++) {
             Class<?> parameterType = parameterTypes[i];
             // Check for the RequestOptions position.
             // To retain previous behavior, only track the first instance found.
             if (parameterType == RequestOptions.class && requestOptionsPosition == -1) {
                 requestOptionsPosition = i;
+            } else if (parameterType == ServerSentEventListener.class) {
+                serverSentEventListenerPosition = i;
             }
         }
 
         this.requestOptionsPosition = requestOptionsPosition;
+        this.serverSentEventListenerPosition = serverSentEventListenerPosition;
         this.headersEagerlyConverted = TypeUtil.isTypeOrSubTypeOf(Response.class, returnType);
         Type unwrappedReturnType = unwrapReturnType(returnType);
         this.returnTypeDecodable = isReturnTypeDecodable(unwrappedReturnType);
@@ -401,6 +406,18 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      */
     public RequestOptions setRequestOptions(Object[] swaggerMethodArguments) {
         return requestOptionsPosition < 0 ? null : (RequestOptions) swaggerMethodArguments[requestOptionsPosition];
+    }
+
+    /**
+     * Get the {@link ServerSentEventListener} passed into the service API.
+     *
+     * @param swaggerMethodArguments The arguments passed to the proxy method.
+     *
+     * @return The server sent event listener.
+     */
+    public ServerSentEventListener setServerSentEventListener(Object[] swaggerMethodArguments) {
+        return serverSentEventListenerPosition < 0 ? null
+            : (ServerSentEventListener) swaggerMethodArguments[serverSentEventListenerPosition];
     }
 
     /**
