@@ -13,7 +13,6 @@ import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRes
 import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreResult;
 import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
-import com.azure.security.keyvault.keys.KeyServiceVersion;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -59,6 +58,24 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
     }
 
     /**
+     * Tests that a Key Vault or MHSM can be pre-backed up.
+     */
+    @SuppressWarnings("ConstantConditions")
+    @ParameterizedTest(name = DISPLAY_NAME)
+    @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
+    public void beginPreBackup(HttpClient httpClient) {
+        getAsyncClient(httpClient, false);
+
+        AsyncPollResponse<KeyVaultBackupOperation, String> backupPollResponse =
+            setPlaybackPollerFluxPollInterval(asyncClient.beginPreBackup(blobStorageUrl, sasToken)).blockLast();
+
+        String backupBlobUri = backupPollResponse.getFinalResult().block();
+
+        assertNotNull(backupBlobUri);
+        assertTrue(backupBlobUri.startsWith(blobStorageUrl));
+    }
+
+    /**
      * Tests that a Key Vault can be restored from a backup.
      */
     @SuppressWarnings("ConstantConditions")
@@ -94,6 +111,41 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
     }
 
     /**
+     * Tests that a Key Vault can be pre-restored from a backup.
+     */
+    @SuppressWarnings("ConstantConditions")
+    @ParameterizedTest(name = DISPLAY_NAME)
+    @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
+    public void beginPreRestore(HttpClient httpClient) {
+        getAsyncClient(httpClient, false);
+
+        // Create a backup
+        AsyncPollResponse<KeyVaultBackupOperation, String> backupPollResponse =
+            setPlaybackPollerFluxPollInterval(asyncClient.beginBackup(blobStorageUrl, sasToken))
+                .takeUntil(asyncPollResponse ->
+                    asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+                .blockLast();
+
+        KeyVaultBackupOperation backupOperation = backupPollResponse.getValue();
+        assertNotNull(backupOperation);
+
+        // Restore the backup
+        String backupFolderUrl = backupOperation.getAzureStorageBlobContainerUrl();
+        AsyncPollResponse<KeyVaultRestoreOperation, KeyVaultRestoreResult> restorePollResponse =
+            setPlaybackPollerFluxPollInterval(asyncClient.beginPreRestore(backupFolderUrl, sasToken))
+                .takeUntil(asyncPollResponse ->
+                    asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+                .blockLast();
+
+        KeyVaultRestoreOperation restoreOperation = restorePollResponse.getValue();
+        assertNotNull(restoreOperation);
+
+        // For some reason, the service might still think a restore operation is running even after returning a success
+        // signal. This gives it some time to "clear" the operation.
+        sleepIfRunningAgainstService(30000);
+    }
+
+    /**
      * Tests that a key can be restored from a backup.
      */
     @SuppressWarnings("ConstantConditions")
@@ -102,7 +154,6 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
     public void beginSelectiveKeyRestore(HttpClient httpClient) {
         KeyAsyncClient keyClient = new KeyClientBuilder()
             .vaultUrl(getEndpoint())
-            .serviceVersion(KeyServiceVersion.V7_2)
             .pipeline(getPipeline(httpClient, false))
             .buildAsyncClient();
 

@@ -24,7 +24,7 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.administration.implementation.KeyVaultCredentialPolicy;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.params.provider.Arguments;
@@ -60,17 +60,11 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestProxyTest
         TokenCredential credential;
 
         if (!interceptorManager.isPlaybackMode()) {
-            String clientId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_ID");
-            String clientKey = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_SECRET");
             String tenantId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_TENANT_ID");
 
-            Objects.requireNonNull(clientId, "The client id cannot be null");
-            Objects.requireNonNull(clientKey, "The client key cannot be null");
             Objects.requireNonNull(tenantId, "The tenant id cannot be null");
 
-            credential = new ClientSecretCredentialBuilder()
-                .clientSecret(clientKey)
-                .clientId(clientId)
+            credential = new DefaultAzureCredentialBuilder()
                 .tenantId(tenantId)
                 .additionallyAllowedTenants("*")
                 .build();
