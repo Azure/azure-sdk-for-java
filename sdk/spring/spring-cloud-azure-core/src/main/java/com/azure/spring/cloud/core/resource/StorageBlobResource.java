@@ -31,6 +31,7 @@ import java.net.URL;
  * Implements {@link WritableResource} for reading and writing objects in Azure StorageAccount blob. An instance of this
  * class represents a handle to a blob.
  */
+@SuppressWarnings("deprecation")
 public final class StorageBlobResource extends AzureStorageResource {
     private static final Logger LOGGER = LoggerFactory.getLogger(StorageBlobResource.class);
     private static final String MSG_FAIL_OPEN_OUTPUT = "Failed to open output stream of cloud blob";

@@ -9,6 +9,7 @@ import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 /**
  * The AzureEnvironment defines all properties to Azure services, such as endpoints, resource ids, etc.
  */
+@SuppressWarnings("deprecation")
 public class AzureEnvironmentProperties implements AzureProfileOptionsProvider.AzureEnvironmentOptions {
 
     /**

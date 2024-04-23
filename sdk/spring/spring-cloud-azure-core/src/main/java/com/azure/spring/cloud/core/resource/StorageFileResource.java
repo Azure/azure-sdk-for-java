@@ -26,6 +26,7 @@ import java.net.URL;
  * Implements {@link WritableResource} for reading and writing objects in Azure StorageAccount file. An instance of this
  * class represents a handle to a file.
  */
+@SuppressWarnings("deprecation")
 public final class StorageFileResource extends AzureStorageResource {
 
     private static final String MSG_FAIL_OPEN_OUTPUT = "Failed to open output stream of file";
