@@ -375,7 +375,6 @@ public class CosmosItemTest extends TestSuiteBase {
             connectTimeout.disable();
         }
     }
->>>>>>> b37d95a0b1c (Fixed an issue in QuorumReader when quorum could not be selected even though 1 secondary and Primary are reachable and in sync (#38832))
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void readManyWithSamePartitionKey() throws Exception {
