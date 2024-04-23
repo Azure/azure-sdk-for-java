@@ -1,18 +1,5 @@
 # Release History
 
-## 5.19.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-- Fixed issue where creating EventProcessorClient instances using the same EventProcessorClientBuilder instance could result in incorrect properties. ([#29875](https://github.com/Azure/azure-sdk-for-java/issues/29875))
-
-### Other Changes
-
-
 ## 5.18.2 (2024-03-20)
 
 ### Other Changes
