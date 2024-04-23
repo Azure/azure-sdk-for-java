@@ -4,22 +4,16 @@
 package com.azure.communication.jobrouter.implementation.models;
 
 import com.azure.communication.jobrouter.models.OAuth2WebhookClientCredential;
-import com.azure.communication.jobrouter.models.RouterRuleKind;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A rule providing a binding to an external web server.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "kind",
-    defaultImpl = WebhookRouterRuleInternal.class,
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("webhook")
 @Fluent
 public final class WebhookRouterRuleInternal extends RouterRuleInternal {
@@ -32,7 +26,8 @@ public final class WebhookRouterRuleInternal extends RouterRuleInternal {
     private String authorizationServerUri;
 
     /*
-     * OAuth2.0 Credentials used to Contoso's Authorization server. Reference: https://www.oauth.com/oauth2-servers/access-tokens/client-credentials/
+     * OAuth2.0 Credentials used to Contoso's Authorization server. Reference:
+     * https://www.oauth.com/oauth2-servers/access-tokens/client-credentials/
      */
     @Generated
     @JsonProperty(value = "clientCredential")
@@ -118,24 +113,5 @@ public final class WebhookRouterRuleInternal extends RouterRuleInternal {
     public WebhookRouterRuleInternal setClientCredential(OAuth2WebhookClientCredential clientCredential) {
         this.clientCredential = clientCredential;
         return this;
-    }
-
-    /*
-     * The type discriminator describing a sub-type of RouterRule
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
-    private RouterRuleKind kind = RouterRuleKind.WEBHOOK;
-
-    /**
-     * Get the kind property: The type discriminator describing a sub-type of RouterRule.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public RouterRuleKind getKind() {
-        return this.kind;
     }
 }

@@ -34,7 +34,7 @@ public final class RouterJobAssignment {
      */
     @Generated
     @JsonProperty(value = "assignedAt")
-    private final OffsetDateTime assignedAt;
+    private OffsetDateTime assignedAt;
 
     /*
      * Timestamp when the job was marked as completed after being assigned in UTC.
@@ -49,17 +49,6 @@ public final class RouterJobAssignment {
     @Generated
     @JsonProperty(value = "closedAt")
     private OffsetDateTime closedAt;
-
-    /**
-     * Creates an instance of RouterJobAssignment class.
-     *
-     * @param assignedAt the assignedAt value to set.
-     */
-    @Generated
-    @JsonCreator
-    private RouterJobAssignment(@JsonProperty(value = "assignedAt") OffsetDateTime assignedAt) {
-        this.assignedAt = assignedAt;
-    }
 
     /**
      * Get the assignmentId property: Id of a job assignment.
@@ -109,5 +98,16 @@ public final class RouterJobAssignment {
     @Generated
     public OffsetDateTime getClosedAt() {
         return this.closedAt;
+    }
+
+    /**
+     * Creates an instance of RouterJobAssignment class.
+     *
+     * @param assignedAt the assignedAt value to set.
+     */
+    @Generated
+    @JsonCreator
+    private RouterJobAssignment(@JsonProperty(value = "assignedAt") OffsetDateTime assignedAt) {
+        this.assignedAt = assignedAt;
     }
 }
