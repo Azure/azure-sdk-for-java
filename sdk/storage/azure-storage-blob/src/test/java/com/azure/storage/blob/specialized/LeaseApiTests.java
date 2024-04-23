@@ -5,8 +5,6 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.CoreUtils;
-import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.blob.models.BlobLeaseRequestConditions;
@@ -19,8 +17,8 @@ import com.azure.storage.blob.options.BlobBreakLeaseOptions;
 import com.azure.storage.blob.options.BlobChangeLeaseOptions;
 import com.azure.storage.blob.options.BlobReleaseLeaseOptions;
 import com.azure.storage.blob.options.BlobRenewLeaseOptions;
-import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -30,6 +28,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -74,7 +73,7 @@ public class LeaseApiTests extends BlobTestBase {
         return Stream.of(
             Arguments.of(null, -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE),
             Arguments.of(null, 25, LeaseStateType.LEASED, LeaseDurationType.FIXED),
-            Arguments.of(CoreUtils.randomUuid().toString(), -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE)
+            Arguments.of(UUID.randomUUID().toString(), -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE)
         );
     }
 
@@ -91,7 +90,7 @@ public class LeaseApiTests extends BlobTestBase {
         assertThrows(BlobStorageException.class, () -> leaseClient.acquireLease(duration));
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("acquireBlobLeaseDurationFailSupplier")
     public void acquireBlobLeaseAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -180,7 +179,7 @@ public class LeaseApiTests extends BlobTestBase {
             .renewLeaseWithResponse(new BlobRenewLeaseOptions(), null, null), 200);
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("acquireBlobLeaseDurationFailSupplier")
     public void renewBlobLeaseAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -245,7 +244,7 @@ public class LeaseApiTests extends BlobTestBase {
             new BlobReleaseLeaseOptions(), null, null), 200);
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("acquireBlobLeaseDurationFailSupplier")
     public void releaseBlobLeaseAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -322,7 +321,7 @@ public class LeaseApiTests extends BlobTestBase {
             new BlobBreakLeaseOptions(), null, null), 202);
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("acquireBlobLeaseDurationFailSupplier")
     public void breakBlobLeaseAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -395,7 +394,7 @@ public class LeaseApiTests extends BlobTestBase {
             new BlobChangeLeaseOptions(testResourceNamer.randomUuid()), null, null), 200);
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("acquireBlobLeaseDurationFailSupplier")
     public void changeBlobLeaseAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -465,7 +464,7 @@ public class LeaseApiTests extends BlobTestBase {
         return Stream.of(
             Arguments.of(null, -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE),
             Arguments.of(null, 25, LeaseStateType.LEASED, LeaseDurationType.FIXED),
-            Arguments.of(CoreUtils.randomUuid().toString(), -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE)
+            Arguments.of(UUID.randomUUID().toString(), -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE)
         );
     }
 

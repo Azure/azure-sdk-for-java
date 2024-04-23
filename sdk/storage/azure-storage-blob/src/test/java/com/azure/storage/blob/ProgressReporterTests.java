@@ -4,8 +4,10 @@
 package com.azure.storage.blob;
 
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
-import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 
@@ -16,8 +18,9 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.ReentrantLock;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.times;
 
 @SuppressWarnings("deprecation")
 public class ProgressReporterTests extends BlobTestBase {
@@ -28,7 +31,7 @@ public class ProgressReporterTests extends BlobTestBase {
         ByteBuffer buf2 = getRandomData(15);
         ByteBuffer buf3 = getRandomData(5);
 
-        TestBlobProgressReceiver mockReceiver = new TestBlobProgressReceiver();
+        ProgressReceiver mockReceiver = Mockito.mock(ProgressReceiver.class);
 
         Flux<ByteBuffer> data = Flux.just(buf1, buf2, buf3);
         data = ProgressReporter.addProgressReporting(data, mockReceiver);
@@ -37,16 +40,16 @@ public class ProgressReporterTests extends BlobTestBase {
         data.subscribe(); // Subscribing twice enforces invocation of rewind
 
         // The same benchmarks should be reported on each subscription (retry). We should never go over total data size.
-        assertEquals(2, mockReceiver.progresses.stream().filter(p -> p == 10).count());
-        assertEquals(2, mockReceiver.progresses.stream().filter(p -> p == 25).count());
-        assertEquals(2, mockReceiver.progresses.stream().filter(p -> p == 30).count());
-        assertEquals(0, mockReceiver.progresses.stream().filter(p -> p > 30).count());
+        Mockito.verify(mockReceiver, times(2)).reportProgress(10);
+        Mockito.verify(mockReceiver, times(2)).reportProgress(25);
+        Mockito.verify(mockReceiver, times(2)).reportProgress(30);
+        Mockito.verify(mockReceiver, times(0)).reportProgress(Mockito.longThat(arg -> arg > 30));
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @Test
     public void reportProgressSequentialNetworkTest() {
-        TestBlobProgressReceiver mockReceiver = new TestBlobProgressReceiver();
+        ProgressReceiver mockReceiver = Mockito.mock(ProgressReceiver.class);
 
         ByteBuffer buffer = getRandomData(1024 * 1024);
         Flux<ByteBuffer> data = ProgressReporter.addProgressReporting(Flux.just(buffer), mockReceiver);
@@ -61,7 +64,7 @@ public class ProgressReporterTests extends BlobTestBase {
         may or may not be any intermediary calls. This test mostly looks to validate that there is no interference
         with actual network calls.
          */
-        assertEquals(1, mockReceiver.progresses.stream().filter(p -> p == 1024 * 1024).count());
+        Mockito.verify(mockReceiver, times(1)).reportProgress(1024 * 1024);
     }
 
     @Test
@@ -73,7 +76,7 @@ public class ProgressReporterTests extends BlobTestBase {
         ReentrantLock lock = new ReentrantLock();
         AtomicLong totalProgress = new AtomicLong(0);
 
-        TestBlobProgressReceiver mockReceiver = new TestBlobProgressReceiver();
+        ProgressReceiver mockReceiver = Mockito.mock(ProgressReceiver.class);
         Flux<ByteBuffer> data = Flux.just(buf1, buf2, buf3);
         Flux<ByteBuffer> data2 = Flux.just(buf3, buf2, buf1);
         data = ProgressReporter.addParallelProgressReporting(data, mockReceiver, lock, totalProgress);
@@ -95,9 +98,9 @@ public class ProgressReporterTests extends BlobTestBase {
         There should be at least one call reporting the total length of the data. There may be two if both data and
         data2 complete before the second batch of subscriptions
          */
-        // Verify that reportProgress was called 1 to 3 times with argument 60
-        long reported60Count = mockReceiver.progresses.stream().filter(p -> p == 60).count();
-        assertTrue(reported60Count >= 1 && reported60Count <= 3);
+        // Verify that reportProgress was called 1 to 2 times with argument 60
+        Mockito.verify(mockReceiver, Mockito.atLeast(1)).reportProgress(60);
+        Mockito.verify(mockReceiver, Mockito.atMost(3)).reportProgress(60);
 
         /*
         There should be 12 calls total, but either one or two of them could be reporting the total length, so we
@@ -105,14 +108,21 @@ public class ProgressReporterTests extends BlobTestBase {
         there would never be concurrent subscriptions to the same Flux as may be the case here, but it is good
         enough.
          */
-        // Verify that reportProgress was called 10 to 12 times with any long argument
-        assertTrue(mockReceiver.progresses.size() >= 10 && mockReceiver.progresses.size() <= 12);
+        // Verify that reportProgress was called 10 to 11 times with any long argument
+        Mockito.verify(mockReceiver, Mockito.atLeast(10)).reportProgress(anyLong());
+        Mockito.verify(mockReceiver, Mockito.atMost(12)).reportProgress(anyLong());
 
         /*
         We should never report more progress than the 60 total (30 from each Flux--Resubscribing is a retry and
         therefore rewinds).
          */
-        assertEquals(0, mockReceiver.progresses.stream().filter(p -> p > 60).count());
+        ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
+        Mockito.verify(mockReceiver, Mockito.atLeast(0)).reportProgress(argumentCaptor.capture());
+
+        List<Long> capturedArguments = argumentCaptor.getAllValues();
+        for (Long argument : capturedArguments) {
+            assertTrue(argument <= 60);
+        }
     }
 
     /**

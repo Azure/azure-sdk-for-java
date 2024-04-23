@@ -10,7 +10,6 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.AzureSasCredentialPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
@@ -104,8 +103,6 @@ public final class BuilderHelper {
         policies.add(BuilderUtils.createRetryPolicy(retryOptions, coreRetryOptions, logger));
 
         policies.add(new AddDatePolicy());
-
-        policies.add(new AddHeadersFromContextPolicy());
 
         // We need to place this policy right before the credential policy since headers may affect the string to sign
         // of the request.
