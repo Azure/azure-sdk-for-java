@@ -3,6 +3,7 @@
 
 import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
+import com.azure.autorest.customization.JavadocCustomization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import com.github.javaparser.StaticJavaParser;
@@ -81,6 +82,7 @@ public class SearchIndexCustomizations extends Customization {
         customizeVectorizableTextQuery(packageCustomization.getClass("VectorizableTextQuery"));
         customizeVectorizableImageUrlQuery(packageCustomization.getClass("VectorizableImageUrlQuery"));
         customizeVectorizableImageBinaryQuery(packageCustomization.getClass("VectorizableImageBinaryQuery"));
+        customizeSearchScoreThreshold(packageCustomization.getClass("SearchScoreThreshold"));
 
         packageCustomization.getClass("QueryAnswerResult").removeMethod("setAdditionalProperties");
         packageCustomization.getClass("QueryCaptionResult").removeMethod("setAdditionalProperties");
@@ -261,6 +263,21 @@ private void customizeVectorQuery(ClassCustomization classCustomization) {
                 "        super.setFields(fields);\n" +
                 "        return this;\n" +
                 "    }")));
+    }
+
+    private void customizeSearchScoreThreshold(ClassCustomization classCustomization) {
+        customizeAst(classCustomization, clazz -> {
+            clazz.getMethodsByName("getValue").get(0).setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
+                "/**",
+                " * Get the value property: The threshold will filter based on the '@search.score' value. Note this is the",
+                " *",
+                " * `@search.score` returned as part of the search response. The threshold direction will be chosen for higher",
+                " * `@search.score`.",
+                " *",
+                " * @return the value.",
+                " */"
+            )));
+        });
     }
 
     private static void customizeAst(ClassCustomization classCustomization, Consumer<ClassOrInterfaceDeclaration> consumer) {
