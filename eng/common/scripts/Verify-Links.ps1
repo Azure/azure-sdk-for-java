@@ -218,7 +218,7 @@ function CheckLink ([System.Uri]$linkUri, $allowRetry=$true)
   }
 
   $linkValid = $true
-  Write-Verbose "Checking link $linkUri..."
+  Write-Host "Checking link $linkUri..."
 
   if ($linkUri.IsFile) {
     if (!(Test-Path $linkUri.LocalPath)) {
