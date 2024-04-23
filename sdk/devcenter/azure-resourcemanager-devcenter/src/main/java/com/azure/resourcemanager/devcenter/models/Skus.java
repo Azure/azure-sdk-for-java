@@ -7,11 +7,13 @@ package com.azure.resourcemanager.devcenter.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Skus. */
+/**
+ * Resource collection API of Skus.
+ */
 public interface Skus {
     /**
      * Lists the Microsoft.DevCenter SKUs available in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of the Microsoft.DevCenter SKU list operation as paginated response with {@link PagedIterable}.
@@ -20,7 +22,7 @@ public interface Skus {
 
     /**
      * Lists the Microsoft.DevCenter SKUs available in a subscription.
-     *
+     * 
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

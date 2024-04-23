@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Describes the state of the license. */
+/**
+ * Describes the state of the license.
+ */
 public final class LicenseState extends ExpandableStringEnum<LicenseState> {
-    /** Static value Activated for LicenseState. */
+    /**
+     * Static value Activated for LicenseState.
+     */
     public static final LicenseState ACTIVATED = fromString("Activated");
 
-    /** Static value Deactivated for LicenseState. */
+    /**
+     * Static value Deactivated for LicenseState.
+     */
     public static final LicenseState DEACTIVATED = fromString("Deactivated");
 
     /**
      * Creates a new instance of LicenseState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class LicenseState extends ExpandableStringEnum<LicenseState> {
 
     /**
      * Creates or finds a LicenseState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LicenseState.
      */
@@ -38,7 +44,7 @@ public final class LicenseState extends ExpandableStringEnum<LicenseState> {
 
     /**
      * Gets known LicenseState values.
-     *
+     * 
      * @return known LicenseState values.
      */
     public static Collection<LicenseState> values() {

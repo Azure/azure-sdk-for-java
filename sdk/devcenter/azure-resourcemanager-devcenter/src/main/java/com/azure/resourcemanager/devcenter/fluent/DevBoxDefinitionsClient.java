@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.devcenter.fluent.models.DevBoxDefinitionInner;
 import com.azure.resourcemanager.devcenter.models.DevBoxDefinitionUpdate;
 
-/** An instance of this class provides access to all the operations defined in DevBoxDefinitionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DevBoxDefinitionsClient.
+ */
 public interface DevBoxDefinitionsClient {
     /**
      * List Dev Box definitions for a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,7 +33,7 @@ public interface DevBoxDefinitionsClient {
 
     /**
      * List Dev Box definitions for a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -42,12 +44,12 @@ public interface DevBoxDefinitionsClient {
      * @return results of the Dev Box definition list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DevBoxDefinitionInner> listByDevCenter(
-        String resourceGroupName, String devCenterName, Integer top, Context context);
+    PagedIterable<DevBoxDefinitionInner> listByDevCenter(String resourceGroupName, String devCenterName, Integer top,
+        Context context);
 
     /**
      * Gets a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -58,12 +60,12 @@ public interface DevBoxDefinitionsClient {
      * @return a Dev Box definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DevBoxDefinitionInner> getWithResponse(
-        String resourceGroupName, String devCenterName, String devBoxDefinitionName, Context context);
+    Response<DevBoxDefinitionInner> getWithResponse(String resourceGroupName, String devCenterName,
+        String devBoxDefinitionName, Context context);
 
     /**
      * Gets a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -77,7 +79,7 @@ public interface DevBoxDefinitionsClient {
 
     /**
      * Creates or updates a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -88,12 +90,12 @@ public interface DevBoxDefinitionsClient {
      * @return the {@link SyncPoller} for polling of represents a definition for a Developer Machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DevBoxDefinitionInner>, DevBoxDefinitionInner> beginCreateOrUpdate(
-        String resourceGroupName, String devCenterName, String devBoxDefinitionName, DevBoxDefinitionInner body);
+    SyncPoller<PollResult<DevBoxDefinitionInner>, DevBoxDefinitionInner> beginCreateOrUpdate(String resourceGroupName,
+        String devCenterName, String devBoxDefinitionName, DevBoxDefinitionInner body);
 
     /**
      * Creates or updates a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -105,16 +107,12 @@ public interface DevBoxDefinitionsClient {
      * @return the {@link SyncPoller} for polling of represents a definition for a Developer Machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DevBoxDefinitionInner>, DevBoxDefinitionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String devCenterName,
-        String devBoxDefinitionName,
-        DevBoxDefinitionInner body,
-        Context context);
+    SyncPoller<PollResult<DevBoxDefinitionInner>, DevBoxDefinitionInner> beginCreateOrUpdate(String resourceGroupName,
+        String devCenterName, String devBoxDefinitionName, DevBoxDefinitionInner body, Context context);
 
     /**
      * Creates or updates a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -125,12 +123,12 @@ public interface DevBoxDefinitionsClient {
      * @return represents a definition for a Developer Machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DevBoxDefinitionInner createOrUpdate(
-        String resourceGroupName, String devCenterName, String devBoxDefinitionName, DevBoxDefinitionInner body);
+    DevBoxDefinitionInner createOrUpdate(String resourceGroupName, String devCenterName, String devBoxDefinitionName,
+        DevBoxDefinitionInner body);
 
     /**
      * Creates or updates a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -142,16 +140,12 @@ public interface DevBoxDefinitionsClient {
      * @return represents a definition for a Developer Machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DevBoxDefinitionInner createOrUpdate(
-        String resourceGroupName,
-        String devCenterName,
-        String devBoxDefinitionName,
-        DevBoxDefinitionInner body,
-        Context context);
+    DevBoxDefinitionInner createOrUpdate(String resourceGroupName, String devCenterName, String devBoxDefinitionName,
+        DevBoxDefinitionInner body, Context context);
 
     /**
      * Partially updates a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -162,12 +156,12 @@ public interface DevBoxDefinitionsClient {
      * @return the {@link SyncPoller} for polling of represents a definition for a Developer Machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DevBoxDefinitionInner>, DevBoxDefinitionInner> beginUpdate(
-        String resourceGroupName, String devCenterName, String devBoxDefinitionName, DevBoxDefinitionUpdate body);
+    SyncPoller<PollResult<DevBoxDefinitionInner>, DevBoxDefinitionInner> beginUpdate(String resourceGroupName,
+        String devCenterName, String devBoxDefinitionName, DevBoxDefinitionUpdate body);
 
     /**
      * Partially updates a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -179,16 +173,12 @@ public interface DevBoxDefinitionsClient {
      * @return the {@link SyncPoller} for polling of represents a definition for a Developer Machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DevBoxDefinitionInner>, DevBoxDefinitionInner> beginUpdate(
-        String resourceGroupName,
-        String devCenterName,
-        String devBoxDefinitionName,
-        DevBoxDefinitionUpdate body,
-        Context context);
+    SyncPoller<PollResult<DevBoxDefinitionInner>, DevBoxDefinitionInner> beginUpdate(String resourceGroupName,
+        String devCenterName, String devBoxDefinitionName, DevBoxDefinitionUpdate body, Context context);
 
     /**
      * Partially updates a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -199,12 +189,12 @@ public interface DevBoxDefinitionsClient {
      * @return represents a definition for a Developer Machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DevBoxDefinitionInner update(
-        String resourceGroupName, String devCenterName, String devBoxDefinitionName, DevBoxDefinitionUpdate body);
+    DevBoxDefinitionInner update(String resourceGroupName, String devCenterName, String devBoxDefinitionName,
+        DevBoxDefinitionUpdate body);
 
     /**
      * Partially updates a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -216,16 +206,12 @@ public interface DevBoxDefinitionsClient {
      * @return represents a definition for a Developer Machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DevBoxDefinitionInner update(
-        String resourceGroupName,
-        String devCenterName,
-        String devBoxDefinitionName,
-        DevBoxDefinitionUpdate body,
-        Context context);
+    DevBoxDefinitionInner update(String resourceGroupName, String devCenterName, String devBoxDefinitionName,
+        DevBoxDefinitionUpdate body, Context context);
 
     /**
      * Deletes a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -235,12 +221,12 @@ public interface DevBoxDefinitionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String devCenterName, String devBoxDefinitionName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String devCenterName,
+        String devBoxDefinitionName);
 
     /**
      * Deletes a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -251,12 +237,12 @@ public interface DevBoxDefinitionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String devCenterName, String devBoxDefinitionName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String devCenterName,
+        String devBoxDefinitionName, Context context);
 
     /**
      * Deletes a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -269,7 +255,7 @@ public interface DevBoxDefinitionsClient {
 
     /**
      * Deletes a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -283,7 +269,7 @@ public interface DevBoxDefinitionsClient {
 
     /**
      * List Dev Box definitions configured for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -296,7 +282,7 @@ public interface DevBoxDefinitionsClient {
 
     /**
      * List Dev Box definitions configured for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -307,12 +293,12 @@ public interface DevBoxDefinitionsClient {
      * @return results of the Dev Box definition list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DevBoxDefinitionInner> listByProject(
-        String resourceGroupName, String projectName, Integer top, Context context);
+    PagedIterable<DevBoxDefinitionInner> listByProject(String resourceGroupName, String projectName, Integer top,
+        Context context);
 
     /**
      * Gets a Dev Box definition configured for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -323,12 +309,12 @@ public interface DevBoxDefinitionsClient {
      * @return a Dev Box definition configured for a project along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DevBoxDefinitionInner> getByProjectWithResponse(
-        String resourceGroupName, String projectName, String devBoxDefinitionName, Context context);
+    Response<DevBoxDefinitionInner> getByProjectWithResponse(String resourceGroupName, String projectName,
+        String devBoxDefinitionName, Context context);
 
     /**
      * Gets a Dev Box definition configured for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param devBoxDefinitionName The name of the Dev Box definition.

@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import com.azure.cosmos.implementation.routing.Range;
@@ -121,19 +122,19 @@ public final class OrderByContinuationToken extends JsonSerializable implements 
     }
 
     private void setCompositeContinuationToken(CompositeContinuationToken compositeContinuationToken) {
-        BridgeInternal.setProperty(this, CompositeContinuationTokenPropertyName, compositeContinuationToken.toJson());
+        this.set(CompositeContinuationTokenPropertyName, compositeContinuationToken.toJson(), CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     private void setOrderByItems(QueryItem[] orderByItems) {
-        BridgeInternal.setProperty(this, OrderByItemsPropetryName, Arrays.asList(orderByItems));
+        this.set(OrderByItemsPropetryName, Arrays.asList(orderByItems), CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     private void setRid(String rid) {
-        BridgeInternal.setProperty(this, RidPropertyName, rid);
+        this.set(RidPropertyName, rid, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     private void setInclusive(boolean inclusive) {
-        BridgeInternal.setProperty(this, InclusivePropertyName, inclusive);
+        this.set(InclusivePropertyName, inclusive, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     @Override

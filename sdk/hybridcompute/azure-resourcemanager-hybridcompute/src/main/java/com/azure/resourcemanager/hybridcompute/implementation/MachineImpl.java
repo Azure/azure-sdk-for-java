@@ -6,7 +6,6 @@ package com.azure.resourcemanager.hybridcompute.implementation;
 
 import com.azure.core.management.SystemData;
 import com.azure.core.management.exception.ManagementError;
-import com.azure.resourcemanager.hybridcompute.fluent.models.LicenseProfileMachineInstanceViewInner;
 import com.azure.resourcemanager.hybridcompute.fluent.models.MachineExtensionInner;
 import com.azure.resourcemanager.hybridcompute.fluent.models.MachineInner;
 import com.azure.resourcemanager.hybridcompute.fluent.models.NetworkProfileInner;
@@ -28,6 +27,7 @@ import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public final class MachineImpl implements Machine {
@@ -68,12 +68,9 @@ public final class MachineImpl implements Machine {
     public List<MachineExtension> resources() {
         List<MachineExtensionInner> inner = this.innerModel().resources();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new MachineExtensionImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new MachineExtensionImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -116,12 +113,7 @@ public final class MachineImpl implements Machine {
     }
 
     public LicenseProfileMachineInstanceView licenseProfile() {
-        LicenseProfileMachineInstanceViewInner inner = this.innerModel().licenseProfile();
-        if (inner != null) {
-            return new LicenseProfileMachineInstanceViewImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.innerModel().licenseProfile();
     }
 
     public String provisioningState() {
@@ -149,7 +141,7 @@ public final class MachineImpl implements Machine {
         return this.innerModel().agentVersion();
     }
 
-    public String vmId() {
+    public UUID vmId() {
         return this.innerModel().vmId();
     }
 
@@ -177,7 +169,7 @@ public final class MachineImpl implements Machine {
         return this.innerModel().osType();
     }
 
-    public String vmUuid() {
+    public UUID vmUuid() {
         return this.innerModel().vmUuid();
     }
 
@@ -192,6 +184,10 @@ public final class MachineImpl implements Machine {
 
     public String osSku() {
         return this.innerModel().osSku();
+    }
+
+    public String osEdition() {
+        return this.innerModel().osEdition();
     }
 
     public String domainName() {

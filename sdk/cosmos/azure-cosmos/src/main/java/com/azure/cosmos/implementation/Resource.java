@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -117,7 +118,7 @@ public class Resource extends JsonSerializable {
      * @return the resource.
      */
     public Resource setId(String id) {
-        super.set(Constants.Properties.ID, id);
+        super.set(Constants.Properties.ID, id, CosmosItemSerializer.DEFAULT_SERIALIZER);
         return this;
     }
 
@@ -137,7 +138,7 @@ public class Resource extends JsonSerializable {
      * @return the resource.
      */
     public Resource setResourceId(String resourceId) {
-        super.set(Constants.Properties.R_ID, resourceId);
+        super.set(Constants.Properties.R_ID, resourceId, CosmosItemSerializer.DEFAULT_SERIALIZER);
         return this;
     }
 
@@ -156,7 +157,7 @@ public class Resource extends JsonSerializable {
      * @param selfLink the self link.
      */
     public Resource setSelfLink(String selfLink) {
-        super.set(Constants.Properties.SELF_LINK, selfLink);
+        super.set(Constants.Properties.SELF_LINK, selfLink, CosmosItemSerializer.DEFAULT_SERIALIZER);
         return this;
     }
 
@@ -180,7 +181,7 @@ public class Resource extends JsonSerializable {
      */
     public Resource setTimestamp(Instant timestamp) {
         long seconds = timestamp.getEpochSecond();
-        super.set(Constants.Properties.LAST_MODIFIED, seconds);
+        super.set(Constants.Properties.LAST_MODIFIED, seconds, CosmosItemSerializer.DEFAULT_SERIALIZER);
         return this;
     }
 
@@ -199,7 +200,7 @@ public class Resource extends JsonSerializable {
      * @param eTag the e tag.
      */
     Resource setETag(String eTag) {
-        super.set(Constants.Properties.E_TAG, eTag);
+        super.set(Constants.Properties.E_TAG, eTag, CosmosItemSerializer.DEFAULT_SERIALIZER);
         return this;
     }
 

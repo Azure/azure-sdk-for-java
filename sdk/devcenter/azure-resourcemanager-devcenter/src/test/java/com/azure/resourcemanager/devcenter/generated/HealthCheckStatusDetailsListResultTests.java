@@ -10,11 +10,9 @@ import com.azure.resourcemanager.devcenter.models.HealthCheckStatusDetailsListRe
 public final class HealthCheckStatusDetailsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HealthCheckStatusDetailsListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"startDateTime\":\"2021-04-28T05:58:57Z\",\"endDateTime\":\"2021-04-26T16:34:12Z\",\"healthChecks\":[{\"status\":\"Failed\",\"displayName\":\"zpjuohminyfl\",\"startDateTime\":\"2021-09-18T08:04:02Z\",\"endDateTime\":\"2021-08-19T07:09:40Z\",\"errorType\":\"uvwpklvxwmyg\",\"recommendedAction\":\"pgpqchiszepnnb\",\"additionalDetails\":\"rxgibbd\"},{\"status\":\"Failed\",\"displayName\":\"nfo\",\"startDateTime\":\"2021-02-08T18:39:08Z\",\"endDateTime\":\"2021-01-31T11:40:54Z\",\"errorType\":\"ukokwbqplhlvn\",\"recommendedAction\":\"epzl\",\"additionalDetails\":\"hw\"},{\"status\":\"Unknown\",\"displayName\":\"dweyuqdunv\",\"startDateTime\":\"2021-06-17T06:57:21Z\",\"endDateTime\":\"2021-07-30T06:00:49Z\",\"errorType\":\"biorktal\",\"recommendedAction\":\"jhhgdnhxmsi\",\"additionalDetails\":\"omi\"},{\"status\":\"Unknown\",\"displayName\":\"gdufiqnd\",\"startDateTime\":\"2021-06-04T07:32:04Z\",\"endDateTime\":\"2021-06-22T17:00:53Z\",\"errorType\":\"fjchvc\",\"recommendedAction\":\"ys\",\"additionalDetails\":\"dotcubiipuip\"}]},\"id\":\"qonmacj\",\"name\":\"k\",\"type\":\"izsh\"}],\"nextLink\":\"cimpevfg\"}")
-                .toObject(HealthCheckStatusDetailsListResult.class);
+        HealthCheckStatusDetailsListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"startDateTime\":\"2021-07-16T10:37:49Z\",\"endDateTime\":\"2021-08-03T07:13:19Z\",\"healthChecks\":[{\"status\":\"Warning\",\"displayName\":\"hihlhzdsqtzbs\",\"startDateTime\":\"2021-01-15T23:38:36Z\",\"endDateTime\":\"2021-06-10T19:30:26Z\",\"errorType\":\"jhf\",\"recommendedAction\":\"vecactx\",\"additionalDetails\":\"oteyowc\"},{\"status\":\"Running\",\"displayName\":\"vekqvgqo\",\"startDateTime\":\"2021-10-12T22:41:28Z\",\"endDateTime\":\"2021-10-16T02:41:01Z\",\"errorType\":\"pjwyiv\",\"recommendedAction\":\"kfxcvhrfs\",\"additionalDetails\":\"uagrttikteusqc\"},{\"status\":\"Unknown\",\"displayName\":\"klxubyja\",\"startDateTime\":\"2021-09-13T22:37:23Z\",\"endDateTime\":\"2021-01-18T06:44:16Z\",\"errorType\":\"lcqcuubgqibrt\",\"recommendedAction\":\"metttwgd\",\"additionalDetails\":\"qxihhrmooi\"},{\"status\":\"Running\",\"displayName\":\"ypxiutcxap\",\"startDateTime\":\"2021-08-22T21:59:05Z\",\"endDateTime\":\"2021-11-27T00:42:27Z\",\"errorType\":\"togebjoxsl\",\"recommendedAction\":\"nhl\",\"additionalDetails\":\"rqnkkzjcjbtr\"}]},\"id\":\"ehvvib\",\"name\":\"xjjs\",\"type\":\"oqbeitpkxzt\"}],\"nextLink\":\"ob\"}")
+            .toObject(HealthCheckStatusDetailsListResult.class);
     }
 
     @org.junit.jupiter.api.Test

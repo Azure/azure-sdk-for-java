@@ -9,7 +9,9 @@ import com.azure.resourcemanager.hybridcompute.models.AssessmentModeTypes;
 import com.azure.resourcemanager.hybridcompute.models.PatchModeTypes;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Specifies the patch settings. */
+/**
+ * Specifies the patch settings.
+ */
 @Fluent
 public final class PatchSettings {
     /*
@@ -24,13 +26,15 @@ public final class PatchSettings {
     @JsonProperty(value = "patchMode")
     private PatchModeTypes patchMode;
 
-    /** Creates an instance of PatchSettings class. */
+    /**
+     * Creates an instance of PatchSettings class.
+     */
     public PatchSettings() {
     }
 
     /**
      * Get the assessmentMode property: Specifies the assessment mode.
-     *
+     * 
      * @return the assessmentMode value.
      */
     public AssessmentModeTypes assessmentMode() {
@@ -39,7 +43,7 @@ public final class PatchSettings {
 
     /**
      * Set the assessmentMode property: Specifies the assessment mode.
-     *
+     * 
      * @param assessmentMode the assessmentMode value to set.
      * @return the PatchSettings object itself.
      */
@@ -50,7 +54,7 @@ public final class PatchSettings {
 
     /**
      * Get the patchMode property: Specifies the patch mode.
-     *
+     * 
      * @return the patchMode value.
      */
     public PatchModeTypes patchMode() {
@@ -59,7 +63,7 @@ public final class PatchSettings {
 
     /**
      * Set the patchMode property: Specifies the patch mode.
-     *
+     * 
      * @param patchMode the patchMode value to set.
      * @return the PatchSettings object itself.
      */
@@ -70,7 +74,7 @@ public final class PatchSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

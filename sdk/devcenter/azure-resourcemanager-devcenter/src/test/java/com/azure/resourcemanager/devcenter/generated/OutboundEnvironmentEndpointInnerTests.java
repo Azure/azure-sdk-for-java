@@ -10,11 +10,9 @@ import com.azure.resourcemanager.devcenter.fluent.models.OutboundEnvironmentEndp
 public final class OutboundEnvironmentEndpointInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OutboundEnvironmentEndpointInner model =
-            BinaryData
-                .fromString(
-                    "{\"category\":\"zwiivwzjbhyzs\",\"endpoints\":[{\"domainName\":\"ambtrnegvm\",\"description\":\"uqeqv\",\"endpointDetails\":[{\"port\":2031178559},{\"port\":608775789},{\"port\":900352978}]},{\"domainName\":\"kdmflvestmjlx\",\"description\":\"ilozapeewchpxlk\",\"endpointDetails\":[{\"port\":1788111588},{\"port\":1984241161},{\"port\":463707796}]}]}")
-                .toObject(OutboundEnvironmentEndpointInner.class);
+        OutboundEnvironmentEndpointInner model = BinaryData.fromString(
+            "{\"category\":\"qzhzbezkgimsi\",\"endpoints\":[{\"domainName\":\"icddyvvjskgfmocw\",\"description\":\"pqg\",\"endpointDetails\":[{\"port\":184839469},{\"port\":1528539116},{\"port\":1199954406}]}]}")
+            .toObject(OutboundEnvironmentEndpointInner.class);
     }
 
     @org.junit.jupiter.api.Test

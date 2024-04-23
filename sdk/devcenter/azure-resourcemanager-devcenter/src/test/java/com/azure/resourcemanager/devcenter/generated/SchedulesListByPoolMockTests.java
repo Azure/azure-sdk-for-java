@@ -6,72 +6,43 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
 import com.azure.resourcemanager.devcenter.models.Schedule;
-import com.azure.resourcemanager.devcenter.models.ScheduleEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ScheduledFrequency;
 import com.azure.resourcemanager.devcenter.models.ScheduledType;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.devcenter.models.ScheduleEnableStatus;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class SchedulesListByPoolMockTests {
     @Test
     public void testListByPool() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"TransientFailure\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"pmeyyvpkpatlbijp\",\"timeZone\":\"sksrfhfvolmknbn\",\"state\":\"Disabled\",\"tags\":{\"awz\":\"mmpvf\",\"uiaclkiexhajlfn\":\"gbrt\",\"b\":\"hiqfyuttdiy\"},\"location\":\"n\"},\"id\":\"wmtxkyctwwgz\",\"name\":\"xjlme\",\"type\":\"vogygzyvneez\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"cjkgdirazftxej\",\"timeZone\":\"bmdujtmvcopexc\",\"state\":\"Disabled\"},\"id\":\"buhhlkyqlt\",\"name\":\"srogtu\",\"type\":\"kffdjktsys\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DevCenterManager manager = DevCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        DevCenterManager manager =
-            DevCenterManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<Schedule> response =
-            manager
-                .schedules()
-                .listByPool("ooqjagmditgueio", "kjbsah", "tdtpdelqacslmo", 818366731, com.azure.core.util.Context.NONE);
+        PagedIterable<Schedule> response = manager.schedules()
+            .listByPool("wex", "mzvlazipbh", "wvqsgny", 2007776080, com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, response.iterator().next().typePropertiesType());
         Assertions.assertEquals(ScheduledFrequency.DAILY, response.iterator().next().frequency());
-        Assertions.assertEquals("cjkgdirazftxej", response.iterator().next().time());
-        Assertions.assertEquals("bmdujtmvcopexc", response.iterator().next().timeZone());
+        Assertions.assertEquals("pmeyyvpkpatlbijp", response.iterator().next().time());
+        Assertions.assertEquals("sksrfhfvolmknbn", response.iterator().next().timeZone());
         Assertions.assertEquals(ScheduleEnableStatus.DISABLED, response.iterator().next().state());
+        Assertions.assertEquals("mmpvf", response.iterator().next().tags().get("awz"));
+        Assertions.assertEquals("n", response.iterator().next().location());
     }
 }

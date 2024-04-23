@@ -16,8 +16,7 @@ import java.util.List;
 @Fluent
 public final class QuotaTicketDetails {
     /*
-     * Required for certain quota types when there is a sub type, such as Batch, for which you are requesting a quota
-     * increase.
+     * Required for certain quota types when there is a sub type, such as Batch, for which you are requesting a quota increase.
      */
     @JsonProperty(value = "quotaChangeRequestSubType")
     private String quotaChangeRequestSubType;
