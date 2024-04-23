@@ -5,60 +5,56 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
-import com.azure.xml.XmlReader;
-import com.azure.xml.XmlSerializable;
-import com.azure.xml.XmlToken;
-import com.azure.xml.XmlWriter;
-import java.util.LinkedHashMap;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.Map;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
 
-/**
- * A listed Azure Storage share item.
- */
+/** A listed Azure Storage share item. */
+@JacksonXmlRootElement(localName = "Share")
 @Fluent
-public final class ShareItemInternal implements XmlSerializable<ShareItemInternal> {
+public final class ShareItemInternal {
     /*
      * The Name property.
      */
+    @JsonProperty(value = "Name", required = true)
     private String name;
 
     /*
      * The Snapshot property.
      */
+    @JsonProperty(value = "Snapshot")
     private String snapshot;
 
     /*
      * The Deleted property.
      */
+    @JsonProperty(value = "Deleted")
     private Boolean deleted;
 
     /*
      * The Version property.
      */
+    @JsonProperty(value = "Version")
     private String version;
 
     /*
      * Properties of a share.
      */
+    @JsonProperty(value = "Properties", required = true)
     private SharePropertiesInternal properties;
 
     /*
      * Dictionary of <string>
      */
+    @JsonProperty(value = "Metadata")
     private Map<String, String> metadata;
 
-    /**
-     * Creates an instance of ShareItemInternal class.
-     */
-    public ShareItemInternal() {
-    }
+    /** Creates an instance of ShareItemInternal class. */
+    public ShareItemInternal() {}
 
     /**
      * Get the name property: The Name property.
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -67,7 +63,7 @@ public final class ShareItemInternal implements XmlSerializable<ShareItemInterna
 
     /**
      * Set the name property: The Name property.
-     * 
+     *
      * @param name the name value to set.
      * @return the ShareItemInternal object itself.
      */
@@ -78,7 +74,7 @@ public final class ShareItemInternal implements XmlSerializable<ShareItemInterna
 
     /**
      * Get the snapshot property: The Snapshot property.
-     * 
+     *
      * @return the snapshot value.
      */
     public String getSnapshot() {
@@ -87,7 +83,7 @@ public final class ShareItemInternal implements XmlSerializable<ShareItemInterna
 
     /**
      * Set the snapshot property: The Snapshot property.
-     * 
+     *
      * @param snapshot the snapshot value to set.
      * @return the ShareItemInternal object itself.
      */
@@ -98,7 +94,7 @@ public final class ShareItemInternal implements XmlSerializable<ShareItemInterna
 
     /**
      * Get the deleted property: The Deleted property.
-     * 
+     *
      * @return the deleted value.
      */
     public Boolean isDeleted() {
@@ -107,7 +103,7 @@ public final class ShareItemInternal implements XmlSerializable<ShareItemInterna
 
     /**
      * Set the deleted property: The Deleted property.
-     * 
+     *
      * @param deleted the deleted value to set.
      * @return the ShareItemInternal object itself.
      */
@@ -118,7 +114,7 @@ public final class ShareItemInternal implements XmlSerializable<ShareItemInterna
 
     /**
      * Get the version property: The Version property.
-     * 
+     *
      * @return the version value.
      */
     public String getVersion() {
@@ -127,7 +123,7 @@ public final class ShareItemInternal implements XmlSerializable<ShareItemInterna
 
     /**
      * Set the version property: The Version property.
-     * 
+     *
      * @param version the version value to set.
      * @return the ShareItemInternal object itself.
      */
@@ -138,7 +134,7 @@ public final class ShareItemInternal implements XmlSerializable<ShareItemInterna
 
     /**
      * Get the properties property: Properties of a share.
-     * 
+     *
      * @return the properties value.
      */
     public SharePropertiesInternal getProperties() {
@@ -147,7 +143,7 @@ public final class ShareItemInternal implements XmlSerializable<ShareItemInterna
 
     /**
      * Set the properties property: Properties of a share.
-     * 
+     *
      * @param properties the properties value to set.
      * @return the ShareItemInternal object itself.
      */
@@ -158,7 +154,7 @@ public final class ShareItemInternal implements XmlSerializable<ShareItemInterna
 
     /**
      * Get the metadata property: Dictionary of &lt;string&gt;.
-     * 
+     *
      * @return the metadata value.
      */
     public Map<String, String> getMetadata() {
@@ -167,94 +163,12 @@ public final class ShareItemInternal implements XmlSerializable<ShareItemInterna
 
     /**
      * Set the metadata property: Dictionary of &lt;string&gt;.
-     * 
+     *
      * @param metadata the metadata value to set.
      * @return the ShareItemInternal object itself.
      */
     public ShareItemInternal setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
-    }
-
-    @Override
-    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        return toXml(xmlWriter, null);
-    }
-
-    @Override
-    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Share" : rootElementName;
-        xmlWriter.writeStartElement(rootElementName);
-        xmlWriter.writeStringElement("Name", this.name);
-        xmlWriter.writeStringElement("Snapshot", this.snapshot);
-        xmlWriter.writeBooleanElement("Deleted", this.deleted);
-        xmlWriter.writeStringElement("Version", this.version);
-        xmlWriter.writeXml(this.properties, "Properties");
-        if (this.metadata != null) {
-            xmlWriter.writeStartElement("Metadata");
-            for (Map.Entry<String, String> entry : this.metadata.entrySet()) {
-                xmlWriter.writeStringElement(entry.getKey(), entry.getValue());
-            }
-            xmlWriter.writeEndElement();
-        }
-        return xmlWriter.writeEndElement();
-    }
-
-    /**
-     * Reads an instance of ShareItemInternal from the XmlReader.
-     * 
-     * @param xmlReader The XmlReader being read.
-     * @return An instance of ShareItemInternal if the XmlReader was pointing to an instance of it, or null if it was
-     * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
-     * @throws XMLStreamException If an error occurs while reading the ShareItemInternal.
-     */
-    public static ShareItemInternal fromXml(XmlReader xmlReader) throws XMLStreamException {
-        return fromXml(xmlReader, null);
-    }
-
-    /**
-     * Reads an instance of ShareItemInternal from the XmlReader.
-     * 
-     * @param xmlReader The XmlReader being read.
-     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
-     * cases where the model can deserialize from different root element names.
-     * @return An instance of ShareItemInternal if the XmlReader was pointing to an instance of it, or null if it was
-     * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
-     * @throws XMLStreamException If an error occurs while reading the ShareItemInternal.
-     */
-    public static ShareItemInternal fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Share" : rootElementName;
-        return xmlReader.readObject(finalRootElementName, reader -> {
-            ShareItemInternal deserializedShareItemInternal = new ShareItemInternal();
-            while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                QName elementName = reader.getElementName();
-
-                if ("Name".equals(elementName.getLocalPart())) {
-                    deserializedShareItemInternal.name = reader.getStringElement();
-                } else if ("Snapshot".equals(elementName.getLocalPart())) {
-                    deserializedShareItemInternal.snapshot = reader.getStringElement();
-                } else if ("Deleted".equals(elementName.getLocalPart())) {
-                    deserializedShareItemInternal.deleted = reader.getNullableElement(Boolean::parseBoolean);
-                } else if ("Version".equals(elementName.getLocalPart())) {
-                    deserializedShareItemInternal.version = reader.getStringElement();
-                } else if ("Properties".equals(elementName.getLocalPart())) {
-                    deserializedShareItemInternal.properties = SharePropertiesInternal.fromXml(reader, "Properties");
-                } else if ("Metadata".equals(elementName.getLocalPart())) {
-                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                        if (deserializedShareItemInternal.metadata == null) {
-                            deserializedShareItemInternal.metadata = new LinkedHashMap<>();
-                        }
-                        deserializedShareItemInternal.metadata.put(reader.getElementName().getLocalPart(),
-                            reader.getStringElement());
-                    }
-                } else {
-                    reader.skipElement();
-                }
-            }
-
-            return deserializedShareItemInternal;
-        });
     }
 }

@@ -4,33 +4,24 @@
 
 package com.azure.storage.file.share.implementation.models;
 
-/**
- * Defines values for ListFilesIncludeType.
- */
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+/** Defines values for ListFilesIncludeType. */
 public enum ListFilesIncludeType {
-    /**
-     * Enum value Timestamps.
-     */
+    /** Enum value Timestamps. */
     TIMESTAMPS("Timestamps"),
 
-    /**
-     * Enum value Etag.
-     */
+    /** Enum value Etag. */
     ETAG("Etag"),
 
-    /**
-     * Enum value Attributes.
-     */
+    /** Enum value Attributes. */
     ATTRIBUTES("Attributes"),
 
-    /**
-     * Enum value PermissionKey.
-     */
+    /** Enum value PermissionKey. */
     PERMISSION_KEY("PermissionKey");
 
-    /**
-     * The actual serialized value for a ListFilesIncludeType instance.
-     */
+    /** The actual serialized value for a ListFilesIncludeType instance. */
     private final String value;
 
     ListFilesIncludeType(String value) {
@@ -39,10 +30,11 @@ public enum ListFilesIncludeType {
 
     /**
      * Parses a serialized value to a ListFilesIncludeType instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed ListFilesIncludeType object, or null if unable to parse.
      */
+    @JsonCreator
     public static ListFilesIncludeType fromString(String value) {
         if (value == null) {
             return null;
@@ -56,9 +48,8 @@ public enum ListFilesIncludeType {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
+    @JsonValue
     @Override
     public String toString() {
         return this.value;

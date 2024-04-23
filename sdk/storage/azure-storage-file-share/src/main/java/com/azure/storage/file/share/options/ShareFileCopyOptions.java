@@ -16,6 +16,7 @@ import java.util.Map;
  */
 @Fluent
 public final class ShareFileCopyOptions {
+
     private FileSmbProperties smbProperties;
     private String filePermission;
     private PermissionCopyModeType permissionCopyModeType;
@@ -26,14 +27,6 @@ public final class ShareFileCopyOptions {
     private CopyableFileSmbPropertiesList smbPropertiesToCopy;
 
     /**
-     * Creates a new instance of {@link ShareFileCopyOptions}.
-     */
-    public ShareFileCopyOptions() {
-    }
-
-    /**
-     * Gets the file permission key.
-     *
      * @return The file's permission key.
      */
     public String getFilePermission() {
@@ -52,8 +45,6 @@ public final class ShareFileCopyOptions {
     }
 
     /**
-     * Gets the SMB properties to set on the destination file.
-     *
      * @return Optional SMB properties to set on the destination file or directory. The only properties that are
      * considered are file attributes, file creation time, file last write time, and file permission key. The rest are
      * ignored.
@@ -63,8 +54,6 @@ public final class ShareFileCopyOptions {
     }
 
     /**
-     * Sets the SMB properties to set on the destination file.
-     *
      * @param smbProperties Optional SMB properties to set on the destination file or directory. The only properties
      * that are  considered are file attributes, file creation time, file last write time, and file permission key. The
      * rest are ignored.
@@ -76,9 +65,6 @@ public final class ShareFileCopyOptions {
     }
 
     /**
-     * Gets the option to copy file security descriptor from source file or to set it using the value which is defined
-     * by the header value of FilePermission or FilePermissionKey.
-     *
      * @return the option to copy file security descriptor from source file or to set it using the value which is
      * defined by the header value of FilePermission or FilePermissionKey.
      */
@@ -87,8 +73,6 @@ public final class ShareFileCopyOptions {
     }
 
     /**
-     * Sets the option to copy file security descriptor from source file or to set it using the value which is defined
-     * by the header value of FilePermission or FilePermissionKey.
      *
      * @param copyModeType specified option to copy file security descriptor from source file or to set it using the
      * value which is defined by the header value of FilePermission or FilePermissionKey.
@@ -100,19 +84,13 @@ public final class ShareFileCopyOptions {
     }
 
     /**
-     * Gets the optional boolean specifying to overwrite the target file if it already exists and has read-only
-     * attribute set.
-     *
-     * @return Optional boolean specifying to overwrite the target file if it already exists and has read-only attribute
-     * set.
+     * @return Optional boolean specifying to overwrite the target file if it already exists and has read-only attribute set.
      */
     public Boolean isIgnoreReadOnly() {
         return ignoreReadOnly;
     }
 
     /**
-     * Sets the optional boolean specifying to overwrite the target file if it already exists and has read-only
-     * attribute set.
      *
      * @param ignoreReadOnly Optional boolean specifying to overwrite the target file if it already exists and has
      * read-only attribute set.
@@ -124,10 +102,7 @@ public final class ShareFileCopyOptions {
     }
 
     /**
-     * Gets the optional boolean specifying to set archive attribute on a target file. True means archive attribute will
-     * be set on a target file despite attribute overrides or a source file state.
-     *
-     * @return Optional boolean specifying to set archive attribute on a target file. True means archive attribute will
+     * @return Optional boolean Specifying to set archive attribute on a target file. True means archive attribute will
      * be set on a target file despite attribute overrides or a source file state.
      */
     public Boolean isArchiveAttributeSet() {
@@ -135,8 +110,6 @@ public final class ShareFileCopyOptions {
     }
 
     /**
-     * Sets the optional boolean specifying to set archive attribute on a target file. True means archive attribute will
-     * be set on a target file despite attribute overrides or a source file state.
      *
      * @param archiveAttribute Optional boolean Specifying to set archive attribute on a target file. True means archive
      * attribute will be set on a target file despite attribute overrides or a source file state.
@@ -148,18 +121,14 @@ public final class ShareFileCopyOptions {
     }
 
     /**
-     * Gets the metadata to associate with the file.
-     *
-     * @return Metadata to associate with the file.
+     * @return Metadata to associate with the share
      */
     public Map<String, String> getMetadata() {
         return metadata;
     }
 
     /**
-     * Sets the metadata to associate with the file.
-     *
-     * @param metadata Metadata to associate with the file. If there is leading or trailing whitespace in any
+     * @param metadata Metadata to associate with the share. If there is leading or trailing whitespace in any
      * metadata key or value, it must be removed or encoded.
      * @return The updated options.
      */
@@ -189,8 +158,6 @@ public final class ShareFileCopyOptions {
     }
 
     /**
-     * Gets the SMB properties to copy from the source file.
-     *
      * @return SMB properties to copy from the source file.
      */
     public CopyableFileSmbPropertiesList getSmbPropertiesToCopy() {
@@ -198,8 +165,6 @@ public final class ShareFileCopyOptions {
     }
 
     /**
-     * Sets the SMB properties to copy from the source file.
-     *
      * @param smbProperties list of SMB properties to copy from the source file.
      * @return The updated options.
      */

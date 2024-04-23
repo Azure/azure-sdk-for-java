@@ -13,19 +13,12 @@ import java.util.Map;
  */
 @Fluent
 public class ShareDirectoryCreateOptions {
+
     private FileSmbProperties smbProperties;
     private String filePermission;
     private Map<String, String> metadata;
 
     /**
-     * Creates a new instance of {@link ShareDirectoryCreateOptions}.
-     */
-    public ShareDirectoryCreateOptions() {
-    }
-
-    /**
-     * Gets the file permission key.
-     *
      * @return The file's permission key.
      */
     public String getFilePermission() {
@@ -44,8 +37,6 @@ public class ShareDirectoryCreateOptions {
     }
 
     /**
-     * Gets the SMB properties to set on the destination directory.
-     *
      * @return Optional SMB properties to set on the destination file or directory. The only properties that are
      * considered are file attributes, file creation time, file last write time, and file permission key. The rest are
      * ignored.
@@ -55,8 +46,6 @@ public class ShareDirectoryCreateOptions {
     }
 
     /**
-     * Sets the SMB properties to set on the destination directory.
-     *
      * @param smbProperties Optional SMB properties to set on the destination file or directory. The only properties
      * that are  considered are file attributes, file creation time, file last write time, and file permission key. The
      * rest are ignored.
@@ -68,18 +57,14 @@ public class ShareDirectoryCreateOptions {
     }
 
     /**
-     * Gets the metadata to associate with the directory.
-     *
-     * @return Metadata to associate with the directory.
+     * @return Metadata to associate with the share
      */
     public Map<String, String> getMetadata() {
         return metadata;
     }
 
     /**
-     * Sets the metadata to associate with the directory.
-     *
-     * @param metadata Metadata to associate with the directory. If there is leading or trailing whitespace in any
+     * @param metadata Metadata to associate with the share. If there is leading or trailing whitespace in any
      * metadata key or value, it must be removed or encoded.
      * @return The updated options.
      */

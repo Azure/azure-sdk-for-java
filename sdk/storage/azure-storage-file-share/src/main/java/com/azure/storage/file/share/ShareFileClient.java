@@ -152,7 +152,7 @@ public class ShareFileClient {
      * Creates and opens an output stream to write data to the file. If the file already exists on the service, it will
      * be overwritten.
      *
-     * @param offset Starting point of the upload range.
+     * @param offset Starting point of the upload range, if {@code null} it will start from the beginning.
      * @return A {@link StorageFileOutputStream} object used to write data to the file.
      * @throws ShareStorageException If a storage service error occurred.
      */
@@ -2159,7 +2159,7 @@ public class ShareFileClient {
         Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("options", options);
         Mono<Response<ShareFileRangeList>> response = shareFileAsyncClient.listRangesWithResponse(options.getRange(),
-            options.getRequestConditions(), options.getPreviousSnapshot(), options.isRenameIncluded(), context);
+            options.getRequestConditions(), options.getPreviousSnapshot(), context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }

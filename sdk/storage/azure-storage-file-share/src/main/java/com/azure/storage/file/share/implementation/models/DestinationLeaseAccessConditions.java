@@ -5,17 +5,13 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * Parameter group.
- */
+/** Parameter group. */
+@JacksonXmlRootElement(localName = "DestinationLeaseAccessConditions")
 @Fluent
-public final class DestinationLeaseAccessConditions implements JsonSerializable<DestinationLeaseAccessConditions> {
+public final class DestinationLeaseAccessConditions {
     /*
      * Required if the destination file has an active infinite lease. The lease ID specified for this header must match
      * the lease ID of the destination file. If the request does not include the lease ID or it is not valid, the
@@ -23,13 +19,11 @@ public final class DestinationLeaseAccessConditions implements JsonSerializable<
      * does not currently have an active lease, the operation will also fail with status code 412 (Precondition
      * Failed).
      */
+    @JsonProperty(value = "destinationLeaseId")
     private String destinationLeaseId;
 
-    /**
-     * Creates an instance of DestinationLeaseAccessConditions class.
-     */
-    public DestinationLeaseAccessConditions() {
-    }
+    /** Creates an instance of DestinationLeaseAccessConditions class. */
+    public DestinationLeaseAccessConditions() {}
 
     /**
      * Get the destinationLeaseId property: Required if the destination file has an active infinite lease. The lease ID
@@ -37,7 +31,7 @@ public final class DestinationLeaseAccessConditions implements JsonSerializable<
      * lease ID or it is not valid, the operation fails with status code 412 (Precondition Failed). If this header is
      * specified and the destination file does not currently have an active lease, the operation will also fail with
      * status code 412 (Precondition Failed).
-     * 
+     *
      * @return the destinationLeaseId value.
      */
     public String getDestinationLeaseId() {
@@ -50,46 +44,12 @@ public final class DestinationLeaseAccessConditions implements JsonSerializable<
      * lease ID or it is not valid, the operation fails with status code 412 (Precondition Failed). If this header is
      * specified and the destination file does not currently have an active lease, the operation will also fail with
      * status code 412 (Precondition Failed).
-     * 
+     *
      * @param destinationLeaseId the destinationLeaseId value to set.
      * @return the DestinationLeaseAccessConditions object itself.
      */
     public DestinationLeaseAccessConditions setDestinationLeaseId(String destinationLeaseId) {
         this.destinationLeaseId = destinationLeaseId;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("destinationLeaseId", this.destinationLeaseId);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of DestinationLeaseAccessConditions from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of DestinationLeaseAccessConditions if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the DestinationLeaseAccessConditions.
-     */
-    public static DestinationLeaseAccessConditions fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            DestinationLeaseAccessConditions deserializedDestinationLeaseAccessConditions
-                = new DestinationLeaseAccessConditions();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("destinationLeaseId".equals(fieldName)) {
-                    deserializedDestinationLeaseAccessConditions.destinationLeaseId = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedDestinationLeaseAccessConditions;
-        });
     }
 }
