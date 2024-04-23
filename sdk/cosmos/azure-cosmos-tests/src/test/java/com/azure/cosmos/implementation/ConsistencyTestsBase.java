@@ -859,13 +859,13 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         if (isRegionScopedSessionTokenCapturingEnabled) {
 
             if (useAltLink) {
-                return ((RegionScopedSessionContainer) client.getSession()).getSessionToken(ModelBridgeInternal.getAltLink(collection));
+                return ((RegionScopedSessionContainer) client.getSession()).getSessionToken(collection.getAltLink());
             } else {
                 return ((RegionScopedSessionContainer) client.getSession()).getSessionToken(collection.getSelfLink());
             }
         } else {
             if (useAltLink) {
-                return ((SessionContainer) client.getSession()).getSessionToken(ModelBridgeInternal.getAltLink(collection));
+                return ((SessionContainer) client.getSession()).getSessionToken(collection.getAltLink());
             } else {
                 return ((SessionContainer) client.getSession()).getSessionToken(collection.getSelfLink());
             }

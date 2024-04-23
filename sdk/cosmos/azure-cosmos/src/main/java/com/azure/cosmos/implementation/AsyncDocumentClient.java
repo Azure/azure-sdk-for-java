@@ -264,6 +264,11 @@ public interface AsyncDocumentClient {
             return this;
         }
 
+        public Builder withRegionScopedSessionCapturingEnabled(boolean isRegionScopedSessionCapturingEnabled) {
+            this.isRegionScopedSessionCapturingEnabled = isRegionScopedSessionCapturingEnabled;
+            return this;
+        }
+
         private void ifThrowIllegalArgException(boolean value, String error) {
             if (value) {
                 throw new IllegalArgumentException(error);

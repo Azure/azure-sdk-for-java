@@ -765,6 +765,10 @@ public final class CosmosAsyncClient implements Closeable {
         return clientLevelThresholds != null ? clientLevelThresholds : new CosmosDiagnosticsThresholds();
     }
 
+    CosmosItemSerializer getEffectiveItemSerializer(CosmosItemSerializer requestOptionsItemSerializer) {
+        return this.asyncDocumentClient.getEffectiveItemSerializer(requestOptionsItemSerializer);
+    }
+
     boolean isTransportLevelTracingEnabled() {
 
         CosmosClientTelemetryConfig effectiveConfig = this.clientTelemetryConfig != null ?
@@ -897,6 +901,11 @@ public final class CosmosAsyncClient implements Closeable {
                 @Override
                 public DiagnosticsProvider getDiagnosticsProvider(CosmosAsyncClient client) {
                     return client.getDiagnosticsProvider();
+                }
+
+                @Override
+                public CosmosItemSerializer getEffectiveItemSerializer(CosmosAsyncClient client, CosmosItemSerializer requestOptionsItemSerializer) {
+                    return client.getEffectiveItemSerializer(requestOptionsItemSerializer);
                 }
             }
         );

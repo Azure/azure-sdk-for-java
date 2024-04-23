@@ -280,7 +280,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 sessionRetryOptions,
                 containerProactiveInitConfig,
                 defaultCustomSerializer,
-            isRegionScopedSessionCapturingEnabled);
+                isRegionScopedSessionCapturingEnabled);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -516,7 +516,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.sessionCapturingOverrideEnabled = sessionCapturingOverrideEnabled;
             boolean disableSessionCapturing = (ConsistencyLevel.SESSION != consistencyLevel && !sessionCapturingOverrideEnabled);
 
-            this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
             this.consistencyLevel = consistencyLevel;
 
             this.userAgentContainer = new UserAgentContainer();
@@ -530,6 +529,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.reactorHttpClient = httpClient();
 
             this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, /**/configs);
+
+            if (isRegionScopedSessionCapturingEnabled || Configs.isRegionScopedSessionTokenCapturingEnabled()) {
+                this.sessionContainer = new RegionScopedSessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing, this.globalEndpointManager);
+                this.diagnosticsClientConfig.withRegionScopedSessionContainerOptions((RegionScopedSessionContainer) this.sessionContainer);
+            } else {
+                this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
+            }
+
+            // todo: revert to use config
+            // this.sessionContainer = new RegionScopedSessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing, this.globalEndpointManager);
             this.retryPolicy = new RetryPolicy(this, this.globalEndpointManager, this.connectionPolicy);
             this.resetSessionTokenRetryPolicy = retryPolicy;
             CpuMemoryMonitor.register(this);
@@ -1279,7 +1288,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return this.create(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, DocumentCollection.class))
                        .doOnNext(resourceResponse -> {
                     // set the session token
-                    this.sessionContainer.setSessionToken(resourceResponse.getResource().getResourceId(),
+                    this.sessionContainer.setSessionToken(
+                        request,
+                        resourceResponse.getResource().getResourceId(),
                         getAltLink(resourceResponse.getResource()),
                         resourceResponse.getResponseHeaders());
                 });
@@ -1333,7 +1344,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 .doOnNext(resourceResponse -> {
                     if (resourceResponse.getResource() != null) {
                         // set the session token
-                        this.sessionContainer.setSessionToken(resourceResponse.getResource().getResourceId(),
+                        this.sessionContainer.setSessionToken(
+                            request,
+                            resourceResponse.getResource().getResourceId(),
                             getAltLink(resourceResponse.getResource()),
                             resourceResponse.getResponseHeaders());
                     }
@@ -1730,6 +1743,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         request.setPartitionKeyInternal(partitionKeyInternal);
+        request.setPartitionKeyDefinition(partitionKeyDefinition);
         request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY, Utils.escapeNonAscii(partitionKeyInternal.toJson()));
     }
 
@@ -1878,6 +1892,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         request.getHeaders().put(HttpConstants.HttpHeaders.IS_BATCH_ATOMIC, String.valueOf(serverBatchRequest.isAtomicBatch()));
         request.getHeaders().put(HttpConstants.HttpHeaders.SHOULD_BATCH_CONTINUE_ON_ERROR, String.valueOf(serverBatchRequest.isShouldContinueOnError()));
 
+        request.setPartitionKeyDefinition(collection.getPartitionKey());
         request.setNumberOfItemsInBatchRequest(serverBatchRequest.getOperations().size());
 
         return request;
@@ -1934,7 +1949,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                           .populateFeedRangeFilteringHeaders(
                               this.getPartitionKeyRangeCache(),
                               request,
-                              this.collectionCache.resolveCollectionAsync(metadataDiagnosticsCtx, request))
+                              this.collectionCache
+                                  .resolveCollectionAsync(metadataDiagnosticsCtx, request)
+                                  .flatMap(documentCollectionValueHolder -> {
+
+                                      if (documentCollectionValueHolder.v != null) {
+                                          request.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
+                                      }
+
+                                      return Mono.just(documentCollectionValueHolder);
+                                  })
+                          )
                           .flatMap(this::populateAuthorizationHeader);
         }
 
@@ -5029,12 +5054,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    public Object getSession() {
+    public ISessionContainer getSession() {
         return this.sessionContainer;
     }
 
-    public void setSession(Object sessionContainer) {
-        this.sessionContainer = (SessionContainer) sessionContainer;
+    public void setSession(ISessionContainer sessionContainer) {
+        this.sessionContainer = sessionContainer;
     }
 
     @Override

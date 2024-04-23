@@ -203,7 +203,7 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
         return BackoffRetryUtility.executeRetry(() -> {
                                       this.retries.incrementAndGet();
                                       return executeRequestAsync(
-                                          this.factoryMethod,
+                                          this.itemSerializer,
                                           req);
                                   }, finalRetryPolicyInstance)
                                   .map(tFeedResponse -> {
