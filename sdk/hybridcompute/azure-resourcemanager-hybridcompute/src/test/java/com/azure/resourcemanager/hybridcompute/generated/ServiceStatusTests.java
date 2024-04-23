@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceStatus model =
-            BinaryData
-                .fromString("{\"status\":\"fmxa\",\"startupType\":\"fjpgddtocjjxhvp\"}")
-                .toObject(ServiceStatus.class);
-        Assertions.assertEquals("fmxa", model.status());
-        Assertions.assertEquals("fjpgddtocjjxhvp", model.startupType());
+        ServiceStatus model = BinaryData.fromString("{\"status\":\"ufizuckyf\",\"startupType\":\"rfidfvzwdz\"}")
+            .toObject(ServiceStatus.class);
+        Assertions.assertEquals("ufizuckyf", model.status());
+        Assertions.assertEquals("rfidfvzwdz", model.startupType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceStatus model = new ServiceStatus().withStatus("fmxa").withStartupType("fjpgddtocjjxhvp");
+        ServiceStatus model = new ServiceStatus().withStatus("ufizuckyf").withStartupType("rfidfvzwdz");
         model = BinaryData.fromObject(model).toObject(ServiceStatus.class);
-        Assertions.assertEquals("fmxa", model.status());
-        Assertions.assertEquals("fjpgddtocjjxhvp", model.startupType());
+        Assertions.assertEquals("ufizuckyf", model.status());
+        Assertions.assertEquals("rfidfvzwdz", model.startupType());
     }
 }

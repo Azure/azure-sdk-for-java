@@ -15,33 +15,30 @@ import org.junit.jupiter.api.Assertions;
 public final class OSProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OSProfile model =
-            BinaryData
-                .fromString(
-                    "{\"computerName\":\"icxm\",\"windowsConfiguration\":{\"patchSettings\":{\"assessmentMode\":\"ImageDefault\",\"patchMode\":\"ImageDefault\"}},\"linuxConfiguration\":{\"patchSettings\":{\"assessmentMode\":\"AutomaticByPlatform\",\"patchMode\":\"AutomaticByOS\"}}}")
-                .toObject(OSProfile.class);
-        Assertions.assertEquals(AssessmentModeTypes.IMAGE_DEFAULT, model.windowsConfiguration().assessmentMode());
-        Assertions.assertEquals(PatchModeTypes.IMAGE_DEFAULT, model.windowsConfiguration().patchMode());
-        Assertions.assertEquals(AssessmentModeTypes.AUTOMATIC_BY_PLATFORM, model.linuxConfiguration().assessmentMode());
-        Assertions.assertEquals(PatchModeTypes.AUTOMATIC_BY_OS, model.linuxConfiguration().patchMode());
+        OSProfile model = BinaryData.fromString(
+            "{\"computerName\":\"gfycc\",\"windowsConfiguration\":{\"patchSettings\":{\"assessmentMode\":\"AutomaticByPlatform\",\"patchMode\":\"AutomaticByPlatform\"}},\"linuxConfiguration\":{\"patchSettings\":{\"assessmentMode\":\"ImageDefault\",\"patchMode\":\"Manual\"}}}")
+            .toObject(OSProfile.class);
+        Assertions.assertEquals(AssessmentModeTypes.AUTOMATIC_BY_PLATFORM,
+            model.windowsConfiguration().assessmentMode());
+        Assertions.assertEquals(PatchModeTypes.AUTOMATIC_BY_PLATFORM, model.windowsConfiguration().patchMode());
+        Assertions.assertEquals(AssessmentModeTypes.IMAGE_DEFAULT, model.linuxConfiguration().assessmentMode());
+        Assertions.assertEquals(PatchModeTypes.MANUAL, model.linuxConfiguration().patchMode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OSProfile model =
-            new OSProfile()
-                .withWindowsConfiguration(
-                    new OSProfileWindowsConfiguration()
-                        .withAssessmentMode(AssessmentModeTypes.IMAGE_DEFAULT)
-                        .withPatchMode(PatchModeTypes.IMAGE_DEFAULT))
-                .withLinuxConfiguration(
-                    new OSProfileLinuxConfiguration()
-                        .withAssessmentMode(AssessmentModeTypes.AUTOMATIC_BY_PLATFORM)
-                        .withPatchMode(PatchModeTypes.AUTOMATIC_BY_OS));
+        OSProfile model = new OSProfile()
+            .withWindowsConfiguration(
+                new OSProfileWindowsConfiguration().withAssessmentMode(AssessmentModeTypes.AUTOMATIC_BY_PLATFORM)
+                    .withPatchMode(PatchModeTypes.AUTOMATIC_BY_PLATFORM))
+            .withLinuxConfiguration(
+                new OSProfileLinuxConfiguration().withAssessmentMode(AssessmentModeTypes.IMAGE_DEFAULT)
+                    .withPatchMode(PatchModeTypes.MANUAL));
         model = BinaryData.fromObject(model).toObject(OSProfile.class);
-        Assertions.assertEquals(AssessmentModeTypes.IMAGE_DEFAULT, model.windowsConfiguration().assessmentMode());
-        Assertions.assertEquals(PatchModeTypes.IMAGE_DEFAULT, model.windowsConfiguration().patchMode());
-        Assertions.assertEquals(AssessmentModeTypes.AUTOMATIC_BY_PLATFORM, model.linuxConfiguration().assessmentMode());
-        Assertions.assertEquals(PatchModeTypes.AUTOMATIC_BY_OS, model.linuxConfiguration().patchMode());
+        Assertions.assertEquals(AssessmentModeTypes.AUTOMATIC_BY_PLATFORM,
+            model.windowsConfiguration().assessmentMode());
+        Assertions.assertEquals(PatchModeTypes.AUTOMATIC_BY_PLATFORM, model.windowsConfiguration().patchMode());
+        Assertions.assertEquals(AssessmentModeTypes.IMAGE_DEFAULT, model.linuxConfiguration().assessmentMode());
+        Assertions.assertEquals(PatchModeTypes.MANUAL, model.linuxConfiguration().patchMode());
     }
 }
