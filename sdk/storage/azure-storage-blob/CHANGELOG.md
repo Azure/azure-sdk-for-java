@@ -1,5 +1,17 @@
 # Release History
 
+## 12.25.4 (2024-04-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
+- Upgraded `azure-storage-common` from `12.24.3` to version `12.24.4`.
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-storage-internal-avro` from `12.10.3` to version `12.10.4`.
+
+
 ## 12.25.3 (2024-03-20)
 
 ### Other Changes
