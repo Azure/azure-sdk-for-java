@@ -499,8 +499,6 @@ public class StorageImplUtils {
             }
             return getResultWithTimeout(future, timeout.toMillis(), RuntimeException.class);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
-            System.err.println("Error in sendRequest at Exception: " + e.getMessage());
-            System.err.println("exception class: " + e.getClass());
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
@@ -513,8 +511,6 @@ public class StorageImplUtils {
             }
             return getResultWithTimeout(future, timeout.toMillis(), exceptionType);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
-            System.err.println("Error in sendRequest at Exception: " + e.getMessage());
-            System.err.println("exception class: " + e.getClass());
             Throwable cause = e.getCause();
             if (exceptionType.isInstance(cause)) {
                 throw exceptionType.cast(cause);
@@ -541,7 +537,6 @@ public class StorageImplUtils {
             if (cause instanceof Error) {
                 throw (Error) cause; // Rethrow if it's an Error
             } else if (exceptionType.isInstance(cause)) {
-                System.err.println("is ShareStorageException: " + exceptionType.isInstance(cause));
                 throw e;
             } else if (cause instanceof RuntimeException) {
                 throw (RuntimeException) cause; // Rethrow if it's another kind of RuntimeException
