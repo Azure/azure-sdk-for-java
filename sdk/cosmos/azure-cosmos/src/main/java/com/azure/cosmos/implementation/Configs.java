@@ -185,7 +185,7 @@ public class Configs {
     //                + "\"enableHistograms\":false,"
     //                + "\"applyDiagnosticThresholdsForTransportLevelMeters\":true}");
     public static final String METRICS_CONFIG = "COSMOS.METRICS_CONFIG";
-    public static final String DEFAULT_METRICS_CONFIG = new CosmosMicrometerMetricsConfig().toJson();
+    public static final String DEFAULT_METRICS_CONFIG = CosmosMicrometerMetricsConfig.DEFAULT.toJson();
 
     public Configs() {
         this.sslContext = sslContextInit();

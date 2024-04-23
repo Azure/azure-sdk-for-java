@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CosmosMicrometerMetricsConfig {
+    public static final CosmosMicrometerMetricsConfig DEFAULT = new CosmosMicrometerMetricsConfig();
 
     @JsonSetter(nulls = Nulls.SKIP)
     @JsonProperty
