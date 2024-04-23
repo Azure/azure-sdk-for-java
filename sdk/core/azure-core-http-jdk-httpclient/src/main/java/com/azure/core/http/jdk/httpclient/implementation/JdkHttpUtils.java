@@ -3,6 +3,7 @@
 package com.azure.core.http.jdk.httpclient.implementation;
 
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.implementation.util.HttpHeadersAccessHelper;
 import com.azure.core.util.CoreUtils;
 
 import java.nio.ByteBuffer;
@@ -25,13 +26,14 @@ public final class JdkHttpUtils {
      * @param headers the JDK Http headers
      * @return the azure-core Http headers
      */
-    @SuppressWarnings("deprecation")
     public static HttpHeaders fromJdkHttpHeaders(java.net.http.HttpHeaders headers) {
         final HttpHeaders httpHeaders = new HttpHeaders((int) (headers.map().size() / 0.75F));
 
         for (Map.Entry<String, List<String>> kvp : headers.map().entrySet()) {
             if (!CoreUtils.isNullOrEmpty(kvp.getValue())) {
-                httpHeaders.set(kvp.getKey(), kvp.getValue());
+                // JDK HttpClient parses headers to lower case, use the access helper to bypass lowercasing the header
+                // name (or in this case, just checking that the header name is lowercased).
+                HttpHeadersAccessHelper.setInternal(httpHeaders, kvp.getKey(), kvp.getKey(), kvp.getValue());
             }
         }
 

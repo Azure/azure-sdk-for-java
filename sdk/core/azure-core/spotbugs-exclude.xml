@@ -441,4 +441,10 @@
     <Class name="com.azure.core.implementation.http.rest.SwaggerMethodParser" />
     <Method name="serialize" />
   </Match>
+
+  <Match>
+    <Bug pattern="EI_EXPOSE_STATIC_REP2" />
+    <Class name="com.azure.core.implementation.util.HttpHeadersAccessHelper" />
+    <Method name="setAccessor" />
+  </Match>
 </FindBugsFilter>
