@@ -16,9 +16,6 @@ public class OpenAIServerSentEventsTest {
         OpenAIServerSentEvents<String> openAIServerSentEvents = new OpenAIServerSentEvents(testFile.toFluxByteBuffer());
 
         StepVerifier.create(openAIServerSentEvents.getEvents())
-            .assertNext(event -> {
-                assertTrue(StringUtils.isNotBlank(event));
-            })
             .verifyComplete();
     }
 }

@@ -12,36 +12,27 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The abstract base representation of a partial streamed message content payload.
+ * Represents a single run step detail item in a streaming run step's delta payload.
  */
 @Immutable
-public class MessageDeltaContent implements JsonSerializable<MessageDeltaContent> {
+public class RunStepDeltaDetail implements JsonSerializable<RunStepDeltaDetail> {
 
     /*
-     * The type of content for this content part.
+     * The object type for the run step detail object.
      */
     @Generated
     private String type;
 
-    /*
-     * The index of the content part of the message.
-     */
-    @Generated
-    private final int index;
-
     /**
-     * Creates an instance of MessageDeltaContent class.
-     *
-     * @param index the index value to set.
+     * Creates an instance of RunStepDeltaDetail class.
      */
     @Generated
-    protected MessageDeltaContent(int index) {
-        this.type = "MessageDeltaContent";
-        this.index = index;
+    protected RunStepDeltaDetail() {
+        this.type = "RunStepDeltaDetail";
     }
 
     /**
-     * Get the type property: The type of content for this content part.
+     * Get the type property: The object type for the run step detail object.
      *
      * @return the type value.
      */
@@ -51,38 +42,26 @@ public class MessageDeltaContent implements JsonSerializable<MessageDeltaContent
     }
 
     /**
-     * Get the index property: The index of the content part of the message.
-     *
-     * @return the index value.
-     */
-    @Generated
-    public int getIndex() {
-        return this.index;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("index", this.index);
         jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of MessageDeltaContent from the JsonReader.
+     * Reads an instance of RunStepDeltaDetail from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of MessageDeltaContent if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of RunStepDeltaDetail if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the MessageDeltaContent.
+     * @throws IOException If an error occurs while reading the RunStepDeltaDetail.
      */
     @Generated
-    public static MessageDeltaContent fromJson(JsonReader jsonReader) throws IOException {
+    public static RunStepDeltaDetail fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
             try (JsonReader readerToUse = reader.bufferObject()) {
@@ -99,10 +78,10 @@ public class MessageDeltaContent implements JsonSerializable<MessageDeltaContent
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("image_file".equals(discriminatorValue)) {
-                    return MessageDeltaImageFileContent.fromJson(readerToUse.reset());
-                } else if ("text".equals(discriminatorValue)) {
-                    return MessageDeltaTextContentObject.fromJson(readerToUse.reset());
+                if ("message_creation".equals(discriminatorValue)) {
+                    return RunStepDeltaMessageCreation.fromJson(readerToUse.reset());
+                } else if ("tool_calls".equals(discriminatorValue)) {
+                    return RunStepDeltaToolCallObject.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
@@ -111,24 +90,19 @@ public class MessageDeltaContent implements JsonSerializable<MessageDeltaContent
     }
 
     @Generated
-    static MessageDeltaContent fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+    static RunStepDeltaDetail fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            int index = 0;
-            String type = null;
+            RunStepDeltaDetail deserializedRunStepDeltaDetail = new RunStepDeltaDetail();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("index".equals(fieldName)) {
-                    index = reader.getInt();
-                } else if ("type".equals(fieldName)) {
-                    type = reader.getString();
+                if ("type".equals(fieldName)) {
+                    deserializedRunStepDeltaDetail.type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            MessageDeltaContent deserializedMessageDeltaContent = new MessageDeltaContent(index);
-            deserializedMessageDeltaContent.type = type;
-            return deserializedMessageDeltaContent;
+            return deserializedRunStepDeltaDetail;
         });
     }
 }

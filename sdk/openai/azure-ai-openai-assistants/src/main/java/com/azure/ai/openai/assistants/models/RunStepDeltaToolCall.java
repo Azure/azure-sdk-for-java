@@ -12,36 +12,44 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The abstract base representation of a partial streamed message content payload.
+ * The abstract base representation of a single tool call within a streaming run step's delta tool call details.
  */
 @Immutable
-public class MessageDeltaContent implements JsonSerializable<MessageDeltaContent> {
+public class RunStepDeltaToolCall implements JsonSerializable<RunStepDeltaToolCall> {
 
     /*
-     * The type of content for this content part.
+     * The type of the tool call detail item in a streaming run step's details.
      */
     @Generated
     private String type;
 
     /*
-     * The index of the content part of the message.
+     * The index of the tool call detail in the run step's tool_calls array.
      */
     @Generated
     private final int index;
 
-    /**
-     * Creates an instance of MessageDeltaContent class.
-     *
-     * @param index the index value to set.
+    /*
+     * The ID of the tool call, used when submitting outputs to the run.
      */
     @Generated
-    protected MessageDeltaContent(int index) {
-        this.type = "MessageDeltaContent";
+    private final String id;
+
+    /**
+     * Creates an instance of RunStepDeltaToolCall class.
+     *
+     * @param index the index value to set.
+     * @param id the id value to set.
+     */
+    @Generated
+    protected RunStepDeltaToolCall(int index, String id) {
+        this.type = "RunStepDeltaToolCall";
         this.index = index;
+        this.id = id;
     }
 
     /**
-     * Get the type property: The type of content for this content part.
+     * Get the type property: The type of the tool call detail item in a streaming run step's details.
      *
      * @return the type value.
      */
@@ -51,13 +59,23 @@ public class MessageDeltaContent implements JsonSerializable<MessageDeltaContent
     }
 
     /**
-     * Get the index property: The index of the content part of the message.
+     * Get the index property: The index of the tool call detail in the run step's tool_calls array.
      *
      * @return the index value.
      */
     @Generated
     public int getIndex() {
         return this.index;
+    }
+
+    /**
+     * Get the id property: The ID of the tool call, used when submitting outputs to the run.
+     *
+     * @return the id value.
+     */
+    @Generated
+    public String getId() {
+        return this.id;
     }
 
     /**
@@ -68,21 +86,22 @@ public class MessageDeltaContent implements JsonSerializable<MessageDeltaContent
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("index", this.index);
+        jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of MessageDeltaContent from the JsonReader.
+     * Reads an instance of RunStepDeltaToolCall from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of MessageDeltaContent if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     * @return An instance of RunStepDeltaToolCall if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the MessageDeltaContent.
+     * @throws IOException If an error occurs while reading the RunStepDeltaToolCall.
      */
     @Generated
-    public static MessageDeltaContent fromJson(JsonReader jsonReader) throws IOException {
+    public static RunStepDeltaToolCall fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
             try (JsonReader readerToUse = reader.bufferObject()) {
@@ -99,10 +118,12 @@ public class MessageDeltaContent implements JsonSerializable<MessageDeltaContent
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("image_file".equals(discriminatorValue)) {
-                    return MessageDeltaImageFileContent.fromJson(readerToUse.reset());
-                } else if ("text".equals(discriminatorValue)) {
-                    return MessageDeltaTextContentObject.fromJson(readerToUse.reset());
+                if ("function".equals(discriminatorValue)) {
+                    return RunStepDeltaFunctionToolCall.fromJson(readerToUse.reset());
+                } else if ("retrieval".equals(discriminatorValue)) {
+                    return RunStepDeltaRetrievalToolCall.fromJson(readerToUse.reset());
+                } else if ("code_interpreter".equals(discriminatorValue)) {
+                    return RunStepDeltaCodeInterpreterToolCall.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
@@ -111,24 +132,27 @@ public class MessageDeltaContent implements JsonSerializable<MessageDeltaContent
     }
 
     @Generated
-    static MessageDeltaContent fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+    static RunStepDeltaToolCall fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             int index = 0;
+            String id = null;
             String type = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("index".equals(fieldName)) {
                     index = reader.getInt();
+                } else if ("id".equals(fieldName)) {
+                    id = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            MessageDeltaContent deserializedMessageDeltaContent = new MessageDeltaContent(index);
-            deserializedMessageDeltaContent.type = type;
-            return deserializedMessageDeltaContent;
+            RunStepDeltaToolCall deserializedRunStepDeltaToolCall = new RunStepDeltaToolCall(index, id);
+            deserializedRunStepDeltaToolCall.type = type;
+            return deserializedRunStepDeltaToolCall;
         });
     }
 }
