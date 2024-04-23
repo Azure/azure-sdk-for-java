@@ -5,10 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The CustomLabelClassificationResult model. */
@@ -17,6 +14,7 @@ public final class CustomLabelClassificationResult extends CustomResult {
     /*
      * Response by document
      */
+    @JsonProperty(value = "documents", required = true)
     private List<CustomLabelClassificationResultDocumentsItem> documents;
 
     /** Creates an instance of CustomLabelClassificationResult class. */
@@ -68,58 +66,5 @@ public final class CustomLabelClassificationResult extends CustomResult {
     public CustomLabelClassificationResult setDeploymentName(String deploymentName) {
         super.setDeploymentName(deploymentName);
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("errors", getErrors(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("projectName", getProjectName());
-        jsonWriter.writeStringField("deploymentName", getDeploymentName());
-        jsonWriter.writeJsonField("statistics", getStatistics());
-        jsonWriter.writeArrayField("documents", this.documents, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of CustomLabelClassificationResult from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of CustomLabelClassificationResult if the JsonReader was pointing to an instance of it, or
-     *     null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the CustomLabelClassificationResult.
-     */
-    public static CustomLabelClassificationResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    CustomLabelClassificationResult deserializedCustomLabelClassificationResult =
-                            new CustomLabelClassificationResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("errors".equals(fieldName)) {
-                            List<DocumentError> errors = reader.readArray(reader1 -> DocumentError.fromJson(reader1));
-                            deserializedCustomLabelClassificationResult.setErrors(errors);
-                        } else if ("projectName".equals(fieldName)) {
-                            deserializedCustomLabelClassificationResult.setProjectName(reader.getString());
-                        } else if ("deploymentName".equals(fieldName)) {
-                            deserializedCustomLabelClassificationResult.setDeploymentName(reader.getString());
-                        } else if ("statistics".equals(fieldName)) {
-                            deserializedCustomLabelClassificationResult.setStatistics(
-                                    RequestStatistics.fromJson(reader));
-                        } else if ("documents".equals(fieldName)) {
-                            List<CustomLabelClassificationResultDocumentsItem> documents =
-                                    reader.readArray(
-                                            reader1 -> CustomLabelClassificationResultDocumentsItem.fromJson(reader1));
-                            deserializedCustomLabelClassificationResult.documents = documents;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedCustomLabelClassificationResult;
-                });
     }
 }

@@ -5,28 +5,27 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents the confidence scores between 0 and 1 across all sentiment classes: positive, neutral, negative. */
 @Fluent
-public final class SentimentConfidenceScorePerLabel implements JsonSerializable<SentimentConfidenceScorePerLabel> {
+public final class SentimentConfidenceScorePerLabel {
     /*
      * Confidence score for positive sentiment
      */
+    @JsonProperty(value = "positive", required = true)
     private double positive;
 
     /*
      * Confidence score for neutral sentiment
      */
+    @JsonProperty(value = "neutral", required = true)
     private double neutral;
 
     /*
      * Confidence score for negative sentiment
      */
+    @JsonProperty(value = "negative", required = true)
     private double negative;
 
     /** Creates an instance of SentimentConfidenceScorePerLabel class. */
@@ -90,47 +89,5 @@ public final class SentimentConfidenceScorePerLabel implements JsonSerializable<
     public SentimentConfidenceScorePerLabel setNegative(double negative) {
         this.negative = negative;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeDoubleField("positive", this.positive);
-        jsonWriter.writeDoubleField("neutral", this.neutral);
-        jsonWriter.writeDoubleField("negative", this.negative);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of SentimentConfidenceScorePerLabel from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of SentimentConfidenceScorePerLabel if the JsonReader was pointing to an instance of it, or
-     *     null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SentimentConfidenceScorePerLabel.
-     */
-    public static SentimentConfidenceScorePerLabel fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    SentimentConfidenceScorePerLabel deserializedSentimentConfidenceScorePerLabel =
-                            new SentimentConfidenceScorePerLabel();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("positive".equals(fieldName)) {
-                            deserializedSentimentConfidenceScorePerLabel.positive = reader.getDouble();
-                        } else if ("neutral".equals(fieldName)) {
-                            deserializedSentimentConfidenceScorePerLabel.neutral = reader.getDouble();
-                        } else if ("negative".equals(fieldName)) {
-                            deserializedSentimentConfidenceScorePerLabel.negative = reader.getDouble();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedSentimentConfidenceScorePerLabel;
-                });
     }
 }
