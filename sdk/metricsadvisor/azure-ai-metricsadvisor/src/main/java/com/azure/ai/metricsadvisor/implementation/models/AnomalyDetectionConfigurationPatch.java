@@ -5,52 +5,48 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The AnomalyDetectionConfigurationPatch model.
- */
+/** The AnomalyDetectionConfigurationPatch model. */
 @Fluent
-public final class AnomalyDetectionConfigurationPatch implements JsonSerializable<AnomalyDetectionConfigurationPatch> {
+public final class AnomalyDetectionConfigurationPatch {
     /*
      * anomaly detection configuration name
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /*
      * anomaly detection configuration description
      */
+    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The wholeMetricConfiguration property.
      */
+    @JsonProperty(value = "wholeMetricConfiguration")
     private WholeMetricConfigurationPatch wholeMetricConfiguration;
 
     /*
      * detection configuration for series group
      */
+    @JsonProperty(value = "dimensionGroupOverrideConfigurations")
     private List<DimensionGroupConfiguration> dimensionGroupOverrideConfigurations;
 
     /*
      * detection configuration for specific series
      */
+    @JsonProperty(value = "seriesOverrideConfigurations")
     private List<SeriesConfiguration> seriesOverrideConfigurations;
 
-    /**
-     * Creates an instance of AnomalyDetectionConfigurationPatch class.
-     */
-    public AnomalyDetectionConfigurationPatch() {
-    }
+    /** Creates an instance of AnomalyDetectionConfigurationPatch class. */
+    public AnomalyDetectionConfigurationPatch() {}
 
     /**
      * Get the name property: anomaly detection configuration name.
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -59,7 +55,7 @@ public final class AnomalyDetectionConfigurationPatch implements JsonSerializabl
 
     /**
      * Set the name property: anomaly detection configuration name.
-     * 
+     *
      * @param name the name value to set.
      * @return the AnomalyDetectionConfigurationPatch object itself.
      */
@@ -70,7 +66,7 @@ public final class AnomalyDetectionConfigurationPatch implements JsonSerializabl
 
     /**
      * Get the description property: anomaly detection configuration description.
-     * 
+     *
      * @return the description value.
      */
     public String getDescription() {
@@ -79,7 +75,7 @@ public final class AnomalyDetectionConfigurationPatch implements JsonSerializabl
 
     /**
      * Set the description property: anomaly detection configuration description.
-     * 
+     *
      * @param description the description value to set.
      * @return the AnomalyDetectionConfigurationPatch object itself.
      */
@@ -90,7 +86,7 @@ public final class AnomalyDetectionConfigurationPatch implements JsonSerializabl
 
     /**
      * Get the wholeMetricConfiguration property: The wholeMetricConfiguration property.
-     * 
+     *
      * @return the wholeMetricConfiguration value.
      */
     public WholeMetricConfigurationPatch getWholeMetricConfiguration() {
@@ -99,19 +95,19 @@ public final class AnomalyDetectionConfigurationPatch implements JsonSerializabl
 
     /**
      * Set the wholeMetricConfiguration property: The wholeMetricConfiguration property.
-     * 
+     *
      * @param wholeMetricConfiguration the wholeMetricConfiguration value to set.
      * @return the AnomalyDetectionConfigurationPatch object itself.
      */
-    public AnomalyDetectionConfigurationPatch
-        setWholeMetricConfiguration(WholeMetricConfigurationPatch wholeMetricConfiguration) {
+    public AnomalyDetectionConfigurationPatch setWholeMetricConfiguration(
+            WholeMetricConfigurationPatch wholeMetricConfiguration) {
         this.wholeMetricConfiguration = wholeMetricConfiguration;
         return this;
     }
 
     /**
      * Get the dimensionGroupOverrideConfigurations property: detection configuration for series group.
-     * 
+     *
      * @return the dimensionGroupOverrideConfigurations value.
      */
     public List<DimensionGroupConfiguration> getDimensionGroupOverrideConfigurations() {
@@ -120,19 +116,19 @@ public final class AnomalyDetectionConfigurationPatch implements JsonSerializabl
 
     /**
      * Set the dimensionGroupOverrideConfigurations property: detection configuration for series group.
-     * 
+     *
      * @param dimensionGroupOverrideConfigurations the dimensionGroupOverrideConfigurations value to set.
      * @return the AnomalyDetectionConfigurationPatch object itself.
      */
     public AnomalyDetectionConfigurationPatch setDimensionGroupOverrideConfigurations(
-        List<DimensionGroupConfiguration> dimensionGroupOverrideConfigurations) {
+            List<DimensionGroupConfiguration> dimensionGroupOverrideConfigurations) {
         this.dimensionGroupOverrideConfigurations = dimensionGroupOverrideConfigurations;
         return this;
     }
 
     /**
      * Get the seriesOverrideConfigurations property: detection configuration for specific series.
-     * 
+     *
      * @return the seriesOverrideConfigurations value.
      */
     public List<SeriesConfiguration> getSeriesOverrideConfigurations() {
@@ -141,68 +137,13 @@ public final class AnomalyDetectionConfigurationPatch implements JsonSerializabl
 
     /**
      * Set the seriesOverrideConfigurations property: detection configuration for specific series.
-     * 
+     *
      * @param seriesOverrideConfigurations the seriesOverrideConfigurations value to set.
      * @return the AnomalyDetectionConfigurationPatch object itself.
      */
-    public AnomalyDetectionConfigurationPatch
-        setSeriesOverrideConfigurations(List<SeriesConfiguration> seriesOverrideConfigurations) {
+    public AnomalyDetectionConfigurationPatch setSeriesOverrideConfigurations(
+            List<SeriesConfiguration> seriesOverrideConfigurations) {
         this.seriesOverrideConfigurations = seriesOverrideConfigurations;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeJsonField("wholeMetricConfiguration", this.wholeMetricConfiguration);
-        jsonWriter.writeArrayField("dimensionGroupOverrideConfigurations", this.dimensionGroupOverrideConfigurations,
-            (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("seriesOverrideConfigurations", this.seriesOverrideConfigurations,
-            (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AnomalyDetectionConfigurationPatch from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AnomalyDetectionConfigurationPatch if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AnomalyDetectionConfigurationPatch.
-     */
-    public static AnomalyDetectionConfigurationPatch fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AnomalyDetectionConfigurationPatch deserializedAnomalyDetectionConfigurationPatch
-                = new AnomalyDetectionConfigurationPatch();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("name".equals(fieldName)) {
-                    deserializedAnomalyDetectionConfigurationPatch.name = reader.getString();
-                } else if ("description".equals(fieldName)) {
-                    deserializedAnomalyDetectionConfigurationPatch.description = reader.getString();
-                } else if ("wholeMetricConfiguration".equals(fieldName)) {
-                    deserializedAnomalyDetectionConfigurationPatch.wholeMetricConfiguration
-                        = WholeMetricConfigurationPatch.fromJson(reader);
-                } else if ("dimensionGroupOverrideConfigurations".equals(fieldName)) {
-                    List<DimensionGroupConfiguration> dimensionGroupOverrideConfigurations
-                        = reader.readArray(reader1 -> DimensionGroupConfiguration.fromJson(reader1));
-                    deserializedAnomalyDetectionConfigurationPatch.dimensionGroupOverrideConfigurations
-                        = dimensionGroupOverrideConfigurations;
-                } else if ("seriesOverrideConfigurations".equals(fieldName)) {
-                    List<SeriesConfiguration> seriesOverrideConfigurations
-                        = reader.readArray(reader1 -> SeriesConfiguration.fromJson(reader1));
-                    deserializedAnomalyDetectionConfigurationPatch.seriesOverrideConfigurations
-                        = seriesOverrideConfigurations;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedAnomalyDetectionConfigurationPatch;
-        });
     }
 }
