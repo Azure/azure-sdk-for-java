@@ -5,6 +5,7 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
@@ -13,117 +14,138 @@ import com.azure.storage.file.share.models.LeaseDurationType;
 import com.azure.storage.file.share.models.LeaseStateType;
 import com.azure.storage.file.share.models.LeaseStatusType;
 import com.azure.storage.file.share.models.ShareRootSquash;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * The SharesGetPropertiesHeaders model.
- */
+/** The SharesGetPropertiesHeaders model. */
+@JacksonXmlRootElement(localName = "null")
 @Fluent
 public final class SharesGetPropertiesHeaders {
     /*
      * The x-ms-share-provisioned-iops property.
      */
+    @JsonProperty(value = "x-ms-share-provisioned-iops")
     private Integer xMsShareProvisionedIops;
 
     /*
      * The x-ms-version property.
      */
+    @JsonProperty(value = "x-ms-version")
     private String xMsVersion;
 
     /*
      * The x-ms-lease-status property.
      */
+    @JsonProperty(value = "x-ms-lease-status")
     private LeaseStatusType xMsLeaseStatus;
 
     /*
      * The x-ms-lease-state property.
      */
+    @JsonProperty(value = "x-ms-lease-state")
     private LeaseStateType xMsLeaseState;
 
     /*
      * The x-ms-root-squash property.
      */
+    @JsonProperty(value = "x-ms-root-squash")
     private ShareRootSquash xMsRootSquash;
 
     /*
      * The Last-Modified property.
      */
+    @JsonProperty(value = "Last-Modified")
     private DateTimeRfc1123 lastModified;
 
     /*
      * The x-ms-access-tier-change-time property.
      */
+    @JsonProperty(value = "x-ms-access-tier-change-time")
     private DateTimeRfc1123 xMsAccessTierChangeTime;
 
     /*
      * The x-ms-meta- property.
      */
+    @HeaderCollection("x-ms-meta-")
     private Map<String, String> xMsMeta;
 
     /*
      * The Date property.
      */
+    @JsonProperty(value = "Date")
     private DateTimeRfc1123 date;
 
     /*
      * The x-ms-share-provisioned-ingress-mbps property.
      */
+    @JsonProperty(value = "x-ms-share-provisioned-ingress-mbps")
     private Integer xMsShareProvisionedIngressMbps;
 
     /*
      * The x-ms-share-provisioned-bandwidth-mibps property.
      */
+    @JsonProperty(value = "x-ms-share-provisioned-bandwidth-mibps")
     private Integer xMsShareProvisionedBandwidthMibps;
 
     /*
      * The x-ms-share-quota property.
      */
+    @JsonProperty(value = "x-ms-share-quota")
     private Integer xMsShareQuota;
 
     /*
      * The x-ms-access-tier property.
      */
+    @JsonProperty(value = "x-ms-access-tier")
     private String xMsAccessTier;
 
     /*
      * The ETag property.
      */
+    @JsonProperty(value = "ETag")
     private String eTag;
 
     /*
      * The x-ms-enabled-protocols property.
      */
+    @JsonProperty(value = "x-ms-enabled-protocols")
     private String xMsEnabledProtocols;
 
     /*
      * The x-ms-lease-duration property.
      */
+    @JsonProperty(value = "x-ms-lease-duration")
     private LeaseDurationType xMsLeaseDuration;
 
     /*
      * The x-ms-request-id property.
      */
+    @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
 
     /*
      * The x-ms-access-tier-transition-state property.
      */
+    @JsonProperty(value = "x-ms-access-tier-transition-state")
     private String xMsAccessTierTransitionState;
 
     /*
      * The x-ms-share-provisioned-egress-mbps property.
      */
+    @JsonProperty(value = "x-ms-share-provisioned-egress-mbps")
     private Integer xMsShareProvisionedEgressMbps;
 
     /*
      * The x-ms-share-next-allowed-quota-downgrade-time property.
      */
+    @JsonProperty(value = "x-ms-share-next-allowed-quota-downgrade-time")
     private DateTimeRfc1123 xMsShareNextAllowedQuotaDowngradeTime;
 
-    private static final HttpHeaderName X_MS_SHARE_PROVISIONED_IOPS
-        = HttpHeaderName.fromString("x-ms-share-provisioned-iops");
+    private static final HttpHeaderName X_MS_SHARE_PROVISIONED_IOPS =
+            HttpHeaderName.fromString("x-ms-share-provisioned-iops");
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
@@ -133,14 +155,14 @@ public final class SharesGetPropertiesHeaders {
 
     private static final HttpHeaderName X_MS_ROOT_SQUASH = HttpHeaderName.fromString("x-ms-root-squash");
 
-    private static final HttpHeaderName X_MS_ACCESS_TIER_CHANGE_TIME
-        = HttpHeaderName.fromString("x-ms-access-tier-change-time");
+    private static final HttpHeaderName X_MS_ACCESS_TIER_CHANGE_TIME =
+            HttpHeaderName.fromString("x-ms-access-tier-change-time");
 
-    private static final HttpHeaderName X_MS_SHARE_PROVISIONED_INGRESS_MBPS
-        = HttpHeaderName.fromString("x-ms-share-provisioned-ingress-mbps");
+    private static final HttpHeaderName X_MS_SHARE_PROVISIONED_INGRESS_MBPS =
+            HttpHeaderName.fromString("x-ms-share-provisioned-ingress-mbps");
 
-    private static final HttpHeaderName X_MS_SHARE_PROVISIONED_BANDWIDTH_MIBPS
-        = HttpHeaderName.fromString("x-ms-share-provisioned-bandwidth-mibps");
+    private static final HttpHeaderName X_MS_SHARE_PROVISIONED_BANDWIDTH_MIBPS =
+            HttpHeaderName.fromString("x-ms-share-provisioned-bandwidth-mibps");
 
     private static final HttpHeaderName X_MS_SHARE_QUOTA = HttpHeaderName.fromString("x-ms-share-quota");
 
@@ -150,19 +172,21 @@ public final class SharesGetPropertiesHeaders {
 
     private static final HttpHeaderName X_MS_LEASE_DURATION = HttpHeaderName.fromString("x-ms-lease-duration");
 
-    private static final HttpHeaderName X_MS_ACCESS_TIER_TRANSITION_STATE
-        = HttpHeaderName.fromString("x-ms-access-tier-transition-state");
+    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
 
-    private static final HttpHeaderName X_MS_SHARE_PROVISIONED_EGRESS_MBPS
-        = HttpHeaderName.fromString("x-ms-share-provisioned-egress-mbps");
+    private static final HttpHeaderName X_MS_ACCESS_TIER_TRANSITION_STATE =
+            HttpHeaderName.fromString("x-ms-access-tier-transition-state");
 
-    private static final HttpHeaderName X_MS_SHARE_NEXT_ALLOWED_QUOTA_DOWNGRADE_TIME
-        = HttpHeaderName.fromString("x-ms-share-next-allowed-quota-downgrade-time");
+    private static final HttpHeaderName X_MS_SHARE_PROVISIONED_EGRESS_MBPS =
+            HttpHeaderName.fromString("x-ms-share-provisioned-egress-mbps");
+
+    private static final HttpHeaderName X_MS_SHARE_NEXT_ALLOWED_QUOTA_DOWNGRADE_TIME =
+            HttpHeaderName.fromString("x-ms-share-next-allowed-quota-downgrade-time");
 
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of SharesGetPropertiesHeaders class.
-     * 
+     *
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public SharesGetPropertiesHeaders(HttpHeaders rawHeaders) {
@@ -214,14 +238,14 @@ public final class SharesGetPropertiesHeaders {
         if (xMsLeaseDuration != null) {
             this.xMsLeaseDuration = LeaseDurationType.fromString(xMsLeaseDuration);
         }
-        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
         this.xMsAccessTierTransitionState = rawHeaders.getValue(X_MS_ACCESS_TIER_TRANSITION_STATE);
         String xMsShareProvisionedEgressMbps = rawHeaders.getValue(X_MS_SHARE_PROVISIONED_EGRESS_MBPS);
         if (xMsShareProvisionedEgressMbps != null) {
             this.xMsShareProvisionedEgressMbps = Integer.parseInt(xMsShareProvisionedEgressMbps);
         }
-        String xMsShareNextAllowedQuotaDowngradeTime
-            = rawHeaders.getValue(X_MS_SHARE_NEXT_ALLOWED_QUOTA_DOWNGRADE_TIME);
+        String xMsShareNextAllowedQuotaDowngradeTime =
+                rawHeaders.getValue(X_MS_SHARE_NEXT_ALLOWED_QUOTA_DOWNGRADE_TIME);
         if (xMsShareNextAllowedQuotaDowngradeTime != null) {
             this.xMsShareNextAllowedQuotaDowngradeTime = new DateTimeRfc1123(xMsShareNextAllowedQuotaDowngradeTime);
         }
@@ -239,7 +263,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Get the xMsShareProvisionedIops property: The x-ms-share-provisioned-iops property.
-     * 
+     *
      * @return the xMsShareProvisionedIops value.
      */
     public Integer getXMsShareProvisionedIops() {
@@ -248,7 +272,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Set the xMsShareProvisionedIops property: The x-ms-share-provisioned-iops property.
-     * 
+     *
      * @param xMsShareProvisionedIops the xMsShareProvisionedIops value to set.
      * @return the SharesGetPropertiesHeaders object itself.
      */
@@ -259,7 +283,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
-     * 
+     *
      * @return the xMsVersion value.
      */
     public String getXMsVersion() {
@@ -268,7 +292,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Set the xMsVersion property: The x-ms-version property.
-     * 
+     *
      * @param xMsVersion the xMsVersion value to set.
      * @return the SharesGetPropertiesHeaders object itself.
      */
@@ -279,7 +303,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Get the xMsLeaseStatus property: The x-ms-lease-status property.
-     * 
+     *
      * @return the xMsLeaseStatus value.
      */
     public LeaseStatusType getXMsLeaseStatus() {
@@ -288,7 +312,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Set the xMsLeaseStatus property: The x-ms-lease-status property.
-     * 
+     *
      * @param xMsLeaseStatus the xMsLeaseStatus value to set.
      * @return the SharesGetPropertiesHeaders object itself.
      */
@@ -299,7 +323,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Get the xMsLeaseState property: The x-ms-lease-state property.
-     * 
+     *
      * @return the xMsLeaseState value.
      */
     public LeaseStateType getXMsLeaseState() {
@@ -308,7 +332,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Set the xMsLeaseState property: The x-ms-lease-state property.
-     * 
+     *
      * @param xMsLeaseState the xMsLeaseState value to set.
      * @return the SharesGetPropertiesHeaders object itself.
      */
@@ -319,7 +343,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Get the xMsRootSquash property: The x-ms-root-squash property.
-     * 
+     *
      * @return the xMsRootSquash value.
      */
     public ShareRootSquash getXMsRootSquash() {
@@ -328,7 +352,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Set the xMsRootSquash property: The x-ms-root-squash property.
-     * 
+     *
      * @param xMsRootSquash the xMsRootSquash value to set.
      * @return the SharesGetPropertiesHeaders object itself.
      */
@@ -339,7 +363,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Get the lastModified property: The Last-Modified property.
-     * 
+     *
      * @return the lastModified value.
      */
     public OffsetDateTime getLastModified() {
@@ -351,7 +375,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Set the lastModified property: The Last-Modified property.
-     * 
+     *
      * @param lastModified the lastModified value to set.
      * @return the SharesGetPropertiesHeaders object itself.
      */
@@ -366,7 +390,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Get the xMsAccessTierChangeTime property: The x-ms-access-tier-change-time property.
-     * 
+     *
      * @return the xMsAccessTierChangeTime value.
      */
     public OffsetDateTime getXMsAccessTierChangeTime() {
@@ -378,7 +402,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Set the xMsAccessTierChangeTime property: The x-ms-access-tier-change-time property.
-     * 
+     *
      * @param xMsAccessTierChangeTime the xMsAccessTierChangeTime value to set.
      * @return the SharesGetPropertiesHeaders object itself.
      */
@@ -393,7 +417,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Get the xMsMeta property: The x-ms-meta- property.
-     * 
+     *
      * @return the xMsMeta value.
      */
     public Map<String, String> getXMsMeta() {
@@ -402,7 +426,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Set the xMsMeta property: The x-ms-meta- property.
-     * 
+     *
      * @param xMsMeta the xMsMeta value to set.
      * @return the SharesGetPropertiesHeaders object itself.
      */
@@ -413,7 +437,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Get the date property: The Date property.
-     * 
+     *
      * @return the date value.
      */
     public OffsetDateTime getDate() {
@@ -425,7 +449,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Set the date property: The Date property.
-     * 
+     *
      * @param date the date value to set.
      * @return the SharesGetPropertiesHeaders object itself.
      */
@@ -440,7 +464,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Get the xMsShareProvisionedIngressMbps property: The x-ms-share-provisioned-ingress-mbps property.
-     * 
+     *
      * @return the xMsShareProvisionedIngressMbps value.
      */
     public Integer getXMsShareProvisionedIngressMbps() {
@@ -449,7 +473,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Set the xMsShareProvisionedIngressMbps property: The x-ms-share-provisioned-ingress-mbps property.
-     * 
+     *
      * @param xMsShareProvisionedIngressMbps the xMsShareProvisionedIngressMbps value to set.
      * @return the SharesGetPropertiesHeaders object itself.
      */
@@ -460,7 +484,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Get the xMsShareProvisionedBandwidthMibps property: The x-ms-share-provisioned-bandwidth-mibps property.
-     * 
+     *
      * @return the xMsShareProvisionedBandwidthMibps value.
      */
     public Integer getXMsShareProvisionedBandwidthMibps() {
@@ -469,7 +493,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Set the xMsShareProvisionedBandwidthMibps property: The x-ms-share-provisioned-bandwidth-mibps property.
-     * 
+     *
      * @param xMsShareProvisionedBandwidthMibps the xMsShareProvisionedBandwidthMibps value to set.
      * @return the SharesGetPropertiesHeaders object itself.
      */
@@ -480,7 +504,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Get the xMsShareQuota property: The x-ms-share-quota property.
-     * 
+     *
      * @return the xMsShareQuota value.
      */
     public Integer getXMsShareQuota() {
@@ -489,7 +513,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Set the xMsShareQuota property: The x-ms-share-quota property.
-     * 
+     *
      * @param xMsShareQuota the xMsShareQuota value to set.
      * @return the SharesGetPropertiesHeaders object itself.
      */
@@ -500,7 +524,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Get the xMsAccessTier property: The x-ms-access-tier property.
-     * 
+     *
      * @return the xMsAccessTier value.
      */
     public String getXMsAccessTier() {
@@ -509,7 +533,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Set the xMsAccessTier property: The x-ms-access-tier property.
-     * 
+     *
      * @param xMsAccessTier the xMsAccessTier value to set.
      * @return the SharesGetPropertiesHeaders object itself.
      */
@@ -520,7 +544,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Get the eTag property: The ETag property.
-     * 
+     *
      * @return the eTag value.
      */
     public String getETag() {
@@ -529,7 +553,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Set the eTag property: The ETag property.
-     * 
+     *
      * @param eTag the eTag value to set.
      * @return the SharesGetPropertiesHeaders object itself.
      */
@@ -540,7 +564,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Get the xMsEnabledProtocols property: The x-ms-enabled-protocols property.
-     * 
+     *
      * @return the xMsEnabledProtocols value.
      */
     public String getXMsEnabledProtocols() {
@@ -549,7 +573,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Set the xMsEnabledProtocols property: The x-ms-enabled-protocols property.
-     * 
+     *
      * @param xMsEnabledProtocols the xMsEnabledProtocols value to set.
      * @return the SharesGetPropertiesHeaders object itself.
      */
@@ -560,7 +584,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Get the xMsLeaseDuration property: The x-ms-lease-duration property.
-     * 
+     *
      * @return the xMsLeaseDuration value.
      */
     public LeaseDurationType getXMsLeaseDuration() {
@@ -569,7 +593,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Set the xMsLeaseDuration property: The x-ms-lease-duration property.
-     * 
+     *
      * @param xMsLeaseDuration the xMsLeaseDuration value to set.
      * @return the SharesGetPropertiesHeaders object itself.
      */
@@ -580,7 +604,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Get the xMsRequestId property: The x-ms-request-id property.
-     * 
+     *
      * @return the xMsRequestId value.
      */
     public String getXMsRequestId() {
@@ -589,7 +613,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Set the xMsRequestId property: The x-ms-request-id property.
-     * 
+     *
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the SharesGetPropertiesHeaders object itself.
      */
@@ -600,7 +624,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Get the xMsAccessTierTransitionState property: The x-ms-access-tier-transition-state property.
-     * 
+     *
      * @return the xMsAccessTierTransitionState value.
      */
     public String getXMsAccessTierTransitionState() {
@@ -609,7 +633,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Set the xMsAccessTierTransitionState property: The x-ms-access-tier-transition-state property.
-     * 
+     *
      * @param xMsAccessTierTransitionState the xMsAccessTierTransitionState value to set.
      * @return the SharesGetPropertiesHeaders object itself.
      */
@@ -620,7 +644,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Get the xMsShareProvisionedEgressMbps property: The x-ms-share-provisioned-egress-mbps property.
-     * 
+     *
      * @return the xMsShareProvisionedEgressMbps value.
      */
     public Integer getXMsShareProvisionedEgressMbps() {
@@ -629,7 +653,7 @@ public final class SharesGetPropertiesHeaders {
 
     /**
      * Set the xMsShareProvisionedEgressMbps property: The x-ms-share-provisioned-egress-mbps property.
-     * 
+     *
      * @param xMsShareProvisionedEgressMbps the xMsShareProvisionedEgressMbps value to set.
      * @return the SharesGetPropertiesHeaders object itself.
      */
@@ -641,7 +665,7 @@ public final class SharesGetPropertiesHeaders {
     /**
      * Get the xMsShareNextAllowedQuotaDowngradeTime property: The x-ms-share-next-allowed-quota-downgrade-time
      * property.
-     * 
+     *
      * @return the xMsShareNextAllowedQuotaDowngradeTime value.
      */
     public OffsetDateTime getXMsShareNextAllowedQuotaDowngradeTime() {
@@ -654,12 +678,12 @@ public final class SharesGetPropertiesHeaders {
     /**
      * Set the xMsShareNextAllowedQuotaDowngradeTime property: The x-ms-share-next-allowed-quota-downgrade-time
      * property.
-     * 
+     *
      * @param xMsShareNextAllowedQuotaDowngradeTime the xMsShareNextAllowedQuotaDowngradeTime value to set.
      * @return the SharesGetPropertiesHeaders object itself.
      */
-    public SharesGetPropertiesHeaders
-        setXMsShareNextAllowedQuotaDowngradeTime(OffsetDateTime xMsShareNextAllowedQuotaDowngradeTime) {
+    public SharesGetPropertiesHeaders setXMsShareNextAllowedQuotaDowngradeTime(
+            OffsetDateTime xMsShareNextAllowedQuotaDowngradeTime) {
         if (xMsShareNextAllowedQuotaDowngradeTime == null) {
             this.xMsShareNextAllowedQuotaDowngradeTime = null;
         } else {

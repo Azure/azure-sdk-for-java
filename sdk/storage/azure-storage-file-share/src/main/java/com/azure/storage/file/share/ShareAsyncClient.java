@@ -1125,7 +1125,7 @@ public class ShareAsyncClient {
                     .map(response -> new PagedResponseBase<>(response.getRequest(),
                         response.getStatusCode(),
                         response.getHeaders(),
-                        response.getValue().items(),
+                        response.getValue(),
                         null,
                         response.getDeserializedHeaders()));
 

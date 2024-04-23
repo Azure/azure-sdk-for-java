@@ -4,9 +4,9 @@
 package com.azure.storage.file.share;
 
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -28,7 +28,7 @@ public class StorageFileInputOutputStreamTests extends FileShareTestBase {
         fileClient = shareClient.getFileClient(filePath);
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.file.share.FileShareTestBase#isLiveMode")
     @Test
     public void uploadDownload() throws IOException {
         length = 30 * Constants.MB;
@@ -54,7 +54,7 @@ public class StorageFileInputOutputStreamTests extends FileShareTestBase {
     }
 
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.file.share.FileShareTestBase#isLiveMode")
     @Test
     public void streamWithOffset() throws IOException {
         length = 7 * Constants.MB;

@@ -7,37 +7,37 @@ package com.azure.storage.file.share.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ListSharesIncludeType. */
-public enum ListSharesIncludeType {
-    /** Enum value snapshots. */
-    SNAPSHOTS("snapshots"),
+/** Access rights of the access policy. */
+public enum AccessRight {
+    /** Enum value Read. */
+    READ("Read"),
 
-    /** Enum value metadata. */
-    METADATA("metadata"),
+    /** Enum value Write. */
+    WRITE("Write"),
 
-    /** Enum value deleted. */
-    DELETED("deleted");
+    /** Enum value Delete. */
+    DELETE("Delete");
 
-    /** The actual serialized value for a ListSharesIncludeType instance. */
+    /** The actual serialized value for a AccessRight instance. */
     private final String value;
 
-    ListSharesIncludeType(String value) {
+    AccessRight(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a ListSharesIncludeType instance.
+     * Parses a serialized value to a AccessRight instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed ListSharesIncludeType object, or null if unable to parse.
+     * @return the parsed AccessRight object, or null if unable to parse.
      */
     @JsonCreator
-    public static ListSharesIncludeType fromString(String value) {
+    public static AccessRight fromString(String value) {
         if (value == null) {
             return null;
         }
-        ListSharesIncludeType[] items = ListSharesIncludeType.values();
-        for (ListSharesIncludeType item : items) {
+        AccessRight[] items = AccessRight.values();
+        for (AccessRight item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

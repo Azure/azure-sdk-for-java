@@ -39,7 +39,6 @@ public class CloseHandlesInfo {
     }
 
     /**
-     * Gets the number of handles closed.
      *
      * @return The number of handles closed.
      */
@@ -48,7 +47,6 @@ public class CloseHandlesInfo {
     }
 
     /**
-     * Gets the number of handles that failed to close.
      *
      * @return The number of handles that failed to close.
      */

@@ -3,7 +3,6 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
 import com.azure.storage.file.share.models.ShareFileProperties;
@@ -17,6 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.Duration;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -28,7 +28,7 @@ public class FileSample {
 
     // This is the helper method to generate random name.
     private static String generateRandomName() {
-        return CoreUtils.randomUuid().toString().substring(0, 8);
+        return UUID.randomUUID().toString().substring(0, 8);
     }
 
     /**
