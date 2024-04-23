@@ -335,7 +335,7 @@ stages:
                     displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
                     artifact: ${{parameters.ArtifactName}}
 
-                  - template: /eng/pipelines/templates/steps/mvn-linux-settings-for-docs.yml
+                  - template: /eng/pipelines/templates/steps/mvn-linux-repository-settings.yml
                   - template: /eng/pipelines/templates/steps/install-rex-validation-tool.yml
 
                   - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
@@ -476,7 +476,7 @@ stages:
               Get-ChildItem -Recurse $(Pipeline.Workspace)/${{parameters.ArtifactName}}/
             displayName: Show visible artifacts
 
-          - template: /eng/pipelines/templates/steps/mvn-linux-settings-for-docs.yml
+          - template: /eng/pipelines/templates/steps/mvn-linux-repository-settings.yml
           - template: /eng/pipelines/templates/steps/install-rex-validation-tool.yml
 
           - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml

@@ -138,7 +138,6 @@ function Get-Toc-Children($package, $docRepoLocation) {
         }
     }
     # Sort the array and clean out any dupes (there shouldn't be any but better safe than sorry)
-    # Ensure that Sort-Object returns an array even if there's only a single object.
     $namespaces = @($namespaces | Sort-Object -Unique)
     # Ensure that this always returns an array, even if there's one item or 0 items
     Write-Output -NoEnumerate $namespaces
@@ -222,7 +221,6 @@ function Fetch-Namespaces-From-Javadoc($package, $groupId, $version) {
         }
     }
 
-    # Ensure that Sort-Object returns an array even if there's only a single object.
     $namespaces = @($namespaces | Sort-Object -Unique)
     # Make sure this always returns an array
     Write-Output -NoEnumerate $namespaces
