@@ -19,7 +19,7 @@ public final class WhatsAppMessageTemplateBindingsComponent {
      */
     @Generated
     @JsonProperty(value = "refValue")
-    private final String refValue;
+    private String refValue;
 
     /**
      * Creates an instance of WhatsAppMessageTemplateBindingsComponent class.
