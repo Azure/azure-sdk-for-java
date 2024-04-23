@@ -10,6 +10,7 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ResponseBodyMode;
+import io.clientcore.core.shared.InsecureTrustManager;
 import io.clientcore.core.util.binarydata.BinaryData;
 import org.conscrypt.Conscrypt;
 import org.junit.jupiter.api.Test;
@@ -20,6 +21,7 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -30,13 +32,11 @@ import java.net.http.HttpTimeoutException;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.GeneralSecurityException;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ForkJoinPool;
@@ -54,6 +54,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Execution(ExecutionMode.SAME_THREAD)
 public class JdkHttpClientTests {
     private static final String SERVER_HTTP_URI = JdkHttpClientLocalTestServer.getServer().getHttpUri();
+    private static final String SERVER_HTTPS_URI = JdkHttpClientLocalTestServer.getServer().getHttpsUri();
 
     @Test
     public void testResponseShortBodyAsByteArray() throws IOException {
@@ -266,16 +267,15 @@ public class JdkHttpClientTests {
 
     @Test
     public void testCustomSslContext() throws IOException, GeneralSecurityException {
-        SSLContext sslContext = SSLContext.getInstance("Default", Conscrypt.newProvider());
+        SSLContext sslContext = SSLContext.getInstance("TLSv1.2", Conscrypt.newProvider());
+
+        // Initialize the SSL context with a trust manager that trusts all certificates.
+        sslContext.init(null, new TrustManager[] { new InsecureTrustManager() }, null);
+
         HttpClient httpClient = new JdkHttpClientBuilder().sslContext(sslContext).build();
 
-        String test = "testing a custom SSL socket factory";
-        String base64 = Base64.getEncoder().encodeToString(test.getBytes(StandardCharsets.UTF_8));
-
-        // Use an external service to validate SSLSocketFactory as it's complicated with LocalTestServer.
-        String url = "https://httpbin.org/base64/" + base64;
-        try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, url))) {
-            assertEquals(test, response.getBody().toString());
+        try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, httpsUrl("/short")))) {
+            TestUtils.assertArraysEqual(SHORT_BODY, response.getBody().toBytes());
         }
     }
 
@@ -283,6 +283,15 @@ public class JdkHttpClientTests {
     private static URL url(String path) {
         try {
             return new URL(SERVER_HTTP_URI + path);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    private static URL httpsUrl(String path) {
+        try {
+            return new URL(SERVER_HTTPS_URI + path);
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }

@@ -11,17 +11,20 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.shared.InsecureTrustManager;
 import io.clientcore.core.shared.LocalTestServer;
 import io.clientcore.core.util.Context;
+import io.clientcore.core.util.TestUtils;
 import io.clientcore.core.util.binarydata.BinaryData;
-import org.conscrypt.DefaultSSLContextImpl;
+import org.conscrypt.Conscrypt;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
-import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -32,7 +35,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -242,18 +244,17 @@ public class DefaultHttpClientTest {
 
     @Test
     public void testCustomSslSocketFactory() throws IOException, GeneralSecurityException {
-        SSLSocketFactory sslSocketFactory = new DefaultSSLContextImpl.TLSv13().engineGetSocketFactory();
+        SSLContext sslContext = SSLContext.getInstance("TLSv1.2", Conscrypt.newProvider());
+
+        // Initialize the SSL context with a trust manager that trusts all certificates.
+        sslContext.init(null, new TrustManager[] { new InsecureTrustManager() }, null);
+
         HttpClient httpClient = new DefaultHttpClientBuilder()
-            .sslSocketFactory(sslSocketFactory)
+            .sslSocketFactory(sslContext.getSocketFactory())
             .build();
 
-        String test = "testing a custom SSL socket factory";
-        String base64 = Base64.getEncoder().encodeToString(test.getBytes(StandardCharsets.UTF_8));
-
-        // Use an external service to validate SSLSocketFactory as it's complicated with LocalTestServer.
-        String url = "https://httpbin.org/base64/" + base64;
-        try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, url))) {
-            assertEquals(test, response.getBody().toString());
+        try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, httpsUrl(server, "/short")))) {
+            TestUtils.assertArraysEqual(SHORT_BODY, response.getBody().toBytes());
         }
     }
 
@@ -267,6 +268,14 @@ public class DefaultHttpClientTest {
     static URL url(LocalTestServer server, String path) {
         try {
             return new URI(server.getHttpUri() + path).toURL();
+        } catch (URISyntaxException | MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    static URL httpsUrl(LocalTestServer server, String path) {
+        try {
+            return new URI(server.getHttpsUri() + path).toURL();
         } catch (URISyntaxException | MalformedURLException e) {
             throw new RuntimeException(e);
         }

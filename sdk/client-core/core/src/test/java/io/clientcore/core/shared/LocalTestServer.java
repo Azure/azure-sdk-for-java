@@ -68,7 +68,6 @@ public class LocalTestServer {
         sslContextFactory.setKeyStorePath(mockKeyStore);
         sslContextFactory.setKeyStorePassword("password");
         sslContextFactory.setKeyManagerPassword("password");
-        sslContextFactory.setKeyStorePath(mockKeyStore);
         sslContextFactory.setTrustStorePassword("password");
         sslContextFactory.setTrustAll(true);
 

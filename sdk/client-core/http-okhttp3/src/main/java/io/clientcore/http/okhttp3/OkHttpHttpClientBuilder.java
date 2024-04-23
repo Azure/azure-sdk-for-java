@@ -14,6 +14,7 @@ import okhttp3.Dispatcher;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
 import java.time.Duration;
@@ -45,6 +46,7 @@ public class OkHttpHttpClientBuilder {
     private ProxyOptions proxyOptions;
     private SSLSocketFactory sslSocketFactory;
     private X509TrustManager trustManager;
+    private HostnameVerifier hostnameVerifier;
 
     /**
      * Creates OkHttpHttpClientBuilder.
@@ -291,6 +293,20 @@ public class OkHttpHttpClientBuilder {
     }
 
     /**
+     * Sets the {@link HostnameVerifier} to use for HTTPS connections.
+     * <p>
+     * If left unset, or set to null, HTTPS connections will use a default hostname verifier.
+     *
+     * @param hostnameVerifier The {@link HostnameVerifier} to use for HTTPS connections.
+     * @return The updated {@link OkHttpHttpClientBuilder} object.
+     */
+    public OkHttpHttpClientBuilder hostnameVerifier(HostnameVerifier hostnameVerifier) {
+        this.hostnameVerifier = hostnameVerifier;
+
+        return this;
+    }
+
+    /**
      * Creates a new OkHttp-backed {@link HttpClient} instance on every call, using the configuration set in this
      * builder at the time of the {@code build()} method call.
      *
@@ -329,6 +345,10 @@ public class OkHttpHttpClientBuilder {
 
         if (this.sslSocketFactory != null) {
             httpClientBuilder = httpClientBuilder.sslSocketFactory(sslSocketFactory, trustManager);
+        }
+
+        if (this.hostnameVerifier != null) {
+            httpClientBuilder = httpClientBuilder.hostnameVerifier(hostnameVerifier);
         }
 
         Configuration buildConfiguration = (configuration == null)
