@@ -9,7 +9,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
-* Wired `excludedRegions` for change feed operations scoped to a partition key. - See [PR 38003](https://github.com/Azure/azure-sdk-for-java/pull/38003) 
+* Wired `excludedRegions` for change feed operations. - See [PR 38003](https://github.com/Azure/azure-sdk-for-java/pull/38003) 
 
 #### Other Changes
 
