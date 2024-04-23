@@ -13,16 +13,11 @@ import java.io.IOException;
 
 /**
  * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an Azure
- * communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may be set
- * which must match the kind enum value.
+ * communication user. This model must be interpreted as a union: Apart from rawId, at most one further property may be
+ * set.
  */
 @Fluent
 public final class CommunicationIdentifierModel implements JsonSerializable<CommunicationIdentifierModel> {
-    /*
-     * The identifier kind. Only required in responses.
-     */
-    private AcsCommunicationIdentifierKind kind;
-
     /*
      * Raw Id of the identifier. Optional in requests, required in responses.
      */
@@ -43,35 +38,10 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
      */
     private MicrosoftTeamsUserIdentifierModel microsoftTeamsUser;
 
-    /*
-     * The Microsoft Teams application.
-     */
-    private AcsMicrosoftTeamsAppIdentifier microsoftTeamsApp;
-
     /**
      * Creates an instance of CommunicationIdentifierModel class.
      */
     public CommunicationIdentifierModel() {
-    }
-
-    /**
-     * Get the kind property: The identifier kind. Only required in responses.
-     * 
-     * @return the kind value.
-     */
-    public AcsCommunicationIdentifierKind getKind() {
-        return this.kind;
-    }
-
-    /**
-     * Set the kind property: The identifier kind. Only required in responses.
-     * 
-     * @param kind the kind value to set.
-     * @return the CommunicationIdentifierModel object itself.
-     */
-    public CommunicationIdentifierModel setKind(AcsCommunicationIdentifierKind kind) {
-        this.kind = kind;
-        return this;
     }
 
     /**
@@ -154,35 +124,13 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
         return this;
     }
 
-    /**
-     * Get the microsoftTeamsApp property: The Microsoft Teams application.
-     * 
-     * @return the microsoftTeamsApp value.
-     */
-    public AcsMicrosoftTeamsAppIdentifier getMicrosoftTeamsApp() {
-        return this.microsoftTeamsApp;
-    }
-
-    /**
-     * Set the microsoftTeamsApp property: The Microsoft Teams application.
-     * 
-     * @param microsoftTeamsApp the microsoftTeamsApp value to set.
-     * @return the CommunicationIdentifierModel object itself.
-     */
-    public CommunicationIdentifierModel setMicrosoftTeamsApp(AcsMicrosoftTeamsAppIdentifier microsoftTeamsApp) {
-        this.microsoftTeamsApp = microsoftTeamsApp;
-        return this;
-    }
-
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeStringField("rawId", this.rawId);
         jsonWriter.writeJsonField("communicationUser", this.communicationUser);
         jsonWriter.writeJsonField("phoneNumber", this.phoneNumber);
         jsonWriter.writeJsonField("microsoftTeamsUser", this.microsoftTeamsUser);
-        jsonWriter.writeJsonField("microsoftTeamsApp", this.microsoftTeamsApp);
         return jsonWriter.writeEndObject();
     }
 
@@ -201,10 +149,7 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("kind".equals(fieldName)) {
-                    deserializedCommunicationIdentifierModel.kind
-                        = AcsCommunicationIdentifierKind.fromString(reader.getString());
-                } else if ("rawId".equals(fieldName)) {
+                if ("rawId".equals(fieldName)) {
                     deserializedCommunicationIdentifierModel.rawId = reader.getString();
                 } else if ("communicationUser".equals(fieldName)) {
                     deserializedCommunicationIdentifierModel.communicationUser
@@ -214,9 +159,6 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
                 } else if ("microsoftTeamsUser".equals(fieldName)) {
                     deserializedCommunicationIdentifierModel.microsoftTeamsUser
                         = MicrosoftTeamsUserIdentifierModel.fromJson(reader);
-                } else if ("microsoftTeamsApp".equals(fieldName)) {
-                    deserializedCommunicationIdentifierModel.microsoftTeamsApp
-                        = AcsMicrosoftTeamsAppIdentifier.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
