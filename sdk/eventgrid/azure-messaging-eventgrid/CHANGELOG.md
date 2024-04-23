@@ -1,5 +1,15 @@
 # Release History
 
+## 4.22.1 (2024-04-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
+
+
 ## 4.22.0 (2024-03-11)
 
 ### Features Added
