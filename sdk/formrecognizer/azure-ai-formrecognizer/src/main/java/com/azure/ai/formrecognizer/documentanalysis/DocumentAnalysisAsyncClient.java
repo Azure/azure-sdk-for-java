@@ -3,7 +3,6 @@
 
 package com.azure.ai.formrecognizer.documentanalysis;
 
-import com.azure.ai.formrecognizer.FormRecognizerClient;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.DocumentClassifiersImpl;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.DocumentModelsImpl;
@@ -16,7 +15,6 @@ import com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transfor
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeDocumentOptions;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
-import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -34,6 +32,7 @@ import com.azure.core.util.polling.PollingContext;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
+import java.util.Objects;
 import java.util.function.Function;
 
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Constants.DEFAULT_POLL_INTERVAL;
@@ -48,31 +47,39 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <ol>
  *     <li>Custom Document Analysis: Classification, extraction and analysis of data from forms and documents specific
  *     to distinct business data and use cases. Use the custom trained model by passing its modelId into the
- *     {@link #beginAnalyzeDocument(String, BinaryData)} method.</li>
+ *     {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient#beginAnalyzeDocument(String, BinaryData)}
+ *     method.</li>
  *     <li>General Document Analysis: Extract text, tables, structure, and key-value pairs. Use general document model
  *     provided by the Form Recognizer service by passing modelId="rebuilt-document" into the
- *     {@link #beginAnalyzeDocument(String, BinaryData)} method.</li>
+ *     {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient#beginAnalyzeDocument(String, BinaryData)}
+ *     method.</li>
  *     <li>Prebuilt Model Analysis: Analyze receipts, business cards, invoices, ID's, W2's and other documents with
  *     <a href="https://aka.ms/azsdk/formrecognizer/models">supported prebuilt models. Use the prebuilt receipt model
- *     provided by passing modelId="prebuilt-receipt" into the {@link #beginAnalyzeDocument(String, BinaryData)}
+ *     provided by passing modelId="prebuilt-receipt" into the
+ *     {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient#beginAnalyzeDocument(String, BinaryData)}
  *     method.</a></li>
  *     <li>Layout Analysis: Extract text, selection marks, and tables structures, along with their bounding box
  *     coordinates, from forms and documents. Use the layout analysis model provided the service by passing
- *     modelId="prebuilt-layout" into the {@link #beginAnalyzeDocument(String, BinaryData)} method.</li>
+ *     modelId="prebuilt-layout" into the
+ *     {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient#beginAnalyzeDocument(String, BinaryData)}
+ *     method.</li>
  *     <li>Polling and Callbacks: It includes mechanisms for polling the service to check the status of an analysis
  *     operation or registering callbacks to receive notifications when the analysis is complete.</li>
  * </ol>
  *
  * <p>This client also provides different methods based on inputs from a URL and inputs from a stream.</p>
  *
- * <p><strong>Note: </strong>This client only supports {@link DocumentAnalysisServiceVersion#V2022_08_31} and newer.
- * To use an older service version, {@link FormRecognizerClient} and {@link FormTrainingClient}.</p>
+ * <p><strong>Note: </strong>This client only supports
+ * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion#V2022_08_31} and newer.
+ * To use an older service version, {@link com.azure.ai.formrecognizer.FormRecognizerClient} and {@link com.azure.ai
+ * .formrecognizer.training.FormTrainingClient}.</p>
  *
  * <p>Service clients are the point of interaction for developers to use Azure Form Recognizer.
- * {@link DocumentAnalysisClient} is the synchronous service client and {@link DocumentAnalysisAsyncClient} is the
- * asynchronous service client. The examples shown in this document use a credential object named DefaultAzureCredential
- * for authentication, which is appropriate for most scenarios, including local development and production environments.
- * Additionally, we recommend using
+ * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient} is the synchronous service client and
+ * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient} is the asynchronous service client.
+ * The examples shown in this document use a credential object named DefaultAzureCredential for authentication, which is
+ * appropriate for most scenarios, including local development and production environments. Additionally, we
+ * recommend using
  * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
  * for authentication in production environments.
  * You can find more information on different ways of authenticating and their corresponding credential types in the
@@ -218,41 +225,54 @@ public final class DocumentAnalysisAsyncClient {
      * @throws IllegalArgumentException If {@code documentUrl} or {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<OperationResult, AnalyzeResult> beginAnalyzeDocumentFromUrl(String modelId, String documentUrl,
-        AnalyzeDocumentOptions analyzeDocumentOptions) {
+    public PollerFlux<OperationResult, AnalyzeResult>
+        beginAnalyzeDocumentFromUrl(String modelId, String documentUrl,
+                                   AnalyzeDocumentOptions analyzeDocumentOptions) {
         return beginAnalyzeDocumentFromUrl(documentUrl, modelId, analyzeDocumentOptions, Context.NONE);
     }
 
-    private PollerFlux<OperationResult, AnalyzeResult> beginAnalyzeDocumentFromUrl(String documentUrl, String modelId,
-        AnalyzeDocumentOptions analyzeDocumentOptions, Context context) {
+    private PollerFlux<OperationResult, AnalyzeResult>
+        beginAnalyzeDocumentFromUrl(String documentUrl, String modelId,
+                                   AnalyzeDocumentOptions analyzeDocumentOptions,
+                                   Context context) {
         try {
             if (CoreUtils.isNullOrEmpty(documentUrl)) {
-                return PollerFlux.error(logger.logExceptionAsError(new IllegalArgumentException(
-                    "'documentUrl' is required and cannot be null or empty")));
+                throw logger.logExceptionAsError(new IllegalArgumentException("'documentUrl' is required and cannot"
+                    + " be null or empty"));
             }
             if (CoreUtils.isNullOrEmpty(modelId)) {
-                return PollerFlux.error(logger.logExceptionAsError(new IllegalArgumentException(
-                    "'modelId' is required and cannot be null or empty")));
+                throw logger.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
+                    + " be null or empty"));
             }
             final AnalyzeDocumentOptions finalAnalyzeDocumentOptions
                 = getAnalyzeDocumentOptions(analyzeDocumentOptions);
-            String pages = CoreUtils.isNullOrEmpty(finalAnalyzeDocumentOptions.getPages())
-                ? null : CoreUtils.stringJoin(",", finalAnalyzeDocumentOptions.getPages());
-
-            return new PollerFlux<>(DEFAULT_POLL_INTERVAL, activationOperation(() ->
-                    documentModelsImpl.analyzeDocumentWithResponseAsync(modelId, pages,
-                            finalAnalyzeDocumentOptions.getLocale(), StringIndexType.UTF16CODE_UNIT,
-                            finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures(),
-                            new AnalyzeDocumentRequest().setUrlSource(documentUrl), context)
-                        .map(analyzeDocumentResponse -> Transforms.toDocumentOperationResult(
-                            analyzeDocumentResponse.getDeserializedHeaders().getOperationLocation())), logger),
+            return new PollerFlux<>(
+                DEFAULT_POLL_INTERVAL,
+                activationOperation(() ->
+                        documentModelsImpl.analyzeDocumentWithResponseAsync(modelId,
+                                CoreUtils.isNullOrEmpty(finalAnalyzeDocumentOptions.getPages())
+                                    ? null : String.join(",", finalAnalyzeDocumentOptions.getPages()),
+                                finalAnalyzeDocumentOptions.getLocale() == null ? null
+                                    : finalAnalyzeDocumentOptions.getLocale(),
+                                StringIndexType.UTF16CODE_UNIT,
+                                finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures(),
+                                new AnalyzeDocumentRequest().setUrlSource(documentUrl),
+                                context)
+                            .map(analyzeDocumentResponse ->
+                                Transforms.toDocumentOperationResult(
+                                    analyzeDocumentResponse.getDeserializedHeaders().getOperationLocation())),
+                    logger),
                 pollingOperation(resultId ->
                     documentModelsImpl.getAnalyzeResultWithResponseAsync(modelId, resultId, context)),
                 (activationResponse, pollingContext) ->
                     Mono.error(new RuntimeException("Cancellation is not supported")),
-                fetchingOperation(resultId -> documentModelsImpl.getAnalyzeResultWithResponseAsync(modelId, resultId,
-                    context))
-                    .andThen(after -> after.map(modelSimpleResponse ->
+                fetchingOperation(resultId ->
+                    documentModelsImpl.getAnalyzeResultWithResponseAsync(
+                        modelId,
+                        resultId,
+                        context))
+                    .andThen(after -> after
+                        .map(modelSimpleResponse ->
                             Transforms.toAnalyzeResultOperation(modelSimpleResponse.getValue().getAnalyzeResult()))
                         .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)));
         } catch (RuntimeException ex) {
@@ -302,7 +322,8 @@ public final class DocumentAnalysisAsyncClient {
      * @throws IllegalArgumentException If {@code document} or {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<OperationResult, AnalyzeResult> beginAnalyzeDocument(String modelId, BinaryData document) {
+    public PollerFlux<OperationResult, AnalyzeResult>
+        beginAnalyzeDocument(String modelId, BinaryData document) {
         return beginAnalyzeDocument(modelId, document, null);
     }
 
@@ -360,46 +381,54 @@ public final class DocumentAnalysisAsyncClient {
      * from given {@link InputStream} with length.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<OperationResult, AnalyzeResult> beginAnalyzeDocument(String modelId, BinaryData document,
-        AnalyzeDocumentOptions analyzeDocumentOptions) {
+    public PollerFlux<OperationResult, AnalyzeResult>
+        beginAnalyzeDocument(String modelId, BinaryData document,
+                             AnalyzeDocumentOptions analyzeDocumentOptions) {
         return beginAnalyzeDocument(modelId, document, analyzeDocumentOptions, Context.NONE);
     }
 
-    private PollerFlux<OperationResult, AnalyzeResult> beginAnalyzeDocument(String modelId, BinaryData document,
-        AnalyzeDocumentOptions analyzeDocumentOptions, Context context) {
+    private PollerFlux<OperationResult, AnalyzeResult>
+        beginAnalyzeDocument(String modelId, BinaryData document,
+                             AnalyzeDocumentOptions analyzeDocumentOptions, Context context) {
         try {
-            if (document == null) {
-                return PollerFlux.error(new NullPointerException("'document' is required and cannot be null."));
-            }
-
+            Objects.requireNonNull(document, "'document' is required and cannot be null.");
             if (CoreUtils.isNullOrEmpty(modelId)) {
-                return PollerFlux.error(logger.logExceptionAsError(new IllegalArgumentException(
-                    "'modelId' is required and cannot be null or empty")));
+                throw logger.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
+                    + " be null or empty"));
             }
 
             if (document.getLength() == null) {
-                return PollerFlux.error(logger.logExceptionAsError(new IllegalArgumentException(
-                    "'document length' is required and cannot be null")));
+                throw logger.logExceptionAsError(new IllegalArgumentException("'document length' is required and cannot"
+                    + " be null"));
             }
 
             final AnalyzeDocumentOptions finalAnalyzeDocumentOptions
                 = getAnalyzeDocumentOptions(analyzeDocumentOptions);
 
-            String pages = CoreUtils.isNullOrEmpty(finalAnalyzeDocumentOptions.getPages())
-                ? null : CoreUtils.stringJoin(",", finalAnalyzeDocumentOptions.getPages());
-            return new PollerFlux<>(DEFAULT_POLL_INTERVAL, activationOperation(() ->
-                    documentModelsImpl.analyzeDocumentWithResponseAsync(modelId, null, pages,
-                            finalAnalyzeDocumentOptions.getLocale(), StringIndexType.UTF16CODE_UNIT,
-                            finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures(), document, document.getLength(),
+            return new PollerFlux<>(
+                DEFAULT_POLL_INTERVAL,
+                activationOperation(() ->
+                    documentModelsImpl.analyzeDocumentWithResponseAsync(modelId,
+                            null,
+                            CoreUtils.isNullOrEmpty(finalAnalyzeDocumentOptions.getPages())
+                                ? null : String.join(",", finalAnalyzeDocumentOptions.getPages()),
+                            finalAnalyzeDocumentOptions.getLocale() == null ? null
+                                : finalAnalyzeDocumentOptions.getLocale(),
+                            StringIndexType.UTF16CODE_UNIT,
+                            finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures(),
+                            document,
+                            document.getLength(),
                             context)
                         .map(analyzeDocumentResponse -> Transforms.toDocumentOperationResult(
-                            analyzeDocumentResponse.getDeserializedHeaders().getOperationLocation())), logger),
-                pollingOperation(resultId -> documentModelsImpl.getAnalyzeResultWithResponseAsync(modelId, resultId,
-                    context)),
+                            analyzeDocumentResponse.getDeserializedHeaders().getOperationLocation())),
+                    logger),
+                pollingOperation(
+                    resultId -> documentModelsImpl.getAnalyzeResultWithResponseAsync(
+                        modelId, resultId, context)),
                 (activationResponse, pollingContext) ->
                     Mono.error(new RuntimeException("Cancellation is not supported")),
-                fetchingOperation(resultId -> documentModelsImpl.getAnalyzeResultWithResponseAsync(modelId, resultId,
-                    context))
+                fetchingOperation(resultId -> documentModelsImpl.getAnalyzeResultWithResponseAsync(
+                    modelId, resultId, context))
                     .andThen(after -> after.map(modelSimpleResponse ->
                             Transforms.toAnalyzeResultOperation(modelSimpleResponse.getValue().getAnalyzeResult()))
                         .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)));
@@ -437,43 +466,53 @@ public final class DocumentAnalysisAsyncClient {
      * @param classifierId The unique classifier ID to be used. Use this to specify the custom classifier ID.
      * @param documentUrl The URL of the document to analyze.
      *
-     * @return A {@link PollerFlux} that polls the progress of the analyze document operation until it has completed,
-     * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
+     * @return A {@link PollerFlux} that polls the progress of the analyze document operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
      * @throws HttpResponseException If analyze operation fails and the {@link AnalyzeResultOperation} returns
      * with an {@link OperationStatus#FAILED}..
      * @throws IllegalArgumentException If {@code documentUrl} or {@code classifierId} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<OperationResult, AnalyzeResult> beginClassifyDocumentFromUrl(String classifierId,
-        String documentUrl) {
+    public PollerFlux<OperationResult, AnalyzeResult>
+        beginClassifyDocumentFromUrl(String classifierId, String documentUrl) {
         return beginClassifyDocumentFromUrl(classifierId, documentUrl, Context.NONE);
     }
 
-    private PollerFlux<OperationResult, AnalyzeResult> beginClassifyDocumentFromUrl(String documentUrl,
-        String classifierId, Context context) {
+    private PollerFlux<OperationResult, AnalyzeResult>
+        beginClassifyDocumentFromUrl(String documentUrl, String classifierId,
+                                Context context) {
         try {
             if (CoreUtils.isNullOrEmpty(documentUrl)) {
-                return PollerFlux.error(logger.logExceptionAsError(new IllegalArgumentException(
-                    "'documentUrl' is required and cannot be null or empty")));
+                throw logger.logExceptionAsError(new IllegalArgumentException("'documentUrl' is required and cannot"
+                    + " be null or empty"));
             }
             if (CoreUtils.isNullOrEmpty(classifierId)) {
-                return PollerFlux.error(logger.logExceptionAsError(new IllegalArgumentException(
-                    "'classifierId' is required and cannot be null or empty")));
+                throw logger.logExceptionAsError(new IllegalArgumentException("'classifierId' is required and cannot"
+                    + " be null or empty"));
             }
 
-            return new PollerFlux<>(DEFAULT_POLL_INTERVAL, activationOperation(() ->
-                    documentClassifiersImpl.classifyDocumentWithResponseAsync(classifierId,
-                            StringIndexType.UTF16CODE_UNIT, new ClassifyDocumentRequest().setUrlSource(documentUrl),
-                            context)
-                            .map(analyzeDocumentResponse -> Transforms.toDocumentOperationResult(
-                                analyzeDocumentResponse.getDeserializedHeaders().getOperationLocation())), logger),
+            return new PollerFlux<>(
+                DEFAULT_POLL_INTERVAL,
+                activationOperation(() ->
+                        documentClassifiersImpl.classifyDocumentWithResponseAsync(classifierId,
+                                StringIndexType.UTF16CODE_UNIT,
+                                new ClassifyDocumentRequest().setUrlSource(documentUrl),
+                                context)
+                            .map(analyzeDocumentResponse ->
+                                Transforms.toDocumentOperationResult(
+                                    analyzeDocumentResponse.getDeserializedHeaders().getOperationLocation())),
+                    logger),
                 pollingOperation(resultId ->
                     documentClassifiersImpl.getClassifyResultWithResponseAsync(classifierId, resultId, context)),
                 (activationResponse, pollingContext) ->
                     Mono.error(new RuntimeException("Cancellation is not supported")),
-                fetchingOperation(resultId -> documentClassifiersImpl.getClassifyResultWithResponseAsync(classifierId,
-                    resultId, context))
-                    .andThen(after -> after.map(modelSimpleResponse ->
+                fetchingOperation(resultId ->
+                    documentClassifiersImpl.getClassifyResultWithResponseAsync(
+                        classifierId,
+                        resultId,
+                        context))
+                    .andThen(after -> after
+                        .map(modelSimpleResponse ->
                             Transforms.toAnalyzeResultOperation(modelSimpleResponse.getValue().getAnalyzeResult()))
                         .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)));
         } catch (RuntimeException ex) {
@@ -524,38 +563,44 @@ public final class DocumentAnalysisAsyncClient {
      * from given {@link InputStream} with length.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<OperationResult, AnalyzeResult> beginClassifyDocument(String classifierId, BinaryData document) {
+    public PollerFlux<OperationResult, AnalyzeResult>
+        beginClassifyDocument(String classifierId, BinaryData document) {
         return beginClassifyDocument(classifierId, document, Context.NONE);
     }
 
-    private PollerFlux<OperationResult, AnalyzeResult> beginClassifyDocument(String classifierId, BinaryData document,
-        Context context) {
+    private PollerFlux<OperationResult, AnalyzeResult>
+        beginClassifyDocument(String classifierId, BinaryData document, Context context) {
         try {
-            if (document == null) {
-                return PollerFlux.error(new RuntimeException("'document' is required and cannot be null."));
-            }
-
+            Objects.requireNonNull(document, "'document' is required and cannot be null.");
             if (CoreUtils.isNullOrEmpty(classifierId)) {
-                return PollerFlux.error(logger.logExceptionAsError(new IllegalArgumentException(
-                    "'classifierId' is required and cannot be null or empty")));
+                throw logger.logExceptionAsError(new IllegalArgumentException("'classifierId' is required and cannot"
+                    + " be null or empty"));
             }
 
             if (document.getLength() == null) {
-                return PollerFlux.error(logger.logExceptionAsError(new IllegalArgumentException(
-                    "'document length' is required and cannot be null")));
+                throw logger.logExceptionAsError(new IllegalArgumentException("'document length' is required and cannot"
+                    + " be null"));
             }
 
-            return new PollerFlux<>(DEFAULT_POLL_INTERVAL, activationOperation(() ->
-                    documentClassifiersImpl.classifyDocumentWithResponseAsync(classifierId, null,
-                            StringIndexType.UTF16CODE_UNIT, document, document.getLength(), context)
-                        .map(analyzeDocumentResponse -> Transforms.toDocumentOperationResult(
-                            analyzeDocumentResponse.getDeserializedHeaders().getOperationLocation())), logger),
-                pollingOperation(resultId -> documentClassifiersImpl.getClassifyResultWithResponseAsync(classifierId,
-                    resultId, context)),
+            return new PollerFlux<>(
+                DEFAULT_POLL_INTERVAL,
+                activationOperation(() ->
+                        documentClassifiersImpl.classifyDocumentWithResponseAsync(classifierId,
+                                null,
+                                StringIndexType.UTF16CODE_UNIT,
+                                document,
+                                document.getLength(),
+                                context)
+                            .map(analyzeDocumentResponse -> Transforms.toDocumentOperationResult(
+                                analyzeDocumentResponse.getDeserializedHeaders().getOperationLocation())),
+                    logger),
+                pollingOperation(
+                    resultId -> documentClassifiersImpl.getClassifyResultWithResponseAsync(
+                        classifierId, resultId, context)),
                 (activationResponse, pollingContext) ->
                     Mono.error(new RuntimeException("Cancellation is not supported")),
-                fetchingOperation(resultId -> documentClassifiersImpl.getClassifyResultWithResponseAsync(classifierId,
-                    resultId, context))
+                fetchingOperation(resultId -> documentClassifiersImpl.getClassifyResultWithResponseAsync(
+                    classifierId, resultId, context))
                     .andThen(after -> after.map(modelSimpleResponse ->
                             Transforms.toAnalyzeResultOperation(modelSimpleResponse.getValue().getAnalyzeResult()))
                         .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)));
@@ -567,11 +612,13 @@ public final class DocumentAnalysisAsyncClient {
     /*
      * Poller's POLLING operation.
      */
-    private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>> pollingOperation(
+    private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
+        pollingOperation(
         Function<String, Mono<Response<AnalyzeResultOperation>>> pollingFunction) {
         return pollingContext -> {
             try {
-                final PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
+                final PollResponse<OperationResult> operationResultPollResponse
+                    = pollingContext.getLatestResponse();
                 final String resultId = operationResultPollResponse.getValue().getOperationId();
                 return pollingFunction.apply(resultId)
                     .flatMap(modelResponse -> processAnalyzeModelResponse(modelResponse, operationResultPollResponse))
@@ -585,7 +632,8 @@ public final class DocumentAnalysisAsyncClient {
     /*
      * Poller's FETCHING operation.
      */
-    private Function<PollingContext<OperationResult>, Mono<Response<AnalyzeResultOperation>>> fetchingOperation(
+    private Function<PollingContext<OperationResult>, Mono<Response<AnalyzeResultOperation>>>
+        fetchingOperation(
         Function<String, Mono<Response<AnalyzeResultOperation>>> fetchingFunction) {
         return pollingContext -> {
             try {
@@ -610,8 +658,8 @@ public final class DocumentAnalysisAsyncClient {
                 status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
                 break;
             case FAILED:
-                return monoError(logger, Transforms.mapResponseErrorToHttpResponseException(
-                    analyzeResultOperationResponse.getValue().getError()));
+                throw logger.logExceptionAsError(Transforms
+                    .mapResponseErrorToHttpResponseException(analyzeResultOperationResponse.getValue().getError()));
             default:
                 status = LongRunningOperationStatus.fromString(
                     analyzeResultOperationResponse.getValue().getStatus().toString(), true);
