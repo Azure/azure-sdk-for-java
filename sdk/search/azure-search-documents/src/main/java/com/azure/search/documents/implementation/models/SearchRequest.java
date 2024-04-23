@@ -223,6 +223,11 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      */
     private VectorFilterMode vectorFilterMode;
 
+    /*
+     * The query parameters to configure hybrid search behaviors.
+     */
+    private Object hybridSearch;
+
     /**
      * Creates an instance of SearchRequest class.
      */
@@ -945,6 +950,26 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
         return this;
     }
 
+    /**
+     * Get the hybridSearch property: The query parameters to configure hybrid search behaviors.
+     * 
+     * @return the hybridSearch value.
+     */
+    public Object getHybridSearch() {
+        return this.hybridSearch;
+    }
+
+    /**
+     * Set the hybridSearch property: The query parameters to configure hybrid search behaviors.
+     * 
+     * @param hybridSearch the hybridSearch value to set.
+     * @return the SearchRequest object itself.
+     */
+    public SearchRequest setHybridSearch(Object hybridSearch) {
+        this.hybridSearch = hybridSearch;
+        return this;
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -983,6 +1008,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
         jsonWriter.writeArrayField("vectorQueries", this.vectorQueries, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("vectorFilterMode",
             this.vectorFilterMode == null ? null : this.vectorFilterMode.toString());
+        jsonWriter.writeUntypedField("hybridSearch", this.hybridSearch);
         return jsonWriter.writeEndObject();
     }
 
@@ -1066,6 +1092,8 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
                     deserializedSearchRequest.vectorQueries = vectorQueries;
                 } else if ("vectorFilterMode".equals(fieldName)) {
                     deserializedSearchRequest.vectorFilterMode = VectorFilterMode.fromString(reader.getString());
+                } else if ("hybridSearch".equals(fieldName)) {
+                    deserializedSearchRequest.hybridSearch = reader.readUntyped();
                 } else {
                     reader.skipChildren();
                 }

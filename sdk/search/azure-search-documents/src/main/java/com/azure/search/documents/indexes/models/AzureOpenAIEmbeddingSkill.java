@@ -20,17 +20,23 @@ import java.util.List;
 @Fluent
 public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
     /*
-     * The resource URI for your Azure OpenAI resource.
+     * The number of dimensions the resulting output embeddings should have. Only supported in text-embedding-3 and
+     * later models.
+     */
+    private Integer dimensions;
+
+    /*
+     * The resource URI of the Azure OpenAI resource.
      */
     private String resourceUri;
 
     /*
-     * ID of your Azure OpenAI model deployment on the designated resource.
+     * ID of the Azure OpenAI model deployment on the designated resource.
      */
     private String deploymentId;
 
     /*
-     * API key for the designated Azure OpenAI resource.
+     * API key of the designated Azure OpenAI resource.
      */
     private String apiKey;
 
@@ -38,6 +44,11 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
      * The user-assigned managed identity used for outbound connections.
      */
     private SearchIndexerDataIdentity authIdentity;
+
+    /*
+     * The name of the embedding model that is deployed at the provided deploymentId path.
+     */
+    private AzureOpenAIModelName modelName;
 
     /**
      * Creates an instance of AzureOpenAIEmbeddingSkill class.
@@ -50,7 +61,29 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Get the resourceUri property: The resource URI for your Azure OpenAI resource.
+     * Get the dimensions property: The number of dimensions the resulting output embeddings should have. Only
+     * supported in text-embedding-3 and later models.
+     * 
+     * @return the dimensions value.
+     */
+    public Integer getDimensions() {
+        return this.dimensions;
+    }
+
+    /**
+     * Set the dimensions property: The number of dimensions the resulting output embeddings should have. Only
+     * supported in text-embedding-3 and later models.
+     * 
+     * @param dimensions the dimensions value to set.
+     * @return the AzureOpenAIEmbeddingSkill object itself.
+     */
+    public AzureOpenAIEmbeddingSkill setDimensions(Integer dimensions) {
+        this.dimensions = dimensions;
+        return this;
+    }
+
+    /**
+     * Get the resourceUri property: The resource URI of the Azure OpenAI resource.
      * 
      * @return the resourceUri value.
      */
@@ -59,7 +92,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the resourceUri property: The resource URI for your Azure OpenAI resource.
+     * Set the resourceUri property: The resource URI of the Azure OpenAI resource.
      * 
      * @param resourceUri the resourceUri value to set.
      * @return the AzureOpenAIEmbeddingSkill object itself.
@@ -70,7 +103,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Get the deploymentId property: ID of your Azure OpenAI model deployment on the designated resource.
+     * Get the deploymentId property: ID of the Azure OpenAI model deployment on the designated resource.
      * 
      * @return the deploymentId value.
      */
@@ -79,7 +112,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the deploymentId property: ID of your Azure OpenAI model deployment on the designated resource.
+     * Set the deploymentId property: ID of the Azure OpenAI model deployment on the designated resource.
      * 
      * @param deploymentId the deploymentId value to set.
      * @return the AzureOpenAIEmbeddingSkill object itself.
@@ -90,7 +123,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Get the apiKey property: API key for the designated Azure OpenAI resource.
+     * Get the apiKey property: API key of the designated Azure OpenAI resource.
      * 
      * @return the apiKey value.
      */
@@ -99,7 +132,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the apiKey property: API key for the designated Azure OpenAI resource.
+     * Set the apiKey property: API key of the designated Azure OpenAI resource.
      * 
      * @param apiKey the apiKey value to set.
      * @return the AzureOpenAIEmbeddingSkill object itself.
@@ -126,6 +159,26 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
      */
     public AzureOpenAIEmbeddingSkill setAuthIdentity(SearchIndexerDataIdentity authIdentity) {
         this.authIdentity = authIdentity;
+        return this;
+    }
+
+    /**
+     * Get the modelName property: The name of the embedding model that is deployed at the provided deploymentId path.
+     * 
+     * @return the modelName value.
+     */
+    public AzureOpenAIModelName getModelName() {
+        return this.modelName;
+    }
+
+    /**
+     * Set the modelName property: The name of the embedding model that is deployed at the provided deploymentId path.
+     * 
+     * @param modelName the modelName value to set.
+     * @return the AzureOpenAIEmbeddingSkill object itself.
+     */
+    public AzureOpenAIEmbeddingSkill setModelName(AzureOpenAIModelName modelName) {
+        this.modelName = modelName;
         return this;
     }
 
@@ -165,10 +218,12 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeStringField("context", getContext());
+        jsonWriter.writeNumberField("dimensions", this.dimensions);
         jsonWriter.writeStringField("resourceUri", this.resourceUri);
         jsonWriter.writeStringField("deploymentId", this.deploymentId);
         jsonWriter.writeStringField("apiKey", this.apiKey);
         jsonWriter.writeJsonField("authIdentity", this.authIdentity);
+        jsonWriter.writeStringField("modelName", this.modelName == null ? null : this.modelName.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -191,10 +246,12 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
             String name = null;
             String description = null;
             String context = null;
+            Integer dimensions = null;
             String resourceUri = null;
             String deploymentId = null;
             String apiKey = null;
             SearchIndexerDataIdentity authIdentity = null;
+            AzureOpenAIModelName modelName = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -218,6 +275,8 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
                     description = reader.getString();
                 } else if ("context".equals(fieldName)) {
                     context = reader.getString();
+                } else if ("dimensions".equals(fieldName)) {
+                    dimensions = reader.getNullable(JsonReader::getInt);
                 } else if ("resourceUri".equals(fieldName)) {
                     resourceUri = reader.getString();
                 } else if ("deploymentId".equals(fieldName)) {
@@ -226,6 +285,8 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
                     apiKey = reader.getString();
                 } else if ("authIdentity".equals(fieldName)) {
                     authIdentity = SearchIndexerDataIdentity.fromJson(reader);
+                } else if ("modelName".equals(fieldName)) {
+                    modelName = AzureOpenAIModelName.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
@@ -236,10 +297,12 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
                 deserializedAzureOpenAIEmbeddingSkill.setName(name);
                 deserializedAzureOpenAIEmbeddingSkill.setDescription(description);
                 deserializedAzureOpenAIEmbeddingSkill.setContext(context);
+                deserializedAzureOpenAIEmbeddingSkill.dimensions = dimensions;
                 deserializedAzureOpenAIEmbeddingSkill.resourceUri = resourceUri;
                 deserializedAzureOpenAIEmbeddingSkill.deploymentId = deploymentId;
                 deserializedAzureOpenAIEmbeddingSkill.apiKey = apiKey;
                 deserializedAzureOpenAIEmbeddingSkill.authIdentity = authIdentity;
+                deserializedAzureOpenAIEmbeddingSkill.modelName = modelName;
 
                 return deserializedAzureOpenAIEmbeddingSkill;
             }

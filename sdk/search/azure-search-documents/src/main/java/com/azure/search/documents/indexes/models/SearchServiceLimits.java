@@ -39,6 +39,11 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
      */
     private Integer maxComplexObjectsInCollectionsPerDocument;
 
+    /*
+     * The maximum amount of storage in bytes allowed per index.
+     */
+    private Long maxStoragePerIndex;
+
     /**
      * Creates an instance of SearchServiceLimits class.
      */
@@ -132,6 +137,26 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
         return this;
     }
 
+    /**
+     * Get the maxStoragePerIndex property: The maximum amount of storage in bytes allowed per index.
+     * 
+     * @return the maxStoragePerIndex value.
+     */
+    public Long getMaxStoragePerIndex() {
+        return this.maxStoragePerIndex;
+    }
+
+    /**
+     * Set the maxStoragePerIndex property: The maximum amount of storage in bytes allowed per index.
+     * 
+     * @param maxStoragePerIndex the maxStoragePerIndex value to set.
+     * @return the SearchServiceLimits object itself.
+     */
+    public SearchServiceLimits setMaxStoragePerIndex(Long maxStoragePerIndex) {
+        this.maxStoragePerIndex = maxStoragePerIndex;
+        return this;
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -140,6 +165,7 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
         jsonWriter.writeNumberField("maxComplexCollectionFieldsPerIndex", this.maxComplexCollectionFieldsPerIndex);
         jsonWriter.writeNumberField("maxComplexObjectsInCollectionsPerDocument",
             this.maxComplexObjectsInCollectionsPerDocument);
+        jsonWriter.writeNumberField("maxStoragePerIndex", this.maxStoragePerIndex);
         return jsonWriter.writeEndObject();
     }
 
@@ -169,6 +195,8 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
                 } else if ("maxComplexObjectsInCollectionsPerDocument".equals(fieldName)) {
                     deserializedSearchServiceLimits.maxComplexObjectsInCollectionsPerDocument
                         = reader.getNullable(JsonReader::getInt);
+                } else if ("maxStoragePerIndex".equals(fieldName)) {
+                    deserializedSearchServiceLimits.maxStoragePerIndex = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }

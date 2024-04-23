@@ -3,11 +3,7 @@
 
 package com.azure.search.documents.indexes;
 
-import com.azure.search.documents.indexes.models.FieldBuilderOptions;
-import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
-import com.azure.search.documents.indexes.models.LexicalNormalizerName;
-import com.azure.search.documents.indexes.models.SearchField;
-import com.azure.search.documents.indexes.models.SynonymMap;
+import com.azure.search.documents.indexes.models.*;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -126,4 +122,12 @@ public @interface SearchableField {
      */
     String vectorSearchProfileName() default "";
 
+    /**
+     * A {@link VectorEncodingFormat} to be associated with the {@link SearchField field}.
+     * <p>
+     * If the value is empty, the field won't have a {@link SearchField#getVectorEncodingFormat()} value.
+     *
+     * @return The {@link VectorEncodingFormat} that will be associated with the {@link SearchField field}.
+     */
+    String vectorEncodingFormat() default "";
 }

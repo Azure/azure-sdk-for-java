@@ -243,6 +243,10 @@ private void customizeVectorQuery(ClassCustomization classCustomization) {
         });
     }
 
+    private void customizeVectorizableImageUrlQuery(ClassCustomization classCustomization) {
+        classCustomization.getMethod("setFields").removeAnnotation("Override");
+    }
+
     private static void customizeAst(ClassCustomization classCustomization, Consumer<ClassOrInterfaceDeclaration> consumer) {
         classCustomization.customizeAst(ast -> consumer.accept(ast.getClassByName(classCustomization.getClassName())
             .orElseThrow(() -> new RuntimeException("Class not found. " + classCustomization.getClassName()))));
