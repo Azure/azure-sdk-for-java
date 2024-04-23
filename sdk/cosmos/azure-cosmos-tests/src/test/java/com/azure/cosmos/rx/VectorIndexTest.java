@@ -18,14 +18,14 @@ import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosVectorDataType;
 import com.azure.cosmos.models.CosmosVectorDistanceFunction;
 import com.azure.cosmos.models.CosmosVectorEmbedding;
+import com.azure.cosmos.models.CosmosVectorEmbeddingPolicy;
 import com.azure.cosmos.models.ExcludedPath;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.VectorEmbeddingPolicy;
-import com.azure.cosmos.models.VectorIndexSpec;
-import com.azure.cosmos.models.VectorIndexType;
+import com.azure.cosmos.models.CosmosVectorIndexSpec;
+import com.azure.cosmos.models.CosmosVectorIndexType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -96,10 +96,10 @@ public class VectorIndexTest extends TestSuiteBase {
 
         indexingPolicy.setVectorIndexes(populateVectorIndexes());
 
-        VectorEmbeddingPolicy vectorEmbeddingPolicy = new VectorEmbeddingPolicy(populateEmbeddings());
+        CosmosVectorEmbeddingPolicy cosmosVectorEmbeddingPolicy = new CosmosVectorEmbeddingPolicy(populateEmbeddings());
 
         collectionDefinition.setIndexingPolicy(indexingPolicy);
-        collectionDefinition.setVectorEmbeddingPolicy(vectorEmbeddingPolicy);
+        collectionDefinition.setVectorEmbeddingPolicy(cosmosVectorEmbeddingPolicy);
 
         database.createContainer(collectionDefinition).block();
         CosmosAsyncContainer createdCollection = database.getContainer(collectionDefinition.getId());
@@ -125,9 +125,9 @@ public class VectorIndexTest extends TestSuiteBase {
         IncludedPath includedPath2 = new IncludedPath("/description/?");
         indexingPolicy.setIncludedPaths(ImmutableList.of(includedPath1, includedPath2));
 
-        VectorIndexSpec vectorIndexSpec = new VectorIndexSpec("/vector1");
-        vectorIndexSpec.setType(VectorIndexType.FLAT.toString());
-        indexingPolicy.setVectorIndexes(ImmutableList.of(vectorIndexSpec));
+        CosmosVectorIndexSpec cosmosVectorIndexSpec = new CosmosVectorIndexSpec("/vector1");
+        cosmosVectorIndexSpec.setType(CosmosVectorIndexType.FLAT.toString());
+        indexingPolicy.setVectorIndexes(ImmutableList.of(cosmosVectorIndexSpec));
 
         collectionDefinition.setIndexingPolicy(indexingPolicy);
 
@@ -158,50 +158,50 @@ public class VectorIndexTest extends TestSuiteBase {
         IncludedPath includedPath2 = new IncludedPath("/description/?");
         indexingPolicy.setIncludedPaths(ImmutableList.of(includedPath1, includedPath2));
 
-        VectorIndexSpec vectorIndexSpec = new VectorIndexSpec("/vector1");
-        vectorIndexSpec.setType(VectorIndexType.FLAT.toString());
-        indexingPolicy.setVectorIndexes(ImmutableList.of(vectorIndexSpec));
+        CosmosVectorIndexSpec cosmosVectorIndexSpec = new CosmosVectorIndexSpec("/vector1");
+        cosmosVectorIndexSpec.setType(CosmosVectorIndexType.FLAT.toString());
+        indexingPolicy.setVectorIndexes(ImmutableList.of(cosmosVectorIndexSpec));
         collectionDefinition.setIndexingPolicy(indexingPolicy);
 
-        CosmosVectorEmbedding embedding = new CosmosVectorEmbedding(
-            "/vector1",
-            "String",
-            3L,
-            CosmosVectorDistanceFunction.COSINE.toString());
+        CosmosVectorEmbedding embedding = new CosmosVectorEmbedding();
+        embedding.setPath("/vector1");
+        embedding.setVectorDataType(null);
+        embedding.setDimensions(3L);
+        embedding.setVectorDistanceFunction(CosmosVectorDistanceFunction.COSINE);
 
         try {
-            VectorEmbeddingPolicy vectorEmbeddingPolicy = new VectorEmbeddingPolicy(ImmutableList.of(embedding));
-            collectionDefinition.setVectorEmbeddingPolicy(vectorEmbeddingPolicy);
-            fail("Vector Embedding policy creation will fail for wrong vector date type being passed");
+            CosmosVectorEmbeddingPolicy cosmosVectorEmbeddingPolicy = new CosmosVectorEmbeddingPolicy(ImmutableList.of(embedding));
+            collectionDefinition.setVectorEmbeddingPolicy(cosmosVectorEmbeddingPolicy);
+            fail("Vector Embedding policy creation will fail for wrong vector data type being passed");
         } catch (IllegalArgumentException ex) {
             assertThat(ex.getMessage()).isEqualTo("Invalid vector data type for the vector embedding policy.");
         }
 
-        embedding.setCosmosVectorDataType(CosmosVectorDataType.FLOAT32.toString());
-        embedding.setCosmosVectorDistanceFunction("COS");
+        embedding.setVectorDataType(CosmosVectorDataType.FLOAT32);
+        embedding.setVectorDistanceFunction(null);
         try {
-            VectorEmbeddingPolicy vectorEmbeddingPolicy = new VectorEmbeddingPolicy(ImmutableList.of(embedding));
-            collectionDefinition.setVectorEmbeddingPolicy(vectorEmbeddingPolicy);
+            CosmosVectorEmbeddingPolicy cosmosVectorEmbeddingPolicy = new CosmosVectorEmbeddingPolicy(ImmutableList.of(embedding));
+            collectionDefinition.setVectorEmbeddingPolicy(cosmosVectorEmbeddingPolicy);
             fail("Vector Embedding policy creation will fail for wrong distance function being passed");
         } catch (IllegalArgumentException ex) {
             assertThat(ex.getMessage()).isEqualTo("Invalid distance function for the vector embedding policy.");
         }
 
-        embedding.setCosmosVectorDistanceFunction(CosmosVectorDistanceFunction.COSINE.toString());
+        embedding.setVectorDistanceFunction(CosmosVectorDistanceFunction.COSINE);
         embedding.setDimensions(null);
         try {
-            VectorEmbeddingPolicy vectorEmbeddingPolicy = new VectorEmbeddingPolicy(ImmutableList.of(embedding));
-            collectionDefinition.setVectorEmbeddingPolicy(vectorEmbeddingPolicy);
+            CosmosVectorEmbeddingPolicy cosmosVectorEmbeddingPolicy = new CosmosVectorEmbeddingPolicy(ImmutableList.of(embedding));
+            collectionDefinition.setVectorEmbeddingPolicy(cosmosVectorEmbeddingPolicy);
             fail("Vector Embedding policy creation will fail for empty distance function being passed");
         } catch (IllegalArgumentException ex) {
             assertThat(ex.getMessage()).isEqualTo("Dimensions for the embedding cannot be null for the vector embedding policy");
         }
 
-        embedding.setCosmosVectorDistanceFunction(CosmosVectorDistanceFunction.COSINE.toString());
+        embedding.setVectorDistanceFunction(CosmosVectorDistanceFunction.COSINE);
         embedding.setDimensions(-1L);
         try {
-            VectorEmbeddingPolicy vectorEmbeddingPolicy = new VectorEmbeddingPolicy(ImmutableList.of(embedding));
-            collectionDefinition.setVectorEmbeddingPolicy(vectorEmbeddingPolicy);
+            CosmosVectorEmbeddingPolicy cosmosVectorEmbeddingPolicy = new CosmosVectorEmbeddingPolicy(ImmutableList.of(embedding));
+            collectionDefinition.setVectorEmbeddingPolicy(cosmosVectorEmbeddingPolicy);
             fail("Vector Embedding policy creation will fail for negative dimensions being passed");
         } catch (IllegalArgumentException ex) {
             assertThat(ex.getMessage()).isEqualTo("Dimensions for the embedding has to be a long value greater than 1 for the vector embedding policy");
@@ -226,18 +226,18 @@ public class VectorIndexTest extends TestSuiteBase {
         IncludedPath includedPath2 = new IncludedPath("/description/?");
         indexingPolicy.setIncludedPaths(ImmutableList.of(includedPath1, includedPath2));
 
-        VectorIndexSpec vectorIndexSpec = new VectorIndexSpec("/vector1");
-        vectorIndexSpec.setType("NonFlat");
-        indexingPolicy.setVectorIndexes(ImmutableList.of(vectorIndexSpec));
+        CosmosVectorIndexSpec cosmosVectorIndexSpec = new CosmosVectorIndexSpec("/vector1");
+        cosmosVectorIndexSpec.setType("NonFlat");
+        indexingPolicy.setVectorIndexes(ImmutableList.of(cosmosVectorIndexSpec));
         collectionDefinition.setIndexingPolicy(indexingPolicy);
 
-        CosmosVectorEmbedding embedding = new CosmosVectorEmbedding(
-            "/vector1",
-            CosmosVectorDistanceFunction.COSINE.toString(),
-            3L,
-            CosmosVectorDistanceFunction.COSINE.toString());
-        VectorEmbeddingPolicy vectorEmbeddingPolicy = new VectorEmbeddingPolicy(ImmutableList.of(embedding));
-        collectionDefinition.setVectorEmbeddingPolicy(vectorEmbeddingPolicy);
+        CosmosVectorEmbedding embedding = new CosmosVectorEmbedding();
+        embedding.setPath("/vector1");
+        embedding.setVectorDataType(CosmosVectorDataType.FLOAT32);
+        embedding.setDimensions(3L);
+        embedding.setVectorDistanceFunction(CosmosVectorDistanceFunction.COSINE);
+        CosmosVectorEmbeddingPolicy cosmosVectorEmbeddingPolicy = new CosmosVectorEmbeddingPolicy(ImmutableList.of(embedding));
+        collectionDefinition.setVectorEmbeddingPolicy(cosmosVectorEmbeddingPolicy);
 
         try {
             database.createContainer(collectionDefinition).block();
@@ -266,16 +266,16 @@ public class VectorIndexTest extends TestSuiteBase {
         IncludedPath includedPath2 = new IncludedPath("/description/?");
         indexingPolicy.setIncludedPaths(ImmutableList.of(includedPath1, includedPath2));
 
-        List<VectorIndexSpec> vectorIndexes = populateVectorIndexes();
+        List<CosmosVectorIndexSpec> vectorIndexes = populateVectorIndexes();
         vectorIndexes.get(2).setPath("/vector2");
         indexingPolicy.setVectorIndexes(vectorIndexes);
 
         List<CosmosVectorEmbedding> embeddings = populateEmbeddings();
         embeddings.get(2).setPath("/vector2");
-        VectorEmbeddingPolicy vectorEmbeddingPolicy = new VectorEmbeddingPolicy(embeddings);
+        CosmosVectorEmbeddingPolicy cosmosVectorEmbeddingPolicy = new CosmosVectorEmbeddingPolicy(embeddings);
 
         collectionDefinition.setIndexingPolicy(indexingPolicy);
-        collectionDefinition.setVectorEmbeddingPolicy(vectorEmbeddingPolicy);
+        collectionDefinition.setVectorEmbeddingPolicy(cosmosVectorEmbeddingPolicy);
 
         database.createContainer(collectionDefinition).block();
         CosmosAsyncContainer createdCollection = database.getContainer(collectionDefinition.getId());
@@ -283,23 +283,23 @@ public class VectorIndexTest extends TestSuiteBase {
         validateCollectionProperties(collectionDefinition, collectionProperties);
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void shouldValidateVectorEmbeddingPolicySerializationAndDeserialization() throws JsonProcessingException {
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         indexingPolicy.setVectorIndexes(populateVectorIndexes());
 
-        VectorEmbeddingPolicy vectorEmbeddingPolicy = new VectorEmbeddingPolicy(populateEmbeddings());
+        CosmosVectorEmbeddingPolicy cosmosVectorEmbeddingPolicy = new CosmosVectorEmbeddingPolicy(populateEmbeddings());
         String vectorEmbeddingPolicyJson = getVectorEmbeddingPolicyAsString();
-        String expectedVectorEmbeddingPolicyJson = simpleObjectMapper.writeValueAsString(vectorEmbeddingPolicy);
+        String expectedVectorEmbeddingPolicyJson = simpleObjectMapper.writeValueAsString(cosmosVectorEmbeddingPolicy);
         assertThat(vectorEmbeddingPolicyJson).isEqualTo(expectedVectorEmbeddingPolicyJson);
 
-        VectorEmbeddingPolicy expectedVectorEmbeddingPolicy = simpleObjectMapper.readValue(expectedVectorEmbeddingPolicyJson, VectorEmbeddingPolicy.class);
-        validateVectorEmbeddingPolicy(vectorEmbeddingPolicy, expectedVectorEmbeddingPolicy);
+        CosmosVectorEmbeddingPolicy expectedCosmosVectorEmbeddingPolicy = simpleObjectMapper.readValue(expectedVectorEmbeddingPolicyJson, CosmosVectorEmbeddingPolicy.class);
+        validateVectorEmbeddingPolicy(cosmosVectorEmbeddingPolicy, expectedCosmosVectorEmbeddingPolicy);
     }
 
     private void validateCollectionProperties(CosmosContainerProperties collectionDefinition, CosmosContainerProperties collectionProperties) {
         assertThat(collectionProperties.getVectorEmbeddingPolicy()).isNotNull();
-        assertThat(collectionProperties.getVectorEmbeddingPolicy().getCosmosVectorEmbeddings()).isNotNull();
+        assertThat(collectionProperties.getVectorEmbeddingPolicy().getVectorEmbeddings()).isNotNull();
         validateVectorEmbeddingPolicy(collectionProperties.getVectorEmbeddingPolicy(),
             collectionDefinition.getVectorEmbeddingPolicy());
 
@@ -307,19 +307,19 @@ public class VectorIndexTest extends TestSuiteBase {
         validateVectorIndexes(collectionDefinition.getIndexingPolicy().getVectorIndexes(), collectionProperties.getIndexingPolicy().getVectorIndexes());
     }
 
-    private void validateVectorEmbeddingPolicy(VectorEmbeddingPolicy actual, VectorEmbeddingPolicy expected) {
-        List<CosmosVectorEmbedding> actualEmbeddings = actual.getCosmosVectorEmbeddings();
-        List<CosmosVectorEmbedding> expectedEmbeddings = expected.getCosmosVectorEmbeddings();
+    private void validateVectorEmbeddingPolicy(CosmosVectorEmbeddingPolicy actual, CosmosVectorEmbeddingPolicy expected) {
+        List<CosmosVectorEmbedding> actualEmbeddings = actual.getVectorEmbeddings();
+        List<CosmosVectorEmbedding> expectedEmbeddings = expected.getVectorEmbeddings();
         assertThat(expectedEmbeddings).hasSameSizeAs(actualEmbeddings);
         for (int i = 0; i < expectedEmbeddings.size(); i++) {
             assertThat(expectedEmbeddings.get(i).getPath()).isEqualTo(actualEmbeddings.get(i).getPath());
-            assertThat(expectedEmbeddings.get(i).getCosmosVectorDataType()).isEqualTo(actualEmbeddings.get(i).getCosmosVectorDataType());
+            assertThat(expectedEmbeddings.get(i).getVectorDataType()).isEqualTo(actualEmbeddings.get(i).getVectorDataType());
             assertThat(expectedEmbeddings.get(i).getDimensions()).isEqualTo(actualEmbeddings.get(i).getDimensions());
-            assertThat(expectedEmbeddings.get(i).getCosmosVectorDistanceFunction()).isEqualTo(actualEmbeddings.get(i).getCosmosVectorDistanceFunction());
+            assertThat(expectedEmbeddings.get(i).getVectorDistanceFunction()).isEqualTo(actualEmbeddings.get(i).getVectorDistanceFunction());
         }
     }
 
-    private void validateVectorIndexes(List<VectorIndexSpec> actual, List<VectorIndexSpec> expected) {
+    private void validateVectorIndexes(List<CosmosVectorIndexSpec> actual, List<CosmosVectorIndexSpec> expected) {
         assertThat(expected).hasSameSizeAs(actual);
         for (int i = 0; i < expected.size(); i++) {
             assertThat(expected.get(i).getPath()).isEqualTo(actual.get(i).getPath());
@@ -327,37 +327,37 @@ public class VectorIndexTest extends TestSuiteBase {
         }
     }
 
-    private List<VectorIndexSpec> populateVectorIndexes() {
-        VectorIndexSpec vectorIndexSpec1 = new VectorIndexSpec("/vector1");
-        vectorIndexSpec1.setType(VectorIndexType.FLAT.toString());
+    private List<CosmosVectorIndexSpec> populateVectorIndexes() {
+        CosmosVectorIndexSpec cosmosVectorIndexSpec1 = new CosmosVectorIndexSpec("/vector1");
+        cosmosVectorIndexSpec1.setType(CosmosVectorIndexType.FLAT.toString());
 
-        VectorIndexSpec vectorIndexSpec2 = new VectorIndexSpec("/vector2");
-        vectorIndexSpec2.setType(VectorIndexType.QUANTIZED_FLAT.toString());
+        CosmosVectorIndexSpec cosmosVectorIndexSpec2 = new CosmosVectorIndexSpec("/vector2");
+        cosmosVectorIndexSpec2.setType(CosmosVectorIndexType.QUANTIZED_FLAT.toString());
 
-        VectorIndexSpec vectorIndexSpec3 = new VectorIndexSpec("/vector3");
-        vectorIndexSpec3.setType(VectorIndexType.DISK_ANN.toString());
+        CosmosVectorIndexSpec cosmosVectorIndexSpec3 = new CosmosVectorIndexSpec("/vector3");
+        cosmosVectorIndexSpec3.setType(CosmosVectorIndexType.DISK_ANN.toString());
 
-        return Arrays.asList(vectorIndexSpec1, vectorIndexSpec2, vectorIndexSpec3);
+        return Arrays.asList(cosmosVectorIndexSpec1, cosmosVectorIndexSpec2, cosmosVectorIndexSpec3);
     }
 
     private List<CosmosVectorEmbedding> populateEmbeddings() {
-        CosmosVectorEmbedding embedding1 = new CosmosVectorEmbedding(
-            "/vector1",
-            CosmosVectorDataType.FLOAT32.toString(),
-            3L,
-            CosmosVectorDistanceFunction.COSINE.toString());
+        CosmosVectorEmbedding embedding1 = new CosmosVectorEmbedding();
+        embedding1.setPath("/vector1");
+        embedding1.setVectorDataType(CosmosVectorDataType.FLOAT32);
+        embedding1.setDimensions(3L);
+        embedding1.setVectorDistanceFunction(CosmosVectorDistanceFunction.COSINE);
 
-        CosmosVectorEmbedding embedding2 = new CosmosVectorEmbedding(
-            "/vector2",
-            CosmosVectorDataType.INT8.toString(),
-            3L,
-            CosmosVectorDistanceFunction.DOT_PRODUCT.toString());
+        CosmosVectorEmbedding embedding2 = new CosmosVectorEmbedding();
+        embedding2.setPath("/vector2");
+        embedding2.setVectorDataType(CosmosVectorDataType.INT8);
+        embedding2.setDimensions(3L);
+        embedding2.setVectorDistanceFunction(CosmosVectorDistanceFunction.DOT_PRODUCT);
 
-        CosmosVectorEmbedding embedding3 = new CosmosVectorEmbedding(
-            "/vector3",
-            CosmosVectorDataType.UINT8.toString(),
-            3L,
-            CosmosVectorDistanceFunction.EUCLIDEAN.toString());
+        CosmosVectorEmbedding embedding3 = new CosmosVectorEmbedding();
+        embedding3.setPath("/vector3");
+        embedding3.setVectorDataType(CosmosVectorDataType.UINT8);
+        embedding3.setDimensions(3L);
+        embedding3.setVectorDistanceFunction(CosmosVectorDistanceFunction.EUCLIDEAN);
         return Arrays.asList(embedding1, embedding2, embedding3);
     }
 

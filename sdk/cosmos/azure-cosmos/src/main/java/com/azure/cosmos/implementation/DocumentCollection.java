@@ -9,11 +9,11 @@ import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.ComputedProperty;
 import com.azure.cosmos.models.ConflictResolutionPolicy;
+import com.azure.cosmos.models.CosmosVectorEmbeddingPolicy;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.UniqueKeyPolicy;
-import com.azure.cosmos.models.VectorEmbeddingPolicy;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
@@ -42,7 +42,7 @@ public final class DocumentCollection extends Resource {
     private UniqueKeyPolicy uniqueKeyPolicy;
     private PartitionKeyDefinition partitionKeyDefinition;
     private ClientEncryptionPolicy clientEncryptionPolicyInternal;
-    private VectorEmbeddingPolicy vectorEmbeddingPolicy;
+    private CosmosVectorEmbeddingPolicy cosmosVectorEmbeddingPolicy;
 
     /**
      * Constructor.
@@ -419,14 +419,14 @@ public final class DocumentCollection extends Resource {
      *
      * @return the Vector Embedding Policy.
      */
-    public VectorEmbeddingPolicy getVectorEmbeddingPolicy() {
-        if (this.vectorEmbeddingPolicy == null) {
+    public CosmosVectorEmbeddingPolicy getVectorEmbeddingPolicy() {
+        if (this.cosmosVectorEmbeddingPolicy == null) {
             if (super.has(Constants.Properties.VECTOR_EMBEDDING_POLICY)) {
-                this.vectorEmbeddingPolicy = super.getObject(Constants.Properties.VECTOR_EMBEDDING_POLICY,
-                    VectorEmbeddingPolicy.class);
+                this.cosmosVectorEmbeddingPolicy = super.getObject(Constants.Properties.VECTOR_EMBEDDING_POLICY,
+                    CosmosVectorEmbeddingPolicy.class);
             }
         }
-        return this.vectorEmbeddingPolicy;
+        return this.cosmosVectorEmbeddingPolicy;
     }
 
     /**
@@ -435,11 +435,11 @@ public final class DocumentCollection extends Resource {
      *
      * @param value the Vector Embedding Policy.
      */
-    public void setVectorEmbeddingPolicy(VectorEmbeddingPolicy value) {
+    public void setVectorEmbeddingPolicy(CosmosVectorEmbeddingPolicy value) {
         if (value == null) {
-            throw new IllegalArgumentException("VectorEmbeddingPolicy cannot be null.");
+            throw new NullPointerException("VectorEmbeddingPolicy cannot be null.");
         }
-        this.vectorEmbeddingPolicy = value;
+        this.cosmosVectorEmbeddingPolicy = value;
         setProperty(this, Constants.Properties.VECTOR_EMBEDDING_POLICY, value);
     }
 

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 /**
  * Vector Indexes spec for Azure CosmosDB service.
  */
-public final class VectorIndexSpec {
+public final class CosmosVectorIndexSpec {
 
     private final JsonSerializable jsonSerializable;
     private String type;
@@ -20,16 +20,9 @@ public final class VectorIndexSpec {
      *
      * @param path the path.
      */
-    public VectorIndexSpec(String path) {
+    public CosmosVectorIndexSpec(String path) {
         this.jsonSerializable = new JsonSerializable();
         this.setPath(path);
-    }
-
-    /**
-     * Constructor.
-     */
-    public VectorIndexSpec() {
-        this.jsonSerializable = new JsonSerializable();
     }
 
     /**
@@ -37,7 +30,7 @@ public final class VectorIndexSpec {
      *
      * @param objectNode the object node that represents the included path.
      */
-    public VectorIndexSpec(ObjectNode objectNode) { this.jsonSerializable = new JsonSerializable(objectNode); }
+    private CosmosVectorIndexSpec(ObjectNode objectNode) { this.jsonSerializable = new JsonSerializable(objectNode); }
 
     /**
      * Gets path.
@@ -54,7 +47,7 @@ public final class VectorIndexSpec {
      * @param path the path.
      * @return the SpatialSpec.
      */
-    public VectorIndexSpec setPath(String path) {
+    public CosmosVectorIndexSpec setPath(String path) {
         this.jsonSerializable.set(Constants.Properties.PATH, path);
         return this;
     }
@@ -81,7 +74,7 @@ public final class VectorIndexSpec {
      * @param type the vector index type
      * @return the VectorIndexSpec
      */
-    public VectorIndexSpec setType(String type) {
+    public CosmosVectorIndexSpec setType(String type) {
         this.type = type;
         this.jsonSerializable.set(Constants.Properties.VECTOR_INDEX_TYPE, this.type);
         return this;

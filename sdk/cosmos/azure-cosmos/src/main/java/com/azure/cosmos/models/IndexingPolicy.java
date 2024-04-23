@@ -24,7 +24,7 @@ public final class IndexingPolicy {
     private List<ExcludedPath> excludedPaths;
     private List<List<CompositePath>> compositeIndexes;
     private List<SpatialSpec> spatialIndexes;
-    private List<VectorIndexSpec> vectorIndexes;
+    private List<CosmosVectorIndexSpec> vectorIndexes;
 
     /**
      * Constructor.
@@ -266,12 +266,12 @@ public final class IndexingPolicy {
      *
      * @return the vector indexes
      */
-    public List<VectorIndexSpec> getVectorIndexes() {
+    public List<CosmosVectorIndexSpec> getVectorIndexes() {
         if (this.vectorIndexes == null) {
-            this.vectorIndexes = this.jsonSerializable.getList(Constants.Properties.VECTOR_INDEXES, VectorIndexSpec.class);
+            this.vectorIndexes = this.jsonSerializable.getList(Constants.Properties.VECTOR_INDEXES, CosmosVectorIndexSpec.class);
 
             if (this.vectorIndexes == null) {
-                this.vectorIndexes = new ArrayList<VectorIndexSpec>();
+                this.vectorIndexes = new ArrayList<CosmosVectorIndexSpec>();
             }
         }
 
@@ -299,7 +299,7 @@ public final class IndexingPolicy {
      * @param vectorIndexes the vector indexes
      * @return the Indexing Policy.
      */
-    public IndexingPolicy setVectorIndexes(List<VectorIndexSpec> vectorIndexes) {
+    public IndexingPolicy setVectorIndexes(List<CosmosVectorIndexSpec> vectorIndexes) {
         this.vectorIndexes = vectorIndexes;
         this.jsonSerializable.set(Constants.Properties.VECTOR_INDEXES,this.vectorIndexes);
         return this;

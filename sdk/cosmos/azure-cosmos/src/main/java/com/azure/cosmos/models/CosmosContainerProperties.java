@@ -353,7 +353,7 @@ public final class CosmosContainerProperties {
      *
      * @return the Vector Embedding Policy.
      */
-    public VectorEmbeddingPolicy getVectorEmbeddingPolicy() {
+    public CosmosVectorEmbeddingPolicy getVectorEmbeddingPolicy() {
         return this.documentCollection.getVectorEmbeddingPolicy();
     }
 
@@ -364,7 +364,7 @@ public final class CosmosContainerProperties {
      * @param value the Vector Embedding Policy.
      * @return the CosmosContainerProperties.
      */
-    public CosmosContainerProperties setVectorEmbeddingPolicy(VectorEmbeddingPolicy value) {
+    public CosmosContainerProperties setVectorEmbeddingPolicy(CosmosVectorEmbeddingPolicy value) {
         this.documentCollection.setVectorEmbeddingPolicy(value);
         return this;
     }

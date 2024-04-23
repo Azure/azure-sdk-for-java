@@ -8,7 +8,7 @@ import com.azure.cosmos.implementation.JsonSerializable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Embedding settings within {@link VectorEmbeddingPolicy}
+ * Embedding settings within {@link CosmosVectorEmbeddingPolicy}
  */
 public final class CosmosVectorEmbedding {
     @JsonProperty(Constants.Properties.PATH)
@@ -20,21 +20,6 @@ public final class CosmosVectorEmbedding {
     @JsonProperty(Constants.Properties.DISTANCE_FUNCTION)
     private String cosmosVectorDistanceFunction;
     private JsonSerializable jsonSerializable;
-
-    /**
-     * Constructor
-     *
-     * @param path path for the cosmosVectorEmbedding
-     * @param vectorDataType data type for the embedding
-     * @param dimensions dimensions for the embedding
-     * @param distanceFunction distanceFunction for the embedding
-     */
-    public CosmosVectorEmbedding(String path, String vectorDataType, Long dimensions, String distanceFunction) {
-        this.path = path;
-        this.cosmosVectorDataType = vectorDataType;
-        this.dimensions = dimensions;
-        this.cosmosVectorDistanceFunction = distanceFunction;
-    }
 
     /**
      * Constructor
@@ -68,8 +53,8 @@ public final class CosmosVectorEmbedding {
      *
      * @return cosmosVectorDataType
      */
-    public String getCosmosVectorDataType() {
-        return cosmosVectorDataType;
+    public CosmosVectorDataType getVectorDataType() {
+        return CosmosVectorDataType.valueOf(cosmosVectorDataType);
     }
 
     /**
@@ -78,8 +63,8 @@ public final class CosmosVectorEmbedding {
      * @param cosmosVectorDataType the data type for the cosmosVectorEmbedding
      * @return CosmosVectorEmbedding
      */
-    public CosmosVectorEmbedding setCosmosVectorDataType(String cosmosVectorDataType) {
-        this.cosmosVectorDataType = cosmosVectorDataType;
+    public CosmosVectorEmbedding setVectorDataType(CosmosVectorDataType cosmosVectorDataType) {
+        this.cosmosVectorDataType = cosmosVectorDataType.toString();
         return this;
     }
 
@@ -108,8 +93,8 @@ public final class CosmosVectorEmbedding {
      *
      * @return cosmosVectorDistanceFunction
      */
-    public String getCosmosVectorDistanceFunction() {
-        return cosmosVectorDistanceFunction;
+    public CosmosVectorDistanceFunction getVectorDistanceFunction() {
+        return CosmosVectorDistanceFunction.valueOf(cosmosVectorDistanceFunction);
     }
 
     /**
@@ -118,8 +103,8 @@ public final class CosmosVectorEmbedding {
      * @param cosmosVectorDistanceFunction the distanceFunction for the cosmosVectorEmbedding
      * @return CosmosVectorEmbedding
      */
-    public CosmosVectorEmbedding setCosmosVectorDistanceFunction(String cosmosVectorDistanceFunction) {
-        this.cosmosVectorDistanceFunction = cosmosVectorDistanceFunction;
+    public CosmosVectorEmbedding setVectorDistanceFunction(CosmosVectorDistanceFunction cosmosVectorDistanceFunction) {
+        this.cosmosVectorDistanceFunction = cosmosVectorDistanceFunction.toString();
         return this;
     }
 }

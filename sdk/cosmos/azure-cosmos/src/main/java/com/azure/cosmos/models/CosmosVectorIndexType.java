@@ -6,7 +6,7 @@ package com.azure.cosmos.models;
 /**
  * Defines the index type of vector index specification in the Azure Cosmos DB service.
  */
-public enum VectorIndexType {
+public enum CosmosVectorIndexType {
     /**
      * Represents a flat vector index type.
      */
@@ -25,7 +25,7 @@ public enum VectorIndexType {
 
     private final String overWireValue;
 
-    VectorIndexType(String overWireValue) {
+    CosmosVectorIndexType(String overWireValue) {
         this.overWireValue = overWireValue;
     }
 
