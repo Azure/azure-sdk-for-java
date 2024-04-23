@@ -4,7 +4,6 @@
 package com.azure.storage.common;
 
 import com.azure.core.exception.UnexpectedLengthException;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
@@ -13,7 +12,6 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
@@ -23,8 +21,6 @@ import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Utility methods for storage client libraries.

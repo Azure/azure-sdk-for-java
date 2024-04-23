@@ -15,6 +15,11 @@ public class MappedByteBufferInputStream extends InputStream {
 
     private final ByteBuffer buf;
 
+    /**
+     * Creates a new input stream from the given {@link ByteBuffer}.
+     *
+     * @param buf The buffer to wrap.
+     */
     public MappedByteBufferInputStream(ByteBuffer buf) {
         this.buf = buf;
     }

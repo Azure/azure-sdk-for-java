@@ -172,19 +172,6 @@ public class DirectoryApiTests extends FileShareTestBase {
     }
 
     @Test
-    public void test() {
-        try {
-            ShareDirectoryClient dirClient = shareClient.getDirectoryClient("test");
-            dirClient.create();
-            dirClient.deleteFile("dummyfile");
-        } catch (ShareStorageException e) {
-            assertEquals(404, e.getStatusCode());
-            System.out.println(e.getErrorCode().toString());
-        }
-//        assertEquals(201, primaryDirectoryClient.createWithResponse(null, null, null, null, null).getStatusCode());
-    }
-
-    @Test
     public void createDirectoryError() {
         String testShareName = generateShareName();
 

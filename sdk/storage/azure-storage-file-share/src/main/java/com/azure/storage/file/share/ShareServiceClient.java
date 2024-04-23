@@ -37,7 +37,6 @@ import com.azure.storage.file.share.models.ListSharesOptions;
 import com.azure.storage.file.share.models.ShareItem;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.options.ShareCreateOptions;
-import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -45,11 +44,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.function.BiFunction;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.THREAD_POOL;
@@ -253,54 +249,6 @@ public final class ShareServiceClient {
             };
 
         return new PagedIterable<>(pageSize -> retriever.apply(null, pageSize), retriever);
-//        Supplier<PagedIterable<ShareItem>> operation = () -> listShares(options, context);
-//        try {
-//            return timeout != null
-//                ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(), TimeUnit.MILLISECONDS) : operation.get();
-//        } catch (RuntimeException e) {
-//            throw LOGGER.logExceptionAsError(e);
-//        } catch (InterruptedException | ExecutionException | TimeoutException e) {
-//            throw LOGGER.logExceptionAsError(new RuntimeException(e));
-//        }
-    }
-
-    PagedIterable<ShareItem> listShares(ListSharesOptions options, Context context) {
-        Context finalContext = context == null ? Context.NONE : context;
-        final String prefix = (options != null) ? options.getPrefix() : null;
-        final Integer maxResultsPerPage = (options != null) ? options.getMaxResultsPerPage() : null;
-        List<ListSharesIncludeType> include = new ArrayList<>();
-
-        if (options != null) {
-            if (options.isIncludeDeleted()) {
-                include.add(ListSharesIncludeType.DELETED);
-            }
-
-            if (options.isIncludeMetadata()) {
-                include.add(ListSharesIncludeType.METADATA);
-            }
-
-            if (options.isIncludeSnapshots()) {
-                include.add(ListSharesIncludeType.SNAPSHOTS);
-            }
-        }
-
-        BiFunction<String, Integer, PagedResponse<ShareItem>> retriever =
-            (nextMarker, pageSize) -> {
-                PagedResponse<ShareItemInternal> response = this.azureFileStorageClient.getServices().listSharesSegmentSinglePage(
-                    prefix, nextMarker, pageSize == null ? maxResultsPerPage : pageSize, include, null, finalContext);
-
-                List<ShareItem> value = response.getValue() == null ? Collections.emptyList()
-                    : response.getValue().stream().map(ModelHelper::populateShareItem).collect(Collectors.toList());
-
-                return new PagedResponseBase<>(
-                    response.getRequest(),
-                    response.getStatusCode(),
-                    response.getHeaders(),
-                    value,
-                    response.getContinuationToken(),
-                    ModelHelper.transformListSharesHeaders(response.getHeaders()));
-            };
-        return new PagedIterable<>(pageSize -> retriever.apply(null, pageSize), retriever);
     }
 
     /**
@@ -365,7 +313,7 @@ public final class ShareServiceClient {
             this.azureFileStorageClient.getServices().getPropertiesWithResponse(null, finalContext);
 
         ResponseBase<ServicesGetPropertiesHeaders, ShareServiceProperties> response =
-            StorageImplUtils.sendRequest(operation, timeout);
+            StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
 
         return new SimpleResponse<>(response, response.getValue());
     }
@@ -499,7 +447,7 @@ public final class ShareServiceClient {
         Callable<ResponseBase<ServicesSetPropertiesHeaders, Void>> operation = () ->
             this.azureFileStorageClient.getServices().setPropertiesWithResponse(properties, null, finalContext);
 
-        return StorageImplUtils.sendRequest(operation, timeout);
+        return StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
     }
 
     /**
@@ -664,7 +612,7 @@ public final class ShareServiceClient {
         Callable<ResponseBase<SharesDeleteHeaders, Void>> operation = () -> this.azureFileStorageClient.getShares()
             .deleteWithResponse(shareName, snapshot, null, deleteSnapshots, null, finalContext);
 
-        return StorageImplUtils.sendRequest(operation, timeout);
+        return StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
     }
 
 
@@ -841,7 +789,7 @@ public final class ShareServiceClient {
         Callable<ResponseBase<SharesRestoreHeaders, Void>> operation = () -> this.azureFileStorageClient.getShares()
             .restoreWithResponse(deletedShareName, null, null, deletedShareName, deletedShareVersion, finalContext);
 
-        ResponseBase<SharesRestoreHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout);
+        ResponseBase<SharesRestoreHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
 
         return new SimpleResponse<>(response, getShareClient(deletedShareName));
     }

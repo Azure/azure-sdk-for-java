@@ -15,7 +15,6 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.file.share.FileConstants;
 import com.azure.storage.file.share.FileSmbProperties;
 import com.azure.storage.file.share.implementation.MessageConstants;
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFileDownloadHeadersConstructorProxy;
@@ -73,17 +72,11 @@ import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
 import com.azure.storage.file.share.models.ShareStatistics;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
-import reactor.core.Exceptions;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.nio.channels.AsynchronousFileChannel;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.OpenOption;
-import java.nio.file.Paths;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -431,12 +424,12 @@ public class ModelHelper {
         FilesUploadRangeHeaders headers = response.getDeserializedHeaders();
         String eTag = headers.getETag();
         OffsetDateTime lastModified = headers.getLastModified();
-        byte[] contentMD5;
-        try {
-            contentMD5 = headers.getContentMD5();
-        } catch (NullPointerException e) {
-            contentMD5 = null;
-        }
+        byte[] contentMD5 = headers.getContentMD5();
+//        try {
+//            contentMD5 = headers.getContentMD5();
+//        } catch (NullPointerException e) {
+//            contentMD5 = null;
+//        }
         Boolean isServerEncrypted = headers.isXMsRequestServerEncrypted();
         ShareFileUploadInfo shareFileUploadInfo = new ShareFileUploadInfo(eTag, lastModified, contentMD5,
             isServerEncrypted);
@@ -486,12 +479,12 @@ public class ModelHelper {
         FilesUploadRangeHeaders headers = response.getDeserializedHeaders();
         String eTag = headers.getETag();
         OffsetDateTime lastModified = headers.getLastModified();
-        byte[] contentMD5;
-        try {
-            contentMD5 = headers.getContentMD5();
-        } catch (NullPointerException e) {
-            contentMD5 = null;
-        }
+        byte[] contentMD5 = headers.getContentMD5();
+//        try {
+//            contentMD5 = headers.getContentMD5();
+//        } catch (NullPointerException e) {
+//            contentMD5 = null;
+//        }
         Boolean isServerEncrypted = headers.isXMsRequestServerEncrypted();
         ShareFileUploadInfo shareFileUploadInfo = new ShareFileUploadInfo(eTag, lastModified, contentMD5,
             isServerEncrypted);

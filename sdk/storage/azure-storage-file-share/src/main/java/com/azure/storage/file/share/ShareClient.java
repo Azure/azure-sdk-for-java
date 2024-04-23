@@ -17,7 +17,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
@@ -59,22 +58,13 @@ import com.azure.storage.file.share.options.ShareSetAccessPolicyOptions;
 import com.azure.storage.file.share.options.ShareSetPropertiesOptions;
 import com.azure.storage.file.share.options.ShareSetMetadataOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
-import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.function.Supplier;
-
-import static com.azure.storage.common.implementation.StorageImplUtils.THREAD_POOL;
-import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
 
 /**
  * This class provides a client that contains all the operations for interacting with a share in Azure Storage Share.
@@ -373,7 +363,7 @@ public class ShareClient {
             .createWithResponse(shareName, null, finalOptions.getMetadata(), finalOptions.getQuotaInGb(),
                 finalOptions.getAccessTier(), finalEnabledProtocol, finalOptions.getRootSquash(), finalContext);
 
-        ResponseBase<SharesCreateHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout);
+        ResponseBase<SharesCreateHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
 
         return ModelHelper.mapToShareInfoResponse(response);
     }
@@ -511,7 +501,7 @@ public class ShareClient {
         Callable<ResponseBase<SharesCreateSnapshotHeaders, Void>> operation = () ->
             this.azureFileStorageClient.getShares().createSnapshotWithResponse(shareName, null, metadata, finalContext);
 
-        ResponseBase<SharesCreateSnapshotHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout);
+        ResponseBase<SharesCreateSnapshotHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
         return ModelHelper.mapCreateSnapshotResponse(response);
     }
 
@@ -606,7 +596,7 @@ public class ShareClient {
             .deleteWithResponse(shareName, snapshot, null, ModelHelper.toDeleteSnapshotsOptionType(
                 finalOptions.getDeleteSnapshotsOptions()), requestConditions.getLeaseId(), finalContext);
 
-        ResponseBase<SharesDeleteHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout);
+        ResponseBase<SharesDeleteHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
 
         return new SimpleResponse<>(response, null);
 
@@ -775,7 +765,7 @@ public class ShareClient {
             this.azureFileStorageClient.getShares()
                 .getPropertiesWithResponse(shareName, snapshot, null, requestConditions.getLeaseId(), finalContext);
 
-        ResponseBase<SharesGetPropertiesHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout);
+        ResponseBase<SharesGetPropertiesHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
 
         return ModelHelper.mapGetPropertiesResponse(response);
     }
@@ -898,8 +888,8 @@ public class ShareClient {
             this.azureFileStorageClient.getShares().setPropertiesWithResponse(shareName, null, options.getQuotaInGb(),
                 options.getAccessTier(), requestConditions.getLeaseId(), options.getRootSquash(), finalContext);
 
-            ResponseBase<SharesSetPropertiesHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout);
-            return ModelHelper.mapToShareInfoResponse(response);
+        ResponseBase<SharesSetPropertiesHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
+        return ModelHelper.mapToShareInfoResponse(response);
     }
 
     /**
@@ -1017,7 +1007,7 @@ public class ShareClient {
             this.azureFileStorageClient.getShares().setMetadataWithResponse(shareName, null, options.getMetadata(),
                 requestConditions.getLeaseId(), finalContext);
 
-        ResponseBase<SharesSetMetadataHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout);
+        ResponseBase<SharesSetMetadataHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
 
         return ModelHelper.mapToShareInfoResponse(response);
 
@@ -1220,7 +1210,7 @@ public class ShareClient {
             this.azureFileStorageClient.getShares()
                 .setAccessPolicyWithResponse(shareName, null, requestConditions.getLeaseId(), permissions, finalContext);
 
-        ResponseBase<SharesSetAccessPolicyHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout);
+        ResponseBase<SharesSetAccessPolicyHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
 
         return ModelHelper.mapToShareInfoResponse(response);
 
@@ -1317,7 +1307,7 @@ public class ShareClient {
             this.azureFileStorageClient.getShares().getStatisticsWithResponse(shareName, null,
                 requestConditions.getLeaseId(), finalContext);
 
-        ResponseBase<SharesGetStatisticsHeaders, ShareStats> response = StorageImplUtils.sendRequest(operation, timeout);
+        ResponseBase<SharesGetStatisticsHeaders, ShareStats> response = StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
 
         return ModelHelper.mapGetStatisticsResponse(response);
 

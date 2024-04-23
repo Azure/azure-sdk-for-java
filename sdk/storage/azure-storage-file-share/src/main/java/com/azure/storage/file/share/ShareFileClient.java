@@ -28,7 +28,6 @@ import com.azure.core.util.polling.PollingContext;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.MappedByteBufferInputStream;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
@@ -40,7 +39,6 @@ import com.azure.storage.file.share.implementation.models.DestinationLeaseAccess
 import com.azure.storage.file.share.implementation.models.FilesAbortCopyHeaders;
 import com.azure.storage.file.share.implementation.models.FilesCreateHeaders;
 import com.azure.storage.file.share.implementation.models.FilesDeleteHeaders;
-import com.azure.storage.file.share.implementation.models.FilesDownloadHeaders;
 import com.azure.storage.file.share.implementation.models.FilesForceCloseHandlesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetRangeListHeaders;
@@ -59,14 +57,12 @@ import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.CopyStatusType;
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
-import com.azure.storage.file.share.models.DownloadRetryOptions;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.Range;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
-import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
 import com.azure.storage.file.share.models.ShareFileDownloadResponse;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileInfo;
@@ -88,16 +84,12 @@ import com.azure.storage.file.share.options.ShareFileSeekableByteChannelReadOpti
 import com.azure.storage.file.share.options.ShareFileSeekableByteChannelWriteOptions;
 import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
-import java.net.HttpURLConnection;
-import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.SeekableByteChannel;
@@ -120,7 +112,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.THREAD_POOL;
-import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
 import static java.nio.channels.FileChannel.MapMode.READ_ONLY;
 
 /**
@@ -502,7 +493,7 @@ public class ShareFileClient {
                 fileChangeTime, finalRequestConditions.getLeaseId(),
                 httpHeaders, finalContext);
 
-        ResponseBase<FilesCreateHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout);
+        ResponseBase<FilesCreateHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
 
         return ModelHelper.createFileInfoResponse(response);
     }
@@ -674,8 +665,8 @@ public class ShareFileClient {
         if (options.getFilePermission() == null || options.getPermissionCopyModeType() == PermissionCopyModeType.SOURCE) {
             if ((options.getFilePermission() != null || filePermissionKey != null)
                 && options.getPermissionCopyModeType() != PermissionCopyModeType.OVERRIDE) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("File permission and file permission " +
-                    "key can not be set when PermissionCopyModeType is source or null"));
+                throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("File permission and file permission key can not be set when PermissionCopyModeType is source or null"));
             }
         } else if (options.getPermissionCopyModeType() == PermissionCopyModeType.OVERRIDE) {
             // Checks that file permission and file permission key are valid
@@ -871,7 +862,7 @@ public class ShareFileClient {
             this.azureFileStorageClient.getFiles().abortCopyWithResponse(shareName, filePath, copyId, null,
                 finalRequestConditions.getLeaseId(), finalContext);
 
-        return StorageImplUtils.sendRequest(operation, timeout);
+        return StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
     }
 
     /**
@@ -1242,7 +1233,7 @@ public class ShareFileClient {
         Callable<ResponseBase<FilesDeleteHeaders, Void>> operation = () -> this.azureFileStorageClient.getFiles()
             .deleteWithResponse(shareName, filePath, null, finalRequestConditions.getLeaseId(), finalContext);
 
-        return StorageImplUtils.sendRequest(operation, timeout);
+        return StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
     }
 
     /**
@@ -1408,7 +1399,7 @@ public class ShareFileClient {
             this.azureFileStorageClient.getFiles().getPropertiesWithResponse(shareName, filePath, snapshot,
                 null, finalRequestConditions.getLeaseId(), finalContext);
 
-        ResponseBase<FilesGetPropertiesHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout);
+        ResponseBase<FilesGetPropertiesHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
 
         return ModelHelper.getPropertiesResponse(response);
 
@@ -1611,7 +1602,7 @@ public class ShareFileClient {
                 newFileSize, finalFilePermission, filePermissionKey, fileCreationTime, fileLastWriteTime,
                 fileChangeTime, finalRequestConditions.getLeaseId(), httpHeaders, finalContext);
 
-        ResponseBase<FilesSetHttpHeadersHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout);
+        ResponseBase<FilesSetHttpHeadersHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
 
         return ModelHelper.setPropertiesResponse(response);
 
@@ -1749,7 +1740,7 @@ public class ShareFileClient {
             this.azureFileStorageClient.getFiles().setMetadataWithResponse(shareName, filePath, null, metadata,
                 finalRequestConditions.getLeaseId(), finalContext);
 
-        ResponseBase<FilesSetMetadataHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout);
+        ResponseBase<FilesSetMetadataHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
         return ModelHelper.setMetadataResponse(response);
     }
 
@@ -2023,7 +2014,7 @@ public class ShareFileClient {
                 options.getLength(), null, null, requestConditions.getLeaseId(), options.getLastWrittenMode(),
                 binaryData, finalContext);
 
-        ResponseBase<FilesUploadRangeHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout);
+        ResponseBase<FilesUploadRangeHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
 
         return ModelHelper.uploadRangeHeadersToShareFileInfo(response);
 
@@ -2183,7 +2174,7 @@ public class ShareFileClient {
                     null, sourceRange.toString(), null, finalRequestConditions.getLeaseId(), sourceAuth,
                     options.getLastWrittenMode(), null, finalContext);
 
-        ResponseBase<FilesUploadRangeFromURLHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout);
+        ResponseBase<FilesUploadRangeFromURLHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
 
         return ModelHelper.mapUploadRangeFromUrlResponse(response);
     }
@@ -2290,7 +2281,7 @@ public class ShareFileClient {
                 ShareFileRangeWriteType.CLEAR, 0L, null, null, finalRequestConditions.getLeaseId(), null, null,
                 finalContext);
 
-        ResponseBase<FilesUploadRangeHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout);
+        ResponseBase<FilesUploadRangeHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
 
         return ModelHelper.transformUploadResponse(response);
 
@@ -2560,7 +2551,7 @@ public class ShareFileClient {
             this.azureFileStorageClient.getFiles().getRangeListWithResponse(shareName, filePath, snapshot,
                 options.getPreviousSnapshot(), null, rangeString, requestConditions.getLeaseId(), null, finalContext);
 
-        return StorageImplUtils.sendRequest(operation, timeout);
+        return StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
     }
 
     /**
@@ -2701,7 +2692,7 @@ public class ShareFileClient {
             this.azureFileStorageClient.getFiles().forceCloseHandlesWithResponse(shareName, filePath, handleId,
                 null, null, snapshot, finalContext);
 
-        ResponseBase<FilesForceCloseHandlesHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout);
+        ResponseBase<FilesForceCloseHandlesHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
 
         return new SimpleResponse<>(response,
             new CloseHandlesInfo(response.getDeserializedHeaders().getXMsNumberOfHandlesClosed(),
@@ -2873,7 +2864,7 @@ public class ShareFileClient {
                 options.getFilePermission(), filePermissionKey, options.getMetadata(), sourceConditions,
                 destinationConditions, smbInfo, headers, finalContext);
 
-        ResponseBase<FilesRenameHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout);
+        ResponseBase<FilesRenameHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
 
         return new SimpleResponse<>(response, destinationFileClient);
     }
