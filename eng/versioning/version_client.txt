@@ -173,7 +173,7 @@ com.azure:azure-perf-test-parent;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-quantum-jobs;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-search-documents;11.6.3;11.6.4
 com.azure:azure-search-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-security-attestation;1.1.22;1.2.0-beta.1
+com.azure:azure-security-attestation;1.1.22;1.1.23
 com.azure:azure-security-confidentialledger;1.0.18;1.0.19
 com.azure:azure-security-keyvault-administration;4.5.1;4.5.2
 com.azure:azure-security-keyvault-certificates;4.6.1;4.7.0-beta.1
