@@ -29,18 +29,6 @@ public final class AnswerCallRequestInternal {
     private String operationContext;
 
     /*
-     * Media Streaming Configuration.
-     */
-    @JsonProperty(value = "mediaStreamingConfiguration")
-    private MediaStreamingConfigurationInternal mediaStreamingConfiguration;
-
-    /*
-     * Live Transcription Configuration.
-     */
-    @JsonProperty(value = "transcriptionConfiguration")
-    private TranscriptionConfigurationInternal transcriptionConfiguration;
-
-    /*
      * AI options for the call.
      */
     @JsonProperty(value = "callIntelligenceOptions")
@@ -52,14 +40,8 @@ public final class AnswerCallRequestInternal {
     @JsonProperty(value = "answeredBy")
     private CommunicationUserIdentifierModel answeredBy;
 
-    /*
-     * The source caller Id, a phone number, that's will be used when inviting
-     * a pstn target.
-     * Required only when transferring call to PSTN, if this is an incoming
-     * voip call.
-     */
-    @JsonProperty(value = "sourceCallerIdNumber")
-    private PhoneNumberIdentifierModel sourceCallerIdNumber;
+    /** Creates an instance of AnswerCallRequestInternal class. */
+    public AnswerCallRequestInternal() {}
 
     /**
      * Get the incomingCallContext property: The context associated with the call.
@@ -122,48 +104,6 @@ public final class AnswerCallRequestInternal {
     }
 
     /**
-     * Get the mediaStreamingConfiguration property: Media Streaming Configuration.
-     *
-     * @return the mediaStreamingConfiguration value.
-     */
-    public MediaStreamingConfigurationInternal getMediaStreamingConfiguration() {
-        return this.mediaStreamingConfiguration;
-    }
-
-    /**
-     * Set the mediaStreamingConfiguration property: Media Streaming Configuration.
-     *
-     * @param mediaStreamingConfiguration the mediaStreamingConfiguration value to set.
-     * @return the AnswerCallRequestInternal object itself.
-     */
-    public AnswerCallRequestInternal setMediaStreamingConfiguration(
-            MediaStreamingConfigurationInternal mediaStreamingConfiguration) {
-        this.mediaStreamingConfiguration = mediaStreamingConfiguration;
-        return this;
-    }
-
-    /**
-     * Get the transcriptionConfiguration property: Live Transcription Configuration.
-     *
-     * @return the transcriptionConfiguration value.
-     */
-    public TranscriptionConfigurationInternal getTranscriptionConfiguration() {
-        return this.transcriptionConfiguration;
-    }
-
-    /**
-     * Set the transcriptionConfiguration property: Live Transcription Configuration.
-     *
-     * @param transcriptionConfiguration the transcriptionConfiguration value to set.
-     * @return the AnswerCallRequestInternal object itself.
-     */
-    public AnswerCallRequestInternal setTranscriptionConfiguration(
-            TranscriptionConfigurationInternal transcriptionConfiguration) {
-        this.transcriptionConfiguration = transcriptionConfiguration;
-        return this;
-    }
-
-    /**
      * Get the callIntelligenceOptions property: AI options for the call.
      *
      * @return the callIntelligenceOptions value.
@@ -201,28 +141,6 @@ public final class AnswerCallRequestInternal {
      */
     public AnswerCallRequestInternal setAnsweredBy(CommunicationUserIdentifierModel answeredBy) {
         this.answeredBy = answeredBy;
-        return this;
-    }
-
-    /**
-     * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that's will be used when inviting a
-     * pstn target. Required only when transferring call to PSTN, if this is an incoming voip call.
-     *
-     * @return the sourceCallerIdNumber value.
-     */
-    public PhoneNumberIdentifierModel getSourceCallerIdNumber() {
-        return this.sourceCallerIdNumber;
-    }
-
-    /**
-     * Set the sourceCallerIdNumber property: The source caller Id, a phone number, that's will be used when inviting a
-     * pstn target. Required only when transferring call to PSTN, if this is an incoming voip call.
-     *
-     * @param sourceCallerIdNumber the sourceCallerIdNumber value to set.
-     * @return the AnswerCallRequestInternal object itself.
-     */
-    public AnswerCallRequestInternal setSourceCallerIdNumber(PhoneNumberIdentifierModel sourceCallerIdNumber) {
-        this.sourceCallerIdNumber = sourceCallerIdNumber;
         return this;
     }
 }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RecordingFormatInternal. */
+/** The format type of call recording. */
 public final class RecordingFormatInternal extends ExpandableStringEnum<RecordingFormatInternal> {
     /** Static value wav for RecordingFormatInternal. */
     public static final RecordingFormatInternal WAV = fromString("wav");
@@ -18,6 +18,14 @@ public final class RecordingFormatInternal extends ExpandableStringEnum<Recordin
 
     /** Static value mp4 for RecordingFormatInternal. */
     public static final RecordingFormatInternal MP4 = fromString("mp4");
+
+    /**
+     * Creates a new instance of RecordingFormatInternal value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RecordingFormatInternal() {}
 
     /**
      * Creates or finds a RecordingFormatInternal from its string representation.
@@ -30,7 +38,11 @@ public final class RecordingFormatInternal extends ExpandableStringEnum<Recordin
         return fromString(name, RecordingFormatInternal.class);
     }
 
-    /** @return known RecordingFormatInternal values. */
+    /**
+     * Gets known RecordingFormatInternal values.
+     *
+     * @return known RecordingFormatInternal values.
+     */
     public static Collection<RecordingFormatInternal> values() {
         return values(RecordingFormatInternal.class);
     }
