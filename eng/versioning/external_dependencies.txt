@@ -9,7 +9,6 @@
 # groupId:artifactId;dependency-version
 ch.qos.logback:logback-classic;1.3.12
 com.azure.tools:azure-autorest-customization;1.0.0-beta.8
-com.azure.tools:azure-callautomation-autorest-customization;1.0.0-beta.1
 com.fasterxml.jackson.core:jackson-annotations;2.13.5
 com.fasterxml.jackson.core:jackson-core;2.13.5
 com.fasterxml.jackson.core:jackson-databind;2.13.5
