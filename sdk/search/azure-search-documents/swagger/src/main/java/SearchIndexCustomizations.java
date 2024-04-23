@@ -79,6 +79,8 @@ public class SearchIndexCustomizations extends Customization {
         customizeVectorQuery(packageCustomization.getClass("VectorQuery"));
         customizeVectorizedQuery(packageCustomization.getClass("VectorizedQuery"));
         customizeVectorizableTextQuery(packageCustomization.getClass("VectorizableTextQuery"));
+        customizeVectorizableImageUrlQuery(packageCustomization.getClass("VectorizableImageUrlQuery"));
+        customizeVectorizableImageBinaryQuery(packageCustomization.getClass("VectorizableImageBinaryQuery"));
 
         packageCustomization.getClass("QueryAnswerResult").removeMethod("setAdditionalProperties");
         packageCustomization.getClass("QueryCaptionResult").removeMethod("setAdditionalProperties");
@@ -244,7 +246,11 @@ private void customizeVectorQuery(ClassCustomization classCustomization) {
     }
 
     private void customizeVectorizableImageUrlQuery(ClassCustomization classCustomization) {
-        classCustomization.getMethod("setFields").removeAnnotation("Override");
+        classCustomization.getMethod("setFields").removeAnnotation("@Override");
+    }
+
+    private void customizeVectorizableImageBinaryQuery(ClassCustomization classCustomization) {
+        classCustomization.getMethod("setFields").removeAnnotation("@Override");
     }
 
     private static void customizeAst(ClassCustomization classCustomization, Consumer<ClassOrInterfaceDeclaration> consumer) {
