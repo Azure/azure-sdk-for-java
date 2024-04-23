@@ -12,7 +12,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Random;
 import java.util.stream.Stream;
 
 import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
@@ -32,7 +32,7 @@ public class AvroParserStateTests {
     public void write(int size) {
         AvroParserState state = new AvroParserState();
         byte[] b = new byte[size];
-        ThreadLocalRandom.current().nextBytes(b);
+        new Random().nextBytes(b);
         state.write(ByteBuffer.wrap(b));
 
         assertEquals(size, state.getSize());

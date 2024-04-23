@@ -23,6 +23,16 @@ public final class SolutionType extends ExpandableStringEnum<SolutionType> {
     public static final SolutionType SOLUTIONS = fromString("Solutions");
 
     /**
+     * Static value Troubleshooters for SolutionType.
+     */
+    public static final SolutionType TROUBLESHOOTERS = fromString("Troubleshooters");
+
+    /**
+     * Static value SelfHelp for SolutionType.
+     */
+    public static final SolutionType SELF_HELP = fromString("SelfHelp");
+
+    /**
      * Creates a new instance of SolutionType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

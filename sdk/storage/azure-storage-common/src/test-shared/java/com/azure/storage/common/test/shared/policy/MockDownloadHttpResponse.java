@@ -3,7 +3,6 @@
 
 package com.azure.storage.common.test.shared.policy;
 
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
 import reactor.core.publisher.Flux;
@@ -38,11 +37,6 @@ public class MockDownloadHttpResponse extends HttpResponse {
     @Override
     public String getHeaderValue(String s) {
         return headers.getValue(s);
-    }
-
-    @Override
-    public String getHeaderValue(HttpHeaderName headerName) {
-        return headers.getValue(headerName);
     }
 
     @Override

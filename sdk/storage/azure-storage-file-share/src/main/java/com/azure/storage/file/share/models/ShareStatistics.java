@@ -33,8 +33,6 @@ public final class ShareStatistics {
     }
 
     /**
-     * Get the size in GB of the Share.
-     *
      * @return the size in GB of the Share
      */
     public int getShareUsageInGB() {
@@ -42,8 +40,6 @@ public final class ShareStatistics {
     }
 
     /**
-     * Get the size in bytes of the Share.
-     *
      * @return the size in bytes of the Share
      */
     public long getShareUsageInBytes() {

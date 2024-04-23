@@ -5,50 +5,57 @@
 package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
-import com.azure.xml.XmlReader;
-import com.azure.xml.XmlSerializable;
-import com.azure.xml.XmlToken;
-import com.azure.xml.XmlWriter;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
 
-/**
- * Storage service properties.
- */
+/** Storage service properties. */
+@JacksonXmlRootElement(localName = "StorageServiceProperties")
 @Fluent
-public final class ShareServiceProperties implements XmlSerializable<ShareServiceProperties> {
+public final class ShareServiceProperties {
     /*
      * A summary of request statistics grouped by API in hourly aggregates for files.
      */
+    @JsonProperty(value = "HourMetrics")
     private ShareMetrics hourMetrics;
 
     /*
      * A summary of request statistics grouped by API in minute aggregates for files.
      */
+    @JsonProperty(value = "MinuteMetrics")
     private ShareMetrics minuteMetrics;
+
+    private static final class CorsWrapper {
+        @JacksonXmlProperty(localName = "CorsRule")
+        private final List<ShareCorsRule> items;
+
+        @JsonCreator
+        private CorsWrapper(@JacksonXmlProperty(localName = "CorsRule") List<ShareCorsRule> items) {
+            this.items = items;
+        }
+    }
 
     /*
      * The set of CORS rules.
      */
-    private List<ShareCorsRule> cors;
+    @JsonProperty(value = "Cors")
+    private CorsWrapper cors;
 
     /*
      * Protocol settings
      */
+    @JsonProperty(value = "ProtocolSettings")
     private ShareProtocolSettings protocol;
 
-    /**
-     * Creates an instance of ShareServiceProperties class.
-     */
-    public ShareServiceProperties() {
-    }
+    /** Creates an instance of ShareServiceProperties class. */
+    public ShareServiceProperties() {}
 
     /**
      * Get the hourMetrics property: A summary of request statistics grouped by API in hourly aggregates for files.
-     * 
+     *
      * @return the hourMetrics value.
      */
     public ShareMetrics getHourMetrics() {
@@ -57,7 +64,7 @@ public final class ShareServiceProperties implements XmlSerializable<ShareServic
 
     /**
      * Set the hourMetrics property: A summary of request statistics grouped by API in hourly aggregates for files.
-     * 
+     *
      * @param hourMetrics the hourMetrics value to set.
      * @return the ShareServiceProperties object itself.
      */
@@ -68,7 +75,7 @@ public final class ShareServiceProperties implements XmlSerializable<ShareServic
 
     /**
      * Get the minuteMetrics property: A summary of request statistics grouped by API in minute aggregates for files.
-     * 
+     *
      * @return the minuteMetrics value.
      */
     public ShareMetrics getMinuteMetrics() {
@@ -77,7 +84,7 @@ public final class ShareServiceProperties implements XmlSerializable<ShareServic
 
     /**
      * Set the minuteMetrics property: A summary of request statistics grouped by API in minute aggregates for files.
-     * 
+     *
      * @param minuteMetrics the minuteMetrics value to set.
      * @return the ShareServiceProperties object itself.
      */
@@ -88,30 +95,30 @@ public final class ShareServiceProperties implements XmlSerializable<ShareServic
 
     /**
      * Get the cors property: The set of CORS rules.
-     * 
+     *
      * @return the cors value.
      */
     public List<ShareCorsRule> getCors() {
         if (this.cors == null) {
-            this.cors = new ArrayList<>();
+            this.cors = new CorsWrapper(new ArrayList<ShareCorsRule>());
         }
-        return this.cors;
+        return this.cors.items;
     }
 
     /**
      * Set the cors property: The set of CORS rules.
-     * 
+     *
      * @param cors the cors value to set.
      * @return the ShareServiceProperties object itself.
      */
     public ShareServiceProperties setCors(List<ShareCorsRule> cors) {
-        this.cors = cors;
+        this.cors = new CorsWrapper(cors);
         return this;
     }
 
     /**
      * Get the protocol property: Protocol settings.
-     * 
+     *
      * @return the protocol value.
      */
     public ShareProtocolSettings getProtocol() {
@@ -120,93 +127,12 @@ public final class ShareServiceProperties implements XmlSerializable<ShareServic
 
     /**
      * Set the protocol property: Protocol settings.
-     * 
+     *
      * @param protocol the protocol value to set.
      * @return the ShareServiceProperties object itself.
      */
     public ShareServiceProperties setProtocol(ShareProtocolSettings protocol) {
         this.protocol = protocol;
         return this;
-    }
-
-    @Override
-    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        return toXml(xmlWriter, null);
-    }
-
-    @Override
-    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "StorageServiceProperties" : rootElementName;
-        xmlWriter.writeStartElement(rootElementName);
-        xmlWriter.writeXml(this.hourMetrics, "HourMetrics");
-        xmlWriter.writeXml(this.minuteMetrics, "MinuteMetrics");
-        if (this.cors != null) {
-            xmlWriter.writeStartElement("Cors");
-            for (ShareCorsRule element : this.cors) {
-                xmlWriter.writeXml(element, "CorsRule");
-            }
-            xmlWriter.writeEndElement();
-        }
-        xmlWriter.writeXml(this.protocol, "ProtocolSettings");
-        return xmlWriter.writeEndElement();
-    }
-
-    /**
-     * Reads an instance of ShareServiceProperties from the XmlReader.
-     * 
-     * @param xmlReader The XmlReader being read.
-     * @return An instance of ShareServiceProperties if the XmlReader was pointing to an instance of it, or null if it
-     * was pointing to XML null.
-     * @throws XMLStreamException If an error occurs while reading the ShareServiceProperties.
-     */
-    public static ShareServiceProperties fromXml(XmlReader xmlReader) throws XMLStreamException {
-        return fromXml(xmlReader, null);
-    }
-
-    /**
-     * Reads an instance of ShareServiceProperties from the XmlReader.
-     * 
-     * @param xmlReader The XmlReader being read.
-     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
-     * cases where the model can deserialize from different root element names.
-     * @return An instance of ShareServiceProperties if the XmlReader was pointing to an instance of it, or null if it
-     * was pointing to XML null.
-     * @throws XMLStreamException If an error occurs while reading the ShareServiceProperties.
-     */
-    public static ShareServiceProperties fromXml(XmlReader xmlReader, String rootElementName)
-        throws XMLStreamException {
-        String finalRootElementName
-            = CoreUtils.isNullOrEmpty(rootElementName) ? "StorageServiceProperties" : rootElementName;
-        return xmlReader.readObject(finalRootElementName, reader -> {
-            ShareServiceProperties deserializedShareServiceProperties = new ShareServiceProperties();
-            while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                QName elementName = reader.getElementName();
-
-                if ("HourMetrics".equals(elementName.getLocalPart())) {
-                    deserializedShareServiceProperties.hourMetrics = ShareMetrics.fromXml(reader, "HourMetrics");
-                } else if ("MinuteMetrics".equals(elementName.getLocalPart())) {
-                    deserializedShareServiceProperties.minuteMetrics = ShareMetrics.fromXml(reader, "MinuteMetrics");
-                } else if ("Cors".equals(elementName.getLocalPart())) {
-                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                        elementName = reader.getElementName();
-                        if ("CorsRule".equals(elementName.getLocalPart())) {
-                            if (deserializedShareServiceProperties.cors == null) {
-                                deserializedShareServiceProperties.cors = new ArrayList<>();
-                            }
-                            deserializedShareServiceProperties.cors.add(ShareCorsRule.fromXml(reader, "CorsRule"));
-                        } else {
-                            reader.skipElement();
-                        }
-                    }
-                } else if ("ProtocolSettings".equals(elementName.getLocalPart())) {
-                    deserializedShareServiceProperties.protocol
-                        = ShareProtocolSettings.fromXml(reader, "ProtocolSettings");
-                } else {
-                    reader.skipElement();
-                }
-            }
-
-            return deserializedShareServiceProperties;
-        });
     }
 }

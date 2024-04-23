@@ -5,7 +5,7 @@ package com.azure.storage.common.test.shared;
 
 import com.azure.storage.common.StorageSharedKeyCredential;
 
-public final class TestAccount {
+public class TestAccount {
     private final String name;
     private final String key;
     private final String connectionString;
@@ -15,8 +15,9 @@ public final class TestAccount {
     private final String queueEndpoint;
     private final String fileEndpoint;
 
-    public TestAccount(String name, String key, String connectionString, String blobEndpoint,
-        String blobEndpointSecondary, String dataLakeEndpoint, String queueEndpoint, String fileEndpoint) {
+    public TestAccount(String name, String key, String connectionString,
+                       String blobEndpoint, String blobEndpointSecondary,
+                       String dataLakeEndpoint, String queueEndpoint, String fileEndpoint) {
         this.name = name;
         this.key = key;
         this.connectionString = connectionString;

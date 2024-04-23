@@ -5,73 +5,27 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** The AnalyzeTextTask model. */
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "kind",
+        defaultImpl = AnalyzeTextTask.class)
+@JsonTypeName("AnalyzeTextTask")
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "EntityLinking", value = AnalyzeTextEntityLinkingInput.class),
+    @JsonSubTypes.Type(name = "EntityRecognition", value = AnalyzeTextEntityRecognitionInput.class),
+    @JsonSubTypes.Type(name = "KeyPhraseExtraction", value = AnalyzeTextKeyPhraseExtractionInput.class),
+    @JsonSubTypes.Type(name = "PiiEntityRecognition", value = AnalyzeTextPiiEntitiesRecognitionInput.class),
+    @JsonSubTypes.Type(name = "LanguageDetection", value = AnalyzeTextLanguageDetectionInput.class),
+    @JsonSubTypes.Type(name = "SentimentAnalysis", value = AnalyzeTextSentimentAnalysisInput.class)
+})
 @Immutable
-public class AnalyzeTextTask implements JsonSerializable<AnalyzeTextTask> {
+public class AnalyzeTextTask {
     /** Creates an instance of AnalyzeTextTask class. */
     public AnalyzeTextTask() {}
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AnalyzeTextTask from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AnalyzeTextTask if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the AnalyzeTextTask.
-     */
-    public static AnalyzeTextTask fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    String discriminatorValue = null;
-                    JsonReader readerToUse = reader.bufferObject();
-
-                    readerToUse.nextToken(); // Prepare for reading
-                    while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = readerToUse.getFieldName();
-                        readerToUse.nextToken();
-                        if ("kind".equals(fieldName)) {
-                            discriminatorValue = readerToUse.getString();
-                            break;
-                        } else {
-                            readerToUse.skipChildren();
-                        }
-                    }
-
-                    if (discriminatorValue != null) {
-                        readerToUse = readerToUse.reset();
-                    }
-                    // Use the discriminator value to determine which subtype should be deserialized.
-                    if ("EntityLinking".equals(discriminatorValue)) {
-                        return AnalyzeTextEntityLinkingInput.fromJson(readerToUse);
-                    } else if ("EntityRecognition".equals(discriminatorValue)) {
-                        return AnalyzeTextEntityRecognitionInput.fromJson(readerToUse);
-                    } else if ("KeyPhraseExtraction".equals(discriminatorValue)) {
-                        return AnalyzeTextKeyPhraseExtractionInput.fromJson(readerToUse);
-                    } else if ("PiiEntityRecognition".equals(discriminatorValue)) {
-                        return AnalyzeTextPiiEntitiesRecognitionInput.fromJson(readerToUse);
-                    } else if ("LanguageDetection".equals(discriminatorValue)) {
-                        return AnalyzeTextLanguageDetectionInput.fromJson(readerToUse);
-                    } else if ("SentimentAnalysis".equals(discriminatorValue)) {
-                        return AnalyzeTextSentimentAnalysisInput.fromJson(readerToUse);
-                    } else {
-                        throw new IllegalStateException(
-                                "Discriminator field 'kind' didn't match one of the expected values 'EntityLinking', 'EntityRecognition', 'KeyPhraseExtraction', 'PiiEntityRecognition', 'LanguageDetection', or 'SentimentAnalysis'. It was: '"
-                                        + discriminatorValue
-                                        + "'.");
-                    }
-                });
-    }
 }

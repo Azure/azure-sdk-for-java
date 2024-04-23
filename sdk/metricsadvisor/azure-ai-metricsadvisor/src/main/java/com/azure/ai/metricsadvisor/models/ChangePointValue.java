@@ -5,49 +5,42 @@
 package com.azure.ai.metricsadvisor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for ChangePointValue.
- */
+/** Defines values for ChangePointValue. */
 public final class ChangePointValue extends ExpandableStringEnum<ChangePointValue> {
-    /**
-     * Static value AutoDetect for ChangePointValue.
-     */
+    /** Static value AutoDetect for ChangePointValue. */
     public static final ChangePointValue AUTO_DETECT = fromString("AutoDetect");
 
-    /**
-     * Static value ChangePoint for ChangePointValue.
-     */
+    /** Static value ChangePoint for ChangePointValue. */
     public static final ChangePointValue CHANGE_POINT = fromString("ChangePoint");
 
-    /**
-     * Static value NotChangePoint for ChangePointValue.
-     */
+    /** Static value NotChangePoint for ChangePointValue. */
     public static final ChangePointValue NOT_CHANGE_POINT = fromString("NotChangePoint");
 
     /**
      * Creates a new instance of ChangePointValue value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public ChangePointValue() {
-    }
+    public ChangePointValue() {}
 
     /**
      * Creates or finds a ChangePointValue from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding ChangePointValue.
      */
+    @JsonCreator
     public static ChangePointValue fromString(String name) {
         return fromString(name, ChangePointValue.class);
     }
 
     /**
      * Gets known ChangePointValue values.
-     * 
+     *
      * @return known ChangePointValue values.
      */
     public static Collection<ChangePointValue> values() {

@@ -5,23 +5,21 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The context of the summary. */
 @Fluent
-public final class SummaryContext implements JsonSerializable<SummaryContext> {
+public final class SummaryContext {
     /*
      * Start position for the context. Use of different 'stringIndexType' values can affect the offset returned.
      */
+    @JsonProperty(value = "offset", required = true)
     private int offset;
 
     /*
      * The length of the context. Use of different 'stringIndexType' values can affect the length returned.
      */
+    @JsonProperty(value = "length", required = true)
     private int length;
 
     /** Creates an instance of SummaryContext class. */
@@ -69,43 +67,5 @@ public final class SummaryContext implements JsonSerializable<SummaryContext> {
     public SummaryContext setLength(int length) {
         this.length = length;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("offset", this.offset);
-        jsonWriter.writeIntField("length", this.length);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of SummaryContext from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of SummaryContext if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SummaryContext.
-     */
-    public static SummaryContext fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    SummaryContext deserializedSummaryContext = new SummaryContext();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("offset".equals(fieldName)) {
-                            deserializedSummaryContext.offset = reader.getInt();
-                        } else if ("length".equals(fieldName)) {
-                            deserializedSummaryContext.length = reader.getInt();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedSummaryContext;
-                });
     }
 }

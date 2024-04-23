@@ -5,11 +5,7 @@
 package com.azure.monitor.query.implementation.metricsbatch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Error response
@@ -18,10 +14,11 @@ import java.io.IOException;
  * follows the OData error response format.).
  */
 @Fluent
-public final class ErrorResponse implements JsonSerializable<ErrorResponse> {
+public final class ErrorResponse {
     /*
      * The error object.
      */
+    @JsonProperty(value = "error")
     private ErrorDetail error;
 
     /**
@@ -48,38 +45,5 @@ public final class ErrorResponse implements JsonSerializable<ErrorResponse> {
     public ErrorResponse setError(ErrorDetail error) {
         this.error = error;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("error", this.error);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ErrorResponse from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ErrorResponse if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ErrorResponse.
-     */
-    public static ErrorResponse fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ErrorResponse deserializedErrorResponse = new ErrorResponse();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("error".equals(fieldName)) {
-                    deserializedErrorResponse.error = ErrorDetail.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedErrorResponse;
-        });
     }
 }

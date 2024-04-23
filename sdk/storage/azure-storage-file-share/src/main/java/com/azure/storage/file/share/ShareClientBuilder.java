@@ -35,6 +35,7 @@ import com.azure.storage.common.implementation.credentials.CredentialValidator;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.sas.CommonSasQueryParameters;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.share.implementation.AzureFileStorageImplBuilder;
 import com.azure.storage.file.share.implementation.util.BuilderHelper;
 import com.azure.storage.file.share.models.ShareAudience;
 import com.azure.storage.file.share.models.ShareTokenIntent;
@@ -208,8 +209,14 @@ public class ShareClientBuilder implements
             endpoint, retryOptions, coreRetryOptions, logOptions,
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, audience, LOGGER);
 
-        AzureFileStorageImpl azureFileStorage = new AzureFileStorageImpl(pipeline, serviceVersion.getVersion(),
-            shareTokenIntent, endpoint, allowTrailingDot, allowSourceTrailingDot);
+        AzureFileStorageImpl azureFileStorage = new AzureFileStorageImplBuilder()
+            .url(endpoint)
+            .pipeline(pipeline)
+            .version(serviceVersion.getVersion())
+            .fileRequestIntent(shareTokenIntent)
+            .allowSourceTrailingDot(allowSourceTrailingDot)
+            .allowTrailingDot(allowTrailingDot)
+            .buildClient();
 
         return new ShareAsyncClient(azureFileStorage, shareName, snapshot, accountName, serviceVersion,
             azureSasCredentialFromSasToken != null ? azureSasCredentialFromSasToken : azureSasCredential);

@@ -12,18 +12,11 @@ import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
  */
 @Fluent
 public class ShareDeleteOptions {
+
     private ShareSnapshotsDeleteOptionType deleteSnapshotsOptions;
     private ShareRequestConditions requestConditions;
 
     /**
-     * Creates a new instance of {@link ShareDeleteOptions}.
-     */
-    public ShareDeleteOptions() {
-    }
-
-    /**
-     * Gets the {@link ShareRequestConditions}.
-     *
      * @return {@link ShareRequestConditions}.
      */
     public ShareRequestConditions getRequestConditions() {
@@ -31,8 +24,6 @@ public class ShareDeleteOptions {
     }
 
     /**
-     * Sets the {@link ShareRequestConditions}.
-     *
      * @param requestConditions {@link ShareRequestConditions}.
      * @return The updated options.
      */
@@ -42,8 +33,6 @@ public class ShareDeleteOptions {
     }
 
     /**
-     * Gets the {@link ShareSnapshotsDeleteOptionType}.
-     *
      * @return {@link ShareSnapshotsDeleteOptionType}
      */
     public ShareSnapshotsDeleteOptionType getDeleteSnapshotsOptions() {
@@ -51,8 +40,6 @@ public class ShareDeleteOptions {
     }
 
     /**
-     * Sets the {@link ShareSnapshotsDeleteOptionType}.
-     *
      * @param deleteSnapshotsOptions {@link ShareSnapshotsDeleteOptionType}
      * @return The updated options.
      */

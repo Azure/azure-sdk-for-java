@@ -5,8 +5,8 @@ package com.azure.storage.common.sas;
 
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
-import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.TimeAndFormat;
+import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -18,32 +18,59 @@ import java.util.function.Function;
  * safety.
  */
 public class CommonSasQueryParameters {
+
     private final String version;
+
     private final SasProtocol protocol;
+
     private final TimeAndFormat startTime;
+
     private final TimeAndFormat expiryTime;
+
     private final SasIpRange sasIpRange;
+
     private final String permissions;
+
     private final String signature;
+
     private final String services;
+
     private final String resourceTypes;
+
     private final String identifier;
+
     private final String keyObjectId;
+
     private final String keyTenantId;
+
     private final TimeAndFormat keyStart;
+
     private final TimeAndFormat keyExpiry;
+
     private final String keyService;
+
     private final String keyVersion;
+
     private final String resource;
+
     private final String cacheControl;
+
     private final String contentDisposition;
+
     private final String contentEncoding;
+
     private final String contentLanguage;
+
     private final String contentType;
+
     private final Integer directoryDepth;
+
     private final String authorizedObjectId;
+
     private final String unauthorizedObjectId;
+
     private final String correlationId;
+
     private final String encryptionScope;
 
     /**
@@ -115,7 +142,7 @@ public class CommonSasQueryParameters {
      *
      * @param parameters A {@code Map} of parameters to values to search.
      * @param name The name of parameter to find.
-     * @param remove Whether to remove the parameter from the map.
+     * @param remove Whether or not to remove the parameter from the map.
      * @return A String representing the query parameter
      */
     private String getQueryParameter(Map<String, String[]> parameters, String name, boolean remove) {
@@ -128,12 +155,12 @@ public class CommonSasQueryParameters {
      * @param <T> The object type.
      * @param parameters A {@code Map} of parameters to values to search.
      * @param name The name of parameter to find.
-     * @param remove Whether to remove the parameter from the map.
+     * @param remove Whether or not to remove the parameter from the map.
      * @param converter Function that transforms the value to a String.
      * @return The object
      */
-    private <T> T getQueryParameter(Map<String, String[]> parameters, String name, boolean remove,
-        Function<String, T> converter) {
+    private <T> T getQueryParameter(Map<String, String[]> parameters, String name, boolean remove, Function<String,
+        T> converter) {
         String[] parameterValue = parameters.get(name);
         if (parameterValue == null) {
             return null;
@@ -192,7 +219,8 @@ public class CommonSasQueryParameters {
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_TYPE, this.contentType);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_PREAUTHORIZED_AGENT_OBJECT_ID,
             this.authorizedObjectId);
-        SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_AGENT_OBJECT_ID, this.unauthorizedObjectId);
+        SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_AGENT_OBJECT_ID,
+            this.unauthorizedObjectId);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CORRELATION_ID, this.correlationId);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_DIRECTORY_DEPTH, this.directoryDepth);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_ENCRYPTION_SCOPE, this.encryptionScope);
@@ -201,20 +229,14 @@ public class CommonSasQueryParameters {
     }
 
     /**
-     * Gets the signed identifier.
-     * <p>
-     * Please see <a href="https://docs.microsoft.com/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     * @return The signed identifier. Please see <a href="https://docs.microsoft.com/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information.
-     *
-     * @return The signed identifier.
      */
     public String getIdentifier() {
         return identifier;
     }
 
     /**
-     * Gets the storage resource.
-     *
      * @return The storage resource.
      */
     public String getResource() {
@@ -222,8 +244,6 @@ public class CommonSasQueryParameters {
     }
 
     /**
-     * Gets the Cache-Control header value when a client accesses the resource with this sas token.
-     *
      * @return The Cache-Control header value when a client accesses the resource with this sas token.
      */
     public String getCacheControl() {
@@ -231,8 +251,6 @@ public class CommonSasQueryParameters {
     }
 
     /**
-     * Gets the Content-Disposition header value when a client accesses the resource with this sas token.
-     *
      * @return The Content-Disposition header value when a client accesses the resource with this sas token.
      */
     public String getContentDisposition() {
@@ -240,8 +258,6 @@ public class CommonSasQueryParameters {
     }
 
     /**
-     * Gets the Content-Encoding header value when a client accesses the resource with this sas token.
-     *
      * @return The Content-Encoding header value when a client accesses the resource with this sas token.
      */
     public String getContentEncoding() {
@@ -249,8 +265,6 @@ public class CommonSasQueryParameters {
     }
 
     /**
-     * Gets the Content-Language header value when a client accesses the resource with this sas token.
-     *
      * @return The Content-Language header value when a client accesses the resource with this sas token.
      */
     public String getContentLanguage() {
@@ -258,8 +272,6 @@ public class CommonSasQueryParameters {
     }
 
     /**
-     * Gets the Content-Type header value when a client accesses the resource with this sas token.
-     *
      * @return The Content-Type header value when a client accesses the resource with this sas token.
      */
     public String getContentType() {
@@ -267,8 +279,6 @@ public class CommonSasQueryParameters {
     }
 
     /**
-     * Gets the object ID of the key.
-     *
      * @return the object ID of the key.
      */
     public String getKeyObjectId() {
@@ -276,8 +286,6 @@ public class CommonSasQueryParameters {
     }
 
     /**
-     * Gets the tenant ID of the key.
-     *
      * @return the tenant ID of the key.
      */
     public String getKeyTenantId() {
@@ -285,8 +293,6 @@ public class CommonSasQueryParameters {
     }
 
     /**
-     * Gets the datetime when the key becomes active.
-     *
      * @return the datetime when the key becomes active.
      */
     public OffsetDateTime getKeyStart() {
@@ -294,8 +300,6 @@ public class CommonSasQueryParameters {
     }
 
     /**
-     * Gets the datetime when the key expires.
-     *
      * @return the datetime when the key expires.
      */
     public OffsetDateTime getKeyExpiry() {
@@ -303,8 +307,6 @@ public class CommonSasQueryParameters {
     }
 
     /**
-     * Gets the services that are permitted by the key.
-     *
      * @return the services that are permitted by the key.
      */
     public String getKeyService() {
@@ -312,8 +314,6 @@ public class CommonSasQueryParameters {
     }
 
     /**
-     * Gets the service version that created the key.
-     *
      * @return the service version that created the key.
      */
     public String getKeyVersion() {
@@ -321,30 +321,22 @@ public class CommonSasQueryParameters {
     }
 
     /**
-     * Gets the storage services being accessed (only for Account SAS).
-     * <p>
-     * Please refer to {@link AccountSasService} for more details.
-     *
-     * @return The storage services being accessed (only for Account SAS).
+     * @return The storage services being accessed (only for Account SAS). Please refer to {@link AccountSasService} for
+     * more details.
      */
     public String getServices() {
         return services;
     }
 
     /**
-     * Gets the storage resource types being accessed (only for Account SAS).
-     * <p>
-     * Please refer to {@link AccountSasResourceType} for more details.
-     *
-     * @return The storage resource types being accessed (only for Account SAS).
+     * @return The storage resource types being accessed (only for Account SAS). Please refer to {@link
+     * AccountSasResourceType} for more details.
      */
     public String getResourceTypes() {
         return resourceTypes;
     }
 
     /**
-     * Gets the storage version.
-     *
      * @return The storage version
      */
     public String getVersion() {
@@ -352,19 +344,13 @@ public class CommonSasQueryParameters {
     }
 
     /**
-     * Gets the allowed HTTP protocol(s).
-     * <p>
-     * Please refer to {@link SasProtocol} for more details.
-     *
-     * @return The allowed HTTP protocol(s) or {@code null}.
+     * @return The allowed HTTP protocol(s) or {@code null}. Please refer to {@link SasProtocol} for more details.
      */
     public SasProtocol getProtocol() {
         return protocol;
     }
 
     /**
-     * Gets the start time for this SAS token.
-     *
      * @return The start time for this SAS token or {@code null}.
      */
     public OffsetDateTime getStartTime() {
@@ -372,8 +358,6 @@ public class CommonSasQueryParameters {
     }
 
     /**
-     * Gets the expiry time for this SAS token.
-     *
      * @return The expiry time for this SAS token.
      */
     public OffsetDateTime getExpiryTime() {
@@ -381,8 +365,6 @@ public class CommonSasQueryParameters {
     }
 
     /**
-     * Gets the {@link SasIpRange}.
-     *
      * @return {@link SasIpRange}
      */
     public SasIpRange getSasIpRange() {
@@ -390,19 +372,13 @@ public class CommonSasQueryParameters {
     }
 
     /**
-     * Gets the SAS permissions in a raw format.
-     * <p>
-     * Please refer to *SASPermission classes for more details.
-     *
-     * @return The SAS permissions in a raw format.
+     * @return Please refer to *SASPermission classes for more details.
      */
     public String getPermissions() {
         return permissions;
     }
 
     /**
-     * Gets the signature for the SAS token.
-     *
      * @return The signature for the SAS token.
      */
     public String getSignature() {
@@ -410,8 +386,6 @@ public class CommonSasQueryParameters {
     }
 
     /**
-     * Gets the directory depth of the resource this SAS token authorizes.
-     *
      * @return The directory depth of the resource this SAS token authorizes.
      */
     public Integer getDirectoryDepth() {
@@ -419,11 +393,6 @@ public class CommonSasQueryParameters {
     }
 
     /**
-     * Gets the AAD object ID of a user assumed to be authorized by the owner of the user delegation key to perform the
-     * action granted by the SAS token. The service will validate the SAS token and ensure that the owner of the user
-     * delegation key has the required permissions before granting access but no additional permission check for the
-     * agent object id will be performed.
-     *
      * @return The AAD object ID of a user assumed to be authorized by the owner of the user delegation key to perform
      * the action granted by the SAS token. The service will validate the SAS token and ensure that the owner of the
      * user delegation key has the required permissions before granting access but no additional permission check for
@@ -434,11 +403,6 @@ public class CommonSasQueryParameters {
     }
 
     /**
-     * Gets the AAD object ID of a user assumed to be unauthorized by the owner of the user delegation key to perform
-     * the action granted by the SAS token. The service will validate the SAS token and ensure that the owner of the
-     * user delegation key has the required permissions before granting access and the service will perform an
-     * additional POSIX ACL check to determine if this user is authorized to perform the requested operation.
-     *
      * @return The AAD object ID of a user assumed to be unauthorized by the owner of the user delegation key to
      * perform the action granted by the SAS token. The service will validate the SAS token and ensure that the owner
      * of the user delegation key has the required permissions before granting access and the service will perform an
@@ -449,8 +413,6 @@ public class CommonSasQueryParameters {
     }
 
     /**
-     * Gets the correlation id to correlate the storage audit logs with the audit logs used by the principal
-     * generating and distributing the SAS.
      * @return The correlation id to correlate the storage audit logs with the audit logs used by the principal
      * generating and distributing the SAS.
      */
@@ -459,8 +421,6 @@ public class CommonSasQueryParameters {
     }
 
     /**
-     * Gets the encryption scope that will be applied to any write operations performed with the sas.
-     *
      * @return An encryption scope that will be applied to any write operations performed with the sas.
      */
     public String getEncryptionScope() {

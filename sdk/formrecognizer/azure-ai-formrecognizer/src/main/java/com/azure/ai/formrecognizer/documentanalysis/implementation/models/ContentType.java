@@ -4,66 +4,45 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-/**
- * Content type for upload.
- */
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+/** Content type for upload. */
 public enum ContentType {
-    /**
-     * Content Type 'application/octet-stream'.
-     */
+    /** Enum value application/octet-stream. */
     APPLICATION_OCTET_STREAM("application/octet-stream"),
 
-    /**
-     * Content Type 'application/pdf'.
-     */
+    /** Enum value application/pdf. */
     APPLICATION_PDF("application/pdf"),
 
-    /**
-     * Content Type 'application/vnd.openxmlformats-officedocument.presentationml.presentation'.
-     */
+    /** Enum value application/vnd.openxmlformats-officedocument.presentationml.presentation. */
     APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_PRESENTATIONML_PRESENTATION(
-        "application/vnd.openxmlformats-officedocument.presentationml.presentation"),
+            "application/vnd.openxmlformats-officedocument.presentationml.presentation"),
 
-    /**
-     * Content Type 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'.
-     */
+    /** Enum value application/vnd.openxmlformats-officedocument.spreadsheetml.sheet. */
     APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_SPREADSHEETML_SHEET(
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"),
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"),
 
-    /**
-     * Content Type 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'.
-     */
+    /** Enum value application/vnd.openxmlformats-officedocument.wordprocessingml.document. */
     APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_WORDPROCESSINGML_DOCUMENT(
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"),
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document"),
 
-    /**
-     * Content Type 'image/bmp'.
-     */
+    /** Enum value image/bmp. */
     IMAGE_BMP("image/bmp"),
 
-    /**
-     * Content Type 'image/heif'.
-     */
+    /** Enum value image/heif. */
     IMAGE_HEIF("image/heif"),
 
-    /**
-     * Content Type 'image/jpeg'.
-     */
+    /** Enum value image/jpeg. */
     IMAGE_JPEG("image/jpeg"),
 
-    /**
-     * Content Type 'image/png'.
-     */
+    /** Enum value image/png. */
     IMAGE_PNG("image/png"),
 
-    /**
-     * Content Type 'image/tiff'.
-     */
+    /** Enum value image/tiff. */
     IMAGE_TIFF("image/tiff");
 
-    /**
-     * The actual serialized value for a ContentType instance.
-     */
+    /** The actual serialized value for a ContentType instance. */
     private final String value;
 
     ContentType(String value) {
@@ -72,10 +51,11 @@ public enum ContentType {
 
     /**
      * Parses a serialized value to a ContentType instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed ContentType object, or null if unable to parse.
      */
+    @JsonCreator
     public static ContentType fromString(String value) {
         if (value == null) {
             return null;
@@ -89,9 +69,8 @@ public enum ContentType {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
+    @JsonValue
     @Override
     public String toString() {
         return this.value;

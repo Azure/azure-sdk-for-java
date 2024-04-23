@@ -34,8 +34,6 @@ public final class QueueStorageException extends HttpResponseException {
     }
 
     /**
-     * Gets the error code returned by the service.
-     *
      * @return The error code returned by the service.
      */
     public QueueErrorCode getErrorCode() {
@@ -43,8 +41,6 @@ public final class QueueStorageException extends HttpResponseException {
     }
 
     /**
-     * Gets the message returned by the service.
-     *
      * @return The message returned by the service.
      */
     public String getServiceMessage() {
@@ -52,9 +48,6 @@ public final class QueueStorageException extends HttpResponseException {
     }
 
     /**
-     *
-     * Gets the status code on the response.
-     *
      * @return The status code on the response.
      */
     public int getStatusCode() {

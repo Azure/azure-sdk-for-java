@@ -2722,7 +2722,7 @@ public class ShareFileAsyncClient {
         try {
             StorageImplUtils.assertNotNull("options", options);
             return listRangesWithResponse(options.getRange(), options.getRequestConditions(),
-                options.getPreviousSnapshot(), options.isRenameIncluded(), Context.NONE);
+                options.getPreviousSnapshot(), Context.NONE);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -2734,7 +2734,7 @@ public class ShareFileAsyncClient {
 
         Function<String, Mono<PagedResponse<ShareFileRange>>> retriever =
             marker -> StorageImplUtils.applyOptionalTimeout(
-                this.listRangesWithResponse(range, requestConditions, null, null, context), timeout)
+                this.listRangesWithResponse(range, requestConditions, null, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
@@ -2748,7 +2748,7 @@ public class ShareFileAsyncClient {
     }
 
     Mono<Response<ShareFileRangeList>> listRangesWithResponse(ShareFileRange range,
-        ShareRequestConditions requestConditions, String previousSnapshot, Boolean supportRename, Context context) {
+        ShareRequestConditions requestConditions, String previousSnapshot, Context context) {
 
         ShareRequestConditions finalRequestConditions = requestConditions == null
             ? new ShareRequestConditions() : requestConditions;
@@ -2756,7 +2756,7 @@ public class ShareFileAsyncClient {
         context = context == null ? Context.NONE : context;
 
         return this.azureFileStorageClient.getFiles().getRangeListWithResponseAsync(shareName, filePath, snapshot,
-            previousSnapshot, null, rangeString, finalRequestConditions.getLeaseId(), supportRename, context)
+            previousSnapshot, null, rangeString, finalRequestConditions.getLeaseId(), context)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -3052,7 +3052,7 @@ public class ShareFileAsyncClient {
         ShareFileHttpHeaders headers = options.getContentType() == null ? null
             : new ShareFileHttpHeaders().setContentType(options.getContentType());
 
-        String renameSource = Utility.encodeUrlPath(this.getFileUrl());
+        String renameSource = this.getFileUrl();
 
         renameSource = this.sasToken != null ? renameSource + "?" + this.sasToken.getSignature() : renameSource;
 

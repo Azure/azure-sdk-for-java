@@ -10,7 +10,6 @@ import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
-import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,11 +33,6 @@ public final class Utility {
       */
     public static final String STORAGE_TRACING_NAMESPACE_VALUE = "Microsoft.Storage";
 
-    /**
-     * Creates a new instance of {@link Utility}.
-     */
-    public Utility() {
-    }
 
     /**
      * Performs a safe decoding of the passed string, taking care to preserve each {@code +} character rather than
@@ -249,7 +243,7 @@ public final class Utility {
             }
         }
 
-        return Flux.<ByteBuffer>defer(() -> {
+        return Flux.defer(() -> {
             /*
              * If the request needs to be retried, the flux will be resubscribed to. The stream and counter must be
              * reset in order to correctly return the same data again.
@@ -322,7 +316,7 @@ public final class Utility {
                 }
                 return is;
             });
-        }).subscribeOn(Schedulers.boundedElastic());
+        });
     }
 
     /**

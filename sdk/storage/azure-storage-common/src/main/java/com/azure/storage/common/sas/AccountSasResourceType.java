@@ -15,8 +15,11 @@ import java.util.Locale;
  * of the resources is particular and this class guarantees correctness.
  */
 public final class AccountSasResourceType {
+
     private boolean service;
+
     private boolean container;
+
     private boolean object;
 
     /**
@@ -50,16 +53,14 @@ public final class AccountSasResourceType {
                     break;
                 default:
                     throw new IllegalArgumentException(
-                        String.format(Locale.ROOT, Constants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Resource Types",
-                            resourceTypesString, c));
+                        String.format(Locale.ROOT, Constants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
+                            "Resource Types", resourceTypesString, c));
             }
         }
         return resourceType;
     }
 
     /**
-     * Gets the access status for service level APIs.
-     *
      * @return the access status for service level APIs.
      */
     public boolean isService() {
@@ -78,10 +79,6 @@ public final class AccountSasResourceType {
     }
 
     /**
-     * Gets the access status for container level APIs.
-     * <p>
-     * This grants access to Blob Containers, Tables, Queues, and File Shares.
-     *
      * @return the access status for container level APIs, this grants access to Blob Containers, Tables, Queues, and
      * File Shares.
      */
@@ -102,10 +99,6 @@ public final class AccountSasResourceType {
     }
 
     /**
-     * Gets the access status for object level APIs.
-     * <p>
-     * This grants access to Blobs, Table Entities, Queue Messages, Files.
-     *
      * @return the access status for object level APIs, this grants access to Blobs, Table Entities, Queue Messages,
      * Files.
      */

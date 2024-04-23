@@ -22,8 +22,8 @@ import com.azure.storage.blob.options.BlobSeekableByteChannelReadOptions;
 import com.azure.storage.blob.options.BlockBlobSeekableByteChannelWriteOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
-import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -141,7 +141,7 @@ public class BlobSeekableByteChannelTests extends BlobTestBase {
         return totalRead;
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("channelReadDataSupplier")
     public void e2EChannelWriteBlock(int streamBufferSize, int copyBufferSize, int dataLength) throws IOException {

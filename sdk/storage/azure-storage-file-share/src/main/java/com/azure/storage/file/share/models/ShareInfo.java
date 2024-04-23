@@ -27,8 +27,6 @@ public final class ShareInfo {
     }
 
     /**
-     * Gets the entity tag that corresponds to the share.
-     *
      * @return the entity tag that corresponds to the share
      */
     public String getETag() {
@@ -36,8 +34,6 @@ public final class ShareInfo {
     }
 
     /**
-     * Gets the last time the share was modified.
-     *
      * @return the last time the share was modified
      */
     public OffsetDateTime getLastModified() {

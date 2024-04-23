@@ -9,13 +9,9 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/**
- * A string indicating what maskingMode to use to mask the personal information detected in the input text.
- */
+/** A string indicating what maskingMode to use to mask the personal information detected in the input text. */
 public final class PiiDetectionSkillMaskingMode extends ExpandableStringEnum<PiiDetectionSkillMaskingMode> {
-    /**
-     * No masking occurs and the maskedText output will not be returned.
-     */
+    /** No masking occurs and the maskedText output will not be returned. */
     public static final PiiDetectionSkillMaskingMode NONE = fromString("none");
 
     /**
@@ -27,16 +23,15 @@ public final class PiiDetectionSkillMaskingMode extends ExpandableStringEnum<Pii
 
     /**
      * Creates a new instance of PiiDetectionSkillMaskingMode value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public PiiDetectionSkillMaskingMode() {
-    }
+    public PiiDetectionSkillMaskingMode() {}
 
     /**
      * Creates or finds a PiiDetectionSkillMaskingMode from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding PiiDetectionSkillMaskingMode.
      */
@@ -46,7 +41,7 @@ public final class PiiDetectionSkillMaskingMode extends ExpandableStringEnum<Pii
 
     /**
      * Gets known PiiDetectionSkillMaskingMode values.
-     * 
+     *
      * @return known PiiDetectionSkillMaskingMode values.
      */
     public static Collection<PiiDetectionSkillMaskingMode> values() {

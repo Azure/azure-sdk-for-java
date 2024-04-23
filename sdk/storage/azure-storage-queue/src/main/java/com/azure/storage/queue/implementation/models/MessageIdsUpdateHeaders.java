@@ -8,48 +8,56 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
-/**
- * The MessageIdsUpdateHeaders model.
- */
+/** The MessageIdsUpdateHeaders model. */
+@JacksonXmlRootElement(localName = "null")
 @Fluent
 public final class MessageIdsUpdateHeaders {
     /*
      * The x-ms-version property.
      */
+    @JsonProperty(value = "x-ms-version")
     private String xMsVersion;
 
     /*
      * The x-ms-time-next-visible property.
      */
+    @JsonProperty(value = "x-ms-time-next-visible")
     private DateTimeRfc1123 xMsTimeNextVisible;
 
     /*
      * The x-ms-request-id property.
      */
+    @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
 
     /*
      * The x-ms-popreceipt property.
      */
+    @JsonProperty(value = "x-ms-popreceipt")
     private String xMsPopreceipt;
 
     /*
      * The Date property.
      */
+    @JsonProperty(value = "Date")
     private DateTimeRfc1123 date;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
     private static final HttpHeaderName X_MS_TIME_NEXT_VISIBLE = HttpHeaderName.fromString("x-ms-time-next-visible");
 
+    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+
     private static final HttpHeaderName X_MS_POPRECEIPT = HttpHeaderName.fromString("x-ms-popreceipt");
 
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of MessageIdsUpdateHeaders class.
-     * 
+     *
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public MessageIdsUpdateHeaders(HttpHeaders rawHeaders) {
@@ -58,7 +66,7 @@ public final class MessageIdsUpdateHeaders {
         if (xMsTimeNextVisible != null) {
             this.xMsTimeNextVisible = new DateTimeRfc1123(xMsTimeNextVisible);
         }
-        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
         this.xMsPopreceipt = rawHeaders.getValue(X_MS_POPRECEIPT);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
@@ -68,7 +76,7 @@ public final class MessageIdsUpdateHeaders {
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
-     * 
+     *
      * @return the xMsVersion value.
      */
     public String getXMsVersion() {
@@ -77,7 +85,7 @@ public final class MessageIdsUpdateHeaders {
 
     /**
      * Set the xMsVersion property: The x-ms-version property.
-     * 
+     *
      * @param xMsVersion the xMsVersion value to set.
      * @return the MessageIdsUpdateHeaders object itself.
      */
@@ -88,7 +96,7 @@ public final class MessageIdsUpdateHeaders {
 
     /**
      * Get the xMsTimeNextVisible property: The x-ms-time-next-visible property.
-     * 
+     *
      * @return the xMsTimeNextVisible value.
      */
     public OffsetDateTime getXMsTimeNextVisible() {
@@ -100,7 +108,7 @@ public final class MessageIdsUpdateHeaders {
 
     /**
      * Set the xMsTimeNextVisible property: The x-ms-time-next-visible property.
-     * 
+     *
      * @param xMsTimeNextVisible the xMsTimeNextVisible value to set.
      * @return the MessageIdsUpdateHeaders object itself.
      */
@@ -115,7 +123,7 @@ public final class MessageIdsUpdateHeaders {
 
     /**
      * Get the xMsRequestId property: The x-ms-request-id property.
-     * 
+     *
      * @return the xMsRequestId value.
      */
     public String getXMsRequestId() {
@@ -124,7 +132,7 @@ public final class MessageIdsUpdateHeaders {
 
     /**
      * Set the xMsRequestId property: The x-ms-request-id property.
-     * 
+     *
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the MessageIdsUpdateHeaders object itself.
      */
@@ -135,7 +143,7 @@ public final class MessageIdsUpdateHeaders {
 
     /**
      * Get the xMsPopreceipt property: The x-ms-popreceipt property.
-     * 
+     *
      * @return the xMsPopreceipt value.
      */
     public String getXMsPopreceipt() {
@@ -144,7 +152,7 @@ public final class MessageIdsUpdateHeaders {
 
     /**
      * Set the xMsPopreceipt property: The x-ms-popreceipt property.
-     * 
+     *
      * @param xMsPopreceipt the xMsPopreceipt value to set.
      * @return the MessageIdsUpdateHeaders object itself.
      */
@@ -155,7 +163,7 @@ public final class MessageIdsUpdateHeaders {
 
     /**
      * Get the date property: The Date property.
-     * 
+     *
      * @return the date value.
      */
     public OffsetDateTime getDate() {
@@ -167,7 +175,7 @@ public final class MessageIdsUpdateHeaders {
 
     /**
      * Set the date property: The Date property.
-     * 
+     *
      * @param date the date value to set.
      * @return the MessageIdsUpdateHeaders object itself.
      */

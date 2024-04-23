@@ -4,9 +4,7 @@
 module com.azure.storage.file.share {
     requires transitive com.azure.storage.common;
 
-    requires com.azure.json;
-    requires com.azure.xml;
-    requires java.xml;
+    requires com.fasterxml.jackson.dataformat.xml;
 
     exports com.azure.storage.file.share;
     exports com.azure.storage.file.share.models;
@@ -14,8 +12,16 @@ module com.azure.storage.file.share {
     exports com.azure.storage.file.share.sas;
     exports com.azure.storage.file.share.specialized;
 
-    opens com.azure.storage.file.share.models to com.azure.core;
-    opens com.azure.storage.file.share.implementation to com.azure.core;
-    opens com.azure.storage.file.share.implementation.models to com.azure.core;
-    opens com.azure.storage.file.share.implementation.util to com.azure.core;
+    opens com.azure.storage.file.share.models to
+        com.fasterxml.jackson.databind,
+        com.azure.core;
+    opens com.azure.storage.file.share.implementation to
+        com.fasterxml.jackson.databind,
+        com.azure.core;
+    opens com.azure.storage.file.share.implementation.models to
+        com.fasterxml.jackson.databind,
+        com.azure.core;
+    opens com.azure.storage.file.share.implementation.util to
+        com.fasterxml.jackson.databind,
+        com.azure.core;
 }

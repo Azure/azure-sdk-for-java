@@ -9,52 +9,37 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/**
- * Defines the type of a datasource.
- */
+/** Defines the type of a datasource. */
 public final class SearchIndexerDataSourceType extends ExpandableStringEnum<SearchIndexerDataSourceType> {
-    /**
-     * Indicates an Azure SQL datasource.
-     */
+    /** Indicates an Azure SQL datasource. */
     public static final SearchIndexerDataSourceType AZURE_SQL = fromString("azuresql");
 
-    /**
-     * Indicates a CosmosDB datasource.
-     */
+    /** Indicates a CosmosDB datasource. */
     public static final SearchIndexerDataSourceType COSMOS_DB = fromString("cosmosdb");
 
-    /**
-     * Indicates an Azure Blob datasource.
-     */
+    /** Indicates an Azure Blob datasource. */
     public static final SearchIndexerDataSourceType AZURE_BLOB = fromString("azureblob");
 
-    /**
-     * Indicates an Azure Table datasource.
-     */
+    /** Indicates an Azure Table datasource. */
     public static final SearchIndexerDataSourceType AZURE_TABLE = fromString("azuretable");
 
-    /**
-     * Indicates a MySql datasource.
-     */
+    /** Indicates a MySql datasource. */
     public static final SearchIndexerDataSourceType MY_SQL = fromString("mysql");
 
-    /**
-     * Indicates an ADLS Gen2 datasource.
-     */
+    /** Indicates an ADLS Gen2 datasource. */
     public static final SearchIndexerDataSourceType ADLS_GEN2 = fromString("adlsgen2");
 
     /**
      * Creates a new instance of SearchIndexerDataSourceType value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public SearchIndexerDataSourceType() {
-    }
+    public SearchIndexerDataSourceType() {}
 
     /**
      * Creates or finds a SearchIndexerDataSourceType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding SearchIndexerDataSourceType.
      */
@@ -64,7 +49,7 @@ public final class SearchIndexerDataSourceType extends ExpandableStringEnum<Sear
 
     /**
      * Gets known SearchIndexerDataSourceType values.
-     * 
+     *
      * @return known SearchIndexerDataSourceType values.
      */
     public static Collection<SearchIndexerDataSourceType> values() {

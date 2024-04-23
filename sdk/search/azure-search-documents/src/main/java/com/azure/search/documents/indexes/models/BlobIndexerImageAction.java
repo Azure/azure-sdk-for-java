@@ -14,9 +14,7 @@ import java.util.Collection;
  * configuration to any value other than "none" requires that a skillset also be attached to that indexer.
  */
 public final class BlobIndexerImageAction extends ExpandableStringEnum<BlobIndexerImageAction> {
-    /**
-     * Ignores embedded images or image files in the data set. This is the default.
-     */
+    /** Ignores embedded images or image files in the data set. This is the default. */
     public static final BlobIndexerImageAction NONE = fromString("none");
 
     /**
@@ -34,21 +32,20 @@ public final class BlobIndexerImageAction extends ExpandableStringEnum<BlobIndex
      * accordingly, instead of extracting embedded images. Non-PDF file types will be treated the same as if
      * "generateNormalizedImages" was set.
      */
-    public static final BlobIndexerImageAction GENERATE_NORMALIZED_IMAGE_PER_PAGE
-        = fromString("generateNormalizedImagePerPage");
+    public static final BlobIndexerImageAction GENERATE_NORMALIZED_IMAGE_PER_PAGE =
+            fromString("generateNormalizedImagePerPage");
 
     /**
      * Creates a new instance of BlobIndexerImageAction value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public BlobIndexerImageAction() {
-    }
+    public BlobIndexerImageAction() {}
 
     /**
      * Creates or finds a BlobIndexerImageAction from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding BlobIndexerImageAction.
      */
@@ -58,7 +55,7 @@ public final class BlobIndexerImageAction extends ExpandableStringEnum<BlobIndex
 
     /**
      * Gets known BlobIndexerImageAction values.
-     * 
+     *
      * @return known BlobIndexerImageAction values.
      */
     public static Collection<BlobIndexerImageAction> values() {

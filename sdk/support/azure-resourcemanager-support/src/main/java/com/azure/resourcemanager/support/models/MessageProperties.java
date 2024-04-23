@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.support.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -35,7 +34,7 @@ public final class MessageProperties {
     /*
      * Body of the communication.
      */
-    @JsonProperty(value = "body", required = true)
+    @JsonProperty(value = "body")
     private String body;
 
     /*
@@ -123,11 +122,5 @@ public final class MessageProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (body() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property body in model MessageProperties"));
-        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(MessageProperties.class);
 }

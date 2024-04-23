@@ -15,7 +15,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressListener;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -45,8 +44,6 @@ import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.test.shared.extensions.LiveOnly;
-import com.azure.storage.common.test.shared.policy.PerCallVersionPolicy;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.blob.BlobEncryptionPolicy;
@@ -57,6 +54,7 @@ import com.microsoft.azure.storage.blob.CloudBlockBlob;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIf;
+import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -93,6 +91,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
@@ -111,6 +110,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.longThat;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 @SuppressWarnings("deprecation")
 public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
@@ -165,7 +169,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
             .buildEncryptedBlobAsyncClient()));
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.specialized.cryptography.BlobCryptographyTestBase#liveOnly")
     @ParameterizedTest
     @ValueSource(ints = {3000, 5 * 1024 * 1024 - 10, 20 * 1024 * 1024 - 10, 4 * 1024 * 1024, 4 * 1024 * 1024 - 10,
         8 * 1024 * 1024})
@@ -247,7 +251,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         encryptionTestHelper(size, byteBufferCount);
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.specialized.cryptography.BlobCryptographyTestBase#liveOnly")
     @ParameterizedTest
     @CsvSource(value = {"5120,1024", "10485760,2"})
     public void encryptionLarge(int size, int byteBufferCount) {
@@ -255,7 +259,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     }
 
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.specialized.cryptography.BlobCryptographyTestBase#liveOnly")
     @ParameterizedTest
     @CsvSource(value = {
         "5,2", // 0 Two buffers smaller than an encryption block.
@@ -276,7 +280,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         encryptionTestHelper(size, byteBufferCount);
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.specialized.cryptography.BlobCryptographyTestBase#liveOnly")
     @ParameterizedTest
     @ValueSource(ints = {3000, 5 * 1024 * 1024 - 10, 20 * 1024 * 1024 - 10})
     public void encryptionV2ManualDecryption(int dataSize) throws IOException, GeneralSecurityException {
@@ -422,7 +426,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         }
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.specialized.cryptography.BlobCryptographyTestBase#liveOnly")
     @ParameterizedTest
     @MethodSource("encryptionComputeMd5Supplier")
     public void encryptionComputeMd5(int size, Long maxSingleUploadSize, Long blockSize, int byteBufferCount,
@@ -482,7 +486,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     }
 
     // This test checks that metadata in encryption is successfully set
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.specialized.cryptography.BlobCryptographyTestBase#liveOnly")
     @ParameterizedTest
     @CsvSource(value = {",,,", "foo,bar,fizz,buzz"})
     public void encryptionMetadata(String key1, String value1, String key2, String value2) {
@@ -565,7 +569,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     }
 
     // This test checks the upload to file method on an encrypted client
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.specialized.cryptography.BlobCryptographyTestBase#liveOnly")
     @ParameterizedTest
     @EnumSource(EncryptionVersion.class)
     public void encryptedUploadFile(EncryptionVersion version) throws IOException {
@@ -580,7 +584,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     @ParameterizedTest
     @EnumSource(EncryptionVersion.class)
     public void encryptedDownloadFile(EncryptionVersion version) throws IOException {
-        String path = CoreUtils.randomUuid() + ".txt";
+        String path = UUID.randomUUID() + ".txt";
         //def dataFlux = Flux.just(defaultData).map{buf -> buf.duplicate()}
         beac = getEncryptionAsyncClient(version);
 
@@ -680,7 +684,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     }
 
     // Tests key resolver
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.specialized.cryptography.BlobCryptographyTestBase#liveOnly")
     @ParameterizedTest
     @CsvSource(value = {"5120,1024", "10485760,2"})
     public void keyResolvedUsedToDecryptDataLarge(int size, int byteBufferCount) {
@@ -723,7 +727,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
 
     // TODO:
     // Upload with old SDK download with new SDK.
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.specialized.cryptography.BlobCryptographyTestBase#liveOnly")
     @Test
     public void crossPlatformTestUploadOldDownloadNew() throws Exception {
         String blobName = generateBlobName();
@@ -757,7 +761,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     }
 
     // Upload with new SDK download with old SDK.
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.specialized.cryptography.BlobCryptographyTestBase#liveOnly")
     @Test
     public void crossPlatformTestUploadNewDownloadOld() throws Exception {
         String blobName = generateBlobName();
@@ -933,7 +937,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
             Arguments.of(3, 2L, DATA.getDefaultText().substring(3, 5)));
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.specialized.cryptography.BlobCryptographyTestBase#liveOnly")
     @ParameterizedTest
     @MethodSource("downloadRangeV2Supplier")
     public void downloadRangeV2(int offset, int count) {
@@ -1079,7 +1083,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         Files.deleteIfExists(testFile.toPath());
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.specialized.cryptography.BlobCryptographyTestBase#liveOnly")
     @ParameterizedTest
     @MethodSource("downloadFileSupplier")
     public void downloadFile(int fileSize, EncryptionVersion version) throws IOException {
@@ -1115,7 +1119,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     }
 
     // Tests downloading a file using a default client that doesn't have a HttpClient passed to it.
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.specialized.cryptography.BlobCryptographyTestBase#liveOnly")
     @ParameterizedTest
     @ValueSource(ints = {0, 20, 16 * 1024 * 1024, 8 * 1026 * 1024 + 10, 50 * Constants.MB})
     public void downloadFileSyncBufferCopy(int fileSize) throws IOException {
@@ -1147,7 +1151,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     }
 
     //Tests downloading a file using a default client that doesn't have a HttpClient passed to it.
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.specialized.cryptography.BlobCryptographyTestBase#liveOnly")
     @ParameterizedTest
     @ValueSource(ints = {0, 20, 16 * 1024 * 1024, 8 * 1026 * 1024 + 10, 50 * Constants.MB})
     public void downloadFileAsyncBufferCopy(int fileSize) throws IOException {
@@ -1179,7 +1183,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         Files.deleteIfExists(file.toPath());
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.specialized.cryptography.BlobCryptographyTestBase#liveOnly")
     @ParameterizedTest
     @MethodSource("downloadFileRangeSupplier")
     public void downloadFileRange(BlobRange range, EncryptionVersion version) throws IOException {
@@ -1213,7 +1217,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
 
 
     // This is to exercise some additional corner cases and ensure there are no arithmetic errors that give false success.
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.specialized.cryptography.BlobCryptographyTestBase#liveOnly")
     @Test
     public void downloadFileRangeFail() throws IOException {
         File file = getRandomFile(DATA.getDefaultDataSize());
@@ -1228,7 +1232,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         Files.deleteIfExists(outFile.toPath());
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.specialized.cryptography.BlobCryptographyTestBase#liveOnly")
     @Test
     public void downloadFileCountNull() throws IOException {
         File file = getRandomFile(DATA.getDefaultDataSize());
@@ -1244,7 +1248,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         Files.deleteIfExists(outFile.toPath());
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.specialized.cryptography.BlobCryptographyTestBase#liveOnly")
     @ParameterizedTest
     @MethodSource("validACSupplier")
     public void downloadFileAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -1273,7 +1277,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
             Arguments.of(null, null, null, GARBAGE_ETAG, null), Arguments.of(null, null, null, null, RECEIVED_LEASE_ID));
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.specialized.cryptography.BlobCryptographyTestBase#liveOnly")
     @ParameterizedTest
     @MethodSource("invalidACSupplier")
     public void downloadFileACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -1305,7 +1309,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
             Arguments.of(null, null, null, null, GARBAGE_LEASE_ID));
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.specialized.cryptography.BlobCryptographyTestBase#liveOnly")
     @Test
     public void downloadFileEtagLock() throws IOException {
         File file = getRandomFile(Constants.MB);
@@ -1376,7 +1380,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         Files.deleteIfExists(outFile.toPath());
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.specialized.cryptography.BlobCryptographyTestBase#liveOnly")
     @ParameterizedTest
     @ValueSource(ints = {100, 8 * 1026 * 1024 + 10})
     public void downloadFileProgressReceiver(int fileSize) throws IOException {
@@ -1385,8 +1389,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         File outFile = new File(prefix);
         Files.deleteIfExists(outFile.toPath());
 
-        List<Long> progress = new ArrayList<>();
-        ProgressReceiver mockReceiver = progress::add;
+        ProgressReceiver mockReceiver = mock(ProgressReceiver.class);
         int numBlocks = fileSize / (4 * 1024 * 1024);
 
         ebc.downloadToFileWithResponse(outFile.toPath().toString(), null,
@@ -1399,20 +1402,20 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         if (numBlocks == 0) {
             numBlocks++;
         }
-        assertTrue(progress.stream().filter(it -> it != file.length()).count() >= numBlocks - 1);
+        verify(mockReceiver, atLeast(numBlocks - 1)).handleProgress(longThat(it -> it != file.length()));
 
         // Should receive at least one notification indicating completed progress, multiple notifications may be
         //received if there are empty buffers in the stream.
-        assertTrue(progress.stream().anyMatch(it -> it == fileSize));
+        verify(mockReceiver, atLeast(1)).handleProgress(fileSize);
 
         // There should be NO notification with a larger than expected size.
-        assertTrue(progress.stream().noneMatch(it -> it > fileSize));
+        verify(mockReceiver, never()).handleProgress(longThat(it -> it > fileSize));
 
         Files.deleteIfExists(file.toPath());
         Files.deleteIfExists(outFile.toPath());
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.specialized.cryptography.BlobCryptographyTestBase#liveOnly")
     @ParameterizedTest
     @ValueSource(ints = {100, 8 * 1026 * 1024 + 10})
     public void downloadFileProgressListener(int fileSize) throws IOException {
@@ -1421,8 +1424,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         File outFile = new File(prefix);
         Files.deleteIfExists(outFile.toPath());
 
-        List<Long> progress = new ArrayList<>();
-        ProgressListener mockListener = progress::add;
+        ProgressListener mockListener = mock(ProgressListener.class);
         int numBlocks = fileSize / (4 * 1024 * 1024);
 
         ebc.downloadToFileWithResponse(outFile.toPath().toString(), null,
@@ -1435,15 +1437,14 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         if (numBlocks == 0) {
             numBlocks++;
         }
-
-        assertTrue(progress.stream().filter(it -> it != file.length()).count() >= numBlocks - 1);
+        verify(mockListener, atLeast(numBlocks - 1)).handleProgress(longThat(it -> it != file.length()));
 
         // Should receive at least one notification indicating completed progress, multiple notifications may be
         // received if there are empty buffers in the stream.
-        assertTrue(progress.stream().anyMatch(it -> it == fileSize));
+        verify(mockListener, atLeast(1)).handleProgress(fileSize);
 
         // There should be NO notification with a larger than expected size.
-        assertTrue(progress.stream().noneMatch(it -> it > fileSize));
+        verify(mockListener, never()).handleProgress(longThat(it -> it > fileSize));
 
         Files.deleteIfExists(file.toPath());
         Files.deleteIfExists(outFile.toPath());
@@ -1512,7 +1513,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         assertFalse(Arrays.equals(byteBuffer.array(), os.toByteArray()));
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.specialized.cryptography.BlobCryptographyTestBase#liveOnly")
     @Test
     public void encryptionUploadISLargeData() {
         byte[] randomData = getRandomByteArray(20 * Constants.MB);
@@ -1527,7 +1528,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         assertArraysEqual(randomData, os.toByteArray());
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.specialized.cryptography.BlobCryptographyTestBase#liveOnly")
     @ParameterizedTest
     @CsvSource(value = {"0,,0", "1024,,0", "1048576,,0", "3145728,1048576,4"})
     public void encryptionUploadISNumBlocks(int size, Long maxUploadSize, int numBlocks) {
@@ -1623,7 +1624,18 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     }
 
     private static HttpPipelinePolicy getPerCallVersionPolicy() {
-        return new PerCallVersionPolicy("2017-11-09");
+        return new HttpPipelinePolicy() {
+            @Override
+            public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                context.getHttpRequest().setHeader("x-ms-version", "2017-11-09");
+                return next.process();
+            }
+
+            @Override
+            public HttpPipelinePosition getPipelinePosition() {
+                return HttpPipelinePosition.PER_CALL;
+            }
+        };
     }
 
 

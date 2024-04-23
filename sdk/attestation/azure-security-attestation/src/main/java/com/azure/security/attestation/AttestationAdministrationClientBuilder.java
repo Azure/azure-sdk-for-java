@@ -131,7 +131,6 @@ public final class AttestationAdministrationClientBuilder implements
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
-    private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
 
     private final String[] dataplaneScope = new String[] {"https://attest.azure.net/.default"};
 
@@ -471,12 +470,10 @@ public final class AttestationAdministrationClientBuilder implements
 
         HttpPipeline pipeline = this.pipeline;
         if (pipeline == null) {
-            ClientOptions localClientOptions = clientOptions != null ? clientOptions : DEFAULT_CLIENT_OPTIONS;
-
             // Closest to API goes first, closest to wire goes last.
             final List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(
-                getApplicationId(localClientOptions, httpLogOptions), CLIENT_NAME, CLIENT_VERSION, buildConfiguration));
+                getApplicationId(clientOptions, httpLogOptions), CLIENT_NAME, CLIENT_VERSION, buildConfiguration));
             policies.add(new RequestIdPolicy());
             policies.add(new AddHeadersFromContextPolicy());
 
@@ -494,10 +491,12 @@ public final class AttestationAdministrationClientBuilder implements
             }
             policies.addAll(perRetryPolicies);
 
-            List<HttpHeader> httpHeaderList = new ArrayList<>();
-            localClientOptions.getHeaders().forEach(
-                header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
-            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+            if (clientOptions != null) {
+                List<HttpHeader> httpHeaderList = new ArrayList<>();
+                clientOptions.getHeaders().forEach(
+                    header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+                policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+            }
 
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
@@ -506,7 +505,6 @@ public final class AttestationAdministrationClientBuilder implements
             pipeline = new HttpPipelineBuilder()
                 .policies(policies.toArray(new HttpPipelinePolicy[0]))
                 .httpClient(httpClient)
-                .clientOptions(localClientOptions)
                 .build();
         }
 
