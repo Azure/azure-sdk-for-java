@@ -5,131 +5,118 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The Cvss3Summary model.
  */
 @Immutable
-public final class Cvss3Summary {
+public final class Cvss3Summary implements JsonSerializable<Cvss3Summary> {
 
     /*
      * The version property.
      */
     @Generated
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * The vectorString property.
      */
     @Generated
-    @JsonProperty(value = "vectorString")
     private String vectorString;
 
     /*
      * The attackVector property.
      */
     @Generated
-    @JsonProperty(value = "attackVector")
     private String attackVector;
 
     /*
      * The attackComplexity property.
      */
     @Generated
-    @JsonProperty(value = "attackComplexity")
     private String attackComplexity;
 
     /*
      * The privilegesRequired property.
      */
     @Generated
-    @JsonProperty(value = "privilegesRequired")
     private String privilegesRequired;
 
     /*
      * The userInteraction property.
      */
     @Generated
-    @JsonProperty(value = "userInteraction")
     private String userInteraction;
 
     /*
      * The scope property.
      */
     @Generated
-    @JsonProperty(value = "scope")
     private String scope;
 
     /*
      * The confidentialityImpact property.
      */
     @Generated
-    @JsonProperty(value = "confidentialityImpact")
     private String confidentialityImpact;
 
     /*
      * The integrityImpact property.
      */
     @Generated
-    @JsonProperty(value = "integrityImpact")
     private String integrityImpact;
 
     /*
      * The availabilityImpact property.
      */
     @Generated
-    @JsonProperty(value = "availabilityImpact")
     private String availabilityImpact;
 
     /*
      * The baseScore property.
      */
     @Generated
-    @JsonProperty(value = "baseScore")
     private Double baseScore;
 
     /*
      * The baseSeverity property.
      */
     @Generated
-    @JsonProperty(value = "baseSeverity")
     private String baseSeverity;
 
     /*
      * The exploitCodeMaturity property.
      */
     @Generated
-    @JsonProperty(value = "exploitCodeMaturity")
     private String exploitCodeMaturity;
 
     /*
      * The remediationLevel property.
      */
     @Generated
-    @JsonProperty(value = "remediationLevel")
     private String remediationLevel;
 
     /*
      * The reportConfidence property.
      */
     @Generated
-    @JsonProperty(value = "reportConfidence")
     private String reportConfidence;
 
     /*
      * The exploitabilityScore property.
      */
     @Generated
-    @JsonProperty(value = "exploitabilityScore")
     private Double exploitabilityScore;
 
     /*
      * The impactScore property.
      */
     @Generated
-    @JsonProperty(value = "impactScore")
     private Double impactScore;
 
     /**
@@ -307,5 +294,89 @@ public final class Cvss3Summary {
     @Generated
     public Double getImpactScore() {
         return this.impactScore;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeStringField("vectorString", this.vectorString);
+        jsonWriter.writeStringField("attackVector", this.attackVector);
+        jsonWriter.writeStringField("attackComplexity", this.attackComplexity);
+        jsonWriter.writeStringField("privilegesRequired", this.privilegesRequired);
+        jsonWriter.writeStringField("userInteraction", this.userInteraction);
+        jsonWriter.writeStringField("scope", this.scope);
+        jsonWriter.writeStringField("confidentialityImpact", this.confidentialityImpact);
+        jsonWriter.writeStringField("integrityImpact", this.integrityImpact);
+        jsonWriter.writeStringField("availabilityImpact", this.availabilityImpact);
+        jsonWriter.writeNumberField("baseScore", this.baseScore);
+        jsonWriter.writeStringField("baseSeverity", this.baseSeverity);
+        jsonWriter.writeStringField("exploitCodeMaturity", this.exploitCodeMaturity);
+        jsonWriter.writeStringField("remediationLevel", this.remediationLevel);
+        jsonWriter.writeStringField("reportConfidence", this.reportConfidence);
+        jsonWriter.writeNumberField("exploitabilityScore", this.exploitabilityScore);
+        jsonWriter.writeNumberField("impactScore", this.impactScore);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Cvss3Summary from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Cvss3Summary if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the Cvss3Summary.
+     */
+    @Generated
+    public static Cvss3Summary fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Cvss3Summary deserializedCvss3Summary = new Cvss3Summary();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("version".equals(fieldName)) {
+                    deserializedCvss3Summary.version = reader.getString();
+                } else if ("vectorString".equals(fieldName)) {
+                    deserializedCvss3Summary.vectorString = reader.getString();
+                } else if ("attackVector".equals(fieldName)) {
+                    deserializedCvss3Summary.attackVector = reader.getString();
+                } else if ("attackComplexity".equals(fieldName)) {
+                    deserializedCvss3Summary.attackComplexity = reader.getString();
+                } else if ("privilegesRequired".equals(fieldName)) {
+                    deserializedCvss3Summary.privilegesRequired = reader.getString();
+                } else if ("userInteraction".equals(fieldName)) {
+                    deserializedCvss3Summary.userInteraction = reader.getString();
+                } else if ("scope".equals(fieldName)) {
+                    deserializedCvss3Summary.scope = reader.getString();
+                } else if ("confidentialityImpact".equals(fieldName)) {
+                    deserializedCvss3Summary.confidentialityImpact = reader.getString();
+                } else if ("integrityImpact".equals(fieldName)) {
+                    deserializedCvss3Summary.integrityImpact = reader.getString();
+                } else if ("availabilityImpact".equals(fieldName)) {
+                    deserializedCvss3Summary.availabilityImpact = reader.getString();
+                } else if ("baseScore".equals(fieldName)) {
+                    deserializedCvss3Summary.baseScore = reader.getNullable(JsonReader::getDouble);
+                } else if ("baseSeverity".equals(fieldName)) {
+                    deserializedCvss3Summary.baseSeverity = reader.getString();
+                } else if ("exploitCodeMaturity".equals(fieldName)) {
+                    deserializedCvss3Summary.exploitCodeMaturity = reader.getString();
+                } else if ("remediationLevel".equals(fieldName)) {
+                    deserializedCvss3Summary.remediationLevel = reader.getString();
+                } else if ("reportConfidence".equals(fieldName)) {
+                    deserializedCvss3Summary.reportConfidence = reader.getString();
+                } else if ("exploitabilityScore".equals(fieldName)) {
+                    deserializedCvss3Summary.exploitabilityScore = reader.getNullable(JsonReader::getDouble);
+                } else if ("impactScore".equals(fieldName)) {
+                    deserializedCvss3Summary.impactScore = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedCvss3Summary;
+        });
     }
 }

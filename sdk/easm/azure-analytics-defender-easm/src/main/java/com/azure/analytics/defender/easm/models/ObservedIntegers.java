@@ -5,7 +5,12 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -18,14 +23,12 @@ public final class ObservedIntegers extends ObservedValue {
      * The values property.
      */
     @Generated
-    @JsonProperty(value = "values")
     private List<Integer> values;
 
     /*
      * The sources property.
      */
     @Generated
-    @JsonProperty(value = "sources")
     private List<Source> sources;
 
     /**
@@ -53,5 +56,62 @@ public final class ObservedIntegers extends ObservedValue {
     @Generated
     public List<Source> getSources() {
         return this.sources;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("firstSeen",
+            getFirstSeen() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getFirstSeen()));
+        jsonWriter.writeStringField("lastSeen",
+            getLastSeen() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getLastSeen()));
+        jsonWriter.writeNumberField("count", getCount());
+        jsonWriter.writeBooleanField("recent", isRecent());
+        jsonWriter.writeArrayField("values", this.values, (writer, element) -> writer.writeInt(element));
+        jsonWriter.writeArrayField("sources", this.sources, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ObservedIntegers from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ObservedIntegers if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ObservedIntegers.
+     */
+    @Generated
+    public static ObservedIntegers fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ObservedIntegers deserializedObservedIntegers = new ObservedIntegers();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("firstSeen".equals(fieldName)) {
+                    deserializedObservedIntegers.setFirstSeen(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                } else if ("lastSeen".equals(fieldName)) {
+                    deserializedObservedIntegers.setLastSeen(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                } else if ("count".equals(fieldName)) {
+                    deserializedObservedIntegers.setCount(reader.getNullable(JsonReader::getLong));
+                } else if ("recent".equals(fieldName)) {
+                    deserializedObservedIntegers.setRecent(reader.getNullable(JsonReader::getBoolean));
+                } else if ("values".equals(fieldName)) {
+                    List<Integer> values = reader.readArray(reader1 -> reader1.getInt());
+                    deserializedObservedIntegers.values = values;
+                } else if ("sources".equals(fieldName)) {
+                    List<Source> sources = reader.readArray(reader1 -> Source.fromJson(reader1));
+                    deserializedObservedIntegers.sources = sources;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedObservedIntegers;
+        });
     }
 }

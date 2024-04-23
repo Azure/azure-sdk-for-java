@@ -5,11 +5,10 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Defines values for ObservedPortStateValue.
+ * state of observed port.
  */
 public final class ObservedPortStateValue extends ExpandableStringEnum<ObservedPortStateValue> {
 
@@ -48,7 +47,6 @@ public final class ObservedPortStateValue extends ExpandableStringEnum<ObservedP
      * @return the corresponding ObservedPortStateValue.
      */
     @Generated
-    @JsonCreator
     public static ObservedPortStateValue fromString(String name) {
         return fromString(name, ObservedPortStateValue.class);
     }
