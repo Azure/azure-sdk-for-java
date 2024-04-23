@@ -10,74 +10,83 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.fluent.models.ProjectInner;
 import java.util.Map;
 
-/** An immutable client-side representation of Project. */
+/**
+ * An immutable client-side representation of Project.
+ */
 public interface Project {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
+     * Gets the identity property: Managed identity properties.
+     * 
+     * @return the identity value.
+     */
+    ManagedServiceIdentity identity();
+
+    /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
 
     /**
      * Gets the devCenterUri property: The URI of the Dev Center resource this project is associated with.
-     *
+     * 
      * @return the devCenterUri value.
      */
     String devCenterUri();
 
     /**
      * Gets the devCenterId property: Resource Id of an associated DevCenter.
-     *
+     * 
      * @return the devCenterId value.
      */
     String devCenterId();
 
     /**
      * Gets the description property: Description of the project.
-     *
+     * 
      * @return the description value.
      */
     String description();
@@ -85,65 +94,77 @@ public interface Project {
     /**
      * Gets the maxDevBoxesPerUser property: When specified, limits the maximum number of Dev Boxes a single user can
      * create across all pools in the project. This will have no effect on existing Dev Boxes when reduced.
-     *
+     * 
      * @return the maxDevBoxesPerUser value.
      */
     Integer maxDevBoxesPerUser();
 
     /**
      * Gets the displayName property: The display name of the project.
-     *
+     * 
      * @return the displayName value.
      */
     String displayName();
 
     /**
+     * Gets the catalogSettings property: Settings to be used when associating a project with a catalog.
+     * 
+     * @return the catalogSettings value.
+     */
+    ProjectCatalogSettings catalogSettings();
+
+    /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.devcenter.fluent.models.ProjectInner object.
-     *
+     * 
      * @return the inner object.
      */
     ProjectInner innerModel();
 
-    /** The entirety of the Project definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the Project definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
-    /** The Project definition stages. */
+    /**
+     * The Project definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the Project definition. */
+        /**
+         * The first stage of the Project definition.
+         */
         interface Blank extends WithLocation {
         }
 
-        /** The stage of the Project definition allowing to specify location. */
+        /**
+         * The stage of the Project definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -151,18 +172,20 @@ public interface Project {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
             WithResourceGroup withRegion(String location);
         }
 
-        /** The stage of the Project definition allowing to specify parent resource. */
+        /**
+         * The stage of the Project definition allowing to specify parent resource.
+         */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
@@ -173,188 +196,258 @@ public interface Project {
          * The stage of the Project definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithDevCenterId,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithMaxDevBoxesPerUser,
-                DefinitionStages.WithDisplayName {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
+            DefinitionStages.WithDevCenterId, DefinitionStages.WithDescription, DefinitionStages.WithMaxDevBoxesPerUser,
+            DefinitionStages.WithDisplayName, DefinitionStages.WithCatalogSettings {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             Project create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             Project create(Context context);
         }
 
-        /** The stage of the Project definition allowing to specify tags. */
+        /**
+         * The stage of the Project definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
 
-        /** The stage of the Project definition allowing to specify devCenterId. */
+        /**
+         * The stage of the Project definition allowing to specify identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Managed identity properties.
+             * 
+             * @param identity Managed identity properties.
+             * @return the next definition stage.
+             */
+            WithCreate withIdentity(ManagedServiceIdentity identity);
+        }
+
+        /**
+         * The stage of the Project definition allowing to specify devCenterId.
+         */
         interface WithDevCenterId {
             /**
              * Specifies the devCenterId property: Resource Id of an associated DevCenter.
-             *
+             * 
              * @param devCenterId Resource Id of an associated DevCenter.
              * @return the next definition stage.
              */
             WithCreate withDevCenterId(String devCenterId);
         }
 
-        /** The stage of the Project definition allowing to specify description. */
+        /**
+         * The stage of the Project definition allowing to specify description.
+         */
         interface WithDescription {
             /**
              * Specifies the description property: Description of the project..
-             *
+             * 
              * @param description Description of the project.
              * @return the next definition stage.
              */
             WithCreate withDescription(String description);
         }
 
-        /** The stage of the Project definition allowing to specify maxDevBoxesPerUser. */
+        /**
+         * The stage of the Project definition allowing to specify maxDevBoxesPerUser.
+         */
         interface WithMaxDevBoxesPerUser {
             /**
              * Specifies the maxDevBoxesPerUser property: When specified, limits the maximum number of Dev Boxes a
              * single user can create across all pools in the project. This will have no effect on existing Dev Boxes
              * when reduced..
-             *
+             * 
              * @param maxDevBoxesPerUser When specified, limits the maximum number of Dev Boxes a single user can create
-             *     across all pools in the project. This will have no effect on existing Dev Boxes when reduced.
+             * across all pools in the project. This will have no effect on existing Dev Boxes when reduced.
              * @return the next definition stage.
              */
             WithCreate withMaxDevBoxesPerUser(Integer maxDevBoxesPerUser);
         }
 
-        /** The stage of the Project definition allowing to specify displayName. */
+        /**
+         * The stage of the Project definition allowing to specify displayName.
+         */
         interface WithDisplayName {
             /**
              * Specifies the displayName property: The display name of the project..
-             *
+             * 
              * @param displayName The display name of the project.
              * @return the next definition stage.
              */
             WithCreate withDisplayName(String displayName);
         }
+
+        /**
+         * The stage of the Project definition allowing to specify catalogSettings.
+         */
+        interface WithCatalogSettings {
+            /**
+             * Specifies the catalogSettings property: Settings to be used when associating a project with a catalog..
+             * 
+             * @param catalogSettings Settings to be used when associating a project with a catalog.
+             * @return the next definition stage.
+             */
+            WithCreate withCatalogSettings(ProjectCatalogSettings catalogSettings);
+        }
     }
 
     /**
      * Begins update for the Project resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     Project.Update update();
 
-    /** The template for Project update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithDevCenterId,
-            UpdateStages.WithDescription,
-            UpdateStages.WithMaxDevBoxesPerUser,
-            UpdateStages.WithDisplayName {
+    /**
+     * The template for Project update.
+     */
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithDevCenterId,
+        UpdateStages.WithDescription, UpdateStages.WithMaxDevBoxesPerUser, UpdateStages.WithDisplayName,
+        UpdateStages.WithCatalogSettings {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         Project apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         Project apply(Context context);
     }
 
-    /** The Project update stages. */
+    /**
+     * The Project update stages.
+     */
     interface UpdateStages {
-        /** The stage of the Project update allowing to specify tags. */
+        /**
+         * The stage of the Project update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
         }
 
-        /** The stage of the Project update allowing to specify devCenterId. */
+        /**
+         * The stage of the Project update allowing to specify identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Managed identity properties.
+             * 
+             * @param identity Managed identity properties.
+             * @return the next definition stage.
+             */
+            Update withIdentity(ManagedServiceIdentity identity);
+        }
+
+        /**
+         * The stage of the Project update allowing to specify devCenterId.
+         */
         interface WithDevCenterId {
             /**
              * Specifies the devCenterId property: Resource Id of an associated DevCenter.
-             *
+             * 
              * @param devCenterId Resource Id of an associated DevCenter.
              * @return the next definition stage.
              */
             Update withDevCenterId(String devCenterId);
         }
 
-        /** The stage of the Project update allowing to specify description. */
+        /**
+         * The stage of the Project update allowing to specify description.
+         */
         interface WithDescription {
             /**
              * Specifies the description property: Description of the project..
-             *
+             * 
              * @param description Description of the project.
              * @return the next definition stage.
              */
             Update withDescription(String description);
         }
 
-        /** The stage of the Project update allowing to specify maxDevBoxesPerUser. */
+        /**
+         * The stage of the Project update allowing to specify maxDevBoxesPerUser.
+         */
         interface WithMaxDevBoxesPerUser {
             /**
              * Specifies the maxDevBoxesPerUser property: When specified, limits the maximum number of Dev Boxes a
              * single user can create across all pools in the project. This will have no effect on existing Dev Boxes
              * when reduced..
-             *
+             * 
              * @param maxDevBoxesPerUser When specified, limits the maximum number of Dev Boxes a single user can create
-             *     across all pools in the project. This will have no effect on existing Dev Boxes when reduced.
+             * across all pools in the project. This will have no effect on existing Dev Boxes when reduced.
              * @return the next definition stage.
              */
             Update withMaxDevBoxesPerUser(Integer maxDevBoxesPerUser);
         }
 
-        /** The stage of the Project update allowing to specify displayName. */
+        /**
+         * The stage of the Project update allowing to specify displayName.
+         */
         interface WithDisplayName {
             /**
              * Specifies the displayName property: The display name of the project..
-             *
+             * 
              * @param displayName The display name of the project.
              * @return the next definition stage.
              */
             Update withDisplayName(String displayName);
         }
+
+        /**
+         * The stage of the Project update allowing to specify catalogSettings.
+         */
+        interface WithCatalogSettings {
+            /**
+             * Specifies the catalogSettings property: Settings to be used when associating a project with a catalog..
+             * 
+             * @param catalogSettings Settings to be used when associating a project with a catalog.
+             * @return the next definition stage.
+             */
+            Update withCatalogSettings(ProjectCatalogSettings catalogSettings);
+        }
     }
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     Project refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
