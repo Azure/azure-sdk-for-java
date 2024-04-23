@@ -47,6 +47,7 @@ public abstract class AbstractAzureCredentialBuilderFactory<T extends Credential
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     protected BiConsumer<T, HttpPipeline> consumeHttpPipeline() {
         return T::httpPipeline;
     }

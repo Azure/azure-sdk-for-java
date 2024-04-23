@@ -11,6 +11,7 @@ import java.util.List;
 /**
  * Method parameters that have to be bound to query parameters or applied to the query independently.
  */
+@SuppressWarnings("removal")
 public class CosmosParameters extends Parameters<CosmosParameters, CosmosParameter> {
 
     /**
