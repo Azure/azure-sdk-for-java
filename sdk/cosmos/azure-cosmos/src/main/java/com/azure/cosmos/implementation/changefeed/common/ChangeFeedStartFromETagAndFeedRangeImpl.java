@@ -3,12 +3,12 @@
 
 package com.azure.cosmos.implementation.changefeed.common;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 
-import static com.azure.cosmos.BridgeInternal.setProperty;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -86,15 +86,15 @@ class ChangeFeedStartFromETagAndFeedRangeImpl extends ChangeFeedStartFromInterna
         super.populatePropertyBag();
 
         synchronized(this) {
-            setProperty(
-                this,
+            this.set(
                 Constants.Properties.CHANGE_FEED_START_FROM_TYPE,
-                ChangeFeedStartFromTypes.LEASE);
+                ChangeFeedStartFromTypes.LEASE,
+                CosmosItemSerializer.DEFAULT_SERIALIZER);
 
-            setProperty(
-                this,
+            this.set(
                 Constants.Properties.CHANGE_FEED_START_FROM_ETAG,
-                this.eTag);
+                this.eTag,
+                CosmosItemSerializer.DEFAULT_SERIALIZER);
 
             this.feedRange.setProperties(
                 this,

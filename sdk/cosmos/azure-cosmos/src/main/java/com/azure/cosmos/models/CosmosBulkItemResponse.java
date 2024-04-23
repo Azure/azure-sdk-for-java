@@ -5,8 +5,10 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.JsonSerializable;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.batch.BatchExecUtils;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Flux;
@@ -31,6 +33,7 @@ public final class CosmosBulkItemResponse {
     private final int subStatusCode;
     private final Map<String, String> responseHeaders;
     private final CosmosDiagnostics cosmosDiagnostics;
+    private CosmosItemSerializer effectiveItemSerializer;
 
     /**
      * Initializes a new instance of the {@link CosmosBulkItemResponse} class.
@@ -42,7 +45,8 @@ public final class CosmosBulkItemResponse {
                            Duration retryAfter,
                            int subStatusCode,
                            Map<String, String> responseHeaders,
-                           CosmosDiagnostics cosmosDiagnostics) {
+                           CosmosDiagnostics cosmosDiagnostics,
+                           CosmosItemSerializer effectiveItemSerializer) {
 
         checkNotNull(responseHeaders, "expected non-null responseHeaders");
 
@@ -54,6 +58,7 @@ public final class CosmosBulkItemResponse {
         this.subStatusCode = subStatusCode;
         this.responseHeaders = responseHeaders;
         this.cosmosDiagnostics = cosmosDiagnostics;
+        this.effectiveItemSerializer = effectiveItemSerializer;
     }
 
     /**
@@ -67,7 +72,6 @@ public final class CosmosBulkItemResponse {
 
     /**
      * Gets the entity tag associated with the current item.
-     *
      * ETags are used for concurrency checking when updating resources.
      *
      * @return Entity tag associated with the current item.
@@ -101,7 +105,11 @@ public final class CosmosBulkItemResponse {
         T item = null;
 
         if (this.getResourceObject() != null) {
-            item = new JsonSerializable(this.getResourceObject()).toObject(type);
+            if (effectiveItemSerializer == CosmosItemSerializer.DEFAULT_SERIALIZER) {
+                item = new JsonSerializable(this.getResourceObject()).toObject(type);
+            } else {
+                item = Utils.parse(this.getResourceObject(), type, effectiveItemSerializer);
+            }
         }
 
         return item;
@@ -187,6 +195,10 @@ public final class CosmosBulkItemResponse {
         return resourceObject;
     }
 
+    void setEffectiveItemSerializer(CosmosItemSerializer effectiveItemSerializer) {
+        this.effectiveItemSerializer = effectiveItemSerializer;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -203,6 +215,13 @@ public final class CosmosBulkItemResponse {
                 public void setResourceObject(CosmosBulkItemResponse cosmosBulkItemResponse,
                                               ObjectNode objectNode) {
                     cosmosBulkItemResponse.resourceObject = objectNode;
+                }
+
+                @Override
+                public void setEffectiveItemSerializer(CosmosBulkItemResponse cosmosBulkItemResponse,
+                                                       CosmosItemSerializer effectiveItemSerializer) {
+
+                    cosmosBulkItemResponse.setEffectiveItemSerializer(effectiveItemSerializer);
                 }
             });
     }

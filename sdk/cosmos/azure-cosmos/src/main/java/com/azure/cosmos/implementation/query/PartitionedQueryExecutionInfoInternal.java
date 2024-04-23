@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.BridgeInternal;
@@ -27,7 +28,10 @@ public final class PartitionedQueryExecutionInfoInternal extends JsonSerializabl
     private List<Range<PartitionKeyInternal>> queryRanges;
 
     public PartitionedQueryExecutionInfoInternal() {
-        BridgeInternal.setProperty(this, PARTITIONED_QUERY_EXECUTION_INFO_VERSION_PROPERTY, Constants.PartitionedQueryExecutionInfo.VERSION_1);
+        this.set(
+            PARTITIONED_QUERY_EXECUTION_INFO_VERSION_PROPERTY,
+            Constants.PartitionedQueryExecutionInfo.VERSION_1,
+            CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     public PartitionedQueryExecutionInfoInternal(ObjectNode objectNode) {

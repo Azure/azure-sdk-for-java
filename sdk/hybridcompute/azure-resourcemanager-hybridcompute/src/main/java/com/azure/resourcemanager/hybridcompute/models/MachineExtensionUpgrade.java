@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Describes the Machine Extension Upgrade Properties. */
+/**
+ * Describes the Machine Extension Upgrade Properties.
+ */
 @Fluent
 public final class MachineExtensionUpgrade {
     /*
@@ -19,13 +21,15 @@ public final class MachineExtensionUpgrade {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ExtensionTargetProperties> extensionTargets;
 
-    /** Creates an instance of MachineExtensionUpgrade class. */
+    /**
+     * Creates an instance of MachineExtensionUpgrade class.
+     */
     public MachineExtensionUpgrade() {
     }
 
     /**
      * Get the extensionTargets property: Describes the Extension Target Properties.
-     *
+     * 
      * @return the extensionTargets value.
      */
     public Map<String, ExtensionTargetProperties> extensionTargets() {
@@ -34,7 +38,7 @@ public final class MachineExtensionUpgrade {
 
     /**
      * Set the extensionTargets property: Describes the Extension Target Properties.
-     *
+     * 
      * @param extensionTargets the extensionTargets value to set.
      * @return the MachineExtensionUpgrade object itself.
      */
@@ -45,19 +49,16 @@ public final class MachineExtensionUpgrade {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (extensionTargets() != null) {
-            extensionTargets()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            extensionTargets().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

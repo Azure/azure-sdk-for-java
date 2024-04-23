@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import org.slf4j.Logger;
@@ -61,11 +62,11 @@ public final class LimitContinuationToken extends JsonSerializable {
     }
 
     private void setLimitCount(int limitCount) {
-        BridgeInternal.setProperty(this, LIMIT_PROPERTY_NAME, limitCount);
+        this.set(LIMIT_PROPERTY_NAME, limitCount, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     private void setSourceToken(String sourceToken) {
-        BridgeInternal.setProperty(this, SOURCE_TOKEN_PROPERTY_NAME, sourceToken);
+        this.set(SOURCE_TOKEN_PROPERTY_NAME, sourceToken, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     @Override

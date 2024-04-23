@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.batch;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.PartitionKey;
 import java.util.List;
@@ -35,13 +36,14 @@ public final class SinglePartitionKeyServerBatchRequest extends ServerBatchReque
      */
     static SinglePartitionKeyServerBatchRequest createBatchRequest(
         final PartitionKey partitionKey,
-        final List<CosmosItemOperation> operations) {
+        final List<CosmosItemOperation> operations,
+        final CosmosItemSerializer effectiveItemSerializer) {
 
         checkNotNull(partitionKey, "expected non-null partitionKey");
         checkNotNull(operations, "expected non-null operations");
 
         final SinglePartitionKeyServerBatchRequest request = new SinglePartitionKeyServerBatchRequest(partitionKey);
-        request.createBodyOfBatchRequest(operations);
+        request.createBodyOfBatchRequest(operations, effectiveItemSerializer);
 
         return request;
     }

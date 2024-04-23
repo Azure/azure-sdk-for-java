@@ -5,10 +5,10 @@
 package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.devcenter.models.ScheduleEnableStatus;
-import com.azure.resourcemanager.devcenter.models.ScheduleUpdate;
 import com.azure.resourcemanager.devcenter.models.ScheduledFrequency;
 import com.azure.resourcemanager.devcenter.models.ScheduledType;
+import com.azure.resourcemanager.devcenter.models.ScheduleEnableStatus;
+import com.azure.resourcemanager.devcenter.models.ScheduleUpdate;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -16,39 +16,35 @@ import org.junit.jupiter.api.Assertions;
 public final class ScheduleUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScheduleUpdate model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"sx\",\"timeZone\":\"jmsvpkjp\",\"state\":\"Enabled\"},\"tags\":{\"ljyxgtczhe\":\"fz\"},\"location\":\"bsdshmkxmaehvbbx\"}")
-                .toObject(ScheduleUpdate.class);
-        Assertions.assertEquals("fz", model.tags().get("ljyxgtczhe"));
-        Assertions.assertEquals("bsdshmkxmaehvbbx", model.location());
+        ScheduleUpdate model = BinaryData.fromString(
+            "{\"properties\":{\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"yik\",\"timeZone\":\"lauyav\",\"state\":\"Enabled\",\"tags\":{\"gsgbdhuzq\":\"csttijfybvpoekr\",\"zvhxnk\":\"njdgkynscliq\"},\"location\":\"tkubotppn\"}}")
+            .toObject(ScheduleUpdate.class);
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, model.type());
         Assertions.assertEquals(ScheduledFrequency.DAILY, model.frequency());
-        Assertions.assertEquals("sx", model.time());
-        Assertions.assertEquals("jmsvpkjp", model.timeZone());
+        Assertions.assertEquals("yik", model.time());
+        Assertions.assertEquals("lauyav", model.timeZone());
         Assertions.assertEquals(ScheduleEnableStatus.ENABLED, model.state());
+        Assertions.assertEquals("csttijfybvpoekr", model.tags().get("gsgbdhuzq"));
+        Assertions.assertEquals("tkubotppn", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScheduleUpdate model =
-            new ScheduleUpdate()
-                .withTags(mapOf("ljyxgtczhe", "fz"))
-                .withLocation("bsdshmkxmaehvbbx")
-                .withType(ScheduledType.STOP_DEV_BOX)
-                .withFrequency(ScheduledFrequency.DAILY)
-                .withTime("sx")
-                .withTimeZone("jmsvpkjp")
-                .withState(ScheduleEnableStatus.ENABLED);
+        ScheduleUpdate model = new ScheduleUpdate().withType(ScheduledType.STOP_DEV_BOX)
+            .withFrequency(ScheduledFrequency.DAILY)
+            .withTime("yik")
+            .withTimeZone("lauyav")
+            .withState(ScheduleEnableStatus.ENABLED)
+            .withTags(mapOf("gsgbdhuzq", "csttijfybvpoekr", "zvhxnk", "njdgkynscliq"))
+            .withLocation("tkubotppn");
         model = BinaryData.fromObject(model).toObject(ScheduleUpdate.class);
-        Assertions.assertEquals("fz", model.tags().get("ljyxgtczhe"));
-        Assertions.assertEquals("bsdshmkxmaehvbbx", model.location());
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, model.type());
         Assertions.assertEquals(ScheduledFrequency.DAILY, model.frequency());
-        Assertions.assertEquals("sx", model.time());
-        Assertions.assertEquals("jmsvpkjp", model.timeZone());
+        Assertions.assertEquals("yik", model.time());
+        Assertions.assertEquals("lauyav", model.timeZone());
         Assertions.assertEquals(ScheduleEnableStatus.ENABLED, model.state());
+        Assertions.assertEquals("csttijfybvpoekr", model.tags().get("gsgbdhuzq"));
+        Assertions.assertEquals("tkubotppn", model.location());
     }
 
     // Use "Map.of" if available

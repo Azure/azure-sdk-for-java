@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.batch;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.models.CosmosItemOperation;
 
 import java.util.List;
@@ -49,7 +50,8 @@ public final class PartitionKeyRangeServerBatchRequest extends ServerBatchReques
         final String partitionKeyRangeId,
         final List<CosmosItemOperation> operations,
         final int maxBodyLength,
-        final int maxOperationCount) {
+        final int maxOperationCount,
+        final CosmosItemSerializer clientItemSerializer) {
 
         final PartitionKeyRangeServerBatchRequest request = new PartitionKeyRangeServerBatchRequest(
             partitionKeyRangeId,
@@ -59,7 +61,7 @@ public final class PartitionKeyRangeServerBatchRequest extends ServerBatchReques
         request.setAtomicBatch(false);
         request.setShouldContinueOnError(true);
 
-        List<CosmosItemOperation> pendingOperations = request.createBodyOfBatchRequest(operations);
+        List<CosmosItemOperation> pendingOperations = request.createBodyOfBatchRequest(operations, clientItemSerializer);
 
         return new ServerOperationBatchRequest(request, pendingOperations);
     }
