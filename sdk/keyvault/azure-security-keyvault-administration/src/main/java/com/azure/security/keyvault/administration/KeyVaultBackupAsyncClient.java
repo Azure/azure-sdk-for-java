@@ -18,6 +18,8 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
 import com.azure.security.keyvault.administration.implementation.KeyVaultBackupClientImpl;
 import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
+import com.azure.security.keyvault.administration.implementation.models.PreBackupOperationParameters;
+import com.azure.security.keyvault.administration.implementation.models.PreRestoreOperationParameters;
 import com.azure.security.keyvault.administration.implementation.models.RestoreOperation;
 import com.azure.security.keyvault.administration.implementation.models.RestoreOperationParameters;
 import com.azure.security.keyvault.administration.implementation.models.SASTokenParameter;
@@ -401,6 +403,88 @@ public final class KeyVaultBackupAsyncClient {
     }
 
     /**
+     * Initiates a pre-full backup of the Key Vault. This operation checks whether a full backup operation can be performed
+     * at a later point.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Starts a {@link KeyVaultBackupOperation pre-backup operation}, polls for its status and waits for it to
+     * complete. Prints out the details of the operation's final result in case of success or prints out details of an
+     * error in case the operation fails.</p>
+     * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient.beginPreBackup#String-String -->
+     * <!-- end com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient.beginPreBackup#String-String -->
+     *
+     * @param blobStorageUrl The URL for the Blob Storage resource where the backup will be located.
+     * @param sasToken Optional Shared Access Signature (SAS) token to authorize access to the blob. If {@code null},
+     * Managed Identity will be used to authenticate instead.
+     *
+     * @return A {@link PollerFlux} polling on the {@link KeyVaultBackupOperation pre-backup operation} status.
+     *
+     * @throws KeyVaultAdministrationException If the given {@code blobStorageUrl} or {@code sasToken} are invalid.
+     * @throws NullPointerException If the {@code blobStorageUrl} is {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<KeyVaultBackupOperation, String> beginPreBackup(String blobStorageUrl, String sasToken) {
+        if (blobStorageUrl == null) {
+            throw LOGGER.logExceptionAsError(
+                new NullPointerException(
+                    String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'blobStorageUrl'")));
+        }
+
+        return new PollerFlux<>(getDefaultPollingInterval(),
+            preBackupActivationOperation(blobStorageUrl, sasToken),
+            backupPollOperation(),
+            (pollingContext, firstResponse) ->
+                Mono.error(LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"))),
+            backupFetchOperation());
+    }
+
+    /**
+     * Initiates a full backup of the Key Vault. This operation checks whether a full backup operation can be performed
+     * at a later point.
+     *
+     * @param blobStorageUrl The URL for the Blob Storage resource where the backup will be located.
+     * @param sasToken Optional Shared Access Signature (SAS) token to authorize access to the blob. If {@code null},
+     * Managed Identity will be used to authenticate instead.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return A {@link PollerFlux} polling on the {@link KeyVaultBackupOperation pre-backup operation} status.
+     *
+     * @throws KeyVaultAdministrationException If the given {@code blobStorageUrl} or {@code sasToken} are invalid.
+     */
+    Mono<Response<KeyVaultBackupOperation>> preBackupWithResponse(String blobStorageUrl, String sasToken,
+                                                                  Context context) {
+        PreBackupOperationParameters preBackupOperationParameters = new PreBackupOperationParameters()
+            .setStorageResourceUri(blobStorageUrl)
+            .setToken(sasToken)
+            .setUseManagedIdentity(sasToken == null);
+
+        try {
+            return clientImpl.preFullBackupWithResponseAsync(vaultUrl, preBackupOperationParameters, context)
+                .doOnRequest(ignored -> LOGGER.verbose("Backing up at URL - {}", blobStorageUrl))
+                .doOnSuccess(response -> LOGGER.verbose("Backed up at URL - {}",
+                    response.getValue().getAzureStorageBlobContainerUri()))
+                .doOnError(error -> LOGGER.warning("Failed to backup at URL - {}", blobStorageUrl, error))
+                .map(backupOperationResponse ->
+                    new SimpleResponse<>(backupOperationResponse.getRequest(), backupOperationResponse.getStatusCode(),
+                        backupOperationResponse.getHeaders(),
+                        (KeyVaultBackupOperation) transformToLongRunningOperation(backupOperationResponse.getValue())));
+        } catch (RuntimeException e) {
+            return monoError(LOGGER, e);
+        }
+    }
+
+    private Function<PollingContext<KeyVaultBackupOperation>, Mono<KeyVaultBackupOperation>> preBackupActivationOperation(String blobStorageUrl, String sasToken) {
+        return (pollingContext) -> {
+            try {
+                return withContext(context -> preBackupWithResponse(blobStorageUrl, sasToken, context))
+                    .flatMap(backupResponse -> Mono.just(backupResponse.getValue()));
+            } catch (RuntimeException e) {
+                return monoError(LOGGER, e);
+            }
+        };
+    }
+
+    /**
      * Initiates a full restore of the Key Vault.
      *
      * <p><strong>Code Samples</strong></p>
@@ -552,6 +636,103 @@ public final class KeyVaultBackupAsyncClient {
 
         return Mono.just(new PollResponse<>(
             toLongRunningOperationStatus(operationStatus.toLowerCase(Locale.US)), response.getValue()));
+    }
+
+    /**
+     * Initiates a pre-full restore of the Key Vault. This operation checks whether a full restore operation can be
+     * performed at a later point.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Starts a {@link KeyVaultRestoreOperation pre-restore operation}, polls for its status and waits for it to
+     * complete. Prints out error details in case the operation fails.</p>
+     * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient.beginPreRestore#String-String -->
+     * <!-- end com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient.beginPreRestore#String-String -->
+     *
+     * @param folderUrl The URL for the Blob Storage resource where the backup is located, including the path to
+     * the blob container where the backup resides. This would be the exact value that is returned as the result of a
+     * backup operation. An example of such a URL may look like the following:
+     * {@code https://contoso.blob.core.windows.net/backup/mhsm-contoso-2020090117323313}.
+     * @param sasToken Optional Shared Access Signature (SAS) token to authorize access to the blob. If {@code null},
+     * Managed Identity will be used to authenticate instead.
+     *
+     * @return A {@link PollerFlux} polling on the {@link KeyVaultRestoreOperation restore operation} status.
+     *
+     * @throws KeyVaultAdministrationException If the given {@code folderUrl} or {@code sasToken} are invalid.
+     * @throws NullPointerException If the {@code folderUrl} is {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<KeyVaultRestoreOperation, KeyVaultRestoreResult> beginPreRestore(String folderUrl,
+                                                                                       String sasToken) {
+        if (folderUrl == null) {
+            throw LOGGER.logExceptionAsError(
+                new NullPointerException(String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'folderUrl'")));
+        }
+
+        return new PollerFlux<>(getDefaultPollingInterval(),
+            preRestoreActivationOperation(folderUrl, sasToken),
+            restorePollOperation(),
+            (pollingContext, firstResponse) ->
+                Mono.error(LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"))),
+            (pollingContext) -> Mono.just(new KeyVaultRestoreResult()));
+    }
+
+    /**
+     * Initiates a pre-full restore of the Key Vault. This operation checks whether a full restore operation can be
+     * performed at a later point.
+     *
+     * @param folderUrl The URL for the Blob Storage resource where the backup is located, including the path to
+     * the blob container where the backup resides. This would be the exact value that is returned as the result of a
+     * backup operation. An example of such a URL may look like the following:
+     * {@code https://contoso.blob.core.windows.net/backup/mhsm-contoso-2020090117323313}.
+     * @param sasToken Optional Shared Access Signature (SAS) token to authorize access to the blob. If {@code null},
+     * Managed Identity will be used to authenticate instead.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return A {@link PollerFlux} polling on the {@link KeyVaultRestoreOperation backup operation} status.
+     *
+     * @throws KeyVaultAdministrationException If the given {@code folderUrl} or {@code sasToken} are invalid.
+     */
+    Mono<Response<KeyVaultRestoreOperation>> preRestoreWithResponse(String folderUrl, String sasToken,
+                                                                    Context context) {
+        String[] segments = folderUrl.split("/");
+        String folderName = segments[segments.length - 1];
+        String containerUrl = folderUrl.substring(0, folderUrl.length() - folderName.length());
+
+        SASTokenParameter sasTokenParameter = new SASTokenParameter(containerUrl)
+            .setToken(sasToken)
+            .setUseManagedIdentity(sasToken == null);
+
+        PreRestoreOperationParameters preRestoreOperationParameters =
+            new PreRestoreOperationParameters()
+                .setFolderToRestore(folderName)
+                .setSasTokenParameters(sasTokenParameter);
+
+        try {
+            return clientImpl.preFullRestoreOperationWithResponseAsync(vaultUrl, preRestoreOperationParameters, context)
+                .doOnRequest(ignored -> LOGGER.verbose("Restoring from location - {}", folderUrl))
+                .doOnSuccess(response -> LOGGER.verbose("Restored from location - {}", folderUrl))
+                .doOnError(error ->
+                    LOGGER.warning("Failed to restore from location - {}", folderUrl, error))
+                .map(restoreOperationResponse ->
+                    new SimpleResponse<>(restoreOperationResponse.getRequest(),
+                        restoreOperationResponse.getStatusCode(),
+                        restoreOperationResponse.getHeaders(),
+                        (KeyVaultRestoreOperation) transformToLongRunningOperation(
+                            restoreOperationResponse.getValue())));
+        } catch (RuntimeException e) {
+            return monoError(LOGGER, e);
+        }
+    }
+
+    private Function<PollingContext<KeyVaultRestoreOperation>, Mono<KeyVaultRestoreOperation>> preRestoreActivationOperation(String folderUrl, String sasToken) {
+        return (pollingContext) -> {
+            try {
+                return withContext(context -> preRestoreWithResponse(folderUrl, sasToken, context))
+                    .flatMap(restoreResponse -> Mono.just(restoreResponse.getValue()));
+            } catch (RuntimeException e) {
+                return monoError(LOGGER, e);
+            }
+        };
     }
 
     /**
