@@ -22,6 +22,7 @@ import java.util.Collections;
  * Configuration extension class based on {@link RepositoryConfigurationExtensionSupport} provide options to set
  * reactive repository support.
  */
+@SuppressWarnings("deprecation")
 public class ReactiveCosmosRepositoryConfigurationExtension extends RepositoryConfigurationExtensionSupport {
 
     /**

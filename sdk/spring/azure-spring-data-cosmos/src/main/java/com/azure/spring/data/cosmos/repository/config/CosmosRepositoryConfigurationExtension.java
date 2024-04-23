@@ -22,6 +22,7 @@ import java.util.Collections;
  * Configuration extension class based on {@link RepositoryConfigurationExtensionSupport} provide options to set
  * repository support.
  */
+@SuppressWarnings("deprecation")
 public class CosmosRepositoryConfigurationExtension extends RepositoryConfigurationExtensionSupport {
 
     /**
