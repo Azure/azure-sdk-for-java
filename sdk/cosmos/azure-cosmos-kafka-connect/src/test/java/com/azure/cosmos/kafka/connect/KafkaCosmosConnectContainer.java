@@ -6,6 +6,7 @@ package com.azure.cosmos.kafka.connect;
 import com.azure.core.exception.ResourceNotFoundException;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.NewTopic;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,7 @@ import org.testcontainers.utility.DockerImageName;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Properties;
+import java.util.UUID;
 
 public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosConnectContainer> {
     private static final Logger logger = LoggerFactory.getLogger(KafkaCosmosConnectContainer.class);
@@ -185,11 +187,15 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
     }
 
     public Properties getProducerProperties() {
-        return (Properties) producerProperties.clone();
+        Properties properties = (Properties) producerProperties.clone();
+        properties.put(ProducerConfig.CLIENT_ID_CONFIG, "IntegrationTest-producer-" + UUID.randomUUID());
+        return properties;
     }
 
     public Properties getConsumerProperties() {
-        return (Properties) consumerProperties.clone();
+        Properties properties = (Properties) consumerProperties.clone();
+        properties.put("group.id", "IntegrationTest-consumer-" + UUID.randomUUID());
+        return properties;
     }
 
     public void createTopic(String topicName, int numPartitions) {

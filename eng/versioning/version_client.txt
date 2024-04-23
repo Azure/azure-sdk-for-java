@@ -156,7 +156,7 @@ com.azure:azure-messaging-eventhubs-checkpointstore-jedis;1.0.0-beta.2;1.0.0-bet
 com.azure:azure-messaging-eventhubs-stress;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventhubs-track1-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventhubs-track2-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-messaging-servicebus;7.15.2;7.16.0
+com.azure:azure-messaging-servicebus;7.16.0;7.17.0-beta.1
 com.azure:azure-messaging-servicebus-stress;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-servicebus-track1-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-servicebus-track2-perf;1.0.0-beta.1;1.0.0-beta.1
@@ -412,7 +412,7 @@ com.azure.resourcemanager:azure-resourcemanager-orbital;1.0.0-beta.2;1.0.0-beta.
 com.azure.resourcemanager:azure-resourcemanager-networkfunction;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-resourceconnector;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-fluidrelay;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-devcenter;1.0.0-beta.6;1.0.0-beta.7
+com.azure.resourcemanager:azure-resourcemanager-devcenter;1.0.0-beta.7;1.0.0-beta.8
 com.azure.resourcemanager:azure-resourcemanager-connectedvmware;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-alertsmanagement;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-nginx;1.0.0;1.1.0-beta.1
@@ -434,7 +434,7 @@ com.azure.resourcemanager:azure-resourcemanager-graphservices;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-paloaltonetworks-ngfw;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-newrelicobservability;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-qumulo;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-selfhelp;1.0.0;1.1.0-beta.3
+com.azure.resourcemanager:azure-resourcemanager-selfhelp;1.0.0;1.1.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-networkcloud;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-cosmosdbforpostgresql;1.0.0;1.1.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-managementgroups;1.0.0-beta.1;1.0.0-beta.2
@@ -456,8 +456,8 @@ com.azure.resourcemanager:azure-resourcemanager-workloadssapvirtualinstance;1.0.
 com.azure.resourcemanager:azure-resourcemanager-largeinstance;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-migrationdiscoverysap;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-storageactions;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-standbypool;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-deviceregistry;1.0.0-beta.1;1.0.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-standbypool;1.0.0-beta.1;1.0.0-beta.2
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
 

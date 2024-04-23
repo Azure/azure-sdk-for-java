@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Indicates the type of sync that is configured for the catalog. */
+/**
+ * Indicates the type of sync that is configured for the catalog.
+ */
 public final class CatalogSyncType extends ExpandableStringEnum<CatalogSyncType> {
-    /** Static value Manual for CatalogSyncType. */
+    /**
+     * Static value Manual for CatalogSyncType.
+     */
     public static final CatalogSyncType MANUAL = fromString("Manual");
 
-    /** Static value Scheduled for CatalogSyncType. */
+    /**
+     * Static value Scheduled for CatalogSyncType.
+     */
     public static final CatalogSyncType SCHEDULED = fromString("Scheduled");
 
     /**
      * Creates a new instance of CatalogSyncType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class CatalogSyncType extends ExpandableStringEnum<CatalogSyncType>
 
     /**
      * Creates or finds a CatalogSyncType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CatalogSyncType.
      */
@@ -38,7 +44,7 @@ public final class CatalogSyncType extends ExpandableStringEnum<CatalogSyncType>
 
     /**
      * Gets known CatalogSyncType values.
-     *
+     * 
      * @return known CatalogSyncType values.
      */
     public static Collection<CatalogSyncType> values() {
