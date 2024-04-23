@@ -498,7 +498,7 @@ public class StoreReaderTest {
         request.requestContext.requestChargeTracker = new RequestChargeTracker();
 
         Mockito.doReturn(Mono.just(primaryURI)).when(addressSelector).resolvePrimaryUriAsync(
-              Mockito.eq(request) , Mockito.eq(false));
+              Mockito.eq(request) , Mockito.eq(false), Mockito.anyMap());
 
         StoreResponse storeResponse = Mockito.mock(StoreResponse.class);
         Mockito.doReturn(Mono.just(storeResponse)).when(transportClient).invokeResourceOperationAsync(Mockito.eq(primaryURI), Mockito.eq(request));
@@ -529,7 +529,7 @@ public class StoreReaderTest {
         request.requestContext.requestChargeTracker = new RequestChargeTracker();
 
         Mockito.doReturn(Mono.just(primaryURI)).when(addressSelector).resolvePrimaryUriAsync(
-                Mockito.eq(request) , Mockito.eq(false));
+                Mockito.eq(request) , Mockito.eq(false), Mockito.anyMap());
 
         Mockito.doReturn(Mono.error(ExceptionBuilder.create().asGoneException())).when(transportClient).invokeResourceOperationAsync(Mockito.eq(primaryURI), Mockito.eq(request));
         StoreReader storeReader = new StoreReader(transportClient, addressSelector, sessionContainer);
@@ -586,7 +586,7 @@ public class StoreReaderTest {
         request.requestContext.requestChargeTracker = new RequestChargeTracker();
 
         Mockito.doReturn(Mono.just(primaryURI)).when(addressSelector).resolvePrimaryUriAsync(
-            Mockito.eq(request) , Mockito.eq(false));
+            Mockito.eq(request) , Mockito.eq(false), Mockito.anyMap());
 
         StoreResponse storeResponse = Mockito.mock(StoreResponse.class);
         Mockito.doReturn(Mono.just(storeResponse)).when(transportClient).invokeResourceOperationAsync(Mockito.eq(primaryURI), Mockito.eq(request));

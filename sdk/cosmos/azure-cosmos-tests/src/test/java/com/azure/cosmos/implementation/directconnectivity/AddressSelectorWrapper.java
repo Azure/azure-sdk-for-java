@@ -258,7 +258,7 @@ public class AddressSelectorWrapper {
     }
 
     public AddressSelectorWrapper verifyVesolvePrimaryUriAsyncCount(int count) {
-        Mockito.verify(addressSelector, Mockito.times(count)).resolvePrimaryUriAsync(Mockito.any(), Mockito.anyBoolean());
+        Mockito.verify(addressSelector, Mockito.times(count)).resolvePrimaryUriAsync(Mockito.any(), Mockito.anyBoolean(), Mockito.anyMap());
         return this;
     }
 
@@ -314,7 +314,7 @@ public class AddressSelectorWrapper {
                     }
 
                     return Mono.just(primaryURIBeforeForceRefresh);
-                }).when(addressSelector).resolvePrimaryUriAsync(Mockito.any(RxDocumentServiceRequest.class), Mockito.anyBoolean());
+                }).when(addressSelector).resolvePrimaryUriAsync(Mockito.any(RxDocumentServiceRequest.class), Mockito.anyBoolean(), Mockito.anyMap());
 
                 Mockito.doAnswer((invocation -> {
                     capture(invocation);
@@ -482,7 +482,7 @@ public class AddressSelectorWrapper {
                 Mockito.doAnswer((invocation) -> {
                     capture(invocation);
                     return Mono.just(primaryAddress);
-                }).when(addressSelector).resolvePrimaryUriAsync(Mockito.any(RxDocumentServiceRequest.class), Mockito.anyBoolean());
+                }).when(addressSelector).resolvePrimaryUriAsync(Mockito.any(RxDocumentServiceRequest.class), Mockito.anyBoolean(), Mockito.anyMap());
 
                 Mockito.doAnswer((invocation -> {
                     capture(invocation);
