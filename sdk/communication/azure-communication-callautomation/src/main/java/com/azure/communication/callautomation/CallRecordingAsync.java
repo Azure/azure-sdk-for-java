@@ -178,6 +178,9 @@ public final class CallRecordingAsync {
                 .collect(Collectors.toList());
             request.setChannelAffinity(channelAffinityInternals);
         }
+        if (options.isPauseOnStart() != null) {
+            request.setPauseOnStart(options.isPauseOnStart());
+        }
 
         return request;
     }
