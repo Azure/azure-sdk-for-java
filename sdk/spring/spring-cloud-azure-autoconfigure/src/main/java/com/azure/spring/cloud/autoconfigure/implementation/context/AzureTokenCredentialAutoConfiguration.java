@@ -50,7 +50,7 @@ import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureC
  */
 @Configuration(proxyBeanMethods = false)
 @AutoConfigureAfter(TaskExecutionAutoConfiguration.class)
-@SuppressWarnings({"deprecation","removal"})
+@SuppressWarnings({"deprecation", "removal"})
 public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigurationBase {
 
     private final IdentityClientProperties identityClientProperties;
