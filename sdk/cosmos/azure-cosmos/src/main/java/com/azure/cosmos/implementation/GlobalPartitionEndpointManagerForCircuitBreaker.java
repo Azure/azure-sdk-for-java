@@ -26,14 +26,13 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
     private final GlobalEndpointManager globalEndpointManager;
     private final ConcurrentHashMap<PartitionKeyRange, PartitionLevelFailoverInfo> partitionKeyRangeToFailoverInfo;
 
-
     public GlobalPartitionEndpointManagerForCircuitBreaker(GlobalEndpointManager globalEndpointManager) {
         this.partitionKeyRangeToFailoverInfo = new ConcurrentHashMap<>();
         this.globalEndpointManager = globalEndpointManager;
     }
 
     public void init() {
-
+        this.updateStaleLocationInfo().subscribeOn(CosmosSchedulers.PARTITION_AVAILABILITY_STALENESS_CHECK_SINGLE).subscribe();
     }
 
     @Override
@@ -191,21 +190,27 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
     }
 
     private Flux<Object> updateStaleLocationInfo() {
-        return Mono.just(1).repeat().delayElements(Duration.ofSeconds(60)).flatMap(ignore -> {
+        return Mono.just(1)
+            .publishOn(CosmosSchedulers.PARTITION_AVAILABILITY_STALENESS_CHECK_SINGLE)
+            .repeat()
+            .delayElements(Duration.ofSeconds(60))
+            .flatMap(ignore -> {
 
-            for (Map.Entry<PartitionKeyRange, PartitionLevelFailoverInfo> pkRangeToFailoverInfo : this.partitionKeyRangeToFailoverInfo.entrySet()) {
+                logger.info("Background updateStaleLocationInfo kicking in...");
 
-                PartitionLevelFailoverInfo partitionLevelFailoverInfo = pkRangeToFailoverInfo.getValue();
+                for (Map.Entry<PartitionKeyRange, PartitionLevelFailoverInfo> pkRangeToFailoverInfo : this.partitionKeyRangeToFailoverInfo.entrySet()) {
 
-                for (Map.Entry<URI, LocationLevelMetrics> locationToLocationLevelMetrics : partitionLevelFailoverInfo.partitionLevelFailureMetadata.entrySet()) {
+                    PartitionLevelFailoverInfo partitionLevelFailoverInfo = pkRangeToFailoverInfo.getValue();
 
-                    LocationLevelMetrics locationLevelMetrics = locationToLocationLevelMetrics.getValue();
-                    locationLevelMetrics.handleSuccess(false);
+                    for (Map.Entry<URI, LocationLevelMetrics> locationToLocationLevelMetrics : partitionLevelFailoverInfo.partitionLevelFailureMetadata.entrySet()) {
+
+                        LocationLevelMetrics locationLevelMetrics = locationToLocationLevelMetrics.getValue();
+                        locationLevelMetrics.handleSuccess(false);
+                    }
                 }
-            }
 
-            return Mono.empty();
-        });
+                return Mono.empty();
+            });
     }
 
     static class PartitionLevelFailoverInfo {
@@ -256,11 +261,10 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
         public void bookmarkSuccess(URI succeededLocation) {
             this.partitionLevelFailureMetadata.compute(succeededLocation, (locationAsKey, locationLevelMetricsAsVal) -> {
 
-                if (locationLevelMetricsAsVal == null) {
-                    return new LocationLevelMetrics();
+                if (locationLevelMetricsAsVal != null) {
+                    locationLevelMetricsAsVal.handleSuccess(false);;
                 }
 
-                locationLevelMetricsAsVal.handleSuccess(false);
                 return locationLevelMetricsAsVal;
             });
         }
@@ -334,18 +338,22 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
                             successCount.incrementAndGet();
                         } else {
                             if ((double) failureCount.get() / (double) successCount.get() < allowedFailureRatio) {
+
                                 this.setHealthStatus(PartitionScopedRegionUnavailabilityStatus.Available);
+                                logger.info("Partition marked as Available");
                             }
                         }
                     }
                     break;
                 case FreshUnavailable:
                     if (!forceStateChange) {
-                        if (Duration.between(this.unavailableSince.get(), Instant.now()).compareTo(Duration.ofSeconds(120)) == 1) {
+                        if (Duration.between(this.unavailableSince.get(), Instant.now()).compareTo(Duration.ofSeconds(30)) > 0) {
                             this.setHealthStatus(PartitionScopedRegionUnavailabilityStatus.StaleUnavailable);
+                            logger.info("Partition marked as StaleUnavailable");
                         }
                     } else {
                         this.setHealthStatus(PartitionScopedRegionUnavailabilityStatus.StaleUnavailable);
+                        logger.info("Partition marked as StaleUnavailable");
                     }
                     break;
                 default:
@@ -365,13 +373,17 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
                         failureCount.addAndGet(errorCount);
                     } else {
                         this.setHealthStatus(PartitionScopedRegionUnavailabilityStatus.FreshUnavailable);
+                        logger.info("Partition marked as FreshUnavailable from Available");
                     }
+                    break;
                 case StaleUnavailable:
                     if (failureCount.get() < allowedFailureCount) {
                         failureCount.addAndGet(errorCount);
                     } else {
                         this.setHealthStatus(PartitionScopedRegionUnavailabilityStatus.FreshUnavailable);
+                        logger.info("Partition marked as FreshUnavailable from StaleUnavailable");
                     }
+                    break;
                 default:
                     throw new IllegalStateException("Unsupported health status: " + currentStatusSnapshot);
             }
@@ -423,7 +435,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
                 case StaleUnavailable:
                     return 0.1d;
                 default:
-                    throw new IllegalStateException("Unsupported health status: " + status);
+                    return 0d;
             }
         }
 

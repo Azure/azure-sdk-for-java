@@ -510,6 +510,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, /**/configs);
             this.globalPartitionEndpointManager = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManager);
+
+            ((GlobalPartitionEndpointManagerForCircuitBreaker) this.globalPartitionEndpointManager).init();
+
             this.retryPolicy = new RetryPolicy(
                 this,
                 this.globalEndpointManager,
