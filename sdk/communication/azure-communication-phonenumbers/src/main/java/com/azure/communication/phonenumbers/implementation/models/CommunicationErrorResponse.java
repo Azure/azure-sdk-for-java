@@ -7,7 +7,7 @@ package com.azure.communication.phonenumbers.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Communication Services error. */
+/** The CommunicationErrorResponse model. */
 @Fluent
 public final class CommunicationErrorResponse {
     /*

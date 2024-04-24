@@ -20,14 +20,14 @@ public final class QueueWeightedAllocationInternal {
      */
     @Generated
     @JsonProperty(value = "weight")
-    private final double weight;
+    private double weight;
 
     /*
      * A collection of queue selectors that will be applied if this allocation is selected.
      */
     @Generated
     @JsonProperty(value = "queueSelectors")
-    private final List<RouterQueueSelectorInternal> queueSelectors;
+    private List<RouterQueueSelectorInternal> queueSelectors;
 
     /**
      * Creates an instance of QueueWeightedAllocationInternal class.

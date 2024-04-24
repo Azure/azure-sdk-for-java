@@ -4,11 +4,10 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /** A rule providing static rules that always return the same result, regardless of input. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
@@ -20,14 +19,11 @@ public final class StaticRouterRule extends RouterRule {
      * The static value this rule always returns.
      */
     @JsonProperty(value = "value")
-    @JsonDeserialize(using = RouterValueDeserializer.class)
-    @JsonSerialize(using = RouterValueSerializer.class)
     private RouterValue value;
 
     /** Creates an instance of StaticRouterRule class. */
-    public StaticRouterRule() {
-        this.kind = RouterRuleKind.STATIC;
-    }
+    @Generated
+    public StaticRouterRule() {}
 
     /**
      * Get the value property: The static value this rule always returns.

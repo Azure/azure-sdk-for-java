@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Represents a wrapper around a list of countries. */
+/** The PhoneNumberCountries model. */
 @Immutable
 public final class PhoneNumberCountries {
     /*

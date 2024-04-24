@@ -6,12 +6,12 @@ package com.azure.communication.callautomation.models;
 import com.azure.core.annotation.Fluent;
 
 /**
- * The options for cancelling add participant.
+ * The options for cancelling add participant operation.
  */
 @Fluent
 public final class CancelAddParticipantOperationOptions {
     /**
-     * The inviation ID used to cancel the add participant request.
+     * The invitation ID used to cancel the add participant request.
      */
     private final String invitationId;
 
@@ -29,7 +29,7 @@ public final class CancelAddParticipantOperationOptions {
     /**
      * Constructor
      *
-     * @param invitationId The inviation ID used to cancel the add participant request.
+     * @param invitationId The invitation ID used to cancel the add participant request.
      */
     public CancelAddParticipantOperationOptions(String invitationId) {
         this.invitationId = invitationId;

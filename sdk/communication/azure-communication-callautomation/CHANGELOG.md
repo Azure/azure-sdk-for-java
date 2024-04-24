@@ -1,16 +1,13 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
-
-- Introduced `TeamsRecordingStateChanged` and `TeamsComplianceRecordingStateChanged` events.
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.1.4 (2024-04-23)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-communication-common` from `1.3.0` to version `1.3.1`.
 
 
 ## 1.1.3 (2024-03-20)
@@ -19,9 +16,7 @@
 
 #### Dependency Updates
 
-- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
 - Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
-- Upgraded `azure-communication-common` from `1.3.0` to version `1.3.1`.
 
 
 ## 1.1.2 (2024-02-20)
@@ -43,7 +38,6 @@
 - Upgraded `azure-communication-common` from `1.2.14` to version `1.2.15`.
 - Upgraded `azure-core` from `1.44.0` to version `1.45.1`.
 
-
 ## 1.1.0 (2023-11-23)
 
 ### Features Added
@@ -56,16 +50,6 @@
 ### Other Changes
 
 - Dependency versions updated.
-
-## 1.1.0-beta.1 (2023-08-17)
-
-### Features Added
-
-- Play and recognize supports TTS and SSML source prompts.
-- Recognize supports choices and freeform speech.
-- Start/Stop continuous DTMF recognition by subscribing/unsubscribing to tones.
-- Send DTMF tones to a participant in the call.
-- Mute participants in the call.
 
 ## 1.0.6 (2023-11-20)
 
@@ -101,6 +85,16 @@
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+
+## 1.1.0-beta.1 (2023-08-17)
+
+### Features Added
+
+- Play and recognize supports TTS and SSML source prompts.
+- Recognize supports choices and freeform speech.
+- Start/Stop continuous DTMF recognition by subscribing/unsubscribing to tones.
+- Send DTMF tones to a participant in the call.
+- Mute participants in the call.
 
 ## 1.0.2 (2023-07-25)
 

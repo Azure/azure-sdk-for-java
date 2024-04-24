@@ -4,16 +4,44 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client-patch.yml
   parameters:
     artifacts:
-    - name: azure-sdk-template
+    - name: azure-communication-email
       groupId: com.azure
-      safeName: azuresdktemplate
-      ServiceDirectory: template
-    - name: azure-sdk-template-two
+      safeName: azurecommunicationemail
+      ServiceDirectory: communication
+    - name: azure-communication-jobrouter
       groupId: com.azure
-      safeName: azuresdktemplatetwo
-      ServiceDirectory: template
-    - name: azure-sdk-template-three
+      safeName: azurecommunicationjobrouterclient
+      ServiceDirectory: communication
+    - name: azure-communication-identity
       groupId: com.azure
-      safeName: azuresdktemplatethree
-      ServiceDirectory: template
+      safeName: azurecommunicationidentity
+      ServiceDirectory: communication
+    - name: azure-ai-contentsafety
+      groupId: com.azure
+      safeName: azureaicontentsafety
+      ServiceDirectory: contentsafety
+    - name: azure-communication-sms
+      groupId: com.azure
+      safeName: azurecommunicationsms
+      ServiceDirectory: communication
+    - name: azure-communication-common
+      groupId: com.azure
+      safeName: azurecommunicationcommon
+      ServiceDirectory: communication
+    - name: azure-communication-messages
+      groupId: com.azure
+      safeName: azurecommunicationmessages
+      ServiceDirectory: communication
+    - name: azure-communication-rooms
+      groupId: com.azure
+      safeName: azurecommunicationrooms
+      ServiceDirectory: communication
+    - name: azure-communication-callautomation
+      groupId: com.azure
+      safeName: azurecommunicationcallautomation
+      ServiceDirectory: communication
+    - name: azure-communication-phonenumbers
+      groupId: com.azure
+      safeName: azurecommunicationphonenumbers
+      ServiceDirectory: communication
 

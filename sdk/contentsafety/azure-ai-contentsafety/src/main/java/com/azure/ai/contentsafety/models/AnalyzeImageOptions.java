@@ -5,35 +5,37 @@ package com.azure.ai.contentsafety.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
  * The image analysis request.
  */
 @Fluent
-public final class AnalyzeImageOptions implements JsonSerializable<AnalyzeImageOptions> {
+public final class AnalyzeImageOptions {
 
     /*
      * The image needs to be analyzed.
      */
     @Generated
-    private final ContentSafetyImageData image;
+    @JsonProperty(value = "image")
+    private ContentSafetyImageData image;
 
     /*
-     * The categories will be analyzed. If they are not assigned, a default set of analysis results for the categories will be returned.
+     * The categories will be analyzed. If they are not assigned, a default set of analysis results for the categories
+     * will be returned.
      */
     @Generated
+    @JsonProperty(value = "categories")
     private List<ImageCategory> categories;
 
     /*
-     * This refers to the type of image analysis output. If no value is assigned, the default value will be "FourSeverityLevels".
+     * This refers to the type of image analysis output. If no value is assigned, the default value will be
+     * "FourSeverityLevels".
      */
     @Generated
+    @JsonProperty(value = "outputType")
     private AnalyzeImageOutputType outputType;
 
     /**
@@ -42,7 +44,8 @@ public final class AnalyzeImageOptions implements JsonSerializable<AnalyzeImageO
      * @param image the image value to set.
      */
     @Generated
-    public AnalyzeImageOptions(ContentSafetyImageData image) {
+    @JsonCreator
+    public AnalyzeImageOptions(@JsonProperty(value = "image") ContentSafetyImageData image) {
         this.image = image;
     }
 
@@ -57,8 +60,8 @@ public final class AnalyzeImageOptions implements JsonSerializable<AnalyzeImageO
     }
 
     /**
-     * Get the categories property: The categories will be analyzed. If they are not assigned, a default set of analysis
-     * results for the categories will be returned.
+     * Get the categories property: The categories will be analyzed. If they are not assigned, a default set of
+     * analysis results for the categories will be returned.
      *
      * @return the categories value.
      */
@@ -68,8 +71,8 @@ public final class AnalyzeImageOptions implements JsonSerializable<AnalyzeImageO
     }
 
     /**
-     * Set the categories property: The categories will be analyzed. If they are not assigned, a default set of analysis
-     * results for the categories will be returned.
+     * Set the categories property: The categories will be analyzed. If they are not assigned, a default set of
+     * analysis results for the categories will be returned.
      *
      * @param categories the categories value to set.
      * @return the AnalyzeImageOptions object itself.
@@ -102,54 +105,5 @@ public final class AnalyzeImageOptions implements JsonSerializable<AnalyzeImageO
     public AnalyzeImageOptions setOutputType(AnalyzeImageOutputType outputType) {
         this.outputType = outputType;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("image", this.image);
-        jsonWriter.writeArrayField("categories", this.categories,
-            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
-        jsonWriter.writeStringField("outputType", this.outputType == null ? null : this.outputType.toString());
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AnalyzeImageOptions from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AnalyzeImageOptions if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AnalyzeImageOptions.
-     */
-    @Generated
-    public static AnalyzeImageOptions fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ContentSafetyImageData image = null;
-            List<ImageCategory> categories = null;
-            AnalyzeImageOutputType outputType = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("image".equals(fieldName)) {
-                    image = ContentSafetyImageData.fromJson(reader);
-                } else if ("categories".equals(fieldName)) {
-                    categories = reader.readArray(reader1 -> ImageCategory.fromString(reader1.getString()));
-                } else if ("outputType".equals(fieldName)) {
-                    outputType = AnalyzeImageOutputType.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            AnalyzeImageOptions deserializedAnalyzeImageOptions = new AnalyzeImageOptions(image);
-            deserializedAnalyzeImageOptions.categories = categories;
-            deserializedAnalyzeImageOptions.outputType = outputType;
-            return deserializedAnalyzeImageOptions;
-        });
     }
 }

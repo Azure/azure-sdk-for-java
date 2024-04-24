@@ -4,6 +4,7 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -18,12 +19,14 @@ public final class FunctionRouterRule extends RouterRule {
     /*
      * URL for Azure Function
      */
+    @Generated
     @JsonProperty(value = "functionUri")
     private String functionUri;
 
     /*
      * Credentials used to access Azure function rule
      */
+    @Generated
     @JsonProperty(value = "credential")
     private FunctionRouterRuleCredential credential;
 
@@ -32,10 +35,10 @@ public final class FunctionRouterRule extends RouterRule {
      *
      * @param functionUri the functionUri value to set.
      */
+    @Generated
     @JsonCreator
     public FunctionRouterRule(@JsonProperty(value = "functionUri") String functionUri) {
         this.functionUri = functionUri;
-        this.kind = RouterRuleKind.FUNCTION;
     }
 
     /**
@@ -43,6 +46,7 @@ public final class FunctionRouterRule extends RouterRule {
      *
      * @return the functionUri value.
      */
+    @Generated
     public String getFunctionUri() {
         return this.functionUri;
     }
@@ -52,6 +56,7 @@ public final class FunctionRouterRule extends RouterRule {
      *
      * @return the credential value.
      */
+    @Generated
     public FunctionRouterRuleCredential getCredential() {
         return this.credential;
     }
@@ -62,6 +67,7 @@ public final class FunctionRouterRule extends RouterRule {
      * @param credential the credential value to set.
      * @return the FunctionRouterRule object itself.
      */
+    @Generated
     public FunctionRouterRule setCredential(FunctionRouterRuleCredential credential) {
         this.credential = credential;
         return this;

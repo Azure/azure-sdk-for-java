@@ -22,7 +22,8 @@ public final class CloseJobOptionsInternal {
     private String dispositionCode;
 
     /*
-     * If not provided, worker capacity is released immediately along with a JobClosedEvent notification. If provided, worker capacity is released along with a JobClosedEvent notification at a future time in UTC.
+     * If not provided, worker capacity is released immediately along with a JobClosedEvent notification. If provided,
+     * worker capacity is released along with a JobClosedEvent notification at a future time in UTC.
      */
     @Generated
     @JsonProperty(value = "closeAt")

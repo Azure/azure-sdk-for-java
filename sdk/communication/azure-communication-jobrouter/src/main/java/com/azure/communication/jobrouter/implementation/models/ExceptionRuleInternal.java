@@ -20,21 +20,21 @@ public final class ExceptionRuleInternal {
      */
     @Generated
     @JsonProperty(value = "id")
-    private final String id;
+    private String id;
 
     /*
      * The trigger for this exception rule.
      */
     @Generated
     @JsonProperty(value = "trigger")
-    private final ExceptionTriggerInternal trigger;
+    private ExceptionTriggerInternal trigger;
 
     /*
      * A collection of actions to perform once the exception is triggered.
      */
     @Generated
     @JsonProperty(value = "actions")
-    private final List<ExceptionActionInternal> actions;
+    private List<ExceptionActionInternal> actions;
 
     /**
      * Creates an instance of ExceptionRuleInternal class.
