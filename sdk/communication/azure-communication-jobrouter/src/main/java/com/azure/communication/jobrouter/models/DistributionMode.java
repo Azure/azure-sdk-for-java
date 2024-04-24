@@ -4,6 +4,7 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -28,17 +29,19 @@ public abstract class DistributionMode {
      * kind discriminator.
      */
     @JsonProperty(value = "kind")
-    protected DistributionModeKind kind;
+    private String kind;
 
     /*
      * Governs the minimum desired number of active concurrent offers a job can have.
      */
+    @Generated
     @JsonProperty(value = "minConcurrentOffers")
     private Integer minConcurrentOffers;
 
     /*
      * Governs the maximum number of active concurrent offers a job can have.
      */
+    @Generated
     @JsonProperty(value = "maxConcurrentOffers")
     private Integer maxConcurrentOffers;
 
@@ -47,10 +50,12 @@ public abstract class DistributionMode {
      * may get workers that are not qualified for the job they are matched with if you set this variable to true. This
      * flag is intended more for temporary usage. By default, set to false.
      */
+    @Generated
     @JsonProperty(value = "bypassSelectors")
     private Boolean bypassSelectors;
 
     /** Creates an instance of DistributionMode class. */
+    @Generated
     public DistributionMode() {}
 
     /**
@@ -59,6 +64,7 @@ public abstract class DistributionMode {
      *
      * @return the minConcurrentOffers value.
      */
+    @Generated
     public Integer getMinConcurrentOffers() {
         return this.minConcurrentOffers;
     }
@@ -70,6 +76,7 @@ public abstract class DistributionMode {
      * @param minConcurrentOffers the minConcurrentOffers value to set.
      * @return the DistributionMode object itself.
      */
+    @Generated
     public DistributionMode setMinConcurrentOffers(Integer minConcurrentOffers) {
         this.minConcurrentOffers = minConcurrentOffers;
         return this;
@@ -80,6 +87,7 @@ public abstract class DistributionMode {
      *
      * @return the maxConcurrentOffers value.
      */
+    @Generated
     public Integer getMaxConcurrentOffers() {
         return this.maxConcurrentOffers;
     }
@@ -90,6 +98,7 @@ public abstract class DistributionMode {
      * @param maxConcurrentOffers the maxConcurrentOffers value to set.
      * @return the DistributionMode object itself.
      */
+    @Generated
     public DistributionMode setMaxConcurrentOffers(Integer maxConcurrentOffers) {
         this.maxConcurrentOffers = maxConcurrentOffers;
         return this;
@@ -102,6 +111,7 @@ public abstract class DistributionMode {
      *
      * @return the bypassSelectors value.
      */
+    @Generated
     public Boolean isBypassSelectors() {
         return this.bypassSelectors;
     }
@@ -114,6 +124,7 @@ public abstract class DistributionMode {
      * @param bypassSelectors the bypassSelectors value to set.
      * @return the DistributionMode object itself.
      */
+    @Generated
     public DistributionMode setBypassSelectors(Boolean bypassSelectors) {
         this.bypassSelectors = bypassSelectors;
         return this;
@@ -123,7 +134,7 @@ public abstract class DistributionMode {
      * Returns kind discriminator.
      * @return kind.
      */
-    public DistributionModeKind getKind() {
+    public String getKind() {
         return this.kind;
     }
 }

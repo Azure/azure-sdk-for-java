@@ -22,17 +22,18 @@ public final class RouterWorkerSelectorInternal {
      */
     @Generated
     @JsonProperty(value = "key")
-    private final String key;
+    private String key;
 
     /*
      * Describes how the value of the label is compared to the value defined on the worker selector.
      */
     @Generated
     @JsonProperty(value = "labelOperator")
-    private final LabelOperator labelOperator;
+    private LabelOperator labelOperator;
 
     /*
-     * The value to compare against the actual label value with the given operator. Values must be primitive values - number, string, boolean.
+     * The value to compare against the actual label value with the given operator. Values must be primitive values -
+     * number, string, boolean.
      */
     @Generated
     @JsonProperty(value = "value")

@@ -589,18 +589,34 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Creates or updates a distribution policy.
-     * <p><strong>Header Parameters</strong></p>
+     * <p>
+     * <strong>Header Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
-     * string.</td></tr>
-     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
-     * entity was not modified after this time.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -608,16 +624,15 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
-     *         kind: String(bestWorker/longestIdle/roundRobin) (Required)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
      *     }
      * }
      * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -625,7 +640,6 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
-     *         kind: String(bestWorker/longestIdle/roundRobin) (Required)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
@@ -655,18 +669,34 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Creates or updates a distribution policy.
-     * <p><strong>Header Parameters</strong></p>
+     * <p>
+     * <strong>Header Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
-     * string.</td></tr>
-     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
-     * entity was not modified after this time.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -674,16 +704,15 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
-     *         kind: String(bestWorker/longestIdle/roundRobin) (Required)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
      *     }
      * }
      * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -691,7 +720,6 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
-     *         kind: String(bestWorker/longestIdle/roundRobin) (Required)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
@@ -719,8 +747,9 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves an existing distribution policy by Id.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -728,7 +757,6 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
-     *         kind: String(bestWorker/longestIdle/roundRobin) (Required)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
@@ -755,8 +783,9 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves an existing distribution policy by Id.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -764,7 +793,6 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
-     *         kind: String(bestWorker/longestIdle/roundRobin) (Required)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
@@ -790,15 +818,28 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing distribution policies.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -806,7 +847,6 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
-     *         kind: String(bestWorker/longestIdle/roundRobin) (Required)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
@@ -834,15 +874,28 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing distribution policies.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -850,7 +903,6 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
-     *         kind: String(bestWorker/longestIdle/roundRobin) (Required)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
@@ -896,15 +948,28 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing distribution policies.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -912,7 +977,6 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
-     *         kind: String(bestWorker/longestIdle/roundRobin) (Required)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
@@ -938,15 +1002,28 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing distribution policies.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -954,7 +1031,6 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
-     *         kind: String(bestWorker/longestIdle/roundRobin) (Required)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
@@ -1038,18 +1114,34 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Creates or updates a classification policy.
-     * <p><strong>Header Parameters</strong></p>
+     * <p>
+     * <strong>Header Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
-     * string.</td></tr>
-     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
-     * entity was not modified after this time.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1058,22 +1150,19 @@ public final class JobRouterAdministrationClientImpl {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
-     *         kind: String(directMap/expression/function/static/webhook) (Required)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      * }
      * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1082,15 +1171,12 @@ public final class JobRouterAdministrationClientImpl {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
-     *         kind: String(directMap/expression/function/static/webhook) (Required)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      * }
@@ -1118,18 +1204,34 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Creates or updates a classification policy.
-     * <p><strong>Header Parameters</strong></p>
+     * <p>
+     * <strong>Header Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
-     * string.</td></tr>
-     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
-     * entity was not modified after this time.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1138,22 +1240,19 @@ public final class JobRouterAdministrationClientImpl {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
-     *         kind: String(directMap/expression/function/static/webhook) (Required)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      * }
      * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1162,15 +1261,12 @@ public final class JobRouterAdministrationClientImpl {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
-     *         kind: String(directMap/expression/function/static/webhook) (Required)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      * }
@@ -1196,8 +1292,9 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves an existing classification policy by Id.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1206,15 +1303,12 @@ public final class JobRouterAdministrationClientImpl {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
-     *         kind: String(directMap/expression/function/static/webhook) (Required)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      * }
@@ -1239,8 +1333,9 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves an existing classification policy by Id.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1249,15 +1344,12 @@ public final class JobRouterAdministrationClientImpl {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
-     *         kind: String(directMap/expression/function/static/webhook) (Required)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      * }
@@ -1281,15 +1373,28 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing classification policies.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1298,15 +1403,12 @@ public final class JobRouterAdministrationClientImpl {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
-     *         kind: String(directMap/expression/function/static/webhook) (Required)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      * }
@@ -1332,15 +1434,28 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing classification policies.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1349,15 +1464,12 @@ public final class JobRouterAdministrationClientImpl {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
-     *         kind: String(directMap/expression/function/static/webhook) (Required)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      * }
@@ -1401,15 +1513,28 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing classification policies.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1418,15 +1543,12 @@ public final class JobRouterAdministrationClientImpl {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
-     *         kind: String(directMap/expression/function/static/webhook) (Required)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      * }
@@ -1450,15 +1572,28 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing classification policies.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1467,15 +1602,12 @@ public final class JobRouterAdministrationClientImpl {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
-     *         kind: String(directMap/expression/function/static/webhook) (Required)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      * }
@@ -1557,18 +1689,34 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Creates or updates a exception policy.
-     * <p><strong>Header Parameters</strong></p>
+     * <p>
+     * <strong>Header Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
-     * string.</td></tr>
-     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
-     * entity was not modified after this time.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1578,11 +1726,9 @@ public final class JobRouterAdministrationClientImpl {
      *          (Optional){
      *             id: String (Required)
      *             trigger (Required): {
-     *                 kind: String(queueLength/waitTime) (Required)
      *             }
      *             actions (Required): [
      *                  (Required){
-     *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
      *             ]
@@ -1590,9 +1736,9 @@ public final class JobRouterAdministrationClientImpl {
      *     ]
      * }
      * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1602,11 +1748,9 @@ public final class JobRouterAdministrationClientImpl {
      *          (Optional){
      *             id: String (Required)
      *             trigger (Required): {
-     *                 kind: String(queueLength/waitTime) (Required)
      *             }
      *             actions (Required): [
      *                  (Required){
-     *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
      *             ]
@@ -1637,18 +1781,34 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Creates or updates a exception policy.
-     * <p><strong>Header Parameters</strong></p>
+     * <p>
+     * <strong>Header Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
-     * string.</td></tr>
-     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
-     * entity was not modified after this time.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1658,11 +1818,9 @@ public final class JobRouterAdministrationClientImpl {
      *          (Optional){
      *             id: String (Required)
      *             trigger (Required): {
-     *                 kind: String(queueLength/waitTime) (Required)
      *             }
      *             actions (Required): [
      *                  (Required){
-     *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
      *             ]
@@ -1670,9 +1828,9 @@ public final class JobRouterAdministrationClientImpl {
      *     ]
      * }
      * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1682,11 +1840,9 @@ public final class JobRouterAdministrationClientImpl {
      *          (Optional){
      *             id: String (Required)
      *             trigger (Required): {
-     *                 kind: String(queueLength/waitTime) (Required)
      *             }
      *             actions (Required): [
      *                  (Required){
-     *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
      *             ]
@@ -1715,8 +1871,9 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves an existing exception policy by Id.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1726,11 +1883,9 @@ public final class JobRouterAdministrationClientImpl {
      *          (Optional){
      *             id: String (Required)
      *             trigger (Required): {
-     *                 kind: String(queueLength/waitTime) (Required)
      *             }
      *             actions (Required): [
      *                  (Required){
-     *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
      *             ]
@@ -1758,8 +1913,9 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves an existing exception policy by Id.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1769,11 +1925,9 @@ public final class JobRouterAdministrationClientImpl {
      *          (Optional){
      *             id: String (Required)
      *             trigger (Required): {
-     *                 kind: String(queueLength/waitTime) (Required)
      *             }
      *             actions (Required): [
      *                  (Required){
-     *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
      *             ]
@@ -1800,15 +1954,28 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing exception policies.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1818,11 +1985,9 @@ public final class JobRouterAdministrationClientImpl {
      *          (Optional){
      *             id: String (Required)
      *             trigger (Required): {
-     *                 kind: String(queueLength/waitTime) (Required)
      *             }
      *             actions (Required): [
      *                  (Required){
-     *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
      *             ]
@@ -1851,15 +2016,28 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing exception policies.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1869,11 +2047,9 @@ public final class JobRouterAdministrationClientImpl {
      *          (Optional){
      *             id: String (Required)
      *             trigger (Required): {
-     *                 kind: String(queueLength/waitTime) (Required)
      *             }
      *             actions (Required): [
      *                  (Required){
-     *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
      *             ]
@@ -1920,15 +2096,28 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing exception policies.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1938,11 +2127,9 @@ public final class JobRouterAdministrationClientImpl {
      *          (Optional){
      *             id: String (Required)
      *             trigger (Required): {
-     *                 kind: String(queueLength/waitTime) (Required)
      *             }
      *             actions (Required): [
      *                  (Required){
-     *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
      *             ]
@@ -1969,15 +2156,28 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing exception policies.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1987,11 +2187,9 @@ public final class JobRouterAdministrationClientImpl {
      *          (Optional){
      *             id: String (Required)
      *             trigger (Required): {
-     *                 kind: String(queueLength/waitTime) (Required)
      *             }
      *             actions (Required): [
      *                  (Required){
-     *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
      *             ]
@@ -2075,18 +2273,34 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Creates or updates a queue.
-     * <p><strong>Header Parameters</strong></p>
+     * <p>
+     * <strong>Header Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
-     * string.</td></tr>
-     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
-     * entity was not modified after this time.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2099,9 +2313,9 @@ public final class JobRouterAdministrationClientImpl {
      *     exceptionPolicyId: String (Optional)
      * }
      * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2136,18 +2350,34 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Creates or updates a queue.
-     * <p><strong>Header Parameters</strong></p>
+     * <p>
+     * <strong>Header Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
-     * string.</td></tr>
-     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
-     * entity was not modified after this time.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2160,9 +2390,9 @@ public final class JobRouterAdministrationClientImpl {
      *     exceptionPolicyId: String (Optional)
      * }
      * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2196,8 +2426,9 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves an existing queue by Id.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2229,8 +2460,9 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves an existing queue by Id.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2261,15 +2493,28 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing queues.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2303,15 +2548,28 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing queues.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2363,15 +2621,28 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing queues.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2403,15 +2674,28 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing queues.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2501,8 +2785,9 @@ public final class JobRouterAdministrationClientImpl {
      * Retrieves existing distribution policies.
      * 
      * Get the next page of items.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2510,7 +2795,6 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
-     *         kind: String(bestWorker/longestIdle/roundRobin) (Required)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
@@ -2544,8 +2828,9 @@ public final class JobRouterAdministrationClientImpl {
      * Retrieves existing distribution policies.
      * 
      * Get the next page of items.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2553,7 +2838,6 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
-     *         kind: String(bestWorker/longestIdle/roundRobin) (Required)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
@@ -2585,8 +2869,9 @@ public final class JobRouterAdministrationClientImpl {
      * Retrieves existing classification policies.
      * 
      * Get the next page of items.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2595,15 +2880,12 @@ public final class JobRouterAdministrationClientImpl {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
-     *         kind: String(directMap/expression/function/static/webhook) (Required)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      * }
@@ -2635,8 +2917,9 @@ public final class JobRouterAdministrationClientImpl {
      * Retrieves existing classification policies.
      * 
      * Get the next page of items.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2645,15 +2928,12 @@ public final class JobRouterAdministrationClientImpl {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
-     *         kind: String(directMap/expression/function/static/webhook) (Required)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      * }
@@ -2683,8 +2963,9 @@ public final class JobRouterAdministrationClientImpl {
      * Retrieves existing exception policies.
      * 
      * Get the next page of items.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2694,11 +2975,9 @@ public final class JobRouterAdministrationClientImpl {
      *          (Optional){
      *             id: String (Required)
      *             trigger (Required): {
-     *                 kind: String(queueLength/waitTime) (Required)
      *             }
      *             actions (Required): [
      *                  (Required){
-     *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
      *             ]
@@ -2732,8 +3011,9 @@ public final class JobRouterAdministrationClientImpl {
      * Retrieves existing exception policies.
      * 
      * Get the next page of items.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2743,11 +3023,9 @@ public final class JobRouterAdministrationClientImpl {
      *          (Optional){
      *             id: String (Required)
      *             trigger (Required): {
-     *                 kind: String(queueLength/waitTime) (Required)
      *             }
      *             actions (Required): [
      *                  (Required){
-     *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
      *             ]
@@ -2780,8 +3058,9 @@ public final class JobRouterAdministrationClientImpl {
      * Retrieves existing queues.
      * 
      * Get the next page of items.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2821,8 +3100,9 @@ public final class JobRouterAdministrationClientImpl {
      * Retrieves existing queues.
      * 
      * Get the next page of items.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)

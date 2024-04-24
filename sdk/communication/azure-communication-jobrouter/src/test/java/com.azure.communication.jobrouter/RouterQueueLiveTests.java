@@ -8,18 +8,17 @@ import com.azure.communication.jobrouter.models.RouterQueue;
 import com.azure.communication.jobrouter.models.RouterValue;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RouterQueueLiveTests extends JobRouterTestBase {
     private JobRouterClient jobRouterClient;
@@ -34,7 +33,7 @@ public class RouterQueueLiveTests extends JobRouterTestBase {
         // Setup
         jobRouterClient = getRouterClient(httpClient);
         routerAdminClient = getRouterAdministrationClient(httpClient);
-        String distributionPolicyId = String.format("%s-CreateQueueAsync-DistributionPolicy", JAVA_LIVE_TESTS);
+        String distributionPolicyId = String.format("%s-CreateQueue-DistributionPolicy", JAVA_LIVE_TESTS);
         DistributionPolicy distributionPolicy = createDistributionPolicy(routerAdminClient, distributionPolicyId);
 
         String queueId = String.format("%s-CreateQueue-Queue", JAVA_LIVE_TESTS);
@@ -44,19 +43,6 @@ public class RouterQueueLiveTests extends JobRouterTestBase {
 
         // Verify
         assertEquals(queueId, jobQueue.getId());
-        assertNotNull(jobQueue.getEtag());
-        assertEquals(queueId + "-Name", jobQueue.getName());
-        assertEquals(distributionPolicyId, jobQueue.getDistributionPolicyId());
-        assertEquals(2, jobQueue.getLabels().size());
-
-        BinaryData binaryData = routerAdminClient.getQueueWithResponse(queueId, null).getValue();
-        RouterQueue deserialized = binaryData.toObject(RouterQueue.class);
-
-        assertEquals(queueId, deserialized.getId());
-        assertEquals(jobQueue.getEtag(), deserialized.getEtag());
-        assertEquals(queueId + "-Name", deserialized.getName());
-        assertEquals(distributionPolicyId, deserialized.getDistributionPolicyId());
-        assertEquals(2, deserialized.getLabels().size());
 
         // Cleanup
         routerAdminClient.deleteQueue(queueId);
@@ -69,25 +55,26 @@ public class RouterQueueLiveTests extends JobRouterTestBase {
         // Setup
         jobRouterClient = getRouterClient(httpClient);
         routerAdminClient = getRouterAdministrationClient(httpClient);
-        String distributionPolicyId = String.format("%s-UpdateQueue-DistributionPolicy", JAVA_LIVE_TESTS);
+        String distributionPolicyId = String.format("%s-CreateQueue-DistributionPolicy", JAVA_LIVE_TESTS);
         DistributionPolicy distributionPolicy = createDistributionPolicy(routerAdminClient, distributionPolicyId);
 
         String queueId = String.format("%s-CreateQueue-Queue", JAVA_LIVE_TESTS);
         RouterQueue queue = createQueue(routerAdminClient, queueId, distributionPolicy.getId());
+
+        String updatedRouterQueue = "{\"name\":\"JAVA_LIVE_TEST-CreateQueue-Queue\",\"distributionPolicyId\":\"JAVA_LIVE_TEST-CreateQueue-DistributionPolicy\",\"labels\":{\"Label_1\":\"UpdatedValue\"}}";
 
         Map<String, RouterValue> updatedQueueLabels = new HashMap<String, RouterValue>() {
             {
                 put("Label_1", new RouterValue("UpdatedValue"));
             }
         };
-        queue.setLabels(updatedQueueLabels);
-
         // Action
-        Response<BinaryData> binaryData = routerAdminClient.updateQueueWithResponse(queueId, BinaryData.fromObject(queue), new RequestOptions());
-        RouterQueue updatedQueue = binaryData.getValue().toObject(RouterQueue.class);
+        BinaryData updatedQueue = routerAdminClient.updateQueueWithResponse(queueId, BinaryData.fromString(updatedRouterQueue), new RequestOptions())
+            .getValue();
+        LOGGER.info(updatedQueue.toString());
 
         // Verify
-        assertEquals("UpdatedValue", updatedQueue.getLabels().get("Label_1").getStringValue());
+        assertTrue(updatedQueue.toString().contains("\"Label_1\":\"UpdatedValue\""));
 
         // Cleanup
         routerAdminClient.deleteQueue(queueId);

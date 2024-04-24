@@ -4,30 +4,31 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.time.Duration;
 
 /** Attaches a worker selector where the value is passed through from the job label with the same key. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("passThrough")
+@JsonTypeName("pass-through")
 @Fluent
 public final class PassThroughWorkerSelectorAttachment extends WorkerSelectorAttachment {
 
     /*
      * The label key to query against
      */
+    @Generated
     @JsonProperty(value = "key")
     private String key;
 
     /*
      * Describes how the value of the label is compared to the value pass through
      */
+    @Generated
     @JsonProperty(value = "labelOperator")
     private LabelOperator labelOperator;
 
@@ -35,8 +36,6 @@ public final class PassThroughWorkerSelectorAttachment extends WorkerSelectorAtt
      * Describes how long the attached label selector is valid in seconds.
      */
     @JsonProperty(value = "expiresAfterSeconds")
-    @JsonDeserialize(using = DurationDeserializer.class)
-    @JsonSerialize(using = DurationSerializer.class)
     private Duration expiresAfter;
 
     /**
@@ -45,13 +44,13 @@ public final class PassThroughWorkerSelectorAttachment extends WorkerSelectorAtt
      * @param key the key value to set.
      * @param labelOperator the labelOperator value to set.
      */
+    @Generated
     @JsonCreator
     public PassThroughWorkerSelectorAttachment(
             @JsonProperty(value = "key") String key,
             @JsonProperty(value = "labelOperator") LabelOperator labelOperator) {
         this.key = key;
         this.labelOperator = labelOperator;
-        this.kind = WorkerSelectorAttachmentKind.PASS_THROUGH;
     }
 
     /**
@@ -59,6 +58,7 @@ public final class PassThroughWorkerSelectorAttachment extends WorkerSelectorAtt
      *
      * @return the key value.
      */
+    @Generated
     public String getKey() {
         return this.key;
     }
@@ -68,6 +68,7 @@ public final class PassThroughWorkerSelectorAttachment extends WorkerSelectorAtt
      *
      * @return the labelOperator value.
      */
+    @Generated
     public LabelOperator getLabelOperator() {
         return this.labelOperator;
     }

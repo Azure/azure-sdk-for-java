@@ -4,6 +4,10 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.JobRouterClientImpl;
+import com.azure.communication.jobrouter.implementation.accesshelpers.RouterJobConstructorProxy;
+import com.azure.communication.jobrouter.implementation.accesshelpers.RouterWorkerConstructorProxy;
+import com.azure.communication.jobrouter.implementation.converters.JobAdapter;
+import com.azure.communication.jobrouter.implementation.converters.WorkerAdapter;
 import com.azure.communication.jobrouter.implementation.models.CancelJobOptionsInternal;
 import com.azure.communication.jobrouter.implementation.models.CancelJobResultInternal;
 import com.azure.communication.jobrouter.implementation.models.CloseJobOptionsInternal;
@@ -17,8 +21,13 @@ import com.azure.communication.jobrouter.implementation.models.ReclassifyJobResu
 import com.azure.communication.jobrouter.implementation.models.RouterJobInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterWorkerInternal;
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
+import com.azure.communication.jobrouter.models.CreateJobOptions;
+import com.azure.communication.jobrouter.models.CreateWorkerOptions;
+import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobPositionDetails;
 import com.azure.communication.jobrouter.models.RouterJobStatusSelector;
+import com.azure.communication.jobrouter.models.RouterQueueStatistics;
+import com.azure.communication.jobrouter.models.RouterWorker;
 import com.azure.communication.jobrouter.models.RouterWorkerStateSelector;
 import com.azure.communication.jobrouter.models.UnassignJobOptions;
 import com.azure.communication.jobrouter.models.UnassignJobResult;
@@ -42,14 +51,6 @@ import java.time.OffsetDateTime;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import com.azure.communication.jobrouter.implementation.converters.JobAdapter;
-import com.azure.communication.jobrouter.implementation.converters.WorkerAdapter;
-import com.azure.communication.jobrouter.models.CreateJobOptions;
-import com.azure.communication.jobrouter.models.CreateJobWithClassificationPolicyOptions;
-import com.azure.communication.jobrouter.models.CreateWorkerOptions;
-import com.azure.communication.jobrouter.models.RouterJob;
-import com.azure.communication.jobrouter.models.RouterQueueStatistics;
-import com.azure.communication.jobrouter.models.RouterWorker;
 
 /**
  * Initializes a new instance of the asynchronous JobRouterClient type.
@@ -72,18 +73,34 @@ public final class JobRouterAsyncClient {
 
     /**
      * Creates or updates a router job.
-     * <p><strong>Header Parameters</strong></p>
+     * <p>
+     * <strong>Header Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
-     * string.</td></tr>
-     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
-     * entity was not modified after this time.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -133,13 +150,12 @@ public final class JobRouterAsyncClient {
      *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
-     *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
      * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -189,7 +205,6 @@ public final class JobRouterAsyncClient {
      *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
-     *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
      * }</pre>
@@ -206,7 +221,8 @@ public final class JobRouterAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> upsertJobWithResponse(String jobId, BinaryData resource, RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertJob' is 'application/merge-patch+json' and stream-style-serialization is not enabled
+        // Convenience API is not generated, as operation 'upsertJob' is 'application/merge-patch+json' and
+        // stream-style-serialization is not enabled
         return this.serviceClient.upsertJobWithResponseAsync(jobId, resource, requestOptions);
     }
 
@@ -496,28 +512,11 @@ public final class JobRouterAsyncClient {
      * @param jobId The jobId of the job.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a unit of work to be routed on successful completion of {@link Mono}.
+     * @return result object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> updateJob(String jobId, BinaryData resource, RequestOptions requestOptions) {
-        return this.serviceClient.upsertJobWithResponseAsync(jobId, resource, requestOptions).map(Response::getValue);
-    }
-
-    /**
-     * Updates a router job.
-     *
-     * @param jobId The jobId of the job.
-     * @param job The job to update.
-     * @return the updated job on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterJob> updateJob(String jobId, RouterJob job) {
-        return updateJobWithResponse(jobId, BinaryData.fromObject(job), null)
-            .map(response -> response.getValue().toObject(RouterJob.class));
+        return updateJobWithResponse(jobId, resource, requestOptions).map(response -> response.getValue());
     }
 
     /**
@@ -535,7 +534,8 @@ public final class JobRouterAsyncClient {
         RouterJobInternal routerJob = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
         return upsertJobWithResponse(createJobOptions.getJobId(), BinaryData.fromObject(routerJob), requestOptions)
             .map(response -> new SimpleResponse<RouterJob>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), response.getValue().toObject(RouterJob.class)));
+                response.getHeaders(),
+                RouterJobConstructorProxy.create(response.getValue().toObject(RouterJobInternal.class))));
     }
 
     /**
@@ -553,49 +553,10 @@ public final class JobRouterAsyncClient {
     }
 
     /**
-     * Create a job using a classification policy.
-     *
-     * @param createJobWithClassificationPolicyOptions Options to create a RouterJob using a classification policy.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return a unit of work to be routed.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterJob>> createJobWithClassificationPolicyWithResponse(
-        CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions,
-        RequestOptions requestOptions) {
-        RouterJobInternal routerJob = JobAdapter
-            .convertCreateJobWithClassificationPolicyOptionsToRouterJob(createJobWithClassificationPolicyOptions);
-        return upsertJobWithResponse(createJobWithClassificationPolicyOptions.getJobId(),
-            BinaryData.fromObject(routerJob), requestOptions)
-            .map(response -> new SimpleResponse<RouterJob>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), response.getValue().toObject(RouterJob.class)));
-    }
-
-    /**
-     * Convenience method to create a job using a classification policy.
-     *
-     * @param createJobWithClassificationPolicyOptions Options to create a RouterJob using a classification policy.
-     * @return a unit of work to be routed.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterJob> createJobWithClassificationPolicy(
-        CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions) {
-        RequestOptions requestOptions = new RequestOptions();
-        return this
-            .createJobWithClassificationPolicyWithResponse(createJobWithClassificationPolicyOptions, requestOptions)
-            .map(response -> response.getValue());
-    }
-
-    /**
      * Retrieves an existing job by Id.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -645,7 +606,6 @@ public final class JobRouterAsyncClient {
      *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
-     *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
      * }</pre>
@@ -686,17 +646,16 @@ public final class JobRouterAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
-     *
      * <pre>{@code
-     * { }
+     * {
+     * }
      * }</pre>
-     *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     *
      * <pre>{@code
-     * { }
+     * {
+     * }
      * }</pre>
      *
      * @param jobId Id of a job.
@@ -718,17 +677,16 @@ public final class JobRouterAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
-     *
      * <pre>{@code
-     * { }
+     * {
+     * }
      * }</pre>
-     *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     *
      * <pre>{@code
-     * { }
+     * {
+     * }
      * }</pre>
      *
      * @param jobId Id of a job.
@@ -746,20 +704,18 @@ public final class JobRouterAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
-     *
      * <pre>{@code
      * {
      *     note: String (Optional)
      *     dispositionCode: String (Optional)
      * }
      * }</pre>
-     *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     *
      * <pre>{@code
-     * { }
+     * {
+     * }
      * }</pre>
      *
      * @param jobId Id of a job.
@@ -781,20 +737,18 @@ public final class JobRouterAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
-     *
      * <pre>{@code
      * {
      *     note: String (Optional)
      *     dispositionCode: String (Optional)
      * }
      * }</pre>
-     *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     *
      * <pre>{@code
-     * { }
+     * {
+     * }
      * }</pre>
      *
      * @param jobId Id of a job.
@@ -809,26 +763,67 @@ public final class JobRouterAsyncClient {
 
     /**
      * Retrieves list of jobs based on filter parameters.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
-     * <tr><td>status</td><td>String</td><td>No</td><td>If specified, filter jobs by status. Allowed values: "all",
-     * "pendingClassification", "queued", "assigned", "completed", "closed", "cancelled", "classificationFailed",
-     * "created", "pendingSchedule", "scheduled", "scheduleFailed", "waitingForActivation", "active".</td></tr>
-     * <tr><td>queueId</td><td>String</td><td>No</td><td>If specified, filter jobs by queue.</td></tr>
-     * <tr><td>channelId</td><td>String</td><td>No</td><td>If specified, filter jobs by channel.</td></tr>
-     * <tr><td>classificationPolicyId</td><td>String</td><td>No</td><td>If specified, filter jobs by
-     * classificationPolicy.</td></tr>
-     * <tr><td>scheduledBefore</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled
-     * before or at given timestamp. Range: (-Inf, scheduledBefore].</td></tr>
-     * <tr><td>scheduledAfter</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled
-     * at or after given value. Range: [scheduledAfter, +Inf).</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
+     * <tr>
+     * <td>status</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, filter jobs by status. Allowed values: "all", "pendingClassification", "queued", "assigned",
+     * "completed", "closed", "cancelled", "classificationFailed", "created", "pendingSchedule", "scheduled",
+     * "scheduleFailed", "waitingForActivation", "active".</td>
+     * </tr>
+     * <tr>
+     * <td>queueId</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, filter jobs by queue.</td>
+     * </tr>
+     * <tr>
+     * <td>channelId</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, filter jobs by channel.</td>
+     * </tr>
+     * <tr>
+     * <td>classificationPolicyId</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, filter jobs by classificationPolicy.</td>
+     * </tr>
+     * <tr>
+     * <td>scheduledBefore</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>If specified, filter on jobs that was scheduled before or at given timestamp. Range: (-Inf,
+     * scheduledBefore].</td>
+     * </tr>
+     * <tr>
+     * <td>scheduledAfter</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>If specified, filter on jobs that was scheduled at or after given value. Range: [scheduledAfter, +Inf).</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -878,7 +873,6 @@ public final class JobRouterAsyncClient {
      *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
-     *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
      * }</pre>
@@ -898,8 +892,9 @@ public final class JobRouterAsyncClient {
 
     /**
      * Gets a job's position details.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     jobId: String (Required)
@@ -926,16 +921,17 @@ public final class JobRouterAsyncClient {
 
     /**
      * Unassign a job.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     suspendMatching: Boolean (Optional)
      * }
      * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     jobId: String (Required)
@@ -962,8 +958,9 @@ public final class JobRouterAsyncClient {
 
     /**
      * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     assignmentId: String (Required)
@@ -994,19 +991,17 @@ public final class JobRouterAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
-     *
      * <pre>{@code
      * {
      *     retryOfferAt: OffsetDateTime (Optional)
      * }
      * }</pre>
-     *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     *
      * <pre>{@code
-     * { }
+     * {
+     * }
      * }</pre>
      *
      * @param workerId Id of a worker.
@@ -1030,19 +1025,17 @@ public final class JobRouterAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
-     *
      * <pre>{@code
      * {
      *     retryOfferAt: OffsetDateTime (Optional)
      * }
      * }</pre>
-     *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     *
      * <pre>{@code
-     * { }
+     * {
+     * }
      * }</pre>
      *
      * @param workerId Id of a worker.
@@ -1059,8 +1052,9 @@ public final class JobRouterAsyncClient {
 
     /**
      * Retrieves a queue's statistics.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     queueId: String (Required)
@@ -1088,18 +1082,34 @@ public final class JobRouterAsyncClient {
 
     /**
      * Creates or updates a worker.
-     * <p><strong>Header Parameters</strong></p>
+     * <p>
+     * <strong>Header Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
-     * string.</td></tr>
-     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
-     * entity was not modified after this time.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1141,12 +1151,11 @@ public final class JobRouterAsyncClient {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1188,7 +1197,6 @@ public final class JobRouterAsyncClient {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      *
@@ -1205,7 +1213,8 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> upsertWorkerWithResponse(String workerId, BinaryData resource,
         RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertWorker' is 'application/merge-patch+json' and stream-style-serialization is not enabled
+        // Convenience API is not generated, as operation 'upsertWorker' is 'application/merge-patch+json' and
+        // stream-style-serialization is not enabled
         return this.serviceClient.upsertWorkerWithResponseAsync(workerId, resource, requestOptions);
     }
 
@@ -1282,7 +1291,6 @@ public final class JobRouterAsyncClient {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      *
@@ -1329,7 +1337,6 @@ public final class JobRouterAsyncClient {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      *
@@ -1421,7 +1428,6 @@ public final class JobRouterAsyncClient {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      *
@@ -1468,63 +1474,17 @@ public final class JobRouterAsyncClient {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      *
      * @param workerId Id of the worker.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an entity for jobs to be routed to on successful completion of {@link Mono}.
+     * @return result object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> updateWorker(String workerId, BinaryData resource, RequestOptions requestOptions) {
-        return this.serviceClient.upsertWorkerWithResponseAsync(workerId, resource, requestOptions)
-            .map(worker -> worker.getValue());
-    }
-
-    /**
-     * Updates a worker.
-     *
-     * <p>
-     * <strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The request should only proceed if an entity matches this string.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>The request should only proceed if the entity was not modified after this time.</td>
-     * </tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
-     * @param workerId Id of the worker.
-     * @param worker The worker to update.
-     * @return the updated worker on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterWorker> updateWorker(String workerId, RouterWorker worker) {
-        return this.updateWorkerWithResponse(workerId, BinaryData.fromObject(worker), null)
-            .map(routerWorkerResponse -> routerWorkerResponse.getValue().toObject(RouterWorker.class));
+        return this.updateWorkerWithResponse(workerId, resource, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1543,7 +1503,8 @@ public final class JobRouterAsyncClient {
         return upsertWorkerWithResponse(createWorkerOptions.getWorkerId(), BinaryData.fromObject(routerWorker),
             requestOptions)
             .map(response -> new SimpleResponse<RouterWorker>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), response.getValue().toObject(RouterWorker.class)));
+                response.getHeaders(),
+                RouterWorkerConstructorProxy.create(response.getValue().toObject(RouterWorkerInternal.class))));
     }
 
     /**
@@ -1563,8 +1524,9 @@ public final class JobRouterAsyncClient {
 
     /**
      * Retrieves an existing worker by Id.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1606,7 +1568,6 @@ public final class JobRouterAsyncClient {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      *
@@ -1643,24 +1604,54 @@ public final class JobRouterAsyncClient {
 
     /**
      * Retrieves existing workers.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
-     * <tr><td>state</td><td>String</td><td>No</td><td>If specified, select workers by worker state. Allowed values:
-     * "active", "draining", "inactive", "all".</td></tr>
-     * <tr><td>channelId</td><td>String</td><td>No</td><td>If specified, select workers who have a channel configuration
-     * with this channel.</td></tr>
-     * <tr><td>queueId</td><td>String</td><td>No</td><td>If specified, select workers who are assigned to this
-     * queue.</td></tr>
-     * <tr><td>hasCapacity</td><td>Boolean</td><td>No</td><td>If set to true, select only workers who have capacity for
-     * the channel specified by `channelId` or for any channel if `channelId` not specified. If set to false, then will
-     * return all workers including workers without any capacity for jobs. Defaults to false.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
+     * <tr>
+     * <td>state</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, select workers by worker state. Allowed values: "active", "draining", "inactive", "all".</td>
+     * </tr>
+     * <tr>
+     * <td>channelId</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, select workers who have a channel configuration with this channel.</td>
+     * </tr>
+     * <tr>
+     * <td>queueId</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>If specified, select workers who are assigned to this queue.</td>
+     * </tr>
+     * <tr>
+     * <td>hasCapacity</td>
+     * <td>Boolean</td>
+     * <td>No</td>
+     * <td>If set to true, select only workers who have capacity for the channel specified by `channelId` or for any
+     * channel if `channelId` not specified. If set to false, then will return all workers including workers without any
+     * capacity for jobs. Defaults to false.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1702,7 +1693,6 @@ public final class JobRouterAsyncClient {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      *
@@ -1824,13 +1814,11 @@ public final class JobRouterAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listJobs(requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
-                ? pagedFluxResponse.byPage().take(1)
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationToken).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, RouterJob>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
+                pagedResponse.getValue().stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(RouterJob.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
@@ -1853,13 +1841,11 @@ public final class JobRouterAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listJobs(requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
-                ? pagedFluxResponse.byPage().take(1)
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationToken).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, RouterJob>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
+                pagedResponse.getValue().stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(RouterJob.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
@@ -1990,7 +1976,8 @@ public final class JobRouterAsyncClient {
         // Generated convenience method for getWorkerWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getWorkerWithResponse(workerId, requestOptions)
-            .map(response -> response.getValue().toObject(RouterWorker.class));
+            .map(response -> response.getValue().toObject(RouterWorkerInternal.class))
+            .map(internal -> RouterWorkerConstructorProxy.create(internal));
     }
 
     /**
@@ -2049,13 +2036,11 @@ public final class JobRouterAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listWorkers(requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
-                ? pagedFluxResponse.byPage().take(1)
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationToken).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, RouterWorker>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
+                pagedResponse.getValue().stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(RouterWorker.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
@@ -2078,13 +2063,11 @@ public final class JobRouterAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listWorkers(requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
-                ? pagedFluxResponse.byPage().take(1)
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationToken).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, RouterWorker>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
+                pagedResponse.getValue().stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(RouterWorker.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
@@ -2122,19 +2105,17 @@ public final class JobRouterAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
-     *
      * <pre>{@code
      * {
      *     note: String (Optional)
      * }
      * }</pre>
-     *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     *
      * <pre>{@code
-     * { }
+     * {
+     * }
      * }</pre>
      *
      * @param jobId Id of a job.
@@ -2158,19 +2139,17 @@ public final class JobRouterAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
-     *
      * <pre>{@code
      * {
      *     note: String (Optional)
      * }
      * }</pre>
-     *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     *
      * <pre>{@code
-     * { }
+     * {
+     * }
      * }</pre>
      *
      * @param jobId Id of a job.
@@ -2190,7 +2169,6 @@ public final class JobRouterAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
-     *
      * <pre>{@code
      * {
      *     dispositionCode: String (Optional)
@@ -2198,13 +2176,12 @@ public final class JobRouterAsyncClient {
      *     note: String (Optional)
      * }
      * }</pre>
-     *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     *
      * <pre>{@code
-     * { }
+     * {
+     * }
      * }</pre>
      *
      * @param jobId Id of a job.
@@ -2227,7 +2204,6 @@ public final class JobRouterAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
-     *
      * <pre>{@code
      * {
      *     dispositionCode: String (Optional)
@@ -2235,13 +2211,12 @@ public final class JobRouterAsyncClient {
      *     note: String (Optional)
      * }
      * }</pre>
-     *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     *
      * <pre>{@code
-     * { }
+     * {
+     * }
      * }</pre>
      *
      * @param jobId Id of a job.

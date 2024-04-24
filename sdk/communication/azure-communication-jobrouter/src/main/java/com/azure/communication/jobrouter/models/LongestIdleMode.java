@@ -13,9 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class LongestIdleMode extends DistributionMode {
     /** Creates an instance of LongestIdleMode class. */
-    public LongestIdleMode() {
-        this.kind = DistributionModeKind.LONGEST_IDLE;
-    }
+    public LongestIdleMode() {}
 
     /** {@inheritDoc} */
     @Override

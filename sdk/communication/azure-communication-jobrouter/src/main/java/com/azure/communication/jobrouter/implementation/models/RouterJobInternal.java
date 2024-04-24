@@ -76,7 +76,7 @@ public final class RouterJobInternal {
     private String queueId;
 
     /*
-     * Priority of this job. Value must be between -100 to 100.
+     * Priority of this job.
      */
     @Generated
     @JsonProperty(value = "priority")
@@ -97,14 +97,16 @@ public final class RouterJobInternal {
     private List<RouterWorkerSelectorInternal> requestedWorkerSelectors;
 
     /*
-     * A collection of worker selectors attached by a classification policy, which a worker must satisfy in order to process this job.
+     * A collection of worker selectors attached by a classification policy, which a worker must satisfy in order to
+     * process this job.
      */
     @Generated
     @JsonProperty(value = "attachedWorkerSelectors", access = JsonProperty.Access.WRITE_ONLY)
     private List<RouterWorkerSelectorInternal> attachedWorkerSelectors;
 
     /*
-     * A set of key/value pairs that are identifying attributes used by the rules engines to make decisions. Values must be primitive values - number, string, boolean.
+     * A set of key/value pairs that are identifying attributes used by the rules engines to make decisions. Values
+     * must be primitive values - number, string, boolean.
      */
     @Generated
     @JsonProperty(value = "labels")
@@ -118,7 +120,8 @@ public final class RouterJobInternal {
     private Map<String, RouterJobAssignment> assignments;
 
     /*
-     * A set of non-identifying attributes attached to this job. Values must be primitive values - number, string, boolean.
+     * A set of non-identifying attributes attached to this job. Values must be primitive values - number, string,
+     * boolean.
      */
     @Generated
     @JsonProperty(value = "tags")
@@ -281,7 +284,7 @@ public final class RouterJobInternal {
     }
 
     /**
-     * Get the priority property: Priority of this job. Value must be between -100 to 100.
+     * Get the priority property: Priority of this job.
      *
      * @return the priority value.
      */
@@ -291,7 +294,7 @@ public final class RouterJobInternal {
     }
 
     /**
-     * Set the priority property: Priority of this job. Value must be between -100 to 100.
+     * Set the priority property: Priority of this job.
      *
      * @param priority the priority value to set.
      * @return the RouterJobInternal object itself.
