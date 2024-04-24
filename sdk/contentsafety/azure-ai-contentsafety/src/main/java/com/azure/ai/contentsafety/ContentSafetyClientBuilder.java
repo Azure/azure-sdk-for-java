@@ -286,7 +286,9 @@ public final class ContentSafetyClientBuilder implements HttpTrait<ContentSafety
 
     @Generated
     private void validateBuilderParameters() {
-        // dev may customize add more validation here
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+
+        // dev may customize and add more validation here
         // in this module, maybe check either keyCredential or tokenCredential exists
     }
 
