@@ -7,7 +7,7 @@ package com.azure.communication.phonenumbers.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents an administrative division. e.g. state or province. */
+/** The PhoneNumberAdministrativeDivision model. */
 @Immutable
 public final class PhoneNumberAdministrativeDivision {
     /*
