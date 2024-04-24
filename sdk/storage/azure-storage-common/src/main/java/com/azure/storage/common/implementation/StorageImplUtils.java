@@ -6,7 +6,6 @@ package com.azure.storage.common.implementation;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.ResponseBase;
-//import com.azure.core.implementation.ImplUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
@@ -491,26 +490,14 @@ public class StorageImplUtils {
         return null;
     }
 
-    public static <T, U> ResponseBase<T, U> sendRequest(Callable<ResponseBase<T, U>> operation, Duration timeout) {
-        try {
-            Future<ResponseBase<T, U>> future = THREAD_POOL.submit(operation);
-            if (timeout == null) {
-                return getResultWithTimeout(future, 0, RuntimeException.class);
-            }
-            return getResultWithTimeout(future, timeout.toMillis(), RuntimeException.class);
-        } catch (InterruptedException | ExecutionException | TimeoutException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
-        }
-    }
-
     public static <T, U> ResponseBase<T, U> sendRequest(Callable<ResponseBase<T, U>> operation, Duration timeout, Class<? extends RuntimeException> exceptionType) {
         try {
-            Future<ResponseBase<T, U>> future = THREAD_POOL.submit(operation);
             if (timeout == null) {
-                return getResultWithTimeout(future, 0, exceptionType);
+                return operation.call();
             }
+            Future<ResponseBase<T, U>> future = THREAD_POOL.submit(operation);
             return getResultWithTimeout(future, timeout.toMillis(), exceptionType);
-        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+        } catch (Exception e) {
             Throwable cause = e.getCause();
             if (exceptionType.isInstance(cause)) {
                 // Safe to cast since we checked with isInstance
@@ -523,7 +510,7 @@ public class StorageImplUtils {
                 throw (Error) cause;
             } else {
                 // Wrap in RuntimeException if it's neither Error nor RuntimeException
-                throw LOGGER.logExceptionAsError(new RuntimeException("Exception during async operation", cause));
+                throw LOGGER.logExceptionAsError(new RuntimeException(cause));
             }
         }
     }
@@ -549,7 +536,7 @@ public class StorageImplUtils {
             } else if (cause instanceof RuntimeException) {
                 throw (RuntimeException) cause; // Rethrow if it's another kind of RuntimeException
             } else {
-                throw new RuntimeException("Exception during async operation", cause); // Wrap other checked exceptions
+                throw new RuntimeException(cause);
             }
         }
     }

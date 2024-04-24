@@ -3,6 +3,8 @@
 
 package com.azure.storage.common.implementation;
 
+import com.azure.core.util.FluxUtil;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -22,7 +24,7 @@ public class MappedByteBufferInputStream extends InputStream {
      */
     public MappedByteBufferInputStream(ByteBuffer buffer) {
         // Defensive copy of the ByteBuffer
-        this.byteBuffer = ByteBuffer.allocate(buffer.capacity()).put(buffer);
+        this.byteBuffer = ByteBuffer.wrap(FluxUtil.byteBufferToArray(buffer));
         this.byteBuffer.flip(); // Reset position after copying data
     }
 
