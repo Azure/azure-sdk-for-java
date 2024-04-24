@@ -629,7 +629,8 @@ private object CosmosAuthConfig {
             CosmosConfigEntry.parseEnumeration(authTypeAsString, CosmosAuthType),
         helpMessage = "There are two auth types are supported currently: " +
             "`MasterKey`(PrimaryReadWriteKeys, SecondReadWriteKeys, PrimaryReadOnlyKeys, SecondReadWriteKeys), " +
-            "`ServicePrincipal` and 'ManagedIdentity' (when the underlying Spark runtime supports it)")
+            "`ServicePrincipal` and 'ManagedIdentity' (when the underlying Spark runtime supports it - currently " +
+            "linked services in Azure Synapse/Fabric don't support managed identity auth for Cosmos DB yet.)")
 
     private val TenantId = CosmosConfigEntry[String](key = CosmosConfigNames.TenantId,
         defaultValue = None,

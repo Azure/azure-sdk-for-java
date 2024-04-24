@@ -3,8 +3,6 @@
 
 package com.azure.cosmos.spark
 
-import reactor.core.publisher.Mono
-
 trait AccountDataResolver {
     def getAccountDataConfig(configs : Map[String, String]): Map[String, String]
 
