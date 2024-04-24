@@ -1,0 +1,22 @@
+steps:
+  # /eng/repo-docs/docms/daily.update.setting.xml contains two settings
+  # 1. The java dev feed - This is for nightly builds and official builds, both of which publish
+  #    to the dev feed. In the case of official builds, setting this up prevents us from having
+  #    to deal with sonatype which may have a delay before what was just published is available.
+  #    The dev feed does not have the same delay that sonatype does.
+  # 2. The docs-public-packages dev feed. This is where the docs java library, java2docfx is
+  #    published. Nightly builds and official releases are published here and, while official releases
+  #    are also published to sonatype, it's better to hit the public dev feed whenever possible.
+  # Here is maven documentation: https://maven.apache.org/guides/mini/guide-multiple-repositories.html
+  - powershell: |
+      # Linux mvn `setting.xml` is sitting under path `~/.m2/setting.xml`
+      Get-Command mvn
+      if (!(Test-Path '~/.m2/')) {
+        mkdir ~/.m2/
+      }
+      if (Test-Path '~/.m2/setting.xml') {
+        Write-Host "'setting.xml' exists. Overwriting the file to support multiple repositories."
+      }
+      Copy-Item "./eng/repo-docs/docms/daily.update.setting.xml" -Destination "~/.m2/settings.xml"
+    displayName: 'Configure mvn repo settings on linux'
+    workingDirectory: $(Build.SourcesDirectory)
