@@ -181,7 +181,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
      */
     public Mono<Void> sendDisposition(String deliveryTag, DeliveryState desiredState) {
         if (isTerminated.get()) {
-            return monoError(logger, DeliveryNotOnLinkException.linkClosed(deliveryTag, desiredState));
+            return monoError(logger.atWarning(), DeliveryNotOnLinkException.linkClosed(deliveryTag, desiredState));
         } else {
             return sendDispositionImpl(deliveryTag, desiredState);
         }
@@ -414,7 +414,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
             try {
                 dispatcher.invoke(() -> delivery.disposition(work.getDesiredState()));
             } catch (IOException | RejectedExecutionException dispatchError) {
-                final Throwable amqpException = logger.atError()
+                final Throwable amqpException = logger.atWarning()
                     .addKeyValue(DELIVERY_TAG_KEY, work.getDeliveryTag())
                     .addKeyValue(LINK_NAME_KEY, receiveLinkName)
                     .log(new AmqpException(false, "Retrying updateDisposition failed to dispatch to Reactor.",

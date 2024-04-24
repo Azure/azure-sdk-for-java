@@ -524,7 +524,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
             } else if (statusCode == AmqpResponseCode.NO_CONTENT) {
                 list = Collections.emptyList();
             } else {
-                throw logger.logExceptionAsError(Exceptions.propagate(new AmqpException(true,
+                throw logger.logExceptionAsWarning(Exceptions.propagate(new AmqpException(true,
                     "Get rules response error. Could not get rules.",
                     getErrorContext())));
             }
@@ -597,7 +597,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
     private <T> Mono<T> errorIfEmpty(RequestResponseChannel channel) {
         return Mono.error(() -> {
             String error = String.format("entityPath[%s] No response received from management channel.", entityPath);
-            return logger.logExceptionAsError(new AmqpException(true, error, channel.getErrorContext()));
+            return logger.logExceptionAsWarning(new AmqpException(true, error, channel.getErrorContext()));
         });
     }
 

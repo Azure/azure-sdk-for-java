@@ -222,7 +222,7 @@ public class ReactorConnection implements AmqpConnection {
     public Mono<AmqpManagementNode> getManagementNode(String entityPath) {
         return Mono.defer(() -> {
             if (isDisposed()) {
-                return monoError(logger.atError().addKeyValue(ENTITY_PATH_KEY, entityPath), Exceptions
+                return monoError(logger.atWarning().addKeyValue(ENTITY_PATH_KEY, entityPath), Exceptions
                     .propagate(new IllegalStateException("Connection is disposed. Cannot get management instance.")));
             }
 

@@ -67,28 +67,6 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
      * Creates an instance of {@link AmqpChannelProcessor}.
      *
      * @param fullyQualifiedNamespace The fully qualified namespace for the AMQP connection.
-     * @param entityPath The entity path for the AMQP connection.
-     * @param endpointStatesFunction The function that returns the endpoint states for the AMQP connection.
-     * @param retryPolicy The retry policy for the AMQP connection.
-     * @param logger The logger to use for this processor.
-     * @deprecated Use constructor overload that does not take {@link ClientLogger}
-     */
-    @Deprecated
-    public AmqpChannelProcessor(String fullyQualifiedNamespace, String entityPath,
-        Function<T, Flux<AmqpEndpointState>> endpointStatesFunction, AmqpRetryPolicy retryPolicy, ClientLogger logger) {
-        this.endpointStatesFunction
-            = Objects.requireNonNull(endpointStatesFunction, "'endpointStates' cannot be null.");
-        this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
-        Map<String, Object> loggingContext = new HashMap<>(1);
-        loggingContext.put(ENTITY_PATH_KEY, Objects.requireNonNull(entityPath, "'entityPath' cannot be null."));
-        this.logger = new ClientLogger(getClass(), loggingContext);
-        this.errorContext = new AmqpErrorContext(fullyQualifiedNamespace);
-    }
-
-    /**
-     * Creates an instance of {@link AmqpChannelProcessor}.
-     *
-     * @param fullyQualifiedNamespace The fully qualified namespace for the AMQP connection.
      * @param endpointStatesFunction The function that returns the endpoint states for the AMQP connection.
      * @param retryPolicy The retry policy for the AMQP connection.
      * @param loggingContext Additional context to add to the logging scope.
@@ -232,7 +210,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
                 }
             });
         } else {
-            logger.atWarning()
+            logger.atError()
                 .addKeyValue(TRY_COUNT_KEY, attemptsMade)
                 .log("Retry attempts exhausted or exception was not retriable.", throwable);
 
@@ -267,7 +245,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
                 actual.onSubscribe(Operators.emptySubscription());
                 actual.onError(lastError);
             } else {
-                Operators.error(actual, logger.logExceptionAsError(
+                Operators.error(actual, logger.logExceptionAsWarning(
                     new IllegalStateException("Cannot subscribe. Processor is already terminated.")));
             }
 
