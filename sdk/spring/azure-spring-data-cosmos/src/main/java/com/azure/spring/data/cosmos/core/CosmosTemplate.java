@@ -60,6 +60,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -220,10 +222,17 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         markAuditedIfConfigured(objectToSave);
         generateIdIfNullAndAutoGenerationEnabled(objectToSave, domainType);
 
-        JsonNode originalItem = mappingCosmosConverter.writeJsonNode(objectToSave, true);
+        List<String> transientFields = mappingCosmosConverter.getTransientFields(objectToSave);
+        HashMap<Field, Object> transientFieldValuesMap = new HashMap<>();
+        JsonNode originalItem;
+        if (!transientFields.isEmpty()) {
+            originalItem = mappingCosmosConverter.writeJsonNode(objectToSave, transientFields);
+            transientFieldValuesMap = mappingCosmosConverter.getTransientFieldsAndValuesMap(objectToSave, transientFields);
+        } else {
+            originalItem = mappingCosmosConverter.writeJsonNode(objectToSave);
+        }
 
         containerName = getContainerName(domainType);
-
 
         LOGGER.debug("execute createItem in database {} container {}", this.getDatabaseName(), containerName);
 
@@ -244,7 +253,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .block();
 
         assert response != null;
-        return toDomainObject(domainType, mappingCosmosConverter.repopulateAnyTransientFields(objectToSave, response.getItem()));
+        return toDomainObject(domainType, mappingCosmosConverter.repopulateAnyTransientFieldsFromMap(response.getItem(), transientFieldValuesMap));
     }
 
     /**
@@ -262,12 +271,20 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         String containerName = information.getContainerName();
         Class<T> domainType = information.getJavaType();
         List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
-        Map<String, Object> entitiesMap = new HashMap<>();
+        Map<String, HashMap<Field, Object>> mapOfTransientFieldValuesMaps = new HashMap<>();
         entities.forEach(entity -> {
             markAuditedIfConfigured(entity);
             generateIdIfNullAndAutoGenerationEnabled(entity, domainType);
-            JsonNode originalItem = mappingCosmosConverter.writeJsonNode(entity, true);
-            entitiesMap.put(originalItem.get("id").asText(), entity);
+            List<String> transientFields = mappingCosmosConverter.getTransientFields(entity);
+            HashMap<Field, Object> transientFieldValuesMap = new HashMap<>();
+            JsonNode originalItem;
+            if (!transientFields.isEmpty()) {
+                originalItem = mappingCosmosConverter.writeJsonNode(entity, transientFields);
+                transientFieldValuesMap = mappingCosmosConverter.getTransientFieldsAndValuesMap(entity, transientFields);
+            } else {
+                originalItem = mappingCosmosConverter.writeJsonNode(entity);
+            }
+            mapOfTransientFieldValuesMaps.put(originalItem.get("id").asText(), transientFieldValuesMap);
             PartitionKey partitionKey = new PartitionKey(information.getPartitionKeyFieldValue(entity));
             final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();
             applyBulkVersioning(domainType, originalItem, options);
@@ -293,8 +310,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                     r.getResponse().getCosmosDiagnostics(), null);
                 JsonNode responseItem = r.getResponse().getItem(JsonNode.class);
                 if (responseItem != null) {
-                    Object preStrippedItem = entitiesMap.get(responseItem.get("id").asText());
-                    return Flux.just(toDomainObject(domainType, mappingCosmosConverter.repopulateAnyTransientFields(preStrippedItem, responseItem)));
+                    HashMap<Field, Object> transientFieldValuesMap = mapOfTransientFieldValuesMaps.get(responseItem.get("id").asText());
+                    return Flux.just(toDomainObject(domainType, mappingCosmosConverter.repopulateAnyTransientFieldsFromMap(responseItem, transientFieldValuesMap)));
                 } else {
                     return Flux.empty();
                 }
@@ -490,8 +507,15 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.notNull(object, "Upsert object should not be null");
         containerName = getContainerName(object.getClass());
         markAuditedIfConfigured(object);
-
-        JsonNode originalItem = mappingCosmosConverter.writeJsonNode(object, true);
+        List<String> transientFields = mappingCosmosConverter.getTransientFields(object);
+        HashMap<Field, Object> transientFieldValuesMap = new HashMap<>();
+        JsonNode originalItem;
+        if (!transientFields.isEmpty()) {
+            originalItem = mappingCosmosConverter.writeJsonNode(object, transientFields);
+            transientFieldValuesMap = mappingCosmosConverter.getTransientFieldsAndValuesMap(object, transientFields);
+        } else {
+            originalItem = mappingCosmosConverter.writeJsonNode(object);
+        }
 
         LOGGER.debug("execute upsert item in database {} container {}", this.getDatabaseName(),
             containerName);
@@ -515,7 +539,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .block();
 
         assert cosmosItemResponse != null;
-        return toDomainObject(domainType, mappingCosmosConverter.repopulateAnyTransientFields(object, cosmosItemResponse.getItem()));
+        return toDomainObject(domainType, mappingCosmosConverter.repopulateAnyTransientFieldsFromMap(cosmosItemResponse.getItem(), transientFieldValuesMap));
     }
 
     /**

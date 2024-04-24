@@ -11,6 +11,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -23,9 +25,11 @@ import org.springframework.data.mapping.context.MappingContext;
 import org.springframework.data.mapping.model.ConvertingPropertyAccessor;
 import org.springframework.util.Assert;
 
+import java.lang.reflect.Field;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,6 +54,8 @@ public class MappingCosmosConverter
     protected GenericConversionService conversionService;
     private ApplicationContext applicationContext;
     private final ObjectMapper objectMapper;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MappingCosmosConverter.class);
 
     /**
      * Initialization
@@ -116,19 +122,21 @@ public class MappingCosmosConverter
      */
 
     public JsonNode writeJsonNode(Object sourceEntity) {
-        return writeJsonNode(sourceEntity, false);
+        return writeJsonNode(sourceEntity, null);
     }
 
     /**
      * To write source entity as a cosmos item
-     * @param <T> type of source entity
+     *
      * @param sourceEntity must not be {@literal null}
-     * @param stripTransientFields to determmine if transient fields should be stripped
+     * @param transientFields transient fields
+     * @param <T> type of source entity
      * @return CosmosItemProperties
      * @throws MappingException no mapping metadata for entity type
      * @throws CosmosAccessException fail to map document value
      */
-    public <T> JsonNode writeJsonNode(Object sourceEntity, boolean stripTransientFields) {
+    public <T> JsonNode writeJsonNode(Object sourceEntity, List<String> transientFields) {
+
         if (sourceEntity == null) {
             return null;
         }
@@ -157,17 +165,9 @@ public class MappingCosmosConverter
             final String id = value == null ? null : value.toString();
             cosmosObjectNode.put("id", id);
         }
-
-        if (stripTransientFields) {
-            @SuppressWarnings("unchecked")
-            final Class<T> domainType = (Class<T>) sourceEntity.getClass();
-            @SuppressWarnings("unchecked")
-            CosmosEntityInformation<T, Object> entityInfo = (CosmosEntityInformation<T, Object>) CosmosEntityInformation.getInstance(domainType);
-            List<String> transientFields =  entityInfo.getTransientFields();
-            if (!transientFields.isEmpty()) {
-                //strip fields with @Transient annotation from the JsonNode so they are not persisted.
-                cosmosObjectNode = stripTransientFields(cosmosObjectNode, transientFields);
-            }
+        if (transientFields != null && !transientFields.isEmpty()) {
+            // Strip fields with @Transient annotation from the JsonNode so they are not persisted.
+            cosmosObjectNode = stripTransientFields(cosmosObjectNode, transientFields);
         }
 
         mapVersionFieldToEtag(sourceEntity, cosmosObjectNode);
@@ -178,31 +178,63 @@ public class MappingCosmosConverter
     /**
      * To repopulate any transient fields that were stripped from the original object
      * @param <T> type of source entity
-     * @param originalObjectToSave must not be {@literal null}
+     * @param transientValues transient fields and their values
      * @param responseItem must not be {@literal null}
      * @return CosmosItemProperties
      * @throws MappingException no mapping metadata for entity type
      * @throws CosmosAccessException fail to map document value
      */
 
-    public <T> JsonNode repopulateAnyTransientFields(Object originalObjectToSave, JsonNode responseItem) {
+    public <T> JsonNode repopulateAnyTransientFieldsFromMap(JsonNode responseItem, HashMap<Field, Object> transientValues) {
+        if (transientValues.isEmpty()) {
+            return responseItem;
+        }
+        ObjectNode updatedItem = (ObjectNode) responseItem;
+        for (Field field : transientValues.keySet()) {
+            Object value = transientValues.get(field);
+            if (value != null) {
+                updatedItem.set(field.getName(), objectMapper.valueToTree(value));
+            }
+        }
+        return updatedItem;
+
+    }
+
+    /**
+     * To get transient fields and their values
+     * @param <T> type of source entity
+     * @param object must not be {@literal null}
+     * @param transientFields transient fields
+     * @return HashMap
+     */
+    public <T> HashMap<Field, Object> getTransientFieldsAndValuesMap(T object, List<String> transientFields) {
+        HashMap<Field, Object> transientValuesMap = new HashMap<>();
+        for (String fieldName : transientFields) {
+            Field field = null;
+            try {
+                field = object.getClass().getDeclaredField(fieldName);
+                field.setAccessible(true);
+                transientValuesMap.put(field, field.get(object));
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                LOGGER.info("No value found for transient field: " + fieldName + " with error: " + e.getMessage());
+            }
+        }
+        return transientValuesMap;
+    }
+
+    /**
+     * To get transient fields
+     * @param <T> type of source entity
+     * @param objectToSave must not be {@literal null}
+     * @return List
+     */
+
+    public <T> List<String> getTransientFields(T objectToSave) {
         @SuppressWarnings("unchecked")
-        Class<T> domainType = (Class<T>) originalObjectToSave.getClass();
+        Class<T> domainType = (Class<T>) objectToSave.getClass();
         @SuppressWarnings("unchecked")
         CosmosEntityInformation<T, Object> entityInfo = (CosmosEntityInformation<T, Object>) CosmosEntityInformation.getInstance(domainType);
-        List<String> transientFields = entityInfo.getTransientFields();
-        if (transientFields.isEmpty()) {
-            return responseItem;
-        }
-        JsonNode originalObject = writeJsonNode(originalObjectToSave);
-        boolean anyTransientFieldsSet = transientFields.stream().anyMatch(originalObject::hasNonNull);
-        if (anyTransientFieldsSet) {
-            ObjectNode updatedItem = (ObjectNode) responseItem;
-            originalObject.fieldNames().forEachRemaining(fieldName -> updatedItem.set(fieldName, originalObject.get(fieldName)));
-            return updatedItem;
-        } else {
-            return responseItem;
-        }
+        return entityInfo.getTransientFields();
     }
 
     private ObjectNode stripTransientFields(ObjectNode objectNode, List<String> transientFields) {
