@@ -62,10 +62,11 @@ def parse_args() -> (argparse.ArgumentParser, argparse.Namespace):
         help='Readme path, Sample: "storage" or "specification/storage/resource-manager/readme.md"',
     )
     parser.add_argument(
-        '-d',
-        '--tsp-directory',
-        help='The top level directory where the main.tsp for the service lives. '
-             'This should be relative to the spec repo root such as specification/cognitiveservices/OpenAI.Inference',
+        '-c',
+        '--tsp-config',
+        help='The top level directory where the tspconfig.yaml for the service lives. '
+             'Currently only support remote url with specific commitID '
+             'e.g. https://github.com/Azure/azure-rest-api-specs/blob/042e4045dedff4baaf5ae551bf6c8087fbdacd40/specification/deviceregistry/DeviceRegistry.Management/tspconfig.yaml',
     )
     parser.add_argument('-t', '--tag', help='Specific tag')
     parser.add_argument('-v', '--version', help='Specific sdk version')
@@ -303,11 +304,11 @@ def main():
     sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
     api_specs_file = os.path.join(base_dir, API_SPECS_FILE)
 
-    if args.get('tsp_directory'):
-        tsp_directory = args['tsp_directory']
+    if args.get('tsp_config'):
+        tsp_config = args['tsp_config']
 
         succeeded, require_sdk_integration, sdk_folder, service, module \
-            = generate_typespec_project(tsp_project=tsp_directory, spec_root=args["spec_root"])
+            = generate_typespec_project(tsp_project=tsp_config, sdk_root=sdk_root)
 
         stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module, **args)
         args['version'] = current_version

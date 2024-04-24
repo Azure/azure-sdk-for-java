@@ -299,7 +299,12 @@ def update_spec(spec: str, subspec: str) -> str:
     return spec
 
 
-def generate_typespec_project(tsp_project: str, sdk_root: str = None, spec_root: str = None, head_sha: str = "", repo_url: str = ""):
+def generate_typespec_project(
+    tsp_project: str,
+    sdk_root: str,
+    spec_root: str = None,
+    head_sha: str = "",
+    repo_url: str = ""):
 
     if not tsp_project:
         return False
@@ -311,13 +316,24 @@ def generate_typespec_project(tsp_project: str, sdk_root: str = None, spec_root:
     require_sdk_integration = False
 
     try:
-        tsp_dir = os.path.join(spec_root, tsp_project) if spec_root else tsp_project
-        repo = remove_prefix(repo_url, 'https://github.com/')
-        cmd = ['npx', 'tsp-client', 'init', '--debug',
-               '--tsp-config', tsp_dir,
-               '--commit', head_sha,
-               '--repo', repo,
-               '--local-spec-repo', tsp_dir]
+        url_match = re.match(
+            r'^https://github.com/(?P<repo>[^/]*/azure-rest-api-specs(-pr)?)/blob/(?P<commit>[0-9a-f]{40})/(?P<path>.*)/tspconfig.yaml$',
+            tsp_project,
+            re.IGNORECASE
+        )
+        if url_match:
+            # generate from remote url
+            cmd = ['npx', 'tsp-client', 'init', '--debug',
+                   '--tsp-config', tsp_project]
+        else:
+            # sdk automation
+            tsp_dir = os.path.join(spec_root, tsp_project) if spec_root else tsp_project
+            repo = remove_prefix(repo_url, 'https://github.com/')
+            cmd = ['npx', 'tsp-client', 'init', '--debug',
+                   '--tsp-config', tsp_dir,
+                   '--commit', head_sha,
+                   '--repo', repo,
+                   '--local-spec-repo', tsp_dir]
         check_call(cmd, sdk_root)
 
         sdk_folder = find_sdk_folder(sdk_root)
