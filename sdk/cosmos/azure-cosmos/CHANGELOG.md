@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.53.5-hotfix (2024-04-23)
+### 4.53.5-hotfix (2024-04-24)
 
 #### Bugs Fixed
 * Fixed an issue in QuorumReader when quorum could not be selected even though 1 secondary and Primary are reachable and in sync. - See [PR 38832](https://github.com/Azure/azure-sdk-for-java/pull/38832)
