@@ -9,6 +9,7 @@ import org.springframework.data.util.ClassTypeInformation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SuppressWarnings("removal")
 public class BasicCosmosPersistentEntityUnitTest {
 
     @Test
