@@ -69,7 +69,7 @@ public class KafkaCosmosConfig extends AbstractConfig {
     private static final String DEFAULT_AAD_CLIENT_SECRET = Strings.Emtpy;
 
     private static final String USE_GATEWAY_MODE = "azure.cosmos.mode.gateway";
-    private static final String USE_GATEWAY_MODE_DOC = "Flag to indicate whether to use gateway mode. By default it is false.";
+    private static final String USE_GATEWAY_MODE_DOC = "Flag to indicate whether to use gateway mode. By default it is false, means SDK uses direct mode. https://learn.microsoft.com/azure/cosmos-db/nosql/sdk-connection-modes";
     private static final String USE_GATEWAY_MODE_DISPLAY = "Use gateway mode.";
     private static final boolean DEFAULT_USE_GATEWAY_MODE = false;
 
@@ -135,7 +135,7 @@ public class KafkaCosmosConfig extends AbstractConfig {
     private static final String DEFAULT_THROUGHPUT_CONTROL_PREFERRED_REGIONS_LIST = Strings.Emtpy;
 
     private static final String THROUGHPUT_CONTROL_USE_GATEWAY_MODE = "azure.cosmos.throughputControl.mode.gateway";
-    private static final String THROUGHPUT_CONTROL_USE_GATEWAY_MODE_DOC = "Flag to indicate whether to use gateway mode for throughput control. By default it is false.";
+    private static final String THROUGHPUT_CONTROL_USE_GATEWAY_MODE_DOC = "Flag to indicate whether to use gateway mode. By default it is false, means SDK uses direct mode. https://learn.microsoft.com/azure/cosmos-db/nosql/sdk-connection-modes";
     private static final String THROUGHPUT_CONTROL_USE_GATEWAY_MODE_DISPLAY = "Use gateway mode for throughput control";
     private static final boolean DEFAULT_THROUGHPUT_CONTROL_USE_GATEWAY_MODE = false;
 
