@@ -58,6 +58,13 @@ public final class SocketConnection {
     }
 
     /**
+     * Returns true if this connection has been used.
+     */
+    public boolean isAvailableForReuse() {
+        return canBeReused;
+    }
+
+    /**
      * Close the socket and its streams
      * @throws IOException if an I/O error occurs
      */
@@ -115,9 +122,10 @@ public final class SocketConnection {
         @Override public boolean equals(Object other) {
             if (other instanceof SocketConnectionProperties) {
                 SocketConnectionProperties that = (SocketConnectionProperties) other;
-                return Objects.equals(this.host, that.host)
-                    && this.port.equals(that.port)
-                    && this.sslSocketFactory.equals(that.sslSocketFactory);
+                boolean p = Objects.equals(this.host, that.host)
+                    && this.port.equals(that.port);
+                return p;
+
             }
             return false;
         }

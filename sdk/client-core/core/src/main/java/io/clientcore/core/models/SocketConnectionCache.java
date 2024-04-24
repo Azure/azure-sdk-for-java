@@ -11,9 +11,9 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Class to maintain a cache of socket connections
@@ -22,7 +22,7 @@ public final class SocketConnectionCache {
 
     private static SocketConnectionCache instance;
     private static final Map<SocketConnectionProperties, List<SocketConnection>> CONNECTION_POOL
-        = new HashMap<SocketConnectionProperties, List<SocketConnection>>();
+        = new ConcurrentHashMap<>();
     private final int readTimeout;
     private final boolean keepConnectionAlive;
     private final int maxConnections;
@@ -69,7 +69,7 @@ public final class SocketConnectionCache {
                 } else {
                     CONNECTION_POOL.put(socketConnectionProperties, connections);
                 }
-                // keep removing connections from list until we find a use-able one, disregard other connections in use
+                // keep removing connections from list until we find a use-a one, disregard other connections in use
                 if (connection.canBeReused()) {
                     return connection;
                 }
@@ -110,7 +110,6 @@ public final class SocketConnectionCache {
     public void reuseConnection(SocketConnection connection) throws IOException {
         if (maxConnections > 0 && keepConnectionAlive && connection.canBeReused()) {
             SocketConnectionProperties connectionProperties = connection.getConnectionProperties();
-
             // try and put the connection back in the pool
             synchronized (CONNECTION_POOL) {
                 List<SocketConnection> connections = CONNECTION_POOL.get(connectionProperties);
@@ -121,7 +120,6 @@ public final class SocketConnectionCache {
                 if (connections.size() < maxConnections) {
                     // mark the connection as available for reuse
                     connection.markAvailableForReuse();
-                    connection.getSocket().setKeepAlive(true);
                     connections.add(connection);
                     CONNECTION_POOL.put(connectionProperties, connections);
                 }
@@ -150,6 +148,7 @@ public final class SocketConnectionCache {
 
         if (keepConnectionAlive) {
             socket.setKeepAlive(true);
+            socket.setReuseAddress(true);
         }
         if (readTimeout != -1) {
             socket.setSoTimeout(readTimeout);

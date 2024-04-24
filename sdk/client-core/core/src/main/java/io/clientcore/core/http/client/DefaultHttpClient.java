@@ -26,11 +26,10 @@ import io.clientcore.core.util.binarydata.BinaryData;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSocketFactory;
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.ConnectException;
@@ -89,7 +88,7 @@ class DefaultHttpClient implements HttpClient {
         String maxConnectionsString = System.getProperty("http.maxConnections");
         maxConnections = maxConnectionsString != null
             ? Integer.parseInt(maxConnectionsString)
-            : keepConnectionAlive ? 5 : 0;
+            : 0;
         this.socketConnectionCache = SocketConnectionCache.getInstance(keepConnectionAlive, maxConnections,
             readTimeout == null ? -1 : (int) readTimeout.toMillis());
     }
@@ -420,12 +419,10 @@ class DefaultHttpClient implements HttpClient {
         private static Response<?> sendPatchRequest(HttpRequest httpRequest, BufferedInputStream bufferedInputStream,
             OutputStream outputStream) throws IOException {
             httpRequest.getHeaders().set(HttpHeaderName.HOST, httpRequest.getUrl().getHost());
-            BufferedReader reader = new BufferedReader(new InputStreamReader(bufferedInputStream, StandardCharsets.UTF_8));
             OutputStreamWriter out = new OutputStreamWriter(outputStream);
 
             buildAndSend(httpRequest, out);
-            Response<?> response = buildResponse(httpRequest, reader);
-
+            Response<?> response = buildResponse(httpRequest, bufferedInputStream);
             HttpHeader locationHeader = response.getHeaders().get(HttpHeaderName.LOCATION);
             String redirectLocation = (locationHeader == null) ? null : locationHeader.getValue();
 
@@ -473,64 +470,87 @@ class DefaultHttpClient implements HttpClient {
          * Response
          *
          * @param httpRequest The HTTP Request being sent
-         * @param reader the input stream from the socket
+         * @param inputStream the input stream from the socket
          * @return an instance of Response
          * @throws IOException If an I/O error occurs
          */
-        private static Response<?> buildResponse(HttpRequest httpRequest, BufferedReader reader) throws IOException {
+        private static Response<?> buildResponse(HttpRequest httpRequest, BufferedInputStream inputStream)
+            throws IOException {
             // Parse Http response from socket:
             // Status Line
             // Response Headers
             // Blank Line
             // Response Body
 
-            int statusCode = readStatusCode(reader);
-
-            HttpHeaders headers = readResponseHeaders(reader);
-            HttpHeader contentLengthHeader = headers.get(CONTENT_LENGTH);
-            String line;
+            int statusCode = readStatusCode(inputStream);
+            HttpHeaders headers = readResponseHeaders(inputStream);
             // read body if present
-            if (headers.getSize() != 0 && contentLengthHeader != null && contentLengthHeader.getValue() != null) {
-                StringBuilder bodyString = new StringBuilder();
-                while ((line = reader.readLine()) != null) {
-                    bodyString.append(line);
-                }
-
-                return new HttpResponse<>(httpRequest, statusCode, headers,
-                    BinaryData.fromString(bodyString.toString()));
+            // TODO: (add chunked encoding support)
+            HttpHeader contentLengthHeader = headers.get(CONTENT_LENGTH);
+            byte[] body = getBody(inputStream, contentLengthHeader);
+            if (body != null) {
+                return new HttpResponse<>(httpRequest, statusCode, headers, BinaryData.fromBytes(body));
             }
             return new HttpResponse<>(httpRequest, statusCode, headers, null);
         }
 
-        private static int readStatusCode(BufferedReader reader) throws IOException {
+        private static synchronized byte[] getBody(BufferedInputStream inputStream, HttpHeader contentLengthHeader)
+            throws IOException {
+            int contentLength;
+            if (contentLengthHeader == null || contentLengthHeader.getValue() == null) {
+                contentLength = -1;
+            } else {
+                contentLength = Integer.parseInt(contentLengthHeader.getValue());
+            }
+            if (contentLength > 0) {
+                byte[] buffer = new byte[contentLength];
+                int bytesRead;
+                int totalBytesRead = 0;
 
-            while (!reader.ready()) {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                while (totalBytesRead < contentLength
+                    && (bytesRead = inputStream.read(buffer, totalBytesRead, contentLength - totalBytesRead)) != -1) {
+                    totalBytesRead += bytesRead;
                 }
-            }
-            String statusLine = reader.readLine();
 
-            if (statusLine == null) {
-                throw LOGGER.logThrowableAsError(new IllegalStateException("Unexpected response from server."));
+                return buffer;
             }
-            int dotIndex = statusLine.indexOf('.');
-            return Integer.parseInt(statusLine.substring(dotIndex + 3, dotIndex + 6));
+            return null;
         }
 
-        private static HttpHeaders readResponseHeaders(BufferedReader reader) throws IOException {
+        private static synchronized int readStatusCode(InputStream inputStream) throws IOException {
+            ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
+            int b;
+            while ((b = inputStream.read()) != -1 && b != '\n') {
+                byteOutputStream.write(b);
+            }
+            String statusLine = byteOutputStream.toString(StandardCharsets.UTF_8).trim();
+            if (statusLine.isEmpty()) {
+                throw new IllegalStateException("Unexpected response from server.");
+            }
+            String[] parts = statusLine.split(" ");
+            if (parts.length < 2) {
+                throw new IllegalStateException("Unexpected response from server. Status : " + statusLine);
+            }
+            return Integer.parseInt(parts[1]);
+        }
+
+        private synchronized static HttpHeaders readResponseHeaders(InputStream inputStream) throws IOException {
             HttpHeaders headers = new HttpHeaders();
-            String line;
-            while ((line = reader.readLine()) != null && !line.isEmpty()) {
-                // Headers may have optional leading and trailing whitespace around the header value.
-                // https://tools.ietf.org/html/rfc7230#section-3.2
-                // Process this accordingly.
-                int split = line.indexOf(':'); // Find ':' to split the header name and value.
-                String key = line.substring(0, split); // Get the header name.
-                String value = line.substring(split + 1).trim(); // Get the header value and trim whitespace.
-                headers.add(HttpHeaderName.fromString(key), value);
+            ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
+            int b;
+            while ((b = inputStream.read()) != -1 && b != '\n') {
+                if (b == '\r') {
+                    String headerLine = byteOutputStream.toString(StandardCharsets.UTF_8).trim();
+                    if (!headerLine.isEmpty()) {
+                        int split = headerLine.indexOf(':');
+                        String key = headerLine.substring(0, split);
+                        String value = headerLine.substring(split + 1).trim();
+                        headers.add(HttpHeaderName.fromString(key), value);
+                    }
+                    byteOutputStream.reset();
+                } else {
+                    byteOutputStream.write(b);
+                }
             }
             return headers;
         }
