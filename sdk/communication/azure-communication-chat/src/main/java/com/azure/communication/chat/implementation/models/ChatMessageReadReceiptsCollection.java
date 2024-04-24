@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A paged collection of chat message read receipts. */
+/**
+ * A paged collection of chat message read receipts.
+ */
 @Fluent
 public final class ChatMessageReadReceiptsCollection {
     /*
@@ -18,15 +20,20 @@ public final class ChatMessageReadReceiptsCollection {
     private List<ChatMessageReadReceipt> value;
 
     /*
-     * If there are more chat message read receipts that can be retrieved, the
-     * next link will be populated.
+     * If there are more chat message read receipts that can be retrieved, the next link will be populated.
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
+     * Creates an instance of ChatMessageReadReceiptsCollection class.
+     */
+    public ChatMessageReadReceiptsCollection() {
+    }
+
+    /**
      * Get the value property: Collection of chat message read receipts.
-     *
+     * 
      * @return the value value.
      */
     public List<ChatMessageReadReceipt> getValue() {
@@ -35,7 +42,7 @@ public final class ChatMessageReadReceiptsCollection {
 
     /**
      * Set the value property: Collection of chat message read receipts.
-     *
+     * 
      * @param value the value value to set.
      * @return the ChatMessageReadReceiptsCollection object itself.
      */
@@ -45,9 +52,9 @@ public final class ChatMessageReadReceiptsCollection {
     }
 
     /**
-     * Get the nextLink property: If there are more chat message read receipts that can be retrieved, the next link will
-     * be populated.
-     *
+     * Get the nextLink property: If there are more chat message read receipts that can be retrieved, the next link
+     * will be populated.
+     * 
      * @return the nextLink value.
      */
     public String getNextLink() {

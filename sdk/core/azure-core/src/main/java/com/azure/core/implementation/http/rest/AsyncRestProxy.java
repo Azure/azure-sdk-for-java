@@ -21,6 +21,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.json.JsonSerializable;
+import com.azure.xml.XmlSerializable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -35,6 +36,9 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static com.azure.core.implementation.ReflectionSerializable.serializeJsonSerializableToBytes;
+import static com.azure.core.implementation.ReflectionSerializable.serializeXmlSerializableToBytes;
+import static com.azure.core.implementation.ReflectionSerializable.supportsJsonSerializable;
+import static com.azure.core.implementation.ReflectionSerializable.supportsXmlSerializable;
 import static com.azure.core.implementation.logging.LoggingKeys.CANCELLED_ERROR_TYPE;
 
 /**
@@ -304,7 +308,7 @@ public class AsyncRestProxy extends RestProxyBase {
         }
 
         if (supportsXmlSerializable(bodyContentObject.getClass())) {
-            request.setBody(BinaryData.fromByteBuffer(serializeAsXmlSerializable(bodyContentObject)));
+            request.setBody(serializeXmlSerializableToBytes((XmlSerializable<?>) bodyContentObject));
             return;
         }
 

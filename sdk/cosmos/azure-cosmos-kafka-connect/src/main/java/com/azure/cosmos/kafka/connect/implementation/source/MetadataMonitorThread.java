@@ -30,7 +30,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public class MetadataMonitorThread extends Thread {
     private static final Logger LOGGER = LoggerFactory.getLogger(MetadataMonitorThread.class);
 
-    // TODO[Public Preview]: using a threadPool with less threads or single thread
+    // TODO[GA]: using a threadPool with less threads or single thread
     public static final Scheduler CONTAINERS_MONITORING_SCHEDULER = Schedulers.newBoundedElastic(
         Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
         Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
@@ -42,7 +42,7 @@ public class MetadataMonitorThread extends Thread {
     private final CosmosSourceContainersConfig sourceContainersConfig;
     private final CosmosMetadataConfig metadataConfig;
     private final SourceConnectorContext connectorContext;
-    private final CosmosSourceOffsetStorageReader offsetStorageReader;
+    private final IMetadataReader metadataReader;
     private final CosmosAsyncClient cosmosClient;
     private final SqlQuerySpec containersQuerySpec;
     private final ContainersMetadataTopicPartition containersMetadataTopicPartition;
@@ -52,19 +52,19 @@ public class MetadataMonitorThread extends Thread {
         CosmosSourceContainersConfig containersConfig,
         CosmosMetadataConfig metadataConfig,
         SourceConnectorContext connectorContext,
-        CosmosSourceOffsetStorageReader offsetStorageReader,
+        IMetadataReader metadataReader,
         CosmosAsyncClient cosmosClient) {
 
         checkNotNull(containersConfig, "Argument 'containersConfig' can not be null");
         checkNotNull(metadataConfig, "Argument 'metadataConfig' can not be null");
         checkNotNull(connectorContext, "Argument 'connectorContext' can not be null");
-        checkNotNull(offsetStorageReader, "Argument 'offsetStorageReader' can not be null");
+        checkNotNull(metadataReader, "Argument 'metadataReader' can not be null");
         checkNotNull(cosmosClient, "Argument 'cosmosClient' can not be null");
 
         this.sourceContainersConfig = containersConfig;
         this.metadataConfig = metadataConfig;
         this.connectorContext = connectorContext;
-        this.offsetStorageReader = offsetStorageReader;
+        this.metadataReader = metadataReader;
         this.cosmosClient = cosmosClient;
         this.containersQuerySpec = this.getContainersQuerySpec();
         this.containersMetadataTopicPartition = new ContainersMetadataTopicPartition(containersConfig.getDatabaseName());
@@ -93,40 +93,47 @@ public class MetadataMonitorThread extends Thread {
                 })
                 .onErrorResume(throwable -> {
                     LOGGER.warn("Containers metadata checking failed. Will retry in next polling cycle", throwable);
-                    // TODO: only allow continue for transient errors, for others raiseError
                     return Mono.empty();
                 })
                 .repeat(() -> this.isRunning.get())
                 .subscribeOn(CONTAINERS_MONITORING_SCHEDULER)
                 .subscribe();
+        } else {
+            LOGGER.info("Containers monitoring task not started due to negative containers poll delay");
         }
-
-        LOGGER.info("Containers monitoring task not started due to negative containers poll delay");
     }
 
     private Mono<Boolean> shouldRequestTaskReconfiguration() {
         // First check any containers to be copied changes
         // Container re-created, add or remove will request task reconfiguration
         // If there are no changes on the containers, then check for each container any feedRanges change need to request task reconfiguration
-        if (containersMetadataOffsetExists()) {
-            return this.getAllContainers()
-                .flatMap(containersList -> {
-                    if (hasContainersChange(containersList)) {
-                        return Mono.just(true);
-                    }
+        return containersMetadataOffsetExists()
+            .flatMap(metadataOffsetExists -> {
+                if (metadataOffsetExists) {
+                    return this.getAllContainers()
+                        .flatMap(containersList -> {
+                            return hasContainersChange(containersList)
+                                .flatMap(hasChange -> {
+                                    if (hasChange) {
+                                        return Mono.just(true);
+                                    }
 
-                    return shouldRequestTaskReconfigurationOnFeedRanges(containersList);
-                });
-        }
+                                    return shouldRequestTaskReconfigurationOnFeedRanges(containersList);
+                                });
+                        });
+                }
 
-        // there is no existing containers offset for comparison.
-        // Could be this is the first time for the connector to start and the metadata task has not been initialized.
-        // will skip and validate in next cycle.
-        return Mono.just(false);
+                // there is no existing containers offset for comparison.
+                // Could be this is the first time for the connector to start and the metadata task has not been initialized.
+                // will skip and validate in next cycle.
+                return Mono.just(false);
+            });
     }
 
-    public boolean containersMetadataOffsetExists() {
-        return this.offsetStorageReader.getContainersMetadataOffset(this.sourceContainersConfig.getDatabaseName()) != null;
+    public Mono<Boolean> containersMetadataOffsetExists() {
+        return this.metadataReader
+            .getContainersMetadataOffset(this.sourceContainersConfig.getDatabaseName())
+            .map(offsetValueHolder -> offsetValueHolder.v != null);
     }
 
     public Mono<List<CosmosContainerProperties>> getAllContainers() {
@@ -139,24 +146,26 @@ public class MetadataMonitorThread extends Thread {
             .onErrorMap(throwable -> KafkaCosmosExceptionsHelper.convertToConnectException(throwable, "getAllContainers failed."));
     }
 
-    public List<String> getContainerRidsFromOffset() {
-        ContainersMetadataTopicOffset topicOffset =
-            this.offsetStorageReader
-                .getContainersMetadataOffset(this.sourceContainersConfig.getDatabaseName());
-        return topicOffset == null ? new ArrayList<>() : topicOffset.getContainerRids();
+    public Mono<List<String>> getContainerRidsFromOffset() {
+        return this.metadataReader
+            .getContainersMetadataOffset(this.sourceContainersConfig.getDatabaseName())
+            .map(offsetValueHolder -> {
+                return offsetValueHolder.v == null ? new ArrayList<>() : offsetValueHolder.v.getContainerRids();
+            });
     }
 
-    private boolean hasContainersChange(List<CosmosContainerProperties> allContainers) {
-        List<String> containerRidsFromOffset = this.getContainerRidsFromOffset();
-
+    private Mono<Boolean> hasContainersChange(List<CosmosContainerProperties> allContainers) {
         List<String> containersRidToBeCopied =
             allContainers
                 .stream()
                 .map(CosmosContainerProperties::getResourceId)
                 .collect(Collectors.toList());
 
-        return !(containerRidsFromOffset.size() == containersRidToBeCopied.size()
-            && containerRidsFromOffset.containsAll(containersRidToBeCopied));
+        return this.getContainerRidsFromOffset()
+            .map(containerRidsFromOffset -> {
+                return !(containerRidsFromOffset.size() == containersRidToBeCopied.size()
+                    && containerRidsFromOffset.containsAll(containersRidToBeCopied));
+            });
     }
 
     private Mono<Boolean> shouldRequestTaskReconfigurationOnFeedRanges(List<CosmosContainerProperties> allContainers) {
@@ -175,56 +184,60 @@ public class MetadataMonitorThread extends Thread {
     }
 
     private Mono<Boolean> shouldRequestTaskReconfigurationOnFeedRanges(CosmosContainerProperties containerProperties) {
-        if (feedRangesMetadataOffsetExists(containerProperties)) {
-            CosmosAsyncContainer container =
-                this.cosmosClient
-                    .getDatabase(this.sourceContainersConfig.getDatabaseName())
-                    .getContainer(containerProperties.getId());
+        return feedRangesMetadataOffsetExists(containerProperties)
+            .flatMap(offsetExists -> {
+                if (offsetExists) {
+                    CosmosAsyncContainer container =
+                        this.cosmosClient
+                            .getDatabase(this.sourceContainersConfig.getDatabaseName())
+                            .getContainer(containerProperties.getId());
 
-            return container
-                .getFeedRanges()
-                .flatMap(feedRanges -> {
-                    FeedRangesMetadataTopicOffset topicOffset =
-                        this.offsetStorageReader
-                            .getFeedRangesMetadataOffset(
-                                this.sourceContainersConfig.getDatabaseName(),
-                                containerProperties.getResourceId());
+                    return container
+                        .getFeedRanges()
+                        .flatMap(feedRanges -> {
+                            return this.metadataReader
+                                .getFeedRangesMetadataOffset(
+                                    this.sourceContainersConfig.getDatabaseName(),
+                                    containerProperties.getResourceId())
+                                .flatMap(offsetValueHolder -> {
+                                    if (offsetValueHolder.v == null) {
+                                        // the container may have recreated
+                                        return Mono.just(true);
+                                    }
 
-                    if (topicOffset == null) {
-                        // the container may have recreated
-                        return Mono.just(true);
-                    }
+                                    List<FeedRange> differences =
+                                        offsetValueHolder.v
+                                            .getFeedRanges()
+                                            .stream()
+                                            .filter(normalizedFeedRange -> !feedRanges.contains(normalizedFeedRange))
+                                            .collect(Collectors.toList());
 
-                    List<FeedRange> differences =
-                        topicOffset
-                            .getFeedRanges()
-                            .stream()
-                            .filter(normalizedFeedRange -> !feedRanges.contains(normalizedFeedRange))
-                            .collect(Collectors.toList());
+                                    if (differences.size() == 0) {
+                                        // the feedRanges are exact the same
+                                        return Mono.just(false);
+                                    }
 
-                    if (differences.size() == 0) {
-                        // the feedRanges are exact the same
-                        return Mono.just(false);
-                    }
+                                    // There are feedRanges change, but not all changes need to trigger a reconfiguration
+                                    // Merge should not trigger task reconfiguration as we will continue pulling the data from the pre-merge feed ranges
+                                    // Split should trigger task reconfiguration for load-balancing
+                                    return shouldRequestTaskReconfigurationOnFeedRangeChanges(containerProperties, differences);
+                                });
+                        });
+                }
 
-                    // There are feedRanges change, but not all changes need to trigger a reconfiguration
-                    // Merge should not trigger task reconfiguration as we will continue pulling the data from the pre-merge feed ranges
-                    // Split should trigger task reconfiguration for load-balancing
-                    return shouldRequestTaskReconfigurationOnFeedRangeChanges(containerProperties, differences);
-                });
-        }
-
-        // there is no existing feedRanges offset for comparison.
-        // Could be this is the first time for the connector to start and the metadata task has not been initialized.
-        // will skip and validate in next cycle.
-        return Mono.just(false);
+                // there is no existing feedRanges offset for comparison.
+                // Could be this is the first time for the connector to start and the metadata task has not been initialized.
+                // will skip and validate in next cycle.
+                return Mono.just(false);
+            });
     }
 
-    private boolean feedRangesMetadataOffsetExists(CosmosContainerProperties containerProperties) {
-        return this.offsetStorageReader
+    private Mono<Boolean> feedRangesMetadataOffsetExists(CosmosContainerProperties containerProperties) {
+        return this.metadataReader
             .getFeedRangesMetadataOffset(
                 this.sourceContainersConfig.getDatabaseName(),
-                containerProperties.getResourceId()) != null;
+                containerProperties.getResourceId())
+            .map(offsetValueHolder -> offsetValueHolder.v != null);
     }
 
     private Mono<Boolean> shouldRequestTaskReconfigurationOnFeedRangeChanges(
@@ -259,7 +272,8 @@ public class MetadataMonitorThread extends Thread {
         return ImplementationBridgeHelpers
                 .CosmosAsyncContainerHelper
                 .getCosmosAsyncContainerAccessor()
-                .getOverlappingFeedRanges(container, feedRangeChanged)
+                // when comparing the differences, we already use container.feedRanges() to refresh the cache, so there is no need to refresh the cache again here
+                .getOverlappingFeedRanges(container, feedRangeChanged, false)
             .map(matchedPkRanges -> {
                 if (matchedPkRanges.size() == 0) {
                     LOGGER.warn(

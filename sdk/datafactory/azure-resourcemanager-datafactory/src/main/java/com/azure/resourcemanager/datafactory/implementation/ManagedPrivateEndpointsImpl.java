@@ -45,8 +45,9 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
 
     public Response<ManagedPrivateEndpointResource> getWithResponse(String resourceGroupName, String factoryName,
         String managedVirtualNetworkName, String managedPrivateEndpointName, String ifNoneMatch, Context context) {
-        Response<ManagedPrivateEndpointResourceInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            factoryName, managedVirtualNetworkName, managedPrivateEndpointName, ifNoneMatch, context);
+        Response<ManagedPrivateEndpointResourceInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName,
+                ifNoneMatch, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ManagedPrivateEndpointResourceImpl(inner.getValue(), this.manager()));
@@ -57,8 +58,8 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
 
     public ManagedPrivateEndpointResource get(String resourceGroupName, String factoryName,
         String managedVirtualNetworkName, String managedPrivateEndpointName) {
-        ManagedPrivateEndpointResourceInner inner = this.serviceClient().get(resourceGroupName, factoryName,
-            managedVirtualNetworkName, managedPrivateEndpointName);
+        ManagedPrivateEndpointResourceInner inner = this.serviceClient()
+            .get(resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName);
         if (inner != null) {
             return new ManagedPrivateEndpointResourceImpl(inner, this.manager());
         } else {
@@ -68,14 +69,15 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
 
     public Response<Void> deleteWithResponse(String resourceGroupName, String factoryName,
         String managedVirtualNetworkName, String managedPrivateEndpointName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName,
-            managedPrivateEndpointName, context);
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName,
+                context);
     }
 
     public void delete(String resourceGroupName, String factoryName, String managedVirtualNetworkName,
         String managedPrivateEndpointName) {
-        this.serviceClient().delete(resourceGroupName, factoryName, managedVirtualNetworkName,
-            managedPrivateEndpointName);
+        this.serviceClient()
+            .delete(resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName);
     }
 
     public ManagedPrivateEndpointResource getById(String id) {
@@ -100,8 +102,10 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
                 .format("The resource ID '%s' is not valid. Missing path segment 'managedPrivateEndpoints'.", id)));
         }
         String localIfNoneMatch = null;
-        return this.getWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName,
-            managedPrivateEndpointName, localIfNoneMatch, Context.NONE).getValue();
+        return this
+            .getWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName,
+                localIfNoneMatch, Context.NONE)
+            .getValue();
     }
 
     public Response<ManagedPrivateEndpointResource> getByIdWithResponse(String id, String ifNoneMatch,

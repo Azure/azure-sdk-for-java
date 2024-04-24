@@ -34,8 +34,7 @@ public final class LtrBackupOperationResponseProperties {
     private String backupName;
 
     /*
-     * Metadata to be stored in RP. Store everything that will be required to perform a successful restore using this
-     * Recovery point. e.g. Versions, DataFormat etc
+     * Metadata to be stored in RP. Store everything that will be required to perform a successful restore using this Recovery point. e.g. Versions, DataFormat etc
      */
     @JsonProperty(value = "backupMetadata")
     private String backupMetadata;
@@ -143,8 +142,8 @@ public final class LtrBackupOperationResponseProperties {
     }
 
     /**
-     * Get the backupMetadata property: Metadata to be stored in RP. Store everything that will be required to perform
-     * a successful restore using this Recovery point. e.g. Versions, DataFormat etc.
+     * Get the backupMetadata property: Metadata to be stored in RP. Store everything that will be required to perform a
+     * successful restore using this Recovery point. e.g. Versions, DataFormat etc.
      * 
      * @return the backupMetadata value.
      */
@@ -153,8 +152,8 @@ public final class LtrBackupOperationResponseProperties {
     }
 
     /**
-     * Set the backupMetadata property: Metadata to be stored in RP. Store everything that will be required to perform
-     * a successful restore using this Recovery point. e.g. Versions, DataFormat etc.
+     * Set the backupMetadata property: Metadata to be stored in RP. Store everything that will be required to perform a
+     * successful restore using this Recovery point. e.g. Versions, DataFormat etc.
      * 
      * @param backupMetadata the backupMetadata value to set.
      * @return the LtrBackupOperationResponseProperties object itself.
@@ -269,12 +268,14 @@ public final class LtrBackupOperationResponseProperties {
      */
     public void validate() {
         if (status() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property status in model LtrBackupOperationResponseProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property status in model LtrBackupOperationResponseProperties"));
         }
         if (startTime() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property startTime in model LtrBackupOperationResponseProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property startTime in model LtrBackupOperationResponseProperties"));
         }
     }
 

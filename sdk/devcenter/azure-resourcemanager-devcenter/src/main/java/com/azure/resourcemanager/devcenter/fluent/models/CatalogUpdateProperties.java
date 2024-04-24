@@ -7,9 +7,13 @@ package com.azure.resourcemanager.devcenter.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.devcenter.models.CatalogSyncType;
 import com.azure.resourcemanager.devcenter.models.GitCatalog;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
-/** Properties of a catalog. These properties can be updated after the resource has been created. */
+/**
+ * Properties of a catalog. These properties can be updated after the resource has been created.
+ */
 @Fluent
 public class CatalogUpdateProperties {
     /*
@@ -30,13 +34,22 @@ public class CatalogUpdateProperties {
     @JsonProperty(value = "syncType")
     private CatalogSyncType syncType;
 
-    /** Creates an instance of CatalogUpdateProperties class. */
+    /*
+     * Resource tags.
+     */
+    @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, String> tags;
+
+    /**
+     * Creates an instance of CatalogUpdateProperties class.
+     */
     public CatalogUpdateProperties() {
     }
 
     /**
      * Get the gitHub property: Properties for a GitHub catalog type.
-     *
+     * 
      * @return the gitHub value.
      */
     public GitCatalog gitHub() {
@@ -45,7 +58,7 @@ public class CatalogUpdateProperties {
 
     /**
      * Set the gitHub property: Properties for a GitHub catalog type.
-     *
+     * 
      * @param gitHub the gitHub value to set.
      * @return the CatalogUpdateProperties object itself.
      */
@@ -56,7 +69,7 @@ public class CatalogUpdateProperties {
 
     /**
      * Get the adoGit property: Properties for an Azure DevOps catalog type.
-     *
+     * 
      * @return the adoGit value.
      */
     public GitCatalog adoGit() {
@@ -65,7 +78,7 @@ public class CatalogUpdateProperties {
 
     /**
      * Set the adoGit property: Properties for an Azure DevOps catalog type.
-     *
+     * 
      * @param adoGit the adoGit value to set.
      * @return the CatalogUpdateProperties object itself.
      */
@@ -76,7 +89,7 @@ public class CatalogUpdateProperties {
 
     /**
      * Get the syncType property: Indicates the type of sync that is configured for the catalog.
-     *
+     * 
      * @return the syncType value.
      */
     public CatalogSyncType syncType() {
@@ -85,7 +98,7 @@ public class CatalogUpdateProperties {
 
     /**
      * Set the syncType property: Indicates the type of sync that is configured for the catalog.
-     *
+     * 
      * @param syncType the syncType value to set.
      * @return the CatalogUpdateProperties object itself.
      */
@@ -95,8 +108,28 @@ public class CatalogUpdateProperties {
     }
 
     /**
+     * Get the tags property: Resource tags.
+     * 
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Resource tags.
+     * 
+     * @param tags the tags value to set.
+     * @return the CatalogUpdateProperties object itself.
+     */
+    public CatalogUpdateProperties withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

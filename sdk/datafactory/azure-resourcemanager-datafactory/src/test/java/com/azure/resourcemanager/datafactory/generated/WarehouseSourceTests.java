@@ -12,20 +12,26 @@ public final class WarehouseSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WarehouseSource model = BinaryData.fromString(
-            "{\"type\":\"WarehouseSource\",\"sqlReaderQuery\":\"dataycvcksz\",\"sqlReaderStoredProcedureName\":\"datagguucpytsxnuj\",\"storedProcedureParameters\":\"datafth\",\"isolationLevel\":\"dataiieoxlbcccc\",\"partitionOption\":\"datauabde\",\"partitionSettings\":{\"partitionColumnName\":\"databgcdxqgsteek\",\"partitionUpperBound\":\"dataksvvyvoib\",\"partitionLowerBound\":\"datauqwljmzp\"},\"queryTimeout\":\"datakrwvvhcgtct\",\"additionalColumns\":\"datadcgobkcebzrt\",\"sourceRetryCount\":\"datatmtjsklkwtnqqiqc\",\"sourceRetryWait\":\"datafxldqtma\",\"maxConcurrentConnections\":\"dataejnemrfqjhc\",\"disableMetricsCollection\":\"datawlezbfgullq\",\"\":{\"gksrorxejf\":\"datajyxcmqc\",\"ray\":\"dataarphltlf\",\"wbkxdhavegy\":\"dataxzdujpuhbaog\",\"pdatvndvwwejvqpw\":\"dataqsmlbzi\"}}")
+            "{\"type\":\"dkj\",\"sqlReaderQuery\":\"datafkinidyjffpuuyk\",\"sqlReaderStoredProcedureName\":\"databpn\",\"storedProcedureParameters\":\"datamlctnnsjc\",\"isolationLevel\":\"dataijvaxu\",\"partitionOption\":\"datazzp\",\"partitionSettings\":{\"partitionColumnName\":\"dataaaxglxhbnqye\",\"partitionUpperBound\":\"datanlen\",\"partitionLowerBound\":\"dataykebtvnedcclpbh\"},\"queryTimeout\":\"dataiehooxqkcayy\",\"additionalColumns\":\"datanllkyiqjtxvxgrf\",\"sourceRetryCount\":\"datavhivvoczsry\",\"sourceRetryWait\":\"datavii\",\"maxConcurrentConnections\":\"datajqpsbbxke\",\"disableMetricsCollection\":\"datamqnuyu\",\"\":{\"ekhfdlbcucwfc\":\"datan\",\"tkv\":\"dataugtcccydldavozmi\"}}")
             .toObject(WarehouseSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WarehouseSource model = new WarehouseSource().withSourceRetryCount("datatmtjsklkwtnqqiqc")
-            .withSourceRetryWait("datafxldqtma").withMaxConcurrentConnections("dataejnemrfqjhc")
-            .withDisableMetricsCollection("datawlezbfgullq").withQueryTimeout("datakrwvvhcgtct")
-            .withAdditionalColumns("datadcgobkcebzrt").withSqlReaderQuery("dataycvcksz")
-            .withSqlReaderStoredProcedureName("datagguucpytsxnuj").withStoredProcedureParameters("datafth")
-            .withIsolationLevel("dataiieoxlbcccc").withPartitionOption("datauabde")
-            .withPartitionSettings(new SqlPartitionSettings().withPartitionColumnName("databgcdxqgsteek")
-                .withPartitionUpperBound("dataksvvyvoib").withPartitionLowerBound("datauqwljmzp"));
+        WarehouseSource model = new WarehouseSource().withSourceRetryCount("datavhivvoczsry")
+            .withSourceRetryWait("datavii")
+            .withMaxConcurrentConnections("datajqpsbbxke")
+            .withDisableMetricsCollection("datamqnuyu")
+            .withQueryTimeout("dataiehooxqkcayy")
+            .withAdditionalColumns("datanllkyiqjtxvxgrf")
+            .withSqlReaderQuery("datafkinidyjffpuuyk")
+            .withSqlReaderStoredProcedureName("databpn")
+            .withStoredProcedureParameters("datamlctnnsjc")
+            .withIsolationLevel("dataijvaxu")
+            .withPartitionOption("datazzp")
+            .withPartitionSettings(new SqlPartitionSettings().withPartitionColumnName("dataaaxglxhbnqye")
+                .withPartitionUpperBound("datanlen")
+                .withPartitionLowerBound("dataykebtvnedcclpbh"));
         model = BinaryData.fromObject(model).toObject(WarehouseSource.class);
     }
 }

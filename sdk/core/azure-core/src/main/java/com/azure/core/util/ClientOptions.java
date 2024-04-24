@@ -135,7 +135,7 @@ public class ClientOptions {
 
     /**
      * Gets {@link MetricsOptions}
-     * @return The {@link MetricsOptions} instance, if metric options weren't set previously, {@code null} is returned.
+     * @return The {@link MetricsOptions} instance, if metrics options weren't set previously, {@code null} is returned.
      */
     public MetricsOptions getMetricsOptions() {
         return metricsOptions;
@@ -154,8 +154,8 @@ public class ClientOptions {
     }
 
     /**
-     * Gets {@link MetricsOptions}
-     * @return The {@link MetricsOptions} instance, if metric options weren't set previously, {@code null} is returned.
+     * Gets {@link TracingOptions}
+     * @return The {@link TracingOptions} instance, if tracing options weren't set previously, {@code null} is returned.
      */
     public TracingOptions getTracingOptions() {
         return tracingOptions;

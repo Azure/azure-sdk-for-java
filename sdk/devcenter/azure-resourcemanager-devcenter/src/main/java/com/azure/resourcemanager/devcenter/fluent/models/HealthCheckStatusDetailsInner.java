@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Health Check details. */
+/**
+ * Health Check details.
+ */
 @Immutable
 public final class HealthCheckStatusDetailsInner extends ProxyResource {
     /*
@@ -27,13 +29,15 @@ public final class HealthCheckStatusDetailsInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of HealthCheckStatusDetailsInner class. */
+    /**
+     * Creates an instance of HealthCheckStatusDetailsInner class.
+     */
     public HealthCheckStatusDetailsInner() {
     }
 
     /**
      * Get the innerProperties property: Health check status details properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private HealthCheckStatusDetailsProperties innerProperties() {
@@ -42,7 +46,7 @@ public final class HealthCheckStatusDetailsInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -51,7 +55,7 @@ public final class HealthCheckStatusDetailsInner extends ProxyResource {
 
     /**
      * Get the startDateTime property: Start time of last execution of the health checks.
-     *
+     * 
      * @return the startDateTime value.
      */
     public OffsetDateTime startDateTime() {
@@ -60,7 +64,7 @@ public final class HealthCheckStatusDetailsInner extends ProxyResource {
 
     /**
      * Get the endDateTime property: End time of last execution of the health checks.
-     *
+     * 
      * @return the endDateTime value.
      */
     public OffsetDateTime endDateTime() {
@@ -69,7 +73,7 @@ public final class HealthCheckStatusDetailsInner extends ProxyResource {
 
     /**
      * Get the healthChecks property: Details for each health check item.
-     *
+     * 
      * @return the healthChecks value.
      */
     public List<HealthCheck> healthChecks() {
@@ -78,7 +82,7 @@ public final class HealthCheckStatusDetailsInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

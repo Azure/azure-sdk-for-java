@@ -7,7 +7,9 @@ package com.azure.communication.chat.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Request payload for sending a read receipt. */
+/**
+ * Request payload for sending a read receipt.
+ */
 @Fluent
 public final class SendReadReceiptRequest {
     /*
@@ -17,8 +19,14 @@ public final class SendReadReceiptRequest {
     private String chatMessageId;
 
     /**
+     * Creates an instance of SendReadReceiptRequest class.
+     */
+    public SendReadReceiptRequest() {
+    }
+
+    /**
      * Get the chatMessageId property: Id of the latest chat message read by the user.
-     *
+     * 
      * @return the chatMessageId value.
      */
     public String getChatMessageId() {
@@ -27,7 +35,7 @@ public final class SendReadReceiptRequest {
 
     /**
      * Set the chatMessageId property: Id of the latest chat message read by the user.
-     *
+     * 
      * @param chatMessageId the chatMessageId value to set.
      * @return the SendReadReceiptRequest object itself.
      */

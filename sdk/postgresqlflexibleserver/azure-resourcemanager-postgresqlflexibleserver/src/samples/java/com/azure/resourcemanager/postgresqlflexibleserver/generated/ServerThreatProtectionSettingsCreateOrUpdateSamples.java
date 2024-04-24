@@ -13,9 +13,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.ThreatProtectio
  */
 public final class ServerThreatProtectionSettingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/
-     * ServerThreatProtectionSettingsCreateOrUpdate.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/ServerThreatProtectionSettingsCreateOrUpdate.json
      */
     /**
      * Sample code: Update a server's Threat Protection settings.
@@ -24,9 +22,10 @@ public final class ServerThreatProtectionSettingsCreateOrUpdateSamples {
      */
     public static void updateAServerSThreatProtectionSettings(
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        ServerThreatProtectionSettingsModel resource
-            = manager.serverThreatProtectionSettings().getWithResponse("threatprotection-4799", "threatprotection-6440",
-                ThreatProtectionName.DEFAULT, com.azure.core.util.Context.NONE).getValue();
+        ServerThreatProtectionSettingsModel resource = manager.serverThreatProtectionSettings()
+            .getWithResponse("threatprotection-4799", "threatprotection-6440", ThreatProtectionName.DEFAULT,
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withState(ThreatProtectionState.ENABLED).apply();
     }
 }

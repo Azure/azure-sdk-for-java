@@ -17,46 +17,43 @@ public final class DbLevelValidationStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DbLevelValidationStatus model = BinaryData.fromString(
-            "{\"databaseName\":\"ujmqlgkfbtndoa\",\"startedOn\":\"2021-04-16T00:49:55Z\",\"endedOn\":\"2021-06-02T01:39:29Z\",\"summary\":[{\"type\":\"ujitcjedftww\",\"state\":\"Warning\",\"messages\":[{\"state\":\"Warning\",\"message\":\"c\"},{\"state\":\"Succeeded\",\"message\":\"qouicybxarzgsz\"},{\"state\":\"Succeeded\",\"message\":\"ciqopidoa\"}]},{\"type\":\"iodhkhazxkhnz\",\"state\":\"Succeeded\",\"messages\":[{\"state\":\"Succeeded\",\"message\":\"egokdwbwhkszzcmr\"},{\"state\":\"Warning\",\"message\":\"tvb\"},{\"state\":\"Failed\",\"message\":\"frao\"},{\"state\":\"Failed\",\"message\":\"owtlmnguxawqald\"}]}]}")
+            "{\"databaseName\":\"i\",\"startedOn\":\"2021-11-01T17:10:34Z\",\"endedOn\":\"2021-09-29T21:57:11Z\",\"summary\":[{\"type\":\"r\",\"state\":\"Failed\",\"messages\":[{\"state\":\"Failed\",\"message\":\"r\"},{\"state\":\"Succeeded\",\"message\":\"squyfxrxxlep\"},{\"state\":\"Succeeded\",\"message\":\"xje\"}]},{\"type\":\"lwnwxuqlcvydyp\",\"state\":\"Succeeded\",\"messages\":[{\"state\":\"Failed\",\"message\":\"kniod\"}]}]}")
             .toObject(DbLevelValidationStatus.class);
-        Assertions.assertEquals("ujmqlgkfbtndoa", model.databaseName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-16T00:49:55Z"), model.startedOn());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-02T01:39:29Z"), model.endedOn());
-        Assertions.assertEquals("ujitcjedftww", model.summary().get(0).type());
-        Assertions.assertEquals(ValidationState.WARNING, model.summary().get(0).state());
-        Assertions.assertEquals(ValidationState.WARNING, model.summary().get(0).messages().get(0).state());
-        Assertions.assertEquals("c", model.summary().get(0).messages().get(0).message());
+        Assertions.assertEquals("i", model.databaseName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-01T17:10:34Z"), model.startedOn());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-29T21:57:11Z"), model.endedOn());
+        Assertions.assertEquals("r", model.summary().get(0).type());
+        Assertions.assertEquals(ValidationState.FAILED, model.summary().get(0).state());
+        Assertions.assertEquals(ValidationState.FAILED, model.summary().get(0).messages().get(0).state());
+        Assertions.assertEquals("r", model.summary().get(0).messages().get(0).message());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DbLevelValidationStatus model = new DbLevelValidationStatus().withDatabaseName("ujmqlgkfbtndoa")
-            .withStartedOn(OffsetDateTime.parse("2021-04-16T00:49:55Z")).withEndedOn(
-                OffsetDateTime.parse("2021-06-02T01:39:29Z"))
-            .withSummary(
-                Arrays
-                    .asList(
-                        new ValidationSummaryItem().withType("ujitcjedftww").withState(ValidationState.WARNING)
+        DbLevelValidationStatus model
+            = new DbLevelValidationStatus().withDatabaseName("i")
+                .withStartedOn(OffsetDateTime.parse("2021-11-01T17:10:34Z"))
+                .withEndedOn(OffsetDateTime.parse("2021-09-29T21:57:11Z"))
+                .withSummary(
+                    Arrays.asList(
+                        new ValidationSummaryItem().withType("r")
+                            .withState(ValidationState.FAILED)
                             .withMessages(Arrays.asList(
-                                new ValidationMessage().withState(ValidationState.WARNING).withMessage("c"),
+                                new ValidationMessage().withState(ValidationState.FAILED).withMessage("r"),
                                 new ValidationMessage().withState(ValidationState.SUCCEEDED)
-                                    .withMessage("qouicybxarzgsz"),
-                                new ValidationMessage().withState(ValidationState.SUCCEEDED).withMessage("ciqopidoa"))),
-                        new ValidationSummaryItem().withType("iodhkhazxkhnz").withState(ValidationState.SUCCEEDED)
+                                    .withMessage("squyfxrxxlep"),
+                                new ValidationMessage().withState(ValidationState.SUCCEEDED).withMessage("xje"))),
+                        new ValidationSummaryItem().withType("lwnwxuqlcvydyp")
+                            .withState(ValidationState.SUCCEEDED)
                             .withMessages(Arrays.asList(
-                                new ValidationMessage().withState(ValidationState.SUCCEEDED)
-                                    .withMessage("egokdwbwhkszzcmr"),
-                                new ValidationMessage().withState(ValidationState.WARNING).withMessage("tvb"),
-                                new ValidationMessage().withState(ValidationState.FAILED).withMessage("frao"),
-                                new ValidationMessage().withState(ValidationState.FAILED)
-                                    .withMessage("owtlmnguxawqald")))));
+                                new ValidationMessage().withState(ValidationState.FAILED).withMessage("kniod")))));
         model = BinaryData.fromObject(model).toObject(DbLevelValidationStatus.class);
-        Assertions.assertEquals("ujmqlgkfbtndoa", model.databaseName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-16T00:49:55Z"), model.startedOn());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-02T01:39:29Z"), model.endedOn());
-        Assertions.assertEquals("ujitcjedftww", model.summary().get(0).type());
-        Assertions.assertEquals(ValidationState.WARNING, model.summary().get(0).state());
-        Assertions.assertEquals(ValidationState.WARNING, model.summary().get(0).messages().get(0).state());
-        Assertions.assertEquals("c", model.summary().get(0).messages().get(0).message());
+        Assertions.assertEquals("i", model.databaseName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-01T17:10:34Z"), model.startedOn());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-29T21:57:11Z"), model.endedOn());
+        Assertions.assertEquals("r", model.summary().get(0).type());
+        Assertions.assertEquals(ValidationState.FAILED, model.summary().get(0).state());
+        Assertions.assertEquals(ValidationState.FAILED, model.summary().get(0).messages().get(0).state());
+        Assertions.assertEquals("r", model.summary().get(0).messages().get(0).message());
     }
 }

@@ -61,27 +61,6 @@ public interface MicrosoftSupport {
     ServicesClient getServices();
 
     /**
-     * Gets the ServiceClassificationsNoSubscriptionsClient object to access its operations.
-     * 
-     * @return the ServiceClassificationsNoSubscriptionsClient object.
-     */
-    ServiceClassificationsNoSubscriptionsClient getServiceClassificationsNoSubscriptions();
-
-    /**
-     * Gets the ServiceClassificationsClient object to access its operations.
-     * 
-     * @return the ServiceClassificationsClient object.
-     */
-    ServiceClassificationsClient getServiceClassifications();
-
-    /**
-     * Gets the ProblemClassificationsNoSubscriptionsClient object to access its operations.
-     * 
-     * @return the ProblemClassificationsNoSubscriptionsClient object.
-     */
-    ProblemClassificationsNoSubscriptionsClient getProblemClassificationsNoSubscriptions();
-
-    /**
      * Gets the ProblemClassificationsClient object to access its operations.
      * 
      * @return the ProblemClassificationsClient object.
@@ -157,11 +136,4 @@ public interface MicrosoftSupport {
      * @return the FilesNoSubscriptionsClient object.
      */
     FilesNoSubscriptionsClient getFilesNoSubscriptions();
-
-    /**
-     * Gets the LookUpResourceIdsClient object to access its operations.
-     * 
-     * @return the LookUpResourceIdsClient object.
-     */
-    LookUpResourceIdsClient getLookUpResourceIds();
 }

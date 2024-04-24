@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The redirect type the rule will use when redirecting traffic. */
+/**
+ * The redirect type the rule will use when redirecting traffic.
+ */
 public final class FrontDoorRedirectType extends ExpandableStringEnum<FrontDoorRedirectType> {
-    /** Static value Moved for FrontDoorRedirectType. */
+    /**
+     * Static value Moved for FrontDoorRedirectType.
+     */
     public static final FrontDoorRedirectType MOVED = fromString("Moved");
 
-    /** Static value Found for FrontDoorRedirectType. */
+    /**
+     * Static value Found for FrontDoorRedirectType.
+     */
     public static final FrontDoorRedirectType FOUND = fromString("Found");
 
-    /** Static value TemporaryRedirect for FrontDoorRedirectType. */
+    /**
+     * Static value TemporaryRedirect for FrontDoorRedirectType.
+     */
     public static final FrontDoorRedirectType TEMPORARY_REDIRECT = fromString("TemporaryRedirect");
 
-    /** Static value PermanentRedirect for FrontDoorRedirectType. */
+    /**
+     * Static value PermanentRedirect for FrontDoorRedirectType.
+     */
     public static final FrontDoorRedirectType PERMANENT_REDIRECT = fromString("PermanentRedirect");
 
     /**
      * Creates a new instance of FrontDoorRedirectType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class FrontDoorRedirectType extends ExpandableStringEnum<FrontDoorR
 
     /**
      * Creates or finds a FrontDoorRedirectType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FrontDoorRedirectType.
      */
@@ -44,7 +54,7 @@ public final class FrontDoorRedirectType extends ExpandableStringEnum<FrontDoorR
 
     /**
      * Gets known FrontDoorRedirectType values.
-     *
+     * 
      * @return known FrontDoorRedirectType values.
      */
     public static Collection<FrontDoorRedirectType> values() {

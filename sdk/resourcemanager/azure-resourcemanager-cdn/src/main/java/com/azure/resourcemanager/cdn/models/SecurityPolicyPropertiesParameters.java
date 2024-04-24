@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The json object containing security policy parameters. */
+/**
+ * The json object containing security policy parameters.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -17,17 +19,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     defaultImpl = SecurityPolicyPropertiesParameters.class)
 @JsonTypeName("SecurityPolicyPropertiesParameters")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "WebApplicationFirewall", value = SecurityPolicyWebApplicationFirewallParameters.class)
-})
+    @JsonSubTypes.Type(name = "WebApplicationFirewall", value = SecurityPolicyWebApplicationFirewallParameters.class) })
 @Immutable
 public class SecurityPolicyPropertiesParameters {
-    /** Creates an instance of SecurityPolicyPropertiesParameters class. */
+    /**
+     * Creates an instance of SecurityPolicyPropertiesParameters class.
+     */
     public SecurityPolicyPropertiesParameters() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

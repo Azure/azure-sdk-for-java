@@ -10,11 +10,9 @@ import com.azure.resourcemanager.devcenter.models.AllowedEnvironmentTypeListResu
 public final class AllowedEnvironmentTypeListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AllowedEnvironmentTypeListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"displayName\":\"cwif\"},\"id\":\"ttgzfbis\",\"name\":\"cbkhajdeyeamdph\",\"type\":\"g\"},{\"properties\":{\"provisioningState\":\"Updated\",\"displayName\":\"xw\"},\"id\":\"pwhonowkg\",\"name\":\"hwankixzbinjepu\",\"type\":\"tmryw\"}],\"nextLink\":\"zoqftiyqzrnkcqvy\"}")
-                .toObject(AllowedEnvironmentTypeListResult.class);
+        AllowedEnvironmentTypeListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"StorageProvisioningFailed\",\"displayName\":\"xyawj\"},\"id\":\"aq\",\"name\":\"slyjpkiid\",\"type\":\"yexz\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"displayName\":\"hnrztfol\"},\"id\":\"nxknalaulp\",\"name\":\"ggdtpnapnyiro\",\"type\":\"uhpigvp\"},{\"properties\":{\"provisioningState\":\"TransientFailure\",\"displayName\":\"git\"},\"id\":\"edjvcslynqw\",\"name\":\"ncw\",\"type\":\"zhxgktrmgucn\"},{\"properties\":{\"provisioningState\":\"NotSpecified\",\"displayName\":\"oellwp\"},\"id\":\"d\",\"name\":\"gpfqbuace\",\"type\":\"pzfqrhhuaoppp\"}],\"nextLink\":\"eqx\"}")
+            .toObject(AllowedEnvironmentTypeListResult.class);
     }
 
     @org.junit.jupiter.api.Test

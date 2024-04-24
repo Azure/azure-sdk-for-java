@@ -6,7 +6,6 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -48,7 +47,6 @@ public final class SortType extends ExpandableStringEnum<SortType> {
      * @return the corresponding SortType.
      */
     @Generated
-    @JsonCreator
     public static SortType fromString(String name) {
         return fromString(name, SortType.class);
     }

@@ -14,73 +14,88 @@ public final class ExpressionV2Tests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExpressionV2 model = BinaryData.fromString(
-            "{\"type\":\"Unary\",\"value\":\"fgfspzw\",\"operator\":\"cu\",\"operands\":[{\"type\":\"Binary\",\"value\":\"jvlwczwdkk\",\"operator\":\"ooqnvhtrfckrm\",\"operands\":[{\"type\":\"Binary\",\"value\":\"tfmpcbvkoughj\",\"operator\":\"pptsvppfdnihxcij\",\"operands\":[{}]},{\"type\":\"Unary\",\"value\":\"yvscgzqncddaqqkl\",\"operator\":\"ibro\",\"operands\":[{},{}]}]},{\"type\":\"Unary\",\"value\":\"nex\",\"operator\":\"sanglw\",\"operands\":[{\"type\":\"Binary\",\"value\":\"m\",\"operator\":\"rhjj\",\"operands\":[{},{},{},{}]},{\"type\":\"Unary\",\"value\":\"rywucpdzbnty\",\"operator\":\"wnpuyhqayls\",\"operands\":[{},{},{},{}]}]},{\"type\":\"Unary\",\"value\":\"lzrrhabbdqne\",\"operator\":\"fujzwqpkhgrdg\",\"operands\":[{\"type\":\"Field\",\"value\":\"qkv\",\"operator\":\"n\",\"operands\":[{},{},{}]},{\"type\":\"Unary\",\"value\":\"aoetrglpaocq\",\"operator\":\"vleouevuhago\",\"operands\":[{},{},{},{}]},{\"type\":\"Binary\",\"value\":\"tuoq\",\"operator\":\"crdnmhrym\",\"operands\":[{},{}]},{\"type\":\"Unary\",\"value\":\"owubkiocjn\",\"operator\":\"nwktbsckcng\",\"operands\":[{},{},{}]}]},{\"type\":\"Field\",\"value\":\"zoxmajpxbtkzvt\",\"operator\":\"tgrmgcfvfwwev\",\"operands\":[{\"type\":\"Constant\",\"value\":\"x\",\"operator\":\"qaqzttogblriznr\",\"operands\":[{},{},{},{}]},{\"type\":\"Unary\",\"value\":\"p\",\"operator\":\"nqljlw\",\"operands\":[{},{},{}]},{\"type\":\"Unary\",\"value\":\"ln\",\"operator\":\"jqlq\",\"operands\":[{},{}]}]}]}")
+            "{\"type\":\"Field\",\"value\":\"el\",\"operator\":\"ikigzbrkwgsqos\",\"operands\":[{\"type\":\"Constant\",\"value\":\"hkljktujf\",\"operator\":\"eqfryketwrzxb\",\"operands\":[{\"type\":\"Field\",\"value\":\"g\",\"operator\":\"qnjfjyppixfub\",\"operands\":[{},{},{}]},{\"type\":\"Constant\",\"value\":\"wyetyrnhisp\",\"operator\":\"ivanlypspnjlo\",\"operands\":[{},{}]}]},{\"type\":\"Unary\",\"value\":\"lma\",\"operator\":\"rbwbkrsmkeiunxtb\",\"operands\":[{\"type\":\"Unary\",\"value\":\"xdtzzmcrmhhfcaiz\",\"operator\":\"iyuzufd\",\"operands\":[{}]},{\"type\":\"Unary\",\"value\":\"nfljv\",\"operator\":\"qkoecozfauhn\",\"operands\":[{},{},{},{}]},{\"type\":\"Unary\",\"value\":\"lgrzcjpkzmhax\",\"operator\":\"jimlfrkmynmmm\",\"operands\":[{}]},{\"type\":\"Binary\",\"value\":\"ghordcc\",\"operator\":\"rwzczlvqlcca\",\"operands\":[{},{}]}]},{\"type\":\"Binary\",\"value\":\"tyiqqwdgys\",\"operator\":\"vvagvqrwrchwd\",\"operands\":[{\"type\":\"Constant\",\"value\":\"tfjj\",\"operator\":\"xweuoklwtoecxndh\",\"operands\":[{},{},{}]},{\"type\":\"Field\",\"value\":\"ocunan\",\"operator\":\"tverplhfwq\",\"operands\":[{},{},{}]}]}]}")
             .toObject(ExpressionV2.class);
-        Assertions.assertEquals(ExpressionV2Type.UNARY, model.type());
-        Assertions.assertEquals("fgfspzw", model.value());
-        Assertions.assertEquals("cu", model.operator());
-        Assertions.assertEquals(ExpressionV2Type.BINARY, model.operands().get(0).type());
-        Assertions.assertEquals("jvlwczwdkk", model.operands().get(0).value());
-        Assertions.assertEquals("ooqnvhtrfckrm", model.operands().get(0).operator());
-        Assertions.assertEquals(ExpressionV2Type.BINARY, model.operands().get(0).operands().get(0).type());
-        Assertions.assertEquals("tfmpcbvkoughj", model.operands().get(0).operands().get(0).value());
-        Assertions.assertEquals("pptsvppfdnihxcij", model.operands().get(0).operands().get(0).operator());
+        Assertions.assertEquals(ExpressionV2Type.FIELD, model.type());
+        Assertions.assertEquals("el", model.value());
+        Assertions.assertEquals("ikigzbrkwgsqos", model.operator());
+        Assertions.assertEquals(ExpressionV2Type.CONSTANT, model.operands().get(0).type());
+        Assertions.assertEquals("hkljktujf", model.operands().get(0).value());
+        Assertions.assertEquals("eqfryketwrzxb", model.operands().get(0).operator());
+        Assertions.assertEquals(ExpressionV2Type.FIELD, model.operands().get(0).operands().get(0).type());
+        Assertions.assertEquals("g", model.operands().get(0).operands().get(0).value());
+        Assertions.assertEquals("qnjfjyppixfub", model.operands().get(0).operands().get(0).operator());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExpressionV2 model = new ExpressionV2().withType(ExpressionV2Type.UNARY).withValue("fgfspzw").withOperator("cu")
-            .withOperands(Arrays.asList(
-                new ExpressionV2().withType(ExpressionV2Type.BINARY).withValue("jvlwczwdkk")
-                    .withOperator("ooqnvhtrfckrm")
-                    .withOperands(Arrays.asList(
-                        new ExpressionV2().withType(ExpressionV2Type.BINARY).withValue("tfmpcbvkoughj")
-                            .withOperator("pptsvppfdnihxcij").withOperands(Arrays.asList(new ExpressionV2())),
-                        new ExpressionV2().withType(ExpressionV2Type.UNARY).withValue("yvscgzqncddaqqkl")
-                            .withOperator("ibro").withOperands(Arrays.asList(new ExpressionV2(), new ExpressionV2())))),
-                new ExpressionV2().withType(ExpressionV2Type.UNARY).withValue("nex").withOperator("sanglw")
-                    .withOperands(Arrays.asList(
-                        new ExpressionV2().withType(ExpressionV2Type.BINARY).withValue("m").withOperator("rhjj")
-                            .withOperands(Arrays.asList(new ExpressionV2(), new ExpressionV2(), new ExpressionV2(),
-                                new ExpressionV2())),
-                        new ExpressionV2().withType(ExpressionV2Type.UNARY).withValue("rywucpdzbnty")
-                            .withOperator("wnpuyhqayls")
-                            .withOperands(Arrays.asList(new ExpressionV2(), new ExpressionV2(), new ExpressionV2(),
-                                new ExpressionV2())))),
-                new ExpressionV2().withType(ExpressionV2Type.UNARY).withValue("lzrrhabbdqne")
-                    .withOperator("fujzwqpkhgrdg")
-                    .withOperands(Arrays.asList(
-                        new ExpressionV2().withType(ExpressionV2Type.FIELD).withValue("qkv").withOperator("n")
-                            .withOperands(Arrays.asList(new ExpressionV2(), new ExpressionV2(), new ExpressionV2())),
-                        new ExpressionV2().withType(ExpressionV2Type.UNARY).withValue("aoetrglpaocq")
-                            .withOperator("vleouevuhago")
-                            .withOperands(Arrays.asList(new ExpressionV2(), new ExpressionV2(), new ExpressionV2(),
-                                new ExpressionV2())),
-                        new ExpressionV2().withType(ExpressionV2Type.BINARY).withValue("tuoq").withOperator("crdnmhrym")
-                            .withOperands(Arrays.asList(new ExpressionV2(), new ExpressionV2())),
-                        new ExpressionV2().withType(ExpressionV2Type.UNARY).withValue("owubkiocjn")
-                            .withOperator("nwktbsckcng")
-                            .withOperands(Arrays.asList(new ExpressionV2(), new ExpressionV2(), new ExpressionV2())))),
-                new ExpressionV2().withType(ExpressionV2Type.FIELD).withValue("zoxmajpxbtkzvt")
-                    .withOperator("tgrmgcfvfwwev")
-                    .withOperands(Arrays.asList(
-                        new ExpressionV2().withType(ExpressionV2Type.CONSTANT).withValue("x")
-                            .withOperator("qaqzttogblriznr")
-                            .withOperands(Arrays.asList(new ExpressionV2(), new ExpressionV2(), new ExpressionV2(),
-                                new ExpressionV2())),
-                        new ExpressionV2().withType(ExpressionV2Type.UNARY).withValue("p").withOperator("nqljlw")
-                            .withOperands(Arrays.asList(new ExpressionV2(), new ExpressionV2(), new ExpressionV2())),
-                        new ExpressionV2().withType(ExpressionV2Type.UNARY).withValue("ln").withOperator("jqlq")
-                            .withOperands(Arrays.asList(new ExpressionV2(), new ExpressionV2()))))));
+        ExpressionV2 model
+            = new ExpressionV2().withType(ExpressionV2Type.FIELD)
+                .withValue("el")
+                .withOperator("ikigzbrkwgsqos")
+                .withOperands(
+                    Arrays
+                        .asList(
+                            new ExpressionV2().withType(ExpressionV2Type.CONSTANT)
+                                .withValue("hkljktujf")
+                                .withOperator("eqfryketwrzxb")
+                                .withOperands(
+                                    Arrays.asList(
+                                        new ExpressionV2().withType(ExpressionV2Type.FIELD)
+                                            .withValue("g")
+                                            .withOperator("qnjfjyppixfub")
+                                            .withOperands(Arrays.asList(new ExpressionV2(), new ExpressionV2(),
+                                                new ExpressionV2())),
+                                        new ExpressionV2().withType(ExpressionV2Type.CONSTANT)
+                                            .withValue("wyetyrnhisp")
+                                            .withOperator("ivanlypspnjlo")
+                                            .withOperands(Arrays.asList(new ExpressionV2(), new ExpressionV2())))),
+                            new ExpressionV2().withType(ExpressionV2Type.UNARY)
+                                .withValue("lma")
+                                .withOperator("rbwbkrsmkeiunxtb")
+                                .withOperands(Arrays.asList(
+                                    new ExpressionV2().withType(ExpressionV2Type.UNARY)
+                                        .withValue("xdtzzmcrmhhfcaiz")
+                                        .withOperator("iyuzufd")
+                                        .withOperands(Arrays.asList(new ExpressionV2())),
+                                    new ExpressionV2().withType(ExpressionV2Type.UNARY)
+                                        .withValue("nfljv")
+                                        .withOperator("qkoecozfauhn")
+                                        .withOperands(Arrays.asList(new ExpressionV2(), new ExpressionV2(),
+                                            new ExpressionV2(), new ExpressionV2())),
+                                    new ExpressionV2().withType(ExpressionV2Type.UNARY)
+                                        .withValue("lgrzcjpkzmhax")
+                                        .withOperator("jimlfrkmynmmm")
+                                        .withOperands(Arrays.asList(new ExpressionV2())),
+                                    new ExpressionV2()
+                                        .withType(ExpressionV2Type.BINARY)
+                                        .withValue("ghordcc")
+                                        .withOperator("rwzczlvqlcca")
+                                        .withOperands(Arrays.asList(new ExpressionV2(), new ExpressionV2())))),
+                            new ExpressionV2().withType(ExpressionV2Type.BINARY)
+                                .withValue("tyiqqwdgys")
+                                .withOperator("vvagvqrwrchwd")
+                                .withOperands(
+                                    Arrays.asList(
+                                        new ExpressionV2().withType(ExpressionV2Type.CONSTANT)
+                                            .withValue("tfjj")
+                                            .withOperator("xweuoklwtoecxndh")
+                                            .withOperands(Arrays.asList(new ExpressionV2(), new ExpressionV2(),
+                                                new ExpressionV2())),
+                                        new ExpressionV2().withType(ExpressionV2Type.FIELD)
+                                            .withValue("ocunan")
+                                            .withOperator("tverplhfwq")
+                                            .withOperands(Arrays.asList(new ExpressionV2(), new ExpressionV2(),
+                                                new ExpressionV2()))))));
         model = BinaryData.fromObject(model).toObject(ExpressionV2.class);
-        Assertions.assertEquals(ExpressionV2Type.UNARY, model.type());
-        Assertions.assertEquals("fgfspzw", model.value());
-        Assertions.assertEquals("cu", model.operator());
-        Assertions.assertEquals(ExpressionV2Type.BINARY, model.operands().get(0).type());
-        Assertions.assertEquals("jvlwczwdkk", model.operands().get(0).value());
-        Assertions.assertEquals("ooqnvhtrfckrm", model.operands().get(0).operator());
-        Assertions.assertEquals(ExpressionV2Type.BINARY, model.operands().get(0).operands().get(0).type());
-        Assertions.assertEquals("tfmpcbvkoughj", model.operands().get(0).operands().get(0).value());
-        Assertions.assertEquals("pptsvppfdnihxcij", model.operands().get(0).operands().get(0).operator());
+        Assertions.assertEquals(ExpressionV2Type.FIELD, model.type());
+        Assertions.assertEquals("el", model.value());
+        Assertions.assertEquals("ikigzbrkwgsqos", model.operator());
+        Assertions.assertEquals(ExpressionV2Type.CONSTANT, model.operands().get(0).type());
+        Assertions.assertEquals("hkljktujf", model.operands().get(0).value());
+        Assertions.assertEquals("eqfryketwrzxb", model.operands().get(0).operator());
+        Assertions.assertEquals(ExpressionV2Type.FIELD, model.operands().get(0).operands().get(0).type());
+        Assertions.assertEquals("g", model.operands().get(0).operands().get(0).value());
+        Assertions.assertEquals("qnjfjyppixfub", model.operands().get(0).operands().get(0).operator());
     }
 }

@@ -80,9 +80,11 @@ public class NamespacePropertiesEntryContent implements XmlSerializable<Namespac
                 NamespaceProperties namespaceProperties = null;
 
                 while (xmlReader.nextElement() != XmlToken.END_ELEMENT) {
+                    // BEGIN: com.azure.xml.XmlReader.getElementName
                     QName qName = xmlReader.getElementName();
-                    String localPart = qName.getLocalPart();
-                    String namespaceUri = qName.getNamespaceURI();
+                    String localPart = qName.getLocalPart(); // The name of the XML element.
+                    String namespaceUri = qName.getNamespaceURI(); // The namespace of the XML element.
+                    // END: com.azure.xml.XmlReader.getElementName
 
                     if ("NamespaceInfo".equals(localPart)
                         && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect".equals(namespaceUri)) {

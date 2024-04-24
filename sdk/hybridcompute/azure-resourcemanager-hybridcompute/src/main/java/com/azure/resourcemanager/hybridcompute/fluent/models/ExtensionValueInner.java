@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes a Extension Metadata. */
+/**
+ * Describes a Extension Metadata.
+ */
 @Immutable
 public final class ExtensionValueInner extends ProxyResource {
     /*
@@ -24,13 +26,15 @@ public final class ExtensionValueInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ExtensionValueInner class. */
+    /**
+     * Creates an instance of ExtensionValueInner class.
+     */
     public ExtensionValueInner() {
     }
 
     /**
      * Get the innerProperties property: The single extension based on search criteria.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ExtensionValueProperties innerProperties() {
@@ -39,7 +43,7 @@ public final class ExtensionValueInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -48,7 +52,7 @@ public final class ExtensionValueInner extends ProxyResource {
 
     /**
      * Get the version property: The version of the Extension being received.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -57,7 +61,7 @@ public final class ExtensionValueInner extends ProxyResource {
 
     /**
      * Get the extensionType property: The type of the Extension being received.
-     *
+     * 
      * @return the extensionType value.
      */
     public String extensionType() {
@@ -66,7 +70,7 @@ public final class ExtensionValueInner extends ProxyResource {
 
     /**
      * Get the publisher property: The publisher of the Extension being received.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -75,7 +79,7 @@ public final class ExtensionValueInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -87,6 +87,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -289,6 +290,46 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(exception.getDiagnostics().getDuration()).isNotNull();
             validateTransportRequestTimelineGateway(diagnostics);
             isValidJSON(diagnostics);
+        }
+    }
+
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
+    public void gatewayDiagnostgiticsOnNonCosmosException() {
+        CosmosAsyncClient testClient = null;
+        try {
+            GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
+            gatewayConnectionConfig.setMaxConnectionPoolSize(1); // using a small value to force pendingAcquisitionTimeout happen
+
+            testClient =
+                new CosmosClientBuilder()
+                    .endpoint(TestConfigurations.HOST)
+                    .key(TestConfigurations.MASTER_KEY)
+                    .gatewayMode(gatewayConnectionConfig)
+                    .buildAsyncClient();
+
+            CosmosAsyncContainer testContainer =
+                testClient
+                    .getDatabase(cosmosAsyncContainer.getDatabase().getId())
+                    .getContainer(cosmosAsyncContainer.getId());
+
+            AtomicBoolean pendingAcquisitionTimeoutHappened = new AtomicBoolean(false);
+            Flux.range(1, 10)
+                .flatMap(t -> testContainer.createItem(TestItem.createNewItem()))
+                .onErrorResume(throwable -> {
+                    assertThat(throwable).isInstanceOf(CosmosException.class);
+                    String cosmosDiagnostics = ((CosmosException)throwable).getDiagnostics().toString();
+                    assertThat(cosmosDiagnostics).contains("exceptionMessage");
+                    if (cosmosDiagnostics.contains("Pending acquire queue has reached its maximum size")) {
+                        pendingAcquisitionTimeoutHappened.compareAndSet(false, true);
+                    }
+
+                    return Mono.empty();
+                })
+                .blockLast();
+
+            assertThat(pendingAcquisitionTimeoutHappened.get()).isTrue();
+        } finally {
+            safeClose(testClient);
         }
     }
 
@@ -1545,7 +1586,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         InternalObjectNode internalObjectNode = new InternalObjectNode();
         String uuid = UUID.randomUUID().toString();
         internalObjectNode.setId(uuid);
-        BridgeInternal.setProperty(internalObjectNode, "mypk", uuid);
+        internalObjectNode.set("mypk", uuid, CosmosItemSerializer.DEFAULT_SERIALIZER);
         return internalObjectNode;
     }
 
@@ -1553,7 +1594,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         InternalObjectNode internalObjectNode = new InternalObjectNode();
         String uuid = UUID.randomUUID().toString();
         internalObjectNode.setId(uuid);
-        BridgeInternal.setProperty(internalObjectNode, "mypk", pkValue);
+        internalObjectNode.set( "mypk", pkValue, CosmosItemSerializer.DEFAULT_SERIALIZER);
         return internalObjectNode;
     }
 

@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-/** Samples for AfdOrigins Delete. */
+/**
+ * Samples for AfdOrigins Delete.
+ */
 public final class AfdOriginsDeleteSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/AFDOrigins_Delete.json
+     * x-ms-original-file:
+     * specification/cdn/resource-manager/Microsoft.Cdn/stable/2024-02-01/examples/AFDOrigins_Delete.json
      */
     /**
      * Sample code: AFDOrigins_Delete.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void aFDOriginsDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cdnProfiles()
-            .manager()
-            .serviceClient()
-            .getAfdOrigins()
-            .delete("RG", "profile1", "origingroup1", "origin1", com.azure.core.util.Context.NONE);
+        azure.cdnProfiles().manager().serviceClient().getAfdOrigins().delete("RG", "profile1", "origingroup1",
+            "origin1", com.azure.core.util.Context.NONE);
     }
 }

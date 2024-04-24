@@ -12,14 +12,14 @@ public final class CmkIdentityDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CmkIdentityDefinition model
-            = BinaryData.fromString("{\"userAssignedIdentity\":\"lexxbczwtru\"}").toObject(CmkIdentityDefinition.class);
-        Assertions.assertEquals("lexxbczwtru", model.userAssignedIdentity());
+            = BinaryData.fromString("{\"userAssignedIdentity\":\"ied\"}").toObject(CmkIdentityDefinition.class);
+        Assertions.assertEquals("ied", model.userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CmkIdentityDefinition model = new CmkIdentityDefinition().withUserAssignedIdentity("lexxbczwtru");
+        CmkIdentityDefinition model = new CmkIdentityDefinition().withUserAssignedIdentity("ied");
         model = BinaryData.fromObject(model).toObject(CmkIdentityDefinition.class);
-        Assertions.assertEquals("lexxbczwtru", model.userAssignedIdentity());
+        Assertions.assertEquals("ied", model.userAssignedIdentity());
     }
 }

@@ -1,6 +1,6 @@
 # Release History
 
-## 7.16.0-beta.2 (Unreleased)
+## 7.17.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,24 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 7.16.0 (2024-04-22)
+
+### Features Added
+
+- Setting the v2 stack as the default for "Session Processor Client" and "Session Reactor Receiver Client". ([39750](https://github.com/Azure/azure-sdk-for-java/pull/39750))
+
+### Bugs Fixed
+
+- Fixes the ServiceBusProcessorClient to signal intermediate errors to the processor handler. ([#39669](https://github.com/Azure/azure-sdk-for-java/issues/39669))
+- Fixes the issue of not creating default rule when creating subscription. ([37856](https://github.com/Azure/azure-sdk-for-java/issues/37856))
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.47.0` to `1.48.0`.
+- Upgraded `azure-core-amqp` from `2.9.2` to `2.9.3`.
+- Upgraded `azure-identity` from `1.11.2` to `1.12.0`.
 
 ## 7.16.0-beta.1 (2024-03-14)
 

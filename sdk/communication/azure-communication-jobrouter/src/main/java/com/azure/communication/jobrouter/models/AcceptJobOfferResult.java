@@ -19,21 +19,21 @@ public final class AcceptJobOfferResult {
      */
     @Generated
     @JsonProperty(value = "assignmentId")
-    private String assignmentId;
+    private final String assignmentId;
 
     /*
      * Id of the job assigned.
      */
     @Generated
     @JsonProperty(value = "jobId")
-    private String jobId;
+    private final String jobId;
 
     /*
      * Id of the worker that has been assigned this job.
      */
     @Generated
     @JsonProperty(value = "workerId")
-    private String workerId;
+    private final String workerId;
 
     /**
      * Creates an instance of AcceptJobOfferResult class.

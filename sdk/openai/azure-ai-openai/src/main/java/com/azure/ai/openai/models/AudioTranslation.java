@@ -21,7 +21,7 @@ public final class AudioTranslation {
      */
     @Generated
     @JsonProperty(value = "text")
-    private String text;
+    private final String text;
 
     /*
      * The label that describes which operation type generated the accompanying response data.

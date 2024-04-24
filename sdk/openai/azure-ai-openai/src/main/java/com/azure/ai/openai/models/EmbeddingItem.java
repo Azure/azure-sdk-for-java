@@ -8,6 +8,8 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import static com.azure.ai.openai.implementation.EmbeddingsUtils.convertBase64ToFloatList;
+import com.azure.core.util.BinaryData;
 
 /**
  * Representation of a single embeddings relatedness comparison.
@@ -19,23 +21,10 @@ public final class EmbeddingItem {
      * List of embeddings value for the input prompt. These represent a measurement of the
      * vector-based relatedness of the provided input.
      */
-    @Generated
     @JsonProperty(value = "embedding")
-    private List<Double> embedding;
+    private BinaryData embedding;
 
-    /**
-     * Creates an instance of EmbeddingItem class.
-     *
-     * @param embedding the embedding value to set.
-     * @param promptIndex the promptIndex value to set.
-     */
-    @Generated
-    @JsonCreator
-    private EmbeddingItem(@JsonProperty(value = "embedding") List<Double> embedding,
-        @JsonProperty(value = "index") int promptIndex) {
-        this.embedding = embedding;
-        this.promptIndex = promptIndex;
-    }
+    private final String embeddingBase64;
 
     /**
      * Get the embedding property: List of embeddings value for the input prompt. These represent a measurement of the
@@ -43,9 +32,17 @@ public final class EmbeddingItem {
      *
      * @return the embedding value.
      */
-    @Generated
-    public List<Double> getEmbedding() {
-        return this.embedding;
+    public List<Float> getEmbedding() {
+        return convertBase64ToFloatList(embeddingBase64);
+    }
+
+    /**
+     * Get the embedding property: List of embeddings value in base64 format for the input prompt.
+     *
+     * @return the embedding base64 encoded string.
+     */
+    public String getEmbeddingAsString() {
+        return embeddingBase64;
     }
 
     /*
@@ -53,7 +50,7 @@ public final class EmbeddingItem {
      */
     @Generated
     @JsonProperty(value = "index")
-    private int promptIndex;
+    private final int promptIndex;
 
     /**
      * Get the promptIndex property: Index of the prompt to which the EmbeddingItem corresponds.
@@ -63,5 +60,19 @@ public final class EmbeddingItem {
     @Generated
     public int getPromptIndex() {
         return this.promptIndex;
+    }
+
+    /**
+     * Creates an instance of EmbeddingItem class.
+     *
+     * @param embedding the embedding value to set.
+     * @param promptIndex the promptIndex value to set.
+     */
+    @JsonCreator
+    private EmbeddingItem(@JsonProperty(value = "embedding") BinaryData embedding,
+        @JsonProperty(value = "index") int promptIndex) {
+        this.embedding = embedding;
+        this.promptIndex = promptIndex;
+        embeddingBase64 = embedding.toString();
     }
 }
