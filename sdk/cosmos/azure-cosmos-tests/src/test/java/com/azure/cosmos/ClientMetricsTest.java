@@ -380,7 +380,7 @@ public class ClientMetricsTest extends BatchTestBase {
             container.createItem(properties);
 
             CosmosItemResponse<InternalObjectNode> readResponse1 = container.readItem(properties.getId(),
-                new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
+                new PartitionKey(properties.get("mypk")),
                 new CosmosItemRequestOptions(),
                 InternalObjectNode.class);
             validateItemResponse(properties, readResponse1);
@@ -423,7 +423,7 @@ public class ClientMetricsTest extends BatchTestBase {
             container.createItem(properties);
 
             CosmosItemResponse<InternalObjectNode> readResponse1 = container.readItem(properties.getId(),
-                new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
+                new PartitionKey(properties.get("mypk")),
                 new CosmosItemRequestOptions(),
                 InternalObjectNode.class);
             validateItemResponse(properties, readResponse1);
@@ -468,15 +468,15 @@ public class ClientMetricsTest extends BatchTestBase {
 
             validateItemResponse(properties, itemResponse);
             String newPropValue = UUID.randomUUID().toString();
-            BridgeInternal.setProperty(properties, "newProp", newPropValue);
+            properties.set("newProp", newPropValue, CosmosItemSerializer.DEFAULT_SERIALIZER);
             CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-            ModelBridgeInternal.setPartitionKey(options, new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")));
+            ModelBridgeInternal.setPartitionKey(options, new PartitionKey(properties.get("mypk")));
             // replace document
             CosmosItemResponse<InternalObjectNode> replace = container.replaceItem(properties,
                 properties.getId(),
-                new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
+                new PartitionKey(properties.get("mypk")),
                 options);
-            assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(BridgeInternal.getProperties(replace), "newProp")).isEqualTo(newPropValue);
+            assertThat(BridgeInternal.getProperties(replace).get("newProp")).isEqualTo(newPropValue);
 
             this.validateMetrics(
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
@@ -506,7 +506,7 @@ public class ClientMetricsTest extends BatchTestBase {
             CosmosItemRequestOptions options = new CosmosItemRequestOptions();
 
             CosmosItemResponse<?> deleteResponse = container.deleteItem(properties.getId(),
-                new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
+                new PartitionKey(properties.get("mypk")),
                 options);
             assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
 

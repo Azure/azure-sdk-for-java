@@ -10,6 +10,12 @@
 
 ### Other Changes
 
+## 1.24.1 (2024-04-23)
+
+### Other Changes
+
+- Added more missing sanitizers.
+
 ## 1.24.1 (2024-04-05)
 
 ### Other Changes

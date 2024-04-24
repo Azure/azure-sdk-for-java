@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.uuid.EthernetAddress;
 import com.azure.cosmos.implementation.uuid.Generators;
@@ -45,8 +46,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -573,30 +576,63 @@ public class Utils {
         }
     }
 
-    public static <T> T parse(byte[] item, Class<T> itemClassType) {
+    public static <T> T parse(byte[] item, Class<T> itemClassType, CosmosItemSerializer itemSerializer) {
         if (Utils.isEmpty(item)) {
             return null;
         }
 
         try {
-            return getSimpleObjectMapper().readValue(item, itemClassType);
+            JsonNode jsonNode = getSimpleObjectMapper().readValue(item, JsonNode.class);
+            if (jsonNode instanceof ObjectNode) {
+                ObjectNode jsonTree = (ObjectNode)jsonNode;
+                CosmosItemSerializer effectiveSerializer = itemSerializer != null
+                    ? itemSerializer
+                    : CosmosItemSerializer.DEFAULT_SERIALIZER;
+
+                T result = effectiveSerializer.deserialize(
+                    getSimpleObjectMapper().convertValue(jsonTree, ObjectNodeMap.JACKSON_MAP_TYPE),
+                    itemClassType);
+                return result;
+            }
+
+            return getSimpleObjectMapper().convertValue(jsonNode, itemClassType);
         } catch (IOException e) {
             throw new IllegalStateException(
                 String.format("Failed to parse byte-array %s to POJO.", new String(item, StandardCharsets.UTF_8)), e);
         }
     }
 
-    public static <T> T parse(JsonNode jsonNode, Class<T> itemClassType, ItemDeserializer itemDeserializer) {
-        ItemDeserializer effectiveDeserializer = itemDeserializer == null ?
-                new ItemDeserializer.JsonDeserializer() : itemDeserializer;
+    public static <T> T parse(ObjectNode jsonNode, Class<T> itemClassType, CosmosItemSerializer itemSerializer) {
+        CosmosItemSerializer effectiveItemSerializer= itemSerializer == null ?
+                CosmosItemSerializer.DEFAULT_SERIALIZER : itemSerializer;
 
-        return effectiveDeserializer.convert(itemClassType, jsonNode);
+        return effectiveItemSerializer.deserialize(new ObjectNodeMap(jsonNode), itemClassType);
     }
 
-    public static ByteBuffer serializeJsonToByteBuffer(ObjectMapper objectMapper, Object object) {
+    @SuppressWarnings("unchecked")
+    public static ByteBuffer serializeJsonToByteBuffer(CosmosItemSerializer serializer, Object object, Consumer<Map<String, Object>> onAfterSerialization) {
+        checkArgument(serializer != null || object instanceof Map<?, ?>, "Argument 'serializer' must not be null.");
         try {
             ByteBufferOutputStream byteBufferOutputStream = new ByteBufferOutputStream(ONE_KB);
-            objectMapper.writeValue(byteBufferOutputStream, object);
+            Map<String, Object> jsonTreeMap = (object instanceof Map<?, ?> && serializer == null)
+                ? (Map<String, Object>) object
+                : serializer.serialize(object);
+
+            if (onAfterSerialization != null) {
+                onAfterSerialization.accept(jsonTreeMap);
+            }
+
+            JsonNode jsonNode;
+
+            if (jsonTreeMap instanceof PrimitiveJsonNodeMap) {
+                jsonNode = ((PrimitiveJsonNodeMap)jsonTreeMap).getPrimitiveJsonNode();
+            } else if (jsonTreeMap instanceof ObjectNodeMap && onAfterSerialization == null) {
+                jsonNode = ((ObjectNodeMap) jsonTreeMap).getObjectNode();
+            } else {
+                jsonNode = simpleObjectMapper.convertValue(jsonTreeMap, JsonNode.class);
+            }
+
+            simpleObjectMapper.writeValue(byteBufferOutputStream, jsonNode);
             return byteBufferOutputStream.asByteBuffer();
         } catch (IOException e) {
             // TODO moderakh: on serialization/deserialization failure we should throw CosmosException here and elsewhere

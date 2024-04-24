@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hybridcompute.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes Extension Metadata properties. */
+/**
+ * Describes Extension Metadata properties.
+ */
 @Immutable
 public final class ExtensionValueProperties {
     /*
@@ -28,13 +30,15 @@ public final class ExtensionValueProperties {
     @JsonProperty(value = "publisher", access = JsonProperty.Access.WRITE_ONLY)
     private String publisher;
 
-    /** Creates an instance of ExtensionValueProperties class. */
+    /**
+     * Creates an instance of ExtensionValueProperties class.
+     */
     public ExtensionValueProperties() {
     }
 
     /**
      * Get the version property: The version of the Extension being received.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -43,7 +47,7 @@ public final class ExtensionValueProperties {
 
     /**
      * Get the extensionType property: The type of the Extension being received.
-     *
+     * 
      * @return the extensionType value.
      */
     public String extensionType() {
@@ -52,7 +56,7 @@ public final class ExtensionValueProperties {
 
     /**
      * Get the publisher property: The publisher of the Extension being received.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -61,7 +65,7 @@ public final class ExtensionValueProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

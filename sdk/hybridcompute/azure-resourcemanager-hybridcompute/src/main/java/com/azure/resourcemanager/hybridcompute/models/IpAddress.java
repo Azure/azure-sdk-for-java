@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hybridcompute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes properties of the IP address. */
+/**
+ * Describes properties of the IP address.
+ */
 @Fluent
 public final class IpAddress {
     /*
@@ -28,13 +30,15 @@ public final class IpAddress {
     @JsonProperty(value = "subnet", access = JsonProperty.Access.WRITE_ONLY)
     private Subnet subnet;
 
-    /** Creates an instance of IpAddress class. */
+    /**
+     * Creates an instance of IpAddress class.
+     */
     public IpAddress() {
     }
 
     /**
      * Get the address property: Represents the IP Address.
-     *
+     * 
      * @return the address value.
      */
     public String address() {
@@ -43,7 +47,7 @@ public final class IpAddress {
 
     /**
      * Set the address property: Represents the IP Address.
-     *
+     * 
      * @param address the address value to set.
      * @return the IpAddress object itself.
      */
@@ -54,7 +58,7 @@ public final class IpAddress {
 
     /**
      * Get the ipAddressVersion property: Represents the Ip Address Version.
-     *
+     * 
      * @return the ipAddressVersion value.
      */
     public String ipAddressVersion() {
@@ -63,7 +67,7 @@ public final class IpAddress {
 
     /**
      * Set the ipAddressVersion property: Represents the Ip Address Version.
-     *
+     * 
      * @param ipAddressVersion the ipAddressVersion value to set.
      * @return the IpAddress object itself.
      */
@@ -74,7 +78,7 @@ public final class IpAddress {
 
     /**
      * Get the subnet property: The subnet to which this IP address belongs.
-     *
+     * 
      * @return the subnet value.
      */
     public Subnet subnet() {
@@ -83,7 +87,7 @@ public final class IpAddress {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
