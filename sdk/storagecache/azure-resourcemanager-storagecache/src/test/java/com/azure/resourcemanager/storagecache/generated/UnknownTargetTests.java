@@ -14,16 +14,15 @@ public final class UnknownTargetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UnknownTarget model
-            = BinaryData.fromString("{\"attributes\":{\"tpuqujmq\":\"efkifr\",\"jcntuj\":\"gkfbtndoaong\"}}")
-                .toObject(UnknownTarget.class);
-        Assertions.assertEquals("efkifr", model.attributes().get("tpuqujmq"));
+            = BinaryData.fromString("{\"attributes\":{\"fbn\":\"xuvw\"}}").toObject(UnknownTarget.class);
+        Assertions.assertEquals("xuvw", model.attributes().get("fbn"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UnknownTarget model = new UnknownTarget().withAttributes(mapOf("tpuqujmq", "efkifr", "jcntuj", "gkfbtndoaong"));
+        UnknownTarget model = new UnknownTarget().withAttributes(mapOf("fbn", "xuvw"));
         model = BinaryData.fromObject(model).toObject(UnknownTarget.class);
-        Assertions.assertEquals("efkifr", model.attributes().get("tpuqujmq"));
+        Assertions.assertEquals("xuvw", model.attributes().get("fbn"));
     }
 
     // Use "Map.of" if available

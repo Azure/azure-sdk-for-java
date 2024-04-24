@@ -56,8 +56,8 @@ public final class AscUsagesClientImpl implements AscUsagesClient {
     }
 
     /**
-     * The interface defining all the services for StorageCacheManagementClientAscUsages to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for StorageCacheManagementClientAscUsages to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "StorageCacheManageme")

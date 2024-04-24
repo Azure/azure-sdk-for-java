@@ -10,7 +10,7 @@ import com.azure.resourcemanager.storagecache.models.Condition;
 public final class ConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Condition model = BinaryData.fromString("{\"timestamp\":\"2021-05-20T03:51:26Z\",\"message\":\"bexrmcq\"}")
+        Condition model = BinaryData.fromString("{\"timestamp\":\"2021-11-25T23:16:06Z\",\"message\":\"axhexiilivp\"}")
             .toObject(Condition.class);
     }
 

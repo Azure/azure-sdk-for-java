@@ -11,7 +11,7 @@ public final class ResourceUsagesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceUsagesListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"rbirphxe\",\"value\":[{\"limit\":1012026798,\"unit\":\"fnljky\",\"currentValue\":197436298,\"name\":{\"value\":\"ujqgidok\",\"localizedValue\":\"ljyoxgvcltb\"}}]}")
+            "{\"nextLink\":\"cvdrhvoodsot\",\"value\":[{\"limit\":138973043,\"unit\":\"pcjwv\",\"currentValue\":2011097883,\"name\":{\"value\":\"wmgxcxrsl\",\"localizedValue\":\"utwu\"}},{\"limit\":966378800,\"unit\":\"pkhjwni\",\"currentValue\":1045229648,\"name\":{\"value\":\"i\",\"localizedValue\":\"dggkzzlvmbmpa\"}}]}")
             .toObject(ResourceUsagesListResult.class);
     }
 

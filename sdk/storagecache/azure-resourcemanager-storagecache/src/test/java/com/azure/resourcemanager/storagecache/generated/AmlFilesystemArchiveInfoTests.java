@@ -12,14 +12,14 @@ public final class AmlFilesystemArchiveInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AmlFilesystemArchiveInfo model
-            = BinaryData.fromString("{\"filesystemPath\":\"kocrcjdkwtnhx\"}").toObject(AmlFilesystemArchiveInfo.class);
-        Assertions.assertEquals("kocrcjdkwtnhx", model.filesystemPath());
+            = BinaryData.fromString("{\"filesystemPath\":\"jwnzlljfmp\"}").toObject(AmlFilesystemArchiveInfo.class);
+        Assertions.assertEquals("jwnzlljfmp", model.filesystemPath());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AmlFilesystemArchiveInfo model = new AmlFilesystemArchiveInfo().withFilesystemPath("kocrcjdkwtnhx");
+        AmlFilesystemArchiveInfo model = new AmlFilesystemArchiveInfo().withFilesystemPath("jwnzlljfmp");
         model = BinaryData.fromObject(model).toObject(AmlFilesystemArchiveInfo.class);
-        Assertions.assertEquals("kocrcjdkwtnhx", model.filesystemPath());
+        Assertions.assertEquals("jwnzlljfmp", model.filesystemPath());
     }
 }

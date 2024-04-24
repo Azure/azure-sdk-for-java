@@ -20,9 +20,7 @@ public final class PrimingJob {
     private String primingJobName;
 
     /*
-     * The URL for the priming manifest file to download. This file must be readable from the HPC Cache. When the file
-     * is in Azure blob storage the URL should include a Shared Access Signature (SAS) granting read permissions on the
-     * blob.
+     * The URL for the priming manifest file to download. This file must be readable from the HPC Cache. When the file is in Azure blob storage the URL should include a Shared Access Signature (SAS) granting read permissions on the blob.
      */
     @JsonProperty(value = "primingManifestUrl")
     private String primingManifestUrl;
@@ -159,12 +157,12 @@ public final class PrimingJob {
      */
     public void validate() {
         if (primingJobName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property primingJobName in model PrimingJob"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property primingJobName in model PrimingJob"));
         }
         if (primingManifestUrl() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property primingManifestUrl in model PrimingJob"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property primingManifestUrl in model PrimingJob"));
         }
     }
 

@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Describes the format of Error response.
  */
 @Fluent
-public final class ErrorResponse {
+public final class AscOperationErrorResponse {
     /*
      * Error code
      */
@@ -25,9 +25,9 @@ public final class ErrorResponse {
     private String message;
 
     /**
-     * Creates an instance of ErrorResponse class.
+     * Creates an instance of AscOperationErrorResponse class.
      */
-    public ErrorResponse() {
+    public AscOperationErrorResponse() {
     }
 
     /**
@@ -43,9 +43,9 @@ public final class ErrorResponse {
      * Set the code property: Error code.
      * 
      * @param code the code value to set.
-     * @return the ErrorResponse object itself.
+     * @return the AscOperationErrorResponse object itself.
      */
-    public ErrorResponse withCode(String code) {
+    public AscOperationErrorResponse withCode(String code) {
         this.code = code;
         return this;
     }
@@ -63,9 +63,9 @@ public final class ErrorResponse {
      * Set the message property: Error message indicating why the operation failed.
      * 
      * @param message the message value to set.
-     * @return the ErrorResponse object itself.
+     * @return the AscOperationErrorResponse object itself.
      */
-    public ErrorResponse withMessage(String message) {
+    public AscOperationErrorResponse withMessage(String message) {
         this.message = message;
         return this;
     }

@@ -54,6 +54,13 @@ public interface StorageCacheManagementClient {
     AmlFilesystemsClient getAmlFilesystems();
 
     /**
+     * Gets the ImportJobsClient object to access its operations.
+     * 
+     * @return the ImportJobsClient object.
+     */
+    ImportJobsClient getImportJobs();
+
+    /**
      * Gets the ResourceProvidersClient object to access its operations.
      * 
      * @return the ResourceProvidersClient object.

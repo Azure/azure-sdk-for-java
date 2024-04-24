@@ -149,14 +149,16 @@ public final class AmlFilesystemImpl implements AmlFilesystem, AmlFilesystem.Def
     }
 
     public AmlFilesystem create() {
-        this.innerObject = serviceManager.serviceClient().getAmlFilesystems().createOrUpdate(resourceGroupName,
-            amlFilesystemName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAmlFilesystems()
+            .createOrUpdate(resourceGroupName, amlFilesystemName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public AmlFilesystem create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAmlFilesystems().createOrUpdate(resourceGroupName,
-            amlFilesystemName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAmlFilesystems()
+            .createOrUpdate(resourceGroupName, amlFilesystemName, this.innerModel(), context);
         return this;
     }
 
@@ -172,14 +174,16 @@ public final class AmlFilesystemImpl implements AmlFilesystem, AmlFilesystem.Def
     }
 
     public AmlFilesystem apply() {
-        this.innerObject = serviceManager.serviceClient().getAmlFilesystems().update(resourceGroupName,
-            amlFilesystemName, updateAmlFilesystem, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAmlFilesystems()
+            .update(resourceGroupName, amlFilesystemName, updateAmlFilesystem, Context.NONE);
         return this;
     }
 
     public AmlFilesystem apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAmlFilesystems().update(resourceGroupName,
-            amlFilesystemName, updateAmlFilesystem, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAmlFilesystems()
+            .update(resourceGroupName, amlFilesystemName, updateAmlFilesystem, context);
         return this;
     }
 
@@ -192,20 +196,24 @@ public final class AmlFilesystemImpl implements AmlFilesystem, AmlFilesystem.Def
     }
 
     public AmlFilesystem refresh() {
-        this.innerObject = serviceManager.serviceClient().getAmlFilesystems()
-            .getByResourceGroupWithResponse(resourceGroupName, amlFilesystemName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAmlFilesystems()
+            .getByResourceGroupWithResponse(resourceGroupName, amlFilesystemName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AmlFilesystem refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAmlFilesystems()
-            .getByResourceGroupWithResponse(resourceGroupName, amlFilesystemName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAmlFilesystems()
+            .getByResourceGroupWithResponse(resourceGroupName, amlFilesystemName, context)
+            .getValue();
         return this;
     }
 
     public Response<Void> archiveWithResponse(AmlFilesystemArchiveInfo archiveInfo, Context context) {
-        return serviceManager.amlFilesystems().archiveWithResponse(resourceGroupName, amlFilesystemName, archiveInfo,
-            context);
+        return serviceManager.amlFilesystems()
+            .archiveWithResponse(resourceGroupName, amlFilesystemName, archiveInfo, context);
     }
 
     public void archive() {

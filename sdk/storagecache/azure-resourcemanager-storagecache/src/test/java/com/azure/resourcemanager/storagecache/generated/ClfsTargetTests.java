@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class ClfsTargetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClfsTarget model = BinaryData.fromString("{\"target\":\"b\"}").toObject(ClfsTarget.class);
-        Assertions.assertEquals("b", model.target());
+        ClfsTarget model = BinaryData.fromString("{\"target\":\"u\"}").toObject(ClfsTarget.class);
+        Assertions.assertEquals("u", model.target());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClfsTarget model = new ClfsTarget().withTarget("b");
+        ClfsTarget model = new ClfsTarget().withTarget("u");
         model = BinaryData.fromObject(model).toObject(ClfsTarget.class);
-        Assertions.assertEquals("b", model.target());
+        Assertions.assertEquals("u", model.target());
     }
 }

@@ -13,20 +13,21 @@ public final class UsageModelInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UsageModelInner model = BinaryData.fromString(
-            "{\"display\":{\"description\":\"rywn\"},\"modelName\":\"oqftiyqzrnkcq\",\"targetType\":\"xlwhzlsicoh\"}")
+            "{\"display\":{\"description\":\"pxebmnzbt\"},\"modelName\":\"jpglkfgohdne\",\"targetType\":\"lfphsdyhtozfikd\"}")
             .toObject(UsageModelInner.class);
-        Assertions.assertEquals("rywn", model.display().description());
-        Assertions.assertEquals("oqftiyqzrnkcq", model.modelName());
-        Assertions.assertEquals("xlwhzlsicoh", model.targetType());
+        Assertions.assertEquals("pxebmnzbt", model.display().description());
+        Assertions.assertEquals("jpglkfgohdne", model.modelName());
+        Assertions.assertEquals("lfphsdyhtozfikd", model.targetType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UsageModelInner model = new UsageModelInner().withDisplay(new UsageModelDisplay().withDescription("rywn"))
-            .withModelName("oqftiyqzrnkcq").withTargetType("xlwhzlsicoh");
+        UsageModelInner model = new UsageModelInner().withDisplay(new UsageModelDisplay().withDescription("pxebmnzbt"))
+            .withModelName("jpglkfgohdne")
+            .withTargetType("lfphsdyhtozfikd");
         model = BinaryData.fromObject(model).toObject(UsageModelInner.class);
-        Assertions.assertEquals("rywn", model.display().description());
-        Assertions.assertEquals("oqftiyqzrnkcq", model.modelName());
-        Assertions.assertEquals("xlwhzlsicoh", model.targetType());
+        Assertions.assertEquals("pxebmnzbt", model.display().description());
+        Assertions.assertEquals("jpglkfgohdne", model.modelName());
+        Assertions.assertEquals("lfphsdyhtozfikd", model.targetType());
     }
 }

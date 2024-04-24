@@ -13,10 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AmlFilesystemRootSquashSettings {
     /*
-     * Squash mode of the AML file system. 'All': User and Group IDs on files will be squashed to the provided values
-     * for all users on non-trusted systems. 'RootOnly': User and Group IDs on files will be squashed to provided
-     * values for solely the root user on non-trusted systems. 'None': No squashing of User and Group IDs is performed
-     * for any users on any systems.
+     * Squash mode of the AML file system. 'All': User and Group IDs on files will be squashed to the provided values for all users on non-trusted systems. 'RootOnly': User and Group IDs on files will be squashed to provided values for solely the root user on non-trusted systems. 'None': No squashing of User and Group IDs is performed for any users on any systems.
      */
     @JsonProperty(value = "mode")
     private AmlFilesystemSquashMode mode;
@@ -52,8 +49,8 @@ public final class AmlFilesystemRootSquashSettings {
     }
 
     /**
-     * Get the mode property: Squash mode of the AML file system. 'All': User and Group IDs on files will be squashed
-     * to the provided values for all users on non-trusted systems. 'RootOnly': User and Group IDs on files will be
+     * Get the mode property: Squash mode of the AML file system. 'All': User and Group IDs on files will be squashed to
+     * the provided values for all users on non-trusted systems. 'RootOnly': User and Group IDs on files will be
      * squashed to provided values for solely the root user on non-trusted systems. 'None': No squashing of User and
      * Group IDs is performed for any users on any systems.
      * 
@@ -64,8 +61,8 @@ public final class AmlFilesystemRootSquashSettings {
     }
 
     /**
-     * Set the mode property: Squash mode of the AML file system. 'All': User and Group IDs on files will be squashed
-     * to the provided values for all users on non-trusted systems. 'RootOnly': User and Group IDs on files will be
+     * Set the mode property: Squash mode of the AML file system. 'All': User and Group IDs on files will be squashed to
+     * the provided values for all users on non-trusted systems. 'RootOnly': User and Group IDs on files will be
      * squashed to provided values for solely the root user on non-trusted systems. 'None': No squashing of User and
      * Group IDs is performed for any users on any systems.
      * 

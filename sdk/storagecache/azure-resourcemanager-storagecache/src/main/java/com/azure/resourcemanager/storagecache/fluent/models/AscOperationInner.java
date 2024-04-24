@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.storagecache.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.storagecache.models.ErrorResponse;
+import com.azure.resourcemanager.storagecache.models.AscOperationErrorResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -48,7 +48,7 @@ public final class AscOperationInner {
      * The error detail of the operation if any.
      */
     @JsonProperty(value = "error")
-    private ErrorResponse error;
+    private AscOperationErrorResponse error;
 
     /*
      * Additional operation-specific properties
@@ -167,7 +167,7 @@ public final class AscOperationInner {
      * 
      * @return the error value.
      */
-    public ErrorResponse error() {
+    public AscOperationErrorResponse error() {
         return this.error;
     }
 
@@ -177,7 +177,7 @@ public final class AscOperationInner {
      * @param error the error value to set.
      * @return the AscOperationInner object itself.
      */
-    public AscOperationInner withError(ErrorResponse error) {
+    public AscOperationInner withError(AscOperationErrorResponse error) {
         this.error = error;
         return this;
     }

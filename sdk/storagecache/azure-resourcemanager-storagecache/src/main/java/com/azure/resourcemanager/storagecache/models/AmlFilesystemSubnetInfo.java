@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AmlFilesystemSubnetInfo {
     /*
-     * Subnet used for managing the AML file system and for client-facing operations. This subnet should have at least
-     * a /24 subnet mask within the VNET's address space.
+     * Subnet used for managing the AML file system and for client-facing operations. This subnet should have at least a /24 subnet mask within the VNET's address space.
      */
     @JsonProperty(value = "filesystemSubnet")
     private String filesystemSubnet;
@@ -44,8 +43,8 @@ public final class AmlFilesystemSubnetInfo {
     }
 
     /**
-     * Get the filesystemSubnet property: Subnet used for managing the AML file system and for client-facing
-     * operations. This subnet should have at least a /24 subnet mask within the VNET's address space.
+     * Get the filesystemSubnet property: Subnet used for managing the AML file system and for client-facing operations.
+     * This subnet should have at least a /24 subnet mask within the VNET's address space.
      * 
      * @return the filesystemSubnet value.
      */
@@ -54,8 +53,8 @@ public final class AmlFilesystemSubnetInfo {
     }
 
     /**
-     * Set the filesystemSubnet property: Subnet used for managing the AML file system and for client-facing
-     * operations. This subnet should have at least a /24 subnet mask within the VNET's address space.
+     * Set the filesystemSubnet property: Subnet used for managing the AML file system and for client-facing operations.
+     * This subnet should have at least a /24 subnet mask within the VNET's address space.
      * 
      * @param filesystemSubnet the filesystemSubnet value to set.
      * @return the AmlFilesystemSubnetInfo object itself.

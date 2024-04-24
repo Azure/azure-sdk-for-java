@@ -6,7 +6,7 @@ package com.azure.resourcemanager.storagecache.implementation;
 
 import com.azure.resourcemanager.storagecache.fluent.models.AscOperationInner;
 import com.azure.resourcemanager.storagecache.models.AscOperation;
-import com.azure.resourcemanager.storagecache.models.ErrorResponse;
+import com.azure.resourcemanager.storagecache.models.AscOperationErrorResponse;
 import java.util.Collections;
 import java.util.Map;
 
@@ -41,7 +41,7 @@ public final class AscOperationImpl implements AscOperation {
         return this.innerModel().status();
     }
 
-    public ErrorResponse error() {
+    public AscOperationErrorResponse error() {
         return this.innerModel().error();
     }
 

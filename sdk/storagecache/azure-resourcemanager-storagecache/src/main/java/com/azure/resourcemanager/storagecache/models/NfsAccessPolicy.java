@@ -79,12 +79,12 @@ public final class NfsAccessPolicy {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model NfsAccessPolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model NfsAccessPolicy"));
         }
         if (accessRules() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property accessRules in model NfsAccessPolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property accessRules in model NfsAccessPolicy"));
         } else {
             accessRules().forEach(e -> e.validate());
         }

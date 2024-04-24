@@ -51,7 +51,7 @@ public interface AscOperation {
      * 
      * @return the error value.
      */
-    ErrorResponse error();
+    AscOperationErrorResponse error();
 
     /**
      * Gets the output property: Additional operation-specific output.
