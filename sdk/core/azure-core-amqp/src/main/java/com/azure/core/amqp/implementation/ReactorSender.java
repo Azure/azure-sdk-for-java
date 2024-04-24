@@ -153,9 +153,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
             handler.getConnectionId(), handler.getLinkName());
 
         this.endpointStates = this.handler.getEndpointStates().map(state -> {
-            logger.atVerbose()
-                .addKeyValue("state", state)
-                .log("onEndpointState");
+            logger.atVerbose().addKeyValue("state", state).log("onEndpointState");
             this.hasConnected.set(state == EndpointState.ACTIVE);
             return AmqpEndpointStateUtil.getConnectionState(state);
         }).doOnError(error -> {

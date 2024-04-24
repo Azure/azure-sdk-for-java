@@ -298,11 +298,9 @@ public class ReactorSession implements AmqpSession {
     @Override
     public Mono<? extends AmqpTransactionCoordinator> getOrCreateTransactionCoordinator() {
         if (isDisposed()) {
-            return monoError(
-                logger.atWarning().addKeyValue(SESSION_NAME_KEY, sessionName),
-                new AmqpException(true, String
-                    .format("Cannot create coordinator send link %s from a closed session.", TRANSACTION_LINK_NAME),
-                    sessionHandler.getErrorContext()));
+            return monoError(logger.atWarning().addKeyValue(SESSION_NAME_KEY, sessionName), new AmqpException(true,
+                String.format("Cannot create coordinator send link %s from a closed session.", TRANSACTION_LINK_NAME),
+                sessionHandler.getErrorContext()));
         }
 
         final TransactionCoordinator existing = transactionCoordinator.get();
