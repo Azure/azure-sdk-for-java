@@ -179,13 +179,13 @@ public class CallAutomationLiveTestBase extends TestProxyTestBase {
         customSanitizers.add(new TestProxySanitizer("x-ms-client-request-id", null, "REDACTED", TestProxySanitizerType.HEADER));
         customSanitizers.add(new TestProxySanitizer("Repeatability-First-Sent", null, "REDACTED", TestProxySanitizerType.HEADER));
         customSanitizers.add(new TestProxySanitizer("Repeatability-Request-ID", null, "REDACTED", TestProxySanitizerType.HEADER));
-        customSanitizers.add(new TestProxySanitizer("$..id", null,"REDACTED", TestProxySanitizerType.BODY_KEY));
-        customSanitizers.add(new TestProxySanitizer("$..rawId", null,"REDACTED", TestProxySanitizerType.BODY_KEY));
-        customSanitizers.add(new TestProxySanitizer("$..callbackUri", null,"REDACTED", TestProxySanitizerType.BODY_KEY));
-        customSanitizers.add(new TestProxySanitizer("$..incomingCallContext", null,"REDACTED", TestProxySanitizerType.BODY_KEY));
-        customSanitizers.add(new TestProxySanitizer("$..message", null,"REDACTED", TestProxySanitizerType.BODY_KEY));
-        customSanitizers.add(new TestProxySanitizer("$..mediaSubscriptionId", null,"REDACTED", TestProxySanitizerType.BODY_KEY));
-        customSanitizers.add(new TestProxySanitizer("$..dataSubscriptionId", null,"REDACTED", TestProxySanitizerType.BODY_KEY));
+        customSanitizers.add(new TestProxySanitizer("$..id", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+        customSanitizers.add(new TestProxySanitizer("$..rawId", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+        customSanitizers.add(new TestProxySanitizer("$..callbackUri", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+        customSanitizers.add(new TestProxySanitizer("$..incomingCallContext", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+        customSanitizers.add(new TestProxySanitizer("$..message", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+        customSanitizers.add(new TestProxySanitizer("$..mediaSubscriptionId", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+        customSanitizers.add(new TestProxySanitizer("$..dataSubscriptionId", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
         customSanitizers.add(new TestProxySanitizer(URL_REGEX, "REDACTED", TestProxySanitizerType.BODY_REGEX));
         
         interceptorManager.addSanitizers(customSanitizers);

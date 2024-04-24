@@ -58,10 +58,9 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
             "https://incomingcalldispatcher.azurewebsites.net");
     protected static final String DISPATCHER_CALLBACK = DISPATCHER_ENDPOINT + "/api/servicebuscallback/events";
     protected static final String BOT_APP_ID = Configuration.getGlobalConfiguration()
-        .get("BOT_APP_ID",
-            "REDACTED-bedb-REDACTED-b8c6-REDACTED");
+        .get("BOT_APP_ID", "REDACTED-bedb-REDACTED-b8c6-REDACTED");
 
-        private static final StringJoiner JSON_PROPERTIES_TO_REDACT
+    private static final StringJoiner JSON_PROPERTIES_TO_REDACT 
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
         .add("value")
         .add("rawId")
@@ -71,10 +70,12 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         .add("ivrContext")
         .add("incomingCallContext")
         .add("serverCallId");
-        protected static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
-            = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT),
-            Pattern.CASE_INSENSITIVE);
-            protected static final String URL_REGEX = "(?<=http:\\/\\/|https:\\/\\/)([^\\/?]+)";
+        
+    protected static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
+        = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT),
+        Pattern.CASE_INSENSITIVE);
+    
+    protected static final String URL_REGEX = "(?<=http:\\/\\/|https:\\/\\/)([^\\/?]+)";
 
     @Override
     protected void beforeTest() {
