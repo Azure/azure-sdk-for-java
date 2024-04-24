@@ -110,6 +110,7 @@ extends:
   parameters:
     ServiceDirectory: cognitiveservices
     EnableBatchRelease: true
+    skipComponentGovernanceDetection: true
     Artifacts:
       - name: azure-resourcemanager-cognitiveservices
         groupId: com.azure.resourcemanager
