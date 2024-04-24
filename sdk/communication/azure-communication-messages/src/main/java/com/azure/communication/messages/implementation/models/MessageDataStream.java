@@ -27,7 +27,7 @@ public final class MessageDataStream {
      */
     @Generated
     @JsonProperty(value = "body")
-    private final byte[] body;
+    private byte[] body;
 
     /**
      * Creates an instance of MessageDataStream class.

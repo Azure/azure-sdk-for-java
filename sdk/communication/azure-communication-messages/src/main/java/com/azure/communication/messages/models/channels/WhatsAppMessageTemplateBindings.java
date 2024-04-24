@@ -4,11 +4,9 @@
 package com.azure.communication.messages.models.channels;
 
 import com.azure.communication.messages.models.MessageTemplateBindings;
-import com.azure.communication.messages.models.MessageTemplateBindingsKind;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,11 +14,7 @@ import java.util.List;
 /**
  * The template bindings for WhatsApp.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "kind",
-    defaultImpl = WhatsAppMessageTemplateBindings.class,
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("whatsApp")
 @Fluent
 public final class WhatsAppMessageTemplateBindings extends MessageTemplateBindings {
@@ -147,24 +141,5 @@ public final class WhatsAppMessageTemplateBindings extends MessageTemplateBindin
     public WhatsAppMessageTemplateBindings setButtons(List<WhatsAppMessageTemplateBindingsButton> buttons) {
         this.buttons = buttons;
         return this;
-    }
-
-    /*
-     * The type discriminator describing a template bindings type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
-    private MessageTemplateBindingsKind kind = MessageTemplateBindingsKind.WHATS_APP;
-
-    /**
-     * Get the kind property: The type discriminator describing a template bindings type.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public MessageTemplateBindingsKind getKind() {
-        return this.kind;
     }
 }
