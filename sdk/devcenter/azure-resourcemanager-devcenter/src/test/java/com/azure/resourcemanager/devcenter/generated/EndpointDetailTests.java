@@ -10,7 +10,7 @@ import com.azure.resourcemanager.devcenter.models.EndpointDetail;
 public final class EndpointDetailTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EndpointDetail model = BinaryData.fromString("{\"port\":1199003595}").toObject(EndpointDetail.class);
+        EndpointDetail model = BinaryData.fromString("{\"port\":1322281835}").toObject(EndpointDetail.class);
     }
 
     @org.junit.jupiter.api.Test

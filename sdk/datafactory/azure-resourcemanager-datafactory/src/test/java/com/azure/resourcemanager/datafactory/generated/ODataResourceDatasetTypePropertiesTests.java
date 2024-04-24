@@ -11,12 +11,12 @@ public final class ODataResourceDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ODataResourceDatasetTypeProperties model
-            = BinaryData.fromString("{\"path\":\"datazgkqwvde\"}").toObject(ODataResourceDatasetTypeProperties.class);
+            = BinaryData.fromString("{\"path\":\"datarmbecx\"}").toObject(ODataResourceDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ODataResourceDatasetTypeProperties model = new ODataResourceDatasetTypeProperties().withPath("datazgkqwvde");
+        ODataResourceDatasetTypeProperties model = new ODataResourceDatasetTypeProperties().withPath("datarmbecx");
         model = BinaryData.fromObject(model).toObject(ODataResourceDatasetTypeProperties.class);
     }
 }

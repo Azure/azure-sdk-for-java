@@ -147,7 +147,7 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
         deserialized.setPrioritizationRule(null);
         deserialized.setQueueSelectorAttachments(new ArrayList<>());
         ClassificationPolicy updatedPolicy = routerAdminClient.updateClassificationPolicy(
-            deserialized.getId(), deserialized, null);
+            deserialized.getId(), deserialized);
 
         assertEquals(classificationPolicyId, updatedPolicy.getId());
         assertEquals(classificationPolicyName, updatedPolicy.getName());

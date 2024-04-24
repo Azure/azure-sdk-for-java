@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AzureDataExplorerDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,21 @@ import java.util.Map;
 /**
  * The Azure Data Explorer (Kusto) dataset.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = AzureDataExplorerTableDataset.class,
+    visible = true)
 @JsonTypeName("AzureDataExplorerTable")
 @Fluent
 public final class AzureDataExplorerTableDataset extends Dataset {
+    /*
+     * Type of dataset.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "AzureDataExplorerTable";
+
     /*
      * Azure Data Explorer (Kusto) dataset properties.
      */
@@ -30,6 +42,16 @@ public final class AzureDataExplorerTableDataset extends Dataset {
      * Creates an instance of AzureDataExplorerTableDataset class.
      */
     public AzureDataExplorerTableDataset() {
+    }
+
+    /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -138,8 +160,9 @@ public final class AzureDataExplorerTableDataset extends Dataset {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model AzureDataExplorerTableDataset"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model AzureDataExplorerTableDataset"));
         } else {
             innerTypeProperties().validate();
         }

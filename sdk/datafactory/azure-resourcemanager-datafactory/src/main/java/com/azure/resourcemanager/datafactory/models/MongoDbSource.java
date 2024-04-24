@@ -6,16 +6,24 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity source for a MongoDB database.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = MongoDbSource.class, visible = true)
 @JsonTypeName("MongoDbSource")
 @Fluent
 public final class MongoDbSource extends CopySource {
+    /*
+     * Copy source type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "MongoDbSource";
+
     /*
      * Database query. Should be a SQL-92 query expression. Type: string (or Expression with resultType string).
      */
@@ -23,8 +31,7 @@ public final class MongoDbSource extends CopySource {
     private Object query;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
-     * Expression with resultType array of objects).
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with resultType array of objects).
      */
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
@@ -33,6 +40,16 @@ public final class MongoDbSource extends CopySource {
      * Creates an instance of MongoDbSource class.
      */
     public MongoDbSource() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

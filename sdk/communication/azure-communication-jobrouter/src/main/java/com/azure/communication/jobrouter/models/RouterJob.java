@@ -15,6 +15,11 @@ import java.util.Map;
 /** A unit of work to be routed. */
 @Fluent
 public final class RouterJob {
+    /**
+     * Create new instance
+     */
+    public RouterJob() {
+    }
 
     /*
      * The id of the job.

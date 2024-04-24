@@ -9,7 +9,9 @@ import com.azure.resourcemanager.hybridcompute.fluent.models.MachineUpdateProper
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Describes a hybrid machine Update. */
+/**
+ * Describes a hybrid machine Update.
+ */
 @Fluent
 public final class MachineUpdate extends ResourceUpdate {
     /*
@@ -30,13 +32,15 @@ public final class MachineUpdate extends ResourceUpdate {
     @JsonProperty(value = "properties")
     private MachineUpdateProperties innerProperties;
 
-    /** Creates an instance of MachineUpdate class. */
+    /**
+     * Creates an instance of MachineUpdate class.
+     */
     public MachineUpdate() {
     }
 
     /**
      * Get the identity property: Identity for the resource.
-     *
+     * 
      * @return the identity value.
      */
     public Identity identity() {
@@ -45,7 +49,7 @@ public final class MachineUpdate extends ResourceUpdate {
 
     /**
      * Set the identity property: Identity for the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the MachineUpdate object itself.
      */
@@ -57,7 +61,7 @@ public final class MachineUpdate extends ResourceUpdate {
     /**
      * Get the kind property: Indicates which kind of Arc machine placement on-premises, such as HCI, SCVMM or VMware
      * etc.
-     *
+     * 
      * @return the kind value.
      */
     public ArcKindEnum kind() {
@@ -67,7 +71,7 @@ public final class MachineUpdate extends ResourceUpdate {
     /**
      * Set the kind property: Indicates which kind of Arc machine placement on-premises, such as HCI, SCVMM or VMware
      * etc.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the MachineUpdate object itself.
      */
@@ -78,14 +82,16 @@ public final class MachineUpdate extends ResourceUpdate {
 
     /**
      * Get the innerProperties property: Hybrid Compute Machine properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MachineUpdateProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MachineUpdate withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -94,7 +100,7 @@ public final class MachineUpdate extends ResourceUpdate {
 
     /**
      * Get the locationData property: Metadata pertaining to the geographic location of the resource.
-     *
+     * 
      * @return the locationData value.
      */
     public LocationData locationData() {
@@ -103,7 +109,7 @@ public final class MachineUpdate extends ResourceUpdate {
 
     /**
      * Set the locationData property: Metadata pertaining to the geographic location of the resource.
-     *
+     * 
      * @param locationData the locationData value to set.
      * @return the MachineUpdate object itself.
      */
@@ -117,7 +123,7 @@ public final class MachineUpdate extends ResourceUpdate {
 
     /**
      * Get the osProfile property: Specifies the operating system settings for the hybrid machine.
-     *
+     * 
      * @return the osProfile value.
      */
     public OSProfile osProfile() {
@@ -126,7 +132,7 @@ public final class MachineUpdate extends ResourceUpdate {
 
     /**
      * Set the osProfile property: Specifies the operating system settings for the hybrid machine.
-     *
+     * 
      * @param osProfile the osProfile value to set.
      * @return the MachineUpdate object itself.
      */
@@ -140,7 +146,7 @@ public final class MachineUpdate extends ResourceUpdate {
 
     /**
      * Get the cloudMetadata property: The metadata of the cloud environment (Azure/GCP/AWS/OCI...).
-     *
+     * 
      * @return the cloudMetadata value.
      */
     public CloudMetadata cloudMetadata() {
@@ -149,7 +155,7 @@ public final class MachineUpdate extends ResourceUpdate {
 
     /**
      * Set the cloudMetadata property: The metadata of the cloud environment (Azure/GCP/AWS/OCI...).
-     *
+     * 
      * @param cloudMetadata the cloudMetadata value to set.
      * @return the MachineUpdate object itself.
      */
@@ -163,7 +169,7 @@ public final class MachineUpdate extends ResourceUpdate {
 
     /**
      * Get the agentUpgrade property: The info of the machine w.r.t Agent Upgrade.
-     *
+     * 
      * @return the agentUpgrade value.
      */
     public AgentUpgrade agentUpgrade() {
@@ -172,7 +178,7 @@ public final class MachineUpdate extends ResourceUpdate {
 
     /**
      * Set the agentUpgrade property: The info of the machine w.r.t Agent Upgrade.
-     *
+     * 
      * @param agentUpgrade the agentUpgrade value to set.
      * @return the MachineUpdate object itself.
      */
@@ -187,7 +193,7 @@ public final class MachineUpdate extends ResourceUpdate {
     /**
      * Get the parentClusterResourceId property: The resource id of the parent cluster (Azure HCI) this machine is
      * assigned to, if any.
-     *
+     * 
      * @return the parentClusterResourceId value.
      */
     public String parentClusterResourceId() {
@@ -197,7 +203,7 @@ public final class MachineUpdate extends ResourceUpdate {
     /**
      * Set the parentClusterResourceId property: The resource id of the parent cluster (Azure HCI) this machine is
      * assigned to, if any.
-     *
+     * 
      * @param parentClusterResourceId the parentClusterResourceId value to set.
      * @return the MachineUpdate object itself.
      */
@@ -212,7 +218,7 @@ public final class MachineUpdate extends ResourceUpdate {
     /**
      * Get the privateLinkScopeResourceId property: The resource id of the private link scope this machine is assigned
      * to, if any.
-     *
+     * 
      * @return the privateLinkScopeResourceId value.
      */
     public String privateLinkScopeResourceId() {
@@ -222,7 +228,7 @@ public final class MachineUpdate extends ResourceUpdate {
     /**
      * Set the privateLinkScopeResourceId property: The resource id of the private link scope this machine is assigned
      * to, if any.
-     *
+     * 
      * @param privateLinkScopeResourceId the privateLinkScopeResourceId value to set.
      * @return the MachineUpdate object itself.
      */
@@ -236,7 +242,7 @@ public final class MachineUpdate extends ResourceUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

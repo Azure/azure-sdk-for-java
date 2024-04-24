@@ -4,10 +4,10 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
-import java.util.Objects;
 
 /**
  * A note attached to a job.
@@ -15,54 +15,62 @@ import java.util.Objects;
 @Fluent
 public final class RouterJobNote {
 
-    /**
-     * Creates an instance of RouterJobNote class.
-     *
-     * @param message The message for the note.
+    /*
+     * The message contained in the note.
      */
-    @JsonCreator
-    public RouterJobNote(@JsonProperty(value = "message") String message) {
-        this.message = Objects.requireNonNull(message, "'message' cannot be null.");
-    }
+    @Generated
+    @JsonProperty(value = "message")
+    private final String message;
 
-    /**
-     * The time at which the note was added in UTC.
+    /*
+     * The time at which the note was added in UTC. If not provided, will default to the current time.
      */
+    @Generated
     @JsonProperty(value = "addedAt")
     private OffsetDateTime addedAt;
 
     /**
-     * Message for the note.
+     * Creates an instance of RouterJobNote class.
+     *
+     * @param message the message value to set.
      */
-    @JsonProperty(value = "message")
-    private final String message;
+    @Generated
+    @JsonCreator
+    public RouterJobNote(@JsonProperty(value = "message") String message) {
+        this.message = message;
+    }
 
     /**
-     * setter for time.
+     * Get the message property: The message contained in the note.
      *
-     * @param addedAt time at which the note was added in UTC.
-     * @return this
+     * @return the message value.
      */
+    @Generated
+    public String getMessage() {
+        return this.message;
+    }
+
+    /**
+     * Get the addedAt property: The time at which the note was added in UTC. If not provided, will default to the
+     * current time.
+     *
+     * @return the addedAt value.
+     */
+    @Generated
+    public OffsetDateTime getAddedAt() {
+        return this.addedAt;
+    }
+
+    /**
+     * Set the addedAt property: The time at which the note was added in UTC. If not provided, will default to the
+     * current time.
+     *
+     * @param addedAt the addedAt value to set.
+     * @return the RouterJobNote object itself.
+     */
+    @Generated
     public RouterJobNote setAddedAt(OffsetDateTime addedAt) {
         this.addedAt = addedAt;
         return this;
-    }
-
-    /**
-     * getter for addedAt.
-     *
-     * @return addedAt
-     */
-    public OffsetDateTime getAddedAt() {
-        return addedAt;
-    }
-
-    /**
-     * Getter for message.
-     *
-     * @return message.
-     */
-    public String getMessage() {
-        return message;
     }
 }

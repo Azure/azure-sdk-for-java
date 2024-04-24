@@ -14,10 +14,8 @@ import com.azure.resourcemanager.hybridcompute.models.TagsResource;
 import java.util.Collections;
 import java.util.Map;
 
-public final class HybridComputePrivateLinkScopeImpl
-    implements HybridComputePrivateLinkScope,
-        HybridComputePrivateLinkScope.Definition,
-        HybridComputePrivateLinkScope.Update {
+public final class HybridComputePrivateLinkScopeImpl implements HybridComputePrivateLinkScope,
+    HybridComputePrivateLinkScope.Definition, HybridComputePrivateLinkScope.Update {
     private HybridComputePrivateLinkScopeInner innerObject;
 
     private final com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager;
@@ -87,27 +85,23 @@ public final class HybridComputePrivateLinkScopeImpl
     }
 
     public HybridComputePrivateLinkScope create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateLinkScopes()
-                .createOrUpdateWithResponse(resourceGroupName, scopeName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateLinkScopes()
+            .createOrUpdateWithResponse(resourceGroupName, scopeName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public HybridComputePrivateLinkScope create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateLinkScopes()
-                .createOrUpdateWithResponse(resourceGroupName, scopeName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateLinkScopes()
+            .createOrUpdateWithResponse(resourceGroupName, scopeName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    HybridComputePrivateLinkScopeImpl(
-        String name, com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager) {
+    HybridComputePrivateLinkScopeImpl(String name,
+        com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager) {
         this.innerObject = new HybridComputePrivateLinkScopeInner();
         this.serviceManager = serviceManager;
         this.scopeName = name;
@@ -119,51 +113,42 @@ public final class HybridComputePrivateLinkScopeImpl
     }
 
     public HybridComputePrivateLinkScope apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateLinkScopes()
-                .updateTagsWithResponse(resourceGroupName, scopeName, updatePrivateLinkScopeTags, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateLinkScopes()
+            .updateTagsWithResponse(resourceGroupName, scopeName, updatePrivateLinkScopeTags, Context.NONE)
+            .getValue();
         return this;
     }
 
     public HybridComputePrivateLinkScope apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateLinkScopes()
-                .updateTagsWithResponse(resourceGroupName, scopeName, updatePrivateLinkScopeTags, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateLinkScopes()
+            .updateTagsWithResponse(resourceGroupName, scopeName, updatePrivateLinkScopeTags, context)
+            .getValue();
         return this;
     }
 
-    HybridComputePrivateLinkScopeImpl(
-        HybridComputePrivateLinkScopeInner innerObject,
+    HybridComputePrivateLinkScopeImpl(HybridComputePrivateLinkScopeInner innerObject,
         com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.scopeName = Utils.getValueFromIdByName(innerObject.id(), "privateLinkScopes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.scopeName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateLinkScopes");
     }
 
     public HybridComputePrivateLinkScope refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateLinkScopes()
-                .getByResourceGroupWithResponse(resourceGroupName, scopeName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateLinkScopes()
+            .getByResourceGroupWithResponse(resourceGroupName, scopeName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public HybridComputePrivateLinkScope refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateLinkScopes()
-                .getByResourceGroupWithResponse(resourceGroupName, scopeName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateLinkScopes()
+            .getByResourceGroupWithResponse(resourceGroupName, scopeName, context)
+            .getValue();
         return this;
     }
 

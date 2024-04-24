@@ -6,6 +6,7 @@ package com.azure.resourcemanager.support.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.support.models.CommunicationDirection;
 import com.azure.resourcemanager.support.models.CommunicationType;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -19,8 +20,8 @@ public final class CommunicationDetailsInner extends ProxyResource {
     /*
      * Properties of the resource.
      */
-    @JsonProperty(value = "properties")
-    private CommunicationDetailsProperties innerProperties;
+    @JsonProperty(value = "properties", required = true)
+    private CommunicationDetailsProperties innerProperties = new CommunicationDetailsProperties();
 
     /**
      * Creates an instance of CommunicationDetailsInner class.
@@ -56,8 +57,7 @@ public final class CommunicationDetailsInner extends ProxyResource {
     }
 
     /**
-     * Get the sender property: Email address of the sender. This property is required if called by a service
-     * principal.
+     * Get the sender property: Email address of the sender. This property is required if called by a service principal.
      * 
      * @return the sender value.
      */
@@ -66,8 +66,7 @@ public final class CommunicationDetailsInner extends ProxyResource {
     }
 
     /**
-     * Set the sender property: Email address of the sender. This property is required if called by a service
-     * principal.
+     * Set the sender property: Email address of the sender. This property is required if called by a service principal.
      * 
      * @param sender the sender value to set.
      * @return the CommunicationDetailsInner object itself.
@@ -141,8 +140,14 @@ public final class CommunicationDetailsInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
+        if (innerProperties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model CommunicationDetailsInner"));
+        } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CommunicationDetailsInner.class);
 }

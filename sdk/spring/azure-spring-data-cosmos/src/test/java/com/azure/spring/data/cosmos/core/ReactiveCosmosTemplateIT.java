@@ -32,12 +32,15 @@ import com.azure.spring.data.cosmos.domain.BasicItem;
 import com.azure.spring.data.cosmos.domain.GenIdEntity;
 import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
+import com.azure.spring.data.cosmos.repository.StubAuditorProvider;
+import com.azure.spring.data.cosmos.repository.StubDateTimeProvider;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.AuditableRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.Assertions;
+import org.assertj.core.util.Lists;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -49,6 +52,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.domain.EntityScanner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.annotation.Persistent;
+import org.springframework.data.auditing.IsNewAwareAuditingHandler;
 import org.springframework.data.repository.query.parser.Part;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -59,9 +63,13 @@ import reactor.test.StepVerifier;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 import static com.azure.spring.data.cosmos.common.TestConstants.ADDRESSES;
@@ -96,6 +104,18 @@ public class ReactiveCosmosTemplateIT {
 
     private static final Person TEST_PERSON_4 = new Person(TestConstants.ID_4, TestConstants.NEW_FIRST_NAME,
         TestConstants.NEW_LAST_NAME, TestConstants.HOBBIES, TestConstants.ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
+
+    private static final AuditableEntity TEST_AUDITABLE_ENTITY_1 = new AuditableEntity();
+
+    private static final String UUID_1 = UUID.randomUUID().toString();
+
+    private static final AuditableEntity TEST_AUDITABLE_ENTITY_2 = new AuditableEntity();
+
+    private static final String UUID_2 = UUID.randomUUID().toString();
+
+    private static final AuditableEntity TEST_AUDITABLE_ENTITY_3 = new AuditableEntity();
+
+    private static final String UUID_3 = UUID.randomUUID().toString();
 
     private static final BasicItem BASIC_ITEM = new BasicItem(ID_1);
     private static final String PRECONDITION_IS_NOT_MET = "is not met";
@@ -134,6 +154,8 @@ public class ReactiveCosmosTemplateIT {
     private static String containerName;
     private static CosmosEntityInformation<Person, String> personInfo;
 
+    private static CosmosEntityInformation<AuditableEntity, String> auditableEntityInfo;
+
     private static CosmosEntityInformation<BasicItem, String> itemInfo;
     private static AzureKeyCredential azureKeyCredential;
 
@@ -151,6 +173,12 @@ public class ReactiveCosmosTemplateIT {
     private ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils;
     @Autowired
     private AuditableRepository auditableRepository;
+    @Autowired
+    private IsNewAwareAuditingHandler inah;
+    @Autowired
+    private StubAuditorProvider stubAuditorProvider;
+    @Autowired
+    private StubDateTimeProvider stubDateTimeProvider;
 
     @Before
     public void setUp() throws ClassNotFoundException {
@@ -159,6 +187,10 @@ public class ReactiveCosmosTemplateIT {
             cosmosClientBuilder.credential(azureKeyCredential);
             client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
             personInfo = new CosmosEntityInformation<>(Person.class);
+            TEST_AUDITABLE_ENTITY_1.setId(UUID_1);
+            TEST_AUDITABLE_ENTITY_2.setId(UUID_2);
+            TEST_AUDITABLE_ENTITY_3.setId(UUID_3);
+            auditableEntityInfo = new CosmosEntityInformation<>(AuditableEntity.class);
             itemInfo = new CosmosEntityInformation<>(BasicItem.class);
             containerName = personInfo.getContainerName();
             cosmosTemplate = createReactiveCosmosTemplate(cosmosConfig, TestConstants.DB_NAME);
@@ -177,7 +209,7 @@ public class ReactiveCosmosTemplateIT {
         final CosmosMappingContext mappingContext = new CosmosMappingContext();
         mappingContext.setInitialEntitySet(new EntityScanner(this.applicationContext).scan(Persistent.class));
         final MappingCosmosConverter cosmosConverter = new MappingCosmosConverter(mappingContext, null);
-        return new ReactiveCosmosTemplate(cosmosFactory, config, cosmosConverter);
+        return new ReactiveCosmosTemplate(cosmosFactory, config, cosmosConverter, inah);
     }
 
     @After
@@ -270,6 +302,110 @@ public class ReactiveCosmosTemplateIT {
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+    }
+
+    @Test
+    public void testSaveSetsAuditData() {
+        stubAuditorProvider.setCurrentAuditor("test-auditor");
+        final OffsetDateTime now = OffsetDateTime.now(ZoneId.of("UTC")).truncatedTo(ChronoUnit.MICROS);
+        stubDateTimeProvider.setNow(now);
+        StepVerifier.create(cosmosTemplate.insert(TEST_AUDITABLE_ENTITY_1))
+            .consumeNextWith(actual -> {
+                Assert.assertEquals(actual.getId(), UUID_1);
+            }).verifyComplete();
+        StepVerifier.create(cosmosTemplate.insert(TEST_AUDITABLE_ENTITY_2))
+            .consumeNextWith(actual -> {
+                Assert.assertEquals(actual.getId(), UUID_2);
+            }).verifyComplete();
+
+        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+
+        final Flux<AuditableEntity> flux = cosmosTemplate.findAll(auditableEntityInfo.getContainerName(), AuditableEntity.class);
+        StepVerifier.create(flux).consumeNextWith(actual -> {
+            Assert.assertEquals(actual.getId(), UUID_1);
+            Assert.assertEquals(actual.getCreatedBy(), "test-auditor");
+            Assert.assertEquals(actual.getLastModifiedBy(), "test-auditor");
+            Assert.assertEquals(actual.getCreatedDate(), now);
+            Assert.assertEquals(actual.getLastModifiedByDate(), now);
+        }).consumeNextWith(actual -> {
+            Assert.assertEquals(actual.getId(), UUID_2);
+            Assert.assertEquals(actual.getCreatedBy(), "test-auditor");
+            Assert.assertEquals(actual.getLastModifiedBy(), "test-auditor");
+            Assert.assertEquals(actual.getCreatedDate(), now);
+            Assert.assertEquals(actual.getLastModifiedByDate(), now);
+        }).verifyComplete();
+    }
+
+    @Test
+    public void testSaveAllSetsAuditData() {
+        stubAuditorProvider.setCurrentAuditor("test-auditor-2");
+        final OffsetDateTime now = OffsetDateTime.now(ZoneId.of("UTC")).truncatedTo(ChronoUnit.MICROS);
+        stubDateTimeProvider.setNow(now);
+        StepVerifier.create(cosmosTemplate.insertAll(auditableEntityInfo, Lists.newArrayList(TEST_AUDITABLE_ENTITY_1,
+                TEST_AUDITABLE_ENTITY_2))).expectNextCount(2).verifyComplete();
+
+        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+
+        final Flux<AuditableEntity> flux = cosmosTemplate.findAll(auditableEntityInfo.getContainerName(), AuditableEntity.class);
+        StepVerifier.create(flux).consumeNextWith(actual -> {
+            Assert.assertEquals(actual.getId(), UUID_1);
+            Assert.assertEquals(actual.getCreatedBy(), "test-auditor-2");
+            Assert.assertEquals(actual.getLastModifiedBy(), "test-auditor-2");
+            Assert.assertEquals(actual.getCreatedDate(), now);
+            Assert.assertEquals(actual.getLastModifiedByDate(), now);
+        }).consumeNextWith(actual -> {
+            Assert.assertEquals(actual.getId(), UUID_2);
+            Assert.assertEquals(actual.getCreatedBy(), "test-auditor-2");
+            Assert.assertEquals(actual.getLastModifiedBy(), "test-auditor-2");
+            Assert.assertEquals(actual.getCreatedDate(), now);
+            Assert.assertEquals(actual.getLastModifiedByDate(), now);
+        }).verifyComplete();
+    }
+
+    @Test
+    public void testSaveAllFailureAuditData() {
+        stubAuditorProvider.setCurrentAuditor("test-auditor-2");
+        final OffsetDateTime now = OffsetDateTime.now(ZoneId.of("UTC")).truncatedTo(ChronoUnit.MICROS);
+        stubDateTimeProvider.setNow(now);
+        StepVerifier.create(cosmosTemplate.insertAll(auditableEntityInfo, Lists.newArrayList(TEST_AUDITABLE_ENTITY_1,
+            TEST_AUDITABLE_ENTITY_2, TEST_AUDITABLE_ENTITY_3))).expectNextCount(3).verifyComplete();
+
+        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+
+        final List<AuditableEntity> result = cosmosTemplate.findAll(auditableEntityInfo.getContainerName(), AuditableEntity.class).collectList().block();
+
+        result.get(1).set_etag("broken_etag");
+        stubAuditorProvider.setCurrentAuditor("test-auditor-3");
+        final OffsetDateTime now2 = OffsetDateTime.now(ZoneId.of("UTC")).truncatedTo(ChronoUnit.MICROS);
+        stubDateTimeProvider.setNow(now2);
+
+        StepVerifier.create(cosmosTemplate.insertAll(auditableEntityInfo, result))
+            .consumeNextWith(actual -> Assert.assertEquals(actual.getId(), UUID_1))
+            .consumeNextWith(actual -> Assert.assertEquals(actual.getId(), UUID_3)).verifyComplete();
+
+        final Flux<AuditableEntity> flux = cosmosTemplate.findAll(auditableEntityInfo.getContainerName(), AuditableEntity.class);
+        StepVerifier.create(flux).consumeNextWith(actual -> {
+            Assert.assertEquals(actual.getId(), UUID_1);
+            Assert.assertEquals(actual.getCreatedBy(), "test-auditor-2");
+            Assert.assertEquals(actual.getLastModifiedBy(), "test-auditor-3");
+            Assert.assertEquals(actual.getCreatedDate(), now);
+            Assert.assertEquals(actual.getLastModifiedByDate(), now2);
+        }).consumeNextWith(actual -> {
+            Assert.assertEquals(actual.getId(), UUID_2);
+            Assert.assertEquals(actual.getCreatedBy(), "test-auditor-2");
+            Assert.assertEquals(actual.getLastModifiedBy(), "test-auditor-2");
+            Assert.assertEquals(actual.getCreatedDate(), now);
+            Assert.assertEquals(actual.getLastModifiedByDate(), now);
+        }).consumeNextWith(actual -> {
+            Assert.assertEquals(actual.getId(), UUID_3);
+            Assert.assertEquals(actual.getCreatedBy(), "test-auditor-2");
+            Assert.assertEquals(actual.getLastModifiedBy(), "test-auditor-3");
+            Assert.assertEquals(actual.getCreatedDate(), now);
+            Assert.assertEquals(actual.getLastModifiedByDate(), now2);
+        }).verifyComplete();
     }
 
     @Test

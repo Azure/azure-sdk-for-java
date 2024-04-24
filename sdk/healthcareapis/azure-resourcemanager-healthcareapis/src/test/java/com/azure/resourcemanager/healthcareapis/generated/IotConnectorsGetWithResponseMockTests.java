@@ -6,58 +6,41 @@ package com.azure.resourcemanager.healthcareapis.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.healthcareapis.HealthcareApisManager;
 import com.azure.resourcemanager.healthcareapis.models.IotConnector;
 import com.azure.resourcemanager.healthcareapis.models.ServiceManagedIdentityType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class IotConnectorsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Verifying\",\"ingestionEndpointConfiguration\":{\"eventHubName\":\"iut\",\"consumerGroup\":\"apzhyrpetoge\",\"fullyQualifiedEventHubNamespace\":\"oxslh\"},\"deviceMapping\":{\"content\":\"datalabrqnkkzjcjbtr\"}},\"identity\":{\"type\":\"None\",\"principalId\":\"d78ae8dd-217a-4a15-9ccd-85e5b8452f9f\",\"tenantId\":\"0284beaa-26e5-4181-b468-2dda2dc544c5\",\"userAssignedIdentities\":{\"jj\":{\"principalId\":\"c2bb81f9-9bfd-4608-8098-c12d94265257\",\"clientId\":\"0654e397-b4f6-4435-93a6-c5400cde3391\"},\"qbeitpkxztmoob\":{\"principalId\":\"907053a4-86fa-45d9-bb81-8cc6a0c89451\",\"clientId\":\"0a48781e-b687-45ca-92b8-b9f0e4736c40\"}}},\"tags\":{\"pimaqxzhemjyh\":\"tidgfcwq\"},\"location\":\"uj\",\"etag\":\"t\",\"id\":\"kozzwculkb\",\"name\":\"wpfaj\",\"type\":\"jwltlwtjjgu\"}";
+            = "{\"properties\":{\"provisioningState\":\"Warned\",\"ingestionEndpointConfiguration\":{\"eventHubName\":\"obfirclnpk\",\"consumerGroup\":\"ayzri\",\"fullyQualifiedEventHubNamespace\":\"hya\"},\"deviceMapping\":{\"content\":\"datajlb\"}},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"36c5dc0e-d88b-47cb-a955-ccf6e913dbd8\",\"tenantId\":\"cc26c0fe-617f-483c-a822-0391f835f38e\",\"userAssignedIdentities\":{\"omdynhdwdigum\":{\"principalId\":\"6297a391-3b9d-4176-b3f8-5fff43963d8b\",\"clientId\":\"2dec164a-b9da-4c64-bb6a-fb09e3e5d4a7\"}}},\"tags\":{\"hezwwvaiq\":\"aauzzptjazysd\",\"hqyikvy\":\"uvvfonkp\"},\"location\":\"uyav\",\"etag\":\"wmn\",\"id\":\"sttijfybvp\",\"name\":\"ekrsgs\",\"type\":\"b\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        HealthcareApisManager manager = HealthcareApisManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        HealthcareApisManager manager = HealthcareApisManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IotConnector response = manager.iotConnectors()
-            .getWithResponse("qcuubgqibrta", "metttwgd", "lqxihhrmooiz", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("riglaec", "ndtic", "kpvzmlq", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("t", response.etag());
-        Assertions.assertEquals("uj", response.location());
-        Assertions.assertEquals("tidgfcwq", response.tags().get("pimaqxzhemjyh"));
-        Assertions.assertEquals(ServiceManagedIdentityType.NONE, response.identity().type());
-        Assertions.assertEquals("iut", response.ingestionEndpointConfiguration().eventHubName());
-        Assertions.assertEquals("apzhyrpetoge", response.ingestionEndpointConfiguration().consumerGroup());
-        Assertions.assertEquals("oxslh", response.ingestionEndpointConfiguration().fullyQualifiedEventHubNamespace());
+        Assertions.assertEquals("wmn", response.etag());
+        Assertions.assertEquals("uyav", response.location());
+        Assertions.assertEquals("aauzzptjazysd", response.tags().get("hezwwvaiq"));
+        Assertions.assertEquals(ServiceManagedIdentityType.USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("obfirclnpk", response.ingestionEndpointConfiguration().eventHubName());
+        Assertions.assertEquals("ayzri", response.ingestionEndpointConfiguration().consumerGroup());
+        Assertions.assertEquals("hya", response.ingestionEndpointConfiguration().fullyQualifiedEventHubNamespace());
     }
 }

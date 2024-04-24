@@ -11,16 +11,19 @@ public final class GoogleAdWordsSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GoogleAdWordsSource model = BinaryData.fromString(
-            "{\"type\":\"GoogleAdWordsSource\",\"query\":\"dataozqqwiawbwzyvbui\",\"queryTimeout\":\"dataysatoplqc\",\"additionalColumns\":\"datasrlzwuqkprf\",\"sourceRetryCount\":\"datacowtoqfwbsbkob\",\"sourceRetryWait\":\"datassj\",\"maxConcurrentConnections\":\"datahfcxwrjbrxm\",\"disableMetricsCollection\":\"dataetttul\",\"\":{\"mosiskihf\":\"datajbhespf\"}}")
+            "{\"type\":\"ty\",\"query\":\"dataese\",\"queryTimeout\":\"dataetackjuwkkva\",\"additionalColumns\":\"datafjuefjbmowqwodmd\",\"sourceRetryCount\":\"datajqwahciapvcsw\",\"sourceRetryWait\":\"datarpcpg\",\"maxConcurrentConnections\":\"datatftaqmrimletjvz\",\"disableMetricsCollection\":\"datafgabiblhzfgl\",\"\":{\"pwri\":\"datagszx\",\"haskuiosl\":\"datakqnbiiandhsjp\",\"rcx\":\"datachcuhvdrfh\"}}")
             .toObject(GoogleAdWordsSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GoogleAdWordsSource model = new GoogleAdWordsSource().withSourceRetryCount("datacowtoqfwbsbkob")
-            .withSourceRetryWait("datassj").withMaxConcurrentConnections("datahfcxwrjbrxm")
-            .withDisableMetricsCollection("dataetttul").withQueryTimeout("dataysatoplqc")
-            .withAdditionalColumns("datasrlzwuqkprf").withQuery("dataozqqwiawbwzyvbui");
+        GoogleAdWordsSource model = new GoogleAdWordsSource().withSourceRetryCount("datajqwahciapvcsw")
+            .withSourceRetryWait("datarpcpg")
+            .withMaxConcurrentConnections("datatftaqmrimletjvz")
+            .withDisableMetricsCollection("datafgabiblhzfgl")
+            .withQueryTimeout("dataetackjuwkkva")
+            .withAdditionalColumns("datafjuefjbmowqwodmd")
+            .withQuery("dataese");
         model = BinaryData.fromObject(model).toObject(GoogleAdWordsSource.class);
     }
 }

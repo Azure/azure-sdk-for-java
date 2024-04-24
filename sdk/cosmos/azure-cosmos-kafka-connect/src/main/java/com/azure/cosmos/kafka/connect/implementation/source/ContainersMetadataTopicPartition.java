@@ -11,7 +11,7 @@ import java.util.Map;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
 public class ContainersMetadataTopicPartition {
-    public static final String DATABASE_NAME_KEY = "cosmos.source.metadata.database.name";
+    public static final String DATABASE_NAME_KEY = "database";
 
     private final String databaseName;
 

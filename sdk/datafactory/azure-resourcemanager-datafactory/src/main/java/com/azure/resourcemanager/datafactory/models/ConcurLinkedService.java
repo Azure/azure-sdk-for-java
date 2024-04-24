@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.ConcurLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,17 @@ import java.util.Map;
 /**
  * Concur Service linked service.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = ConcurLinkedService.class, visible = true)
 @JsonTypeName("Concur")
 @Fluent
 public final class ConcurLinkedService extends LinkedService {
+    /*
+     * Type of linked service.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "Concur";
+
     /*
      * Concur Service linked service properties.
      */
@@ -30,6 +38,16 @@ public final class ConcurLinkedService extends LinkedService {
      * Creates an instance of ConcurLinkedService class.
      */
     public ConcurLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -222,8 +240,8 @@ public final class ConcurLinkedService extends LinkedService {
     }
 
     /**
-     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true.
+     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
+     * SSL. The default value is true.
      * 
      * @return the usePeerVerification value.
      */
@@ -232,8 +250,8 @@ public final class ConcurLinkedService extends LinkedService {
     }
 
     /**
-     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true.
+     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
+     * SSL. The default value is true.
      * 
      * @param usePeerVerification the usePeerVerification value to set.
      * @return the ConcurLinkedService object itself.
@@ -247,8 +265,8 @@ public final class ConcurLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -257,8 +275,8 @@ public final class ConcurLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the ConcurLinkedService object itself.
@@ -280,8 +298,9 @@ public final class ConcurLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model ConcurLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model ConcurLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

@@ -5,8 +5,13 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An Application Insights application.
@@ -14,35 +19,30 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Application Insights apps that were part of the metadata request and that the user has access to.
  */
 @Fluent
-public final class MetadataApplication {
+public final class MetadataApplication implements JsonSerializable<MetadataApplication> {
     /*
      * The ID of the Application Insights app.
      */
-    @JsonProperty(value = "id", required = true)
-    private String id;
+    private final String id;
 
     /*
      * The ARM resource ID of the Application Insights app.
      */
-    @JsonProperty(value = "resourceId", required = true)
-    private String resourceId;
+    private final String resourceId;
 
     /*
      * The name of the Application Insights app.
      */
-    @JsonProperty(value = "name", required = true)
-    private String name;
+    private final String name;
 
     /*
      * The Azure region of the Application Insights app.
      */
-    @JsonProperty(value = "region", required = true)
-    private String region;
+    private final String region;
 
     /*
      * The related metadata items for the Application Insights app.
      */
-    @JsonProperty(value = "related")
     private MetadataApplicationRelated related;
 
     /**
@@ -53,11 +53,7 @@ public final class MetadataApplication {
      * @param name the name value to set.
      * @param region the region value to set.
      */
-    @JsonCreator
-    public MetadataApplication(@JsonProperty(value = "id", required = true) String id,
-        @JsonProperty(value = "resourceId", required = true) String resourceId,
-        @JsonProperty(value = "name", required = true) String name,
-        @JsonProperty(value = "region", required = true) String region) {
+    public MetadataApplication(String id, String resourceId, String name, String region) {
         this.id = id;
         this.resourceId = resourceId;
         this.name = name;
@@ -118,5 +114,84 @@ public final class MetadataApplication {
     public MetadataApplication setRelated(MetadataApplicationRelated related) {
         this.related = related;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("region", this.region);
+        jsonWriter.writeJsonField("related", this.related);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetadataApplication from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetadataApplication if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MetadataApplication.
+     */
+    public static MetadataApplication fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean idFound = false;
+            String id = null;
+            boolean resourceIdFound = false;
+            String resourceId = null;
+            boolean nameFound = false;
+            String name = null;
+            boolean regionFound = false;
+            String region = null;
+            MetadataApplicationRelated related = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                    idFound = true;
+                } else if ("resourceId".equals(fieldName)) {
+                    resourceId = reader.getString();
+                    resourceIdFound = true;
+                } else if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                    nameFound = true;
+                } else if ("region".equals(fieldName)) {
+                    region = reader.getString();
+                    regionFound = true;
+                } else if ("related".equals(fieldName)) {
+                    related = MetadataApplicationRelated.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (idFound && resourceIdFound && nameFound && regionFound) {
+                MetadataApplication deserializedMetadataApplication
+                    = new MetadataApplication(id, resourceId, name, region);
+                deserializedMetadataApplication.related = related;
+
+                return deserializedMetadataApplication;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!idFound) {
+                missingProperties.add("id");
+            }
+            if (!resourceIdFound) {
+                missingProperties.add("resourceId");
+            }
+            if (!nameFound) {
+                missingProperties.add("name");
+            }
+            if (!regionFound) {
+                missingProperties.add("region");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

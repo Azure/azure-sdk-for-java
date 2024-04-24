@@ -154,6 +154,21 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.selfhelp.fluent.models.SimplifiedSolutionsResourceInner",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.selfhelp.fluent.models.SimplifiedSolutionsResourceProperties",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.selfhelp.models.SolutionWarmUpRequestBody",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.selfhelp.fluent.models.TroubleshooterResourceInner",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -200,6 +215,51 @@
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.selfhelp.fluent.models.RestartTroubleshooterResponseInner",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.selfhelp.fluent.models.SolutionResourceSelfHelpInner",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.selfhelp.fluent.models.SolutionsResourcePropertiesSelfHelp",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.selfhelp.models.ReplacementMapsSelfHelp",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.selfhelp.models.SectionSelfHelp",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.selfhelp.models.DiscoveryNlpRequest",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.selfhelp.fluent.models.DiscoveryNlpResponseInner",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.selfhelp.models.SolutionNlpMetadataResource",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.selfhelp.fluent.models.NlpSolutions",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.selfhelp.models.ClassificationService",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -295,6 +355,11 @@
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.selfhelp.models.QuestionContentType",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.selfhelp.models.ValidationScope",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true

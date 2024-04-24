@@ -99,7 +99,7 @@ public class ExceptionPolicyLiveTests extends JobRouterTestBase {
 
         deserialized.setExceptionRules(new ArrayList<>());
         ExceptionPolicy updatedPolicy = routerAdminClient.updateExceptionPolicy(
-            deserialized.getId(), deserialized, null);
+            deserialized.getId(), deserialized);
 
         assertEquals(exceptionPolicyId, updatedPolicy.getId());
         assertEquals(exceptionPolicyName, updatedPolicy.getName());

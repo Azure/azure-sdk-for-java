@@ -1,5 +1,34 @@
 # Release History
 
+## 1.0.0-beta.9 (Unreleased)
+
+### Features Added
+
+- Added support for service API version, `2024-04-01-preview`. 
+- Note that `AOAI` refers to Azure OpenAI and `OAI` refers to OpenAI.
+
+**Audio**
+
+- Added timestamp granularity to Whisper transcription; this is an array of enumerated string values 
+  (word and/or segment) that controls which, if any, timestamp information is emitted to transcription results.
+  - `AudioTranscriptionTimestampGranularity` enum to represent the timestamp granularity options for Whisper transcription.
+  - `AudioTranscriptionWord` class to represent the word timestamp information in the transcription results.
+- Added two new audio formats, 'wav' and 'pcm', to the `SpeechGenerationResponseFormat` enum.
+
+**Chat**
+
+- [AOAI] Added a new property `indirectAttack` in `ContentFilterResultDetailsForPrompt` class to represent the indirect attack results.
+
+### Breaking Changes
+
+- [AOAI] Added a new class `ContentFilterDetailedResults` to represent detailed content filter results, which replaces the
+  `customBlocklists` response property type, `List<ContentFilterBlocklistIdResult>` in 
+  `ContentFilterResultDetailsForPrompt` and `ContentFilterResultsForChoice` class.
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.0.0-beta.8 (2024-04-09)
 
 ### Features Added
