@@ -3,16 +3,14 @@
 
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static com.azure.cosmos.BridgeInternal.setProperty;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -95,7 +93,7 @@ public final class CompositeContinuationToken extends JsonSerializable implement
             // but converting it to the cleaner format
             if (rangeNode.isTextual()) {
                 Range<String> parsedRange = new Range<>(rangeNode.textValue());
-                setProperty(this, RangePropertyName, parsedRange);
+                this.set(RangePropertyName, parsedRange, CosmosItemSerializer.DEFAULT_SERIALIZER);
                 return parsedRange;
             }
 
@@ -110,7 +108,7 @@ public final class CompositeContinuationToken extends JsonSerializable implement
      *            the token to set
      */
     public void setToken(String token) {
-        BridgeInternal.setProperty(this, TokenPropertyName, token);
+        this.set(TokenPropertyName, token, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     /**
@@ -118,7 +116,7 @@ public final class CompositeContinuationToken extends JsonSerializable implement
      *            the range to set
      */
     public void setRange(Range<String> range) {
-        BridgeInternal.setProperty(this, RangePropertyName, range);
+        this.set(RangePropertyName, range, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     @Override

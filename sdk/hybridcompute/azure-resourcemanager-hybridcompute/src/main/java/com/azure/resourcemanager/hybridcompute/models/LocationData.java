@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Metadata pertaining to the geographic location of the resource. */
+/**
+ * Metadata pertaining to the geographic location of the resource.
+ */
 @Fluent
 public final class LocationData {
     /*
@@ -35,13 +37,15 @@ public final class LocationData {
     @JsonProperty(value = "countryOrRegion")
     private String countryOrRegion;
 
-    /** Creates an instance of LocationData class. */
+    /**
+     * Creates an instance of LocationData class.
+     */
     public LocationData() {
     }
 
     /**
      * Get the name property: A canonical name for the geographic or physical location.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -50,7 +54,7 @@ public final class LocationData {
 
     /**
      * Set the name property: A canonical name for the geographic or physical location.
-     *
+     * 
      * @param name the name value to set.
      * @return the LocationData object itself.
      */
@@ -61,7 +65,7 @@ public final class LocationData {
 
     /**
      * Get the city property: The city or locality where the resource is located.
-     *
+     * 
      * @return the city value.
      */
     public String city() {
@@ -70,7 +74,7 @@ public final class LocationData {
 
     /**
      * Set the city property: The city or locality where the resource is located.
-     *
+     * 
      * @param city the city value to set.
      * @return the LocationData object itself.
      */
@@ -81,7 +85,7 @@ public final class LocationData {
 
     /**
      * Get the district property: The district, state, or province where the resource is located.
-     *
+     * 
      * @return the district value.
      */
     public String district() {
@@ -90,7 +94,7 @@ public final class LocationData {
 
     /**
      * Set the district property: The district, state, or province where the resource is located.
-     *
+     * 
      * @param district the district value to set.
      * @return the LocationData object itself.
      */
@@ -101,7 +105,7 @@ public final class LocationData {
 
     /**
      * Get the countryOrRegion property: The country or region where the resource is located.
-     *
+     * 
      * @return the countryOrRegion value.
      */
     public String countryOrRegion() {
@@ -110,7 +114,7 @@ public final class LocationData {
 
     /**
      * Set the countryOrRegion property: The country or region where the resource is located.
-     *
+     * 
      * @param countryOrRegion the countryOrRegion value to set.
      * @return the LocationData object itself.
      */
@@ -121,14 +125,13 @@ public final class LocationData {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model LocationData"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model LocationData"));
         }
     }
 

@@ -66,8 +66,8 @@ public final class CommunicationsNoSubscriptionsClientImpl implements Communicat
     }
 
     /**
-     * The interface defining all the services for MicrosoftSupportCommunicationsNoSubscriptions to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for MicrosoftSupportCommunicationsNoSubscriptions to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftSupportComm")

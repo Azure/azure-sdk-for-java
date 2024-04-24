@@ -7,6 +7,7 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.datafactory.fluent.models.DelimitedTextDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,10 +16,17 @@ import java.util.Map;
 /**
  * Delimited text dataset.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = DelimitedTextDataset.class, visible = true)
 @JsonTypeName("DelimitedText")
 @Fluent
 public final class DelimitedTextDataset extends Dataset {
+    /*
+     * Type of dataset.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "DelimitedText";
+
     /*
      * Delimited text dataset properties.
      */
@@ -29,6 +37,16 @@ public final class DelimitedTextDataset extends Dataset {
      * Creates an instance of DelimitedTextDataset class.
      */
     public DelimitedTextDataset() {
+    }
+
+    /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -173,10 +191,10 @@ public final class DelimitedTextDataset extends Dataset {
     }
 
     /**
-     * Get the encodingName property: The code page name of the preferred encoding. If miss, the default value is
-     * UTF-8, unless BOM denotes another Unicode encoding. Refer to the name column of the table in the following link
-     * to set supported values: https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or
-     * Expression with resultType string).
+     * Get the encodingName property: The code page name of the preferred encoding. If miss, the default value is UTF-8,
+     * unless BOM denotes another Unicode encoding. Refer to the name column of the table in the following link to set
+     * supported values: https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or Expression with
+     * resultType string).
      * 
      * @return the encodingName value.
      */
@@ -185,10 +203,10 @@ public final class DelimitedTextDataset extends Dataset {
     }
 
     /**
-     * Set the encodingName property: The code page name of the preferred encoding. If miss, the default value is
-     * UTF-8, unless BOM denotes another Unicode encoding. Refer to the name column of the table in the following link
-     * to set supported values: https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or
-     * Expression with resultType string).
+     * Set the encodingName property: The code page name of the preferred encoding. If miss, the default value is UTF-8,
+     * unless BOM denotes another Unicode encoding. Refer to the name column of the table in the following link to set
+     * supported values: https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or Expression with
+     * resultType string).
      * 
      * @param encodingName the encodingName value to set.
      * @return the DelimitedTextDataset object itself.

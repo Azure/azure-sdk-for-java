@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Resource status of the origin group. */
+/**
+ * Resource status of the origin group.
+ */
 public final class OriginGroupResourceState extends ExpandableStringEnum<OriginGroupResourceState> {
-    /** Static value Creating for OriginGroupResourceState. */
+    /**
+     * Static value Creating for OriginGroupResourceState.
+     */
     public static final OriginGroupResourceState CREATING = fromString("Creating");
 
-    /** Static value Active for OriginGroupResourceState. */
+    /**
+     * Static value Active for OriginGroupResourceState.
+     */
     public static final OriginGroupResourceState ACTIVE = fromString("Active");
 
-    /** Static value Deleting for OriginGroupResourceState. */
+    /**
+     * Static value Deleting for OriginGroupResourceState.
+     */
     public static final OriginGroupResourceState DELETING = fromString("Deleting");
 
     /**
      * Creates a new instance of OriginGroupResourceState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class OriginGroupResourceState extends ExpandableStringEnum<OriginG
 
     /**
      * Creates or finds a OriginGroupResourceState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OriginGroupResourceState.
      */
@@ -41,7 +49,7 @@ public final class OriginGroupResourceState extends ExpandableStringEnum<OriginG
 
     /**
      * Gets known OriginGroupResourceState values.
-     *
+     * 
      * @return known OriginGroupResourceState values.
      */
     public static Collection<OriginGroupResourceState> values() {

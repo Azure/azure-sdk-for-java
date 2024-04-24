@@ -116,7 +116,7 @@ class OrderByUtils {
                                 // Once we do that we need to seek to the correct _rid within the term,
                                 // since there might be many documents with the same order by value we left off on.
                                 List<QueryItem> queryItems = new ArrayList<QueryItem>();
-                                ArrayNode arrayNode = (ArrayNode)ModelBridgeInternal.getObjectFromJsonSerializable(tOrderByRowResult, "orderByItems");
+                                ArrayNode arrayNode = (ArrayNode)tOrderByRowResult.get("orderByItems");
                                 for (JsonNode jsonNode : arrayNode) {
                                     QueryItem queryItem = new QueryItem(jsonNode.toString());
                                     queryItems.add(queryItem);
@@ -170,7 +170,7 @@ class OrderByUtils {
                 Flux<Document> x = Flux.fromIterable(results);
 
                 return x.map(r -> new OrderByRowResult<Document>(
-                        ModelBridgeInternal.toJsonFromJsonSerializable(r),
+                        r.toJson(),
                         documentProducerFeedResponse.sourceFeedRange,
                         documentProducerFeedResponse.pageResult.getContinuationToken()));
             }, 1);

@@ -1,6 +1,6 @@
 function Get-java-OnboardedDocsMsPackages($DocRepoLocation) {
     $packageOnboardingFiles = "$DocRepoLocation/package.json"
-  
+
     $onboardingSpec = ConvertFrom-Json (Get-Content $packageOnboardingFiles -Raw)
     $allPackages = @{}
     foreach ($spec in $onboardingSpec) {
@@ -11,13 +11,13 @@ function Get-java-OnboardedDocsMsPackages($DocRepoLocation) {
 
 function Get-java-OnboardedDocsMsPackagesForMoniker ($DocRepoLocation, $moniker) {
     $packageOnboardingFiles = "$DocRepoLocation/package.json"
-  
+
     $onboardingSpec = ConvertFrom-Json (Get-Content $packageOnboardingFiles -Raw)
     if ("preview" -eq $moniker) {
         $onboardingSpec = $onboardingSpec | Where-Object { $_.output_path -eq "preview/docs-ref-autogen" }
     } elseif("latest" -eq $moniker) {
         $onboardingSpec = $onboardingSpec | Where-Object { $_.output_path -eq "docs-ref-autogen" }
-    } elseif ("legacy" -eq $moniker) { 
+    } elseif ("legacy" -eq $moniker) {
         $onboardingSpec = $onboardingSpec | Where-Object { $_.output_path -eq "legacy/docs-ref-autogen" }
     }
 
@@ -49,10 +49,12 @@ function GetPackageReadmeName ($packageMetadata) {
 
     return $packageLevelReadmeName
 }
-function Get-java-PackageLevelReadme($packageMetadata) {   
+function Get-java-PackageLevelReadme($packageMetadata) {
     return GetPackageReadmeName -packageMetadata $packageMetadata
 }
 
+# Defined in common.ps1
+# $GetDocsMsTocDataFn = "Get-${Language}-DocsMsTocData"
 function Get-java-DocsMsTocData($packageMetadata, $docRepoLocation) {
     $packageLevelReadmeName = GetPackageReadmeName -packageMetadata $packageMetadata
     $packageTocHeader = GetDocsTocDisplayName -pkg $packageMetadata
@@ -99,96 +101,134 @@ function Get-java-DocsMsTocChildrenForManagementPackages($packageMetadata, $docR
     return ($children | Sort-Object | Get-Unique)
 }
 
-# This is a helper function which fetch the java package namespaces from javadoc jar.
-# Here are the major workflow:
-# 1. Read the ${package}.txt under /metadata folder
-# 2. If file not found, then download javadoc jar from maven repository.
-# 3. If there is 'element-list' in javadoc jar, then copy to destination ${package}.txt.
-# 4. If no 'element-list', then parse the 'overview-frame.html' for the namespaces and copy to destination.
-# 5. If no 'overview-frame.html', then read folder 'com/azure/...' for namespaces. E.g some mgmt packages use this structure.
-# 6. Otherwise, return empty children.
-function Get-Toc-Children($package, $groupId, $version, $docRepoLocation, $folderName) {
-    # Looking for the txt
-    $filePath = Join-Path "$docRepoLocation/metadata/$folderName" "$package.txt"
-    if (!(Test-Path $filePath)) {
-        # Download from maven
-        # javadoc jar url. e.g.: https://repo1.maven.org/maven2/com/azure/azure-core/1.25.0/azure-core-1.25.0-javadoc.jar
-        $artifact = "${groupId}:${package}:${version}:javadoc" 
-        # A temp folder
-        $tempDirectory = Join-Path ([System.IO.Path]::GetTempPath()) "javadoc"
-        if (!(Test-Path $tempDirectory)) {
-            New-Item $tempDirectory -ItemType Directory | Out-Null
-        } 
-        try {
-            Write-Host "mvn dependency:copy -Dartifact=$artifact -DoutputDirectory=$tempDirectory"
-            $javadocLocation = "$tempDirectory/$package-$version-javadoc.jar"
-            & 'mvn' dependency:copy -Dartifact="$artifact" -DoutputDirectory="$tempDirectory" | Out-Null
-            Write-Host "Download complete."
-        }
-        catch {
-            Write-Error "Not able to download javadoc jar from $artifact."
-            return @()
-        }
-        Fetch-Namespaces-From-Javadoc -jarFilePath $javadocLocation -destination $filePath
+# This function is called within a loop. To prevent multiple reads of the same
+# file data, this uses a script-scoped cache variable.
+$script:PackageMetadataJsonLookup = $null
+function GetPackageMetadataJsonLookup($docRepoLocation) {
+    if ($script:PackageMetadataJsonLookup) {
+        return $script:PackageMetadataJsonLookup
     }
 
-    if (!(Test-Path $filePath)) {
-        # Log and warn
-        Write-Host "Not able to find namespaces from javadoc jar $package-$version-javadoc.jar"
+    $script:PackageMetadataJsonLookup = @{}
+    $packageJsonFiles = Get-ChildItem $docRepoLocation/metadata/ -Filter *.json -Recurse
+    foreach ($packageJsonFile in $packageJsonFiles) {
+        $packageJson = Get-Content $packageJsonFile -Raw | ConvertFrom-Json -AsHashtable
+
+        if (!$script:PackageMetadataJsonLookup.ContainsKey($packageJson.Name)) {
+            $script:PackageMetadataJsonLookup[$packageJson.Name] = @($packageJson)
+        } else {
+            $script:PackageMetadataJsonLookup[$packageJson.Name] += $packageJson
+        }
     }
-    return (Get-Content $filePath | ForEach-Object {$_.Trim()})
+
+    return $script:PackageMetadataJsonLookup
 }
-  
-function Fetch-Namespaces-From-Javadoc ($jarFilePath, $destination) {
-    $tempLocation = (Join-Path ([System.IO.Path]::GetTempPath()) "jarFiles")
-    if (Test-Path $tempLocation) {
-        Remove-Item $tempLocation/* -Recurse -Force 
-    }
-    else {
-        New-Item -ItemType Directory -Path $tempLocation -Force | Out-Null
-    }
 
-    Add-Type -AssemblyName System.IO.Compression.FileSystem
-    [System.IO.Compression.ZipFile]::ExtractToDirectory($jarFilePath, $tempLocation)
-    if (Test-Path "$tempLocation/element-list") {
-        # Rename and move to location
-        Write-Host "Copying the element-list to $destination..."
-        Copy-Item "$tempLocation/element-list" -Destination $destination
-    }
-    elseif (Test-Path "$tempLocation/overview-frame.html") {
-        Parse-Overview-Frame -filePath "$tempLocation/overview-frame.html" -destination $destination
-    }
-    elseif (Test-Path "$tempLocation/com") {
-        $originLocation = Get-Location 
-        try {
-            Set-Location $tempLocation
-            $allFolders = Get-ChildItem "$tempLocation/com" -Recurse -Directory | 
-                Where-Object {$_.GetFiles().Count -gt 0 -and $_.name -notmatch "class-use"}
-            foreach ($path in $allFolders) {
-                $path = (Resolve-Path $path -Relative) -replace "\./|\.\\"
-                $path = $path -replace "\\|\/", "."
-                Add-Content $destination -Value $path.Trim()
+
+# Grab the namespaces from the json file
+function Get-Toc-Children($package, $docRepoLocation) {
+    $packageTable = GetPackageMetadataJsonLookup $docRepoLocation
+
+    $namespaces = @()
+    if ($packageTable.ContainsKey($package)) {
+        foreach ($entry in $packageTable[$package]) {
+            if ($entry.ContainsKey('Namespaces')) {
+                $namespaces += $entry['Namespaces']
             }
         }
-        finally {
-            Set-Location $originLocation
+    }
+    # Sort the array and clean out any dupes (there shouldn't be any but better safe than sorry)
+    $namespaces = @($namespaces | Sort-Object -Unique)
+    # Ensure that this always returns an array, even if there's one item or 0 items
+    Write-Output -NoEnumerate $namespaces
+}
+
+# Given a library, groupId and version, return the list of namespaces
+function Fetch-Namespaces-From-Javadoc($package, $groupId, $version) {
+
+    $namespaces = @()
+    # Create a temporary directory to drop the jar into
+    $tempDirectory = Join-Path ([System.IO.Path]::GetTempPath()) "${groupId}-${package}-${version}"
+    New-Item $tempDirectory -ItemType Directory | Out-Null
+    $artifact = "${groupId}:${package}:${version}:jar:javadoc"
+    try {
+        # Download the Jar file
+        Write-Host "mvn dependency:copy -Dartifact=""$artifact"" -DoutputDirectory=""$tempDirectory"""
+        $mvnResults = mvn `
+          dependency:copy `
+          -Dartifact="$artifact" `
+          -DoutputDirectory="$tempDirectory"
+
+        if ($LASTEXITCODE -ne 0) {
+            LogWarning "Could not download javadoc artifact: $artifact"
+            $mvnResults | Write-Host
+        } else {
+            # Unpack the Jar file
+            $javadocLocation = "$tempDirectory/$package-$version-javadoc.jar"
+            $unpackDirectory = Join-Path $tempDirectory "unpackedJavadoc"
+            New-Item $unpackDirectory -ItemType Directory | Out-Null
+            Add-Type -AssemblyName System.IO.Compression.FileSystem
+            [System.IO.Compression.ZipFile]::ExtractToDirectory($javadocLocation, $unpackDirectory)
+            if (Test-Path "$unpackDirectory/element-list") {
+                # Grab the namespaces from the element-list.
+                Write-Host "Fetching Namespaces: processing element-list"
+                foreach($line in [System.IO.File]::ReadLines("$unpackDirectory/element-list")) {
+                    if (-not [string]::IsNullOrWhiteSpace($line)) {
+                        $namespaces += $line
+                    }
+                }
+            }
+            elseif (Test-Path "$unpackDirectory/overview-frame.html") {
+                # Grab the namespaces from the overview-frame.html's package elements
+                Write-Host "Fetching Namespaces: processing overview-frame.html"
+                $htmlBody = Get-Content "$unpackDirectory/overview-frame.html"
+                $packages = [RegEx]::Matches($htmlBody, "<li><a.*?>(?<package>.*?)<\/a><\/li>")
+                $namespaces = $packages | ForEach-Object { $_.Groups["package"].Value }
+            }
+            elseif (Test-Path "$unpackDirectory/com") {
+                # If all else fails, scrape the namespaces from the directories
+                Write-Host "Fetching Namespaces: searching the /com directores"
+                $originLocation = Get-Location
+                try {
+                    Set-Location $unpackDirectory
+                    $allFolders = Get-ChildItem "$unpackDirectory/com" -Recurse -Directory |
+                        Where-Object {$_.GetFiles().Count -gt 0 -and $_.name -notmatch "class-use"}
+                    foreach ($path in $allFolders) {
+                        $path = (Resolve-Path $path -Relative) -replace "\./|\.\\"
+                        $path = $path -replace "\\|\/", "."
+                        # add the namespace to the list
+                        $namespaces += $path.Trim()
+                    }
+                }
+                finally {
+                    Set-Location $originLocation
+                }
+            }
+            else {
+                LogWarning "Unable to determine namespaces from $artifact."
+            }
         }
     }
-    else {
-        Write-Error "Can't find namespaces from javadoc jar jarFilePath."
+    catch {
+        LogError "Exception while trying to download: $artifact"
+        LogError $_
+        LogError $_.ScriptStackTrace
     }
+    finally {
+        # everything is contained within the temp directory, clean it up every time
+        if (Test-Path $tempDirectory) {
+            Remove-Item $tempDirectory -Recurse -Force
+        }
+    }
+
+    $namespaces = @($namespaces | Sort-Object -Unique)
+    # Make sure this always returns an array
+    Write-Output -NoEnumerate $namespaces
 }
 
 function Get-java-RepositoryLink ($packageInfo) {
     $groupIdPath = $packageInfo.GroupId -replace "\.", "/"
     return "$PackageRepositoryUri/$groupIdPath/$($packageInfo.Package)"
-}
-  
-function Parse-Overview-Frame ($filePath, $destination) {
-    $htmlBody = Get-Content $filePath
-    $packages = [RegEx]::Matches($htmlBody, "<li><a.*?>(?<package>.*?)<\/a><\/li>")
-    $namespaces = $packages | ForEach-Object { $_.Groups["package"].Value }    
-    Add-Content -Path $destination -Value $namespaces
 }
 
 function Get-java-UpdatedDocsMsToc($toc) {
@@ -258,7 +298,7 @@ function Get-java-UpdatedDocsMsToc($toc) {
                 name  = "Resource Management"
                 href  = "~/docs-ref-services/{moniker}/resourcemanager-msi-readme.md"
                 children = @("com.azure.resourcemanager.msi*")
-            }, 
+            },
             [PSCustomObject]@{
                 name  = "Client"
                 children = @(
@@ -329,7 +369,7 @@ function Get-java-UpdatedDocsMsToc($toc) {
             [PSCustomObject]@{
                 name  = "Management"
                 children = @(
-                    "com.microsoft.azure.cognitiveservices.language.luis*", 
+                    "com.microsoft.azure.cognitiveservices.language.luis*",
                     "com.microsoft.azure.cognitiveservices.language.luis.authoring*")
             })
     }

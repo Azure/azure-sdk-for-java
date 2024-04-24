@@ -5,48 +5,46 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The related metadata items for the resource-type.
  */
 @Fluent
-public final class MetadataResourceTypeRelated {
+public final class MetadataResourceTypeRelated implements JsonSerializable<MetadataResourceTypeRelated> {
     /*
      * The tables related to the resource-type
      */
-    @JsonProperty(value = "tables")
     private List<String> tables;
 
     /*
      * The functions related to the resource-type
      */
-    @JsonProperty(value = "functions")
     private List<String> functions;
 
     /*
      * The categories related to the resource-type
      */
-    @JsonProperty(value = "categories")
     private List<String> categories;
 
     /*
      * The queries related to the resource-type
      */
-    @JsonProperty(value = "queries")
     private List<String> queries;
 
     /*
      * The Log Analytics workspaces related to the resource-type
      */
-    @JsonProperty(value = "workspaces")
     private List<String> workspaces;
 
     /*
      * The Azure resources related to the resource-type
      */
-    @JsonProperty(value = "resources")
     private List<String> resources;
 
     /**
@@ -173,5 +171,59 @@ public final class MetadataResourceTypeRelated {
     public MetadataResourceTypeRelated setResources(List<String> resources) {
         this.resources = resources;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("tables", this.tables, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("functions", this.functions, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("categories", this.categories, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("queries", this.queries, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("workspaces", this.workspaces, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("resources", this.resources, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetadataResourceTypeRelated from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetadataResourceTypeRelated if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetadataResourceTypeRelated.
+     */
+    public static MetadataResourceTypeRelated fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetadataResourceTypeRelated deserializedMetadataResourceTypeRelated = new MetadataResourceTypeRelated();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tables".equals(fieldName)) {
+                    List<String> tables = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetadataResourceTypeRelated.tables = tables;
+                } else if ("functions".equals(fieldName)) {
+                    List<String> functions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetadataResourceTypeRelated.functions = functions;
+                } else if ("categories".equals(fieldName)) {
+                    List<String> categories = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetadataResourceTypeRelated.categories = categories;
+                } else if ("queries".equals(fieldName)) {
+                    List<String> queries = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetadataResourceTypeRelated.queries = queries;
+                } else if ("workspaces".equals(fieldName)) {
+                    List<String> workspaces = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetadataResourceTypeRelated.workspaces = workspaces;
+                } else if ("resources".equals(fieldName)) {
+                    List<String> resources = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetadataResourceTypeRelated.resources = resources;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetadataResourceTypeRelated;
+        });
     }
 }

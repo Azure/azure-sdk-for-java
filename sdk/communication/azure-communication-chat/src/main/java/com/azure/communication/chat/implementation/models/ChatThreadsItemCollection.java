@@ -9,7 +9,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of chat threads. */
+/**
+ * Collection of chat threads.
+ */
 @Fluent
 public final class ChatThreadsItemCollection {
     /*
@@ -19,15 +21,20 @@ public final class ChatThreadsItemCollection {
     private List<ChatThreadItem> value;
 
     /*
-     * If there are more chat threads that can be retrieved, the next link will
-     * be populated.
+     * If there are more chat threads that can be retrieved, the next link will be populated.
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
+     * Creates an instance of ChatThreadsItemCollection class.
+     */
+    public ChatThreadsItemCollection() {
+    }
+
+    /**
      * Get the value property: Collection of chat threads.
-     *
+     * 
      * @return the value value.
      */
     public List<ChatThreadItem> getValue() {
@@ -36,7 +43,7 @@ public final class ChatThreadsItemCollection {
 
     /**
      * Set the value property: Collection of chat threads.
-     *
+     * 
      * @param value the value value to set.
      * @return the ChatThreadsItemCollection object itself.
      */
@@ -46,8 +53,9 @@ public final class ChatThreadsItemCollection {
     }
 
     /**
-     * Get the nextLink property: If there are more chat threads that can be retrieved, the next link will be populated.
-     *
+     * Get the nextLink property: If there are more chat threads that can be retrieved, the next link will be
+     * populated.
+     * 
      * @return the nextLink value.
      */
     public String getNextLink() {

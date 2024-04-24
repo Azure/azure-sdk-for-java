@@ -258,6 +258,9 @@ stages:
                   - download: current
                     displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
                     artifact: ${{parameters.ArtifactName}}
+
+                  - template: /eng/pipelines/templates/steps/mvn-linux-repository-settings.yml
+
                   - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
                     parameters:
                       PackageInfoLocations:
@@ -272,17 +275,6 @@ stages:
                         - docs-ref-services/
                         - metadata/
                       DocValidationImageId: "$(DocValidationImageId)"
-
-                  - ${{ each artifact in parameters.Artifacts }}:
-                    - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
-                      - template: /eng/pipelines/templates/steps/fetch-package-list.yml
-                        parameters:
-                          JavaDocJarLocation: "$(Pipeline.Workspace)/${{parameters.ArtifactName}}/${{artifact.groupId}}/${{artifact.name}}"
-                          ArtifactName: ${{artifact.name}}
-                          TargetBranch: $(TargetBranchName)
-                          DocRepoLocation: $(DocRepoLocation)
-                          TargetDocRepoName: ${{parameters.TargetDocRepoName}}
-                          TargetDocRepoOwner: "Azure"
 
         - deployment: PublishDocs
           displayName: Publish Docs to GitHubIO Blob Storage

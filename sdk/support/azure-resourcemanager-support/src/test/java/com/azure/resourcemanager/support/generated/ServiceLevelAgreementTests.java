@@ -11,7 +11,7 @@ public final class ServiceLevelAgreementTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceLevelAgreement model = BinaryData.fromString(
-            "{\"startTime\":\"2021-04-28T11:36:58Z\",\"expirationTime\":\"2021-08-04T10:31:47Z\",\"slaMinutes\":1139203375}")
+            "{\"startTime\":\"2021-03-01T08:49:54Z\",\"expirationTime\":\"2020-12-25T09:40:11Z\",\"slaMinutes\":1243858380}")
             .toObject(ServiceLevelAgreement.class);
     }
 

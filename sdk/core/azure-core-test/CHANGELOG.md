@@ -10,6 +10,22 @@
 
 ### Other Changes
 
+## 1.24.1 (2024-04-23)
+
+### Other Changes
+
+- Added more missing sanitizers.
+
+## 1.24.1 (2024-04-05)
+
+### Other Changes
+
+- Added missing sanitizers.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to `1.48.0`.
+
 ## 1.24.0 (2024-03-01)
 
 ### Other Changes

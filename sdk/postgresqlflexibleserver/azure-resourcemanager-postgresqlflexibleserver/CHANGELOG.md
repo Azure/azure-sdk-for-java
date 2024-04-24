@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.3 (Unreleased)
+## 1.1.0-beta.4 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,33 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0-beta.3 (2024-04-18)
+
+- Azure Resource Manager PostgreSql client library for Java. This package contains Microsoft Azure SDK for PostgreSql Management SDK. The Microsoft Azure management API provides create, read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall rules, VNET rules, security alert policies, log files and configurations with new business model. Package tag package-flexibleserver-2023-12-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.MigrateRolesEnum` was added
+
+#### `models.MigrationResource$Definition` was modified
+
+* `withMigrateRoles(models.MigrateRolesEnum)` was added
+* `withMigrationInstanceResourceId(java.lang.String)` was added
+
+#### `models.MigrationResourceForPatch` was modified
+
+* `migrateRoles()` was added
+* `withMigrateRoles(models.MigrateRolesEnum)` was added
+
+#### `models.MigrationResource$Update` was modified
+
+* `withMigrateRoles(models.MigrateRolesEnum)` was added
+
+#### `models.MigrationResource` was modified
+
+* `migrateRoles()` was added
+* `migrationInstanceResourceId()` was added
 
 ## 1.1.0-beta.2 (2024-01-22)
 

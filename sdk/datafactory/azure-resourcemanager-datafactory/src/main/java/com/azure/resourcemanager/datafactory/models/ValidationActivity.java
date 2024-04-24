@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.ValidationActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,10 +16,17 @@ import java.util.List;
 /**
  * This activity verifies that an external resource exists.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = ValidationActivity.class, visible = true)
 @JsonTypeName("Validation")
 @Fluent
 public final class ValidationActivity extends ControlActivity {
+    /*
+     * Type of activity.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "Validation";
+
     /*
      * Validation activity properties.
      */
@@ -29,6 +37,16 @@ public final class ValidationActivity extends ControlActivity {
      * Creates an instance of ValidationActivity class.
      */
     public ValidationActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -95,8 +113,8 @@ public final class ValidationActivity extends ControlActivity {
     }
 
     /**
-     * Get the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it
-     * takes the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
+     * Get the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it takes
+     * the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
      * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      * 
      * @return the timeout value.
@@ -106,8 +124,8 @@ public final class ValidationActivity extends ControlActivity {
     }
 
     /**
-     * Set the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it
-     * takes the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
+     * Set the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it takes
+     * the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
      * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      * 
      * @param timeout the timeout value to set.
@@ -122,8 +140,8 @@ public final class ValidationActivity extends ControlActivity {
     }
 
     /**
-     * Get the sleep property: A delay in seconds between validation attempts. If no value is specified, 10 seconds
-     * will be used as the default. Type: integer (or Expression with resultType integer).
+     * Get the sleep property: A delay in seconds between validation attempts. If no value is specified, 10 seconds will
+     * be used as the default. Type: integer (or Expression with resultType integer).
      * 
      * @return the sleep value.
      */
@@ -132,8 +150,8 @@ public final class ValidationActivity extends ControlActivity {
     }
 
     /**
-     * Set the sleep property: A delay in seconds between validation attempts. If no value is specified, 10 seconds
-     * will be used as the default. Type: integer (or Expression with resultType integer).
+     * Set the sleep property: A delay in seconds between validation attempts. If no value is specified, 10 seconds will
+     * be used as the default. Type: integer (or Expression with resultType integer).
      * 
      * @param sleep the sleep value to set.
      * @return the ValidationActivity object itself.
@@ -173,8 +191,7 @@ public final class ValidationActivity extends ControlActivity {
 
     /**
      * Get the childItems property: Can be used if dataset points to a folder. If set to true, the folder must have at
-     * least one file. If set to false, the folder must be empty. Type: boolean (or Expression with resultType
-     * boolean).
+     * least one file. If set to false, the folder must be empty. Type: boolean (or Expression with resultType boolean).
      * 
      * @return the childItems value.
      */
@@ -184,8 +201,7 @@ public final class ValidationActivity extends ControlActivity {
 
     /**
      * Set the childItems property: Can be used if dataset points to a folder. If set to true, the folder must have at
-     * least one file. If set to false, the folder must be empty. Type: boolean (or Expression with resultType
-     * boolean).
+     * least one file. If set to false, the folder must be empty. Type: boolean (or Expression with resultType boolean).
      * 
      * @param childItems the childItems value to set.
      * @return the ValidationActivity object itself.
@@ -230,8 +246,9 @@ public final class ValidationActivity extends ControlActivity {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model ValidationActivity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model ValidationActivity"));
         } else {
             innerTypeProperties().validate();
         }

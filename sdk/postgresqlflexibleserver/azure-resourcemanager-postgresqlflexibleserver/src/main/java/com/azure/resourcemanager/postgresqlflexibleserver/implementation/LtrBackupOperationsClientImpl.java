@@ -56,8 +56,8 @@ public final class LtrBackupOperationsClientImpl implements LtrBackupOperationsC
     }
 
     /**
-     * The interface defining all the services for PostgreSqlManagementClientLtrBackupOperations to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for PostgreSqlManagementClientLtrBackupOperations to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "PostgreSqlManagement")

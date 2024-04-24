@@ -6,34 +6,40 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.fluent.models.ProjectProperties;
+import com.azure.resourcemanager.devcenter.models.CatalogItemType;
+import com.azure.resourcemanager.devcenter.models.ProjectCatalogSettings;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class ProjectPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProjectProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Updating\",\"devCenterUri\":\"xsabkyqdu\",\"devCenterId\":\"itcjczdz\",\"description\":\"ndhkrw\",\"maxDevBoxesPerUser\":881924894,\"displayName\":\"p\"}")
-                .toObject(ProjectProperties.class);
-        Assertions.assertEquals("itcjczdz", model.devCenterId());
-        Assertions.assertEquals("ndhkrw", model.description());
-        Assertions.assertEquals(881924894, model.maxDevBoxesPerUser());
-        Assertions.assertEquals("p", model.displayName());
+        ProjectProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Running\",\"devCenterUri\":\"lwckbasyypnddhs\",\"devCenterId\":\"bacphejko\",\"description\":\"nqgoulzndli\",\"maxDevBoxesPerUser\":1462222832,\"displayName\":\"kgfg\",\"catalogSettings\":{\"catalogItemSyncTypes\":[\"EnvironmentDefinition\",\"EnvironmentDefinition\",\"EnvironmentDefinition\",\"EnvironmentDefinition\"]}}")
+            .toObject(ProjectProperties.class);
+        Assertions.assertEquals("bacphejko", model.devCenterId());
+        Assertions.assertEquals("nqgoulzndli", model.description());
+        Assertions.assertEquals(1462222832, model.maxDevBoxesPerUser());
+        Assertions.assertEquals("kgfg", model.displayName());
+        Assertions.assertEquals(CatalogItemType.ENVIRONMENT_DEFINITION,
+            model.catalogSettings().catalogItemSyncTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProjectProperties model =
-            new ProjectProperties()
-                .withDevCenterId("itcjczdz")
-                .withDescription("ndhkrw")
-                .withMaxDevBoxesPerUser(881924894)
-                .withDisplayName("p");
+        ProjectProperties model = new ProjectProperties().withDevCenterId("bacphejko")
+            .withDescription("nqgoulzndli")
+            .withMaxDevBoxesPerUser(1462222832)
+            .withDisplayName("kgfg")
+            .withCatalogSettings(new ProjectCatalogSettings().withCatalogItemSyncTypes(
+                Arrays.asList(CatalogItemType.ENVIRONMENT_DEFINITION, CatalogItemType.ENVIRONMENT_DEFINITION,
+                    CatalogItemType.ENVIRONMENT_DEFINITION, CatalogItemType.ENVIRONMENT_DEFINITION)));
         model = BinaryData.fromObject(model).toObject(ProjectProperties.class);
-        Assertions.assertEquals("itcjczdz", model.devCenterId());
-        Assertions.assertEquals("ndhkrw", model.description());
-        Assertions.assertEquals(881924894, model.maxDevBoxesPerUser());
-        Assertions.assertEquals("p", model.displayName());
+        Assertions.assertEquals("bacphejko", model.devCenterId());
+        Assertions.assertEquals("nqgoulzndli", model.description());
+        Assertions.assertEquals(1462222832, model.maxDevBoxesPerUser());
+        Assertions.assertEquals("kgfg", model.displayName());
+        Assertions.assertEquals(CatalogItemType.ENVIRONMENT_DEFINITION,
+            model.catalogSettings().catalogItemSyncTypes().get(0));
     }
 }

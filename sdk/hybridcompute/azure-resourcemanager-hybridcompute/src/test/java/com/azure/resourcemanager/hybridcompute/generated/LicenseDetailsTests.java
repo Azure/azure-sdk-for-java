@@ -15,33 +15,28 @@ import org.junit.jupiter.api.Assertions;
 public final class LicenseDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LicenseDetails model =
-            BinaryData
-                .fromString(
-                    "{\"state\":\"Activated\",\"target\":\"Windows Server 2012"
-                        + " R2\",\"edition\":\"Standard\",\"type\":\"pCore\",\"processors\":365003669,\"assignedLicenses\":1426424508,\"immutableId\":\"ajpsquc\"}")
-                .toObject(LicenseDetails.class);
+        LicenseDetails model = BinaryData.fromString(
+            "{\"state\":\"Activated\",\"target\":\"Windows Server 2012 R2\",\"edition\":\"Datacenter\",\"type\":\"vCore\",\"processors\":336183826,\"assignedLicenses\":1522081541,\"immutableId\":\"anyktzlcuiywg\"}")
+            .toObject(LicenseDetails.class);
         Assertions.assertEquals(LicenseState.ACTIVATED, model.state());
         Assertions.assertEquals(LicenseTarget.WINDOWS_SERVER_2012_R2, model.target());
-        Assertions.assertEquals(LicenseEdition.STANDARD, model.edition());
-        Assertions.assertEquals(LicenseCoreType.P_CORE, model.type());
-        Assertions.assertEquals(365003669, model.processors());
+        Assertions.assertEquals(LicenseEdition.DATACENTER, model.edition());
+        Assertions.assertEquals(LicenseCoreType.V_CORE, model.type());
+        Assertions.assertEquals(336183826, model.processors());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LicenseDetails model =
-            new LicenseDetails()
-                .withState(LicenseState.ACTIVATED)
-                .withTarget(LicenseTarget.WINDOWS_SERVER_2012_R2)
-                .withEdition(LicenseEdition.STANDARD)
-                .withType(LicenseCoreType.P_CORE)
-                .withProcessors(365003669);
+        LicenseDetails model = new LicenseDetails().withState(LicenseState.ACTIVATED)
+            .withTarget(LicenseTarget.WINDOWS_SERVER_2012_R2)
+            .withEdition(LicenseEdition.DATACENTER)
+            .withType(LicenseCoreType.V_CORE)
+            .withProcessors(336183826);
         model = BinaryData.fromObject(model).toObject(LicenseDetails.class);
         Assertions.assertEquals(LicenseState.ACTIVATED, model.state());
         Assertions.assertEquals(LicenseTarget.WINDOWS_SERVER_2012_R2, model.target());
-        Assertions.assertEquals(LicenseEdition.STANDARD, model.edition());
-        Assertions.assertEquals(LicenseCoreType.P_CORE, model.type());
-        Assertions.assertEquals(365003669, model.processors());
+        Assertions.assertEquals(LicenseEdition.DATACENTER, model.edition());
+        Assertions.assertEquals(LicenseCoreType.V_CORE, model.type());
+        Assertions.assertEquals(336183826, model.processors());
     }
 }

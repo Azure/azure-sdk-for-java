@@ -12,8 +12,7 @@ import java.util.List;
 
 /**
  * Extended information about a single segment of translated audio data.
- * Segments generally represent roughly 5-10 seconds of speech. Segment boundaries typically occur between words but
- * not
+ * Segments generally represent roughly 5-10 seconds of speech. Segment boundaries typically occur between words but not
  * necessarily sentences.
  */
 @Immutable
@@ -24,75 +23,74 @@ public final class AudioTranslationSegment {
      */
     @Generated
     @JsonProperty(value = "id")
-    private int id;
+    private final int id;
 
     /*
      * The time at which this segment started relative to the beginning of the translated audio.
      */
     @Generated
     @JsonProperty(value = "start")
-    private double start;
+    private final double start;
 
     /*
      * The time at which this segment ended relative to the beginning of the translated audio.
      */
     @Generated
     @JsonProperty(value = "end")
-    private double end;
+    private final double end;
 
     /*
      * The translated text that was part of this audio segment.
      */
     @Generated
     @JsonProperty(value = "text")
-    private String text;
+    private final String text;
 
     /*
      * The temperature score associated with this audio segment.
      */
     @Generated
     @JsonProperty(value = "temperature")
-    private double temperature;
+    private final double temperature;
 
     /*
      * The average log probability associated with this audio segment.
      */
     @Generated
     @JsonProperty(value = "avg_logprob")
-    private double avgLogprob;
+    private final double avgLogprob;
 
     /*
      * The compression ratio of this audio segment.
      */
     @Generated
     @JsonProperty(value = "compression_ratio")
-    private double compressionRatio;
+    private final double compressionRatio;
 
     /*
      * The probability of no speech detection within this audio segment.
      */
     @Generated
     @JsonProperty(value = "no_speech_prob")
-    private double noSpeechProb;
+    private final double noSpeechProb;
 
     /*
      * The token IDs matching the translated text in this audio segment.
      */
     @Generated
     @JsonProperty(value = "tokens")
-    private List<Integer> tokens;
+    private final List<Integer> tokens;
 
     /*
      * The seek position associated with the processing of this audio segment.
      * Seek positions are expressed as hundredths of seconds.
-     * The model may process several segments from a single seek position, so while the seek position will never
-     * represent
+     * The model may process several segments from a single seek position, so while the seek position will never represent
      * a later time than the segment's start, the segment's start may represent a significantly later time than the
      * segment's associated seek position.
      */
     @Generated
     @JsonProperty(value = "seek")
-    private int seek;
+    private final int seek;
 
     /**
      * Creates an instance of AudioTranslationSegment class.
@@ -112,8 +110,16 @@ public final class AudioTranslationSegment {
     private AudioTranslationSegment(int id, Duration start, Duration end, String text, double temperature,
         double avgLogprob, double compressionRatio, double noSpeechProb, List<Integer> tokens, int seek) {
         this.id = id;
-        this.start = (double) start.toNanos() / 1000_000_000L;
-        this.end = (double) end.toNanos() / 1000_000_000L;
+        if (start == null) {
+            this.start = 0.0;
+        } else {
+            this.start = (double) start.toNanos() / 1000_000_000L;
+        }
+        if (end == null) {
+            this.end = 0.0;
+        } else {
+            this.end = (double) end.toNanos() / 1000_000_000L;
+        }
         this.text = text;
         this.temperature = temperature;
         this.avgLogprob = avgLogprob;
@@ -146,8 +152,7 @@ public final class AudioTranslationSegment {
     }
 
     /**
-     * Get the start property: The time at which this segment started relative to the beginning of the translated
-     * audio.
+     * Get the start property: The time at which this segment started relative to the beginning of the translated audio.
      *
      * @return the start value.
      */

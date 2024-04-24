@@ -4,7 +4,6 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,31 +16,24 @@ public final class ScoringRuleOptions {
     /*
      * Set batch size when 'isBatchScoringEnabled' is set to true. Defaults to 20 if not configured.
      */
-    @Generated
     @JsonProperty(value = "batchSize")
     private Integer batchSize;
 
     /*
-     * List of extra parameters from a job that will be sent as part of the payload to scoring rule. If not set, a
-     * job's labels (sent in the payload as `job`) and a job's worker selectors (sent in the payload as `selectors`)
-     * are added to the payload of the scoring rule by default. Note: Worker labels are always sent with scoring
-     * payload.
+     * List of extra parameters from a job that will be sent as part of the payload to scoring rule. If not set, a job's labels (sent in the payload as `job`) and a job's worker selectors (sent in the payload as `selectors`) are added to the payload of the scoring rule by default. Note: Worker labels are always sent with scoring payload.
      */
-    @Generated
     @JsonProperty(value = "scoringParameters")
     private List<ScoringRuleParameterSelector> scoringParameters;
 
     /*
      * If false, will sort scores by ascending order. By default, set to true.
      */
-    @Generated
     @JsonProperty(value = "descendingOrder")
     private Boolean descendingOrder;
 
     /**
      * Creates an instance of ScoringRuleOptions class.
      */
-    @Generated
     public ScoringRuleOptions() {
     }
 
@@ -51,7 +43,6 @@ public final class ScoringRuleOptions {
      *
      * @return the batchSize value.
      */
-    @Generated
     public Integer getBatchSize() {
         return this.batchSize;
     }
@@ -63,7 +54,6 @@ public final class ScoringRuleOptions {
      * @param batchSize the batchSize value to set.
      * @return the ScoringRuleOptions object itself.
      */
-    @Generated
     public ScoringRuleOptions setBatchSize(Integer batchSize) {
         this.batchSize = batchSize;
         return this;
@@ -77,7 +67,6 @@ public final class ScoringRuleOptions {
      *
      * @return the scoringParameters value.
      */
-    @Generated
     public List<ScoringRuleParameterSelector> getScoringParameters() {
         return this.scoringParameters;
     }
@@ -91,7 +80,6 @@ public final class ScoringRuleOptions {
      * @param scoringParameters the scoringParameters value to set.
      * @return the ScoringRuleOptions object itself.
      */
-    @Generated
     public ScoringRuleOptions setScoringParameters(List<ScoringRuleParameterSelector> scoringParameters) {
         this.scoringParameters = scoringParameters;
         return this;
@@ -102,7 +90,6 @@ public final class ScoringRuleOptions {
      *
      * @return the descendingOrder value.
      */
-    @Generated
     public Boolean isDescendingOrder() {
         return this.descendingOrder;
     }
@@ -113,18 +100,14 @@ public final class ScoringRuleOptions {
      * @param descendingOrder the descendingOrder value to set.
      * @return the ScoringRuleOptions object itself.
      */
-    @Generated
     public ScoringRuleOptions setDescendingOrder(Boolean descendingOrder) {
         this.descendingOrder = descendingOrder;
         return this;
     }
 
     /*
-     * If set to true, will score workers in batches, and the parameter name of the worker labels will be sent as
-     * `workers`. By default, set to false and the parameter name for the worker labels will be sent as `worker`. Note:
-     * If enabled, use 'batchSize' to set batch size.
+     * If set to true, will score workers in batches, and the parameter name of the worker labels will be sent as `workers`. By default, set to false and the parameter name for the worker labels will be sent as `worker`. Note: If enabled, use 'batchSize' to set batch size.
      */
-    @Generated
     @JsonProperty(value = "isBatchScoringEnabled")
     private Boolean isBatchScoringEnabled;
 
@@ -135,7 +118,6 @@ public final class ScoringRuleOptions {
      *
      * @return the isBatchScoringEnabled value.
      */
-    @Generated
     public Boolean isBatchScoringEnabled() {
         return this.isBatchScoringEnabled;
     }
@@ -161,7 +143,6 @@ public final class ScoringRuleOptions {
      * @param isBatchScoringEnabled the isBatchScoringEnabled value to set.
      * @return the ScoringRuleOptions object itself.
      */
-    @Generated
     public ScoringRuleOptions setIsBatchScoringEnabled(Boolean isBatchScoringEnabled) {
         this.isBatchScoringEnabled = isBatchScoringEnabled;
         return this;

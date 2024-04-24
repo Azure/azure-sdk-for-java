@@ -12,7 +12,9 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** Defines the LatencyScorecard. */
+/**
+ * Defines the LatencyScorecard.
+ */
 @Fluent
 public final class LatencyScorecardInner extends Resource {
     /*
@@ -21,27 +23,33 @@ public final class LatencyScorecardInner extends Resource {
     @JsonProperty(value = "properties")
     private LatencyScorecardProperties innerProperties;
 
-    /** Creates an instance of LatencyScorecardInner class. */
+    /**
+     * Creates an instance of LatencyScorecardInner class.
+     */
     public LatencyScorecardInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of a latency scorecard.
-     *
+     * 
      * @return the innerProperties value.
      */
     private LatencyScorecardProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LatencyScorecardInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LatencyScorecardInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -50,7 +58,7 @@ public final class LatencyScorecardInner extends Resource {
 
     /**
      * Get the id property: The unique identifier of the Latency Scorecard.
-     *
+     * 
      * @return the id value.
      */
     public String idPropertiesId() {
@@ -59,7 +67,7 @@ public final class LatencyScorecardInner extends Resource {
 
     /**
      * Get the name property: The name of the Latency Scorecard.
-     *
+     * 
      * @return the name value.
      */
     public String namePropertiesName() {
@@ -68,7 +76,7 @@ public final class LatencyScorecardInner extends Resource {
 
     /**
      * Get the description property: The description of the Latency Scorecard.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -77,7 +85,7 @@ public final class LatencyScorecardInner extends Resource {
 
     /**
      * Get the endpointA property: The A endpoint in the scorecard.
-     *
+     * 
      * @return the endpointA value.
      */
     public String endpointA() {
@@ -86,7 +94,7 @@ public final class LatencyScorecardInner extends Resource {
 
     /**
      * Get the endpointB property: The B endpoint in the scorecard.
-     *
+     * 
      * @return the endpointB value.
      */
     public String endpointB() {
@@ -95,7 +103,7 @@ public final class LatencyScorecardInner extends Resource {
 
     /**
      * Get the startDateTimeUtc property: The start time of the Latency Scorecard in UTC.
-     *
+     * 
      * @return the startDateTimeUtc value.
      */
     public OffsetDateTime startDateTimeUtc() {
@@ -104,7 +112,7 @@ public final class LatencyScorecardInner extends Resource {
 
     /**
      * Get the endDateTimeUtc property: The end time of the Latency Scorecard in UTC.
-     *
+     * 
      * @return the endDateTimeUtc value.
      */
     public OffsetDateTime endDateTimeUtc() {
@@ -114,7 +122,7 @@ public final class LatencyScorecardInner extends Resource {
     /**
      * Get the country property: The country associated with the Latency Scorecard. Values are country ISO codes as
      * specified here- https://www.iso.org/iso-3166-country-codes.html.
-     *
+     * 
      * @return the country value.
      */
     public String country() {
@@ -123,7 +131,7 @@ public final class LatencyScorecardInner extends Resource {
 
     /**
      * Get the latencyMetrics property: The latency metrics of the Latency Scorecard.
-     *
+     * 
      * @return the latencyMetrics value.
      */
     public List<LatencyMetric> latencyMetrics() {
@@ -132,7 +140,7 @@ public final class LatencyScorecardInner extends Resource {
 
     /**
      * Set the latencyMetrics property: The latency metrics of the Latency Scorecard.
-     *
+     * 
      * @param latencyMetrics the latencyMetrics value to set.
      * @return the LatencyScorecardInner object itself.
      */
@@ -146,7 +154,7 @@ public final class LatencyScorecardInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

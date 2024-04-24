@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -14,7 +15,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * A specific representation of configurable options for Azure Cosmos DB when using it as an Azure OpenAI chat
  * extension.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = AzureCosmosDBChatExtensionConfiguration.class,
+    visible = true)
 @JsonTypeName("azure_cosmos_db")
 @Immutable
 public final class AzureCosmosDBChatExtensionConfiguration extends AzureChatExtensionConfiguration {
@@ -24,7 +29,7 @@ public final class AzureCosmosDBChatExtensionConfiguration extends AzureChatExte
      */
     @Generated
     @JsonProperty(value = "parameters")
-    private AzureCosmosDBChatExtensionParameters parameters;
+    private final AzureCosmosDBChatExtensionParameters parameters;
 
     /**
      * Get the parameters property: The parameters to use when configuring Azure OpenAI CosmosDB chat extensions.
@@ -46,5 +51,27 @@ public final class AzureCosmosDBChatExtensionConfiguration extends AzureChatExte
     public AzureCosmosDBChatExtensionConfiguration(
         @JsonProperty(value = "parameters") AzureCosmosDBChatExtensionParameters parameters) {
         this.parameters = parameters;
+    }
+
+    /*
+     *   The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource.
+     *   Azure chat extensions are only compatible with Azure OpenAI.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "type")
+    private AzureChatExtensionType type = AzureChatExtensionType.AZURE_COSMOS_DB;
+
+    /**
+     * Get the type property: The label for the type of an Azure chat extension. This typically corresponds to a
+     * matching Azure resource.
+     * Azure chat extensions are only compatible with Azure OpenAI.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public AzureChatExtensionType getType() {
+        return this.type;
     }
 }

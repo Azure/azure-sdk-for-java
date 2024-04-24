@@ -24,6 +24,7 @@ import com.azure.resourcemanager.cosmos.models.FailoverPolicy;
 import com.azure.resourcemanager.cosmos.models.IpAddressOrRange;
 import com.azure.resourcemanager.cosmos.models.KeyKind;
 import com.azure.resourcemanager.cosmos.models.Location;
+import com.azure.resourcemanager.cosmos.models.PublicNetworkAccess;
 import com.azure.resourcemanager.cosmos.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.cosmos.models.PrivateLinkResource;
 import com.azure.resourcemanager.cosmos.models.PrivateLinkServiceConnectionStateProperty;
@@ -78,6 +79,11 @@ class CosmosDBAccountImpl
     @Override
     public DatabaseAccountOfferType databaseAccountOfferType() {
         return this.innerModel().databaseAccountOfferType();
+    }
+
+    @Override
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerModel().publicNetworkAccess();
     }
 
     @Override
@@ -507,6 +513,8 @@ class CosmosDBAccountImpl
                 .withVirtualNetworkRules(new ArrayList<VirtualNetworkRule>(this.virtualNetworkRulesMap.values()));
             this.virtualNetworkRulesMap = null;
         }
+        createUpdateParametersInner.withPublicNetworkAccess(inner.publicNetworkAccess());
+
         return createUpdateParametersInner;
     }
 
@@ -529,6 +537,7 @@ class CosmosDBAccountImpl
             virtualNetworkRulesMap = null;
         }
         this.addLocationsForParameters(new UpdateLocationParameters(updateParameters), this.failoverPolicies);
+        updateParameters.withPublicNetworkAccess(inner.publicNetworkAccess());
 
         return updateParameters;
     }
@@ -785,6 +794,18 @@ class CosmosDBAccountImpl
                 new PrivateLinkServiceConnectionStateProperty()
                     .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED.toString())))
             .then();
+    }
+
+    @Override
+    public CosmosDBAccountImpl enablePublicNetworkAccess() {
+        this.innerModel().withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
+        return this;
+    }
+
+    @Override
+    public CosmosDBAccountImpl disablePublicNetworkAccess() {
+        this.innerModel().withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
+        return this;
     }
 
     interface HasLocations {

@@ -13,16 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceUpdate model =
-            BinaryData.fromString("{\"tags\":{\"lhmwhfpmrqobm\":\"uxzdxtay\"}}").toObject(ResourceUpdate.class);
-        Assertions.assertEquals("uxzdxtay", model.tags().get("lhmwhfpmrqobm"));
+        ResourceUpdate model = BinaryData.fromString("{\"tags\":{\"yofd\":\"kfpbs\",\"dttouwaboekqvkel\":\"luu\"}}")
+            .toObject(ResourceUpdate.class);
+        Assertions.assertEquals("kfpbs", model.tags().get("yofd"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceUpdate model = new ResourceUpdate().withTags(mapOf("lhmwhfpmrqobm", "uxzdxtay"));
+        ResourceUpdate model = new ResourceUpdate().withTags(mapOf("yofd", "kfpbs", "dttouwaboekqvkel", "luu"));
         model = BinaryData.fromObject(model).toObject(ResourceUpdate.class);
-        Assertions.assertEquals("uxzdxtay", model.tags().get("lhmwhfpmrqobm"));
+        Assertions.assertEquals("kfpbs", model.tags().get("yofd"));
     }
 
     // Use "Map.of" if available

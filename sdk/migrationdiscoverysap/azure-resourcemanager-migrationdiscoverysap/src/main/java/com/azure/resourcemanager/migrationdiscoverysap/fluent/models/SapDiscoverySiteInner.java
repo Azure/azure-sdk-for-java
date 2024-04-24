@@ -8,8 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.migrationdiscoverysap.models.ExtendedLocation;
-import com.azure.resourcemanager.migrationdiscoverysap.models.ProvisioningState;
-import com.azure.resourcemanager.migrationdiscoverysap.models.SapMigrateError;
+import com.azure.resourcemanager.migrationdiscoverysap.models.SapDiscoverySiteProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -22,7 +21,7 @@ public final class SapDiscoverySiteInner extends Resource {
      * The resource-specific properties for this resource.
      */
     @JsonProperty(value = "properties")
-    private SapDiscoverySiteProperties innerProperties;
+    private SapDiscoverySiteProperties properties;
 
     /*
      * The extended location definition.
@@ -43,12 +42,23 @@ public final class SapDiscoverySiteInner extends Resource {
     }
 
     /**
-     * Get the innerProperties property: The resource-specific properties for this resource.
+     * Get the properties property: The resource-specific properties for this resource.
      * 
-     * @return the innerProperties value.
+     * @return the properties value.
      */
-    private SapDiscoverySiteProperties innerProperties() {
-        return this.innerProperties;
+    public SapDiscoverySiteProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: The resource-specific properties for this resource.
+     * 
+     * @param properties the properties value to set.
+     * @return the SapDiscoverySiteInner object itself.
+     */
+    public SapDiscoverySiteInner withProperties(SapDiscoverySiteProperties properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**
@@ -99,77 +109,13 @@ public final class SapDiscoverySiteInner extends Resource {
     }
 
     /**
-     * Get the masterSiteId property: The master site ID from Azure Migrate.
-     * 
-     * @return the masterSiteId value.
-     */
-    public String masterSiteId() {
-        return this.innerProperties() == null ? null : this.innerProperties().masterSiteId();
-    }
-
-    /**
-     * Set the masterSiteId property: The master site ID from Azure Migrate.
-     * 
-     * @param masterSiteId the masterSiteId value to set.
-     * @return the SapDiscoverySiteInner object itself.
-     */
-    public SapDiscoverySiteInner withMasterSiteId(String masterSiteId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SapDiscoverySiteProperties();
-        }
-        this.innerProperties().withMasterSiteId(masterSiteId);
-        return this;
-    }
-
-    /**
-     * Get the migrateProjectId property: The migrate project ID from Azure Migrate.
-     * 
-     * @return the migrateProjectId value.
-     */
-    public String migrateProjectId() {
-        return this.innerProperties() == null ? null : this.innerProperties().migrateProjectId();
-    }
-
-    /**
-     * Set the migrateProjectId property: The migrate project ID from Azure Migrate.
-     * 
-     * @param migrateProjectId the migrateProjectId value to set.
-     * @return the SapDiscoverySiteInner object itself.
-     */
-    public SapDiscoverySiteInner withMigrateProjectId(String migrateProjectId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SapDiscoverySiteProperties();
-        }
-        this.innerProperties().withMigrateProjectId(migrateProjectId);
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: Defines the provisioning states.
-     * 
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
-     * Get the errors property: Indicates any errors on the SAP Migration discovery site resource.
-     * 
-     * @return the errors value.
-     */
-    public SapMigrateError errors() {
-        return this.innerProperties() == null ? null : this.innerProperties().errors();
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
         if (extendedLocation() != null) {
             extendedLocation().validate();

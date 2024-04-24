@@ -1,16 +1,25 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
-
-- Added support for using the default broker account
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0 (2024-04-08)
+
+### Features Added
+
+- Added support for using the default broker account
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.11.4` to version `1.12.0`.
+- Upgraded `msal4j` from `1.14.3` to version `1.15.0`.
 
 ## 1.0.4 (2024-03-14)
 

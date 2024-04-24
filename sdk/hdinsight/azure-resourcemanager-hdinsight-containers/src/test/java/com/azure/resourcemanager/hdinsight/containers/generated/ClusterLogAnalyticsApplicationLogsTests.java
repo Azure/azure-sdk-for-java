@@ -11,20 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterLogAnalyticsApplicationLogsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterLogAnalyticsApplicationLogs model =
-            BinaryData
-                .fromString("{\"stdOutEnabled\":true,\"stdErrorEnabled\":false}")
+        ClusterLogAnalyticsApplicationLogs model
+            = BinaryData.fromString("{\"stdOutEnabled\":false,\"stdErrorEnabled\":true}")
                 .toObject(ClusterLogAnalyticsApplicationLogs.class);
-        Assertions.assertEquals(true, model.stdOutEnabled());
-        Assertions.assertEquals(false, model.stdErrorEnabled());
+        Assertions.assertEquals(false, model.stdOutEnabled());
+        Assertions.assertEquals(true, model.stdErrorEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterLogAnalyticsApplicationLogs model =
-            new ClusterLogAnalyticsApplicationLogs().withStdOutEnabled(true).withStdErrorEnabled(false);
+        ClusterLogAnalyticsApplicationLogs model
+            = new ClusterLogAnalyticsApplicationLogs().withStdOutEnabled(false).withStdErrorEnabled(true);
         model = BinaryData.fromObject(model).toObject(ClusterLogAnalyticsApplicationLogs.class);
-        Assertions.assertEquals(true, model.stdOutEnabled());
-        Assertions.assertEquals(false, model.stdErrorEnabled());
+        Assertions.assertEquals(false, model.stdOutEnabled());
+        Assertions.assertEquals(true, model.stdErrorEnabled());
     }
 }

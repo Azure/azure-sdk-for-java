@@ -52,7 +52,6 @@ jobs:
       os: linux
 
     templateContext:
-      outputParentDirectory: '$(System.DefaultWorkingDirectory)'
       outputs:
         - output: pipelineArtifact
           artifactName: 'repository-$(System.JobName)'

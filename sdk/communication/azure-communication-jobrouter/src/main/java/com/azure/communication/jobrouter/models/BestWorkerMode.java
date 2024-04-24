@@ -4,7 +4,6 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -21,7 +20,6 @@ public final class BestWorkerMode extends DistributionMode {
      * of label selectors the worker labels match and/or exceed using a logistic function
      * (https://en.wikipedia.org/wiki/Logistic_function).
      */
-    @Generated
     @JsonProperty(value = "scoringRule")
     private RouterRule scoringRule;
 
@@ -32,7 +30,9 @@ public final class BestWorkerMode extends DistributionMode {
     private ScoringRuleOptions scoringRuleOptions;
 
     /** Creates an instance of BestWorkerMode class. */
-    public BestWorkerMode() {}
+    public BestWorkerMode() {
+        this.kind = DistributionModeKind.BEST_WORKER;
+    }
 
     /**
      * Get the scoringRule property: Define a scoring rule to use, when calculating a score to determine the best
@@ -81,7 +81,6 @@ public final class BestWorkerMode extends DistributionMode {
     }
 
     /** {@inheritDoc} */
-    @Generated
     @Override
     public BestWorkerMode setMinConcurrentOffers(Integer minConcurrentOffers) {
         super.setMinConcurrentOffers(minConcurrentOffers);
@@ -89,7 +88,6 @@ public final class BestWorkerMode extends DistributionMode {
     }
 
     /** {@inheritDoc} */
-    @Generated
     @Override
     public BestWorkerMode setMaxConcurrentOffers(Integer maxConcurrentOffers) {
         super.setMaxConcurrentOffers(maxConcurrentOffers);
@@ -97,7 +95,6 @@ public final class BestWorkerMode extends DistributionMode {
     }
 
     /** {@inheritDoc} */
-    @Generated
     @Override
     public BestWorkerMode setBypassSelectors(Boolean bypassSelectors) {
         super.setBypassSelectors(bypassSelectors);

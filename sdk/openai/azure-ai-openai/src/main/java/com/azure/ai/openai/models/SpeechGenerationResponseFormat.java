@@ -70,4 +70,18 @@ public final class SpeechGenerationResponseFormat extends ExpandableStringEnum<S
     public static Collection<SpeechGenerationResponseFormat> values() {
         return values(SpeechGenerationResponseFormat.class);
     }
+
+    /**
+     * Use uncompressed WAV as the audio output format, suitable for low-latency applications to avoid decoding
+     * overhead.
+     */
+    @Generated
+    public static final SpeechGenerationResponseFormat WAV = fromString("wav");
+
+    /**
+     * Use uncompressed PCM as the audio output format, which is similar to WAV but contains raw samples in 24kHz
+     * (16-bit signed, low-endian), without the header.
+     */
+    @Generated
+    public static final SpeechGenerationResponseFormat PCM = fromString("pcm");
 }
