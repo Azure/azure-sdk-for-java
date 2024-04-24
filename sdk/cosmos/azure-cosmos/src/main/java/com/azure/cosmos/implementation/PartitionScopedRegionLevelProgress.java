@@ -124,7 +124,7 @@ public class PartitionScopedRegionLevelProgress {
                     }
                 } else {
                     if (logger.isDebugEnabled()) {
-                        logger.warn("Region with name - {} which has no known regionId has been seen", normalizedRegionRoutedTo);
+                        logger.debug("Region with name - {} which has no known regionId has been seen", normalizedRegionRoutedTo);
                     }
                 }
 
@@ -181,7 +181,7 @@ public class PartitionScopedRegionLevelProgress {
                 if (normalizedRegionName.equals(StringUtils.EMPTY)) {
 
                     if (logger.isDebugEnabled()) {
-                        logger.warn("regionId with value - {} which has no known region name has been seen in the vector session token", regionId);
+                        logger.debug("regionId with value - {} which has no known region name has been seen in the vector session token", regionId);
                     }
 
                     return globalSessionToken;
