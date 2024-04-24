@@ -187,15 +187,15 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
         assertThat(errorMessages.get("azure.cosmos.throughputControl.targetThroughput").size()).isGreaterThan(0);
         assertThat(errorMessages.get("azure.cosmos.throughputControl.targetThroughputThreshold").size()).isGreaterThan(0);
         assertThat(errorMessages.get("azure.cosmos.throughputControl.priorityLevel").size()).isGreaterThan(0);
-        assertThat(errorMessages.get("azure.cosmos.throughputControl.globalControl.database").size()).isGreaterThan(0);
-        assertThat(errorMessages.get("azure.cosmos.throughputControl.globalControl.container").size()).isGreaterThan(0);
+        assertThat(errorMessages.get("azure.cosmos.throughputControl.globalControl.database.name").size()).isGreaterThan(0);
+        assertThat(errorMessages.get("azure.cosmos.throughputControl.globalControl.container.name").size()).isGreaterThan(0);
 
         // invalid throughput control account config with masterKey auth
         sinkConfigMap = this.getValidSinkConfig();
         sinkConfigMap.put("azure.cosmos.throughputControl.enabled", "true");
         sinkConfigMap.put("azure.cosmos.throughputControl.targetThroughput", "1");
-        sinkConfigMap.put("azure.cosmos.throughputControl.globalControl.database", "ThroughputControlDatabase");
-        sinkConfigMap.put("azure.cosmos.throughputControl.globalControl.container", "ThroughputControlContainer");
+        sinkConfigMap.put("azure.cosmos.throughputControl.globalControl.database.name", "ThroughputControlDatabase");
+        sinkConfigMap.put("azure.cosmos.throughputControl.globalControl.container.name", "ThroughputControlContainer");
         sinkConfigMap.put("azure.cosmos.throughputControl.group.name", "groupName");
         sinkConfigMap.put("azure.cosmos.throughputControl.account.endpoint", TestConfigurations.HOST);
 
@@ -208,8 +208,8 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
         sinkConfigMap = this.getValidSinkConfig();
         sinkConfigMap.put("azure.cosmos.throughputControl.enabled", "true");
         sinkConfigMap.put("azure.cosmos.throughputControl.targetThroughputThreshold", "0.9");
-        sinkConfigMap.put("azure.cosmos.throughputControl.globalControl.database", "ThroughputControlDatabase");
-        sinkConfigMap.put("azure.cosmos.throughputControl.globalControl.container", "ThroughputControlContainer");
+        sinkConfigMap.put("azure.cosmos.throughputControl.globalControl.database.name", "ThroughputControlDatabase");
+        sinkConfigMap.put("azure.cosmos.throughputControl.globalControl.container.name", "ThroughputControlContainer");
         sinkConfigMap.put("azure.cosmos.throughputControl.group.name", "groupName");
         sinkConfigMap.put("azure.cosmos.throughputControl.account.endpoint", TestConfigurations.HOST);
         sinkConfigMap.put("azure.cosmos.throughputControl.auth.type", CosmosAuthType.SERVICE_PRINCIPAL.getName());
