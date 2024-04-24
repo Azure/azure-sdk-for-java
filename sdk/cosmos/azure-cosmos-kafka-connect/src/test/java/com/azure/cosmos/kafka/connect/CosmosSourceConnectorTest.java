@@ -564,7 +564,7 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         Config config = sourceConnector.validate(sourceConfigMap);
         Map<String, List<String>> errorMessages = config.configValues().stream()
             .collect(Collectors.toMap(ConfigValue::name, ConfigValue::errorMessages));
-        assertThat(errorMessages.get("azure.cosmos.throughputControl.name").size()).isGreaterThan(0);
+        assertThat(errorMessages.get("azure.cosmos.throughputControl.group.name").size()).isGreaterThan(0);
         assertThat(errorMessages.get("azure.cosmos.throughputControl.targetThroughput").size()).isGreaterThan(0);
         assertThat(errorMessages.get("azure.cosmos.throughputControl.targetThroughputThreshold").size()).isGreaterThan(0);
         assertThat(errorMessages.get("azure.cosmos.throughputControl.priorityLevel").size()).isGreaterThan(0);
@@ -577,7 +577,7 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         sourceConfigMap.put("azure.cosmos.throughputControl.targetThroughput", "1");
         sourceConfigMap.put("azure.cosmos.throughputControl.globalControl.database.name", "ThroughputControlDatabase");
         sourceConfigMap.put("azure.cosmos.throughputControl.globalControl.container.name", "ThroughputControlContainer");
-        sourceConfigMap.put("azure.cosmos.throughputControl.name", "groupName");
+        sourceConfigMap.put("azure.cosmos.throughputControl.group.name", "groupName");
         sourceConfigMap.put("azure.cosmos.throughputControl.account.endpoint", KafkaCosmosTestConfigurations.HOST);
 
         config = sourceConnector.validate(sourceConfigMap);
@@ -591,7 +591,7 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         sourceConfigMap.put("azure.cosmos.throughputControl.targetThroughputThreshold", "0.9");
         sourceConfigMap.put("azure.cosmos.throughputControl.globalControl.database.name", "ThroughputControlDatabase");
         sourceConfigMap.put("azure.cosmos.throughputControl.globalControl.container.name", "ThroughputControlContainer");
-        sourceConfigMap.put("azure.cosmos.throughputControl.name", "groupName");
+        sourceConfigMap.put("azure.cosmos.throughputControl.group.name", "groupName");
         sourceConfigMap.put("azure.cosmos.throughputControl.account.endpoint", KafkaCosmosTestConfigurations.HOST);
         sourceConfigMap.put("azure.cosmos.throughputControl.auth.type", CosmosAuthType.SERVICE_PRINCIPAL.getName());
 
