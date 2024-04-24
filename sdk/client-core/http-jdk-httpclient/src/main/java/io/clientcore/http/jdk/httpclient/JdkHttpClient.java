@@ -199,6 +199,7 @@ class JdkHttpClient implements HttpClient {
                     }
                 }
                 break;
+
             default:
                 try (InputStream responseBody = response.body()) { // Use try-with-resources to close the stream.
                     body = BinaryData.fromBytes(responseBody.readAllBytes());
