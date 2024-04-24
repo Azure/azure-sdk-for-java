@@ -228,6 +228,7 @@ public final class ContentSafetyClientBuilder implements HttpTrait<ContentSafety
     @Generated
     @Override
     public ContentSafetyClientBuilder endpoint(String endpoint) {
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
         this.endpoint = endpoint;
         return this;
     }
@@ -284,7 +285,14 @@ public final class ContentSafetyClientBuilder implements HttpTrait<ContentSafety
     }
 
     @Generated
+    private void validateBuilderParameters() {
+        // dev may customize add more validation here
+        // in this module, maybe check either keyCredential or tokenCredential exists
+    }
+
+    @Generated
     private HttpPipeline createHttpPipeline() {
+        validateBuilderParameters();
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
