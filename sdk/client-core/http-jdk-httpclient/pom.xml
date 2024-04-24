@@ -127,6 +127,12 @@
       <version>9.4.54.v20240208</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.conscrypt</groupId>
+      <artifactId>conscrypt-openjdk-uber</artifactId>
+      <version>2.5.2</version> <!-- {x-version-update;org.conscrypt:conscrypt-openjdk;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <profiles>

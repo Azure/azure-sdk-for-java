@@ -10,13 +10,17 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.shared.InsecureTrustManager;
 import io.clientcore.core.shared.LocalTestServer;
+import org.conscrypt.Conscrypt;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.X509TrustManager;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -24,6 +28,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -166,9 +171,35 @@ public class OkHttpHttpClientTests {
         }
     }
 
+    @Test
+    public void testCustomSslSocketFactory() throws IOException, GeneralSecurityException {
+        SSLContext sslContext = SSLContext.getInstance("TLSv1.2", Conscrypt.newProvider());
+
+        // Initialize the SSL context with a trust manager that trusts all certificates.
+        X509TrustManager[] trustManagers = new X509TrustManager[] { new InsecureTrustManager() };
+        sslContext.init(null, trustManagers, null);
+
+        HttpClient httpClient = new OkHttpHttpClientBuilder()
+            .sslSocketFactory(sslContext.getSocketFactory(), trustManagers[0])
+            .hostnameVerifier((hostname, session) -> true)
+            .build();
+
+        try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, httpsUrl(server, "/short")))) {
+            TestUtils.assertArraysEqual(SHORT_BODY, response.getBody().toBytes());
+        }
+    }
+
     static URL url(LocalTestServer server, String path) {
         try {
             return new URI(server.getHttpUri() + path).toURL();
+        } catch (URISyntaxException | MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    static URL httpsUrl(LocalTestServer server, String path) {
+        try {
+            return new URI(server.getHttpsUri() + path).toURL();
         } catch (URISyntaxException | MalformedURLException e) {
             throw new RuntimeException(e);
         }

@@ -11,15 +11,20 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.shared.InsecureTrustManager;
 import io.clientcore.core.shared.LocalTestServer;
 import io.clientcore.core.util.Context;
+import io.clientcore.core.util.TestUtils;
 import io.clientcore.core.util.binarydata.BinaryData;
+import org.conscrypt.Conscrypt;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -27,6 +32,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -36,7 +42,6 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 
 import static io.clientcore.core.util.TestUtils.assertArraysEqual;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -161,7 +166,7 @@ public class DefaultHttpClientTest {
         List<Callable<Void>> requests = new ArrayList<>(numRequests);
         for (int i = 0; i < numRequests; i++) {
             requests.add(() -> {
-                try (Response<?> response = doRequest(client, "/error")) {
+                try (Response<?> response = doRequest(client, "/long")) {
                     byte[] body = response.getBody().toBytes();
                     assertArraysEqual(LONG_BODY, body);
                     return null;
@@ -210,7 +215,7 @@ public class DefaultHttpClientTest {
         HttpClient client = new DefaultHttpClientBuilder().build();
 
         try (Response<?> response = getResponse(client, "/short", Context.EMPTY)) {
-            assertArrayEquals(SHORT_BODY, response.getBody().toBytes());
+            assertArraysEqual(SHORT_BODY, response.getBody().toBytes());
         }
     }
 
@@ -233,7 +238,23 @@ public class DefaultHttpClientTest {
         request.setBody(BinaryData.fromString(contentChunk));
 
         try (Response<?> response = client.send(request)) {
-            assertArrayEquals(SHORT_BODY, response.getBody().toBytes());
+            assertArraysEqual(SHORT_BODY, response.getBody().toBytes());
+        }
+    }
+
+    @Test
+    public void testCustomSslSocketFactory() throws IOException, GeneralSecurityException {
+        SSLContext sslContext = SSLContext.getInstance("TLSv1.2", Conscrypt.newProvider());
+
+        // Initialize the SSL context with a trust manager that trusts all certificates.
+        sslContext.init(null, new TrustManager[] { new InsecureTrustManager() }, null);
+
+        HttpClient httpClient = new DefaultHttpClientBuilder()
+            .sslSocketFactory(sslContext.getSocketFactory())
+            .build();
+
+        try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, httpsUrl(server, "/short")))) {
+            TestUtils.assertArraysEqual(SHORT_BODY, response.getBody().toBytes());
         }
     }
 
@@ -247,6 +268,14 @@ public class DefaultHttpClientTest {
     static URL url(LocalTestServer server, String path) {
         try {
             return new URI(server.getHttpUri() + path).toURL();
+        } catch (URISyntaxException | MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    static URL httpsUrl(LocalTestServer server, String path) {
+        try {
+            return new URI(server.getHttpsUri() + path).toURL();
         } catch (URISyntaxException | MalformedURLException e) {
             throw new RuntimeException(e);
         }

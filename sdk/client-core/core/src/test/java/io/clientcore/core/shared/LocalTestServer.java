@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 
 /**
  * Local server that will reply to requests based on the configured {@link HttpServlet}.
@@ -63,6 +64,11 @@ public class LocalTestServer {
         server.addConnector(this.httpConnector);
 
         SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
+        String mockKeyStore = Objects.toString(LocalTestServer.class.getResource("/keystore.jks"), null);
+        sslContextFactory.setKeyStorePath(mockKeyStore);
+        sslContextFactory.setKeyStorePassword("password");
+        sslContextFactory.setKeyManagerPassword("password");
+        sslContextFactory.setTrustStorePassword("password");
         sslContextFactory.setTrustAll(true);
 
         SslConnectionFactory sslConnectionFactory =

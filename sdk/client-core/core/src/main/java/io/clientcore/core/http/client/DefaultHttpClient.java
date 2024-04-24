@@ -20,6 +20,7 @@ import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.ServerSentEventUtils;
 import io.clientcore.core.util.binarydata.BinaryData;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import java.io.BufferedReader;
@@ -67,23 +68,30 @@ class DefaultHttpClient implements HttpClient {
     private final long connectionTimeout;
     private final long readTimeout;
     private final ProxyOptions proxyOptions;
+    private final SSLSocketFactory sslSocketFactory;
 
-    DefaultHttpClient(Duration connectionTimeout, Duration readTimeout, ProxyOptions proxyOptions) {
+    DefaultHttpClient(Duration connectionTimeout, Duration readTimeout, ProxyOptions proxyOptions,
+        SSLSocketFactory sslSocketFactory) {
         this.connectionTimeout = connectionTimeout == null ? -1 : connectionTimeout.toMillis();
         this.readTimeout = readTimeout == null ? -1 : readTimeout.toMillis();
         this.proxyOptions = proxyOptions;
+        this.sslSocketFactory = sslSocketFactory;
     }
 
     @Override
     public Response<?> send(HttpRequest httpRequest) throws IOException {
         if (httpRequest.getHttpMethod() == HttpMethod.PATCH) {
-            return SocketClient.sendPatchRequest(httpRequest);
+            return SocketClient.sendPatchRequest(httpRequest, getSslSocketFactory());
         }
 
         HttpURLConnection connection = connect(httpRequest);
         sendBody(httpRequest, connection);
 
         return receiveResponse(httpRequest, connection);
+    }
+
+    private SSLSocketFactory getSslSocketFactory() {
+        return (sslSocketFactory != null) ? sslSocketFactory : (SSLSocketFactory) SSLSocketFactory.getDefault();
     }
 
     /**
@@ -116,6 +124,11 @@ class DefaultHttpClient implements HttpClient {
             }
         } else {
             connection = (HttpURLConnection) url.openConnection();
+        }
+
+        if (connection instanceof HttpsURLConnection && sslSocketFactory != null) {
+            HttpsURLConnection httpsConnection = (HttpsURLConnection) connection;
+            httpsConnection.setSSLSocketFactory(sslSocketFactory);
         }
 
         if (connectionTimeout != -1) {
@@ -317,20 +330,21 @@ class DefaultHttpClient implements HttpClient {
         }
     }
 
-    private static class SocketClient {
+    private static final class SocketClient {
 
         private static final String HTTP_VERSION = " HTTP/1.1";
-        private static final SSLSocketFactory SSL_SOCKET_FACTORY = (SSLSocketFactory) SSLSocketFactory.getDefault();
 
         /**
          * Opens a socket connection, then writes the PATCH request across the connection and reads the response
          *
          * @param httpRequest The HTTP Request being sent
+         * @param sslSocketFactory The SSLSocketFactory to use for HTTPS connections
          * @return an instance of HttpUrlConnectionResponse
          * @throws ProtocolException If the protocol is not HTTP or HTTPS
          * @throws IOException If an I/O error occurs
          */
-        public static Response<?> sendPatchRequest(HttpRequest httpRequest) throws IOException {
+        public static Response<?> sendPatchRequest(HttpRequest httpRequest, SSLSocketFactory sslSocketFactory)
+            throws IOException {
             final URL requestUrl = httpRequest.getUrl();
             final String protocol = requestUrl.getProtocol();
             final String host = requestUrl.getHost();
@@ -338,13 +352,13 @@ class DefaultHttpClient implements HttpClient {
 
             switch (protocol) {
                 case "https":
-                    try (SSLSocket socket = (SSLSocket) SSL_SOCKET_FACTORY.createSocket(host, port)) {
-                        return doInputOutput(httpRequest, socket);
+                    try (SSLSocket socket = (SSLSocket) sslSocketFactory.createSocket(host, port)) {
+                        return doInputOutput(httpRequest, socket, sslSocketFactory);
                     }
 
                 case "http":
                     try (Socket socket = new Socket(host, port)) {
-                        return doInputOutput(httpRequest, socket);
+                        return doInputOutput(httpRequest, socket, sslSocketFactory);
                     }
 
                 default:
@@ -362,7 +376,8 @@ class DefaultHttpClient implements HttpClient {
          * @return an instance of Response
          */
         @SuppressWarnings("deprecation")
-        private static Response<?> doInputOutput(HttpRequest httpRequest, Socket socket) throws IOException {
+        private static Response<?> doInputOutput(HttpRequest httpRequest, Socket socket,
+            SSLSocketFactory sslSocketFactory) throws IOException {
             httpRequest.getHeaders().set(HttpHeaderName.HOST, httpRequest.getUrl().getHost());
             if (!"keep-alive".equalsIgnoreCase(httpRequest.getHeaders().getValue(HttpHeaderName.CONNECTION))) {
                 httpRequest.getHeaders().set(HttpHeaderName.CONNECTION, "close");
@@ -384,7 +399,7 @@ class DefaultHttpClient implements HttpClient {
                     } else {
                         httpRequest.setUrl(new URL(httpRequest.getUrl(), redirectLocation));
                     }
-                    return sendPatchRequest(httpRequest);
+                    return sendPatchRequest(httpRequest, sslSocketFactory);
                 }
                 return response;
             }
