@@ -1275,6 +1275,62 @@ public class ClientMetricsTest extends BatchTestBase {
             .isSameAs(CosmosMetricName.DIRECT_REQUEST_SIZE_REQUEST);
     }
 
+    @Test(groups = { "unit" }, timeOut = TIMEOUT)
+    public void metricConfigsThroughSystemProperty() {
+        System.setProperty(
+            "COSMOS.METRICS_CONFIG",
+            "{\"metricCategories\":\"[OperationDetails]\","
+                + "\"tagNames\":\"[PartitionId]\","
+                + "\"sampleRate\":0.5,"
+                + "\"percentiles\":[0.90,0.99],"
+                + "\"enableHistograms\":false,"
+                + "\"applyDiagnosticThresholdsForTransportLevelMeters\":true}");
+
+        CosmosClientBuilder testClientBuilder = new CosmosClientBuilder();
+        CosmosClientTelemetryConfig clientTelemetryConfig = ReflectionUtils.getClientTelemetryConfig(testClientBuilder);
+        EnumSet<MetricCategory> effectiveMetricsCategory = ImplementationBridgeHelpers
+            .CosmosClientTelemetryConfigHelper
+            .getCosmosClientTelemetryConfigAccessor()
+            .getMetricCategories(clientTelemetryConfig);
+        assertThat(effectiveMetricsCategory).containsAll(MetricCategory.MINIMAL_CATEGORIES);
+        assertThat(effectiveMetricsCategory).contains(MetricCategory.OperationDetails);
+
+        EnumSet<TagName> effectiveTagNames =
+            ImplementationBridgeHelpers
+                .CosmosClientTelemetryConfigHelper
+                .getCosmosClientTelemetryConfigAccessor()
+                .getMetricTagNames(clientTelemetryConfig);
+        assertThat(effectiveTagNames).containsAll(TagName.MINIMUM_TAGS);
+        assertThat(effectiveTagNames).contains(TagName.PartitionId);
+
+        double sampleRate = ImplementationBridgeHelpers
+            .CosmosClientTelemetryConfigHelper
+            .getCosmosClientTelemetryConfigAccessor()
+            .getSamplingRate(clientTelemetryConfig);
+        assertThat(sampleRate).isEqualTo(0.5);
+
+        double[] percentiles =
+            ImplementationBridgeHelpers
+                .CosmosClientTelemetryConfigHelper
+                .getCosmosClientTelemetryConfigAccessor()
+                .getDefaultPercentiles(clientTelemetryConfig);
+        assertThat(percentiles).contains(0.90, 0.99);
+
+        boolean publishHistograms =
+            ImplementationBridgeHelpers
+                .CosmosClientTelemetryConfigHelper
+                .getCosmosClientTelemetryConfigAccessor()
+                .shouldPublishHistograms(clientTelemetryConfig);
+        assertThat(publishHistograms).isFalse();
+
+        boolean applyDiagnosticThresholdsForTransportLevelMeters =
+            ImplementationBridgeHelpers
+                .CosmosClientTelemetryConfigHelper
+                .getCosmosClientTelemetryConfigAccessor()
+                .shouldApplyDiagnosticThresholdsForTransportLevelMeters(clientTelemetryConfig);
+        assertThat(applyDiagnosticThresholdsForTransportLevelMeters).isTrue();
+    }
+
     private InternalObjectNode getDocumentDefinition(String documentId) {
         final String uuid = UUID.randomUUID().toString();
         return

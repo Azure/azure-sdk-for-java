@@ -67,5 +67,14 @@ public enum TagName {
         TagName.RequestStatusCode,
         TagName.RequestOperationType
     );
+
+    public static TagName fromValue(String value) {
+        for (TagName tagName : TagName.values()) {
+            if (tagName.toLowerStringValue.equalsIgnoreCase(value)) {
+                return tagName;
+            }
+        }
+        return null;
+    }
 }
 
