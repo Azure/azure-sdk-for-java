@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.HDInsightHiveActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,17 @@ import java.util.Map;
 /**
  * HDInsight Hive activity type.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = HDInsightHiveActivity.class, visible = true)
 @JsonTypeName("HDInsightHive")
 @Fluent
 public final class HDInsightHiveActivity extends ExecutionActivity {
+    /*
+     * Type of activity.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "HDInsightHive";
+
     /*
      * HDInsight Hive activity properties.
      */
@@ -30,6 +38,16 @@ public final class HDInsightHiveActivity extends ExecutionActivity {
      * Creates an instance of HDInsightHiveActivity class.
      */
     public HDInsightHiveActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -275,8 +293,8 @@ public final class HDInsightHiveActivity extends ExecutionActivity {
     }
 
     /**
-     * Get the queryTimeout property: Query timeout value (in minutes). Effective when the HDInsight cluster is with
-     * ESP (Enterprise Security Package).
+     * Get the queryTimeout property: Query timeout value (in minutes). Effective when the HDInsight cluster is with ESP
+     * (Enterprise Security Package).
      * 
      * @return the queryTimeout value.
      */
@@ -285,8 +303,8 @@ public final class HDInsightHiveActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the queryTimeout property: Query timeout value (in minutes). Effective when the HDInsight cluster is with
-     * ESP (Enterprise Security Package).
+     * Set the queryTimeout property: Query timeout value (in minutes). Effective when the HDInsight cluster is with ESP
+     * (Enterprise Security Package).
      * 
      * @param queryTimeout the queryTimeout value to set.
      * @return the HDInsightHiveActivity object itself.
@@ -308,8 +326,9 @@ public final class HDInsightHiveActivity extends ExecutionActivity {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model HDInsightHiveActivity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model HDInsightHiveActivity"));
         } else {
             innerTypeProperties().validate();
         }

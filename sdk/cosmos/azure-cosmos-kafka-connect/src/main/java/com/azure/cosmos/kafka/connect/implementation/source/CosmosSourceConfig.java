@@ -35,7 +35,7 @@ public class CosmosSourceConfig extends KafkaCosmosConfig {
 
     private static final String CONTAINERS_INCLUDED_LIST_CONFIG = "azure.cosmos.source.containers.includedList";
     private static final String CONTAINERS_INCLUDED_LIST_CONFIG_DOC =
-        "Containers included. This config will be ignored if kafka.connect.cosmos.source.includeAllContainers is true.";
+        "Containers included. This config will be ignored if kafka.connect.cosmos.source.containers.includeAll is true.";
     private static final String CONTAINERS_INCLUDED_LIST_CONFIG_DISPLAY = "Containers included.";
 
     private static final String CONTAINERS_TOPIC_MAP_CONFIG = "azure.cosmos.source.containers.topicMap";
@@ -93,7 +93,7 @@ public class CosmosSourceConfig extends KafkaCosmosConfig {
     private static final String MESSAGE_KEY_FIELD_CONFIG = "azure.cosmos.source.messageKey.field";
     private static final String MESSAGE_KEY_FIELD_CONFIG_DOC = "The field to use as the message key.";
     private static final String MESSAGE_KEY_FIELD_CONFIG_DISPLAY = "Kafka message key field.";
-    private static final String DEFAULT_MESSAGE_KEY_FIELD = "id"; // TODO: should we use pk instead?
+    private static final String DEFAULT_MESSAGE_KEY_FIELD = "id";
 
     private final CosmosSourceContainersConfig containersConfig;
     private final CosmosMetadataConfig metadataConfig;

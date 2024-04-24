@@ -7,7 +7,9 @@ package com.azure.resourcemanager.devcenter.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A role that can be assigned to a user. */
+/**
+ * A role that can be assigned to a user.
+ */
 @Immutable
 public final class EnvironmentRole {
     /*
@@ -22,13 +24,15 @@ public final class EnvironmentRole {
     @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
-    /** Creates an instance of EnvironmentRole class. */
+    /**
+     * Creates an instance of EnvironmentRole class.
+     */
     public EnvironmentRole() {
     }
 
     /**
      * Get the roleName property: The common name of the Role Assignment. This is a descriptive name such as 'AcrPush'.
-     *
+     * 
      * @return the roleName value.
      */
     public String roleName() {
@@ -37,7 +41,7 @@ public final class EnvironmentRole {
 
     /**
      * Get the description property: This is a description of the Role Assignment.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -46,7 +50,7 @@ public final class EnvironmentRole {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

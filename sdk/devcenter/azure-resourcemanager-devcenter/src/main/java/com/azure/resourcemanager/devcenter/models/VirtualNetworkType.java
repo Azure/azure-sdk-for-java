@@ -12,15 +12,19 @@ import java.util.Collection;
  * Indicates a pool uses a Virtual Network managed by Microsoft (Managed), or a customer provided Network (Unmanaged).
  */
 public final class VirtualNetworkType extends ExpandableStringEnum<VirtualNetworkType> {
-    /** Static value Managed for VirtualNetworkType. */
+    /**
+     * Static value Managed for VirtualNetworkType.
+     */
     public static final VirtualNetworkType MANAGED = fromString("Managed");
 
-    /** Static value Unmanaged for VirtualNetworkType. */
+    /**
+     * Static value Unmanaged for VirtualNetworkType.
+     */
     public static final VirtualNetworkType UNMANAGED = fromString("Unmanaged");
 
     /**
      * Creates a new instance of VirtualNetworkType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -29,7 +33,7 @@ public final class VirtualNetworkType extends ExpandableStringEnum<VirtualNetwor
 
     /**
      * Creates or finds a VirtualNetworkType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VirtualNetworkType.
      */
@@ -40,7 +44,7 @@ public final class VirtualNetworkType extends ExpandableStringEnum<VirtualNetwor
 
     /**
      * Gets known VirtualNetworkType values.
-     *
+     * 
      * @return known VirtualNetworkType values.
      */
     public static Collection<VirtualNetworkType> values() {

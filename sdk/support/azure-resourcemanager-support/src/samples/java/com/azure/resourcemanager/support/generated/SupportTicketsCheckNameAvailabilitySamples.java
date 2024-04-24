@@ -12,18 +12,17 @@ import com.azure.resourcemanager.support.models.Type;
  */
 public final class SupportTicketsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/
-     * CheckNameAvailabilityWithSubscription.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/CheckNameAvailabilityWithSubscription.json
      */
     /**
-     * Sample code: Checks whether name is available for subscription scoped SupportTicket resource.
+     * Sample code: Checks whether name is available for a subscription support ticket resource.
      * 
      * @param manager Entry point to SupportManager.
      */
-    public static void checksWhetherNameIsAvailableForSubscriptionScopedSupportTicketResource(
+    public static void checksWhetherNameIsAvailableForASubscriptionSupportTicketResource(
         com.azure.resourcemanager.support.SupportManager manager) {
-        manager.supportTickets().checkNameAvailabilityWithResponse(
-            new CheckNameAvailabilityInput().withName("sampleName").withType(Type.MICROSOFT_SUPPORT_SUPPORT_TICKETS),
-            com.azure.core.util.Context.NONE);
+        manager.supportTickets()
+            .checkNameAvailabilityWithResponse(new CheckNameAvailabilityInput().withName("sampleName")
+                .withType(Type.MICROSOFT_SUPPORT_SUPPORT_TICKETS), com.azure.core.util.Context.NONE);
     }
 }

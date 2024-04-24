@@ -73,14 +73,14 @@ public class KafkaCosmosConfig extends AbstractConfig {
     private static final String USE_GATEWAY_MODE_DISPLAY = "Use gateway mode.";
     private static final boolean DEFAULT_USE_GATEWAY_MODE = false;
 
-    private static final String PREFERRED_REGIONS_LIST = "azure.cosmos.region.preferredList";
+    private static final String PREFERRED_REGIONS_LIST = "azure.cosmos.preferredRegionList";
     private static final String PREFERRED_REGIONS_LIST_DOC = "Preferred regions list to be used for a multi region Cosmos DB account. "
         + "This is a comma separated value (e.g., `[East US, West US]` or `East US, West US`) provided preferred regions will be used as hint. "
         + "You should use a collocated kafka cluster with your Cosmos DB account and pass the kafka cluster region as preferred region. "
         + "See list of azure regions [here](https://docs.microsoft.com/dotnet/api/microsoft.azure.documents.locationnames?view=azure-dotnet&preserve-view=true).";
     private static final String PREFERRED_REGIONS_LIST_DISPLAY = "Preferred regions list.";
 
-    private static final String APPLICATION_NAME = "azure.cosmos.applicationName";
+    private static final String APPLICATION_NAME = "azure.cosmos.application.name";
     private static final String APPLICATION_NAME_DOC = "Application name. Will be added as the userAgent suffix.";
     private static final String APPLICATION_NAME_DISPLAY = "Application name.";
 
@@ -126,7 +126,7 @@ public class KafkaCosmosConfig extends AbstractConfig {
     private static final String THROUGHPUT_CONTROL_AAD_CLIENT_SECRET_DISPLAY = "The client secret/password of the service principal.";
     private static final String DEFAULT_THROUGHPUT_CONTROL_AAD_CLIENT_SECRET = Strings.Emtpy;
 
-    private static final String THROUGHPUT_CONTROL_PREFERRED_REGIONS_LIST = "azure.cosmos.throughputControl.region.preferredList";
+    private static final String THROUGHPUT_CONTROL_PREFERRED_REGIONS_LIST = "azure.cosmos.throughputControl.preferredRegionList";
     private static final String THROUGHPUT_CONTROL_PREFERRED_REGIONS_LIST_DOC = "Preferred regions list to be used for a multi region Cosmos DB account. "
         + "This is a comma separated value (e.g., `[East US, West US]` or `East US, West US`) provided preferred regions will be used as hint. "
         + "You should use a collocated kafka cluster with your Cosmos DB account and pass the kafka cluster region as preferred region. "
@@ -139,7 +139,7 @@ public class KafkaCosmosConfig extends AbstractConfig {
     private static final String THROUGHPUT_CONTROL_USE_GATEWAY_MODE_DISPLAY = "Use gateway mode for throughput control";
     private static final boolean DEFAULT_THROUGHPUT_CONTROL_USE_GATEWAY_MODE = false;
 
-    private static final String THROUGHPUT_CONTROL_GROUP_NAME = "azure.cosmos.throughputControl.name";
+    private static final String THROUGHPUT_CONTROL_GROUP_NAME = "azure.cosmos.throughputControl.group.name";
     private static final String THROUGHPUT_CONTROL_GROUP_NAME_DOC =
         "Throughput control group name. Since customer is allowed to create many groups for a container, the name should be unique.";
     private static final String THROUGHPUT_CONTROL_GROUP_NAME_DISPLAY = "Throughput control group name.";
@@ -160,12 +160,12 @@ public class KafkaCosmosConfig extends AbstractConfig {
     private static final String THROUGHPUT_CONTROL_PRIORITY_LEVEL_DISPLAY = "Throughput control group priority level. The value can be None, High or Low.";
     private static final String DEFAULT_THROUGHPUT_CONTROL_PRIORITY_LEVEL = CosmosPriorityLevel.NONE.getName();
 
-    private static final String THROUGHPUT_CONTROL_GLOBAL_CONTROL_DATABASE = "azure.cosmos.throughputControl.globalControl.database";
+    private static final String THROUGHPUT_CONTROL_GLOBAL_CONTROL_DATABASE = "azure.cosmos.throughputControl.globalControl.database.name";
     private static final String THROUGHPUT_CONTROL_GLOBAL_CONTROL_DATABASE_DOC = "Database which will be used for throughput global control.";
     private static final String THROUGHPUT_CONTROL_GLOBAL_CONTROL_DATABASE_DISPLAY = "Database which will be used for throughput global control.";
     private static final String DEFAULT_THROUGHPUT_CONTROL_GLOBAL_CONTROL_DATABASE = Strings.Emtpy;
 
-    private static final String THROUGHPUT_CONTROL_GLOBAL_CONTROL_CONTAINER = "azure.cosmos.throughputControl.globalControl.container";
+    private static final String THROUGHPUT_CONTROL_GLOBAL_CONTROL_CONTAINER = "azure.cosmos.throughputControl.globalControl.container.name";
     private static final String THROUGHPUT_CONTROL_GLOBAL_CONTROL_CONTAINER_DOC = "Container which will be used for throughput global control.";
     private static final String THROUGHPUT_CONTROL_GLOBAL_CONTROL_CONTAINER_DISPLAY = "Container which will be used for throughput global control.";
     private static final String DEFAULT_THROUGHPUT_CONTROL_GLOBAL_CONTROL_CONTAINER = Strings.Emtpy;

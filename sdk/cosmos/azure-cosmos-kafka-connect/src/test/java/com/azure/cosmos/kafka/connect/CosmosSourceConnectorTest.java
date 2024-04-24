@@ -91,7 +91,7 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         }
     }
 
-    @Test(groups = "{ kafka }", timeOut = TIMEOUT)
+    @Test(groups = { "kafka", "kafka-emulator" }, timeOut = TIMEOUT)
     public void getTaskConfigsWithoutPersistedOffset() throws JsonProcessingException {
         CosmosSourceConnector sourceConnector = new CosmosSourceConnector();
         try {
@@ -162,10 +162,10 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         }
     }
 
-    @Test(groups = "{ kafka }", timeOut = TIMEOUT)
+    @Test(groups = { "kafka", "kafka-emulator" }, timeOut = TIMEOUT)
     public void getTaskConfigs_withMetadataCosmosStorageManager() throws JsonProcessingException {
         CosmosSourceConnector sourceConnector = new CosmosSourceConnector();
-        String metadataStorageName = "_cosmos.metadata.topic";
+        String metadataStorageName = "_cosmos.metadata.topic-" + UUID.randomUUID();
         CosmosAsyncClient cosmosAsyncClient = null;
         try {
             Map<String, Object> sourceConfigMap = new HashMap<>();
@@ -241,7 +241,7 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         }
     }
 
-    @Test(groups = "{ kafka }", timeOut = TIMEOUT)
+    @Test(groups = { "kafka", "kafka-emulator" }, timeOut = TIMEOUT)
     public void getTaskConfigsAfterSplit() throws JsonProcessingException {
         // This test is to simulate after a split happen, the task resume with persisted offset
         CosmosSourceConnector sourceConnector = new CosmosSourceConnector();
@@ -336,7 +336,7 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         }
     }
 
-    @Test(groups = "{ kafka }", timeOut = TIMEOUT)
+    @Test(groups = { "kafka", "kafka-emulator" }, timeOut = TIMEOUT)
     public void getTaskConfigsAfterMerge() throws JsonProcessingException {
         // This test is to simulate after a merge happen, the task resume with previous feedRanges
         CosmosSourceConnector sourceConnector = new CosmosSourceConnector();
@@ -531,11 +531,11 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
 
         Map<String, String> sourceConfigMap = this.getValidSourceConfig();
         sourceConfigMap.put("azure.cosmos.throughputControl.enabled", "true");
-        sourceConfigMap.put("azure.cosmos.throughputControl.name", throughputControlGroupName);
+        sourceConfigMap.put("azure.cosmos.throughputControl.group.name", throughputControlGroupName);
         sourceConfigMap.put("azure.cosmos.throughputControl.targetThroughput", String.valueOf(targetThroughput));
         sourceConfigMap.put("azure.cosmos.throughputControl.targetThroughputThreshold", String.valueOf(targetThroughputThreshold));
-        sourceConfigMap.put("azure.cosmos.throughputControl.globalControl.database", throughputControlDatabaseName);
-        sourceConfigMap.put("azure.cosmos.throughputControl.globalControl.container", throughputControlContainerName);
+        sourceConfigMap.put("azure.cosmos.throughputControl.globalControl.database.name", throughputControlDatabaseName);
+        sourceConfigMap.put("azure.cosmos.throughputControl.globalControl.container.name", throughputControlContainerName);
 
         CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConfigMap);
         assertThat(sourceConfig.getThroughputControlConfig()).isNotNull();
@@ -656,7 +656,6 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         CosmosAsyncContainer container = cosmosAsyncClient.getDatabase(databaseName).getContainer(containerName);
         MetadataCosmosStorageManager cosmosStorageManager = new MetadataCosmosStorageManager(container);
         KafkaCosmosReflectionUtils.setMetadataReader(sourceConnector, cosmosStorageManager);
-
 
         InMemoryStorageReader inMemoryStorageReader = new InMemoryStorageReader();
         MetadataKafkaStorageManager metadataReader = new MetadataKafkaStorageManager(inMemoryStorageReader);
@@ -874,8 +873,8 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
             new KafkaCosmosConfigEntry<String>("azure.cosmos.auth.aad.clientId", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<String>("azure.cosmos.auth.aad.clientSecret", Strings.Emtpy, true, true),
             new KafkaCosmosConfigEntry<Boolean>("azure.cosmos.mode.gateway", false, true),
-            new KafkaCosmosConfigEntry<String>("azure.cosmos.region.preferredList", Strings.Emtpy, true),
-            new KafkaCosmosConfigEntry<String>("azure.cosmos.applicationName", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<String>("azure.cosmos.preferredRegionList", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<String>("azure.cosmos.application.name", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.enabled", false, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.account.endpoint", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<String>("azure.cosmos.throughputControl.account.tenantId", Strings.Emtpy, true),
@@ -883,14 +882,14 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.account.key", Strings.Emtpy, true, true),
             new KafkaCosmosConfigEntry<String>("azure.cosmos.throughputControl.auth.aad.clientId", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<String>("azure.cosmos.throughputControl.auth.aad.clientSecret", Strings.Emtpy, true, true),
-            new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.region.preferredList", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.preferredRegionList", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.mode.gateway", false, true),
-            new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.name", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.group.name", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.targetThroughput", -1, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.targetThroughputThreshold", -1d, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.priorityLevel", "None", true),
-            new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.globalControl.database", Strings.Emtpy, true),
-            new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.globalControl.container", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.globalControl.database.name", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.globalControl.container.name", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.globalControl.renewIntervalInMS", -1, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.globalControl.expireIntervalInMS", -1, true),
 

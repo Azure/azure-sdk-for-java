@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AzureFunctionActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,17 @@ import java.util.Map;
 /**
  * Azure Function activity.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = AzureFunctionActivity.class, visible = true)
 @JsonTypeName("AzureFunctionActivity")
 @Fluent
 public final class AzureFunctionActivity extends ExecutionActivity {
+    /*
+     * Type of activity.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "AzureFunctionActivity";
+
     /*
      * Azure Function activity properties.
      */
@@ -30,6 +38,16 @@ public final class AzureFunctionActivity extends ExecutionActivity {
      * Creates an instance of AzureFunctionActivity class.
      */
     public AzureFunctionActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -168,7 +186,7 @@ public final class AzureFunctionActivity extends ExecutionActivity {
      * 
      * @return the headers value.
      */
-    public Map<String, String> headers() {
+    public Map<String, Object> headers() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().headers();
     }
 
@@ -180,7 +198,7 @@ public final class AzureFunctionActivity extends ExecutionActivity {
      * @param headers the headers value to set.
      * @return the AzureFunctionActivity object itself.
      */
-    public AzureFunctionActivity withHeaders(Map<String, String> headers) {
+    public AzureFunctionActivity withHeaders(Map<String, Object> headers) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new AzureFunctionActivityTypeProperties();
         }
@@ -222,8 +240,9 @@ public final class AzureFunctionActivity extends ExecutionActivity {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model AzureFunctionActivity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model AzureFunctionActivity"));
         } else {
             innerTypeProperties().validate();
         }

@@ -151,11 +151,11 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
 
         Map<String, String> sourceConfigMap = this.getValidSinkConfig();
         sourceConfigMap.put("azure.cosmos.throughputControl.enabled", "true");
-        sourceConfigMap.put("azure.cosmos.throughputControl.name", throughputControlGroupName);
+        sourceConfigMap.put("azure.cosmos.throughputControl.group.name", throughputControlGroupName);
         sourceConfigMap.put("azure.cosmos.throughputControl.targetThroughput", String.valueOf(targetThroughput));
         sourceConfigMap.put("azure.cosmos.throughputControl.targetThroughputThreshold", String.valueOf(targetThroughputThreshold));
-        sourceConfigMap.put("azure.cosmos.throughputControl.globalControl.database", throughputControlDatabaseName);
-        sourceConfigMap.put("azure.cosmos.throughputControl.globalControl.container", throughputControlContainerName);
+        sourceConfigMap.put("azure.cosmos.throughputControl.globalControl.database.name", throughputControlDatabaseName);
+        sourceConfigMap.put("azure.cosmos.throughputControl.globalControl.container.name", throughputControlContainerName);
 
         CosmosSinkConfig sinkConfig = new CosmosSinkConfig(sourceConfigMap);
         assertThat(sinkConfig.getThroughputControlConfig()).isNotNull();
@@ -183,7 +183,7 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
         Config config = sinkConnector.validate(sinkConfigMap);
         Map<String, List<String>> errorMessages = config.configValues().stream()
             .collect(Collectors.toMap(ConfigValue::name, ConfigValue::errorMessages));
-        assertThat(errorMessages.get("azure.cosmos.throughputControl.name").size()).isGreaterThan(0);
+        assertThat(errorMessages.get("azure.cosmos.throughputControl.group.name").size()).isGreaterThan(0);
         assertThat(errorMessages.get("azure.cosmos.throughputControl.targetThroughput").size()).isGreaterThan(0);
         assertThat(errorMessages.get("azure.cosmos.throughputControl.targetThroughputThreshold").size()).isGreaterThan(0);
         assertThat(errorMessages.get("azure.cosmos.throughputControl.priorityLevel").size()).isGreaterThan(0);
@@ -196,7 +196,7 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
         sinkConfigMap.put("azure.cosmos.throughputControl.targetThroughput", "1");
         sinkConfigMap.put("azure.cosmos.throughputControl.globalControl.database", "ThroughputControlDatabase");
         sinkConfigMap.put("azure.cosmos.throughputControl.globalControl.container", "ThroughputControlContainer");
-        sinkConfigMap.put("azure.cosmos.throughputControl.name", "groupName");
+        sinkConfigMap.put("azure.cosmos.throughputControl.group.name", "groupName");
         sinkConfigMap.put("azure.cosmos.throughputControl.account.endpoint", TestConfigurations.HOST);
 
         config = sinkConnector.validate(sinkConfigMap);
@@ -210,7 +210,7 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
         sinkConfigMap.put("azure.cosmos.throughputControl.targetThroughputThreshold", "0.9");
         sinkConfigMap.put("azure.cosmos.throughputControl.globalControl.database", "ThroughputControlDatabase");
         sinkConfigMap.put("azure.cosmos.throughputControl.globalControl.container", "ThroughputControlContainer");
-        sinkConfigMap.put("azure.cosmos.throughputControl.name", "groupName");
+        sinkConfigMap.put("azure.cosmos.throughputControl.group.name", "groupName");
         sinkConfigMap.put("azure.cosmos.throughputControl.account.endpoint", TestConfigurations.HOST);
         sinkConfigMap.put("azure.cosmos.throughputControl.auth.type", CosmosAuthType.SERVICE_PRINCIPAL.getName());
 
@@ -285,8 +285,8 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
             new KafkaCosmosConfigEntry<String>("azure.cosmos.auth.aad.clientId", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<String>("azure.cosmos.auth.aad.clientSecret", Strings.Emtpy, true, true),
             new KafkaCosmosConfigEntry<Boolean>("azure.cosmos.mode.gateway", false, true),
-            new KafkaCosmosConfigEntry<String>("azure.cosmos.region.preferredList", Strings.Emtpy, true),
-            new KafkaCosmosConfigEntry<String>("azure.cosmos.applicationName", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<String>("azure.cosmos.preferredRegionList", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<String>("azure.cosmos.application.name", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.enabled", false, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.account.endpoint", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<String>("azure.cosmos.throughputControl.account.tenantId", Strings.Emtpy, true),
@@ -294,18 +294,18 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.account.key", Strings.Emtpy, true, true),
             new KafkaCosmosConfigEntry<String>("azure.cosmos.throughputControl.auth.aad.clientId", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<String>("azure.cosmos.throughputControl.auth.aad.clientSecret", Strings.Emtpy, true, true),
-            new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.region.preferredList", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.preferredRegionList", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.mode.gateway", false, true),
-            new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.name", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.group.name", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.targetThroughput", -1, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.targetThroughputThreshold", -1d, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.priorityLevel", "None", true),
-            new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.globalControl.database", Strings.Emtpy, true),
-            new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.globalControl.container", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.globalControl.database.name", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.globalControl.container.name", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.globalControl.renewIntervalInMS", -1, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.globalControl.expireIntervalInMS", -1, true),
 
-            new KafkaCosmosConfigEntry<String>("azure.cosmos.sink.errors.tolerance", "None", true),
+            new KafkaCosmosConfigEntry<String>("azure.cosmos.sink.errors.tolerance.level", "None", true),
             new KafkaCosmosConfigEntry<Boolean>("azure.cosmos.sink.bulk.enabled", true, true),
             new KafkaCosmosConfigEntry<Integer>("azure.cosmos.sink.bulk.maxConcurrentCosmosPartitions", -1, true),
             new KafkaCosmosConfigEntry<Integer>("azure.cosmos.sink.bulk.initialBatchSize", 1, true),

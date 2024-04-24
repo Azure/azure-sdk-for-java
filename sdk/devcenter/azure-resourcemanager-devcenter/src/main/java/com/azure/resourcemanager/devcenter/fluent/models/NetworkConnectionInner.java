@@ -13,7 +13,9 @@ import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Network related settings. */
+/**
+ * Network related settings.
+ */
 @Fluent
 public final class NetworkConnectionInner extends Resource {
     /*
@@ -28,13 +30,15 @@ public final class NetworkConnectionInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of NetworkConnectionInner class. */
+    /**
+     * Creates an instance of NetworkConnectionInner class.
+     */
     public NetworkConnectionInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of a Network Connection.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NetworkProperties innerProperties() {
@@ -43,21 +47,25 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkConnectionInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkConnectionInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -66,7 +74,7 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -76,7 +84,7 @@ public final class NetworkConnectionInner extends Resource {
     /**
      * Get the healthCheckStatus property: Overall health status of the network connection. Health checks are run on
      * creation, update, and periodically to validate the network connection.
-     *
+     * 
      * @return the healthCheckStatus value.
      */
     public HealthCheckStatus healthCheckStatus() {
@@ -85,7 +93,7 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Get the networkingResourceGroupName property: The name for resource group where NICs will be placed.
-     *
+     * 
      * @return the networkingResourceGroupName value.
      */
     public String networkingResourceGroupName() {
@@ -94,7 +102,7 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Set the networkingResourceGroupName property: The name for resource group where NICs will be placed.
-     *
+     * 
      * @param networkingResourceGroupName the networkingResourceGroupName value to set.
      * @return the NetworkConnectionInner object itself.
      */
@@ -108,7 +116,7 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Get the domainJoinType property: AAD Join type.
-     *
+     * 
      * @return the domainJoinType value.
      */
     public DomainJoinType domainJoinType() {
@@ -117,7 +125,7 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Set the domainJoinType property: AAD Join type.
-     *
+     * 
      * @param domainJoinType the domainJoinType value to set.
      * @return the NetworkConnectionInner object itself.
      */
@@ -131,7 +139,7 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Get the subnetId property: The subnet to attach Virtual Machines to.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -140,7 +148,7 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Set the subnetId property: The subnet to attach Virtual Machines to.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the NetworkConnectionInner object itself.
      */
@@ -154,7 +162,7 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Get the domainName property: Active Directory domain name.
-     *
+     * 
      * @return the domainName value.
      */
     public String domainName() {
@@ -163,7 +171,7 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Set the domainName property: Active Directory domain name.
-     *
+     * 
      * @param domainName the domainName value to set.
      * @return the NetworkConnectionInner object itself.
      */
@@ -177,7 +185,7 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Get the organizationUnit property: Active Directory domain Organization Unit (OU).
-     *
+     * 
      * @return the organizationUnit value.
      */
     public String organizationUnit() {
@@ -186,7 +194,7 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Set the organizationUnit property: Active Directory domain Organization Unit (OU).
-     *
+     * 
      * @param organizationUnit the organizationUnit value to set.
      * @return the NetworkConnectionInner object itself.
      */
@@ -200,8 +208,8 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Get the domainUsername property: The username of an Active Directory account (user or service account) that has
-     * permissions to create computer objects in Active Directory. Required format: admin@contoso.com.
-     *
+     * permissions to create computer objects in Active Directory. Required format: admin&#064;contoso.com.
+     * 
      * @return the domainUsername value.
      */
     public String domainUsername() {
@@ -210,8 +218,8 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Set the domainUsername property: The username of an Active Directory account (user or service account) that has
-     * permissions to create computer objects in Active Directory. Required format: admin@contoso.com.
-     *
+     * permissions to create computer objects in Active Directory. Required format: admin&#064;contoso.com.
+     * 
      * @param domainUsername the domainUsername value to set.
      * @return the NetworkConnectionInner object itself.
      */
@@ -225,7 +233,7 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Get the domainPassword property: The password for the account used to join domain.
-     *
+     * 
      * @return the domainPassword value.
      */
     public String domainPassword() {
@@ -234,7 +242,7 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Set the domainPassword property: The password for the account used to join domain.
-     *
+     * 
      * @param domainPassword the domainPassword value to set.
      * @return the NetworkConnectionInner object itself.
      */
@@ -248,7 +256,7 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

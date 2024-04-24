@@ -12,20 +12,20 @@ public final class CommunicationDetailsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommunicationDetailsInner model = BinaryData.fromString(
-            "{\"properties\":{\"communicationType\":\"phone\",\"communicationDirection\":\"inbound\",\"sender\":\"n\",\"subject\":\"aljutiiswac\",\"body\":\"fgdkzzew\",\"createdDate\":\"2021-09-11T04:06:27Z\"},\"id\":\"hqcrailvpnpp\",\"name\":\"uflrwd\",\"type\":\"hdlxyjrxsagafcn\"}")
+            "{\"properties\":{\"communicationType\":\"phone\",\"communicationDirection\":\"outbound\",\"sender\":\"pnyiropuhp\",\"subject\":\"gvpgy\",\"body\":\"gqgitxmedjvcsl\",\"createdDate\":\"2021-02-07T09:50:45Z\"},\"id\":\"wwncwzzhxgk\",\"name\":\"rmgucnap\",\"type\":\"t\"}")
             .toObject(CommunicationDetailsInner.class);
-        Assertions.assertEquals("n", model.sender());
-        Assertions.assertEquals("aljutiiswac", model.subject());
-        Assertions.assertEquals("fgdkzzew", model.body());
+        Assertions.assertEquals("pnyiropuhp", model.sender());
+        Assertions.assertEquals("gvpgy", model.subject());
+        Assertions.assertEquals("gqgitxmedjvcsl", model.body());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CommunicationDetailsInner model
-            = new CommunicationDetailsInner().withSender("n").withSubject("aljutiiswac").withBody("fgdkzzew");
+            = new CommunicationDetailsInner().withSender("pnyiropuhp").withSubject("gvpgy").withBody("gqgitxmedjvcsl");
         model = BinaryData.fromObject(model).toObject(CommunicationDetailsInner.class);
-        Assertions.assertEquals("n", model.sender());
-        Assertions.assertEquals("aljutiiswac", model.subject());
-        Assertions.assertEquals("fgdkzzew", model.body());
+        Assertions.assertEquals("pnyiropuhp", model.sender());
+        Assertions.assertEquals("gvpgy", model.subject());
+        Assertions.assertEquals("gqgitxmedjvcsl", model.body());
     }
 }

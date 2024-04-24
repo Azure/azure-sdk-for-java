@@ -77,7 +77,7 @@ public final class JobRouterClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -131,9 +131,9 @@ public final class JobRouterClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -621,7 +621,7 @@ public final class JobRouterClient {
     /**
      * Retrieves an existing job by Id.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -858,7 +858,7 @@ public final class JobRouterClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -929,7 +929,7 @@ public final class JobRouterClient {
     /**
      * Gets a job's position details.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     jobId: String (Required)
@@ -957,15 +957,15 @@ public final class JobRouterClient {
     /**
      * Unassign a job.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     suspendMatching: Boolean (Optional)
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     jobId: String (Required)
@@ -992,7 +992,7 @@ public final class JobRouterClient {
     /**
      * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     assignmentId: String (Required)
@@ -1090,7 +1090,7 @@ public final class JobRouterClient {
     /**
      * Retrieves a queue's statistics.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     queueId: String (Required)
@@ -1129,7 +1129,7 @@ public final class JobRouterClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1174,9 +1174,9 @@ public final class JobRouterClient {
      *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1571,7 +1571,7 @@ public final class JobRouterClient {
     /**
      * Retrieves an existing worker by Id.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1667,7 +1667,7 @@ public final class JobRouterClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)

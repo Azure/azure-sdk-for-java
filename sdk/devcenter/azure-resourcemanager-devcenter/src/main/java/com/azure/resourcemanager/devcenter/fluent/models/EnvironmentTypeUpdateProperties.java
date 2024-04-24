@@ -7,7 +7,9 @@ package com.azure.resourcemanager.devcenter.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of an environment type. These properties can be updated after the resource has been created. */
+/**
+ * Properties of an environment type. These properties can be updated after the resource has been created.
+ */
 @Fluent
 public class EnvironmentTypeUpdateProperties {
     /*
@@ -16,13 +18,15 @@ public class EnvironmentTypeUpdateProperties {
     @JsonProperty(value = "displayName")
     private String displayName;
 
-    /** Creates an instance of EnvironmentTypeUpdateProperties class. */
+    /**
+     * Creates an instance of EnvironmentTypeUpdateProperties class.
+     */
     public EnvironmentTypeUpdateProperties() {
     }
 
     /**
      * Get the displayName property: The display name of the environment type.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -31,7 +35,7 @@ public class EnvironmentTypeUpdateProperties {
 
     /**
      * Set the displayName property: The display name of the environment type.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the EnvironmentTypeUpdateProperties object itself.
      */
@@ -42,7 +46,7 @@ public class EnvironmentTypeUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

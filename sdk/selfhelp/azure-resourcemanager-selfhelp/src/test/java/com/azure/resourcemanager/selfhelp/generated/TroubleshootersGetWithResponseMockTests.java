@@ -6,52 +6,35 @@ package com.azure.resourcemanager.selfhelp.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.selfhelp.SelfHelpManager;
 import com.azure.resourcemanager.selfhelp.models.TroubleshooterResource;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class TroubleshootersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"solutionId\":\"rgzdwmsweyp\",\"parameters\":{\"tlstvlzywem\":\"xggicccnxqhuexmk\",\"lusiy\":\"zrncsdt\",\"cy\":\"bsfgytguslfea\",\"xgfpelolppv\":\"qukyhejhzi\"},\"provisioningState\":\"AutoContinue\",\"steps\":[{\"id\":\"ujzra\",\"title\":\"twdw\",\"description\":\"tswiby\",\"guidance\":\"dl\",\"executionStatus\":\"Warning\",\"executionStatusDescription\":\"fwpracstwi\",\"type\":\"Insight\",\"isLastStep\":true,\"inputs\":[{},{},{},{}],\"automatedCheckResults\":{\"result\":\"edcpnmdyodnwzxl\",\"type\":\"Error\"},\"insights\":[{},{},{}]},{\"id\":\"tiugcxnav\",\"title\":\"xqi\",\"description\":\"qunyowxwlmdjr\",\"guidance\":\"fgbvfvpdbo\",\"executionStatus\":\"Warning\",\"executionStatusDescription\":\"zsjqlh\",\"type\":\"Decision\",\"isLastStep\":true,\"inputs\":[{}],\"automatedCheckResults\":{\"result\":\"qipqkghvxndz\",\"type\":\"Error\"},\"insights\":[{},{}]},{\"id\":\"jpjorwkqnyhgb\",\"title\":\"tjivfxzsjabib\",\"description\":\"stawfsdjpvkv\",\"guidance\":\"jxbkzbzkdvn\",\"executionStatus\":\"Running\",\"executionStatusDescription\":\"udurgkakmokz\",\"type\":\"Decision\",\"isLastStep\":true,\"inputs\":[{},{}],\"automatedCheckResults\":{\"result\":\"ouw\",\"type\":\"Success\"},\"insights\":[{},{}]},{\"id\":\"eeyebi\",\"title\":\"kayuhqlbjbs\",\"description\":\"bqwrvtldgm\",\"guidance\":\"gvmpipaslthaqfx\",\"executionStatus\":\"Failed\",\"executionStatusDescription\":\"u\",\"type\":\"Solution\",\"isLastStep\":false,\"inputs\":[{},{},{}],\"automatedCheckResults\":{\"result\":\"drhneuyow\",\"type\":\"Success\"},\"insights\":[{},{}]}]},\"id\":\"sibircgpi\",\"name\":\"pzimejzanlfzxi\",\"type\":\"vrmbzono\"}";
+            = "{\"properties\":{\"solutionId\":\"stotxh\",\"parameters\":{\"c\":\"jbypel\",\"w\":\"vhixbjxy\",\"coolsttpkiwkkb\":\"yl\",\"fpncurdo\":\"ujrywvtyl\"},\"provisioningState\":\"Canceled\",\"steps\":[{\"id\":\"tywubxcbihwq\",\"title\":\"fdntwjchrdgoih\",\"description\":\"mwctondzjluudfd\",\"guidance\":\"gg\",\"executionStatus\":\"Success\",\"executionStatusDescription\":\"wtovvtgsein\",\"type\":\"AutomatedCheck\",\"isLastStep\":true,\"inputs\":[{}],\"automatedCheckResults\":{\"version\":\"pirgnepttwq\",\"status\":\"niffcdmqnroj\",\"result\":\"ijnkrxfrdd\",\"type\":\"Warning\"},\"insights\":[{},{},{}]},{\"id\":\"zronasxift\",\"title\":\"qyzhf\",\"description\":\"esgogc\",\"guidance\":\"onnxkrlgnyhm\",\"executionStatus\":\"Running\",\"executionStatusDescription\":\"kkgthr\",\"type\":\"Solution\",\"isLastStep\":false,\"inputs\":[{},{}],\"automatedCheckResults\":{\"version\":\"xvcxgfrpdsofbshr\",\"status\":\"vbuswd\",\"result\":\"yybyc\",\"type\":\"Error\"},\"insights\":[{},{}]}]},\"id\":\"tkfa\",\"name\":\"nopqgikyzirtx\",\"type\":\"yuxzejntpsewgi\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SelfHelpManager manager = SelfHelpManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SelfHelpManager manager = SelfHelpManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        TroubleshooterResource response = manager.troubleshooters()
+            .getWithResponse("qncygupkvi", "mdscwxqupev", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        TroubleshooterResource response
-            = manager.troubleshooters().getWithResponse("zbwemh", "i", com.azure.core.util.Context.NONE).getValue();
-
-        Assertions.assertEquals("rgzdwmsweyp", response.solutionId());
-        Assertions.assertEquals("xggicccnxqhuexmk", response.parameters().get("tlstvlzywem"));
+        Assertions.assertEquals("stotxh", response.solutionId());
+        Assertions.assertEquals("jbypel", response.parameters().get("c"));
     }
 }

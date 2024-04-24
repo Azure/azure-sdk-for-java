@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.hybridcompute.models.LicenseProfileArmEsuPropertiesWithoutAssignedLicense;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the properties of a License Profile ARM model. */
+/**
+ * Describes the properties of a License Profile ARM model.
+ */
 @Fluent
 public final class LicenseProfileArmEsuProperties extends LicenseProfileArmEsuPropertiesWithoutAssignedLicense {
     /*
@@ -17,13 +19,15 @@ public final class LicenseProfileArmEsuProperties extends LicenseProfileArmEsuPr
     @JsonProperty(value = "assignedLicense")
     private String assignedLicense;
 
-    /** Creates an instance of LicenseProfileArmEsuProperties class. */
+    /**
+     * Creates an instance of LicenseProfileArmEsuProperties class.
+     */
     public LicenseProfileArmEsuProperties() {
     }
 
     /**
      * Get the assignedLicense property: The resource id of the license.
-     *
+     * 
      * @return the assignedLicense value.
      */
     public String assignedLicense() {
@@ -32,7 +36,7 @@ public final class LicenseProfileArmEsuProperties extends LicenseProfileArmEsuPr
 
     /**
      * Set the assignedLicense property: The resource id of the license.
-     *
+     * 
      * @param assignedLicense the assignedLicense value to set.
      * @return the LicenseProfileArmEsuProperties object itself.
      */
@@ -43,7 +47,7 @@ public final class LicenseProfileArmEsuProperties extends LicenseProfileArmEsuPr
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class CosmosSinkConfig extends KafkaCosmosConfig {
 
     // error tolerance
-    public static final String TOLERANCE_ON_ERROR = "azure.cosmos.sink.errors.tolerance";
+    public static final String TOLERANCE_ON_ERROR = "azure.cosmos.sink.errors.tolerance.level";
     public static final String TOLERANCE_ON_ERROR_DOC =
         "Error tolerance level after exhausting all retries. 'None' for fail on error. 'All' for log and continue";
     public static final String TOLERANCE_ON_ERROR_DISPLAY = "Error tolerance level.";
@@ -36,8 +36,6 @@ public class CosmosSinkConfig extends KafkaCosmosConfig {
         "Flag to indicate whether Cosmos DB bulk mode is enabled for Sink connector. By default it is true.";
     private static final String BULK_ENABLED_DISPLAY = "enable bulk mode.";
     private static final boolean DEFAULT_BULK_ENABLED = true;
-
-    // TODO[Public Preview]: Add other write config, for example patch, bulkUpdate
     public static final String BULK_MAX_CONCURRENT_PARTITIONS = "azure.cosmos.sink.bulk.maxConcurrentCosmosPartitions";
     private static final String BULK_MAX_CONCURRENT_PARTITIONS_DOC =
         "Cosmos DB Item Write Max Concurrent Cosmos Partitions."
@@ -108,7 +106,6 @@ public class CosmosSinkConfig extends KafkaCosmosConfig {
         "A comma delimited list of Kafka topics mapped to Cosmos containers. For example: topic1#con1,topic2#con2.";
     private static final String CONTAINERS_TOPIC_MAP_DISPLAY = "Topic-Container map";
 
-    // TODO[Public preview]: re-examine idStrategy implementation
     // id.strategy
     public static final String ID_STRATEGY_CONF = "azure.cosmos.sink.id.strategy";
     public static final String ID_STRATEGY_DOC =
@@ -127,8 +124,6 @@ public class CosmosSinkConfig extends KafkaCosmosConfig {
     // ([.]path[(](.*)[)])*: mapping path match, it is optional
     // [.]op[(](.*)[)]: patch operation mapping
     public static final Pattern PATCH_PROPERTY_CONFIG_PATTERN = Pattern.compile("(?i)property[(](.*?)[)]([.]path[(](.*)[)])*[.]op[(](.*)[)]$");
-
-    // TODO[Public Preview] Verify whether compression need to happen in connector
 
     private final CosmosSinkWriteConfig writeConfig;
     private final CosmosSinkContainersConfig containersConfig;

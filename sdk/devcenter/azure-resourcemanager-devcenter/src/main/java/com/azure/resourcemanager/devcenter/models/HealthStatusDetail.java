@@ -7,7 +7,9 @@ package com.azure.resourcemanager.devcenter.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Pool health status detail. */
+/**
+ * Pool health status detail.
+ */
 @Immutable
 public final class HealthStatusDetail {
     /*
@@ -22,13 +24,15 @@ public final class HealthStatusDetail {
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
-    /** Creates an instance of HealthStatusDetail class. */
+    /**
+     * Creates an instance of HealthStatusDetail class.
+     */
     public HealthStatusDetail() {
     }
 
     /**
      * Get the code property: An identifier for the issue.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -38,7 +42,7 @@ public final class HealthStatusDetail {
     /**
      * Get the message property: A message describing the issue, intended to be suitable for display in a user
      * interface.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -47,7 +51,7 @@ public final class HealthStatusDetail {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

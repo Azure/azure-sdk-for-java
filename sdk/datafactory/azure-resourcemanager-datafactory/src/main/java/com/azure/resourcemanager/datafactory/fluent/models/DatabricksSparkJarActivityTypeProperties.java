@@ -16,8 +16,7 @@ import java.util.Map;
 @Fluent
 public final class DatabricksSparkJarActivityTypeProperties {
     /*
-     * The full name of the class containing the main method to be executed. This class must be contained in a JAR
-     * provided as a library. Type: string (or Expression with resultType string).
+     * The full name of the class containing the main method to be executed. This class must be contained in a JAR provided as a library. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "mainClassName", required = true)
     private Object mainClassName;
@@ -109,8 +108,9 @@ public final class DatabricksSparkJarActivityTypeProperties {
      */
     public void validate() {
         if (mainClassName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property mainClassName in model DatabricksSparkJarActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property mainClassName in model DatabricksSparkJarActivityTypeProperties"));
         }
     }
 

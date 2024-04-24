@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class UploadFileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UploadFile model
-            = BinaryData.fromString("{\"content\":\"i\",\"chunkIndex\":1822288960}").toObject(UploadFile.class);
-        Assertions.assertEquals("i", model.content());
-        Assertions.assertEquals(1822288960, model.chunkIndex());
+        UploadFile model = BinaryData.fromString("{\"content\":\"wlrbqtkoievseo\",\"chunkIndex\":143823433}")
+            .toObject(UploadFile.class);
+        Assertions.assertEquals("wlrbqtkoievseo", model.content());
+        Assertions.assertEquals(143823433, model.chunkIndex());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UploadFile model = new UploadFile().withContent("i").withChunkIndex(1822288960);
+        UploadFile model = new UploadFile().withContent("wlrbqtkoievseo").withChunkIndex(143823433);
         model = BinaryData.fromObject(model).toObject(UploadFile.class);
-        Assertions.assertEquals("i", model.content());
-        Assertions.assertEquals(1822288960, model.chunkIndex());
+        Assertions.assertEquals("wlrbqtkoievseo", model.content());
+        Assertions.assertEquals(143823433, model.chunkIndex());
     }
 }

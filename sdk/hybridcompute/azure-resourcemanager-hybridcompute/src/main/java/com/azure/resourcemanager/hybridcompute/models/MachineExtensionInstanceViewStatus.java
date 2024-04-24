@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Instance view status. */
+/**
+ * Instance view status.
+ */
 @Fluent
 public final class MachineExtensionInstanceViewStatus {
     /*
@@ -41,13 +43,15 @@ public final class MachineExtensionInstanceViewStatus {
     @JsonProperty(value = "time")
     private OffsetDateTime time;
 
-    /** Creates an instance of MachineExtensionInstanceViewStatus class. */
+    /**
+     * Creates an instance of MachineExtensionInstanceViewStatus class.
+     */
     public MachineExtensionInstanceViewStatus() {
     }
 
     /**
      * Get the code property: The status code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -56,7 +60,7 @@ public final class MachineExtensionInstanceViewStatus {
 
     /**
      * Set the code property: The status code.
-     *
+     * 
      * @param code the code value to set.
      * @return the MachineExtensionInstanceViewStatus object itself.
      */
@@ -67,7 +71,7 @@ public final class MachineExtensionInstanceViewStatus {
 
     /**
      * Get the level property: The level code.
-     *
+     * 
      * @return the level value.
      */
     public StatusLevelTypes level() {
@@ -76,7 +80,7 @@ public final class MachineExtensionInstanceViewStatus {
 
     /**
      * Set the level property: The level code.
-     *
+     * 
      * @param level the level value to set.
      * @return the MachineExtensionInstanceViewStatus object itself.
      */
@@ -87,7 +91,7 @@ public final class MachineExtensionInstanceViewStatus {
 
     /**
      * Get the displayStatus property: The short localizable label for the status.
-     *
+     * 
      * @return the displayStatus value.
      */
     public String displayStatus() {
@@ -96,7 +100,7 @@ public final class MachineExtensionInstanceViewStatus {
 
     /**
      * Set the displayStatus property: The short localizable label for the status.
-     *
+     * 
      * @param displayStatus the displayStatus value to set.
      * @return the MachineExtensionInstanceViewStatus object itself.
      */
@@ -107,7 +111,7 @@ public final class MachineExtensionInstanceViewStatus {
 
     /**
      * Get the message property: The detailed status message, including for alerts and error messages.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -116,7 +120,7 @@ public final class MachineExtensionInstanceViewStatus {
 
     /**
      * Set the message property: The detailed status message, including for alerts and error messages.
-     *
+     * 
      * @param message the message value to set.
      * @return the MachineExtensionInstanceViewStatus object itself.
      */
@@ -127,7 +131,7 @@ public final class MachineExtensionInstanceViewStatus {
 
     /**
      * Get the time property: The time of the status.
-     *
+     * 
      * @return the time value.
      */
     public OffsetDateTime time() {
@@ -136,7 +140,7 @@ public final class MachineExtensionInstanceViewStatus {
 
     /**
      * Set the time property: The time of the status.
-     *
+     * 
      * @param time the time value to set.
      * @return the MachineExtensionInstanceViewStatus object itself.
      */
@@ -147,7 +151,7 @@ public final class MachineExtensionInstanceViewStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

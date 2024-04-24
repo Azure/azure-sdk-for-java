@@ -60,8 +60,8 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
     }
 
     /**
-     * The interface defining all the services for DataFactoryManagementClientChangeDataCaptures to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for DataFactoryManagementClientChangeDataCaptures to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataFactoryManagemen")
