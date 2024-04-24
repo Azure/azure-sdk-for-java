@@ -328,7 +328,8 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
             .setAppId(testTeamsUserId)
             .setCloud(CommunicationCloudEnvironmentModel.GCCH);
         CommunicationIdentifierModel communicationIdentifierModel = new CommunicationIdentifierModel()
-            .setMicrosoftTeamsApp(MicrosoftTeamsAppIdentifierModel);
+            .setMicrosoftTeamsApp(MicrosoftTeamsAppIdentifierModel)
+            .setRawId(testTeamsUserId);
 
         CommunicationIdentifier got = CommunicationIdentifierConverter.convert(communicationIdentifierModel);
 
@@ -345,7 +346,8 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
             .setCloud(CommunicationCloudEnvironmentModel.GCCH);
         CommunicationIdentifierModel communicationIdentifierModel = new CommunicationIdentifierModel()
             .setMicrosoftTeamsApp(MicrosoftTeamsAppIdentifierModel)
-            .setKind(CommunicationIdentifierModelKind.MICROSOFT_TEAMS_APP);
+            .setKind(CommunicationIdentifierModelKind.MICROSOFT_TEAMS_APP)
+            .setRawId(testTeamsUserId);
 
         CommunicationIdentifier got = CommunicationIdentifierConverter.convert(communicationIdentifierModel);
 
@@ -362,7 +364,8 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
             .setCloud(CommunicationCloudEnvironmentModel.GCCH);
         CommunicationIdentifierModel communicationIdentifierModel = new CommunicationIdentifierModel()
             .setMicrosoftTeamsApp(MicrosoftTeamsAppIdentifierModel)
-            .setKind(CommunicationIdentifierModelKind.MICROSOFT_TEAMS_APP);
+            .setKind(CommunicationIdentifierModelKind.MICROSOFT_TEAMS_APP)
+            .setRawId(testTeamsUserId);
 
         try {
             CommunicationIdentifierConverter.convert(communicationIdentifierModel);
@@ -376,7 +379,8 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
         MicrosoftTeamsAppIdentifierModel MicrosoftTeamsAppIdentifierModel = new MicrosoftTeamsAppIdentifierModel()
             .setCloud(CommunicationCloudEnvironmentModel.GCCH);
         CommunicationIdentifierModel communicationIdentifierModel = new CommunicationIdentifierModel()
-            .setMicrosoftTeamsApp(MicrosoftTeamsAppIdentifierModel);
+            .setMicrosoftTeamsApp(MicrosoftTeamsAppIdentifierModel)
+            .setRawId(testTeamsUserId);
 
         try {
             CommunicationIdentifierConverter.convert(communicationIdentifierModel);
@@ -391,7 +395,8 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
             .setAppId(testTeamsUserId);
         CommunicationIdentifierModel communicationIdentifierModel = new CommunicationIdentifierModel()
             .setMicrosoftTeamsApp(MicrosoftTeamsAppIdentifierModel)
-            .setKind(CommunicationIdentifierModelKind.MICROSOFT_TEAMS_APP);
+            .setKind(CommunicationIdentifierModelKind.MICROSOFT_TEAMS_APP)
+            .setRawId(testTeamsUserId);
 
         try {
             CommunicationIdentifierConverter.convert(communicationIdentifierModel);

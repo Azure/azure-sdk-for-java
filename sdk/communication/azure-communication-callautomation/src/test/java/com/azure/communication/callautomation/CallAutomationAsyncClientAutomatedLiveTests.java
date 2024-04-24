@@ -11,6 +11,7 @@ import com.azure.communication.callautomation.models.RejectCallOptions;
 import com.azure.communication.callautomation.models.events.CallConnected;
 import com.azure.communication.callautomation.models.events.CallDisconnected;
 import com.azure.communication.callautomation.models.events.ParticipantsUpdated;
+import com.azure.communication.callautomation.models.events.CreateCallFailed;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
@@ -182,13 +183,13 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
             String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(10));
             assertNotNull(incomingCallContext);
 
-            // answer the call
+            // rejet the call
             RejectCallOptions rejectCallOptions = new RejectCallOptions(incomingCallContext);
             receiverAsyncClient.rejectCallWithResponse(rejectCallOptions).block();
 
             // check events
-            CallDisconnected callDisconnected = waitForEvent(CallDisconnected.class, callerConnectionId, Duration.ofSeconds(10));
-            assertNotNull(callDisconnected);
+            CreateCallFailed CreateCallFailed = waitForEvent(CreateCallFailed.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(CreateCallFailed);
             assertThrows(RuntimeException.class, () -> createCallResult.getCallConnection().getCallProperties());
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
