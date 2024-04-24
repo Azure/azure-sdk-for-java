@@ -6,7 +6,6 @@ package io.clientcore.core.models;
 import io.clientcore.core.implementation.util.CoreUtils;
 import io.clientcore.core.models.SocketConnection.SocketConnectionProperties;
 
-import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import java.io.IOException;
 import java.net.Socket;
@@ -136,16 +135,18 @@ public final class SocketConnectionCache {
 
     private static SocketConnection getSocketSocketConnection(SocketConnectionProperties socketConnectionProperties,
         int readTimeout, boolean keepConnectionAlive) throws IOException {
-        SocketConnection connection;
         URL requestUrl = socketConnectionProperties.getRequestUrl();
         String protocol = requestUrl.getProtocol();
         String host = requestUrl.getHost();
         int port = requestUrl.getPort();
 
         Socket socket;
-        socket = "https".equals(protocol)
-            ? (SSLSocket) SSLSocketFactory.getDefault().createSocket(host, port)
-            : new Socket(host, port);
+        if ("https".equals(protocol)) {
+            SSLSocketFactory sslSocketFactory = socketConnectionProperties.getSslSocketFactory();
+            socket = sslSocketFactory.createSocket(host, port);
+        } else {
+            socket = new Socket(host, port);
+        }
 
         if (keepConnectionAlive) {
             socket.setKeepAlive(true);
@@ -153,7 +154,7 @@ public final class SocketConnectionCache {
         if (readTimeout != -1) {
             socket.setSoTimeout(readTimeout);
         }
-        connection = new SocketConnection(socket, socketConnectionProperties);
-        return connection;
+
+        return new SocketConnection(socket, socketConnectionProperties);
     }
 }

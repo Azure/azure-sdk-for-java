@@ -24,7 +24,6 @@ import io.clientcore.core.util.ServerSentResult;
 import io.clientcore.core.util.binarydata.BinaryData;
 
 import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -104,7 +103,7 @@ class DefaultHttpClient implements HttpClient {
             final int port = requestUrl.getPort();
 
             socketConnection = socketConnectionCache.get(
-                new SocketConnection.SocketConnectionProperties(requestUrl, host, String.valueOf(port)));
+                new SocketConnection.SocketConnectionProperties(requestUrl, host, String.valueOf(port), getSslSocketFactory()));
 
             Response<?> response
                 = SocketClient.sendPatchRequest(httpRequest, socketConnection.getSocketInputStream(),

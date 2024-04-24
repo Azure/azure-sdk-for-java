@@ -3,7 +3,7 @@
 
 package io.clientcore.core.models;
 
-import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -68,12 +68,7 @@ public final class SocketConnection {
         if (socketOutputStream != null) {
             socketOutputStream.close();
         }
-        if (socket instanceof SSLSocket) {
-            SSLSocket sslSocket = (SSLSocket) socket;
-            sslSocket.close();
-        } else {
-            socket.close();
-        }
+        socket.close();
     }
 
     Socket getSocket() {
@@ -95,21 +90,13 @@ public final class SocketConnection {
     }
 
     /**
-     * Checks the status of connection is reused
-     * @return true if the connection is reused, false otherwise
-     */
-    public boolean isReused() {
-        return canBeReused;
-    }
-
-
-    /**
      * Class to hold the properties of the socket connection
      */
     public static final class SocketConnectionProperties {
         private final URL requestUrl;
         private final String host;
         private final String port;
+        private final SSLSocketFactory sslSocketFactory;
 
         /**
          * Creates a new instance of SocketConnectionProperties
@@ -118,17 +105,19 @@ public final class SocketConnection {
          * @param host the host name
          * @param port the port number
          */
-        public SocketConnectionProperties(URL requestUrl, String host, String port) {
+        public SocketConnectionProperties(URL requestUrl, String host, String port, SSLSocketFactory sslSocketFactory) {
             this.requestUrl = requestUrl;
             this.host = host;
             this.port = port;
+            this.sslSocketFactory = sslSocketFactory;
         }
 
         @Override public boolean equals(Object other) {
             if (other instanceof SocketConnectionProperties) {
                 SocketConnectionProperties that = (SocketConnectionProperties) other;
                 return Objects.equals(this.host, that.host)
-                    && this.port.equals(that.port);
+                    && this.port.equals(that.port)
+                    && this.sslSocketFactory.equals(that.sslSocketFactory);
             }
             return false;
         }
@@ -143,6 +132,14 @@ public final class SocketConnection {
          */
         public URL getRequestUrl() {
             return requestUrl;
+        }
+
+        /**
+         * Get the SSL socket factory
+         * @return SSL socket factory
+         */
+        public SSLSocketFactory getSslSocketFactory() {
+            return sslSocketFactory;
         }
     }
 }

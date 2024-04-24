@@ -64,7 +64,8 @@ public class HttpPatch extends ScenarioBase<StressOptions> {
         // no need to handle exceptions here, they will be handled (and recorded) by the telemetry helper
         try (Response<?> response = pipeline.send(createRequest())) {
             int responseCode = response.getStatusCode();
-            assert responseCode == 200;
+            assert responseCode == 200 : "Unexpected response code: " + responseCode;
+            response.getBody().toBytes();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -81,6 +82,8 @@ public class HttpPatch extends ScenarioBase<StressOptions> {
         request.getHeaders().set(HttpHeaderName.USER_AGENT, "azsdk-java-stress");
         request.getHeaders().set(HttpHeaderName.fromString("x-client-id"), String.valueOf(clientRequestId.incrementAndGet()));
         request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
+        request.getHeaders().set(HttpHeaderName.fromString("response-length"),"102400");
+        request.getHeaders().set(HttpHeaderName.ACCEPT,"application/json");
         return request;
     }
 
