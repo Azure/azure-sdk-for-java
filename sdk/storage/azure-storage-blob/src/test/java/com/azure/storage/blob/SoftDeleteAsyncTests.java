@@ -34,15 +34,12 @@ public class SoftDeleteAsyncTests extends BlobTestBase {
 
     @Test
     public void undeleteMin() {
-        blobClient.delete().block();
-        assertAsyncResponseStatusCode(blobClient.undeleteWithResponse(), 200);
+        assertAsyncResponseStatusCode(blobClient.delete().then(blobClient.undeleteWithResponse()), 200);
     }
 
     @Test
     public void undelete() {
-        blobClient.delete().block();
-
-        StepVerifier.create(blobClient.undeleteWithResponse())
+        StepVerifier.create(blobClient.delete().then(blobClient.undeleteWithResponse()))
             .then(() -> blobClient.getProperties())
             .assertNext(r -> {
                 assertNotNull(r.getHeaders().getValue(X_MS_REQUEST_ID));
@@ -54,23 +51,19 @@ public class SoftDeleteAsyncTests extends BlobTestBase {
 
     @Test
     public void listBlobsFlatOptionsDeleted() {
-        blobClient.delete().block();
-
         ListBlobsOptions options = new ListBlobsOptions()
             .setDetails(new BlobListDetails().setRetrieveDeletedBlobs(true))
             .setPrefix(prefix);
-        StepVerifier.create(containerClient.listBlobs(options))
+        StepVerifier.create(blobClient.delete().thenMany(containerClient.listBlobs(options)))
             .assertNext(r -> assertEquals(blobClient.getBlobName(), r.getName()))
             .verifyComplete();
     }
 
     @Test
     public void listBlobsHierOptionsDeleted() {
-        blobClient.delete().block();
-
         ListBlobsOptions options = new ListBlobsOptions().setDetails(
             new BlobListDetails().setRetrieveDeletedBlobs(true)).setPrefix(prefix);
-        StepVerifier.create(containerClient.listBlobsByHierarchy("", options))
+        StepVerifier.create(blobClient.delete().thenMany(containerClient.listBlobsByHierarchy("", options)))
             .assertNext(r -> assertEquals(blobClient.getBlobName(), r.getName()))
             .verifyComplete();
     }
