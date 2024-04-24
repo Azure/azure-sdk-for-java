@@ -6,16 +6,24 @@ package com.azure.resourcemanager.quota.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The resource quota limit value.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "limitObjectType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "limitObjectType", defaultImpl = LimitObject.class, visible = true)
 @JsonTypeName("LimitValue")
 @Fluent
 public final class LimitObject extends LimitJsonObject {
+    /*
+     * The limit object type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "limitObjectType", required = true)
+    private LimitType limitObjectType = LimitType.LIMIT_VALUE;
+
     /*
      * The quota/limit value
      */
@@ -32,6 +40,16 @@ public final class LimitObject extends LimitJsonObject {
      * Creates an instance of LimitObject class.
      */
     public LimitObject() {
+    }
+
+    /**
+     * Get the limitObjectType property: The limit object type.
+     * 
+     * @return the limitObjectType value.
+     */
+    @Override
+    public LimitType limitObjectType() {
+        return this.limitObjectType;
     }
 
     /**
