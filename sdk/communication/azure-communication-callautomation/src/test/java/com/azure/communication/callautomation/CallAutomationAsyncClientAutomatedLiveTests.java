@@ -188,8 +188,8 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
             receiverAsyncClient.rejectCallWithResponse(rejectCallOptions).block();
 
             // check events
-            CreateCallFailed CreateCallFailed = waitForEvent(CreateCallFailed.class, callerConnectionId, Duration.ofSeconds(10));
-            assertNotNull(CreateCallFailed);
+            CreateCallFailed createCallFailed = waitForEvent(CreateCallFailed.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(createCallFailed);
             assertThrows(RuntimeException.class, () -> createCallResult.getCallConnection().getCallProperties());
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
