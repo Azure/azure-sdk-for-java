@@ -34,6 +34,7 @@ import com.azure.core.util.Configuration;
 @Isolated
 @Execution(ExecutionMode.SAME_THREAD)
 @ExtendWith(MockitoExtension.class)
+@SuppressWarnings("deprecation")
 public class BaseAppConfigurationPolicyTest {
 
     private static final String PRE_USER_AGENT = "PreExistingUserAgent";
