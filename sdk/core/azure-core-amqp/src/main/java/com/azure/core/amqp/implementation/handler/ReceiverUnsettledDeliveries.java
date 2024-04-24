@@ -414,7 +414,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
             try {
                 dispatcher.invoke(() -> delivery.disposition(work.getDesiredState()));
             } catch (IOException | RejectedExecutionException dispatchError) {
-                final Throwable amqpException = logger.atWarning()
+                final Throwable amqpException = logger.atError()
                     .addKeyValue(DELIVERY_TAG_KEY, work.getDeliveryTag())
                     .addKeyValue(LINK_NAME_KEY, receiveLinkName)
                     .log(new AmqpException(false, "Retrying updateDisposition failed to dispatch to Reactor.",
