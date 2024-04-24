@@ -42,20 +42,7 @@ public final class CallConnectionPropertiesInternal {
     private String callbackUri;
 
     /*
-     * SubscriptionId for media streaming
-     */
-    @JsonProperty(value = "mediaSubscriptionId")
-    private String mediaSubscriptionId;
-
-    /*
-     * SubscriptionId for transcription
-     */
-    @JsonProperty(value = "dataSubscriptionId")
-    private String dataSubscriptionId;
-
-    /*
-     * The source caller Id, a phone number, that's shown to the PSTN
-     * participant being invited.
+     * The source caller Id, a phone number, that's shown to the PSTN participant being invited.
      * Required only when calling a PSTN callee.
      */
     @JsonProperty(value = "sourceCallerIdNumber")
@@ -80,18 +67,13 @@ public final class CallConnectionPropertiesInternal {
     private String correlationId;
 
     /*
-     * Identity of the answering entity. Only populated when identity is
-     * provided in the request.
+     * Identity of the answering entity. Only populated when identity is provided in the request.
      */
     @JsonProperty(value = "answeredBy")
     private CommunicationUserIdentifierModel answeredBy;
 
-    /*
-     * Identity of the original Pstn target of an incoming Call. Only populated
-     * when the original target is a Pstn number.
-     */
-    @JsonProperty(value = "answeredFor")
-    private PhoneNumberIdentifierModel answeredFor;
+    /** Creates an instance of CallConnectionPropertiesInternal class. */
+    public CallConnectionPropertiesInternal() {}
 
     /**
      * Get the callConnectionId property: The call connection id.
@@ -191,46 +173,6 @@ public final class CallConnectionPropertiesInternal {
      */
     public CallConnectionPropertiesInternal setCallbackUri(String callbackUri) {
         this.callbackUri = callbackUri;
-        return this;
-    }
-
-    /**
-     * Get the mediaSubscriptionId property: SubscriptionId for media streaming.
-     *
-     * @return the mediaSubscriptionId value.
-     */
-    public String getMediaSubscriptionId() {
-        return this.mediaSubscriptionId;
-    }
-
-    /**
-     * Set the mediaSubscriptionId property: SubscriptionId for media streaming.
-     *
-     * @param mediaSubscriptionId the mediaSubscriptionId value to set.
-     * @return the CallConnectionPropertiesInternal object itself.
-     */
-    public CallConnectionPropertiesInternal setMediaSubscriptionId(String mediaSubscriptionId) {
-        this.mediaSubscriptionId = mediaSubscriptionId;
-        return this;
-    }
-
-    /**
-     * Get the dataSubscriptionId property: SubscriptionId for transcription.
-     *
-     * @return the dataSubscriptionId value.
-     */
-    public String getDataSubscriptionId() {
-        return this.dataSubscriptionId;
-    }
-
-    /**
-     * Set the dataSubscriptionId property: SubscriptionId for transcription.
-     *
-     * @param dataSubscriptionId the dataSubscriptionId value to set.
-     * @return the CallConnectionPropertiesInternal object itself.
-     */
-    public CallConnectionPropertiesInternal setDataSubscriptionId(String dataSubscriptionId) {
-        this.dataSubscriptionId = dataSubscriptionId;
         return this;
     }
 
@@ -335,28 +277,6 @@ public final class CallConnectionPropertiesInternal {
      */
     public CallConnectionPropertiesInternal setAnsweredBy(CommunicationUserIdentifierModel answeredBy) {
         this.answeredBy = answeredBy;
-        return this;
-    }
-
-    /**
-     * Get the answeredFor property: Identity of the original Pstn target of an incoming Call. Only populated when the
-     * original target is a Pstn number.
-     *
-     * @return the answeredFor value.
-     */
-    public PhoneNumberIdentifierModel getAnsweredFor() {
-        return this.answeredFor;
-    }
-
-    /**
-     * Set the answeredFor property: Identity of the original Pstn target of an incoming Call. Only populated when the
-     * original target is a Pstn number.
-     *
-     * @param answeredFor the answeredFor value to set.
-     * @return the CallConnectionPropertiesInternal object itself.
-     */
-    public CallConnectionPropertiesInternal setAnsweredFor(PhoneNumberIdentifierModel answeredFor) {
-        this.answeredFor = answeredFor;
         return this;
     }
 }

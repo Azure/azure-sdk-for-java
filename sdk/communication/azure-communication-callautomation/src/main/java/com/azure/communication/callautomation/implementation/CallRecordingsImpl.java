@@ -62,10 +62,10 @@ public final class CallRecordingsImpl {
         Mono<Response<RecordingStateResponseInternal>> startRecording(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Repeatability-Request-ID") UUID repeatabilityRequestID,
-                @HeaderParam("Repeatability-First-Sent") DateTimeRfc1123 repeatabilityFirstSent,
                 @BodyParam("application/json") StartCallRecordingRequestInternal startCallRecording,
                 @HeaderParam("Accept") String accept,
+                @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
+                @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent,
                 Context context);
 
         @Get("/calling/recordings/{recordingId}")
@@ -113,36 +113,26 @@ public final class CallRecordingsImpl {
      * Start recording the call.
      *
      * @param startCallRecording The request body of start call recording request.
-     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
-     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
-     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
-     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
-     *     (random) UUID.
-     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
-     *     header must also be specified. The value should be the date and time at which the request was first created,
-     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecordingStateResponseInternal>> startRecordingWithResponseAsync(
-            StartCallRecordingRequestInternal startCallRecording,
-            UUID repeatabilityRequestID,
-            OffsetDateTime repeatabilityFirstSent) {
+            StartCallRecordingRequestInternal startCallRecording) {
         final String accept = "application/json";
-        DateTimeRfc1123 repeatabilityFirstSentConverted =
-                repeatabilityFirstSent == null ? null : new DateTimeRfc1123(repeatabilityFirstSent);
+        String repeatabilityRequestId = UUID.randomUUID().toString();
+        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
         return FluxUtil.withContext(
                 context ->
                         service.startRecording(
                                 this.client.getEndpoint(),
                                 this.client.getApiVersion(),
-                                repeatabilityRequestID,
-                                repeatabilityFirstSentConverted,
                                 startCallRecording,
                                 accept,
+                                repeatabilityRequestId,
+                                repeatabilityFirstSent,
                                 context));
     }
 
@@ -150,36 +140,25 @@ public final class CallRecordingsImpl {
      * Start recording the call.
      *
      * @param startCallRecording The request body of start call recording request.
-     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
-     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
-     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
-     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
-     *     (random) UUID.
-     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
-     *     header must also be specified. The value should be the date and time at which the request was first created,
-     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecordingStateResponseInternal>> startRecordingWithResponseAsync(
-            StartCallRecordingRequestInternal startCallRecording,
-            UUID repeatabilityRequestID,
-            OffsetDateTime repeatabilityFirstSent,
-            Context context) {
+            StartCallRecordingRequestInternal startCallRecording, Context context) {
         final String accept = "application/json";
-        DateTimeRfc1123 repeatabilityFirstSentConverted =
-                repeatabilityFirstSent == null ? null : new DateTimeRfc1123(repeatabilityFirstSent);
+        String repeatabilityRequestId = UUID.randomUUID().toString();
+        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
         return service.startRecording(
                 this.client.getEndpoint(),
                 this.client.getApiVersion(),
-                repeatabilityRequestID,
-                repeatabilityFirstSentConverted,
                 startCallRecording,
                 accept,
+                repeatabilityRequestId,
+                repeatabilityFirstSent,
                 context);
     }
 
@@ -187,123 +166,62 @@ public final class CallRecordingsImpl {
      * Start recording the call.
      *
      * @param startCallRecording The request body of start call recording request.
-     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
-     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
-     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
-     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
-     *     (random) UUID.
-     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
-     *     header must also be specified. The value should be the date and time at which the request was first created,
-     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecordingStateResponseInternal> startRecordingAsync(
-            StartCallRecordingRequestInternal startCallRecording,
-            UUID repeatabilityRequestID,
-            OffsetDateTime repeatabilityFirstSent) {
-        return startRecordingWithResponseAsync(startCallRecording, repeatabilityRequestID, repeatabilityFirstSent)
-                .flatMap(
-                        (Response<RecordingStateResponseInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            StartCallRecordingRequestInternal startCallRecording) {
+        return startRecordingWithResponseAsync(startCallRecording).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Start recording the call.
      *
      * @param startCallRecording The request body of start call recording request.
-     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
-     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
-     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
-     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
-     *     (random) UUID.
-     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
-     *     header must also be specified. The value should be the date and time at which the request was first created,
-     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecordingStateResponseInternal> startRecordingAsync(
-            StartCallRecordingRequestInternal startCallRecording,
-            UUID repeatabilityRequestID,
-            OffsetDateTime repeatabilityFirstSent,
-            Context context) {
-        return startRecordingWithResponseAsync(
-                        startCallRecording, repeatabilityRequestID, repeatabilityFirstSent, context)
-                .flatMap(
-                        (Response<RecordingStateResponseInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            StartCallRecordingRequestInternal startCallRecording, Context context) {
+        return startRecordingWithResponseAsync(startCallRecording, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Start recording the call.
      *
      * @param startCallRecording The request body of start call recording request.
-     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
-     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
-     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
-     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
-     *     (random) UUID.
-     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
-     *     header must also be specified. The value should be the date and time at which the request was first created,
-     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecordingStateResponseInternal startRecording(
-            StartCallRecordingRequestInternal startCallRecording,
-            UUID repeatabilityRequestID,
-            OffsetDateTime repeatabilityFirstSent) {
-        return startRecordingAsync(startCallRecording, repeatabilityRequestID, repeatabilityFirstSent).block();
-    }
-
-    /**
-     * Start recording the call.
-     *
-     * @param startCallRecording The request body of start call recording request.
-     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
-     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
-     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
-     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
-     *     (random) UUID.
-     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
-     *     header must also be specified. The value should be the date and time at which the request was first created,
-     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecordingStateResponseInternal> startRecordingWithResponse(
-            StartCallRecordingRequestInternal startCallRecording,
-            UUID repeatabilityRequestID,
-            OffsetDateTime repeatabilityFirstSent,
-            Context context) {
-        return startRecordingWithResponseAsync(
-                        startCallRecording, repeatabilityRequestID, repeatabilityFirstSent, context)
-                .block();
+            StartCallRecordingRequestInternal startCallRecording, Context context) {
+        return startRecordingWithResponseAsync(startCallRecording, context).block();
+    }
+
+    /**
+     * Start recording the call.
+     *
+     * @param startCallRecording The request body of start call recording request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RecordingStateResponseInternal startRecording(StartCallRecordingRequestInternal startCallRecording) {
+        return startRecordingWithResponse(startCallRecording, Context.NONE).getValue();
     }
 
     /**
@@ -313,7 +231,7 @@ public final class CallRecordingsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return call recording properties.
+     * @return call recording properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecordingStateResponseInternal>> getRecordingPropertiesWithResponseAsync(String recordingId) {
@@ -332,7 +250,7 @@ public final class CallRecordingsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return call recording properties.
+     * @return call recording properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecordingStateResponseInternal>> getRecordingPropertiesWithResponseAsync(
@@ -349,19 +267,11 @@ public final class CallRecordingsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return call recording properties.
+     * @return call recording properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecordingStateResponseInternal> getRecordingPropertiesAsync(String recordingId) {
-        return getRecordingPropertiesWithResponseAsync(recordingId)
-                .flatMap(
-                        (Response<RecordingStateResponseInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getRecordingPropertiesWithResponseAsync(recordingId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -372,19 +282,28 @@ public final class CallRecordingsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return call recording properties.
+     * @return call recording properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecordingStateResponseInternal> getRecordingPropertiesAsync(String recordingId, Context context) {
         return getRecordingPropertiesWithResponseAsync(recordingId, context)
-                .flatMap(
-                        (Response<RecordingStateResponseInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get call recording properties.
+     *
+     * @param recordingId The recording id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return call recording properties along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RecordingStateResponseInternal> getRecordingPropertiesWithResponse(
+            String recordingId, Context context) {
+        return getRecordingPropertiesWithResponseAsync(recordingId, context).block();
     }
 
     /**
@@ -398,23 +317,7 @@ public final class CallRecordingsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecordingStateResponseInternal getRecordingProperties(String recordingId) {
-        return getRecordingPropertiesAsync(recordingId).block();
-    }
-
-    /**
-     * Get call recording properties.
-     *
-     * @param recordingId The recording id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return call recording properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecordingStateResponseInternal> getRecordingPropertiesWithResponse(
-            String recordingId, Context context) {
-        return getRecordingPropertiesWithResponseAsync(recordingId, context).block();
+        return getRecordingPropertiesWithResponse(recordingId, Context.NONE).getValue();
     }
 
     /**
@@ -424,7 +327,7 @@ public final class CallRecordingsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stopRecordingWithResponseAsync(String recordingId) {
@@ -443,7 +346,7 @@ public final class CallRecordingsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stopRecordingWithResponseAsync(String recordingId, Context context) {
@@ -459,11 +362,11 @@ public final class CallRecordingsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopRecordingAsync(String recordingId) {
-        return stopRecordingWithResponseAsync(recordingId).flatMap((Response<Void> res) -> Mono.empty());
+        return stopRecordingWithResponseAsync(recordingId).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -474,11 +377,26 @@ public final class CallRecordingsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopRecordingAsync(String recordingId, Context context) {
-        return stopRecordingWithResponseAsync(recordingId, context).flatMap((Response<Void> res) -> Mono.empty());
+        return stopRecordingWithResponseAsync(recordingId, context).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Stop recording the call.
+     *
+     * @param recordingId The recording id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> stopRecordingWithResponse(String recordingId, Context context) {
+        return stopRecordingWithResponseAsync(recordingId, context).block();
     }
 
     /**
@@ -491,22 +409,7 @@ public final class CallRecordingsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stopRecording(String recordingId) {
-        stopRecordingAsync(recordingId).block();
-    }
-
-    /**
-     * Stop recording the call.
-     *
-     * @param recordingId The recording id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> stopRecordingWithResponse(String recordingId, Context context) {
-        return stopRecordingWithResponseAsync(recordingId, context).block();
+        stopRecordingWithResponse(recordingId, Context.NONE);
     }
 
     /**
@@ -516,7 +419,7 @@ public final class CallRecordingsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> pauseRecordingWithResponseAsync(String recordingId) {
@@ -535,7 +438,7 @@ public final class CallRecordingsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> pauseRecordingWithResponseAsync(String recordingId, Context context) {
@@ -551,11 +454,11 @@ public final class CallRecordingsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> pauseRecordingAsync(String recordingId) {
-        return pauseRecordingWithResponseAsync(recordingId).flatMap((Response<Void> res) -> Mono.empty());
+        return pauseRecordingWithResponseAsync(recordingId).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -566,11 +469,26 @@ public final class CallRecordingsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> pauseRecordingAsync(String recordingId, Context context) {
-        return pauseRecordingWithResponseAsync(recordingId, context).flatMap((Response<Void> res) -> Mono.empty());
+        return pauseRecordingWithResponseAsync(recordingId, context).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Pause recording the call.
+     *
+     * @param recordingId The recording id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> pauseRecordingWithResponse(String recordingId, Context context) {
+        return pauseRecordingWithResponseAsync(recordingId, context).block();
     }
 
     /**
@@ -583,22 +501,7 @@ public final class CallRecordingsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void pauseRecording(String recordingId) {
-        pauseRecordingAsync(recordingId).block();
-    }
-
-    /**
-     * Pause recording the call.
-     *
-     * @param recordingId The recording id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> pauseRecordingWithResponse(String recordingId, Context context) {
-        return pauseRecordingWithResponseAsync(recordingId, context).block();
+        pauseRecordingWithResponse(recordingId, Context.NONE);
     }
 
     /**
@@ -608,7 +511,7 @@ public final class CallRecordingsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resumeRecordingWithResponseAsync(String recordingId) {
@@ -627,7 +530,7 @@ public final class CallRecordingsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resumeRecordingWithResponseAsync(String recordingId, Context context) {
@@ -643,11 +546,11 @@ public final class CallRecordingsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> resumeRecordingAsync(String recordingId) {
-        return resumeRecordingWithResponseAsync(recordingId).flatMap((Response<Void> res) -> Mono.empty());
+        return resumeRecordingWithResponseAsync(recordingId).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -658,11 +561,26 @@ public final class CallRecordingsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> resumeRecordingAsync(String recordingId, Context context) {
-        return resumeRecordingWithResponseAsync(recordingId, context).flatMap((Response<Void> res) -> Mono.empty());
+        return resumeRecordingWithResponseAsync(recordingId, context).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Resume recording the call.
+     *
+     * @param recordingId The recording id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> resumeRecordingWithResponse(String recordingId, Context context) {
+        return resumeRecordingWithResponseAsync(recordingId, context).block();
     }
 
     /**
@@ -675,21 +593,6 @@ public final class CallRecordingsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resumeRecording(String recordingId) {
-        resumeRecordingAsync(recordingId).block();
-    }
-
-    /**
-     * Resume recording the call.
-     *
-     * @param recordingId The recording id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> resumeRecordingWithResponse(String recordingId, Context context) {
-        return resumeRecordingWithResponseAsync(recordingId, context).block();
+        resumeRecordingWithResponse(recordingId, Context.NONE);
     }
 }

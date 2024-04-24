@@ -16,7 +16,7 @@ public final class SsmlSource extends PlaySource {
     private String ssmlText;
 
     /*
-     * Endpoint where the Custom Voice was deployed.
+     * Endpoint where the custom voice was deployed.
      */
     @JsonProperty(value = "customVoiceEndpointId")
     private String customVoiceEndpointId;
@@ -54,7 +54,7 @@ public final class SsmlSource extends PlaySource {
      * Set the customVoiceEndpointId property: Endpoint where the custom voice was deployed.
      *
      * @param customVoiceEndpointId the customVoiceEndpointId value to set.
-     * @return the TextSourceInternal object itself.
+     * @return the SsmlSourceInternal object itself.
      */
     public SsmlSource setCustomVoiceEndpointId(String customVoiceEndpointId) {
         this.customVoiceEndpointId = customVoiceEndpointId;
