@@ -46,6 +46,7 @@ class AadWebApplicationConfiguration {
     static class DefaultAadWebSecurityConfiguration {
 
         @Bean
+        @SuppressWarnings("removal")
         SecurityFilterChain defaultAadWebApplicationFilterChain(HttpSecurity http) throws Exception {
             http
                 .apply(aadWebApplication())

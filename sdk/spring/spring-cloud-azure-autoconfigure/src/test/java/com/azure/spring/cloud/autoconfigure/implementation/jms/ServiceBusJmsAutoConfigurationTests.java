@@ -226,6 +226,7 @@ class ServiceBusJmsAutoConfigurationTests {
 
     @ParameterizedTest
     @ValueSource(strings = { "standard", "premium" })
+    @SuppressWarnings("removal")
     void jmsPropertiesConfiguredCorrectly(String pricingTier) {
         this.contextRunner
             .withPropertyValues(

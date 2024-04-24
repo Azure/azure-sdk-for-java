@@ -147,6 +147,7 @@ class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2A
     }
 
     @Test
+    @SuppressWarnings("removal")
     void testNotBindBinderPropertiesOnBoot() {
         getContextRunnerWithEventHubsURL()
             .withPropertyValues(

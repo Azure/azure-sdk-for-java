@@ -39,6 +39,7 @@ class AzureEventHubsKafkaConfigurationTests {
 
 
     @Test
+    @SuppressWarnings("removal")
     void shouldConfigureSaslPlainWhenGivenConnectionString() {
         contextRunner
                 .withPropertyValues("spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test"))

@@ -72,6 +72,7 @@ class KafkaBinderConfigurationPropertiesBeanPostProcessor extends AbstractKafkaP
         return merged;
     }
 
+    @SuppressWarnings("removal")
     private Map<String, Object> mergeAdminProperties(KafkaBinderConfigurationProperties properties) {
         Map<String, Object> adminProperties = properties.getKafkaProperties().buildAdminProperties();
         normalalizeBootPropsWithBinder(adminProperties, properties.getKafkaProperties(), properties);

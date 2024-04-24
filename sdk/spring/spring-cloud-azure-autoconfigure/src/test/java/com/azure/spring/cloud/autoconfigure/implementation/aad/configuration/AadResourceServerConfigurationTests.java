@@ -187,6 +187,7 @@ class AadResourceServerConfigurationTests {
         private HttpSecurity savedResourceServerHttpSecurity;
 
         @Bean
+        @SuppressWarnings("removal")
         SecurityFilterChain testAadResourceServerFilterChain(HttpSecurity http,
                                                              TestJwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter) throws Exception {
             http.apply(aadResourceServer()

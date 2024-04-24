@@ -24,6 +24,7 @@ import java.util.Collection;
  * make {@link OAuth2ResourceServerConfigurer.JwtConfigurer } and {@link AadJwtGrantedAuthoritiesConverter} take effect.
  *
  */
+@SuppressWarnings("removal")
 public class AadResourceServerHttpSecurityConfigurer extends AbstractHttpConfigurer<AadResourceServerHttpSecurityConfigurer, HttpSecurity> {
 
     private AadResourceServerProperties properties;

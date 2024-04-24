@@ -124,6 +124,7 @@ class CosmosDataAutoConfigurationTests {
     }
 
     @Test
+    @SuppressWarnings("try")
     void testWithEnableAuditing() {
         try (MockedStatic<CosmosFactory> ignored = mockStatic(CosmosFactory.class, RETURNS_MOCKS)) {
             AzureCosmosProperties azureCosmosProperties = new AzureCosmosProperties();

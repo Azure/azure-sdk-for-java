@@ -10,6 +10,7 @@ import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 /**
  * The AzureProfile defines the properties related to an Azure subscription.
  */
+@SuppressWarnings("deprecation")
 public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdapter {
 
     /**

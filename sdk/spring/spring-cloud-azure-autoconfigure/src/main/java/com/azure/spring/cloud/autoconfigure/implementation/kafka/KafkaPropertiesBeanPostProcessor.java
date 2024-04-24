@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 
 import java.util.Map;
 
+@SuppressWarnings("removal")
 class KafkaPropertiesBeanPostProcessor extends AbstractKafkaPropertiesBeanPostProcessor<KafkaProperties> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaPropertiesBeanPostProcessor.class);

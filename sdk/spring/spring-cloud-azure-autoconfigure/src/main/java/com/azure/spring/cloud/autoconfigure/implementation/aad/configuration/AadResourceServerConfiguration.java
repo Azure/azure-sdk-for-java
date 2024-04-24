@@ -85,6 +85,7 @@ class AadResourceServerConfiguration {
 
         @Bean
         @ConditionalOnBean(AadResourceServerProperties.class)
+        @SuppressWarnings("removal")
         SecurityFilterChain defaultAadResourceServerFilterChain(HttpSecurity http) throws Exception {
             http.apply(aadResourceServer());
             return http.build();

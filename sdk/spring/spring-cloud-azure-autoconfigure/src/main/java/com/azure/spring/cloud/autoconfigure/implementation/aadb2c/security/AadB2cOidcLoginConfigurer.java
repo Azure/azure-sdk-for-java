@@ -77,6 +77,7 @@ public class AadB2cOidcLoginConfigurer extends AbstractHttpConfigurer<AadB2cOidc
      * @throws Exception failed to initialize SecurityBuilder
      */
     @Override
+    @SuppressWarnings("removal")
     public void init(HttpSecurity http) throws Exception {
         // @formatter:off
         http.logout()
