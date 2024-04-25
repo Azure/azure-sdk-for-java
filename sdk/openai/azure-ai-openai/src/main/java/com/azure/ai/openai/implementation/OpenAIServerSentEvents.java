@@ -44,10 +44,8 @@ public final class OpenAIServerSentEvents<T> {
                 byte[] byteArray = byteBuffer.array();
                 for (byte currentByte : byteArray) {
                     if (currentByte == 0xA || currentByte == 0xD) {
-                        String currentLine;
                         try {
-                            currentLine = outStream.toString(StandardCharsets.UTF_8.name());
-                            handleCurrentLine(currentLine, values);
+                            handleCurrentLine(outStream.toString(StandardCharsets.UTF_8.name()), values);
                         } catch (UnsupportedEncodingException | UncheckedIOException e) {
                             return Flux.error(e);
                         }
@@ -88,6 +86,11 @@ public final class OpenAIServerSentEvents<T> {
         }
 
         T value = SERIALIZER.deserializeFromBytes(dataValue.getBytes(StandardCharsets.UTF_8), TypeReference.createInstance(type));
+        if (value == null) {
+            throw new IllegalStateException("Failed to deserialize the data value " + dataValue);
+        }
+
         values.add(value);
+
     }
 }
