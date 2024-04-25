@@ -698,6 +698,7 @@ public class ShareDirectoryClient {
         ModelHelper.validateFilePermissionAndKey(filePermission, smbProperties.getFilePermissionKey());
 
         // If file permission and file permission key are both not set then set default value
+        String finalFilePermission = smbProperties.setFilePermission(filePermission, FileConstants.PRESERVE);
         String filePermissionKey = smbProperties.getFilePermissionKey();
 
         String fileAttributes = smbProperties.setNtfsFileAttributes(FileConstants.PRESERVE);
@@ -706,7 +707,7 @@ public class ShareDirectoryClient {
         String fileChangeTime = smbProperties.getFileChangeTimeString();
         Callable<ResponseBase<DirectoriesSetPropertiesHeaders, Void>> operation = () ->
             this.azureFileStorageClient.getDirectories().setPropertiesWithResponse(shareName, directoryPath,
-                fileAttributes, null, filePermission, filePermissionKey, fileCreationTime, fileLastWriteTime,
+                fileAttributes, null, finalFilePermission, filePermissionKey, fileCreationTime, fileLastWriteTime,
                 fileChangeTime, finalContext);
 
         ResponseBase<DirectoriesSetPropertiesHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);

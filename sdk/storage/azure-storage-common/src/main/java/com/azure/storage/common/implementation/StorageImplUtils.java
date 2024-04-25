@@ -490,8 +490,6 @@ public class StorageImplUtils {
         return null;
     }
 
-    // Suppressing SpotBug warning since Class.cast is already checking if obj is an instance of exceptionType
-    @SuppressWarnings("cast")
     public static <T, U> ResponseBase<T, U> sendRequest(Callable<ResponseBase<T, U>> operation, Duration timeout,
         Class<? extends RuntimeException> exceptionType) {
         try {
