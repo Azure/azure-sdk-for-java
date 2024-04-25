@@ -57,6 +57,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
 
     // magic OpenTelemetry string that represents unknown error.
     private static final String OTHER_ERROR_TYPE = "_OTHER";
+    private UrlSanitizer urlSanitizer;
     private Tracer tracer;
 
     /**
@@ -70,8 +71,9 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
      *
      * @param tracer the tracer instance.
      */
-    public void initialize(Tracer tracer) {
+    public void initialize(Tracer tracer, UrlSanitizer urlSanitizer) {
         this.tracer = tracer;
+        this.urlSanitizer = urlSanitizer;
     }
 
     @Override
@@ -80,15 +82,15 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
             return next.process();
         }
 
-        return Mono.defer(() -> {
-            Context span = startSpan(context);
-            return next.process()
-                .doOnSuccess(response -> onResponseCode(response, span))
-                // TODO: maybe we can optimize it? https://github.com/Azure/azure-sdk-for-java/issues/38228
-                .map(response -> TraceableResponse.create(response, tracer, span))
-                .doOnCancel(() -> tracer.end(CANCELLED_ERROR_TYPE, null, span))
-                .doOnError(exception -> tracer.end(null, exception, span));
-        });
+        return Mono.using(() -> startSpan(context),
+            span -> next.process().map(response -> {
+                    onResponseCode(response, span);
+                    // TODO: maybe we can optimize it? https://github.com/Azure/azure-sdk-for-java/issues/38228
+                    return TraceableResponse.create(response, tracer, span);
+                })
+            .doOnCancel(() -> tracer.end(CANCELLED_ERROR_TYPE, null, span))
+            .doOnError(exception -> tracer.end(null, exception, span)), __ -> {
+            });
     }
 
     @SuppressWarnings("try")
@@ -120,7 +122,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         // Build new child span representing this outgoing request.
         String methodName = request.getHttpMethod().toString();
         StartSpanOptions spanOptions = new StartSpanOptions(SpanKind.CLIENT).setAttribute(HTTP_METHOD, methodName)
-            .setAttribute(HTTP_URL, request.getUrl().toString())
+            .setAttribute(HTTP_URL, urlSanitizer.getRedactedUrl(request.getUrl()))
             .setAttribute(SERVER_ADDRESS, request.getUrl().getHost())
             .setAttribute(SERVER_PORT, getPort(request.getUrl()));
         Context span = tracer.start(methodName, spanOptions, azContext.getContext());

@@ -87,12 +87,4 @@ public class TracerProviderTests {
         assertFalse(tracer.isEnabled());
         assertInstanceOf(NoopTracer.class, tracer);
     }
-
-    public static class TestTracerProvider implements TracerProvider {
-        @Override
-        public Tracer createTracer(String libraryName, String libraryVersion, String azNamespace,
-            TracingOptions options) {
-            return null;
-        }
-    }
 }

@@ -6,6 +6,9 @@ package com.azure.core.util;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 
+import java.util.Collections;
+import java.util.Set;
+
 import static com.azure.core.implementation.ImplUtils.getClassByName;
 
 /**
@@ -27,6 +30,7 @@ public class TracingOptions {
 
     private static final Configuration GLOBAL_CONFIG = Configuration.getGlobalConfiguration();
     private final Class<? extends TracerProvider> tracerProvider;
+    private Set<String> allowedQueryParamNames;
     private boolean isEnabled;
 
     /**
@@ -97,5 +101,23 @@ public class TracingOptions {
      */
     public Class<? extends TracerProvider> getTracerProvider() {
         return tracerProvider;
+    }
+
+    /**
+     * Gets the set of query parameter names that are allowed to be recorded in the URL.
+     * @return
+     */
+    public Set<String> getAllowedQueryParamNames() {
+        return allowedQueryParamNames;
+    }
+
+    /**
+     * Sets the set of query parameter names that are allowed to be recorded in the URL.
+     * @param allowedQueryParamNames The set of query parameter names that are allowed to be recorded in the URL.
+     * @return The updated {@link TracingOptions} object.
+     */
+    public TracingOptions setAllowedQueryParamNames(Set<String> allowedQueryParamNames) {
+        this.allowedQueryParamNames = allowedQueryParamNames;
+        return this;
     }
 }
