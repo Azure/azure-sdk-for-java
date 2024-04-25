@@ -12,19 +12,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class OpenAIServerSentEventsTest {
 
     @Test
-    public void testOpenAIServerSentEvents() {
+    public void eventsEmissionCount() {
         BinaryData testFile = BinaryData.fromFile(AssistantsClientTestBase.openResourceFile("create_thread_run.dump"));
         OpenAIServerSentEvents<String> openAIServerSentEvents = new OpenAIServerSentEvents(testFile.toFluxByteBuffer());
 
-        AtomicInteger i = new AtomicInteger();
-        System.out.println("Events: ");
-        StepVerifier.create(openAIServerSentEvents.getEvents()
-                .doOnEach(event -> {
-                    System.out.println("Event " + i.getAndIncrement() + ": ");
-                    System.out.println(event + "\n");
-                })
-            )
-                            .expectNextCount(30)
+        // data: [DONE] is the last event in the file, but is not emitted by the Flux
+        StepVerifier.create(openAIServerSentEvents.getEvents())
+            .expectNextCount(30)
             .verifyComplete();
     }
 }
