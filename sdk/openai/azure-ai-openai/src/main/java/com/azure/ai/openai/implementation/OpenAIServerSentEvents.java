@@ -3,13 +3,15 @@
 
 package com.azure.ai.openai.implementation;
 
-import com.azure.json.JsonProviders;
-import com.azure.json.JsonReader;
+import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.JsonSerializerProviders;
+import com.azure.core.util.serializer.TypeReference;
+import com.azure.json.implementation.jackson.core.JsonProcessingException;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
-
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -22,6 +24,8 @@ public final class OpenAIServerSentEvents<T> {
     private final Flux<ByteBuffer> source;
     private final Class<T> type;
     private ByteArrayOutputStream outStream;
+
+    private final JsonSerializer SERIALIZER = JsonSerializerProviders.createInstance(true);
 
     public OpenAIServerSentEvents(Flux<ByteBuffer> source, Class<T> type) {
         this.source = source;
@@ -45,7 +49,7 @@ public final class OpenAIServerSentEvents<T> {
                         try {
                             currentLine = outStream.toString(StandardCharsets.UTF_8.name());
                             handleCurrentLine(currentLine, values);
-                        } catch (IOException e) {
+                        } catch (UnsupportedEncodingException | UncheckedIOException e) {
                             return Flux.error(e);
                         }
                         outStream = new ByteArrayOutputStream();
@@ -56,19 +60,19 @@ public final class OpenAIServerSentEvents<T> {
                 try {
                     handleCurrentLine(outStream.toString(StandardCharsets.UTF_8.name()), values);
                     outStream = new ByteArrayOutputStream();
-                } catch (IllegalStateException e) {
+                } catch (IllegalStateException | UncheckedIOException e) {
                     // return the values collected so far, as this could be because the server sent event is
                     // split across two byte buffers and the last line is incomplete and will be continued in
                     // the next byte buffer
                     return Flux.fromIterable(values);
-                } catch (IOException e) {
+                } catch (UnsupportedEncodingException e) {
                     return Flux.error(e);
                 }
                 return Flux.fromIterable(values);
             }).cache();
     }
 
-    private void handleCurrentLine(String currentLine, List<T> values) throws IOException {
+    private void handleCurrentLine(String currentLine, List<T> values) throws UncheckedIOException {
         if (currentLine.isEmpty() || STREAM_COMPLETION_EVENT.contains(currentLine)) {
             return;
         }
@@ -84,13 +88,7 @@ public final class OpenAIServerSentEvents<T> {
             dataValue = split[1].substring(1);
         }
 
-//        T value = SERIALIZER.readValue(dataValue, type);
-
-
-        JsonReader reader = JsonProviders.createReader(dataValue);
-
-        T value = null;
-
+        T value = SERIALIZER.deserializeFromBytes(dataValue.getBytes(StandardCharsets.UTF_8), TypeReference.createInstance(type));
         values.add(value);
     }
 }
