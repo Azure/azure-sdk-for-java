@@ -248,6 +248,7 @@ there are non-existent document IDs also passed through the API - See [PR 35513]
 #### Other Changes
 * Refactored `CosmosContainerProactiveInitConfigBuilder` to make use of `ContainerDirectConnectionMetadata` and to wire `DirectConnectionConfig` with
   JVM configuration - `COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT` - See [PR 34859](https://github.com/Azure/azure-sdk-for-java/pull/34859)
+* Extending maximum retry delay in `SessionTokenMismatchRetryPolicy`. - See [PR 35360](https://github.com/Azure/azure-sdk-for-java/pull/35360)
 
 ### 4.45.3-hotfix (2024-03-15)
 
@@ -271,7 +272,6 @@ there are non-existent document IDs also passed through the API - See [PR 35513]
 * Optimized the replica validation flow to validate replica health with `Unknown` health status only when the replica is
   used by a container which is also part of the connection warm-up flow. - See [PR 36225](https://github.com/Azure/azure-sdk-for-java/pull/36225)
 * Fixed possible `NullPointerException` issue if health-check flow kicks in before RNTBD context negotiation for a given channel - See [PR 36397](https://github.com/Azure/azure-sdk-for-java/pull/36397).
-  Extending maximum retry delay in `SessionTokenMismatchRetryPolicy`. - See [PR 35360](https://github.com/Azure/azure-sdk-for-java/pull/35360)
 
 ### 4.45.1 (2023-05-19)
 #### Bugs Fixed
