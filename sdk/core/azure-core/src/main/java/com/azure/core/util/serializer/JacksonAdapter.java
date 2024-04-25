@@ -6,6 +6,7 @@ package com.azure.core.util.serializer;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.ImplUtils;
+import com.azure.core.implementation.ReflectionSerializable;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.jackson.ObjectMapperShim;
 import com.azure.core.util.Configuration;
@@ -16,7 +17,6 @@ import com.azure.core.util.Header;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.json.JsonSerializable;
-import com.azure.xml.XmlSerializable;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -39,12 +39,6 @@ import java.util.function.BiConsumer;
 
 import static com.azure.core.implementation.ReflectionSerializable.deserializeAsJsonSerializable;
 import static com.azure.core.implementation.ReflectionSerializable.deserializeAsXmlSerializable;
-import static com.azure.core.implementation.ReflectionSerializable.serializeJsonSerializableIntoOutputStream;
-import static com.azure.core.implementation.ReflectionSerializable.serializeJsonSerializableToBytes;
-import static com.azure.core.implementation.ReflectionSerializable.serializeJsonSerializableToString;
-import static com.azure.core.implementation.ReflectionSerializable.serializeXmlSerializableIntoOutputStream;
-import static com.azure.core.implementation.ReflectionSerializable.serializeXmlSerializableToBytes;
-import static com.azure.core.implementation.ReflectionSerializable.serializeXmlSerializableToString;
 import static com.azure.core.implementation.ReflectionSerializable.supportsJsonSerializable;
 import static com.azure.core.implementation.ReflectionSerializable.supportsXmlSerializable;
 
@@ -125,10 +119,7 @@ public class JacksonAdapter implements SerializerAdapter {
      *
      * @param configureSerialization Applies additional configuration to outer mapper using inner mapper for module
      * chaining.
-     * @deprecated This API will be removed in the future. Please use {@link #createDefaultSerializerAdapter()} if you
-     * need to use JacksonAdapter.
      */
-    @Deprecated
     public JacksonAdapter(BiConsumer<ObjectMapper, ObjectMapper> configureSerialization) {
         Objects.requireNonNull(configureSerialization, "'configureSerialization' cannot be null.");
         this.headerMapper = ObjectMapperShim.createHeaderMapper();
@@ -188,13 +179,13 @@ public class JacksonAdapter implements SerializerAdapter {
         return (String) useAccessHelper(() -> {
             if (encoding == SerializerEncoding.XML) {
                 return supportsXmlSerializable(object.getClass())
-                    ? serializeXmlSerializableToString((XmlSerializable<?>) object)
+                    ? ReflectionSerializable.serializeXmlSerializableToString(object)
                     : getXmlMapper().writeValueAsString(object);
             } else if (encoding == SerializerEncoding.TEXT) {
                 return object.toString();
             } else {
-                return supportsJsonSerializable(object.getClass())
-                    ? serializeJsonSerializableToString((JsonSerializable<?>) object)
+                return ReflectionSerializable.supportsJsonSerializable(object.getClass())
+                    ? ReflectionSerializable.serializeJsonSerializableToString((JsonSerializable<?>) object)
                     : mapper.writeValueAsString(object);
             }
         });
@@ -209,13 +200,13 @@ public class JacksonAdapter implements SerializerAdapter {
         return (byte[]) useAccessHelper(() -> {
             if (encoding == SerializerEncoding.XML) {
                 return supportsXmlSerializable(object.getClass())
-                    ? serializeXmlSerializableToBytes((XmlSerializable<?>) object)
+                    ? ReflectionSerializable.serializeXmlSerializableToBytes(object)
                     : getXmlMapper().writeValueAsBytes(object);
             } else if (encoding == SerializerEncoding.TEXT) {
                 return object.toString().getBytes(StandardCharsets.UTF_8);
             } else {
-                return supportsJsonSerializable(object.getClass())
-                    ? serializeJsonSerializableToBytes((JsonSerializable<?>) object)
+                return ReflectionSerializable.supportsJsonSerializable(object.getClass())
+                    ? ReflectionSerializable.serializeJsonSerializableToBytes((JsonSerializable<?>) object)
                     : mapper.writeValueAsBytes(object);
             }
         });
@@ -230,15 +221,16 @@ public class JacksonAdapter implements SerializerAdapter {
         useAccessHelper(() -> {
             if (encoding == SerializerEncoding.XML) {
                 if (supportsXmlSerializable(object.getClass())) {
-                    serializeXmlSerializableIntoOutputStream((XmlSerializable<?>) object, outputStream);
+                    ReflectionSerializable.serializeXmlSerializableIntoOutputStream(object, outputStream);
                 } else {
                     getXmlMapper().writeValue(outputStream, object);
                 }
             } else if (encoding == SerializerEncoding.TEXT) {
                 outputStream.write(object.toString().getBytes(StandardCharsets.UTF_8));
             } else {
-                if (supportsJsonSerializable(object.getClass())) {
-                    serializeJsonSerializableIntoOutputStream((JsonSerializable<?>) object, outputStream);
+                if (ReflectionSerializable.supportsJsonSerializable(object.getClass())) {
+                    ReflectionSerializable.serializeJsonSerializableIntoOutputStream((JsonSerializable<?>) object,
+                        outputStream);
                 } else {
                     mapper.writeValue(outputStream, object);
                 }

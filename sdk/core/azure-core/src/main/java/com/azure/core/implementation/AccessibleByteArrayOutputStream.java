@@ -100,8 +100,4 @@ public class AccessibleByteArrayOutputStream extends ByteArrayOutputStream {
     public String bomAwareToString(String contentType) {
         return ImplUtils.bomAwareToString(buf, 0, count, contentType);
     }
-
-    @Override
-    public void close() {
-    }
 }

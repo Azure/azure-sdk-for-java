@@ -189,7 +189,6 @@ public class AsyncRestProxyTests {
             Arguments.of(new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, ContentType.APPLICATION_OCTET_STREAM),
                 true),
             Arguments.of(new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "text/event-stream"), false),
-            Arguments.of(new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "text/event-stream; charset=utf-8"), false),
             Arguments.of(new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, ContentType.APPLICATION_JSON), true),
             Arguments.of(new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml"), true));
     }

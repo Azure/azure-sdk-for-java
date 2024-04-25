@@ -20,7 +20,6 @@ import com.fasterxml.jackson.annotation.JsonRawValue;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -306,7 +305,6 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
         this.id = CoreUtils.randomUuid().toString();
         this.specVersion = CloudEvent.SPEC_VERSION;
         this.binaryData = data;
-        this.time = OffsetDateTime.now(ZoneOffset.UTC);
     }
 
     private CloudEvent() {
@@ -478,8 +476,6 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
 
     /**
      * Set the time associated with the occurrence of the event.
-     * <p>
-     * At creation, the time is set to the current UTC time. It can be unset by setting it to null.
      *
      * @param time the time to set.
      * @return the cloud event itself.

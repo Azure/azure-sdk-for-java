@@ -3,9 +3,8 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.implementation.ReflectionSerializable;
-import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.implementation.ReflectiveInvoker;
+import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,6 +22,17 @@ import java.io.IOException;
 final class JsonSerializableDeserializer extends JsonDeserializer<JsonSerializable<?>> {
     private static final ClientLogger LOGGER = new ClientLogger(JsonSerializableDeserializer.class);
 
+    private static final Module MODULE = new SimpleModule().setDeserializerModifier(new BeanDeserializerModifier() {
+        @SuppressWarnings("unchecked")
+        @Override
+        public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config, BeanDescription beanDesc,
+            JsonDeserializer<?> deserializer) {
+            return (JsonSerializable.class.isAssignableFrom(beanDesc.getBeanClass()))
+                ? new JsonSerializableDeserializer((Class<? extends JsonSerializable<?>>) beanDesc.getBeanClass())
+                : deserializer;
+        }
+    });
+
     private final Class<? extends JsonSerializable<?>> jsonSerializableType;
     private final ReflectiveInvoker readJson;
 
@@ -32,16 +42,7 @@ final class JsonSerializableDeserializer extends JsonDeserializer<JsonSerializab
      * @return A module to be plugged into Jackson ObjectMapper.
      */
     public static Module getModule() {
-        return new SimpleModule().setDeserializerModifier(new BeanDeserializerModifier() {
-            @SuppressWarnings("unchecked")
-            @Override
-            public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config, BeanDescription beanDesc,
-                JsonDeserializer<?> deserializer) {
-                return ReflectionSerializable.supportsJsonSerializable(beanDesc.getBeanClass())
-                    ? new JsonSerializableDeserializer((Class<? extends JsonSerializable<?>>) beanDesc.getBeanClass())
-                    : deserializer;
-            }
-        });
+        return MODULE;
     }
 
     /**

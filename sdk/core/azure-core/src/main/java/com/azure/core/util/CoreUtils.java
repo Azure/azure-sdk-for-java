@@ -14,15 +14,7 @@ import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.DateTimeException;
 import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
-import java.time.temporal.TemporalQueries;
-import java.time.temporal.TemporalQuery;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -769,36 +761,6 @@ public final class CoreUtils {
         }
 
         return builder.toString();
-    }
-
-    /**
-     * Parses a string into an {@link OffsetDateTime}.
-     * <p>
-     * If {@code dateString} is null, null will be returned.
-     * <p>
-     * This method attempts to parse the {@code dateString} using
-     * {@link DateTimeFormatter#parseBest(CharSequence, TemporalQuery[])}. This will use
-     * {@link OffsetDateTime#from(TemporalAccessor)} as the first attempt and will fall back to
-     * {@link LocalDateTime#from(TemporalAccessor)} with setting the offset as {@link ZoneOffset#UTC}.
-     *
-     * @param dateString The string to parse into an {@link OffsetDateTime}.
-     * @return The parsed {@link OffsetDateTime}, or null if {@code dateString} was null.
-     * @throws DateTimeException If the {@code dateString} cannot be parsed by either
-     * {@link OffsetDateTime#from(TemporalAccessor)} or {@link LocalDateTime#from(TemporalAccessor)}.
-     */
-    public static OffsetDateTime parseBestOffsetDateTime(String dateString) {
-        if (dateString == null) {
-            return null;
-        }
-
-        TemporalAccessor temporal
-            = DateTimeFormatter.ISO_DATE_TIME.parseBest(dateString, OffsetDateTime::from, LocalDateTime::from);
-
-        if (temporal.query(TemporalQueries.offset()) == null) {
-            return LocalDateTime.from(temporal).atOffset(ZoneOffset.UTC);
-        } else {
-            return OffsetDateTime.from(temporal);
-        }
     }
 
     /*

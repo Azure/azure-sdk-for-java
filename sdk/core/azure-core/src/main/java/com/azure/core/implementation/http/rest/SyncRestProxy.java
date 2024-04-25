@@ -19,7 +19,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.json.JsonSerializable;
-import com.azure.xml.XmlSerializable;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -31,9 +30,6 @@ import java.util.EnumSet;
 import java.util.function.Consumer;
 
 import static com.azure.core.implementation.ReflectionSerializable.serializeJsonSerializableToBytes;
-import static com.azure.core.implementation.ReflectionSerializable.serializeXmlSerializableToBytes;
-import static com.azure.core.implementation.ReflectionSerializable.supportsJsonSerializable;
-import static com.azure.core.implementation.ReflectionSerializable.supportsXmlSerializable;
 
 /**
  * A synchronous REST proxy implementation.
@@ -240,7 +236,7 @@ public class SyncRestProxy extends RestProxyBase {
         }
 
         if (supportsXmlSerializable(bodyContentObject.getClass())) {
-            request.setBody(serializeXmlSerializableToBytes((XmlSerializable<?>) bodyContentObject));
+            request.setBody(BinaryData.fromByteBuffer(serializeAsXmlSerializable(bodyContentObject)));
             return;
         }
 

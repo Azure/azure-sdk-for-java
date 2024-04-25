@@ -2,9 +2,7 @@
 // Licensed under the MIT License.
 
 module com.azure.core {
-    requires transitive com.azure.json;
-    requires transitive com.azure.xml;
-
+    requires com.azure.json;
     requires transitive reactor.core;
     requires transitive org.reactivestreams;
     requires transitive org.slf4j;
@@ -13,6 +11,7 @@ module com.azure.core {
     requires transitive com.fasterxml.jackson.core;
     requires transitive com.fasterxml.jackson.databind;
 
+    requires java.xml;
     requires transitive com.fasterxml.jackson.datatype.jsr310;
 
     // public API surface area
