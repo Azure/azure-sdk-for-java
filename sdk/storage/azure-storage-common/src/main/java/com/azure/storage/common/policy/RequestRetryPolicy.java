@@ -4,6 +4,7 @@
 package com.azure.storage.common.policy;
 
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
@@ -39,6 +40,7 @@ import java.util.concurrent.TimeoutException;
 public final class RequestRetryPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(RequestRetryPolicy.class);
     private final RequestRetryOptions requestRetryOptions;
+    private static final HttpHeaderName X_MS_COPY_SOURCE_ERROR_CODE = HttpHeaderName.fromString("x-ms-copy-source-error-code");
 
     /**
      * Constructs the policy using the retry options.
@@ -151,7 +153,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
             boolean newConsiderSecondary = considerSecondary;
             int statusCode = response.getStatusCode();
 
-            boolean retry = shouldStatusCodeBeRetried(statusCode, tryingPrimary);
+            boolean retry = shouldResponseBeRetried(statusCode, tryingPrimary, response);
             if (!tryingPrimary && statusCode == 404) {
                 newConsiderSecondary = false;
             }
@@ -266,7 +268,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
 
             boolean newConsiderSecondary = considerSecondary;
             int statusCode = response.getStatusCode();
-            boolean retry = shouldStatusCodeBeRetried(statusCode, tryingPrimary);
+            boolean retry = shouldResponseBeRetried(statusCode, tryingPrimary, response);
             if (!tryingPrimary && statusCode == 404) {
                 newConsiderSecondary = false;
             }
@@ -377,14 +379,23 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
         return new ExceptionRetryStatus(false, unwrappedThrowable);
     }
 
-    static boolean shouldStatusCodeBeRetried(int statusCode, boolean isPrimary) {
+    static boolean shouldResponseBeRetried(int statusCode, boolean isPrimary, HttpResponse response) {
         /*
          * Retry the request if the server had an error (500), was unavailable (503), or requested a backoff (429),
          * or if the secondary was being tried and the resources didn't exist there (404). Only the secondary can retry
          * if the resource wasn't found as there may be a delay in replication from the primary.
          */
-        return (statusCode == 429 || statusCode == 500 || statusCode == 503)
-            || (!isPrimary && statusCode == 404);
+        boolean headerRetry = false;
+        boolean statusCodeRetry = (statusCode == 429 || statusCode == 500 || statusCode == 503) || (!isPrimary && statusCode == 404);
+        if (response != null && response.getHeaders() != null) {
+            String headerValue = response.getHeaders().getValue(X_MS_COPY_SOURCE_ERROR_CODE);
+            if (headerValue != null) {
+                headerRetry = ("429".equals(headerValue) || "500".equals(headerValue) || "503".equals(headerValue))
+                    || (!isPrimary && "404".equals(headerValue));
+            }
+
+        }
+        return statusCodeRetry || headerRetry;
     }
 
     static final class ExceptionRetryStatus {

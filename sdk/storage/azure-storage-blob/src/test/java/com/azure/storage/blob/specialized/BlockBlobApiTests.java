@@ -376,6 +376,20 @@ public class BlockBlobApiTests extends BlobTestBase {
         assertEquals(ByteBuffer.wrap(outputStream.toByteArray()), DATA.getDefaultData());
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @Test
+    public void stageBlockFromUrlSourceErrorAndStatusCode() {
+        BlockBlobClient destBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
+
+        String blockID = getBlockID();
+
+        BlobStorageException e = assertThrows(BlobStorageException.class, () -> destBlob.stageBlockFromUrl(blockID, blockBlobClient.getBlobUrl(), new BlobRange(0, (long) PageBlobClient.PAGE_BYTES)));
+
+        assertTrue(e.getStatusCode() == 409);
+        assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
+        assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
+    }
+
     @Test
     public void stageBlockFromUrlMin() {
         BlockBlobClient bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
@@ -1483,6 +1497,18 @@ public class BlockBlobApiTests extends BlobTestBase {
         assertNotNull(blockBlobItem.getETag());
         assertNotNull(blockBlobItem.getLastModified());
         TestUtils.assertArraysEqual(DATA.getDefaultBytes(), os.toByteArray());
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @Test
+    public void uploadFromUrlSourceErrorAndStatusCode() {
+        BlockBlobClient destBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
+
+        BlobStorageException e = assertThrows(BlobStorageException.class, () -> destBlob.uploadFromUrl(blockBlobClient.getBlobUrl()));
+
+        assertTrue(e.getStatusCode() == 409);
+        assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
+        assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-04-08")

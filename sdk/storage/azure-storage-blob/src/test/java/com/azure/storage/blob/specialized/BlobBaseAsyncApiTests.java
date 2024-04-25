@@ -47,6 +47,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BlobBaseAsyncApiTests extends BlobTestBase {
@@ -583,6 +584,21 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
         StepVerifier.create(bc.queryWithResponse(optionsOs))
             .verifyError(BlobStorageException.class);
     }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @Test
+    public void copyFromURLSourceErrorAndStatusCode() {
+        BlockBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+
+        StepVerifier.create(destBlob.copyFromUrl(bc.getBlobUrl()))
+            .verifyErrorSatisfies(r -> {
+                BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
+                assertTrue(e.getStatusCode() == 409);
+                assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
+                assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
+            });
+    }
+
 
     static class MockProgressConsumer implements Consumer<BlobQueryProgress> {
 
