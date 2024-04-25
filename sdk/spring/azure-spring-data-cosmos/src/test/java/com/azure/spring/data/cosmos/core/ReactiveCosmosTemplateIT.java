@@ -99,8 +99,6 @@ import static org.junit.Assert.fail;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class ReactiveCosmosTemplateIT {
-
-    private static final Address TEST_ADDRESS_TRANSIENT_PARTITION_KEY = new Address(TestConstants.POSTAL_CODE_3, TestConstants.STREET, TestConstants.CITY);
     private static final Person TEST_PERSON = new Person(TestConstants.ID_1, TestConstants.FIRST_NAME,
         TestConstants.LAST_NAME, TestConstants.HOBBIES, TestConstants.ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
 
