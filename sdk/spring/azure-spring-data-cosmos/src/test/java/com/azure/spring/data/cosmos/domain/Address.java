@@ -35,7 +35,6 @@ public class Address {
 
     boolean isOffice;
 
-    @Transient
     @PartitionKey
     String city;
 

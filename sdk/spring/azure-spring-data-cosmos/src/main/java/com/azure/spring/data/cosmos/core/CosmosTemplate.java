@@ -657,6 +657,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     @Override
     public CosmosContainerProperties createContainerIfNotExists(CosmosEntityInformation<?, ?> information) {
 
+        information.getTransientFields();
+
         final CosmosContainerResponse response = createDatabaseIfNotExists()
             .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
             .onErrorResume(throwable ->

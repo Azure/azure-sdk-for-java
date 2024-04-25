@@ -13,7 +13,6 @@ import java.util.Objects;
 @Container(ru = TestConstants.DEFAULT_MINIMUM_RU)
 public class BasicItem {
 
-    @Transient
     @Id
     @PartitionKey
     private String id;

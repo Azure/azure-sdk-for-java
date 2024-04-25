@@ -93,8 +93,7 @@ public final class TestConstants {
     public static final String POSTAL_CODE = "98052";
     public static final String POSTAL_CODE_0 = "00000";
     public static final String POSTAL_CODE_1 = "11111";
-
-    public static final String POSTAL_CODE_2 = "12345";
+    public static final String POSTAL_CODE_3 = "10112";
     public static final String CITY = "testCity";
     public static final String CITY_0 = "testCityZero";
     public static final String CITY_1 = "testCityOne";
