@@ -246,7 +246,7 @@ public class TestProxyUtils {
             versionFile = overrideVersionFile;
         }
 
-        versionFilePath = rootPath.resolve(versionFile);
+        Path versionFilePath = rootPath.resolve(versionFile);
         try {
             return Files.readAllLines(versionFilePath).get(0).replace(System.getProperty("line.separator"), "");
         } catch (IOException e) {
