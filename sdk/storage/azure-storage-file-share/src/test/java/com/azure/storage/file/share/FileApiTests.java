@@ -11,7 +11,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
@@ -1071,7 +1070,7 @@ class FileApiTests extends FileShareTestBase {
         }
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
     @Test
     public void uploadRangeFromURLSourceErrorAndStatusCode() {
         primaryFileClient.create(1024);
@@ -1332,7 +1331,7 @@ class FileApiTests extends FileShareTestBase {
         FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.INVALID_HEADER_VALUE);
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
     @Test
     public void startCopySourceErrorAndStatusCode() {
         primaryFileClient.create(1024);

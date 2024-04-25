@@ -7,7 +7,6 @@ import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
@@ -609,7 +608,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         }).verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
     @Test
     public void uploadRangeFromURLSourceErrorAndStatusCode() {
         ShareFileAsyncClient destinationClient = shareAsyncClient.getFileClient(generatePathName());
@@ -794,7 +793,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .verify(Duration.ofMinutes(1));
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
     @Test
     public void startCopySourceErrorAndStatusCode() {
         primaryFileAsyncClient.create(1024);

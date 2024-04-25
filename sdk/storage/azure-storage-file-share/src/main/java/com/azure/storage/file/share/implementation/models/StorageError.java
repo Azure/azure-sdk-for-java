@@ -19,7 +19,6 @@ public final class StorageError {
     private String message;
 
     /*
-<<<<<<< HEAD
      * The CopySourceStatusCode property.
      */
     @JsonProperty(value = "CopySourceStatusCode")
@@ -67,7 +66,6 @@ public final class StorageError {
     }
 
     /**
-<<<<<<< HEAD
      * Get the copySourceStatusCode property: The CopySourceStatusCode property.
      *
      * @return the copySourceStatusCode value.
