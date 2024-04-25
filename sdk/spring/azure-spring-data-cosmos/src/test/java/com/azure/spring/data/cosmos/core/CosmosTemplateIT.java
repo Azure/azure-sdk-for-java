@@ -28,14 +28,12 @@ import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
+import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.domain.AuditableEntity;
 import com.azure.spring.data.cosmos.domain.AutoScaleSample;
 import com.azure.spring.data.cosmos.domain.BasicItem;
 import com.azure.spring.data.cosmos.domain.GenIdEntity;
-import com.azure.spring.data.cosmos.domain.IntegerIdDomain;
 import com.azure.spring.data.cosmos.domain.Person;
-import com.azure.spring.data.cosmos.domain.PersonWithTransientId;
-import com.azure.spring.data.cosmos.domain.PersonWithTransientPartitionKey;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.StubAuditorProvider;
 import com.azure.spring.data.cosmos.repository.StubDateTimeProvider;
@@ -73,10 +71,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static com.azure.spring.data.cosmos.common.TestConstants.ADDRESSES;
 import static com.azure.spring.data.cosmos.common.TestConstants.AGE;
@@ -87,7 +82,6 @@ import static com.azure.spring.data.cosmos.common.TestConstants.ID_1;
 import static com.azure.spring.data.cosmos.common.TestConstants.ID_2;
 import static com.azure.spring.data.cosmos.common.TestConstants.ID_3;
 import static com.azure.spring.data.cosmos.common.TestConstants.ID_4;
-import static com.azure.spring.data.cosmos.common.TestConstants.ID_5;
 import static com.azure.spring.data.cosmos.common.TestConstants.ID_6;
 import static com.azure.spring.data.cosmos.common.TestConstants.LAST_NAME;
 import static com.azure.spring.data.cosmos.common.TestConstants.NEW_FIRST_NAME;
@@ -125,12 +119,7 @@ public class CosmosTemplateIT {
 
     private static final Person TEST_PERSON_4 = new Person(ID_4, NEW_FIRST_NAME, NEW_LAST_NAME, TRANSIENT_PROPERTY, HOBBIES,
         ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
-
-    private static final PersonWithTransientId TEST_PERSON_TRANSIENT_ID = new PersonWithTransientId(ID_5, NEW_FIRST_NAME, NEW_LAST_NAME, TRANSIENT_PROPERTY, HOBBIES,
-        ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
-
-    private static final PersonWithTransientPartitionKey TEST_PERSON_TRANSIENT_PARTITION_KEY = new PersonWithTransientPartitionKey(ID_6, NEW_FIRST_NAME, NEW_LAST_NAME, TRANSIENT_PROPERTY, HOBBIES,
-        ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
+    private static final Address TEST_ADDRESS_TRANSIENT_PARTITION_KEY = new Address(TestConstants.POSTAL_CODE_2, TestConstants.STREET, TestConstants.CITY);
 
     private static final AuditableEntity TEST_AUDITABLE_ENTITY_1 = new AuditableEntity();
 
@@ -145,6 +134,7 @@ public class CosmosTemplateIT {
     private static final String UUID_3 = UUID.randomUUID().toString();
 
     private static final BasicItem BASIC_ITEM = new BasicItem(ID_1);
+    private static final BasicItem BASIC_ITEM2 = new BasicItem(ID_6);
 
     private static final String PRECONDITION_IS_NOT_MET = "is not met";
 
@@ -176,9 +166,6 @@ public class CosmosTemplateIT {
     private static CosmosAsyncClient client;
     private static CosmosTemplate cosmosTemplate;
     private static CosmosEntityInformation<Person, String> personInfo;
-    private static CosmosEntityInformation<PersonWithTransientId, String> personWithTransientIdInfo;
-
-    private static CosmosEntityInformation<PersonWithTransientPartitionKey, String> personWithTransientPartitionKeyInfo;
     private static CosmosEntityInformation<AuditableEntity, String> auditableEntityInfo;
     private static String containerName;
     private MappingCosmosConverter cosmosConverter;
@@ -186,6 +173,10 @@ public class CosmosTemplateIT {
     private Person insertedPerson;
 
     private BasicItem pointReadItem;
+
+    private BasicItem transientIdItem;
+
+    private Address transientPartitionKeyItem;
     @Autowired
     private ApplicationContext applicationContext;
     @Autowired
@@ -209,8 +200,6 @@ public class CosmosTemplateIT {
         if (cosmosTemplate == null) {
             client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
             personInfo = new CosmosEntityInformation<>(Person.class);
-            personWithTransientIdInfo = new CosmosEntityInformation<>(PersonWithTransientId.class);
-            personWithTransientPartitionKeyInfo = new CosmosEntityInformation<>(PersonWithTransientPartitionKey.class);
             TEST_AUDITABLE_ENTITY_1.setId(UUID_1);
             TEST_AUDITABLE_ENTITY_2.setId(UUID_2);
             TEST_AUDITABLE_ENTITY_3.setId(UUID_3);
@@ -219,7 +208,7 @@ public class CosmosTemplateIT {
             cosmosTemplate = createCosmosTemplate(cosmosConfig, TestConstants.DB_NAME);
         }
 
-        collectionManager.ensureContainersCreatedAndEmpty(cosmosTemplate, Person.class, PersonWithTransientId.class, PersonWithTransientPartitionKey.class,
+        collectionManager.ensureContainersCreatedAndEmpty(cosmosTemplate, Person.class,
                                                           GenIdEntity.class, AuditableEntity.class, BasicItem.class);
         insertedPerson = cosmosTemplate.insert(Person.class.getSimpleName(), TEST_PERSON,
             new PartitionKey(TEST_PERSON.getLastName()));
@@ -264,20 +253,17 @@ public class CosmosTemplateIT {
 
     @Test
     public void testInsertDocWithIdDeclaredTransient() {
-        final PersonWithTransientId personWithTransientId = TEST_PERSON_TRANSIENT_ID;
-        final PersonWithTransientId insertedPerson = cosmosTemplate.insert(personWithTransientIdInfo.getContainerName(), personWithTransientId, new PartitionKey(personWithTransientIdInfo.getPartitionKeyFieldValue(TEST_PERSON_TRANSIENT_ID)));
-        Assert.assertEquals(personWithTransientId.getId(), insertedPerson.getId());
-        final PersonWithTransientId retrievedPerson = cosmosTemplate.findById(personWithTransientIdInfo.getContainerName(), insertedPerson.getId(), PersonWithTransientId.class);
-        Assert.assertEquals(personWithTransientId.getId(), retrievedPerson.getId());
+        final BasicItem basicItemWithTransientId = BASIC_ITEM2;
+        transientIdItem = cosmosTemplate.insert(BasicItem.class.getSimpleName(), BASIC_ITEM2, new PartitionKey(BASIC_ITEM2.getId()));
+        final BasicItem retrievedBasicItemWithTransientId = cosmosTemplate.findById(BasicItem.class.getSimpleName(), transientIdItem.getId(), BasicItem.class);
+        Assert.assertEquals(basicItemWithTransientId.getId(), retrievedBasicItemWithTransientId.getId());
     }
 
     @Test
     public void testInsertDocWithPartitionKeyDeclaredTransient() {
-        final PersonWithTransientPartitionKey personWithTransientPartitionKey = TEST_PERSON_TRANSIENT_PARTITION_KEY;
-        final PersonWithTransientPartitionKey insertedPerson = cosmosTemplate.insert(PersonWithTransientPartitionKey.class.getSimpleName(), personWithTransientPartitionKey, new PartitionKey(personWithTransientPartitionKeyInfo.getPartitionKeyFieldValue(TEST_PERSON_TRANSIENT_PARTITION_KEY)));
-        Assert.assertEquals(personWithTransientPartitionKey.getId(), insertedPerson.getId());
-        final PersonWithTransientPartitionKey retrievedPerson = cosmosTemplate.findById(PersonWithTransientPartitionKey.class.getSimpleName(), insertedPerson.getId(), PersonWithTransientPartitionKey.class);
-        Assert.assertEquals(personWithTransientPartitionKey.getId(), retrievedPerson.getId());
+        final Address addressWithTransientPartitionKey = TEST_ADDRESS_TRANSIENT_PARTITION_KEY;
+        final Address retrievedWithTransientPartitionKey = cosmosTemplate.findById(Address.class.getSimpleName(), TEST_ADDRESS_TRANSIENT_PARTITION_KEY.getPostalCode(), Address.class);
+        Assert.assertEquals(addressWithTransientPartitionKey.getPostalCode(), retrievedWithTransientPartitionKey.getPostalCode());
     }
 
     @Test
