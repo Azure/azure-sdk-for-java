@@ -6,6 +6,7 @@ package com.azure.cosmos.kafka.connect;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
@@ -55,11 +56,14 @@ import static com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig.va
  */
 public final class CosmosSourceConnector extends SourceConnector implements AutoCloseable {
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosSourceConnector.class);
+    private static final String CONNECTOR_NAME = "name";
+
     private CosmosSourceConfig config;
     private CosmosAsyncClient cosmosClient;
     private MetadataMonitorThread monitorThread;
     private MetadataKafkaStorageManager kafkaOffsetStorageReader;
     private IMetadataReader metadataReader;
+    private String connectorName;
 
     @Override
     public void start(Map<String, String> props) {
@@ -70,7 +74,9 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
         // IMPORTANT: sequence matters
         this.kafkaOffsetStorageReader = new MetadataKafkaStorageManager(this.context().offsetStorageReader());
         this.metadataReader = this.getMetadataReader();
+        this.connectorName = props.containsKey(CONNECTOR_NAME) ? props.get(CONNECTOR_NAME).toString() : Strings.Emtpy;
         this.monitorThread = new MetadataMonitorThread(
+            connectorName,
             this.config.getContainersConfig(),
             this.config.getMetadataConfig(),
             this.context(),
@@ -239,6 +245,7 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
 
         MetadataTaskUnit metadataTaskUnit =
             new MetadataTaskUnit(
+                this.connectorName,
                 this.config.getContainersConfig().getDatabaseName(),
                 allContainers.stream().map(CosmosContainerProperties::getResourceId).collect(Collectors.toList()),
                 updatedContainerToFeedRangesMap,
@@ -264,7 +271,7 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
 
         FeedRangesMetadataTopicOffset feedRangesMetadataTopicOffset =
             this.metadataReader
-                .getFeedRangesMetadataOffset(databaseName, containerProperties.getResourceId())
+                .getFeedRangesMetadataOffset(databaseName, containerProperties.getResourceId(), this.connectorName)
                 .block().v;
 
         Map<FeedRange, KafkaCosmosChangeFeedState> effectiveFeedRangesContinuationMap = new LinkedHashMap<>();

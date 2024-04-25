@@ -6,6 +6,7 @@ package com.azure.cosmos.kafka.connect.implementation.source;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.FeedRange;
@@ -25,6 +26,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class MetadataMonitorThread extends Thread {
@@ -39,6 +41,7 @@ public class MetadataMonitorThread extends Thread {
         true
     );
 
+    private final String connectorName;
     private final CosmosSourceContainersConfig sourceContainersConfig;
     private final CosmosMetadataConfig metadataConfig;
     private final SourceConnectorContext connectorContext;
@@ -49,25 +52,28 @@ public class MetadataMonitorThread extends Thread {
     private final AtomicBoolean isRunning = new AtomicBoolean(true);
 
     public MetadataMonitorThread(
+        String connectorName,
         CosmosSourceContainersConfig containersConfig,
         CosmosMetadataConfig metadataConfig,
         SourceConnectorContext connectorContext,
         IMetadataReader metadataReader,
         CosmosAsyncClient cosmosClient) {
 
+        checkArgument(StringUtils.isNotEmpty(connectorName), "Argument 'connectorName' can not be null");
         checkNotNull(containersConfig, "Argument 'containersConfig' can not be null");
         checkNotNull(metadataConfig, "Argument 'metadataConfig' can not be null");
         checkNotNull(connectorContext, "Argument 'connectorContext' can not be null");
         checkNotNull(metadataReader, "Argument 'metadataReader' can not be null");
         checkNotNull(cosmosClient, "Argument 'cosmosClient' can not be null");
 
+        this.connectorName = connectorName;
         this.sourceContainersConfig = containersConfig;
         this.metadataConfig = metadataConfig;
         this.connectorContext = connectorContext;
         this.metadataReader = metadataReader;
         this.cosmosClient = cosmosClient;
         this.containersQuerySpec = this.getContainersQuerySpec();
-        this.containersMetadataTopicPartition = new ContainersMetadataTopicPartition(containersConfig.getDatabaseName());
+        this.containersMetadataTopicPartition = new ContainersMetadataTopicPartition(containersConfig.getDatabaseName(), connectorName);
     }
 
     @Override
@@ -132,7 +138,7 @@ public class MetadataMonitorThread extends Thread {
 
     public Mono<Boolean> containersMetadataOffsetExists() {
         return this.metadataReader
-            .getContainersMetadataOffset(this.sourceContainersConfig.getDatabaseName())
+            .getContainersMetadataOffset(this.sourceContainersConfig.getDatabaseName(), this.connectorName)
             .map(offsetValueHolder -> offsetValueHolder.v != null);
     }
 
@@ -148,7 +154,7 @@ public class MetadataMonitorThread extends Thread {
 
     public Mono<List<String>> getContainerRidsFromOffset() {
         return this.metadataReader
-            .getContainersMetadataOffset(this.sourceContainersConfig.getDatabaseName())
+            .getContainersMetadataOffset(this.sourceContainersConfig.getDatabaseName(), this.connectorName)
             .map(offsetValueHolder -> {
                 return offsetValueHolder.v == null ? new ArrayList<>() : offsetValueHolder.v.getContainerRids();
             });
@@ -198,7 +204,8 @@ public class MetadataMonitorThread extends Thread {
                             return this.metadataReader
                                 .getFeedRangesMetadataOffset(
                                     this.sourceContainersConfig.getDatabaseName(),
-                                    containerProperties.getResourceId())
+                                    containerProperties.getResourceId(),
+                                    this.connectorName)
                                 .flatMap(offsetValueHolder -> {
                                     if (offsetValueHolder.v == null) {
                                         // the container may have recreated
@@ -236,7 +243,8 @@ public class MetadataMonitorThread extends Thread {
         return this.metadataReader
             .getFeedRangesMetadataOffset(
                 this.sourceContainersConfig.getDatabaseName(),
-                containerProperties.getResourceId())
+                containerProperties.getResourceId(),
+                this.connectorName)
             .map(offsetValueHolder -> offsetValueHolder.v != null);
     }
 

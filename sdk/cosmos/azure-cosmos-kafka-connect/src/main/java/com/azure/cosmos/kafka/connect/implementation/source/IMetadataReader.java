@@ -7,6 +7,11 @@ import com.azure.cosmos.implementation.Utils;
 import reactor.core.publisher.Mono;
 
 public interface IMetadataReader {
-    Mono<Utils.ValueHolder<ContainersMetadataTopicOffset>> getContainersMetadataOffset(String databaseName);
-    Mono<Utils.ValueHolder<FeedRangesMetadataTopicOffset>> getFeedRangesMetadataOffset(String databaseName, String collectionRid);
+    Mono<Utils.ValueHolder<ContainersMetadataTopicOffset>> getContainersMetadataOffset(
+        String databaseName,
+        String connectorName);
+    Mono<Utils.ValueHolder<FeedRangesMetadataTopicOffset>> getFeedRangesMetadataOffset(
+        String databaseName,
+        String collectionRid,
+        String connectorName);
 }

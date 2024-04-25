@@ -35,7 +35,9 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
     @Test(groups = { "kafka" }, timeOut = 60 * TIMEOUT)
     public void poll() throws InterruptedException {
         String testContainerName = "KafkaCosmosTestPoll-" + UUID.randomUUID();
+        String connectorName = "kafka-test-poll";
         Map<String, String> sourceConfigMap = new HashMap<>();
+        sourceConfigMap.put("name", connectorName);
         sourceConfigMap.put("azure.cosmos.account.endpoint", TestConfigurations.HOST);
         sourceConfigMap.put("azure.cosmos.account.key", TestConfigurations.MASTER_KEY);
         sourceConfigMap.put("azure.cosmos.source.database.name", databaseName);
@@ -64,6 +66,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
             Map<String, List<FeedRange>> containersEffectiveRangesMap = new HashMap<>();
             containersEffectiveRangesMap.put(testContainer.getResourceId(), Arrays.asList(FeedRange.forFullRange()));
             MetadataTaskUnit metadataTaskUnit = new MetadataTaskUnit(
+                connectorName,
                 databaseName,
                 Arrays.asList(testContainer.getResourceId()),
                 containersEffectiveRangesMap,
@@ -266,13 +269,15 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
         }
     }
 
-    private void validateMetadataRecords(List<SourceRecord> sourceRecords, MetadataTaskUnit metadataTaskUnit) {
+    private void validateMetadataRecords(
+        List<SourceRecord> sourceRecords,
+        MetadataTaskUnit metadataTaskUnit) {
         // one containers metadata
         // one feedRanges metadata record for each container
         assertThat(sourceRecords.size()).isEqualTo(metadataTaskUnit.getContainerRids().size() + 1);
 
         ContainersMetadataTopicPartition containersMetadataTopicPartition =
-            new ContainersMetadataTopicPartition(metadataTaskUnit.getDatabaseName());
+            new ContainersMetadataTopicPartition(metadataTaskUnit.getDatabaseName(), metadataTaskUnit.getConnectorName());
         ContainersMetadataTopicOffset containersMetadataTopicOffset =
             new ContainersMetadataTopicOffset(metadataTaskUnit.getContainerRids());
         assertThat(sourceRecords.get(0).sourcePartition()).isEqualTo(ContainersMetadataTopicPartition.toMap(containersMetadataTopicPartition));
@@ -286,7 +291,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
             assertThat(containerFeedRanges).isNotNull();
 
             FeedRangesMetadataTopicPartition feedRangesMetadataTopicPartition =
-                new FeedRangesMetadataTopicPartition(metadataTaskUnit.getDatabaseName(), containerRid);
+                new FeedRangesMetadataTopicPartition(metadataTaskUnit.getDatabaseName(), containerRid, metadataTaskUnit.getConnectorName());
             FeedRangesMetadataTopicOffset feedRangesMetadataTopicOffset =
                 new FeedRangesMetadataTopicOffset(containerFeedRanges);
             assertThat(sourceRecord.sourcePartition()).isEqualTo(FeedRangesMetadataTopicPartition.toMap(feedRangesMetadataTopicPartition));

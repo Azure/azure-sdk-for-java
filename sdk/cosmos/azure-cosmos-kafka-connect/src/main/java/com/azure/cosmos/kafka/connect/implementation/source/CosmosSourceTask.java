@@ -145,7 +145,7 @@ public class CosmosSourceTask extends SourceTask {
                 ContainersMetadataTopicOffset.toMap(containersMetadata.getRight()),
                 taskUnit.getStorageName(),
                 Schema.STRING_SCHEMA,
-                containersMetadata.getLeft().getDatabaseName(),
+                getContainersMetadataItemId(containersMetadata.getLeft().getDatabaseName(), containersMetadata.getLeft().getConnectorName()),
                 containersMetadataSchemaAndValue.schema(),
                 containersMetadataSchemaAndValue.value()));
 
@@ -162,13 +162,24 @@ public class CosmosSourceTask extends SourceTask {
                     FeedRangesMetadataTopicOffset.toMap(feedRangesMetadata.getRight()),
                     taskUnit.getStorageName(),
                     Schema.STRING_SCHEMA,
-                    feedRangesMetadata.getLeft().getDatabaseName() + "_" + feedRangesMetadata.getLeft().getContainerRid(),
+                    this.getFeedRangesMetadataItemId(
+                        feedRangesMetadata.getLeft().getDatabaseName(),
+                        feedRangesMetadata.getLeft().getContainerRid(),
+                        feedRangesMetadata.getLeft().getConnectorName()
+                    ),
                     feedRangeMetadataSchemaAndValue.schema(),
                     feedRangeMetadataSchemaAndValue.value()));
         }
 
         LOGGER.info("There are {} metadata records being created/updated", sourceRecords.size());
         return sourceRecords;
+    }
+
+    private String getContainersMetadataItemId(String databaseName, String connectorName) {
+        return databaseName + "_" + connectorName;
+    }
+    private String getFeedRangesMetadataItemId(String databaseName, String collectionRid, String connectorName) {
+        return databaseName + "_" + collectionRid + "_" + connectorName;
     }
 
     private Pair<List<SourceRecord>, Boolean> executeFeedRangeTask(FeedRangeTaskUnit feedRangeTaskUnit) {

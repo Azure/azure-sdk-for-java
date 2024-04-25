@@ -63,6 +63,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
     @Test(groups = { "kafka", "kafka-emulator" }, dataProvider = "metadataStorageTypeParameterProvider", timeOut = TIMEOUT)
     public void requestTaskReconfigurationOnContainersChange(CosmosMetadataStorageType metadataStorageType) throws InterruptedException {
         String metadataStorageName = "_cosmos.metadata.topic";
+        String connectorName = "requestTaskReconfigurationOnContainersChange";
         try {
             CosmosSourceContainersConfig cosmosSourceContainersConfig =
                 new CosmosSourceContainersConfig(
@@ -78,6 +79,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
             IMetadataReader metadataReader = getMetadataReader(metadataStorageType, metadataConfig);
             MetadataMonitorThread monitorThread =
                 new MetadataMonitorThread(
+                    connectorName,
                     cosmosSourceContainersConfig,
                     metadataConfig,
                     sourceConnectorContext,
@@ -93,7 +95,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
             // now populate containers metadata offset
             CosmosContainerProperties singlePartitionContainer = getSinglePartitionContainer(this.client);
             ContainersMetadataTopicPartition containersMetadataTopicPartition =
-                new ContainersMetadataTopicPartition(databaseName);
+                new ContainersMetadataTopicPartition(databaseName, connectorName);
             ContainersMetadataTopicOffset containersMetadataTopicOffset =
                 new ContainersMetadataTopicOffset(Arrays.asList(singlePartitionContainer.getResourceId()));
 
@@ -114,6 +116,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
     public void requestTaskReconfigurationOnSplit(CosmosMetadataStorageType metadataStorageType) throws InterruptedException {
 
         String metadataStorageName = "_cosmos.metadata.topic";
+        String connectorName = "requestTaskReconfigurationOnSplit";
         try {
             CosmosSourceContainersConfig cosmosSourceContainersConfig =
                 new CosmosSourceContainersConfig(
@@ -130,7 +133,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
             //populate containers metadata offset
             CosmosContainerProperties multiPartitionContainer = getMultiPartitionContainer(this.client);
             ContainersMetadataTopicPartition containersMetadataTopicPartition =
-                new ContainersMetadataTopicPartition(databaseName);
+                new ContainersMetadataTopicPartition(databaseName, connectorName);
             ContainersMetadataTopicOffset containersMetadataTopicOffset =
                 new ContainersMetadataTopicOffset(Arrays.asList(multiPartitionContainer.getResourceId()));
 
@@ -138,6 +141,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
 
             MetadataMonitorThread monitorThread =
                 new MetadataMonitorThread(
+                    "requestTaskReconfigurationOnSplit",
                     cosmosSourceContainersConfig,
                     metadataConfig,
                     sourceConnectorContext,
@@ -160,7 +164,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
             assertThat(feedRanges.size()).isGreaterThan(1);
 
             FeedRangesMetadataTopicPartition feedRangesMetadataTopicPartition =
-                new FeedRangesMetadataTopicPartition(databaseName, multiPartitionContainer.getResourceId());
+                new FeedRangesMetadataTopicPartition(databaseName, multiPartitionContainer.getResourceId(), connectorName);
             FeedRangesMetadataTopicOffset feedRangesMetadataTopicOffset =
                 new FeedRangesMetadataTopicOffset(Arrays.asList(FeedRange.forFullRange()));
 
@@ -181,6 +185,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
     @Test(groups = { "kafka", "kafka-emulator" }, dataProvider = "metadataStorageTypeParameterProvider", timeOut = TIMEOUT)
     public void requestTaskReconfigurationOnMerge(CosmosMetadataStorageType metadataStorageType) throws InterruptedException {
         String metadataStorageName = "_cosmos.metadata.topic";
+        String connectorName = "requestTaskReconfigurationOnMerge";
         try {
             CosmosSourceContainersConfig cosmosSourceContainersConfig =
                 new CosmosSourceContainersConfig(
@@ -197,7 +202,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
             //populate containers metadata offset
             CosmosContainerProperties singlePartitionContainer = getSinglePartitionContainer(this.client);
             ContainersMetadataTopicPartition containersMetadataTopicPartition =
-                new ContainersMetadataTopicPartition(databaseName);
+                new ContainersMetadataTopicPartition(connectorName, "requestTaskReconfigurationOnMerged");
             ContainersMetadataTopicOffset containersMetadataTopicOffset =
                 new ContainersMetadataTopicOffset(Arrays.asList(singlePartitionContainer.getResourceId()));
 
@@ -205,6 +210,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
 
             MetadataMonitorThread monitorThread =
                 new MetadataMonitorThread(
+                    connectorName,
                     cosmosSourceContainersConfig,
                     metadataConfig,
                     sourceConnectorContext,
@@ -237,7 +243,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
                     .block();
 
             FeedRangesMetadataTopicPartition feedRangesMetadataTopicPartition =
-                new FeedRangesMetadataTopicPartition(databaseName, singlePartitionContainer.getResourceId());
+                new FeedRangesMetadataTopicPartition(databaseName, singlePartitionContainer.getResourceId(), connectorName);
             FeedRangesMetadataTopicOffset feedRangesMetadataTopicOffset =
                 new FeedRangesMetadataTopicOffset(
                     childRanges

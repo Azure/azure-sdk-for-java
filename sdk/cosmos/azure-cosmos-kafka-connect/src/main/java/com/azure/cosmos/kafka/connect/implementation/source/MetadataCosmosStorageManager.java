@@ -44,7 +44,7 @@ public class MetadataCosmosStorageManager implements IMetadataReader {
 
         ContainersMetadataItem containersMetadataItem =
             new ContainersMetadataItem(
-                topicPartition.getDatabaseName(),
+                this.getContainersMetadataItemId(topicPartition.getDatabaseName(), topicPartition.getConnectorName()),
                 ContainersMetadataTopicOffset.toMap(topicOffset));
 
         this.metadataContainer
@@ -60,7 +60,10 @@ public class MetadataCosmosStorageManager implements IMetadataReader {
         FeedRangesMetadataTopicPartition topicPartition,
         FeedRangesMetadataTopicOffset topicOffset) {
 
-        String itemId = getFeedRangesMetadataItemId(topicPartition.getDatabaseName(), topicPartition.getContainerRid());
+        String itemId = getFeedRangesMetadataItemId(
+            topicPartition.getDatabaseName(),
+            topicPartition.getContainerRid(),
+            topicPartition.getConnectorName());
         FeedRangesMetadataItem feedRangesMetadataItem =
             new FeedRangesMetadataItem(itemId, FeedRangesMetadataTopicOffset.toMap(topicOffset));
 
@@ -69,16 +72,24 @@ public class MetadataCosmosStorageManager implements IMetadataReader {
             .onErrorMap(throwable ->
                 KafkaCosmosExceptionsHelper.convertToConnectException(
                     throwable,
-                    "createFeedRangesMetadataItem failed for database " + topicPartition.getDatabaseName() + ", containerRid: " + topicPartition.getContainerRid()))
+                    String.format(
+                        "createFeedRangesMetadataItem failed for database %s, containerRid %s, connector %s",
+                        topicPartition.getDatabaseName(),
+                        topicPartition.getContainerRid(),
+                        topicPartition.getConnectorName())
+                    ))
             .block();
     }
 
-    private String getFeedRangesMetadataItemId(String databaseName, String collectionRid) {
-        return databaseName + "_" + collectionRid;
+    private String getContainersMetadataItemId(String databaseName, String connectorName) {
+        return databaseName + "_" + connectorName;
+    }
+    private String getFeedRangesMetadataItemId(String databaseName, String collectionRid, String connectorName) {
+        return databaseName + "_" + collectionRid + "_" + connectorName;
     }
 
     @Override
-    public Mono<Utils.ValueHolder<ContainersMetadataTopicOffset>> getContainersMetadataOffset(String databaseName) {
+    public Mono<Utils.ValueHolder<ContainersMetadataTopicOffset>> getContainersMetadataOffset(String databaseName, String connectorName) {
         return this.metadataContainer
             .readItem(databaseName, new PartitionKey(databaseName), ContainersMetadataItem.class)
             .map(itemResponse -> new Utils.ValueHolder<>(ContainersMetadataTopicOffset.fromMap(itemResponse.getItem().getMetadata())))
@@ -95,8 +106,11 @@ public class MetadataCosmosStorageManager implements IMetadataReader {
     }
 
     @Override
-    public Mono<Utils.ValueHolder<FeedRangesMetadataTopicOffset>> getFeedRangesMetadataOffset(String databaseName, String collectionRid) {
-        String itemId = this.getFeedRangesMetadataItemId(databaseName, collectionRid);
+    public Mono<Utils.ValueHolder<FeedRangesMetadataTopicOffset>> getFeedRangesMetadataOffset(
+        String databaseName,
+        String collectionRid,
+        String connectorName) {
+        String itemId = this.getFeedRangesMetadataItemId(databaseName, collectionRid, connectorName);
         return this.metadataContainer
             .readItem(itemId, new PartitionKey(itemId), FeedRangesMetadataItem.class)
             .map(itemResponse -> new Utils.ValueHolder<>(FeedRangesMetadataTopicOffset.fromMap(itemResponse.getItem().getMetadata())))

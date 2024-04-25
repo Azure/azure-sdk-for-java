@@ -32,6 +32,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 @JsonSerialize(using = MetadataTaskUnit.MetadataTaskUnitSerializer.class)
 @JsonDeserialize(using = MetadataTaskUnit.MetadataTaskUnitDeserializer.class)
 public class MetadataTaskUnit implements ITaskUnit {
+    private final String connectorName;
     private final String databaseName;
     private final List<String> containerRids;
     private final Map<String, List<FeedRange>> containersEffectiveRangesMap;
@@ -39,6 +40,7 @@ public class MetadataTaskUnit implements ITaskUnit {
     private final CosmosMetadataStorageType storageType;
 
     public MetadataTaskUnit(
+        String connectorName,
         String databaseName,
         List<String> containerRids,
         Map<String, List<FeedRange>> containersEffectiveRangesMap,
@@ -50,6 +52,7 @@ public class MetadataTaskUnit implements ITaskUnit {
         checkNotNull(containersEffectiveRangesMap, "Argument 'containersEffectiveRangesMap' can not be null");
         checkArgument(StringUtils.isNotEmpty(storageName), "Argument 'storageName' should not be null");
 
+        this.connectorName = connectorName;
         this.databaseName = databaseName;
         this.containerRids = containerRids;
         this.containersEffectiveRangesMap = containersEffectiveRangesMap;
@@ -77,9 +80,13 @@ public class MetadataTaskUnit implements ITaskUnit {
         return storageType;
     }
 
+    public String getConnectorName() {
+        return connectorName;
+    }
+
     public Pair<ContainersMetadataTopicPartition, ContainersMetadataTopicOffset> getContainersMetadata() {
         ContainersMetadataTopicPartition containersMetadataTopicPartition =
-            new ContainersMetadataTopicPartition(this.databaseName);
+            new ContainersMetadataTopicPartition(this.databaseName, this.connectorName);
 
         ContainersMetadataTopicOffset containersMetadataTopicOffset =
             new ContainersMetadataTopicOffset(this.containerRids);
@@ -93,7 +100,7 @@ public class MetadataTaskUnit implements ITaskUnit {
 
         for (String containerRid : this.containersEffectiveRangesMap.keySet()) {
             FeedRangesMetadataTopicPartition feedRangesMetadataTopicPartition =
-                new FeedRangesMetadataTopicPartition(this.databaseName, containerRid);
+                new FeedRangesMetadataTopicPartition(this.databaseName, containerRid, this.connectorName);
             FeedRangesMetadataTopicOffset feedRangesMetadataTopicOffset =
                 new FeedRangesMetadataTopicOffset(this.containersEffectiveRangesMap.get(containerRid));
 
@@ -142,6 +149,7 @@ public class MetadataTaskUnit implements ITaskUnit {
                               SerializerProvider serializerProvider) throws IOException {
             ObjectMapper objectMapper = new ObjectMapper();
             writer.writeStartObject();
+            writer.writeStringField("connectorName", metadataTaskUnit.getConnectorName());
             writer.writeStringField("databaseName", metadataTaskUnit.getDatabaseName());
             writer.writeStringField(
                 "containerRids",
@@ -184,6 +192,7 @@ public class MetadataTaskUnit implements ITaskUnit {
             final JsonNode rootNode = jsonParser.getCodec().readTree(jsonParser);
             final ObjectMapper mapper = (ObjectMapper) jsonParser.getCodec();
 
+            String connectorName = rootNode.get("connectorName").asText();
             String databaseName = rootNode.get("databaseName").asText();
             List<String> containerRids = mapper.readValue(rootNode.get("containerRids").asText(), new TypeReference<List<String>>() {});
             ArrayNode arrayNode = (ArrayNode) rootNode.get("containersEffectiveRangesMap");
@@ -203,6 +212,7 @@ public class MetadataTaskUnit implements ITaskUnit {
             String storageName = rootNode.get("storageName").asText();
             CosmosMetadataStorageType storageType = CosmosMetadataStorageType.fromName(rootNode.get("storageType").asText());
             return new MetadataTaskUnit(
+                connectorName,
                 databaseName,
                 containerRids,
                 containersEffectiveRangesMap,
