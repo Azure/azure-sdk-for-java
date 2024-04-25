@@ -36,8 +36,8 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
     public void poll() throws InterruptedException {
         String testContainerName = "KafkaCosmosTestPoll-" + UUID.randomUUID();
         Map<String, String> sourceConfigMap = new HashMap<>();
-        sourceConfigMap.put("kafka.connect.cosmos.accountEndpoint", TestConfigurations.HOST);
-        sourceConfigMap.put("kafka.connect.cosmos.accountKey", TestConfigurations.MASTER_KEY);
+        sourceConfigMap.put("kafka.connect.cosmos.account.endpoint", TestConfigurations.HOST);
+        sourceConfigMap.put("kafka.connect.cosmos.account.key", TestConfigurations.MASTER_KEY);
         sourceConfigMap.put("kafka.connect.cosmos.source.database.name", databaseName);
         List<String> containersIncludedList = Arrays.asList(testContainerName);
         sourceConfigMap.put("kafka.connect.cosmos.source.containers.includedList", containersIncludedList.toString());
@@ -135,8 +135,8 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
     public void pollWithSpecificFeedRange() {
         // Test only items belong to the feedRange defined in the feedRangeTaskUnit will be returned
         Map<String, String> sourceConfigMap = new HashMap<>();
-        sourceConfigMap.put("kafka.connect.cosmos.accountEndpoint", TestConfigurations.HOST);
-        sourceConfigMap.put("kafka.connect.cosmos.accountKey", TestConfigurations.MASTER_KEY);
+        sourceConfigMap.put("kafka.connect.cosmos.account.endpoint", TestConfigurations.HOST);
+        sourceConfigMap.put("kafka.connect.cosmos.account.key", TestConfigurations.MASTER_KEY);
         sourceConfigMap.put("kafka.connect.cosmos.source.database.name", databaseName);
         List<String> containersIncludedList = Arrays.asList(multiPartitionContainerName);
         sourceConfigMap.put("kafka.connect.cosmos.source.containers.includedList", containersIncludedList.toString());
@@ -202,8 +202,8 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
         String throughputControlContainerName = "throughputControlContainer-" + UUID.randomUUID();
 
         Map<String, String> sourceConfigMap = new HashMap<>();
-        sourceConfigMap.put("kafka.connect.cosmos.accountEndpoint", TestConfigurations.HOST);
-        sourceConfigMap.put("kafka.connect.cosmos.accountKey", TestConfigurations.MASTER_KEY);
+        sourceConfigMap.put("kafka.connect.cosmos.account.endpoint", TestConfigurations.HOST);
+        sourceConfigMap.put("kafka.connect.cosmos.account.key", TestConfigurations.MASTER_KEY);
         sourceConfigMap.put("kafka.connect.cosmos.source.database.name", databaseName);
         List<String> containersIncludedList = Arrays.asList(singlePartitionContainerName);
         sourceConfigMap.put("kafka.connect.cosmos.source.containers.includedList", containersIncludedList.toString());

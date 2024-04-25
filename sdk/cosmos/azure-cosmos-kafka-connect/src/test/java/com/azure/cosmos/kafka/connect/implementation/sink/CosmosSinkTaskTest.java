@@ -693,11 +693,11 @@ public class CosmosSinkTaskTest extends KafkaCosmosTestSuiteBase {
         String nestedPartitionKeyPathContainer = "NestedPartitionKeyPathContainer";
 
         Map<String, String> sinkConfigMap = new HashMap<>();
-        sinkConfigMap.put("kafka.connect.cosmos.accountEndpoint", TestConfigurations.HOST);
-        sinkConfigMap.put("kafka.connect.cosmos.accountKey", TestConfigurations.MASTER_KEY);
-        sinkConfigMap.put("kafka.connect.cosmos.sink.database.name", databaseName);
-        sinkConfigMap.put("kafka.connect.cosmos.sink.containers.topicMap", topicName + "#" + nestedPartitionKeyPathContainer);
-        sinkConfigMap.put("kafka.connect.cosmos.sink.bulk.enabled", String.valueOf(bulkEnabled));
+        sinkConfigMap.put("azure.cosmos.account.endpoint", TestConfigurations.HOST);
+        sinkConfigMap.put("azure.cosmos.account.key", TestConfigurations.MASTER_KEY);
+        sinkConfigMap.put("azure.cosmos.sink.database.name", databaseName);
+        sinkConfigMap.put("azure.cosmos.sink.containers.topicMap", topicName + "#" + nestedPartitionKeyPathContainer);
+        sinkConfigMap.put("azure.cosmos.sink.bulk.enabled", String.valueOf(bulkEnabled));
 
         CosmosSinkTask sinkTask = new CosmosSinkTask();
         SinkTaskContext sinkTaskContext = Mockito.mock(SinkTaskContext.class);

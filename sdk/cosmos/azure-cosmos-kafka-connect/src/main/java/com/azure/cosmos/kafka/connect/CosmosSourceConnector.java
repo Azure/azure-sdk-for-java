@@ -53,7 +53,7 @@ import static com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig.va
 /***
  * The CosmosDb source connector.
  */
-public class CosmosSourceConnector extends SourceConnector implements AutoCloseable {
+public final class CosmosSourceConnector extends SourceConnector implements AutoCloseable {
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosSourceConnector.class);
     private CosmosSourceConfig config;
     private CosmosAsyncClient cosmosClient;
