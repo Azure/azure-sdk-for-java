@@ -983,6 +983,9 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
                 // RecoverableReactorReceiver, Or downstream cancels parent RecoverableReactorReceiver.
                 // 1 & 2 means we don't have to read the 'volatile' variables 'parent.done', 'parent.cancelled'
                 //
+                final String state
+                    = String.format("[link.done:%b link.cancelled:%b parent.done:%b parent.cancelled:%b]", done,
+                        s == CANCELLED_SUBSCRIPTION, parent.done, parent.cancelled);
 
                 final DeliveryNotOnLinkException dispositionError
                     = DeliveryNotOnLinkException.linkClosed(deliveryTag, deliveryState);
@@ -994,16 +997,10 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
                 if (upstreamError != null) {
                     dispositionError.addSuppressed(upstreamError);
                 }
-
-                LoggingEventBuilder log = logger.atError()
+                return monoError(logger.atError()
                     .addKeyValue(DELIVERY_TAG_KEY, deliveryTag)
                     .addKeyValue(DELIVERY_STATE_KEY, deliveryState)
-                    .addKeyValue("link.done", done)
-                    .addKeyValue("link.cancelled", s == CANCELLED_SUBSCRIPTION)
-                    .addKeyValue("parent.done", parent.done)
-                    .addKeyValue("parent.cancelled", parent.cancelled);
-
-                return monoError(log, dispositionError);
+                    .addKeyValue("messageFluxState", state), dispositionError);
             }
             return receiver.updateDisposition(deliveryTag, deliveryState);
         }

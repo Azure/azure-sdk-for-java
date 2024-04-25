@@ -524,9 +524,9 @@ public class ManagementChannel implements ServiceBusManagementNode {
             } else if (statusCode == AmqpResponseCode.NO_CONTENT) {
                 list = Collections.emptyList();
             } else {
-                throw logger.logExceptionAsWarning(Exceptions.propagate(new AmqpException(true,
+                throw logger.logExceptionAsWarning(new AmqpException(true,
                     "Get rules response error. Could not get rules.",
-                    getErrorContext())));
+                    getErrorContext()));
             }
 
             return Flux.fromIterable(list);

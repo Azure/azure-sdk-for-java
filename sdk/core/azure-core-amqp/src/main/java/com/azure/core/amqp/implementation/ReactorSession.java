@@ -358,8 +358,8 @@ public class ReactorSession implements AmqpSession {
                 .addKeyValue(ENTITY_PATH_KEY, entityPath)
                 .addKeyValue(LINK_NAME_KEY, linkName);
 
-            return monoError(logBuilder, Exceptions.propagate(new AmqpException(true,
-                "Cannot create receive link from a closed session.", sessionHandler.getErrorContext())));
+            return monoError(logBuilder, new AmqpException(true,
+                "Cannot create receive link from a closed session.", sessionHandler.getErrorContext()));
         }
 
         final LinkSubscription<AmqpReceiveLink> existingLink = openReceiveLinks.get(linkName);
@@ -448,8 +448,8 @@ public class ReactorSession implements AmqpSession {
                 .addKeyValue(ENTITY_PATH_KEY, entityPath)
                 .addKeyValue(LINK_NAME_KEY, linkName);
 
-            return monoError(logBuilder, Exceptions.propagate(new AmqpException(true,
-                "Cannot create send link from a closed session.", sessionHandler.getErrorContext())));
+            return monoError(logBuilder, new AmqpException(true,
+                "Cannot create send link from a closed session.", sessionHandler.getErrorContext()));
         }
 
         final LinkSubscription<AmqpSendLink> existing = openSendLinks.get(linkName);

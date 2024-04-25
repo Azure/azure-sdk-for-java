@@ -247,7 +247,7 @@ public final class ReactorDispatcher {
                     ioSignal.sink().close();
                 }
             } catch (IOException ioException) {
-                logger.warning("CloseHandler.sink().close() failed with an error.", ioException);
+                logger.error("CloseHandler.sink().close() failed with an error.", ioException);
             }
 
             workScheduler.run(null);
@@ -257,7 +257,7 @@ public final class ReactorDispatcher {
                     ioSignal.source().close();
                 }
             } catch (IOException ioException) {
-                logger.warning("CloseHandler.source().close() failed with an error.", ioException);
+                logger.error("CloseHandler.source().close() failed with an error.", ioException);
             }
         }
     }
