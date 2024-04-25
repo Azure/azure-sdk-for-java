@@ -18,8 +18,6 @@ import com.azure.messaging.eventgrid.namespaces.models.RejectResult;
 import com.azure.messaging.eventgrid.namespaces.models.ReleaseDelay;
 import com.azure.messaging.eventgrid.namespaces.models.ReleaseOptions;
 import com.azure.messaging.eventgrid.namespaces.models.ReleaseResult;
-import com.azure.messaging.eventgrid.namespaces.models.RenewCloudEventLocksResult;
-import com.azure.messaging.eventgrid.namespaces.models.RenewLockOptions;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
