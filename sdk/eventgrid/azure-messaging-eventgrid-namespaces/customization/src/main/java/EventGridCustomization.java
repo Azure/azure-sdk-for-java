@@ -53,11 +53,15 @@ public class EventGridCustomization extends Customization {
             PackageCustomization packageCustomization = customization.getPackage(p);
             packageCustomization.listClasses().forEach(c -> {
                 c.customizeAst(comp -> {
-                    logger.info("Got here");
-                    comp.getImports().removeIf(i -> i.getNameAsString().equals("com.azure.messaging.eventgrid.namespaces.implementation.models.CloudEvent"));
-                    comp.addImport("com.azure.core.models.CloudEvent");
+                    if (comp.getImports().removeIf(i -> i.getNameAsString().equals("com.azure.messaging.eventgrid.namespaces.models.CloudEvent"))) {
+                        logger.info("Removed CloudEvent import from " + c.getClassName());
+                        comp.addImport("com.azure.core.models.CloudEvent");
+                    }
                 });
             });
         });
+        customization.getRawEditor().removeFile("src/main/java/com/azure/messaging/eventgrid/namespaces/models/PublishResult.java");
+        customization.getRawEditor().removeFile("src/main/java/com/azure/messaging/eventgrid/namespaces/models/CloudEvent.java");
+
     }
 }
