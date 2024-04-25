@@ -46,7 +46,7 @@ public class StorageSeekableByteChannelShareFileWriteBehaviorTests extends FileS
 
         AtomicInteger uploadRangeCallCount = new AtomicInteger(0);
         ShareFileClient client = new ShareFileClient(null, new AzureFileStorageImpl(null, null, "fakeurl", false,
-            false), generateShareName(), generatePathName(), null, null, null, null) {
+            false), "testshare", "testpath", null, null, null, null) {
             @Override
             public Response<ShareFileUploadInfo> uploadRangeWithResponse(ShareFileUploadRangeOptions options,
                 Duration timeout, Context context) {
@@ -98,7 +98,7 @@ public class StorageSeekableByteChannelShareFileWriteBehaviorTests extends FileS
     public void writeBehaviorCanSeekAnywhereInFileRange(long fileSize, int position) {
         AtomicInteger getPropertiesCallCount = new AtomicInteger(0);
         ShareFileClient client = new ShareFileClient(null, new AzureFileStorageImpl(null, null, "fakeurl", false,
-            false), generateShareName(), generatePathName(), null, null, null, null) {
+            false), "testshare", "testpath", null, null, null, null) {
             @Override
             public ShareFileProperties getProperties() {
                 getPropertiesCallCount.incrementAndGet();
@@ -125,7 +125,7 @@ public class StorageSeekableByteChannelShareFileWriteBehaviorTests extends FileS
     public void writeBehaviorThrowsWhenSeekingBeyondRange(long fileSize, int position) {
         AtomicInteger getPropertiesCallCount = new AtomicInteger(0);
         ShareFileClient client = new ShareFileClient(null, new AzureFileStorageImpl(null, null, "fakeurl", false,
-            false), generateShareName(), generatePathName(), null, null, null, null) {
+            false), "testshare", "testpath", null, null, null, null) {
             @Override
             public ShareFileProperties getProperties() {
                 getPropertiesCallCount.incrementAndGet();
@@ -150,7 +150,7 @@ public class StorageSeekableByteChannelShareFileWriteBehaviorTests extends FileS
     @Test
     public void writeBehaviorTruncateUnsupported() {
         ShareFileClient client = new ShareFileClient(null, new AzureFileStorageImpl(null, null, "fakeurl", false,
-            false), generateShareName(), generatePathName(), null, null, null, null);
+            false), "testshare", "testpath", null, null, null, null);
         StorageSeekableByteChannelShareFileWriteBehavior behavior =
             new StorageSeekableByteChannelShareFileWriteBehavior(client, null, null);
         assertThrows(UnsupportedOperationException.class, () -> behavior.resize(10));

@@ -499,9 +499,9 @@ public class StorageImplUtils {
             return getResultWithTimeout(future, timeout.toMillis(), exceptionType);
         } catch (Exception e) {
             Throwable cause = e.getCause();
-            if (exceptionType.isInstance(cause)) {
+            if (exceptionType.isInstance(e)) {
                 // Safe to cast since we checked with isInstance
-                throw exceptionType.cast(cause);
+                throw exceptionType.cast(e);
             } else if (cause instanceof RuntimeException) {
                 // Throw as is if it's already a RuntimeException
                 throw (RuntimeException) cause;
