@@ -1,4 +1,4 @@
 package com.azure.ai.openai.assistants.models;
 
-public class StreamRequiredAction extends StreamingUpdate {
+public class StreamRequiredAction extends StreamUpdate {
 }

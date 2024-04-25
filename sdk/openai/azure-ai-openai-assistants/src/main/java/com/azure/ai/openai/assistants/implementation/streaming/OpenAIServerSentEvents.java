@@ -1,25 +1,34 @@
 package com.azure.ai.openai.assistants.implementation.streaming;
 
+import com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent;
+import com.azure.ai.openai.assistants.models.StreamUpdate;
+import com.azure.core.util.BinaryData;
+import com.azure.json.JsonProviders;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.io.JsonEOFException;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class OpenAIServerSentEvents<T> {
+import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.DONE;
+import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.ERROR;
 
-    private static final List<String> STREAM_COMPLETION_EVENT = List.of("data: [DONE]", "data:[DONE]");
-    private static final List<String> STREAM_ERROR_EVENT = List.of("data: [ERROR]", "data:[ERROR]");
+public final class OpenAIServerSentEvents {
+
+    private final StreamTypeFactory streamTypeFactory = new StreamTypeFactory();
 
     // Server sent events are divided by 2 line breaks, therefore we need to account for 4 bytes containing 2 CRLF characters.
     private static final int LINE_BREAK_CHAR_COUNT_THRESHOLD = 4;
 
 
-    private static final String STREAM_EVENT_DELTA_NAME = "event:";
     private final Flux<ByteBuffer> source;
     private ByteArrayOutputStream outStream;
 
@@ -28,11 +37,20 @@ public final class OpenAIServerSentEvents<T> {
         this.outStream = new ByteArrayOutputStream();
     }
 
-    public Flux<T> getEvents() {
+    public Flux<StreamUpdate> getEvents() {
+        return mapEventStream();
+    }
+
+    /**
+     * Maps the byte buffer to a stream of server sent events.
+     *
+     * @return A stream of server sent events deserialized into StreamUpdates.
+     */
+    private Flux<StreamUpdate> mapEventStream() {
         return source
             .publishOn(Schedulers.boundedElastic())
-            .concatMap(byteBuffer ->{
-                List<T> values = new ArrayList<>();
+            .concatMap(byteBuffer -> {
+                List<StreamUpdate> values = new ArrayList<>();
                 byte[] byteArray = byteBuffer.array();
                 int lineBreakCharsEncountered = 0;
 
@@ -42,12 +60,12 @@ public final class OpenAIServerSentEvents<T> {
                         lineBreakCharsEncountered++;
 
                         // We are looking for 2 line breaks to signify the end of a server sent event.
-                        if(lineBreakCharsEncountered == LINE_BREAK_CHAR_COUNT_THRESHOLD) {
+                        if (lineBreakCharsEncountered == LINE_BREAK_CHAR_COUNT_THRESHOLD) {
                             String currentLine;
                             try {
-                                currentLine = outStream.toString(StandardCharsets.UTF_8);
+                                currentLine = outStream.toString(StandardCharsets.UTF_8.name());
                                 handleCurrentEvent(currentLine, values);
-                            } catch (IllegalStateException | JsonProcessingException e) {
+                            } catch (IOException e) {
                                 return Flux.error(e);
                             }
                             outStream = new ByteArrayOutputStream();
@@ -56,6 +74,17 @@ public final class OpenAIServerSentEvents<T> {
                         lineBreakCharsEncountered = 0;
                     }
                 }
+
+                try {
+                    handleCurrentEvent(outStream.toString(StandardCharsets.UTF_8.name()), values);
+                    outStream = new ByteArrayOutputStream();
+                } catch (IllegalStateException | UncheckedIOException e) {
+                    // Even split across different ByteBuffers, the next one will contain the rest of the event.
+                    return Flux.fromIterable(values);
+                } catch (IOException e) {
+                    return Flux.error(e);
+                }
+//                outStream = new ByteArrayOutputStream();
                 return Flux.fromIterable(values);
             }).cache();
     }
@@ -78,17 +107,20 @@ public final class OpenAIServerSentEvents<T> {
      * @throws JsonProcessingException If the current line cannot be processed.
      * @throws IllegalStateException If the current event contains a server side error.
      */
-    private void handleCurrentEvent(String currentEvent, List<T> values) throws JsonProcessingException, IllegalStateException {
-        String[] lines = currentEvent.split("");
-        if (currentEvent.isEmpty() || STREAM_COMPLETION_EVENT.contains(currentEvent)) {
+    private void handleCurrentEvent(String currentEvent, List<StreamUpdate> values) throws JsonEOFException, IllegalStateException, IOException {
+        String[] lines = currentEvent.split("\r\n");
+
+        String eventName = lines[0].substring(6).trim(); // removing "event:" prefix
+        String eventJson = lines[1].substring(5).trim(); // removing "data:" prefix
+
+        if (DONE.equals(AssistantStreamEvent.fromString(eventName))) {
             return;
         }
 
-        if (STREAM_ERROR_EVENT.contains(currentEvent)) {
+        if (ERROR.equals(AssistantStreamEvent.fromString(eventName))) {
             throw new IllegalStateException("Server sent event error occurred.");
         }
 
-
-        values.add((T) currentEvent);
+        values.add(streamTypeFactory.deserializeEvent(eventName, BinaryData.fromString(eventJson)));
     }
 }

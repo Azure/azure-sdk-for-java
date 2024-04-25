@@ -14,11 +14,18 @@ public class OpenAIServerSentEventsTest {
     @Test
     public void eventsEmissionCount() {
         BinaryData testFile = BinaryData.fromFile(AssistantsClientTestBase.openResourceFile("create_thread_run.dump"));
-        OpenAIServerSentEvents<String> openAIServerSentEvents = new OpenAIServerSentEvents(testFile.toFluxByteBuffer());
+        OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testFile.toFluxByteBuffer());
 
+        AtomicInteger i = new AtomicInteger(0);
         // data: [DONE] is the last event in the file, but is not emitted by the Flux
-        StepVerifier.create(openAIServerSentEvents.getEvents())
-            .expectNextCount(30)
+        StepVerifier.create(
+            openAIServerSentEvents.getEvents()
+                .doOnNext(event -> {
+                    System.out.println("Event number: " + i.getAndIncrement());
+                    System.out.println(BinaryData.fromObject(event));
+                    System.out.println();
+                })
+            ).expectNextCount(30)
             .verifyComplete();
     }
 }
