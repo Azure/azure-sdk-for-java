@@ -371,7 +371,6 @@ public interface Tracer {
      * tracer.setAttribute&#40;&quot;foo&quot;, 42, span&#41;;
      * </pre>
      * <!-- end com.azure.core.util.tracing.set-attribute#int -->
-    
      * @param key attribute name
      * @param value atteribute value
      * @param context tracing context

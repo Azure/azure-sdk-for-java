@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed unreliable HTTP span reporting when response is not closed.
+ 
 ### Other Changes
 
 ## 1.0.0-beta.44 (2024-03-01)
