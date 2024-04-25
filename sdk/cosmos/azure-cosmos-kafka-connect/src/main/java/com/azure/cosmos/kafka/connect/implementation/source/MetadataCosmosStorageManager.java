@@ -90,8 +90,9 @@ public class MetadataCosmosStorageManager implements IMetadataReader {
 
     @Override
     public Mono<Utils.ValueHolder<ContainersMetadataTopicOffset>> getContainersMetadataOffset(String databaseName, String connectorName) {
+        String itemId = this.getContainersMetadataItemId(databaseName, connectorName);
         return this.metadataContainer
-            .readItem(databaseName, new PartitionKey(databaseName), ContainersMetadataItem.class)
+            .readItem(itemId, new PartitionKey(itemId), ContainersMetadataItem.class)
             .map(itemResponse -> new Utils.ValueHolder<>(ContainersMetadataTopicOffset.fromMap(itemResponse.getItem().getMetadata())))
             .onErrorResume(throwable -> {
                 if (KafkaCosmosExceptionsHelper.isNotFoundException(throwable)) {

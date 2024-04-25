@@ -76,4 +76,8 @@ public class KafkaCosmosReflectionUtils {
     public static CosmosAsyncClient getSinkTaskCosmosClient(CosmosSinkTask sinkTask) {
         return get(sinkTask,"cosmosClient");
     }
+
+    public static void setConnectorName(CosmosSourceConnector sourceConnector, String connectorName) {
+        set(sourceConnector, connectorName,"connectorName");
+    }
 }

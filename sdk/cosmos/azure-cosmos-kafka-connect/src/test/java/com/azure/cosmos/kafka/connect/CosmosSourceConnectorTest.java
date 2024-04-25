@@ -241,7 +241,7 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
                     databaseName,
                     Arrays.asList(singlePartitionContainer, multiPartitionContainer));
             CosmosAsyncContainer metadataContainer = cosmosAsyncClient.getDatabase(databaseName).getContainer(metadataStorageName);
-            validateMetadataItems(expectedMetadataTaskUnit, metadataContainer);
+            validateMetadataItems(expectedMetadataTaskUnit, metadataContainer, connectorName);
         } finally {
             if (cosmosAsyncClient != null) {
                 cosmosAsyncClient.getDatabase(databaseName).getContainer(metadataStorageName).delete().block();
@@ -663,6 +663,8 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         String containerName,
         String connectorName) {
 
+        KafkaCosmosReflectionUtils.setConnectorName(sourceConnector, connectorName);
+
         CosmosSourceConfig cosmosSourceConfig = new CosmosSourceConfig(sourceConfigMap);
         KafkaCosmosReflectionUtils.setCosmosSourceConfig(sourceConnector, cosmosSourceConfig);
 
@@ -830,12 +832,14 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
 
     private void validateMetadataItems(
         MetadataTaskUnit expectedMetadataTaskUnit,
-        CosmosAsyncContainer metadataContainer) throws JsonProcessingException {
+        CosmosAsyncContainer metadataContainer,
+        String connectorName) throws JsonProcessingException {
 
         // validate containers metadata exists
+        String itemId = expectedMetadataTaskUnit.getDatabaseName() + "_" + connectorName;
         JsonNode containersMetadata =
             metadataContainer
-                .readItem(expectedMetadataTaskUnit.getDatabaseName(), new PartitionKey(expectedMetadataTaskUnit.getDatabaseName()), JsonNode.class)
+                .readItem(itemId, new PartitionKey(itemId), JsonNode.class)
                 .block()
                 .getItem();
         Map<String, Object> metadataMap =
@@ -862,7 +866,7 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
                     .map(FeedRange::toString)
                     .collect(Collectors.toList());
 
-            String cosmosItemId = expectedMetadataTaskUnit.getDatabaseName() + "_" + containerRid;
+            String cosmosItemId = expectedMetadataTaskUnit.getDatabaseName() + "_" + containerRid + "_" + connectorName;
             JsonNode persistedFeedRangesMetadata =
                 metadataContainer
                     .readItem(cosmosItemId, new PartitionKey(cosmosItemId), JsonNode.class)
