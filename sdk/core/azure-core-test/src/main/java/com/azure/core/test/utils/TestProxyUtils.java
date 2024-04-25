@@ -238,10 +238,17 @@ public class TestProxyUtils {
      */
     public static String getTestProxyVersion(Path testClassPath) {
         Path rootPath = TestUtils.getRepoRootResolveUntil(testClassPath, "eng");
+        Path overrideVersionFile = Paths.get("eng", "target_proxy_version.txt");
         Path versionFile = Paths.get("eng", "common", "testproxy", "target_version.txt");
-        rootPath = rootPath.resolve(versionFile);
+
+        // if a long-lived override exists, use it.
+        if (Files.exists(rootPath.resolve(overrideVersionFile))) {
+            versionFile = overrideVersionFile;
+        }
+
+        versionFilePath = rootPath.resolve(versionFile);
         try {
-            return Files.readAllLines(rootPath).get(0).replace(System.getProperty("line.separator"), "");
+            return Files.readAllLines(versionFilePath).get(0).replace(System.getProperty("line.separator"), "");
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
