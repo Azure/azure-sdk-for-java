@@ -632,6 +632,8 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         Map<String, Object> sourceConfigMap,
         String connectorName) {
 
+        KafkaCosmosReflectionUtils.setConnectorName(sourceConnector, connectorName);
+
         CosmosSourceConfig cosmosSourceConfig = new CosmosSourceConfig(sourceConfigMap);
         KafkaCosmosReflectionUtils.setCosmosSourceConfig(sourceConnector, cosmosSourceConfig);
 

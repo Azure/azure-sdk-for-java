@@ -1,6 +1,6 @@
 ## Release History
 
-### 1.0.0-beta.1 (Unreleased)
+### 1.0.0-beta.1 (2024-04-25)
 
 #### Features Added
 * Added Source connector. See [PR 39410](https://github.com/Azure/azure-sdk-for-java/pull/39410)
@@ -10,8 +10,3 @@
 * Added `ItemPatch support` in sink connector - See [PR 39558](https://github.com/Azure/azure-sdk-for-java/pull/39558)
 * Added support to use CosmosDB container for tracking metadata - See [PR 39634](https://github.com/Azure/azure-sdk-for-java/pull/39634)
 
-#### Breaking Changes
-
-#### Bugs Fixed
-
-#### Other Changes
