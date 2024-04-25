@@ -2778,8 +2778,8 @@ public class ShareFileClient {
         DestinationLeaseAccessConditions destinationConditions = new DestinationLeaseAccessConditions()
             .setDestinationLeaseId(destinationRequestConditions.getLeaseId());
 
-        CopyFileSmbInfo smbInfo;
-        String filePermissionKey;
+        CopyFileSmbInfo smbInfo = null;
+        String filePermissionKey = null;
         if (options.getSmbProperties() != null) {
             FileSmbProperties tempSmbProperties = options.getSmbProperties();
             filePermissionKey = tempSmbProperties.getFilePermissionKey();
@@ -2794,26 +2794,26 @@ public class ShareFileClient {
                 .setFileLastWriteTime(fileLastWriteTime)
                 .setFileChangeTime(fileChangeTime)
                 .setIgnoreReadOnly(options.isIgnoreReadOnly());
-        } else {
-            smbInfo = null;
-            filePermissionKey = null;
         }
+        CopyFileSmbInfo finalSmbInfo = smbInfo;
+        String finalFilePermissionKey = filePermissionKey;
 
         ShareFileClient destinationFileClient = getFileClient(options.getDestinationPath());
 
         ShareFileHttpHeaders headers = options.getContentType() == null ? null
             : new ShareFileHttpHeaders().setContentType(options.getContentType());
 
-        String renameSource = this.sasToken != null
-            ? this.getFileUrl() + "?" + this.sasToken.getSignature() : this.getFileUrl();
+        String renameSource = Utility.encodeUrlPath(this.getFileUrl());
+
+        String finalRenameSource = this.sasToken != null ? renameSource + "?" + this.sasToken.getSignature() : renameSource;
 
 
         Callable<ResponseBase<FilesRenameHeaders, Void>> operation = () ->
             destinationFileClient.azureFileStorageClient.getFiles().renameWithResponse(
-                destinationFileClient.getShareName(), destinationFileClient.getFilePath(), renameSource,
+                destinationFileClient.getShareName(), destinationFileClient.getFilePath(), finalRenameSource,
                 null /* timeout */, options.getReplaceIfExists(), options.isIgnoreReadOnly(),
-                options.getFilePermission(), filePermissionKey, options.getMetadata(), sourceConditions,
-                destinationConditions, smbInfo, headers, finalContext);
+                options.getFilePermission(), finalFilePermissionKey, options.getMetadata(), sourceConditions,
+                destinationConditions, finalSmbInfo, headers, finalContext);
 
         ResponseBase<FilesRenameHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
 
