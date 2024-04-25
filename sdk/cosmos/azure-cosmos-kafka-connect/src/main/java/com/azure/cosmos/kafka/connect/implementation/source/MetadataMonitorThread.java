@@ -6,7 +6,6 @@ package com.azure.cosmos.kafka.connect.implementation.source;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.FeedRange;
@@ -26,7 +25,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class MetadataMonitorThread extends Thread {
@@ -59,7 +57,6 @@ public class MetadataMonitorThread extends Thread {
         IMetadataReader metadataReader,
         CosmosAsyncClient cosmosClient) {
 
-        checkArgument(StringUtils.isNotEmpty(connectorName), "Argument 'connectorName' can not be null");
         checkNotNull(containersConfig, "Argument 'containersConfig' can not be null");
         checkNotNull(metadataConfig, "Argument 'metadataConfig' can not be null");
         checkNotNull(connectorContext, "Argument 'connectorContext' can not be null");
