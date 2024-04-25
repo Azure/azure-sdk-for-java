@@ -204,7 +204,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
         Map<String, String> sourceConfigMap = new HashMap<>();
         sourceConfigMap.put("azure.cosmos.account.endpoint", TestConfigurations.HOST);
         sourceConfigMap.put("azure.cosmos.account.key", TestConfigurations.MASTER_KEY);
-        sourceConfigMap.put("azure.cosmos.cosmos.source.database.name", databaseName);
+        sourceConfigMap.put("azure.cosmos.source.database.name", databaseName);
         List<String> containersIncludedList = Arrays.asList(singlePartitionContainerName);
         sourceConfigMap.put("azure.cosmos.source.containers.includedList", containersIncludedList.toString());
         sourceConfigMap.put("azure.cosmos.throughputControl.enabled", "true");
