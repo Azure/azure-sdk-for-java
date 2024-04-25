@@ -36,11 +36,11 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
     public void poll() throws InterruptedException {
         String testContainerName = "KafkaCosmosTestPoll-" + UUID.randomUUID();
         Map<String, String> sourceConfigMap = new HashMap<>();
-        sourceConfigMap.put("kafka.connect.cosmos.account.endpoint", TestConfigurations.HOST);
-        sourceConfigMap.put("kafka.connect.cosmos.account.key", TestConfigurations.MASTER_KEY);
-        sourceConfigMap.put("kafka.connect.cosmos.source.database.name", databaseName);
+        sourceConfigMap.put("azure.cosmos.account.endpoint", TestConfigurations.HOST);
+        sourceConfigMap.put("azure.cosmos.account.key", TestConfigurations.MASTER_KEY);
+        sourceConfigMap.put("azure.cosmos.source.database.name", databaseName);
         List<String> containersIncludedList = Arrays.asList(testContainerName);
-        sourceConfigMap.put("kafka.connect.cosmos.source.containers.includedList", containersIncludedList.toString());
+        sourceConfigMap.put("azure.cosmos.source.containers.includedList", containersIncludedList.toString());
 
         CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConfigMap);
         CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sourceConfig.getAccountConfig());
@@ -135,11 +135,11 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
     public void pollWithSpecificFeedRange() {
         // Test only items belong to the feedRange defined in the feedRangeTaskUnit will be returned
         Map<String, String> sourceConfigMap = new HashMap<>();
-        sourceConfigMap.put("kafka.connect.cosmos.account.endpoint", TestConfigurations.HOST);
-        sourceConfigMap.put("kafka.connect.cosmos.account.key", TestConfigurations.MASTER_KEY);
-        sourceConfigMap.put("kafka.connect.cosmos.source.database.name", databaseName);
+        sourceConfigMap.put("azure.cosmos.account.endpoint", TestConfigurations.HOST);
+        sourceConfigMap.put("azure.cosmos.account.key", TestConfigurations.MASTER_KEY);
+        sourceConfigMap.put("azure.cosmos.source.database.name", databaseName);
         List<String> containersIncludedList = Arrays.asList(multiPartitionContainerName);
-        sourceConfigMap.put("kafka.connect.cosmos.source.containers.includedList", containersIncludedList.toString());
+        sourceConfigMap.put("azure.cosmos.source.containers.includedList", containersIncludedList.toString());
 
         CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConfigMap);
         CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sourceConfig.getAccountConfig());
@@ -202,16 +202,16 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
         String throughputControlContainerName = "throughputControlContainer-" + UUID.randomUUID();
 
         Map<String, String> sourceConfigMap = new HashMap<>();
-        sourceConfigMap.put("kafka.connect.cosmos.account.endpoint", TestConfigurations.HOST);
-        sourceConfigMap.put("kafka.connect.cosmos.account.key", TestConfigurations.MASTER_KEY);
-        sourceConfigMap.put("kafka.connect.cosmos.source.database.name", databaseName);
+        sourceConfigMap.put("azure.cosmos.account.endpoint", TestConfigurations.HOST);
+        sourceConfigMap.put("azure.cosmos.account.key", TestConfigurations.MASTER_KEY);
+        sourceConfigMap.put("azure.cosmos.cosmos.source.database.name", databaseName);
         List<String> containersIncludedList = Arrays.asList(singlePartitionContainerName);
-        sourceConfigMap.put("kafka.connect.cosmos.source.containers.includedList", containersIncludedList.toString());
-        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.enabled", "true");
-        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.name", "pollWithThroughputControl-" + UUID.randomUUID());
-        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.targetThroughput", "100");
-        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.globalControl.database", databaseName);
-        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.globalControl.container", throughputControlContainerName);
+        sourceConfigMap.put("azure.cosmos.source.containers.includedList", containersIncludedList.toString());
+        sourceConfigMap.put("azure.cosmos.throughputControl.enabled", "true");
+        sourceConfigMap.put("azure.cosmos.throughputControl.group.name", "pollWithThroughputControl-" + UUID.randomUUID());
+        sourceConfigMap.put("azure.cosmos.throughputControl.targetThroughput", "100");
+        sourceConfigMap.put("azure.cosmos.throughputControl.globalControl.database.name", databaseName);
+        sourceConfigMap.put("azure.cosmos.throughputControl.globalControl.container.name", throughputControlContainerName);
 
         CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConfigMap);
         CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sourceConfig.getAccountConfig());
