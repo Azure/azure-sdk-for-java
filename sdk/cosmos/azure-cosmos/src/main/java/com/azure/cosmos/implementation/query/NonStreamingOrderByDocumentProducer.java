@@ -16,7 +16,7 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class NonStreamingOrderByDocumentProducer extends DocumentProducer<Document>{
+public class NonStreamingOrderByDocumentProducer extends DocumentProducer<Document> {
     private final OrderbyRowComparer<Document> consumeComparer;
 
     NonStreamingOrderByDocumentProducer(

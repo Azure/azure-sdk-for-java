@@ -25,6 +25,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
     private boolean queryPlanRetrievalDisallowed;
     private boolean emptyPageDiagnosticsEnabled;
     private String queryName;
+    private Integer maxSizePerPartition;
     private List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker = new ArrayList<>();
 
     /**
@@ -62,6 +63,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
         this.queryName = options.queryName;
         this.feedRange = options.feedRange;
         this.cancelledRequestDiagnosticsTracker = options.cancelledRequestDiagnosticsTracker;
+        this.maxSizePerPartition = options.maxSizePerPartition;
     }
 
     /**
@@ -193,6 +195,26 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
      */
     public CosmosQueryRequestOptionsImpl setMaxItemCount(Integer maxItemCount) {
         this.maxItemCount = maxItemCount;
+        return this;
+    }
+
+    /**
+     * Gets the maximum size to fetch from a partition during non-streaming order by queries
+     *
+     * @return the max size per partition
+     */
+    public Integer getMaxSizePerPartition() {
+        return maxSizePerPartition;
+    }
+
+    /**
+     * Sets the maximum size to fetch from a partition during non-streaming order by queries
+     *
+     * @param maxSizePerPartition the max size per partition
+     * @return the CosmosQueryRequestOptions.
+     */
+    public CosmosQueryRequestOptionsImpl setMaxSizePerPartition(Integer maxSizePerPartition) {
+        this.maxSizePerPartition = maxSizePerPartition;
         return this;
     }
 

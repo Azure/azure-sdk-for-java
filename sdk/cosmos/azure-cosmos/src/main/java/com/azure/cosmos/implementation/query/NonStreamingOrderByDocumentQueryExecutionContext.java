@@ -56,6 +56,7 @@ public class NonStreamingOrderByDocumentQueryExecutionContext
     private final RequestChargeTracker tracker;
     private final ConcurrentMap<String, QueryMetrics> queryMetricMap;
     private final Collection<ClientSideRequestStatistics> clientSideRequestStatistics;
+    private Flux<OrderByRowResult<Document>> orderByObservable;
 
     private int maxPageSizePerPartition;
 
@@ -112,7 +113,8 @@ public class NonStreamingOrderByDocumentQueryExecutionContext
                 initParams.getQueryInfo().getOrderBy(),
                 initParams.getQueryInfo().getOrderByExpressions(),
                 initParams.getInitialPageSize(),
-                collection);
+                collection,
+                ModelBridgeInternal.getMaxSizePerPartitionFromQueryRequestOptions(initParams.getCosmosQueryRequestOptions()));
 
             return Flux.just(context);
         } catch (CosmosException dce) {
@@ -124,7 +126,8 @@ public class NonStreamingOrderByDocumentQueryExecutionContext
         List<FeedRangeEpkImpl> feedRanges, List<SortOrder> sortOrders,
         Collection<String> orderByExpressions,
         int initialPageSize,
-        DocumentCollection collection) throws CosmosException {
+        DocumentCollection collection,
+        int maxSizePerPartition) throws CosmosException {
         // Since the continuation token will always be null,
         // we don't need to handle any initialization based on continuationToken.
         // We can directly initialize without any consideration for continuationToken.
@@ -135,6 +138,14 @@ public class NonStreamingOrderByDocumentQueryExecutionContext
             initialPageSize,
             new SqlQuerySpec(querySpec.getQueryText().replace(FormatPlaceHolder, True),
                 querySpec.getParameters()));
+
+        orderByObservable = NonStreamingOrderByUtils.nonStreamingOrderedMerge(
+            consumeComparer,
+            tracker,
+            documentProducers,
+            queryMetricMap,
+            maxSizePerPartition,
+            clientSideRequestStatistics);
     }
 
     @Override
@@ -169,58 +180,15 @@ public class NonStreamingOrderByDocumentQueryExecutionContext
 
     @Override
     public Flux<FeedResponse<Document>> drainAsync(int maxPageSize) {
-        int adjustedMaxPageSize = Math.min(maxPageSize, maxPageSizePerPartition);
-        maxPageSizePerPartition -= adjustedMaxPageSize;
-        return Flux.defer(() -> {
-            List<Flux<OrderByRowResult<Document>>> orderedFluxes = new ArrayList<>();
-            for (DocumentProducer<Document> producer : documentProducers) {
-                Flux<OrderByRowResult<Document>> orderedFlux = producer.produceAsync()
-                    .transform(new PageToItemTransformer(tracker, queryMetricMap,
-                        consumeComparer.getSortOrders(), adjustedMaxPageSize));
-                orderedFluxes.add(orderedFlux);
-            }
-            return Flux.mergeOrdered(consumeComparer, orderedFluxes.toArray(new Flux[0]))
-                .transformDeferred(new ItemToPageTransformer(tracker, maxPageSize, queryMetricMap,
-                    this.clientSideRequestStatistics));
-        });
+        return this.orderByObservable.transformDeferred(new ItemToPageTransformer(tracker,
+            maxPageSize,
+            this.queryMetricMap,
+            this.clientSideRequestStatistics));
     }
 
     @Override
     public Flux<FeedResponse<Document>> executeAsync() {
         return drainAsync(ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(cosmosQueryRequestOptions));
-    }
-
-    private static class PageToItemTransformer implements
-        Function<Flux<DocumentProducer<Document>.DocumentProducerFeedResponse>, Flux<OrderByRowResult<Document>>> {
-        private final RequestChargeTracker tracker;
-        private final Map<String, QueryMetrics> queryMetricsMap;
-        private final List<SortOrder> sortOrders;
-        private final int maxPageSize;
-
-        public PageToItemTransformer(
-            RequestChargeTracker tracker, Map<String, QueryMetrics> queryMetricsMap,
-            List<SortOrder> sortOrders, int maxPageSize) {
-            this.tracker = tracker;
-            this.queryMetricsMap = queryMetricsMap;
-            this.sortOrders = sortOrders;
-            this.maxPageSize = maxPageSize;
-        }
-
-        @Override
-        public Flux<OrderByRowResult<Document>> apply(Flux<DocumentProducer<Document>.DocumentProducerFeedResponse> source) {
-            return source.flatMap(documentProducerFeedResponse -> {
-                QueryMetrics.mergeQueryMetricsMap(queryMetricsMap,
-                    BridgeInternal.queryMetricsFromFeedResponse(documentProducerFeedResponse.pageResult));
-                List<Document> results = documentProducerFeedResponse.pageResult.getResults();
-                tracker.addCharge(documentProducerFeedResponse.pageResult.getRequestCharge());
-                int pageSize = Math.min(maxPageSize, results.size());
-                return Flux.fromIterable(results.subList(0, pageSize))
-                    .map(r -> new OrderByRowResult<Document>(
-                        ModelBridgeInternal.toJsonFromJsonSerializable(r),
-                        documentProducerFeedResponse.sourceFeedRange,
-                        null)); // Continuation token is always null
-            }, 1);
-        }
     }
 
     private static class ItemToPageTransformer implements

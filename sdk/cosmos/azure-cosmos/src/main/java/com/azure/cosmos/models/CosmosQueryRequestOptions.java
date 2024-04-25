@@ -256,6 +256,26 @@ public class CosmosQueryRequestOptions {
     }
 
     /**
+     * Gets the maximum size to fetch from a partition during non-streaming order by queries
+     *
+     * @return the max size per partition
+     */
+    public Integer getMaxSizePerPartition() {
+        return this.actualRequestOptions.getMaxSizePerPartition();
+    }
+
+    /**
+     * Sets the maximum size to fetch from a partition during non-streaming order by queries
+     *
+     * @param maxSizePerPartition the max size per partition
+     * @return the CosmosQueryRequestOptions.
+     */
+    public CosmosQueryRequestOptions setMaxSizePerPartition(Integer maxSizePerPartition) {
+        this.actualRequestOptions.setMaxSizePerPartition(maxSizePerPartition);
+        return this;
+    }
+
+    /**
      * Gets the request continuation token.
      *
      * @return the request continuation.
