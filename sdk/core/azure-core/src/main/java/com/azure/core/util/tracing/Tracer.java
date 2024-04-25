@@ -381,6 +381,28 @@ public interface Tracer {
     }
 
     /**
+     * Sets an attribute on span.
+     * Adding duplicate attributes, update, or removal is discouraged, since underlying implementations
+     * behavior can vary.
+     *
+     * @param key attribute key.
+     * @param value attribute value. Note that underlying tracer implementations limit supported value types.
+     *              OpenTelemetry implementation supports following types:
+     * <ul>
+     *     <li>{@link String}</li>
+     *     <li>{@code int}</li>
+     *     <li>{@code double}</li>
+     *     <li>{@code boolean}</li>
+     *     <li>{@code long}</li>
+     * </ul>
+     * @param context context containing span to which attribute is added.
+     */
+    default void setAttribute(String key, Object value, Context context) {
+        Objects.requireNonNull(value, "'value' cannot be null.");
+        setAttribute(key, value.toString(), context);
+    }
+
+    /**
      * Sets the name for spans that are created.
      *
      * <p><strong>Code samples</strong></p>
@@ -618,6 +640,16 @@ public interface Tracer {
      */
     default AutoCloseable makeSpanCurrent(Context context) {
         return NoopTracer.INSTANCE.makeSpanCurrent(context);
+    }
+
+    /**
+     * Checks if span is sampled in.
+     *
+     * @param span Span to check.
+     * @return true if span is recording, false otherwise.
+     */
+    default boolean isRecording(Context span) {
+        return true;
     }
 
     /**
