@@ -18,10 +18,9 @@ import java.util.stream.Collectors;
 
 public class CosmosSourceTaskConfig extends CosmosSourceConfig {
     private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
-    private static final String SOURCE_TASK_CONFIG_PREFIX = "kafka.connect.cosmos.source.task.";
 
-    public static final String SOURCE_METADATA_TASK_UNIT = SOURCE_TASK_CONFIG_PREFIX + "metadataTaskUnit";
-    public static final String SOURCE_FEED_RANGE_TASK_UNITS = SOURCE_TASK_CONFIG_PREFIX + "feedRangeTaskUnits";
+    public static final String SOURCE_METADATA_TASK_UNIT = "azure.cosmos.source.task.metadataTaskUnit";
+    public static final String SOURCE_FEED_RANGE_TASK_UNITS = "azure.cosmos.source.task.feedRangeTaskUnits";
 
     private final List<FeedRangeTaskUnit> feedRangeTaskUnits;
     private MetadataTaskUnit metadataTaskUnit;

@@ -27,7 +27,7 @@ import static com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig.va
 /**
  * A Sink connector that publishes topic messages to CosmosDB.
  */
-public class CosmosSinkConnector extends SinkConnector {
+public final class CosmosSinkConnector extends SinkConnector {
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosSinkConnector.class);
 
     private CosmosSinkConfig sinkConfig;

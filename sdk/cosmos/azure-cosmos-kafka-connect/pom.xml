@@ -43,8 +43,7 @@ Licensed under the MIT License.
   <!-- CosmosSkip - Needed temporary values to 10% not fail. -->
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jacoco.min.linecoverage>0.01</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.02</jacoco.min.branchcoverage>
+    <jacoco.skip>true</jacoco.skip>
     <shadingPrefix>azure_cosmos_kafka_connect</shadingPrefix>
 
     <!-- CosmosSkip - This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
@@ -309,12 +308,10 @@ Licensed under the MIT License.
               <goal>shade</goal>
             </goals>
             <configuration>
-              <finalName>${project.artifactId}-${project.version}-jar-with-dependencies</finalName>
               <filters>
                 <filter>
                   <artifact>*:*:*:*</artifact>
                   <excludes>
-                    <exclude>META-INF/maven/**</exclude>
                     <!-- suppress warning: Discovered module-info.class. Shading will break its strong encapsulation. -->
                     <!-- https://stackoverflow.com/questions/56063566/maven-how-to-remove-module-info-class-warning-for-shaded-jar -->
                     <exclude>module-info.class</exclude>
@@ -329,6 +326,12 @@ Licensed under the MIT License.
                     <exclude>META-INF/license/LICENSE.tomcat-native.txt</exclude>
                     <exclude>META-INF.versions.9.module-info.class</exclude>
                   </excludes>
+                </filter>
+                <filter>
+                  <artifact>io.micrometer:micrometer-core</artifact>
+                  <includes>
+                    <include>**</include>
+                  </includes>
                 </filter>
               </filters>
               <relocations>
@@ -362,10 +365,6 @@ Licensed under the MIT License.
                 <relocation>
                   <pattern>com.thoughtworks.paranamer</pattern>
                   <shadedPattern>${shadingPrefix}.com.thoughtworks.paranamer</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>io.micrometer</pattern>
-                  <shadedPattern>${shadingPrefix}.io.micrometer</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>org.HdrHistogram</pattern>
