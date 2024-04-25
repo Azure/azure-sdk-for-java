@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.devcenter.fluent.models.ScheduleInner;
 import com.azure.resourcemanager.devcenter.models.ScheduleUpdate;
 
-/** An instance of this class provides access to all the operations defined in SchedulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SchedulesClient.
+ */
 public interface SchedulesClient {
     /**
      * Lists schedules for a pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -32,7 +34,7 @@ public interface SchedulesClient {
 
     /**
      * Lists schedules for a pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -44,12 +46,12 @@ public interface SchedulesClient {
      * @return result of the schedule list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ScheduleInner> listByPool(
-        String resourceGroupName, String projectName, String poolName, Integer top, Context context);
+    PagedIterable<ScheduleInner> listByPool(String resourceGroupName, String projectName, String poolName, Integer top,
+        Context context);
 
     /**
      * Gets a schedule resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -62,17 +64,12 @@ public interface SchedulesClient {
      * @return a schedule resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScheduleInner> getWithResponse(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        Integer top,
-        Context context);
+    Response<ScheduleInner> getWithResponse(String resourceGroupName, String projectName, String poolName,
+        String scheduleName, Integer top, Context context);
 
     /**
      * Gets a schedule resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -87,7 +84,7 @@ public interface SchedulesClient {
 
     /**
      * Creates or updates a Schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -99,12 +96,12 @@ public interface SchedulesClient {
      * @return the {@link SyncPoller} for polling of represents a Schedule to execute a task.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ScheduleInner>, ScheduleInner> beginCreateOrUpdate(
-        String resourceGroupName, String projectName, String poolName, String scheduleName, ScheduleInner body);
+    SyncPoller<PollResult<ScheduleInner>, ScheduleInner> beginCreateOrUpdate(String resourceGroupName,
+        String projectName, String poolName, String scheduleName, ScheduleInner body);
 
     /**
      * Creates or updates a Schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -118,18 +115,12 @@ public interface SchedulesClient {
      * @return the {@link SyncPoller} for polling of represents a Schedule to execute a task.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ScheduleInner>, ScheduleInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        ScheduleInner body,
-        Integer top,
-        Context context);
+    SyncPoller<PollResult<ScheduleInner>, ScheduleInner> beginCreateOrUpdate(String resourceGroupName,
+        String projectName, String poolName, String scheduleName, ScheduleInner body, Integer top, Context context);
 
     /**
      * Creates or updates a Schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -141,12 +132,12 @@ public interface SchedulesClient {
      * @return represents a Schedule to execute a task.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ScheduleInner createOrUpdate(
-        String resourceGroupName, String projectName, String poolName, String scheduleName, ScheduleInner body);
+    ScheduleInner createOrUpdate(String resourceGroupName, String projectName, String poolName, String scheduleName,
+        ScheduleInner body);
 
     /**
      * Creates or updates a Schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -160,18 +151,12 @@ public interface SchedulesClient {
      * @return represents a Schedule to execute a task.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ScheduleInner createOrUpdate(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        ScheduleInner body,
-        Integer top,
-        Context context);
+    ScheduleInner createOrUpdate(String resourceGroupName, String projectName, String poolName, String scheduleName,
+        ScheduleInner body, Integer top, Context context);
 
     /**
      * Partially updates a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -183,12 +168,12 @@ public interface SchedulesClient {
      * @return the {@link SyncPoller} for polling of represents a Schedule to execute a task.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ScheduleInner>, ScheduleInner> beginUpdate(
-        String resourceGroupName, String projectName, String poolName, String scheduleName, ScheduleUpdate body);
+    SyncPoller<PollResult<ScheduleInner>, ScheduleInner> beginUpdate(String resourceGroupName, String projectName,
+        String poolName, String scheduleName, ScheduleUpdate body);
 
     /**
      * Partially updates a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -202,18 +187,12 @@ public interface SchedulesClient {
      * @return the {@link SyncPoller} for polling of represents a Schedule to execute a task.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ScheduleInner>, ScheduleInner> beginUpdate(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        ScheduleUpdate body,
-        Integer top,
-        Context context);
+    SyncPoller<PollResult<ScheduleInner>, ScheduleInner> beginUpdate(String resourceGroupName, String projectName,
+        String poolName, String scheduleName, ScheduleUpdate body, Integer top, Context context);
 
     /**
      * Partially updates a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -225,12 +204,12 @@ public interface SchedulesClient {
      * @return represents a Schedule to execute a task.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ScheduleInner update(
-        String resourceGroupName, String projectName, String poolName, String scheduleName, ScheduleUpdate body);
+    ScheduleInner update(String resourceGroupName, String projectName, String poolName, String scheduleName,
+        ScheduleUpdate body);
 
     /**
      * Partially updates a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -244,18 +223,12 @@ public interface SchedulesClient {
      * @return represents a Schedule to execute a task.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ScheduleInner update(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        ScheduleUpdate body,
-        Integer top,
-        Context context);
+    ScheduleInner update(String resourceGroupName, String projectName, String poolName, String scheduleName,
+        ScheduleUpdate body, Integer top, Context context);
 
     /**
      * Deletes a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -266,12 +239,12 @@ public interface SchedulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String projectName, String poolName, String scheduleName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String projectName, String poolName,
+        String scheduleName);
 
     /**
      * Deletes a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -284,17 +257,12 @@ public interface SchedulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        Integer top,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String projectName, String poolName,
+        String scheduleName, Integer top, Context context);
 
     /**
      * Deletes a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -308,7 +276,7 @@ public interface SchedulesClient {
 
     /**
      * Deletes a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -320,11 +288,6 @@ public interface SchedulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        Integer top,
+    void delete(String resourceGroupName, String projectName, String poolName, String scheduleName, Integer top,
         Context context);
 }

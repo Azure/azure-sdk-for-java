@@ -13,8 +13,11 @@ import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.azure.resourcemanager.devcenter.models.SyncStats;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
-/** Properties of a catalog. */
+/**
+ * Properties of a catalog.
+ */
 @Fluent
 public final class CatalogProperties extends CatalogUpdateProperties {
     /*
@@ -53,13 +56,15 @@ public final class CatalogProperties extends CatalogUpdateProperties {
     @JsonProperty(value = "lastSyncTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastSyncTime;
 
-    /** Creates an instance of CatalogProperties class. */
+    /**
+     * Creates an instance of CatalogProperties class.
+     */
     public CatalogProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -68,7 +73,7 @@ public final class CatalogProperties extends CatalogUpdateProperties {
 
     /**
      * Get the syncState property: The synchronization state of the catalog.
-     *
+     * 
      * @return the syncState value.
      */
     public CatalogSyncState syncState() {
@@ -77,7 +82,7 @@ public final class CatalogProperties extends CatalogUpdateProperties {
 
     /**
      * Get the lastSyncStats property: Stats of the latest synchronization.
-     *
+     * 
      * @return the lastSyncStats value.
      */
     public SyncStats lastSyncStats() {
@@ -86,7 +91,7 @@ public final class CatalogProperties extends CatalogUpdateProperties {
 
     /**
      * Get the connectionState property: The connection state of the catalog.
-     *
+     * 
      * @return the connectionState value.
      */
     public CatalogConnectionState connectionState() {
@@ -95,7 +100,7 @@ public final class CatalogProperties extends CatalogUpdateProperties {
 
     /**
      * Get the lastConnectionTime property: When the catalog was last connected.
-     *
+     * 
      * @return the lastConnectionTime value.
      */
     public OffsetDateTime lastConnectionTime() {
@@ -104,28 +109,34 @@ public final class CatalogProperties extends CatalogUpdateProperties {
 
     /**
      * Get the lastSyncTime property: When the catalog was last synced.
-     *
+     * 
      * @return the lastSyncTime value.
      */
     public OffsetDateTime lastSyncTime() {
         return this.lastSyncTime;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CatalogProperties withGitHub(GitCatalog gitHub) {
         super.withGitHub(gitHub);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CatalogProperties withAdoGit(GitCatalog adoGit) {
         super.withAdoGit(adoGit);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CatalogProperties withSyncType(CatalogSyncType syncType) {
         super.withSyncType(syncType);
@@ -133,8 +144,17 @@ public final class CatalogProperties extends CatalogUpdateProperties {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CatalogProperties withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.support.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Details about an Azure service available for support ticket creation.
@@ -26,13 +24,6 @@ public final class ServiceProperties {
      */
     @JsonProperty(value = "resourceTypes")
     private List<String> resourceTypes;
-
-    /*
-     * Metadata about the service, only visible for 1P clients
-     */
-    @JsonProperty(value = "metadata", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> metadata;
 
     /**
      * Creates an instance of ServiceProperties class.
@@ -78,15 +69,6 @@ public final class ServiceProperties {
     public ServiceProperties withResourceTypes(List<String> resourceTypes) {
         this.resourceTypes = resourceTypes;
         return this;
-    }
-
-    /**
-     * Get the metadata property: Metadata about the service, only visible for 1P clients.
-     * 
-     * @return the metadata value.
-     */
-    public Map<String, String> metadata() {
-        return this.metadata;
     }
 
     /**

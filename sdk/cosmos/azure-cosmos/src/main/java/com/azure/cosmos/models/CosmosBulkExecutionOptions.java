@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
@@ -10,6 +11,7 @@ import com.azure.cosmos.implementation.batch.BulkExecutorDiagnosticsTracker;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,8 +40,30 @@ public final class CosmosBulkExecutionOptions {
     private Map<String, String> customOptions;
     private String throughputControlGroupName;
     private List<String> excludeRegions;
-
     private BulkExecutorDiagnosticsTracker diagnosticsTracker = null;
+    private CosmosItemSerializer customSerializer;
+
+
+    CosmosBulkExecutionOptions(CosmosBulkExecutionOptions toBeCloned) {
+        this.initialMicroBatchSize = toBeCloned.initialMicroBatchSize;
+        this.maxMicroBatchConcurrency = toBeCloned.maxMicroBatchConcurrency;
+        this.maxMicroBatchSize = toBeCloned.maxMicroBatchSize;
+        this.maxMicroBatchRetryRate = toBeCloned.maxMicroBatchRetryRate;
+        this.minMicroBatchRetryRate = toBeCloned.minMicroBatchRetryRate;
+        this.maxMicroBatchPayloadSizeInBytes = toBeCloned.maxMicroBatchPayloadSizeInBytes;
+        this.legacyBatchScopedContext = toBeCloned.legacyBatchScopedContext;
+        this.thresholds = toBeCloned.thresholds;
+        this.maxConcurrentCosmosPartitions = toBeCloned.maxConcurrentCosmosPartitions;
+        this.throughputControlGroupName = toBeCloned.throughputControlGroupName;
+        this.operationContextAndListenerTuple = toBeCloned.operationContextAndListenerTuple;
+        this.diagnosticsTracker = toBeCloned.diagnosticsTracker;
+        this.customSerializer = toBeCloned.customSerializer;
+        this.customOptions = toBeCloned.customOptions;
+
+        if (toBeCloned.excludeRegions != null) {
+            this.excludeRegions = new ArrayList<>(toBeCloned.excludeRegions);
+        }
+    }
 
     /**
      * Constructor
@@ -146,6 +170,27 @@ public final class CosmosBulkExecutionOptions {
      */
     public CosmosBulkExecutionOptions setMaxMicroBatchSize(int maxMicroBatchSize) {
         this.maxMicroBatchSize = maxMicroBatchSize;
+        return this;
+    }
+
+    /**
+     * Gets the custom item serializer defined for this instance of request options
+     * @return the custom item serializer
+     */
+    public CosmosItemSerializer getCustomSerializer() {
+        return this.customSerializer;
+    }
+
+    /**
+     * Allows specifying a custom item serializer to be used for this operation. If the serializer
+     * on the request options is null, the serializer on CosmosClientBuilder is used. If both serializers
+     * are null (the default), an internal Jackson ObjectMapper is ued for serialization/deserialization.
+     * @param itemSerializerOverride the custom item serializer for this operation
+     * @return  the CosmosItemRequestOptions.
+     */
+    public CosmosBulkExecutionOptions setCustomSerializer(CosmosItemSerializer itemSerializerOverride) {
+        this.customSerializer = itemSerializerOverride;
+
         return this;
     }
 
@@ -463,6 +508,11 @@ public final class CosmosBulkExecutionOptions {
                 @Override
                 public BulkExecutorDiagnosticsTracker getDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions) {
                     return cosmosBulkExecutionOptions.getDiagnosticsTracker();
+                }
+
+                @Override
+                public CosmosBulkExecutionOptions clone(CosmosBulkExecutionOptions toBeCloned) {
+                    return new CosmosBulkExecutionOptions(toBeCloned);
                 }
             });
     }

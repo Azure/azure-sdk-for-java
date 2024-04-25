@@ -9,7 +9,9 @@ import com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCcfInne
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Object that includes an array of Managed CCF and a possible link for next set. */
+/**
+ * Object that includes an array of Managed CCF and a possible link for next set.
+ */
 @Fluent
 public final class ManagedCcfList {
     /*
@@ -24,13 +26,15 @@ public final class ManagedCcfList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ManagedCcfList class. */
+    /**
+     * Creates an instance of ManagedCcfList class.
+     */
     public ManagedCcfList() {
     }
 
     /**
      * Get the value property: List of Managed CCF.
-     *
+     * 
      * @return the value value.
      */
     public List<ManagedCcfInner> value() {
@@ -39,7 +43,7 @@ public final class ManagedCcfList {
 
     /**
      * Set the value property: List of Managed CCF.
-     *
+     * 
      * @param value the value value to set.
      * @return the ManagedCcfList object itself.
      */
@@ -50,7 +54,7 @@ public final class ManagedCcfList {
 
     /**
      * Get the nextLink property: The URL the client should use to fetch the next page (per server side paging).
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ManagedCcfList {
 
     /**
      * Set the nextLink property: The URL the client should use to fetch the next page (per server side paging).
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ManagedCcfList object itself.
      */
@@ -70,7 +74,7 @@ public final class ManagedCcfList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

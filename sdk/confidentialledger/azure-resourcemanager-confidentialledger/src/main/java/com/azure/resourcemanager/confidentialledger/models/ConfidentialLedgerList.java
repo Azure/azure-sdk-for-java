@@ -9,7 +9,9 @@ import com.azure.resourcemanager.confidentialledger.fluent.models.ConfidentialLe
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Object that includes an array of Confidential Ledgers and a possible link for next set. */
+/**
+ * Object that includes an array of Confidential Ledgers and a possible link for next set.
+ */
 @Fluent
 public final class ConfidentialLedgerList {
     /*
@@ -24,13 +26,15 @@ public final class ConfidentialLedgerList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ConfidentialLedgerList class. */
+    /**
+     * Creates an instance of ConfidentialLedgerList class.
+     */
     public ConfidentialLedgerList() {
     }
 
     /**
      * Get the value property: List of Confidential Ledgers.
-     *
+     * 
      * @return the value value.
      */
     public List<ConfidentialLedgerInner> value() {
@@ -39,7 +43,7 @@ public final class ConfidentialLedgerList {
 
     /**
      * Set the value property: List of Confidential Ledgers.
-     *
+     * 
      * @param value the value value to set.
      * @return the ConfidentialLedgerList object itself.
      */
@@ -50,7 +54,7 @@ public final class ConfidentialLedgerList {
 
     /**
      * Get the nextLink property: The URL the client should use to fetch the next page (per server side paging).
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ConfidentialLedgerList {
 
     /**
      * Set the nextLink property: The URL the client should use to fetch the next page (per server side paging).
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ConfidentialLedgerList object itself.
      */
@@ -70,7 +74,7 @@ public final class ConfidentialLedgerList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

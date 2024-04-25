@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Specifies the status of Agent Upgrade. */
+/**
+ * Specifies the status of Agent Upgrade.
+ */
 public final class LastAttemptStatusEnum extends ExpandableStringEnum<LastAttemptStatusEnum> {
-    /** Static value Success for LastAttemptStatusEnum. */
+    /**
+     * Static value Success for LastAttemptStatusEnum.
+     */
     public static final LastAttemptStatusEnum SUCCESS = fromString("Success");
 
-    /** Static value Failed for LastAttemptStatusEnum. */
+    /**
+     * Static value Failed for LastAttemptStatusEnum.
+     */
     public static final LastAttemptStatusEnum FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of LastAttemptStatusEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class LastAttemptStatusEnum extends ExpandableStringEnum<LastAttemp
 
     /**
      * Creates or finds a LastAttemptStatusEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LastAttemptStatusEnum.
      */
@@ -38,7 +44,7 @@ public final class LastAttemptStatusEnum extends ExpandableStringEnum<LastAttemp
 
     /**
      * Gets known LastAttemptStatusEnum values.
-     *
+     * 
      * @return known LastAttemptStatusEnum values.
      */
     public static Collection<LastAttemptStatusEnum> values() {

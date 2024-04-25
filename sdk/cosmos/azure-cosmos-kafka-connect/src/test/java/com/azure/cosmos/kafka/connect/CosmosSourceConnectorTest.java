@@ -90,7 +90,7 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         }
     }
 
-    @Test(groups = "{ kafka }", timeOut = TIMEOUT)
+    @Test(groups = { "kafka", "kafka-emulator" }, timeOut = TIMEOUT)
     public void getTaskConfigsWithoutPersistedOffset() throws JsonProcessingException {
         CosmosSourceConnector sourceConnector = new CosmosSourceConnector();
         try {
@@ -161,10 +161,10 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         }
     }
 
-    @Test(groups = "{ kafka }", timeOut = TIMEOUT)
+    @Test(groups = { "kafka", "kafka-emulator" }, timeOut = TIMEOUT)
     public void getTaskConfigs_withMetadataCosmosStorageManager() throws JsonProcessingException {
         CosmosSourceConnector sourceConnector = new CosmosSourceConnector();
-        String metadataStorageName = "_cosmos.metadata.topic";
+        String metadataStorageName = "_cosmos.metadata.topic-" + UUID.randomUUID();
         CosmosAsyncClient cosmosAsyncClient = null;
         try {
             Map<String, Object> sourceConfigMap = new HashMap<>();
@@ -240,7 +240,7 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         }
     }
 
-    @Test(groups = "{ kafka }", timeOut = TIMEOUT)
+    @Test(groups = { "kafka", "kafka-emulator" }, timeOut = TIMEOUT)
     public void getTaskConfigsAfterSplit() throws JsonProcessingException {
         // This test is to simulate after a split happen, the task resume with persisted offset
         CosmosSourceConnector sourceConnector = new CosmosSourceConnector();
@@ -335,7 +335,7 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         }
     }
 
-    @Test(groups = "{ kafka }", timeOut = TIMEOUT)
+    @Test(groups = { "kafka", "kafka-emulator" }, timeOut = TIMEOUT)
     public void getTaskConfigsAfterMerge() throws JsonProcessingException {
         // This test is to simulate after a merge happen, the task resume with previous feedRanges
         CosmosSourceConnector sourceConnector = new CosmosSourceConnector();
@@ -655,7 +655,6 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         CosmosAsyncContainer container = cosmosAsyncClient.getDatabase(databaseName).getContainer(containerName);
         MetadataCosmosStorageManager cosmosStorageManager = new MetadataCosmosStorageManager(container);
         KafkaCosmosReflectionUtils.setMetadataReader(sourceConnector, cosmosStorageManager);
-
 
         InMemoryStorageReader inMemoryStorageReader = new InMemoryStorageReader();
         MetadataKafkaStorageManager metadataReader = new MetadataKafkaStorageManager(inMemoryStorageReader);
