@@ -46,18 +46,17 @@ public final class StringField implements JsonSerializable<StringField > {
 
     public static StringField fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String description = null;
+            String value = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                } else if ("description".equals(fieldName)) {
-                    description = reader.getString();
+                if ("type".equals(fieldName) || "description".equals(fieldName)) {
+                    value = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new StringField(description);
+            return new StringField(value);
         });
     }
 }

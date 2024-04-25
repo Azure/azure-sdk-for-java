@@ -6,7 +6,6 @@ package com.azure.ai.openai.implementation;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.json.implementation.jackson.core.JsonProcessingException;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 import java.io.ByteArrayOutputStream;
@@ -25,7 +24,7 @@ public final class OpenAIServerSentEvents<T> {
     private final Class<T> type;
     private ByteArrayOutputStream outStream;
 
-    private final JsonSerializer SERIALIZER = JsonSerializerProviders.createInstance(true);
+    private static final JsonSerializer SERIALIZER = JsonSerializerProviders.createInstance(true);
 
     public OpenAIServerSentEvents(Flux<ByteBuffer> source, Class<T> type) {
         this.source = source;

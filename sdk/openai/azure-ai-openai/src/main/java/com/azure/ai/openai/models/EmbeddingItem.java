@@ -5,11 +5,11 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -21,7 +21,7 @@ import static com.azure.ai.openai.implementation.EmbeddingsUtils.convertBase64To
 @Immutable
 public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
 
-    private String embeddingBase64;
+    private final String embeddingBase64;
 
     /**
      * Get the embedding property: List of embeddings value for the input prompt. These represent a measurement of the
