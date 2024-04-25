@@ -24,6 +24,7 @@ import java.time.ZoneOffset;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
@@ -51,8 +52,9 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
 
         SyncPoller<KeyVaultBackupOperation, String> backupPoller =
             setPlaybackSyncPollerPollInterval(client.beginBackup(blobStorageUrl, sasToken));
+        PollResponse<KeyVaultBackupOperation> pollResponse = backupPoller.waitForCompletion();
 
-        backupPoller.waitForCompletion();
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
 
         String backupBlobUri = backupPoller.getFinalResult();
 
@@ -70,13 +72,13 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
 
         SyncPoller<KeyVaultBackupOperation, String> backupPoller =
             setPlaybackSyncPollerPollInterval(client.beginPreBackup(blobStorageUrl, sasToken));
+        PollResponse<KeyVaultBackupOperation> pollResponse = backupPoller.waitForCompletion();
 
-        backupPoller.waitForCompletion();
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
 
         String backupBlobUri = backupPoller.getFinalResult();
 
-        assertNotNull(backupBlobUri);
-        assertTrue(backupBlobUri.startsWith(blobStorageUrl));
+        assertNull(backupBlobUri);
     }
 
     /**
@@ -90,8 +92,9 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
         // Create a backup
         SyncPoller<KeyVaultBackupOperation, String> backupPoller =
             setPlaybackSyncPollerPollInterval(client.beginBackup(blobStorageUrl, sasToken));
+        PollResponse<KeyVaultBackupOperation> pollResponse = backupPoller.waitForCompletion();
 
-        backupPoller.waitForCompletion();
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
 
         // Restore the backup
         String backupFolderUrl = backupPoller.getFinalResult();
@@ -120,19 +123,17 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
         // Create a backup
         SyncPoller<KeyVaultBackupOperation, String> backupPoller =
             setPlaybackSyncPollerPollInterval(client.beginBackup(blobStorageUrl, sasToken));
+        PollResponse<KeyVaultBackupOperation> backupPollResponse = backupPoller.waitForCompletion();
 
-        backupPoller.waitForCompletion();
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, backupPollResponse.getStatus());
 
         // Restore the backup
         String backupFolderUrl = backupPoller.getFinalResult();
         SyncPoller<KeyVaultRestoreOperation, KeyVaultRestoreResult> restorePoller =
             setPlaybackSyncPollerPollInterval(client.beginPreRestore(backupFolderUrl, sasToken));
+        PollResponse<KeyVaultRestoreOperation> restorePollResponse = restorePoller.waitForCompletion();
 
-        restorePoller.waitForCompletion();
-
-        PollResponse<KeyVaultRestoreOperation> restoreResponse = restorePoller.poll();
-
-        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, restoreResponse.getStatus());
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, restorePollResponse.getStatus());
 
         // For some reason, the service might still think a restore operation is running even after returning a success
         // signal. This gives it some time to "clear" the operation.
@@ -162,20 +163,19 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
         // Create a backup
         SyncPoller<KeyVaultBackupOperation, String> backupPoller =
             setPlaybackSyncPollerPollInterval(client.beginBackup(blobStorageUrl, sasToken));
+        PollResponse<KeyVaultBackupOperation> backupPollResponse = backupPoller.waitForCompletion();
 
-        backupPoller.waitForCompletion();
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, backupPollResponse.getStatus());
 
         // Restore one key from said backup
         String backupFolderUrl = backupPoller.getFinalResult();
         SyncPoller<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> selectiveKeyRestorePoller =
             setPlaybackSyncPollerPollInterval(client.beginSelectiveKeyRestore(createdKey.getName(), backupFolderUrl,
                 sasToken));
+        PollResponse<KeyVaultSelectiveKeyRestoreOperation> restorePollResponse =
+            selectiveKeyRestorePoller.waitForCompletion();
 
-        selectiveKeyRestorePoller.waitForCompletion();
-
-        PollResponse<KeyVaultSelectiveKeyRestoreOperation> response = selectiveKeyRestorePoller.poll();
-
-        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, restorePollResponse.getStatus());
 
         // For some reason, the service might still think a restore operation is running even after returning a success
         // signal. This gives it some time to "clear" the operation.
