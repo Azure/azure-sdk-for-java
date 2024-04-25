@@ -8,71 +8,96 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.frontdoor.models.ActionType;
 import com.azure.resourcemanager.frontdoor.models.CustomRule;
 import com.azure.resourcemanager.frontdoor.models.CustomRuleEnabledState;
+import com.azure.resourcemanager.frontdoor.models.GroupByVariable;
 import com.azure.resourcemanager.frontdoor.models.MatchCondition;
 import com.azure.resourcemanager.frontdoor.models.MatchVariable;
 import com.azure.resourcemanager.frontdoor.models.Operator;
 import com.azure.resourcemanager.frontdoor.models.RuleType;
 import com.azure.resourcemanager.frontdoor.models.TransformType;
+import com.azure.resourcemanager.frontdoor.models.VariableName;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class CustomRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomRule model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"ipjoxzjnchgejs\",\"priority\":178199431,\"enabledState\":\"Enabled\",\"ruleType\":\"RateLimitRule\",\"rateLimitDurationInMinutes\":1543997460,\"rateLimitThreshold\":1345546955,\"matchConditions\":[{\"matchVariable\":\"RequestBody\",\"selector\":\"o\",\"operator\":\"BeginsWith\",\"negateCondition\":false,\"matchValue\":[\"uxinpmqnjaq\",\"ixjsprozvcputeg\",\"vwmf\"],\"transforms\":[\"UrlDecode\"]}],\"action\":\"Block\"}")
-                .toObject(CustomRule.class);
-        Assertions.assertEquals("ipjoxzjnchgejs", model.name());
-        Assertions.assertEquals(178199431, model.priority());
-        Assertions.assertEquals(CustomRuleEnabledState.ENABLED, model.enabledState());
+        CustomRule model = BinaryData.fromString(
+            "{\"name\":\"tihfx\",\"priority\":1773018691,\"enabledState\":\"Disabled\",\"ruleType\":\"RateLimitRule\",\"rateLimitDurationInMinutes\":322305671,\"rateLimitThreshold\":1747386848,\"groupBy\":[{\"variableName\":\"None\"},{\"variableName\":\"None\"},{\"variableName\":\"SocketAddr\"},{\"variableName\":\"GeoLocation\"}],\"matchConditions\":[{\"matchVariable\":\"RequestUri\",\"selector\":\"fcyzkohdbihanufh\",\"operator\":\"RegEx\",\"negateCondition\":false,\"matchValue\":[\"s\"],\"transforms\":[\"Trim\",\"Uppercase\",\"Uppercase\"]},{\"matchVariable\":\"SocketAddr\",\"selector\":\"abifpikxwczbys\",\"operator\":\"EndsWith\",\"negateCondition\":false,\"matchValue\":[\"uhivyqniw\"],\"transforms\":[\"RemoveNulls\"]},{\"matchVariable\":\"Cookies\",\"selector\":\"vd\",\"operator\":\"Contains\",\"negateCondition\":false,\"matchValue\":[\"tfwvukxgaudc\"],\"transforms\":[\"UrlDecode\",\"RemoveNulls\",\"Trim\"]},{\"matchVariable\":\"SocketAddr\",\"selector\":\"yejhk\",\"operator\":\"BeginsWith\",\"negateCondition\":true,\"matchValue\":[\"apcz\",\"lokjyemkk\",\"ni\"],\"transforms\":[\"Trim\",\"RemoveNulls\",\"RemoveNulls\",\"UrlDecode\"]}],\"action\":\"Block\"}")
+            .toObject(CustomRule.class);
+        Assertions.assertEquals("tihfx", model.name());
+        Assertions.assertEquals(1773018691, model.priority());
+        Assertions.assertEquals(CustomRuleEnabledState.DISABLED, model.enabledState());
         Assertions.assertEquals(RuleType.RATE_LIMIT_RULE, model.ruleType());
-        Assertions.assertEquals(1543997460, model.rateLimitDurationInMinutes());
-        Assertions.assertEquals(1345546955, model.rateLimitThreshold());
-        Assertions.assertEquals(MatchVariable.REQUEST_BODY, model.matchConditions().get(0).matchVariable());
-        Assertions.assertEquals("o", model.matchConditions().get(0).selector());
-        Assertions.assertEquals(Operator.BEGINS_WITH, model.matchConditions().get(0).operator());
+        Assertions.assertEquals(322305671, model.rateLimitDurationInMinutes());
+        Assertions.assertEquals(1747386848, model.rateLimitThreshold());
+        Assertions.assertEquals(VariableName.NONE, model.groupBy().get(0).variableName());
+        Assertions.assertEquals(MatchVariable.REQUEST_URI, model.matchConditions().get(0).matchVariable());
+        Assertions.assertEquals("fcyzkohdbihanufh", model.matchConditions().get(0).selector());
+        Assertions.assertEquals(Operator.REG_EX, model.matchConditions().get(0).operator());
         Assertions.assertEquals(false, model.matchConditions().get(0).negateCondition());
-        Assertions.assertEquals("uxinpmqnjaq", model.matchConditions().get(0).matchValue().get(0));
-        Assertions.assertEquals(TransformType.URL_DECODE, model.matchConditions().get(0).transforms().get(0));
+        Assertions.assertEquals("s", model.matchConditions().get(0).matchValue().get(0));
+        Assertions.assertEquals(TransformType.TRIM, model.matchConditions().get(0).transforms().get(0));
         Assertions.assertEquals(ActionType.BLOCK, model.action());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomRule model =
-            new CustomRule()
-                .withName("ipjoxzjnchgejs")
-                .withPriority(178199431)
-                .withEnabledState(CustomRuleEnabledState.ENABLED)
+        CustomRule model
+            = new CustomRule().withName("tihfx")
+                .withPriority(1773018691)
+                .withEnabledState(CustomRuleEnabledState.DISABLED)
                 .withRuleType(RuleType.RATE_LIMIT_RULE)
-                .withRateLimitDurationInMinutes(1543997460)
-                .withRateLimitThreshold(1345546955)
+                .withRateLimitDurationInMinutes(322305671)
+                .withRateLimitThreshold(1747386848)
+                .withGroupBy(Arrays.asList(new GroupByVariable().withVariableName(VariableName.NONE),
+                    new GroupByVariable().withVariableName(VariableName.NONE), new GroupByVariable().withVariableName(
+                        VariableName.SOCKET_ADDR),
+                    new GroupByVariable().withVariableName(VariableName.GEO_LOCATION)))
                 .withMatchConditions(
                     Arrays
                         .asList(
-                            new MatchCondition()
-                                .withMatchVariable(MatchVariable.REQUEST_BODY)
-                                .withSelector("o")
-                                .withOperator(Operator.BEGINS_WITH)
+                            new MatchCondition().withMatchVariable(MatchVariable.REQUEST_URI)
+                                .withSelector("fcyzkohdbihanufh")
+                                .withOperator(Operator.REG_EX)
                                 .withNegateCondition(false)
-                                .withMatchValue(Arrays.asList("uxinpmqnjaq", "ixjsprozvcputeg", "vwmf"))
-                                .withTransforms(Arrays.asList(TransformType.URL_DECODE))))
+                                .withMatchValue(Arrays.asList("s"))
+                                .withTransforms(Arrays.asList(TransformType.TRIM, TransformType.UPPERCASE,
+                                    TransformType.UPPERCASE)),
+                            new MatchCondition().withMatchVariable(MatchVariable.SOCKET_ADDR)
+                                .withSelector("abifpikxwczbys")
+                                .withOperator(Operator.ENDS_WITH)
+                                .withNegateCondition(false)
+                                .withMatchValue(Arrays.asList("uhivyqniw"))
+                                .withTransforms(Arrays.asList(TransformType.REMOVE_NULLS)),
+                            new MatchCondition().withMatchVariable(MatchVariable.COOKIES)
+                                .withSelector("vd")
+                                .withOperator(Operator.CONTAINS)
+                                .withNegateCondition(false)
+                                .withMatchValue(Arrays.asList("tfwvukxgaudc"))
+                                .withTransforms(Arrays.asList(TransformType.URL_DECODE, TransformType.REMOVE_NULLS,
+                                    TransformType.TRIM)),
+                            new MatchCondition().withMatchVariable(MatchVariable.SOCKET_ADDR)
+                                .withSelector("yejhk")
+                                .withOperator(Operator.BEGINS_WITH)
+                                .withNegateCondition(true)
+                                .withMatchValue(Arrays.asList("apcz", "lokjyemkk", "ni"))
+                                .withTransforms(Arrays.asList(TransformType.TRIM, TransformType.REMOVE_NULLS,
+                                    TransformType.REMOVE_NULLS, TransformType.URL_DECODE))))
                 .withAction(ActionType.BLOCK);
         model = BinaryData.fromObject(model).toObject(CustomRule.class);
-        Assertions.assertEquals("ipjoxzjnchgejs", model.name());
-        Assertions.assertEquals(178199431, model.priority());
-        Assertions.assertEquals(CustomRuleEnabledState.ENABLED, model.enabledState());
+        Assertions.assertEquals("tihfx", model.name());
+        Assertions.assertEquals(1773018691, model.priority());
+        Assertions.assertEquals(CustomRuleEnabledState.DISABLED, model.enabledState());
         Assertions.assertEquals(RuleType.RATE_LIMIT_RULE, model.ruleType());
-        Assertions.assertEquals(1543997460, model.rateLimitDurationInMinutes());
-        Assertions.assertEquals(1345546955, model.rateLimitThreshold());
-        Assertions.assertEquals(MatchVariable.REQUEST_BODY, model.matchConditions().get(0).matchVariable());
-        Assertions.assertEquals("o", model.matchConditions().get(0).selector());
-        Assertions.assertEquals(Operator.BEGINS_WITH, model.matchConditions().get(0).operator());
+        Assertions.assertEquals(322305671, model.rateLimitDurationInMinutes());
+        Assertions.assertEquals(1747386848, model.rateLimitThreshold());
+        Assertions.assertEquals(VariableName.NONE, model.groupBy().get(0).variableName());
+        Assertions.assertEquals(MatchVariable.REQUEST_URI, model.matchConditions().get(0).matchVariable());
+        Assertions.assertEquals("fcyzkohdbihanufh", model.matchConditions().get(0).selector());
+        Assertions.assertEquals(Operator.REG_EX, model.matchConditions().get(0).operator());
         Assertions.assertEquals(false, model.matchConditions().get(0).negateCondition());
-        Assertions.assertEquals("uxinpmqnjaq", model.matchConditions().get(0).matchValue().get(0));
-        Assertions.assertEquals(TransformType.URL_DECODE, model.matchConditions().get(0).transforms().get(0));
+        Assertions.assertEquals("s", model.matchConditions().get(0).matchValue().get(0));
+        Assertions.assertEquals(TransformType.TRIM, model.matchConditions().get(0).transforms().get(0));
         Assertions.assertEquals(ActionType.BLOCK, model.action());
     }
 }

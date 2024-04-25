@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.batch;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
@@ -49,7 +50,9 @@ public abstract class ServerBatchRequest {
      *
      * @return Any pending operations that were not included in the request.
      */
-    final List<CosmosItemOperation> createBodyOfBatchRequest(final List<CosmosItemOperation> operations) {
+    final List<CosmosItemOperation> createBodyOfBatchRequest(
+        final List<CosmosItemOperation> operations,
+        final CosmosItemSerializer effectiveItemSerializer) {
 
         checkNotNull(operations, "expected non-null operations");
 
@@ -63,8 +66,8 @@ public abstract class ServerBatchRequest {
             int operationSerializedLength;
 
             if (operation instanceof CosmosItemOperationBase) {
-                operationJsonSerializable = ((CosmosItemOperationBase) operation).getSerializedOperation();
-                operationSerializedLength = ((CosmosItemOperationBase) operation).getSerializedLength();
+                operationJsonSerializable = ((CosmosItemOperationBase) operation).getSerializedOperation(effectiveItemSerializer);
+                operationSerializedLength = ((CosmosItemOperationBase) operation).getSerializedLength(effectiveItemSerializer);
             } else {
                 throw new UnsupportedOperationException("Unknown CosmosItemOperation.");
             }

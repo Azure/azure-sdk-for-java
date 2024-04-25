@@ -19,14 +19,14 @@ public final class ImagingProcedure {
      */
     @Generated
     @JsonProperty(value = "modality")
-    private FhirR4CodeableConcept modality;
+    private final FhirR4CodeableConcept modality;
 
     /*
      * Anatomy : SNOMED CT code.
      */
     @Generated
     @JsonProperty(value = "anatomy")
-    private FhirR4CodeableConcept anatomy;
+    private final FhirR4CodeableConcept anatomy;
 
     /*
      * Laterality : SNOMED CT code.

@@ -19,7 +19,7 @@ public final class SourceText {
      */
     @Generated
     @JsonProperty(value = "text")
-    private String text;
+    private final String text;
 
     /**
      * Creates an instance of SourceText class.

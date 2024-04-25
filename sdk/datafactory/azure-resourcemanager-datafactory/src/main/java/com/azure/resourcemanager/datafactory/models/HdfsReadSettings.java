@@ -6,19 +6,26 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * HDFS read settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = HdfsReadSettings.class, visible = true)
 @JsonTypeName("HdfsReadSettings")
 @Fluent
 public final class HdfsReadSettings extends StoreReadSettings {
     /*
-     * If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression
-     * with resultType boolean).
+     * The read setting type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "HdfsReadSettings";
+
+    /*
+     * If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "recursive")
     private Object recursive;
@@ -36,8 +43,7 @@ public final class HdfsReadSettings extends StoreReadSettings {
     private Object wildcardFileName;
 
     /*
-     * Point to a text file that lists each file (relative path to the path configured in the dataset) that you want to
-     * copy. Type: string (or Expression with resultType string).
+     * Point to a text file that lists each file (relative path to the path configured in the dataset) that you want to copy. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "fileListPath")
     private Object fileListPath;
@@ -49,8 +55,7 @@ public final class HdfsReadSettings extends StoreReadSettings {
     private Object enablePartitionDiscovery;
 
     /*
-     * Specify the root path where partition discovery starts from. Type: string (or Expression with resultType
-     * string).
+     * Specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "partitionRootPath")
     private Object partitionRootPath;
@@ -74,8 +79,7 @@ public final class HdfsReadSettings extends StoreReadSettings {
     private DistcpSettings distcpSettings;
 
     /*
-     * Indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or
-     * Expression with resultType boolean).
+     * Indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "deleteFilesAfterCompletion")
     private Object deleteFilesAfterCompletion;
@@ -87,8 +91,18 @@ public final class HdfsReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Get the recursive property: If true, files under the folder path will be read recursively. Default is true.
-     * Type: boolean (or Expression with resultType boolean).
+     * Get the type property: The read setting type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the recursive property: If true, files under the folder path will be read recursively. Default is true. Type:
+     * boolean (or Expression with resultType boolean).
      * 
      * @return the recursive value.
      */
@@ -97,8 +111,8 @@ public final class HdfsReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Set the recursive property: If true, files under the folder path will be read recursively. Default is true.
-     * Type: boolean (or Expression with resultType boolean).
+     * Set the recursive property: If true, files under the folder path will be read recursively. Default is true. Type:
+     * boolean (or Expression with resultType boolean).
      * 
      * @param recursive the recursive value to set.
      * @return the HdfsReadSettings object itself.
@@ -151,8 +165,8 @@ public final class HdfsReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Get the fileListPath property: Point to a text file that lists each file (relative path to the path configured
-     * in the dataset) that you want to copy. Type: string (or Expression with resultType string).
+     * Get the fileListPath property: Point to a text file that lists each file (relative path to the path configured in
+     * the dataset) that you want to copy. Type: string (or Expression with resultType string).
      * 
      * @return the fileListPath value.
      */
@@ -161,8 +175,8 @@ public final class HdfsReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Set the fileListPath property: Point to a text file that lists each file (relative path to the path configured
-     * in the dataset) that you want to copy. Type: string (or Expression with resultType string).
+     * Set the fileListPath property: Point to a text file that lists each file (relative path to the path configured in
+     * the dataset) that you want to copy. Type: string (or Expression with resultType string).
      * 
      * @param fileListPath the fileListPath value to set.
      * @return the HdfsReadSettings object itself.
@@ -195,8 +209,8 @@ public final class HdfsReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Get the partitionRootPath property: Specify the root path where partition discovery starts from. Type: string
-     * (or Expression with resultType string).
+     * Get the partitionRootPath property: Specify the root path where partition discovery starts from. Type: string (or
+     * Expression with resultType string).
      * 
      * @return the partitionRootPath value.
      */
@@ -205,8 +219,8 @@ public final class HdfsReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Set the partitionRootPath property: Specify the root path where partition discovery starts from. Type: string
-     * (or Expression with resultType string).
+     * Set the partitionRootPath property: Specify the root path where partition discovery starts from. Type: string (or
+     * Expression with resultType string).
      * 
      * @param partitionRootPath the partitionRootPath value to set.
      * @return the HdfsReadSettings object itself.

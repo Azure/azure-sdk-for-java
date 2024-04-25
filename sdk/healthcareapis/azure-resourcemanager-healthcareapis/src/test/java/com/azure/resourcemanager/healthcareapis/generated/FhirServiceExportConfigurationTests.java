@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class FhirServiceExportConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FhirServiceExportConfiguration model = BinaryData.fromString("{\"storageAccountName\":\"pqwcciuqgbdbutau\"}")
+        FhirServiceExportConfiguration model = BinaryData.fromString("{\"storageAccountName\":\"wbpokulpiujwaasi\"}")
             .toObject(FhirServiceExportConfiguration.class);
-        Assertions.assertEquals("pqwcciuqgbdbutau", model.storageAccountName());
+        Assertions.assertEquals("wbpokulpiujwaasi", model.storageAccountName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FhirServiceExportConfiguration model
-            = new FhirServiceExportConfiguration().withStorageAccountName("pqwcciuqgbdbutau");
+            = new FhirServiceExportConfiguration().withStorageAccountName("wbpokulpiujwaasi");
         model = BinaryData.fromObject(model).toObject(FhirServiceExportConfiguration.class);
-        Assertions.assertEquals("pqwcciuqgbdbutau", model.storageAccountName());
+        Assertions.assertEquals("wbpokulpiujwaasi", model.storageAccountName());
     }
 }

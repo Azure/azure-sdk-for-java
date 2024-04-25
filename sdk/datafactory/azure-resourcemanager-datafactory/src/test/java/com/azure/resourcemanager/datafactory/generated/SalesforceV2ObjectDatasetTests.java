@@ -19,31 +19,34 @@ public final class SalesforceV2ObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SalesforceV2ObjectDataset model = BinaryData.fromString(
-            "{\"type\":\"SalesforceV2Object\",\"typeProperties\":{\"objectApiName\":\"datamajokbxxcdkhxjwt\",\"reportId\":\"datatgzljuepm\"},\"description\":\"sjpgbmlbxjhgvte\",\"structure\":\"datarunudmakkshrna\",\"schema\":\"dataczkwohdigeyuocf\",\"linkedServiceName\":{\"referenceName\":\"samodwq\",\"parameters\":{\"xerowuzvrnnb\":\"datat\",\"dofmazhk\":\"datagrafeonmtojx\"}},\"parameters\":{\"szbwgpmdmwi\":{\"type\":\"String\",\"defaultValue\":\"datana\"},\"hh\":{\"type\":\"SecureString\",\"defaultValue\":\"datavesw\"}},\"annotations\":[\"datahdldarg\",\"datawimtcceeeuquu\",\"dataczzc\",\"datajwx\"],\"folder\":{\"name\":\"irgkn\"},\"\":{\"wdajyd\":\"datala\"}}")
+            "{\"type\":\"poid\",\"typeProperties\":{\"objectApiName\":\"databthutctcabc\",\"reportId\":\"dataabzfihsz\"},\"description\":\"wegvuojuwgweccvu\",\"structure\":\"dataqvfcfsssmyaemk\",\"schema\":\"databsdgktluifiqgp\",\"linkedServiceName\":{\"referenceName\":\"cpenobqysbees\",\"parameters\":{\"rszsu\":\"datavva\",\"intz\":\"datazsautbricvvofe\",\"xjpisrdnowinc\":\"datanhyyqxckd\",\"vijnubxfiiytqx\":\"dataes\"}},\"parameters\":{\"rxkivbkutogecyqo\":{\"type\":\"Bool\",\"defaultValue\":\"datautezlghkvoxdp\"},\"ya\":{\"type\":\"Object\",\"defaultValue\":\"datassbvqnpwdwdmu\"}},\"annotations\":[\"dataqpwxnb\",\"datazrmiukothyfjbpnh\"],\"folder\":{\"name\":\"r\"},\"\":{\"jioqwu\":\"datazfwgnpcjniaffwcg\",\"mwr\":\"dataogdkp\",\"yxqucnbg\":\"datauqjde\"}}")
             .toObject(SalesforceV2ObjectDataset.class);
-        Assertions.assertEquals("sjpgbmlbxjhgvte", model.description());
-        Assertions.assertEquals("samodwq", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("szbwgpmdmwi").type());
-        Assertions.assertEquals("irgkn", model.folder().name());
+        Assertions.assertEquals("wegvuojuwgweccvu", model.description());
+        Assertions.assertEquals("cpenobqysbees", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("rxkivbkutogecyqo").type());
+        Assertions.assertEquals("r", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SalesforceV2ObjectDataset model = new SalesforceV2ObjectDataset().withDescription("sjpgbmlbxjhgvte")
-            .withStructure("datarunudmakkshrna").withSchema("dataczkwohdigeyuocf")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("samodwq")
-                .withParameters(mapOf("xerowuzvrnnb", "datat", "dofmazhk", "datagrafeonmtojx")))
-            .withParameters(mapOf("szbwgpmdmwi",
-                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datana"), "hh",
-                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datavesw")))
-            .withAnnotations(Arrays.asList("datahdldarg", "datawimtcceeeuquu", "dataczzc", "datajwx"))
-            .withFolder(new DatasetFolder().withName("irgkn")).withObjectApiName("datamajokbxxcdkhxjwt")
-            .withReportId("datatgzljuepm");
+        SalesforceV2ObjectDataset model = new SalesforceV2ObjectDataset().withDescription("wegvuojuwgweccvu")
+            .withStructure("dataqvfcfsssmyaemk")
+            .withSchema("databsdgktluifiqgp")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("cpenobqysbees")
+                .withParameters(mapOf("rszsu", "datavva", "intz", "datazsautbricvvofe", "xjpisrdnowinc",
+                    "datanhyyqxckd", "vijnubxfiiytqx", "dataes")))
+            .withParameters(mapOf("rxkivbkutogecyqo",
+                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datautezlghkvoxdp"), "ya",
+                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datassbvqnpwdwdmu")))
+            .withAnnotations(Arrays.asList("dataqpwxnb", "datazrmiukothyfjbpnh"))
+            .withFolder(new DatasetFolder().withName("r"))
+            .withObjectApiName("databthutctcabc")
+            .withReportId("dataabzfihsz");
         model = BinaryData.fromObject(model).toObject(SalesforceV2ObjectDataset.class);
-        Assertions.assertEquals("sjpgbmlbxjhgvte", model.description());
-        Assertions.assertEquals("samodwq", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("szbwgpmdmwi").type());
-        Assertions.assertEquals("irgkn", model.folder().name());
+        Assertions.assertEquals("wegvuojuwgweccvu", model.description());
+        Assertions.assertEquals("cpenobqysbees", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("rxkivbkutogecyqo").type());
+        Assertions.assertEquals("r", model.folder().name());
     }
 
     // Use "Map.of" if available

@@ -7,11 +7,18 @@
   <suppress files="com.azure.storage.queue.implementation.MessagesImpl.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.storage.queue.implementation.QueuesImpl.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.storage.queue.implementation.ServicesImpl.java" checks="MissingJavadocMethodCheck" />
+  <suppress files="com.azure.storage.queue.implementation.models.PeekedMessageItemInternalWrapper.java" checks="MissingJavadocMethodCheck" />
+  <suppress files="com.azure.storage.queue.implementation.models.QueueMessageItemInternalWrapper.java" checks="MissingJavadocMethodCheck" />
+  <suppress files="com.azure.storage.queue.implementation.models.QueueSignedIdentifierWrapper.java" checks="MissingJavadocMethodCheck" />
+  <suppress files="com.azure.storage.queue.implementation.models.SendMessageResultWrapper.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.storage.queue.implementation.util.BuilderHelper.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.storage.queue.implementation.util.ModelHelper.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.storage.queue.implementation.util.BuilderHelper.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.storage.queue.implementation.util.ModelHelper.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.storage.queue.implementation.util.QueueSasImplUtil.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
+  <suppress files="com.azure.storage.queue.implementation.models.PeekedMessageItemInternalWrapper.java" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
+  <suppress files="com.azure.storage.queue.implementation.models.QueueMessageItemInternalWrapper.java" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
+  <suppress files="com.azure.storage.queue.implementation.models.QueueSignedIdentifierWrapper.java" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
+  <suppress files="com.azure.storage.queue.implementation.models.SendMessageResultWrapper.java" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
   <suppress files="com.azure.storage.queue.implementation.util.ModelHelper.java" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
-  <suppress files="com.azure.storage.queue.implementation.AzureQueueStorageImplBuilder.java" checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" />
 </suppressions>

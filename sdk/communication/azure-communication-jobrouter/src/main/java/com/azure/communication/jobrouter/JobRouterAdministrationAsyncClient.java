@@ -4,26 +4,10 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.JobRouterAdministrationClientImpl;
-import com.azure.communication.jobrouter.implementation.accesshelpers.ClassificationPolicyConstructorProxy;
-import com.azure.communication.jobrouter.implementation.accesshelpers.DistributionPolicyConstructorProxy;
-import com.azure.communication.jobrouter.implementation.accesshelpers.ExceptionPolicyConstructorProxy;
-import com.azure.communication.jobrouter.implementation.accesshelpers.RouterQueueConstructorProxy;
-import com.azure.communication.jobrouter.implementation.converters.ClassificationPolicyAdapter;
-import com.azure.communication.jobrouter.implementation.converters.DistributionPolicyAdapter;
-import com.azure.communication.jobrouter.implementation.converters.ExceptionPolicyAdapter;
-import com.azure.communication.jobrouter.implementation.converters.QueueAdapter;
 import com.azure.communication.jobrouter.implementation.models.ClassificationPolicyInternal;
 import com.azure.communication.jobrouter.implementation.models.DistributionPolicyInternal;
 import com.azure.communication.jobrouter.implementation.models.ExceptionPolicyInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterQueueInternal;
-import com.azure.communication.jobrouter.models.ClassificationPolicy;
-import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
-import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
-import com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions;
-import com.azure.communication.jobrouter.models.CreateQueueOptions;
-import com.azure.communication.jobrouter.models.DistributionPolicy;
-import com.azure.communication.jobrouter.models.ExceptionPolicy;
-import com.azure.communication.jobrouter.models.RouterQueue;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -43,6 +27,18 @@ import com.azure.core.util.FluxUtil;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import com.azure.communication.jobrouter.implementation.converters.ClassificationPolicyAdapter;
+import com.azure.communication.jobrouter.implementation.converters.DistributionPolicyAdapter;
+import com.azure.communication.jobrouter.implementation.converters.ExceptionPolicyAdapter;
+import com.azure.communication.jobrouter.implementation.converters.QueueAdapter;
+import com.azure.communication.jobrouter.models.ClassificationPolicy;
+import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
+import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
+import com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions;
+import com.azure.communication.jobrouter.models.CreateQueueOptions;
+import com.azure.communication.jobrouter.models.DistributionPolicy;
+import com.azure.communication.jobrouter.models.ExceptionPolicy;
+import com.azure.communication.jobrouter.models.RouterQueue;
 
 /**
  * Initializes a new instance of the asynchronous JobRouterAdministrationClient type.
@@ -65,34 +61,18 @@ public final class JobRouterAdministrationAsyncClient {
 
     /**
      * Creates or updates a distribution policy.
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The request should only proceed if an entity matches this string.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>The request should only proceed if the entity was not modified after this time.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
+     * string.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
+     * entity was not modified after this time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -100,15 +80,16 @@ public final class JobRouterAdministrationAsyncClient {
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
+     *         kind: String(bestWorker/longestIdle/roundRobin) (Required)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -116,6 +97,7 @@ public final class JobRouterAdministrationAsyncClient {
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
+     *         kind: String(bestWorker/longestIdle/roundRobin) (Required)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
@@ -137,8 +119,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> upsertDistributionPolicyWithResponse(String distributionPolicyId, BinaryData resource,
         RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertDistributionPolicy' is 'application/merge-patch+json'
-        // and stream-style-serialization is not enabled
+        // Convenience API is not generated, as operation 'upsertDistributionPolicy' is 'application/merge-patch+json' and stream-style-serialization is not enabled
         return this.serviceClient.upsertDistributionPolicyWithResponseAsync(distributionPolicyId, resource,
             requestOptions);
     }
@@ -287,14 +268,33 @@ public final class JobRouterAdministrationAsyncClient {
      * @param distributionPolicyId The unique identifier of the policy.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return policy governing how jobs are distributed to workers along with {@link Response} on successful completion
-     * of {@link Mono}.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return policy governing how jobs are distributed to workers on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> updateDistributionPolicy(String distributionPolicyId, BinaryData resource,
         RequestOptions requestOptions) {
-        return this.updateDistributionPolicyWithResponse(distributionPolicyId, resource, requestOptions)
-            .map(response -> response.getValue());
+        return this.serviceClient
+            .upsertDistributionPolicyWithResponseAsync(distributionPolicyId, resource, requestOptions)
+            .map(policy -> policy.getValue());
+    }
+
+    /**
+     * Updates a distribution policy.
+     *
+     * @param distributionPolicyId The unique identifier of the policy.
+     * @param distributionPolicy The distribution policy to update.
+     * @return policy governing how jobs are distributed to workers on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DistributionPolicy> updateDistributionPolicy(String distributionPolicyId,
+        DistributionPolicy distributionPolicy) {
+        return this
+            .updateDistributionPolicyWithResponse(distributionPolicyId, BinaryData.fromObject(distributionPolicy), null)
+            .map(response -> response.getValue().toObject(DistributionPolicy.class));
     }
 
     /**
@@ -314,9 +314,8 @@ public final class JobRouterAdministrationAsyncClient {
             = DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
         return upsertDistributionPolicyWithResponse(createDistributionPolicyOptions.getDistributionPolicyId(),
             BinaryData.fromObject(distributionPolicy), requestOptions)
-            .map(response -> new SimpleResponse<DistributionPolicy>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), DistributionPolicyConstructorProxy
-                    .create(response.getValue().toObject(DistributionPolicyInternal.class))));
+            .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), response.getValue().toObject(DistributionPolicy.class)));
     }
 
     /**
@@ -334,9 +333,8 @@ public final class JobRouterAdministrationAsyncClient {
 
     /**
      * Retrieves an existing distribution policy by Id.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -344,6 +342,7 @@ public final class JobRouterAdministrationAsyncClient {
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
+     *         kind: String(bestWorker/longestIdle/roundRobin) (Required)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
@@ -369,28 +368,15 @@ public final class JobRouterAdministrationAsyncClient {
 
     /**
      * Retrieves existing distribution policies.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>Number of objects to return per page.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -398,6 +384,7 @@ public final class JobRouterAdministrationAsyncClient {
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
+     *         kind: String(bestWorker/longestIdle/roundRobin) (Required)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
@@ -438,34 +425,18 @@ public final class JobRouterAdministrationAsyncClient {
 
     /**
      * Creates or updates a classification policy.
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The request should only proceed if an entity matches this string.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>The request should only proceed if the entity was not modified after this time.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
+     * string.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
+     * entity was not modified after this time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -474,19 +445,22 @@ public final class JobRouterAdministrationAsyncClient {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
+     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
+     *         kind: String(directMap/expression/function/static/webhook) (Required)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
+     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -495,12 +469,15 @@ public final class JobRouterAdministrationAsyncClient {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
+     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
+     *         kind: String(directMap/expression/function/static/webhook) (Required)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
+     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      * }
@@ -520,8 +497,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> upsertClassificationPolicyWithResponse(String classificationPolicyId,
         BinaryData resource, RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertClassificationPolicy' is 'application/merge-patch+json'
-        // and stream-style-serialization is not enabled
+        // Convenience API is not generated, as operation 'upsertClassificationPolicy' is 'application/merge-patch+json' and stream-style-serialization is not enabled
         return this.serviceClient.upsertClassificationPolicyWithResponseAsync(classificationPolicyId, resource,
             requestOptions);
     }
@@ -690,14 +666,35 @@ public final class JobRouterAdministrationAsyncClient {
      * @param classificationPolicyId Unique identifier of this policy.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return result object.
-     * completion of {@link Mono}.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a container for the rules that govern how jobs are classified on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> updateClassificationPolicy(String classificationPolicyId, BinaryData resource,
         RequestOptions requestOptions) {
-        return this.updateClassificationPolicyWithResponse(classificationPolicyId, resource, requestOptions)
-            .map(response -> response.getValue());
+        return this.serviceClient
+            .upsertClassificationPolicyWithResponseAsync(classificationPolicyId, resource, requestOptions)
+            .map(policy -> policy.getValue());
+    }
+
+    /**
+     * Updates a classification policy.
+     *
+     * @param classificationPolicyId Unique identifier of this policy.
+     * @param classificationPolicy The classification policy to update.
+     * @return the updated classification policy.
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ClassificationPolicy> updateClassificationPolicy(String classificationPolicyId,
+        ClassificationPolicy classificationPolicy) {
+        return this
+            .updateClassificationPolicyWithResponse(classificationPolicyId, BinaryData.fromObject(classificationPolicy),
+                null)
+            .map(response -> response.getValue().toObject(ClassificationPolicy.class));
     }
 
     /**
@@ -717,9 +714,8 @@ public final class JobRouterAdministrationAsyncClient {
             .convertCreateOptionsToClassificationPolicyInternal(createClassificationPolicyOptions);
         return upsertClassificationPolicyWithResponse(createClassificationPolicyOptions.getClassificationPolicyId(),
             BinaryData.fromObject(classificationPolicy), requestOptions)
-            .map(response -> new SimpleResponse<ClassificationPolicy>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), ClassificationPolicyConstructorProxy
-                    .create(response.getValue().toObject(ClassificationPolicyInternal.class))));
+            .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), response.getValue().toObject(ClassificationPolicy.class)));
     }
 
     /**
@@ -740,9 +736,8 @@ public final class JobRouterAdministrationAsyncClient {
 
     /**
      * Retrieves an existing classification policy by Id.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -751,12 +746,15 @@ public final class JobRouterAdministrationAsyncClient {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
+     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
+     *         kind: String(directMap/expression/function/static/webhook) (Required)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
+     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      * }
@@ -780,28 +778,15 @@ public final class JobRouterAdministrationAsyncClient {
 
     /**
      * Retrieves existing classification policies.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>Number of objects to return per page.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -810,12 +795,15 @@ public final class JobRouterAdministrationAsyncClient {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
+     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
+     *         kind: String(directMap/expression/function/static/webhook) (Required)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
+     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      * }
@@ -854,34 +842,18 @@ public final class JobRouterAdministrationAsyncClient {
 
     /**
      * Creates or updates a exception policy.
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The request should only proceed if an entity matches this string.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>The request should only proceed if the entity was not modified after this time.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
+     * string.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
+     * entity was not modified after this time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -891,9 +863,11 @@ public final class JobRouterAdministrationAsyncClient {
      *          (Optional){
      *             id: String (Required)
      *             trigger (Required): {
+     *                 kind: String(queueLength/waitTime) (Required)
      *             }
      *             actions (Required): [
      *                  (Required){
+     *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
      *             ]
@@ -901,9 +875,9 @@ public final class JobRouterAdministrationAsyncClient {
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -913,9 +887,11 @@ public final class JobRouterAdministrationAsyncClient {
      *          (Optional){
      *             id: String (Required)
      *             trigger (Required): {
+     *                 kind: String(queueLength/waitTime) (Required)
      *             }
      *             actions (Required): [
      *                  (Required){
+     *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
      *             ]
@@ -938,8 +914,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> upsertExceptionPolicyWithResponse(String exceptionPolicyId, BinaryData resource,
         RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertExceptionPolicy' is 'application/merge-patch+json' and
-        // stream-style-serialization is not enabled
+        // Convenience API is not generated, as operation 'upsertExceptionPolicy' is 'application/merge-patch+json' and stream-style-serialization is not enabled
         return this.serviceClient.upsertExceptionPolicyWithResponseAsync(exceptionPolicyId, resource, requestOptions);
     }
 
@@ -1102,14 +1077,32 @@ public final class JobRouterAdministrationAsyncClient {
      * @param exceptionPolicyId The Id of the exception policy.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return a policy that defines actions to execute when exception are triggered along with {@link Response} on
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a policy that defines actions to execute when exception are triggered on
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> updateExceptionPolicy(String exceptionPolicyId, BinaryData resource,
         RequestOptions requestOptions) {
-        return this.updateExceptionPolicyWithResponse(exceptionPolicyId, resource, requestOptions)
-            .map(response -> response.getValue());
+        return this.serviceClient.upsertExceptionPolicyWithResponseAsync(exceptionPolicyId, resource, requestOptions)
+            .map(policy -> policy.getValue());
+    }
+
+    /**
+     * Updates a exception policy.
+     *
+     * @param exceptionPolicyId The Id of the exception policy.
+     * @param exceptionPolicy The exception policy to update.
+     * @return a policy that defines actions to execute when exception are triggered on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ExceptionPolicy> updateExceptionPolicy(String exceptionPolicyId, ExceptionPolicy exceptionPolicy) {
+        return this.updateExceptionPolicyWithResponse(exceptionPolicyId, BinaryData.fromObject(exceptionPolicy), null)
+            .map(response -> response.getValue().toObject(ExceptionPolicy.class));
     }
 
     /**
@@ -1129,9 +1122,8 @@ public final class JobRouterAdministrationAsyncClient {
             = ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
         return upsertExceptionPolicyWithResponse(createExceptionPolicyOptions.getExceptionPolicyId(),
             BinaryData.fromObject(exceptionPolicy), requestOptions)
-            .map(response -> new SimpleResponse<ExceptionPolicy>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(),
-                ExceptionPolicyConstructorProxy.create(response.getValue().toObject(ExceptionPolicyInternal.class))));
+            .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), response.getValue().toObject(ExceptionPolicy.class)));
     }
 
     /**
@@ -1147,9 +1139,8 @@ public final class JobRouterAdministrationAsyncClient {
 
     /**
      * Retrieves an existing exception policy by Id.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1159,9 +1150,11 @@ public final class JobRouterAdministrationAsyncClient {
      *          (Optional){
      *             id: String (Required)
      *             trigger (Required): {
+     *                 kind: String(queueLength/waitTime) (Required)
      *             }
      *             actions (Required): [
      *                  (Required){
+     *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
      *             ]
@@ -1179,6 +1172,7 @@ public final class JobRouterAdministrationAsyncClient {
      * @return a policy that defines actions to execute when exception are triggered along with {@link Response} on
      * successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getExceptionPolicyWithResponse(String exceptionPolicyId,
         RequestOptions requestOptions) {
@@ -1209,6 +1203,7 @@ public final class JobRouterAdministrationAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
+     *
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1261,34 +1256,18 @@ public final class JobRouterAdministrationAsyncClient {
 
     /**
      * Creates or updates a queue.
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The request should only proceed if an entity matches this string.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>The request should only proceed if the entity was not modified after this time.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
+     * string.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
+     * entity was not modified after this time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1301,9 +1280,9 @@ public final class JobRouterAdministrationAsyncClient {
      *     exceptionPolicyId: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1331,8 +1310,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> upsertQueueWithResponse(String queueId, BinaryData resource,
         RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertQueue' is 'application/merge-patch+json' and
-        // stream-style-serialization is not enabled
+        // Convenience API is not generated, as operation 'upsertQueue' is 'application/merge-patch+json' and stream-style-serialization is not enabled
         return this.serviceClient.upsertQueueWithResponseAsync(queueId, resource, requestOptions);
     }
 
@@ -1475,12 +1453,30 @@ public final class JobRouterAdministrationAsyncClient {
      * @param queueId The Id of this queue.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return result object.
-     * Mono}.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a queue that can contain jobs to be routed on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> updateQueue(String queueId, BinaryData resource, RequestOptions requestOptions) {
-        return this.upsertQueueWithResponse(queueId, resource, requestOptions).map(response -> response.getValue());
+        return this.serviceClient.upsertQueueWithResponseAsync(queueId, resource, requestOptions)
+            .map(queue -> queue.getValue());
+    }
+
+    /**
+     * Updates a queue.
+     *
+     * @param queueId The Id of this queue.
+     * @param queue The queue to update.
+     * @return The updated queue.
+     * Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RouterQueue> updateQueue(String queueId, RouterQueue queue) {
+        return this.upsertQueueWithResponse(queueId, BinaryData.fromObject(queue), null)
+            .map(response -> response.getValue().toObject(RouterQueue.class));
     }
 
     /**
@@ -1498,8 +1494,7 @@ public final class JobRouterAdministrationAsyncClient {
         RouterQueueInternal queue = QueueAdapter.convertCreateQueueOptionsToRouterQueueInternal(createQueueOptions);
         return upsertQueueWithResponse(createQueueOptions.getQueueId(), BinaryData.fromObject(queue), requestOptions)
             .map(response -> new SimpleResponse<RouterQueue>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(),
-                RouterQueueConstructorProxy.create(response.getValue().toObject(RouterQueueInternal.class))));
+                response.getHeaders(), response.getValue().toObject(RouterQueue.class)));
     }
 
     /**
@@ -1516,15 +1511,13 @@ public final class JobRouterAdministrationAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         RouterQueueInternal queue = QueueAdapter.convertCreateQueueOptionsToRouterQueueInternal(createQueueOptions);
         return upsertQueueWithResponse(createQueueOptions.getQueueId(), BinaryData.fromObject(queue), requestOptions)
-            .map(response -> response.getValue().toObject(RouterQueueInternal.class))
-            .map(internal -> RouterQueueConstructorProxy.create(internal));
+            .map(response -> response.getValue().toObject(RouterQueue.class));
     }
 
     /**
      * Retrieves an existing queue by Id.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1555,28 +1548,15 @@ public final class JobRouterAdministrationAsyncClient {
 
     /**
      * Retrieves existing queues.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>Number of objects to return per page.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1656,11 +1636,13 @@ public final class JobRouterAdministrationAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listDistributionPolicies(requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+                ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationToken).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, DistributionPolicy>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
+                pagedResponse.getValue()
+                    .stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(DistributionPolicy.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
@@ -1723,12 +1705,14 @@ public final class JobRouterAdministrationAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listClassificationPolicies(requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+                ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationToken).take(1);
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, ClassificationPolicy>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                    pagedResponse.getValue().stream()
+                    pagedResponse.getValue()
+                        .stream()
                         .map(protocolMethodData -> protocolMethodData.toObject(ClassificationPolicy.class))
                         .collect(Collectors.toList()),
                     pagedResponse.getContinuationToken(), null));
@@ -1770,7 +1754,6 @@ public final class JobRouterAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExceptionPolicy> getExceptionPolicy(String exceptionPolicyId) {
-        // Generated convenience method for getExceptionPolicyWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getExceptionPolicyWithResponse(exceptionPolicyId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ExceptionPolicy.class));
@@ -1792,11 +1775,13 @@ public final class JobRouterAdministrationAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listExceptionPolicies(requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+                ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationToken).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, ExceptionPolicy>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
+                pagedResponse.getValue()
+                    .stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(ExceptionPolicy.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
@@ -1859,11 +1844,13 @@ public final class JobRouterAdministrationAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listQueues(requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+                ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationToken).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, RouterQueue>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
+                pagedResponse.getValue()
+                    .stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(RouterQueue.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));

@@ -27,13 +27,15 @@ public final class OperationListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of OperationListResult class. */
+    /**
+     * Creates an instance of OperationListResult class.
+     */
     public OperationListResult() {
     }
 
     /**
      * Get the value property: List of operations supported by the resource provider.
-     *
+     * 
      * @return the value value.
      */
     public List<OperationInner> value() {
@@ -42,7 +44,7 @@ public final class OperationListResult {
 
     /**
      * Get the nextLink property: URL to get the next set of operation list results (if there are any).
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -51,7 +53,7 @@ public final class OperationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

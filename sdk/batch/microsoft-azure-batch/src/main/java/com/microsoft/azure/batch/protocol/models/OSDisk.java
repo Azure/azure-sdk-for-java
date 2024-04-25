@@ -22,6 +22,34 @@ public class OSDisk {
     private DiffDiskSettings ephemeralOSDiskSettings;
 
     /**
+     * Specifies the caching requirements. Possible values are: None, ReadOnly,
+     * ReadWrite. The default values are: None for Standard storage. ReadOnly
+     * for Premium storage.
+     * Possible values include: 'none', 'readOnly', 'readWrite'.
+     */
+    @JsonProperty(value = "caching")
+    private CachingType caching;
+
+    /**
+     * The managed disk parameters.
+     */
+    @JsonProperty(value = "managedDisk")
+    private ManagedDisk managedDisk;
+
+    /**
+     * The initial disk size in GB when creating new OS disk.
+     */
+    @JsonProperty(value = "diskSizeGB")
+    private Integer diskSizeGB;
+
+    /**
+     * Specifies whether writeAccelerator should be enabled or disabled on the
+     * disk.
+     */
+    @JsonProperty(value = "writeAcceleratorEnabled")
+    private Boolean writeAcceleratorEnabled;
+
+    /**
      * Get the ephemeralOSDiskSettings value.
      *
      * @return the ephemeralOSDiskSettings value
@@ -38,6 +66,86 @@ public class OSDisk {
      */
     public OSDisk withEphemeralOSDiskSettings(DiffDiskSettings ephemeralOSDiskSettings) {
         this.ephemeralOSDiskSettings = ephemeralOSDiskSettings;
+        return this;
+    }
+
+    /**
+     * Get possible values include: 'none', 'readOnly', 'readWrite'.
+     *
+     * @return the caching value
+     */
+    public CachingType caching() {
+        return this.caching;
+    }
+
+    /**
+     * Set possible values include: 'none', 'readOnly', 'readWrite'.
+     *
+     * @param caching the caching value to set
+     * @return the OSDisk object itself.
+     */
+    public OSDisk withCaching(CachingType caching) {
+        this.caching = caching;
+        return this;
+    }
+
+    /**
+     * Get the managedDisk value.
+     *
+     * @return the managedDisk value
+     */
+    public ManagedDisk managedDisk() {
+        return this.managedDisk;
+    }
+
+    /**
+     * Set the managedDisk value.
+     *
+     * @param managedDisk the managedDisk value to set
+     * @return the OSDisk object itself.
+     */
+    public OSDisk withManagedDisk(ManagedDisk managedDisk) {
+        this.managedDisk = managedDisk;
+        return this;
+    }
+
+    /**
+     * Get the diskSizeGB value.
+     *
+     * @return the diskSizeGB value
+     */
+    public Integer diskSizeGB() {
+        return this.diskSizeGB;
+    }
+
+    /**
+     * Set the diskSizeGB value.
+     *
+     * @param diskSizeGB the diskSizeGB value to set
+     * @return the OSDisk object itself.
+     */
+    public OSDisk withDiskSizeGB(Integer diskSizeGB) {
+        this.diskSizeGB = diskSizeGB;
+        return this;
+    }
+
+    /**
+     * Get the writeAcceleratorEnabled value.
+     *
+     * @return the writeAcceleratorEnabled value
+     */
+    public Boolean writeAcceleratorEnabled() {
+        return this.writeAcceleratorEnabled;
+    }
+
+    /**
+     * Set the writeAcceleratorEnabled value.
+     *
+     * @param writeAcceleratorEnabled the writeAcceleratorEnabled value to set
+     * @return the OSDisk object itself.
+     */
+    public OSDisk withWriteAcceleratorEnabled(Boolean writeAcceleratorEnabled) {
+        this.writeAcceleratorEnabled = writeAcceleratorEnabled;
         return this;
     }
 

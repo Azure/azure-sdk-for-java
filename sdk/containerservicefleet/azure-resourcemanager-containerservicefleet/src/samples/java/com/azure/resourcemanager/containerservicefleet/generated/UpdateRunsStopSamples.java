@@ -4,18 +4,22 @@
 
 package com.azure.resourcemanager.containerservicefleet.generated;
 
-/** Samples for UpdateRuns Stop. */
+/**
+ * Samples for UpdateRuns Stop.
+ */
 public final class UpdateRunsStopSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/stable/2023-10-15/examples/UpdateRuns_Stop.json
+     * x-ms-original-file:
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2024-02-02-preview/
+     * examples/UpdateRuns_Stop.json
      */
     /**
      * Sample code: Stops an UpdateRun.
-     *
+     * 
      * @param manager Entry point to ContainerServiceFleetManager.
      */
-    public static void stopsAnUpdateRun(
-        com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
+    public static void
+        stopsAnUpdateRun(com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
         manager.updateRuns().stop("rg1", "fleet1", "run1", null, com.azure.core.util.Context.NONE);
     }
 }

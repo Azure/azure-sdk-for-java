@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.SerializableWrapper;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
@@ -22,8 +23,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Collection;
 import java.util.Collections;
-
-import static com.azure.cosmos.BridgeInternal.setProperty;
 
 /**
  * Represents a document collection in the Azure Cosmos DB database service. A collection is a named logical container
@@ -173,7 +172,7 @@ public final class DocumentCollection extends Resource {
         // a "null" value is represented as a missing element on the wire.
         // setting timeToLive to null should remove the property from the property bag.
         if (timeToLive != null) {
-            setProperty(this, Constants.Properties.DEFAULT_TTL, timeToLive);
+            this.set(Constants.Properties.DEFAULT_TTL, timeToLive, CosmosItemSerializer.DEFAULT_SERIALIZER);
         } else if (super.has(Constants.Properties.DEFAULT_TTL)) {
             remove(Constants.Properties.DEFAULT_TTL);
         }
@@ -193,7 +192,7 @@ public final class DocumentCollection extends Resource {
         // a "null" value is represented as a missing element on the wire.
         // setting timeToLive to null should remove the property from the property bag.
         if (timeToLive != null) {
-            super.set(Constants.Properties.ANALYTICAL_STORAGE_TTL, timeToLive);
+            super.set(Constants.Properties.ANALYTICAL_STORAGE_TTL, timeToLive, CosmosItemSerializer.DEFAULT_SERIALIZER);
         } else if (super.has(Constants.Properties.ANALYTICAL_STORAGE_TTL)) {
             super.remove(Constants.Properties.ANALYTICAL_STORAGE_TTL);
         }
@@ -241,7 +240,7 @@ public final class DocumentCollection extends Resource {
         }
 
         this.uniqueKeyPolicy = uniqueKeyPolicy;
-        setProperty(this, Constants.Properties.UNIQUE_KEY_POLICY, uniqueKeyPolicy);
+        this.set(Constants.Properties.UNIQUE_KEY_POLICY, uniqueKeyPolicy, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     /**
@@ -265,7 +264,7 @@ public final class DocumentCollection extends Resource {
             throw new IllegalArgumentException("CONFLICT_RESOLUTION_POLICY cannot be null.");
         }
 
-        setProperty(this, Constants.Properties.CONFLICT_RESOLUTION_POLICY, value);
+        this.set(Constants.Properties.CONFLICT_RESOLUTION_POLICY, value, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     /**
@@ -293,7 +292,7 @@ public final class DocumentCollection extends Resource {
             throw new IllegalArgumentException("CHANGE_FEED_POLICY cannot be null.");
         }
 
-        setProperty(this, Constants.Properties.CHANGE_FEED_POLICY, value);
+        this.set(Constants.Properties.CHANGE_FEED_POLICY, value, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     /**
@@ -326,7 +325,7 @@ public final class DocumentCollection extends Resource {
             }
         });
 
-        setProperty(this, Constants.Properties.COMPUTED_PROPERTIES, computedProperties);
+        this.set(Constants.Properties.COMPUTED_PROPERTIES, computedProperties, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     /**
@@ -408,7 +407,7 @@ public final class DocumentCollection extends Resource {
             throw new IllegalArgumentException("ClientEncryptionPolicy cannot be null.");
         }
 
-        setProperty(this, Constants.Properties.CLIENT_ENCRYPTION_POLICY, value);
+        this.set(Constants.Properties.CLIENT_ENCRYPTION_POLICY, value, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     public void populatePropertyBag() {
@@ -422,13 +421,16 @@ public final class DocumentCollection extends Resource {
 
         if (this.partitionKeyDefinition != null) {
             ModelBridgeInternal.populatePropertyBag(this.partitionKeyDefinition);
-            setProperty(this, Constants.Properties.PARTITION_KEY, this.partitionKeyDefinition);
+            this.set(
+                Constants.Properties.PARTITION_KEY,
+                this.partitionKeyDefinition,
+                CosmosItemSerializer.DEFAULT_SERIALIZER);
         }
         ModelBridgeInternal.populatePropertyBag(this.indexingPolicy);
         ModelBridgeInternal.populatePropertyBag(this.uniqueKeyPolicy);
 
-        setProperty(this, Constants.Properties.INDEXING_POLICY, this.indexingPolicy);
-        setProperty(this, Constants.Properties.UNIQUE_KEY_POLICY, this.uniqueKeyPolicy);
+        this.set(Constants.Properties.INDEXING_POLICY, this.indexingPolicy, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.UNIQUE_KEY_POLICY, this.uniqueKeyPolicy, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     @Override

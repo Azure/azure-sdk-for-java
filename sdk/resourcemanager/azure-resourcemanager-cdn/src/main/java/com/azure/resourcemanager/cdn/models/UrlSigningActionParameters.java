@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Defines the parameters for the Url Signing action. */
+/**
+ * Defines the parameters for the Url Signing action.
+ */
 @Fluent
 public final class UrlSigningActionParameters {
     /*
@@ -29,14 +31,15 @@ public final class UrlSigningActionParameters {
     @JsonProperty(value = "parameterNameOverride")
     private List<UrlSigningParamIdentifier> parameterNameOverride;
 
-    /** Creates an instance of UrlSigningActionParameters class. */
+    /**
+     * Creates an instance of UrlSigningActionParameters class.
+     */
     public UrlSigningActionParameters() {
-        typeName = "DeliveryRuleUrlSigningActionParameters";
     }
 
     /**
      * Get the typeName property: The typeName property.
-     *
+     * 
      * @return the typeName value.
      */
     public String typeName() {
@@ -45,7 +48,7 @@ public final class UrlSigningActionParameters {
 
     /**
      * Set the typeName property: The typeName property.
-     *
+     * 
      * @param typeName the typeName value to set.
      * @return the UrlSigningActionParameters object itself.
      */
@@ -56,7 +59,7 @@ public final class UrlSigningActionParameters {
 
     /**
      * Get the algorithm property: Algorithm to use for URL signing.
-     *
+     * 
      * @return the algorithm value.
      */
     public Algorithm algorithm() {
@@ -65,7 +68,7 @@ public final class UrlSigningActionParameters {
 
     /**
      * Set the algorithm property: Algorithm to use for URL signing.
-     *
+     * 
      * @param algorithm the algorithm value to set.
      * @return the UrlSigningActionParameters object itself.
      */
@@ -77,7 +80,7 @@ public final class UrlSigningActionParameters {
     /**
      * Get the parameterNameOverride property: Defines which query string parameters in the url to be considered for
      * expires, key id etc.
-     *
+     * 
      * @return the parameterNameOverride value.
      */
     public List<UrlSigningParamIdentifier> parameterNameOverride() {
@@ -87,7 +90,7 @@ public final class UrlSigningActionParameters {
     /**
      * Set the parameterNameOverride property: Defines which query string parameters in the url to be considered for
      * expires, key id etc.
-     *
+     * 
      * @param parameterNameOverride the parameterNameOverride value to set.
      * @return the UrlSigningActionParameters object itself.
      */
@@ -98,7 +101,7 @@ public final class UrlSigningActionParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

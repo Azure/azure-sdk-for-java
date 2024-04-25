@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A condition for the delivery rule. */
+/**
+ * A condition for the delivery rule.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -35,17 +37,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "ClientPort", value = DeliveryRuleClientPortCondition.class),
     @JsonSubTypes.Type(name = "ServerPort", value = DeliveryRuleServerPortCondition.class),
     @JsonSubTypes.Type(name = "HostName", value = DeliveryRuleHostnameCondition.class),
-    @JsonSubTypes.Type(name = "SslProtocol", value = DeliveryRuleSslProtocolCondition.class)
-})
+    @JsonSubTypes.Type(name = "SslProtocol", value = DeliveryRuleSslProtocolCondition.class) })
 @Immutable
 public class DeliveryRuleCondition {
-    /** Creates an instance of DeliveryRuleCondition class. */
+    /**
+     * Creates an instance of DeliveryRuleCondition class.
+     */
     public DeliveryRuleCondition() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

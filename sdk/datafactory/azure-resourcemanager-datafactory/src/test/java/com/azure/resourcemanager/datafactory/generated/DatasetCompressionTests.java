@@ -12,14 +12,16 @@ import java.util.Map;
 public final class DatasetCompressionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatasetCompression model = BinaryData.fromString(
-            "{\"type\":\"datagzancoinmphy\",\"level\":\"dataqidkltvdh\",\"\":{\"bydhuih\":\"datafbxweiibntojovfn\",\"kehwvumosqirca\":\"dataouwudhuaorh\",\"cv\":\"dataqprlobruge\"}}")
+        DatasetCompression model = BinaryData
+            .fromString(
+                "{\"type\":\"datavrqoemwsi\",\"level\":\"dataailwdqmqfyd\",\"\":{\"i\":\"datamfxlkdlgwgnamkuu\"}}")
             .toObject(DatasetCompression.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatasetCompression model = new DatasetCompression().withType("datagzancoinmphy").withLevel("dataqidkltvdh")
+        DatasetCompression model = new DatasetCompression().withType("datavrqoemwsi")
+            .withLevel("dataailwdqmqfyd")
             .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(DatasetCompression.class);
     }

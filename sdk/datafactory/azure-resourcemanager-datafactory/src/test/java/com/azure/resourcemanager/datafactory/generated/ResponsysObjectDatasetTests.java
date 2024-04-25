@@ -19,31 +19,34 @@ public final class ResponsysObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResponsysObjectDataset model = BinaryData.fromString(
-            "{\"type\":\"ResponsysObject\",\"typeProperties\":{\"tableName\":\"dataxcsdqoxhdenmj\"},\"description\":\"xgrggyciw\",\"structure\":\"dataqinr\",\"schema\":\"datavvmrn\",\"linkedServiceName\":{\"referenceName\":\"rdijox\",\"parameters\":{\"b\":\"datasychdcjggcmpncj\",\"owvfxe\":\"databnoq\",\"irvcpol\":\"datatzgwjeky\",\"ilbdvxlfhlzzgap\":\"datavgppp\"}},\"parameters\":{\"xnroyhthesyw\":{\"type\":\"SecureString\",\"defaultValue\":\"datablscrmzquuzywkgo\"}},\"annotations\":[\"datavg\"],\"folder\":{\"name\":\"c\"},\"\":{\"zyrgrlh\":\"datazcwuejmxlfzl\"}}")
+            "{\"type\":\"mfwfpoeow\",\"typeProperties\":{\"tableName\":\"datau\"},\"description\":\"zzwncs\",\"structure\":\"datafxvchmubyguqh\",\"schema\":\"datamsvjfgrpryyir\",\"linkedServiceName\":{\"referenceName\":\"bajxj\",\"parameters\":{\"atxkznlwlmbx\":\"datayrkb\",\"ay\":\"datagkev\",\"kxiymzgrg\":\"datax\",\"ybsps\":\"datajalrjwaezp\"}},\"parameters\":{\"suiwexpasckpg\":{\"type\":\"Bool\",\"defaultValue\":\"dataepzimfc\"},\"cmxtoejt\":{\"type\":\"Float\",\"defaultValue\":\"datayxbwslx\"},\"idkxz\":{\"type\":\"Int\",\"defaultValue\":\"datactm\"}},\"annotations\":[\"datauzntbpcadd\",\"datax\",\"datarxiperrplfm\",\"datavmjjfz\"],\"folder\":{\"name\":\"lbiqq\"},\"\":{\"symagbahdbtjmku\":\"datarxknfv\",\"bizrxhuq\":\"dataonrk\",\"cxgqtquirgopgza\":\"datavpanloqov\"}}")
             .toObject(ResponsysObjectDataset.class);
-        Assertions.assertEquals("xgrggyciw", model.description());
-        Assertions.assertEquals("rdijox", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("xnroyhthesyw").type());
-        Assertions.assertEquals("c", model.folder().name());
+        Assertions.assertEquals("zzwncs", model.description());
+        Assertions.assertEquals("bajxj", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("suiwexpasckpg").type());
+        Assertions.assertEquals("lbiqq", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResponsysObjectDataset model = new ResponsysObjectDataset().withDescription("xgrggyciw")
-            .withStructure("dataqinr").withSchema("datavvmrn")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("rdijox")
-                .withParameters(mapOf("b", "datasychdcjggcmpncj", "owvfxe", "databnoq", "irvcpol", "datatzgwjeky",
-                    "ilbdvxlfhlzzgap", "datavgppp")))
-            .withParameters(mapOf("xnroyhthesyw",
-                new ParameterSpecification().withType(ParameterType.SECURE_STRING)
-                    .withDefaultValue("datablscrmzquuzywkgo")))
-            .withAnnotations(Arrays.asList("datavg")).withFolder(new DatasetFolder().withName("c"))
-            .withTableName("dataxcsdqoxhdenmj");
+        ResponsysObjectDataset model = new ResponsysObjectDataset().withDescription("zzwncs")
+            .withStructure("datafxvchmubyguqh")
+            .withSchema("datamsvjfgrpryyir")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("bajxj")
+                .withParameters(mapOf("atxkznlwlmbx", "datayrkb", "ay", "datagkev", "kxiymzgrg", "datax", "ybsps",
+                    "datajalrjwaezp")))
+            .withParameters(mapOf("suiwexpasckpg",
+                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("dataepzimfc"), "cmxtoejt",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datayxbwslx"), "idkxz",
+                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datactm")))
+            .withAnnotations(Arrays.asList("datauzntbpcadd", "datax", "datarxiperrplfm", "datavmjjfz"))
+            .withFolder(new DatasetFolder().withName("lbiqq"))
+            .withTableName("datau");
         model = BinaryData.fromObject(model).toObject(ResponsysObjectDataset.class);
-        Assertions.assertEquals("xgrggyciw", model.description());
-        Assertions.assertEquals("rdijox", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("xnroyhthesyw").type());
-        Assertions.assertEquals("c", model.folder().name());
+        Assertions.assertEquals("zzwncs", model.description());
+        Assertions.assertEquals("bajxj", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("suiwexpasckpg").type());
+        Assertions.assertEquals("lbiqq", model.folder().name());
     }
 
     // Use "Map.of" if available

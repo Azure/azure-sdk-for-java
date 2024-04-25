@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Spark user plugins spec. */
+/**
+ * Spark user plugins spec.
+ */
 @Fluent
 public final class SparkUserPlugins {
     /*
@@ -17,13 +19,15 @@ public final class SparkUserPlugins {
     @JsonProperty(value = "plugins")
     private List<SparkUserPlugin> plugins;
 
-    /** Creates an instance of SparkUserPlugins class. */
+    /**
+     * Creates an instance of SparkUserPlugins class.
+     */
     public SparkUserPlugins() {
     }
 
     /**
      * Get the plugins property: Spark user plugins.
-     *
+     * 
      * @return the plugins value.
      */
     public List<SparkUserPlugin> plugins() {
@@ -32,7 +36,7 @@ public final class SparkUserPlugins {
 
     /**
      * Set the plugins property: Spark user plugins.
-     *
+     * 
      * @param plugins the plugins value to set.
      * @return the SparkUserPlugins object itself.
      */
@@ -43,7 +47,7 @@ public final class SparkUserPlugins {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes a managed rule group. */
+/**
+ * Describes a managed rule group.
+ */
 @Immutable
 public final class ManagedRuleGroupDefinition {
     /*
@@ -29,13 +31,15 @@ public final class ManagedRuleGroupDefinition {
     @JsonProperty(value = "rules", access = JsonProperty.Access.WRITE_ONLY)
     private List<ManagedRuleDefinition> rules;
 
-    /** Creates an instance of ManagedRuleGroupDefinition class. */
+    /**
+     * Creates an instance of ManagedRuleGroupDefinition class.
+     */
     public ManagedRuleGroupDefinition() {
     }
 
     /**
      * Get the ruleGroupName property: Name of the managed rule group.
-     *
+     * 
      * @return the ruleGroupName value.
      */
     public String ruleGroupName() {
@@ -44,7 +48,7 @@ public final class ManagedRuleGroupDefinition {
 
     /**
      * Get the description property: Description of the managed rule group.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -53,7 +57,7 @@ public final class ManagedRuleGroupDefinition {
 
     /**
      * Get the rules property: List of rules within the managed rule group.
-     *
+     * 
      * @return the rules value.
      */
     public List<ManagedRuleDefinition> rules() {
@@ -62,7 +66,7 @@ public final class ManagedRuleGroupDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

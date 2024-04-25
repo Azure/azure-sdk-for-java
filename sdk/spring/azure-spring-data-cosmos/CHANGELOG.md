@@ -1,15 +1,29 @@
 ## Release History
 
-### 3.44.0-beta.1 (Unreleased)
+### 3.45.0-beta.1 (Unreleased)
 
 #### Features Added
+* Exposing the `indexQueryMetrics` to the `CosmosConfig` via the `application.properties` configuration file - See [PR 39433](https://github.com/Azure/azure-sdk-for-java/pull/39433).
 
 #### Breaking Changes
+
+#### Bugs Fixed
+* Fixed all saveAll/insertAll bulk functionality to populated audit data - See [PR 39620](https://github.com/Azure/azure-sdk-for-java/pull/39620).
+
+#### Other Changes
+
+### 5.11.0 (2024-03-29)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.57.0`.
+
+### 3.44.0 (2024-03-28)
 
 #### Bugs Fixed
 * Fixed `IllegalStateException` for `delete` - See [PR 38996](https://github.com/Azure/azure-sdk-for-java/pull/38996). 
 
 #### Other Changes
+* Updated `azure-cosmos` to version `4.57.0`.
 
 ### 5.10.0 (2024-03-01)
 

@@ -19,7 +19,7 @@ public class InputTextItem {
      */
     @Generated
     @JsonProperty(value = "text")
-    private String text;
+    private final String text;
 
     /**
      * Creates an instance of InputTextItem class.

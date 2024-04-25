@@ -6,9 +6,11 @@ package com.azure.ai.openai.assistants.implementation;
 import com.azure.ai.openai.assistants.models.FunctionDefinition;
 import com.azure.ai.openai.assistants.models.FunctionToolDefinition;
 import com.azure.core.util.BinaryData;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,30 +38,44 @@ public class FunctionsToolCallHelper {
             .setDescription("Given a desired location, airline, and approximate time of year, retrieves estimated prices."));
     }
 
-    private class AirlineForSeasonParameters {
-        @JsonProperty(value = "type")
-        private String type = "object";
+    private static class AirlineForSeasonParameters implements JsonSerializable<AirlineForSeasonParameters> {
 
-        @JsonProperty(value = "properties")
-        private Map<String, FunctionEnumParameter> properties;
+        private final String type = "object";
 
-        @JsonCreator
+        private final Map<String, FunctionEnumParameter> properties;
+
         AirlineForSeasonParameters() {
             this.properties = new HashMap<>();
 
             this.properties.put("season", new FunctionEnumParameter(Arrays.asList("winter", "spring", "summer", "fall")));
         }
+
+
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("type", this.type);
+            jsonWriter.writeFieldName("properties");
+            jsonWriter.writeStartObject();
+            for (Map.Entry<String, FunctionEnumParameter> entry : this.properties.entrySet()) {
+                jsonWriter.writeFieldName(entry.getKey());
+                entry.getValue().toJson(jsonWriter);
+            }
+            jsonWriter.writeEndObject();
+            return jsonWriter.writeEndObject();
+        }
+
+        public static AirlineForSeasonParameters fromJson(JsonReader jsonReader) {
+            // Deserialization logic not necessary for stub class
+            return new AirlineForSeasonParameters();
+        }
     }
 
-    private class AirlinePriceFunctionParameters {
+    private static class AirlinePriceFunctionParameters implements JsonSerializable<AirlinePriceFunctionParameters> {
 
-        @JsonProperty(value = "type")
-        private String type = "object";
+        private final String type = "object";
+        private final Map<String, FunctionStringParameter> properties;
 
-        @JsonProperty(value = "properties")
-        private Map<String, FunctionStringParameter> properties;
-
-        @JsonCreator
         AirlinePriceFunctionParameters() {
             this.properties = new HashMap<>();
 
@@ -67,15 +83,50 @@ public class FunctionsToolCallHelper {
             this.properties.put("airline", new FunctionStringParameter("The name of an airline that flights can be booked on."));
             this.properties.put("time", new FunctionStringParameter("An approximate time of year at which travel is planned."));
         }
+
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("type", this.type);
+            jsonWriter.writeFieldName("properties");
+            jsonWriter.writeStartObject();
+            for (Map.Entry<String, FunctionStringParameter> entry : this.properties.entrySet()) {
+                jsonWriter.writeFieldName(entry.getKey());
+                entry.getValue().toJson(jsonWriter);
+            }
+            jsonWriter.writeEndObject();
+            return jsonWriter.writeEndObject();
+        }
+
+        public static AirlinePriceFunctionParameters fromJson(JsonReader jsonReader) {
+            // Deserialization logic not necessary for stub class
+            return new AirlinePriceFunctionParameters();
+        }
     }
 
-    private class FavoriteVacationDestinationParameters {
+    private static class FavoriteVacationDestinationParameters implements JsonSerializable<FavoriteVacationDestinationParameters> {
 
-        @JsonProperty(value = "type")
-        private String type = "object";
+        private final String type = "object";
 
-        @JsonProperty(value = "properties")
-        private Map<String, FunctionStringParameter> properties = new HashMap<>();
+        private final Map<String, FunctionStringParameter> properties = new HashMap<>();
 
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("type", this.type);
+            jsonWriter.writeFieldName("properties");
+            jsonWriter.writeStartObject();
+            for (Map.Entry<String, FunctionStringParameter> entry : this.properties.entrySet()) {
+                jsonWriter.writeFieldName(entry.getKey());
+                entry.getValue().toJson(jsonWriter);
+            }
+            jsonWriter.writeEndObject();
+            return jsonWriter.writeEndObject();
+        }
+
+        public static FavoriteVacationDestinationParameters fromJson(JsonReader jsonReader) {
+            // Deserialization logic not necessary for stub class
+            return new FavoriteVacationDestinationParameters();
+        }
     }
 }

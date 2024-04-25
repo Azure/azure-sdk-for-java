@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Content of a chat message. */
+/**
+ * Content of a chat message.
+ */
 @Fluent
 public final class ChatMessageContent {
     /*
@@ -24,8 +26,7 @@ public final class ChatMessageContent {
     private String topic;
 
     /*
-     * Chat message content for messages of types participantAdded or
-     * participantRemoved.
+     * Chat message content for messages of types participantAdded or participantRemoved.
      */
     @JsonProperty(value = "participants")
     private List<ChatParticipant> participants;
@@ -37,17 +38,22 @@ public final class ChatMessageContent {
     private List<ChatAttachment> attachments;
 
     /*
-     * Identifies a participant in Azure Communication services. A participant
-     * is, for example, a phone number or an Azure communication user. This
-     * model is polymorphic: Apart from kind and rawId, at most one further
-     * property may be set which must match the kind enum value.
+     * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an
+     * Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may
+     * be set which must match the kind enum value.
      */
     @JsonProperty(value = "initiatorCommunicationIdentifier")
     private CommunicationIdentifierModel initiatorCommunicationIdentifier;
 
     /**
+     * Creates an instance of ChatMessageContent class.
+     */
+    public ChatMessageContent() {
+    }
+
+    /**
      * Get the message property: Chat message content for messages of types text or html.
-     *
+     * 
      * @return the message value.
      */
     public String getMessage() {
@@ -56,7 +62,7 @@ public final class ChatMessageContent {
 
     /**
      * Set the message property: Chat message content for messages of types text or html.
-     *
+     * 
      * @param message the message value to set.
      * @return the ChatMessageContent object itself.
      */
@@ -67,7 +73,7 @@ public final class ChatMessageContent {
 
     /**
      * Get the topic property: Chat message content for messages of type topicUpdated.
-     *
+     * 
      * @return the topic value.
      */
     public String getTopic() {
@@ -76,7 +82,7 @@ public final class ChatMessageContent {
 
     /**
      * Set the topic property: Chat message content for messages of type topicUpdated.
-     *
+     * 
      * @param topic the topic value to set.
      * @return the ChatMessageContent object itself.
      */
@@ -86,8 +92,9 @@ public final class ChatMessageContent {
     }
 
     /**
-     * Get the participants property: Chat message content for messages of types participantAdded or participantRemoved.
-     *
+     * Get the participants property: Chat message content for messages of types participantAdded or
+     * participantRemoved.
+     * 
      * @return the participants value.
      */
     public List<ChatParticipant> getParticipants() {
@@ -95,8 +102,9 @@ public final class ChatMessageContent {
     }
 
     /**
-     * Set the participants property: Chat message content for messages of types participantAdded or participantRemoved.
-     *
+     * Set the participants property: Chat message content for messages of types participantAdded or
+     * participantRemoved.
+     * 
      * @param participants the participants value to set.
      * @return the ChatMessageContent object itself.
      */
@@ -107,7 +115,7 @@ public final class ChatMessageContent {
 
     /**
      * Get the attachments property: List of attachments for this message.
-     *
+     * 
      * @return the attachments value.
      */
     public List<ChatAttachment> getAttachments() {
@@ -116,7 +124,7 @@ public final class ChatMessageContent {
 
     /**
      * Set the attachments property: List of attachments for this message.
-     *
+     * 
      * @param attachments the attachments value to set.
      * @return the ChatMessageContent object itself.
      */
@@ -127,9 +135,9 @@ public final class ChatMessageContent {
 
     /**
      * Get the initiatorCommunicationIdentifier property: Identifies a participant in Azure Communication services. A
-     * participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart from
-     * kind and rawId, at most one further property may be set which must match the kind enum value.
-     *
+     * participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart
+     * from kind and rawId, at most one further property may be set which must match the kind enum value.
+     * 
      * @return the initiatorCommunicationIdentifier value.
      */
     public CommunicationIdentifierModel getInitiatorCommunicationIdentifier() {
@@ -138,14 +146,14 @@ public final class ChatMessageContent {
 
     /**
      * Set the initiatorCommunicationIdentifier property: Identifies a participant in Azure Communication services. A
-     * participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart from
-     * kind and rawId, at most one further property may be set which must match the kind enum value.
-     *
+     * participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart
+     * from kind and rawId, at most one further property may be set which must match the kind enum value.
+     * 
      * @param initiatorCommunicationIdentifier the initiatorCommunicationIdentifier value to set.
      * @return the ChatMessageContent object itself.
      */
-    public ChatMessageContent setInitiatorCommunicationIdentifier(
-            CommunicationIdentifierModel initiatorCommunicationIdentifier) {
+    public ChatMessageContent
+        setInitiatorCommunicationIdentifier(CommunicationIdentifierModel initiatorCommunicationIdentifier) {
         this.initiatorCommunicationIdentifier = initiatorCommunicationIdentifier;
         return this;
     }

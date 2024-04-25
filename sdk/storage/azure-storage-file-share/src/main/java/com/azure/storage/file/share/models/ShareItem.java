@@ -5,50 +5,50 @@
 package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.core.util.CoreUtils;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * A listed Azure Storage share item.
  */
-@JacksonXmlRootElement(localName = "Share")
 @Fluent
-public final class ShareItem {
+public final class ShareItem implements XmlSerializable<ShareItem> {
     /*
      * The name property.
      */
-    @JsonProperty(value = "Name", required = true)
     private String name;
 
     /*
      * The snapshot property.
      */
-    @JsonProperty(value = "Snapshot")
     private String snapshot;
 
     /*
      * The deleted property.
      */
-    @JsonProperty(value = "Deleted")
     private Boolean deleted;
 
     /*
      * The version property.
      */
-    @JsonProperty(value = "Version")
     private String version;
 
     /*
      * The properties property.
      */
-    @JsonProperty(value = "Properties", required = true)
     private ShareProperties properties;
 
     /*
      * The metadata property.
      */
-    @JsonProperty(value = "Metadata")
     private Map<String, String> metadata;
 
     /**
@@ -169,5 +169,87 @@ public final class ShareItem {
     public ShareItem setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Share" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        xmlWriter.writeStringElement("Name", this.name);
+        xmlWriter.writeStringElement("Snapshot", this.snapshot);
+        xmlWriter.writeBooleanElement("Deleted", this.deleted);
+        xmlWriter.writeStringElement("Version", this.version);
+        xmlWriter.writeXml(this.properties, "Properties");
+        if (this.metadata != null) {
+            xmlWriter.writeStartElement("Metadata");
+            for (Map.Entry<String, String> entry : this.metadata.entrySet()) {
+                xmlWriter.writeStringElement(entry.getKey(), entry.getValue());
+            }
+            xmlWriter.writeEndElement();
+        }
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of ShareItem from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of ShareItem if the XmlReader was pointing to an instance of it, or null if it was
+     * pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the ShareItem.
+     */
+    public static ShareItem fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of ShareItem from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     * cases where the model can deserialize from different root element names.
+     * @return An instance of ShareItem if the XmlReader was pointing to an instance of it, or null if it was
+     * pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the ShareItem.
+     */
+    public static ShareItem fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Share" : rootElementName;
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            ShareItem deserializedShareItem = new ShareItem();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
+
+                if ("Name".equals(elementName.getLocalPart())) {
+                    deserializedShareItem.name = reader.getStringElement();
+                } else if ("Snapshot".equals(elementName.getLocalPart())) {
+                    deserializedShareItem.snapshot = reader.getStringElement();
+                } else if ("Deleted".equals(elementName.getLocalPart())) {
+                    deserializedShareItem.deleted = reader.getNullableElement(Boolean::parseBoolean);
+                } else if ("Version".equals(elementName.getLocalPart())) {
+                    deserializedShareItem.version = reader.getStringElement();
+                } else if ("Properties".equals(elementName.getLocalPart())) {
+                    deserializedShareItem.properties = ShareProperties.fromXml(reader, "Properties");
+                } else if ("Metadata".equals(elementName.getLocalPart())) {
+                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                        if (deserializedShareItem.metadata == null) {
+                            deserializedShareItem.metadata = new LinkedHashMap<>();
+                        }
+                        deserializedShareItem.metadata.put(reader.getElementName().getLocalPart(),
+                            reader.getStringElement());
+                    }
+                } else {
+                    reader.skipElement();
+                }
+            }
+
+            return deserializedShareItem;
+        });
     }
 }

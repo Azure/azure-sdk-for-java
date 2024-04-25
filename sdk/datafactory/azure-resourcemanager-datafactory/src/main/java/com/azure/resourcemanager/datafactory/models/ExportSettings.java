@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
@@ -17,11 +19,7 @@ import java.util.Map;
 /**
  * Export command settings.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = ExportSettings.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = ExportSettings.class, visible = true)
 @JsonTypeName("ExportSettings")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "SnowflakeExportCopyCommand", value = SnowflakeExportCopyCommand.class),
@@ -30,6 +28,13 @@ import java.util.Map;
         value = AzureDatabricksDeltaLakeExportCommand.class) })
 @Fluent
 public class ExportSettings {
+    /*
+     * The export setting type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type;
+
     /*
      * Export command settings.
      */
@@ -40,6 +45,16 @@ public class ExportSettings {
      * Creates an instance of ExportSettings class.
      */
     public ExportSettings() {
+        this.type = "ExportSettings";
+    }
+
+    /**
+     * Get the type property: The export setting type.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**

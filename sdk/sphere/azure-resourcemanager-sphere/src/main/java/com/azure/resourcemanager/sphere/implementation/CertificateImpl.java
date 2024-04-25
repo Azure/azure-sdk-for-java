@@ -7,9 +7,7 @@ package com.azure.resourcemanager.sphere.implementation;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.sphere.fluent.models.CertificateInner;
 import com.azure.resourcemanager.sphere.models.Certificate;
-import com.azure.resourcemanager.sphere.models.CertificateStatus;
-import com.azure.resourcemanager.sphere.models.ProvisioningState;
-import java.time.OffsetDateTime;
+import com.azure.resourcemanager.sphere.models.CertificateProperties;
 
 public final class CertificateImpl implements Certificate {
     private CertificateInner innerObject;
@@ -33,36 +31,12 @@ public final class CertificateImpl implements Certificate {
         return this.innerModel().type();
     }
 
+    public CertificateProperties properties() {
+        return this.innerModel().properties();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
-    }
-
-    public String certificate() {
-        return this.innerModel().certificate();
-    }
-
-    public CertificateStatus status() {
-        return this.innerModel().status();
-    }
-
-    public String subject() {
-        return this.innerModel().subject();
-    }
-
-    public String thumbprint() {
-        return this.innerModel().thumbprint();
-    }
-
-    public OffsetDateTime expiryUtc() {
-        return this.innerModel().expiryUtc();
-    }
-
-    public OffsetDateTime notBeforeUtc() {
-        return this.innerModel().notBeforeUtc();
-    }
-
-    public ProvisioningState provisioningState() {
-        return this.innerModel().provisioningState();
     }
 
     public CertificateInner innerModel() {

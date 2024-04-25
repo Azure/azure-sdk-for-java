@@ -11,8 +11,7 @@ import com.azure.resourcemanager.selfhelp.models.CheckNameAvailabilityRequest;
  */
 public final class CheckNameAvailabilityPostSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/
-     * CheckNameAvailabilityForDiagnosticWhenNameIsNotAvailable.json
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/CheckNameAvailabilityForDiagnosticWhenNameIsNotAvailable.json
      */
     /**
      * Sample code: Example when name is not available for a Diagnostic resource.
@@ -21,14 +20,14 @@ public final class CheckNameAvailabilityPostSamples {
      */
     public static void exampleWhenNameIsNotAvailableForADiagnosticResource(
         com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
-        manager.checkNameAvailabilities().postWithResponse("subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6",
-            new CheckNameAvailabilityRequest().withName("sampleName").withType("Microsoft.Help/diagnostics"),
-            com.azure.core.util.Context.NONE);
+        manager.checkNameAvailabilities()
+            .postWithResponse("subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6",
+                new CheckNameAvailabilityRequest().withName("sampleName").withType("Microsoft.Help/diagnostics"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/
-     * CheckNameAvailabilityForDiagnosticWhenNameIsAvailable.json
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/CheckNameAvailabilityForDiagnosticWhenNameIsAvailable.json
      */
     /**
      * Sample code: Example when name is available for a Diagnostic resource.
@@ -37,8 +36,9 @@ public final class CheckNameAvailabilityPostSamples {
      */
     public static void
         exampleWhenNameIsAvailableForADiagnosticResource(com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
-        manager.checkNameAvailabilities().postWithResponse("subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6",
-            new CheckNameAvailabilityRequest().withName("sampleName").withType("Microsoft.Help/diagnostics"),
-            com.azure.core.util.Context.NONE);
+        manager.checkNameAvailabilities()
+            .postWithResponse("subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6",
+                new CheckNameAvailabilityRequest().withName("sampleName").withType("Microsoft.Help/diagnostics"),
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -18,6 +18,7 @@ import com.azure.ai.openai.models.FunctionParameters;
 import com.azure.ai.openai.models.FunctionProperties;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Configuration;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -37,8 +38,8 @@ public class ChatCompletionsFunctionCall {
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) {
-        String azureOpenaiKey = "{azure-open-ai-key}";
-        String endpoint = "{azure-open-ai-endpoint}";
+        String azureOpenaiKey = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY");
+        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT");
         // Function call is supported for model versions with suffix `-0613` and later.
         String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
 
