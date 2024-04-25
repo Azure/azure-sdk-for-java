@@ -175,6 +175,7 @@ public class ShareClient {
      * @return a {@link ShareDirectoryClient} that interacts with the directory in the share
      */
     public ShareDirectoryClient getDirectoryClient(String directoryName) {
+        directoryName = "/".equals(directoryName) ? "" : directoryName;
         return new ShareDirectoryClient(azureFileStorageClient, shareName, directoryName, snapshot, accountName,
             serviceVersion, sasToken);
     }

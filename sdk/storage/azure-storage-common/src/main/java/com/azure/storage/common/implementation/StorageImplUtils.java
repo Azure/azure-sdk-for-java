@@ -490,7 +490,10 @@ public class StorageImplUtils {
         return null;
     }
 
-    public static <T, U> ResponseBase<T, U> sendRequest(Callable<ResponseBase<T, U>> operation, Duration timeout, Class<? extends RuntimeException> exceptionType) {
+    // Suppressing SpotBug warning since Class.cast is already checking if obj is an instance of exceptionType
+    @SuppressWarnings("cast")
+    public static <T, U> ResponseBase<T, U> sendRequest(Callable<ResponseBase<T, U>> operation, Duration timeout,
+        Class<? extends RuntimeException> exceptionType) {
         try {
             if (timeout == null) {
                 return operation.call();
@@ -515,8 +518,9 @@ public class StorageImplUtils {
         }
     }
 
-    public static <T> T getResultWithTimeout(Future<T> future, long timeoutInMillis, Class<? extends RuntimeException> exceptionType)
-        throws InterruptedException, ExecutionException, TimeoutException {
+    public static <T> T getResultWithTimeout(Future<T> future, long timeoutInMillis,
+        Class<? extends RuntimeException> exceptionType) throws InterruptedException, ExecutionException,
+        TimeoutException {
         Objects.requireNonNull(future, "'future' cannot be null.");
 
         try {

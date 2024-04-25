@@ -1990,26 +1990,8 @@ public class ShareFileClient {
      */
     public Response<ShareFileUploadInfo> uploadRangeWithResponse(ShareFileUploadRangeOptions options,
         Duration timeout, Context context) {
-        /**
-         * One-shot upload range.
-         */
-        ShareRequestConditions requestConditions = options.getRequestConditions() == null
-            ? new ShareRequestConditions() : options.getRequestConditions();
-        long rangeOffset = (options.getOffset() == null) ? 0L : options.getOffset();
-        ShareFileRange range = new ShareFileRange(rangeOffset, rangeOffset + options.getLength() - 1);
-        Context finalContext = context == null ? Context.NONE : context;
-
-        BinaryData binaryData = options.getDataStream() != null ? BinaryData.fromStream(options.getDataStream())
-            : BinaryData.fromFlux(options.getDataFlux(), options.getLength()).block();
-        Callable<ResponseBase<FilesUploadRangeHeaders, Void>> operation = () -> azureFileStorageClient.getFiles()
-            .uploadRangeWithResponse(shareName, filePath, range.toString(), ShareFileRangeWriteType.UPDATE,
-                options.getLength(), null, null, requestConditions.getLeaseId(), options.getLastWrittenMode(),
-                binaryData, finalContext);
-
-        ResponseBase<FilesUploadRangeHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
-
-        return ModelHelper.uploadRangeHeadersToShareFileInfo(response);
-
+        return StorageImplUtils.blockWithOptionalTimeout(
+            shareFileAsyncClient.uploadRangeWithResponse(options, context), timeout);
     }
 
     /**
