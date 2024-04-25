@@ -60,10 +60,10 @@
     <!-- Azure SDKs-->
     <!-- Explicitly referencing azure-core.  It's possible that the dependent versions below conflict with our
     currently released version and a lower version is resolved. -->
-    <dependency>
+   <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.47.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.48.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>

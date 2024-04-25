@@ -98,10 +98,10 @@
       <version>0.11.7</version> <!-- {x-version-update;net.oneandone.reflections8:reflections8;external_dependency} -->
     </dependency>
 
-    <dependency>
+   <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.47.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.48.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
