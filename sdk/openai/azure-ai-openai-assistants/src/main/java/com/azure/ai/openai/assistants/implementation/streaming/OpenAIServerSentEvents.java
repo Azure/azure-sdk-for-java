@@ -119,7 +119,8 @@ public final class OpenAIServerSentEvents {
             return;
         }
 
-        String[] lines = currentEvent.split("\n");
+        // We split the event into the event name and the event data. We don't want to split on \n in the data body.
+        String[] lines = currentEvent.split("\n", 2);
 
         String eventName = lines[0].substring(6).trim(); // removing "event:" prefix
         String eventJson = lines[1].substring(5).trim(); // removing "data:" prefix
