@@ -862,7 +862,7 @@ public class QueueAsyncApiTests extends QueueTestBase {
     }
 
     @Test
-    public void audienceError() {
+    public void audienceErrorBearerChallengeRetry() {
         queueAsyncClient.createIfNotExists().block();
         QueueAsyncClient aadQueue = getOAuthQueueClientBuilder(primaryQueueServiceAsyncClient.getQueueServiceUrl())
             .queueName(queueAsyncClient.getQueueName())
@@ -870,10 +870,8 @@ public class QueueAsyncApiTests extends QueueTestBase {
             .buildAsyncClient();
 
         StepVerifier.create(aadQueue.getProperties())
-            .verifyErrorSatisfies(r -> {
-                QueueStorageException e = assertInstanceOf(QueueStorageException.class, r);
-                assertEquals(QueueErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
-            });
+            .assertNext(r -> assertNotNull(r))
+            .verifyComplete();
     }
 
     @Test

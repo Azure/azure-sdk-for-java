@@ -868,15 +868,14 @@ public class QueueApiTests extends QueueTestBase {
     }
 
     @Test
-    public void audienceError() {
+    public void audienceErrorBearerChallengeRetry() {
         queueClient.createIfNotExists();
         QueueClient aadQueue = getOAuthQueueClientBuilder(primaryQueueServiceClient.getQueueServiceUrl())
             .queueName(queueClient.getQueueName())
             .audience(QueueAudience.createQueueServiceAccountAudience("badaudience"))
             .buildClient();
 
-        QueueStorageException e = assertThrows(QueueStorageException.class, aadQueue::getProperties);
-        assertEquals(QueueErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
+        assertNotNull(aadQueue.getProperties());
     }
 
     @Test
