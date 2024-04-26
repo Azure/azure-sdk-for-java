@@ -31,6 +31,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static com.azure.spring.data.cosmos.Constants.ISO_8601_COMPATIBLE_DATE_PATTERN;
@@ -184,20 +185,14 @@ public class MappingCosmosConverter
      * @throws MappingException no mapping metadata for entity type
      * @throws CosmosAccessException fail to map document value
      */
-
-    public <T> JsonNode repopulateAnyTransientFieldsFromMap(JsonNode responseItem, HashMap<Field, Object> transientValues) {
-        if (transientValues.isEmpty()) {
-            return responseItem;
-        }
+    public <T> JsonNode repopulateAnyTransientFieldsFromMap(JsonNode responseItem, Map<Field, Object> transientValues) {
         ObjectNode updatedItem = (ObjectNode) responseItem;
-        for (Field field : transientValues.keySet()) {
-            Object value = transientValues.get(field);
+        transientValues.forEach((field, value) -> {
             if (value != null) {
                 updatedItem.set(field.getName(), objectMapper.valueToTree(value));
             }
-        }
+        });
         return updatedItem;
-
     }
 
     /**
@@ -205,20 +200,22 @@ public class MappingCosmosConverter
      * @param <T> type of source entity
      * @param object must not be {@literal null}
      * @param transientFields transient fields
+     * @throws MappingException no such field found
      * @return HashMap
      */
-    public <T> HashMap<Field, Object> getTransientFieldsAndValuesMap(T object, List<String> transientFields) {
-        HashMap<Field, Object> transientValuesMap = new HashMap<>();
-        for (String fieldName : transientFields) {
-            Field field = null;
+    public <T> Map<Field, Object> getTransientFieldsAndValuesMap(T object, List<String> transientFields) {
+        Map<Field, Object> transientValuesMap = new HashMap<>();
+        transientFields.forEach(fieldName -> {
             try {
-                field = object.getClass().getDeclaredField(fieldName);
+                Field field = object.getClass().getDeclaredField(fieldName);
                 field.setAccessible(true);
                 transientValuesMap.put(field, field.get(object));
-            } catch (NoSuchFieldException | IllegalAccessException e) {
-                LOGGER.info("No value found for transient field: " + fieldName + " with error: " + e.getMessage());
+            } catch (NoSuchFieldException e) {
+                throw new MappingException("No such field found: " + fieldName, e);
+            } catch (IllegalAccessException e) {
+                LOGGER.warn("No value found for transient field: " + fieldName + " with error: " + e.getMessage());
             }
-        }
+        });
         return transientValuesMap;
     }
 
