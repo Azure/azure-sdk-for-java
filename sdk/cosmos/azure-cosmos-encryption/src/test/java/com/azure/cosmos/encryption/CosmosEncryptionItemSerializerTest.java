@@ -243,7 +243,7 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
         return prefix + "|Client_" + customSerializer.getClass().getSimpleName();
     }
 
-    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT)
+    @Test(groups = { "encryption" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT)
     public void pointOperationsAndQueryWithPojo(CosmosItemSerializer requestLevelSerializer) {
         String id = UUID.randomUUID().toString();
         TestDocument doc = TestDocument.create(id);
@@ -271,7 +271,7 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
             TestDocument.class);
     }
 
-    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
+    @Test(groups = { "encryption" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
     public void pointOperationsAndQueryWithObjectNode(CosmosItemSerializer requestLevelSerializer) {
         String id = UUID.randomUUID().toString();
         ObjectNode doc = TestDocument.createAsObjectNode(id);
@@ -406,7 +406,7 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
         assertSameDocument(doc, results.get(0));
     }
 
-    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
+    @Test(groups = { "encryption" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
     public void bulkAndReadManyWithObjectNode(CosmosItemSerializer requestLevelSerializer) {
 
         runBulkAndReadManyTestCase(
@@ -416,7 +416,7 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
         );
     }
 
-    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
+    @Test(groups = { "encryption" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
     public void bulkAndReadManyWithPojo(CosmosItemSerializer requestLevelSerializer) {
 
         runBulkAndReadManyTestCase(
@@ -498,7 +498,7 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
         */
     }
 
-    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
+    @Test(groups = { "encryption" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
     public void batchAndChangeFeedWithObjectNode(CosmosItemSerializer requestLevelSerializer) {
 
         runBatchAndChangeFeedTestCase(
@@ -508,7 +508,7 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
         );
     }
 
-    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
+    @Test(groups = { "encryption" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
     public void batchAndChangeFeedWithPojo(CosmosItemSerializer requestLevelSerializer) {
 
         runBatchAndChangeFeedTestCase(
