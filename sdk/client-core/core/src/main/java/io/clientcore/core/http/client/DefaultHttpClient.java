@@ -37,7 +37,6 @@ import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Base64;
 import java.util.List;
@@ -376,7 +375,7 @@ class DefaultHttpClient implements HttpClient {
     }
 
     private static int speculateContentLength(HttpHeaders headers) {
-        String contentLength = headers.getValue(HttpHeaderName.CONTENT_LENGTH);
+        String contentLength = headers.getValue(CONTENT_LENGTH);
         if (contentLength == null) {
             return -1;
         }
@@ -523,7 +522,7 @@ class DefaultHttpClient implements HttpClient {
             while ((b = inputStream.read()) != -1 && b != '\n') {
                 byteOutputStream.write(b);
             }
-            String statusLine = byteOutputStream.toString(StandardCharsets.UTF_8).trim();
+            String statusLine = byteOutputStream.toString("UTF-8").trim();
             if (statusLine.isEmpty()) {
                 throw new IllegalStateException("Unexpected response from server.");
             }
@@ -540,7 +539,7 @@ class DefaultHttpClient implements HttpClient {
             int b;
             while ((b = inputStream.read()) != -1 && b != '\n') {
                 if (b == '\r') {
-                    String headerLine = byteOutputStream.toString(StandardCharsets.UTF_8).trim();
+                    String headerLine = byteOutputStream.toString("UTF-8").trim();
                     if (!headerLine.isEmpty()) {
                         int split = headerLine.indexOf(':');
                         String key = headerLine.substring(0, split);

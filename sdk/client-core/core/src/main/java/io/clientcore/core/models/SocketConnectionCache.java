@@ -7,7 +7,9 @@ import io.clientcore.core.implementation.util.CoreUtils;
 import io.clientcore.core.models.SocketConnection.SocketConnectionProperties;
 
 import javax.net.ssl.SSLSocketFactory;
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
@@ -26,6 +28,7 @@ public final class SocketConnectionCache {
     private final int readTimeout;
     private final boolean keepConnectionAlive;
     private final int maxConnections;
+    private long readPos = 0;
 
     private SocketConnectionCache(boolean connectionKeepAlive, int maximumConnections, int readTimeout) {
         this.keepConnectionAlive = connectionKeepAlive;
@@ -47,7 +50,6 @@ public final class SocketConnectionCache {
         }
         return instance;
     }
-
 
     /**
      * Get a {@link SocketConnection connection} from the cache based on the {@link SocketConnectionProperties}
@@ -118,6 +120,10 @@ public final class SocketConnectionCache {
                     CONNECTION_POOL.put(connectionProperties, connections);
                 }
                 if (connections.size() < maxConnections) {
+                    BufferedInputStream is = connection.getSocketInputStream();
+                    // buildResponse might not consume the entire inputstream,
+                    // so we need to skip the remaining bytes to reuse the connection (keep alive).
+                    skipRemaining(is);
                     // mark the connection as available for reuse
                     connection.markAvailableForReuse();
                     connections.add(connection);
@@ -155,5 +161,21 @@ public final class SocketConnectionCache {
         }
 
         return new SocketConnection(socket, socketConnectionProperties);
+    }
+
+    private void skipRemaining(InputStream is) throws IOException {
+        long count = is.available();
+        readPos += count;
+        long pos = 0;
+        int chunkSize = 4096; // Define your chunk size here
+
+        while (pos < count) {
+            long toSkip = Math.min(chunkSize, count - pos);
+            long skipped = is.skip(toSkip);
+            if (skipped == -1) {
+                throw new IOException("No data, can't skip " + count + " bytes");
+            }
+            pos += skipped;
+        }
     }
 }

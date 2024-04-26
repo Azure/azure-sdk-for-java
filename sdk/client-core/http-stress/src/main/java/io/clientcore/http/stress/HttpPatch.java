@@ -65,8 +65,7 @@ public class HttpPatch extends ScenarioBase<StressOptions> {
         try (Response<?> response = pipeline.send(createRequest())) {
             int responseCode = response.getStatusCode();
             assert responseCode == 200 : "Unexpected response code: " + responseCode;
-            LOGGER.atInfo().addKeyValue("Response Length", response.getBody().toBytes().length).log("Response Length");
-            response.getBody().toBytes();
+            response.getBody().close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
