@@ -145,5 +145,7 @@ public class CosmosSourceTaskConfig extends CosmosSourceConfig {
         return metadataTaskUnit;
     }
 
-    public String getTaskId() { return this.taskId; }
+    public String getTaskId() {
+        return taskId;
+    }
 }

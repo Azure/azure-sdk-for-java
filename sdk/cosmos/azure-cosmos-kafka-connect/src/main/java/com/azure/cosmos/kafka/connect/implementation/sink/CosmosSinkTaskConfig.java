@@ -29,8 +29,7 @@ public class CosmosSinkTaskConfig extends CosmosSinkConfig {
                 SINK_TASK_ID,
                 ConfigDef.Type.STRING,
                 ConfigDef.NO_DEFAULT_VALUE,
-                ConfigDef.Importance.MEDIUM
-            );
+                ConfigDef.Importance.MEDIUM);
     }
 
     public String getTaskId() {
