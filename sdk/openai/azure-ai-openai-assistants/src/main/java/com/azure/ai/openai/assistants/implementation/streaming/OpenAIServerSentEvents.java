@@ -3,16 +3,12 @@ package com.azure.ai.openai.assistants.implementation.streaming;
 import com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent;
 import com.azure.ai.openai.assistants.models.StreamUpdate;
 import com.azure.core.util.BinaryData;
-import com.azure.json.JsonProviders;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.io.JsonEOFException;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -116,10 +112,9 @@ public final class OpenAIServerSentEvents {
      *
      * @param currentEvent The current line of the server sent event.
      * @param values The list of values to add the current line to.
-     * @throws JsonProcessingException If the current line cannot be processed.
      * @throws IllegalStateException If the current event contains a server side error.
      */
-    private void handleCurrentEvent(String currentEvent, List<StreamUpdate> values) throws JsonEOFException, IllegalStateException, IOException {
+    private void handleCurrentEvent(String currentEvent, List<StreamUpdate> values) throws IllegalStateException, IOException {
         if (currentEvent.isEmpty()) {
             return;
         }

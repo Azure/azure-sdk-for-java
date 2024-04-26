@@ -16,7 +16,6 @@ import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.core.util.BinaryData;
-import com.fasterxml.jackson.core.io.JsonEOFException;
 
 import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.THEARD_RUN_QUEUED;
 import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.THREAD_CREATED;
@@ -34,7 +33,7 @@ import static com.azure.ai.openai.assistants.implementation.models.AssistantStre
 
 public class StreamTypeFactory {
 
-    public StreamUpdate deserializeEvent(String eventName, BinaryData eventJson) throws JsonEOFException, IllegalArgumentException {
+    public StreamUpdate deserializeEvent(String eventName, BinaryData eventJson) throws IllegalArgumentException {
         AssistantStreamEvent event = AssistantStreamEvent.fromString(eventName);
 
         if (THREAD_CREATED.equals(event)) {
