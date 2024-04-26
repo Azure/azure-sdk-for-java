@@ -27,12 +27,14 @@ extends:
           TestResourceDirectories:
             - cosmos/test-resources/kafka-testcontainer/
           Artifacts:
+            - name: azure-cosmos
+              groupId: com.azure
+              safeName: azurecosmos
+            - name: azure-cosmos-tests
+              groupId: com.azure
             - name: azure-cosmos-kafka-connect
               groupId: com.azure.cosmos.kafka
               safeName: azurecosmoskafkaconnect
-          AdditionalModules:
-            - name: azure-cosmos
-              groupId: com.azure
           TimeoutInMinutes: 120
           PreSteps:
             - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
