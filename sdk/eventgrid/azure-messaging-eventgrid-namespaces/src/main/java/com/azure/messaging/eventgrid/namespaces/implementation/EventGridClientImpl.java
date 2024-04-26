@@ -283,28 +283,6 @@ public final class EventGridClientImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("topicName") String topicName,
             @PathParam("eventSubscriptionName") String eventSubscriptionName, @HeaderParam("accept") String accept,
             @BodyParam("application/json") BinaryData rejectOptions, RequestOptions requestOptions, Context context);
-
-        @Post("/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:renewLock")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> renewCloudEventLocks(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("topicName") String topicName,
-            @PathParam("eventSubscriptionName") String eventSubscriptionName, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData renewLockOptions, RequestOptions requestOptions, Context context);
-
-        @Post("/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:renewLock")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> renewCloudEventLocksSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("topicName") String topicName,
-            @PathParam("eventSubscriptionName") String eventSubscriptionName, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData renewLockOptions, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -738,14 +716,6 @@ public final class EventGridClientImpl {
      * Release batch of Cloud Events. The server responds with an HTTP 200 status code if the request is successfully
      * accepted. The response body will include the set of successfully released lockTokens, along with other failed
      * lockTokens with their corresponding error information.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>releaseDelayInSeconds</td><td>String</td><td>No</td><td>Release cloud events with the specified delay in
-     * seconds. Allowed values: 0, 10, 60, 600, 3600.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -806,14 +776,6 @@ public final class EventGridClientImpl {
      * Release batch of Cloud Events. The server responds with an HTTP 200 status code if the request is successfully
      * accepted. The response body will include the set of successfully released lockTokens, along with other failed
      * lockTokens with their corresponding error information.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>releaseDelayInSeconds</td><td>String</td><td>No</td><td>Release cloud events with the specified delay in
-     * seconds. Allowed values: 0, 10, 60, 600, 3600.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -986,125 +948,5 @@ public final class EventGridClientImpl {
         final String accept = "application/json";
         return service.rejectCloudEventsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), topicName,
             eventSubscriptionName, accept, rejectOptions, requestOptions, Context.NONE);
-    }
-
-    /**
-     * Renew lock for batch of Cloud Events. The server responds with an HTTP 200 status code if the request is
-     * successfully accepted. The response body will include the set of successfully renewed lockTokens, along with
-     * other failed lockTokens with their corresponding error information.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     lockTokens (Required): [
-     *         String (Required)
-     *     ]
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     failedLockTokens (Required): [
-     *          (Required){
-     *             lockToken: String (Required)
-     *             error (Required): {
-     *                 code: String (Required)
-     *                 message: String (Required)
-     *                 target: String (Optional)
-     *                 details (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *                 innererror (Optional): {
-     *                     code: String (Optional)
-     *                     innererror (Optional): (recursive schema, see innererror above)
-     *                 }
-     *             }
-     *         }
-     *     ]
-     *     succeededLockTokens (Required): [
-     *         String (Required)
-     *     ]
-     * }
-     * }</pre>
-     * 
-     * @param topicName Topic Name.
-     * @param eventSubscriptionName Event Subscription Name.
-     * @param renewLockOptions RenewLockOptions.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the result of the RenewLock operation along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> renewCloudEventLocksWithResponseAsync(String topicName,
-        String eventSubscriptionName, BinaryData renewLockOptions, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.renewCloudEventLocks(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                topicName, eventSubscriptionName, accept, renewLockOptions, requestOptions, context));
-    }
-
-    /**
-     * Renew lock for batch of Cloud Events. The server responds with an HTTP 200 status code if the request is
-     * successfully accepted. The response body will include the set of successfully renewed lockTokens, along with
-     * other failed lockTokens with their corresponding error information.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     lockTokens (Required): [
-     *         String (Required)
-     *     ]
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     failedLockTokens (Required): [
-     *          (Required){
-     *             lockToken: String (Required)
-     *             error (Required): {
-     *                 code: String (Required)
-     *                 message: String (Required)
-     *                 target: String (Optional)
-     *                 details (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *                 innererror (Optional): {
-     *                     code: String (Optional)
-     *                     innererror (Optional): (recursive schema, see innererror above)
-     *                 }
-     *             }
-     *         }
-     *     ]
-     *     succeededLockTokens (Required): [
-     *         String (Required)
-     *     ]
-     * }
-     * }</pre>
-     * 
-     * @param topicName Topic Name.
-     * @param eventSubscriptionName Event Subscription Name.
-     * @param renewLockOptions RenewLockOptions.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the result of the RenewLock operation along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> renewCloudEventLocksWithResponse(String topicName, String eventSubscriptionName,
-        BinaryData renewLockOptions, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.renewCloudEventLocksSync(this.getEndpoint(), this.getServiceVersion().getVersion(), topicName,
-            eventSubscriptionName, accept, renewLockOptions, requestOptions, Context.NONE);
     }
 }
