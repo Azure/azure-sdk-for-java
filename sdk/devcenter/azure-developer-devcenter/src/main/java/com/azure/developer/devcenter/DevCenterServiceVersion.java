@@ -13,7 +13,12 @@ public enum DevCenterServiceVersion implements ServiceVersion {
     /**
      * Enum value 2023-04-01.
      */
-    V2023_04_01("2023-04-01");
+    V2023_04_01("2023-04-01"),
+
+    /**
+     * Enum value 2024-02-01.
+     */
+    V2024_02_01("2024-02-01");
 
     private final String version;
 
@@ -35,6 +40,6 @@ public enum DevCenterServiceVersion implements ServiceVersion {
      * @return The latest {@link DevCenterServiceVersion}.
      */
     public static DevCenterServiceVersion getLatest() {
-        return V2023_04_01;
+        return V2024_02_01;
     }
 }
