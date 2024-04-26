@@ -1,14 +1,10 @@
 ## Release History
 
-### 4.59.0-beta.1 (Unreleased)
+### 4.59.0 (2024-04-26)
 
 #### Features Added
 * Added public APIs `getCustomItemSerializer` and `setCustomItemSerializer` to allow customers to specify custom payload transformations or serialization settings. - See [PR 38997](https://github.com/Azure/azure-sdk-for-java/pull/38997) and [PR 39933](https://github.com/Azure/azure-sdk-for-java/pull/39933) 
  
-#### Breaking Changes
-
-#### Bugs Fixed
-
 #### Other Changes
 * Load Blackbird or Afterburner into the ObjectMapper depending upon Java version and presence of modules in classpath. Make Afterburner and Blackbird optional maven dependencies. See - [PR 39689](https://github.com/Azure/azure-sdk-for-java/pull/39689)
 
