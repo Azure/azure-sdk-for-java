@@ -51,7 +51,7 @@ public class CosmosDBSqlApiRowByRowReader extends AbstractCosmosDBSqlApiReader {
         List<String> errors = new ArrayList<>();
         dataFormat.parse(dataRowsFromPrevReaderCall, dataSession, readAttr,errors);
 
-        do {
+        while (remainingRowsToRead > 0 && !aduc.isNoMoreRecords()) {
             //Because of page size setting we need to call rowsReadFromSource() method repeatedly
             //until the while condition satisfies
             List<Object> dataRows = new ArrayList<>();
@@ -66,7 +66,7 @@ public class CosmosDBSqlApiRowByRowReader extends AbstractCosmosDBSqlApiReader {
             remainingRowsToRead = remainingRowsToRead - rowsToProcess;
 
             dataRowsToPushInQueue.stream().forEach(e -> aduc.getRecordQueue().offer(e.toString()));
-        } while (remainingRowsToRead > 0 && !aduc.isNoMoreRecords());
+        }
 
         rowsFaildToParse = errors.size();
         rowsRead = rowsToRead - remainingRowsToRead;
@@ -120,7 +120,7 @@ public class CosmosDBSqlApiRowByRowReader extends AbstractCosmosDBSqlApiReader {
             if (aduc.getContinuationToken() == null) {
                 feedResponse = pagedFluxResponse.byPage(pageSize).next().block();
             } else {
-                feedResponse = pagedFluxResponse.byPage(aduc.getContinuationToken()).next().block();
+                feedResponse = pagedFluxResponse.byPage(aduc.getContinuationToken(), pageSize).next().block();
             }
             aduc.setContinuationToken(feedResponse.getContinuationToken());
             docList = feedResponse.getResults().iterator();
