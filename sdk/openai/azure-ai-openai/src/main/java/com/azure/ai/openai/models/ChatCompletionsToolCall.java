@@ -71,7 +71,6 @@ public class ChatCompletionsToolCall implements JsonSerializable<ChatCompletions
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ChatCompletionsToolCall.
      */
-    @Generated
     public static ChatCompletionsToolCall fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;

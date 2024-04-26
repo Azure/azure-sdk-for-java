@@ -120,11 +120,9 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-
         jsonWriter.writeBinaryField("content", this.content.toBytes());
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
         jsonWriter.writeStringField("name", this.name);

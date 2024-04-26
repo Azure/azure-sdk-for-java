@@ -14,20 +14,17 @@ import java.util.Arrays;
 /**
  * This class contains the customization code to customize the AutoRest generated code for OpenAI.
  */
-public class ChatCompletionsToolCallCustomizations extends Customization {
+public class OpenAICustomizations extends Customization {
 
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
-        customizeChatCompletionsToolCall(customization, logger);
+        // remove unused class (no reference to them, after partial-update)
+        customization.getRawEditor().removeFile("src/main/java/com/azure/ai/openai/models/FileDetails.java");
+        customization.getRawEditor().removeFile("src/main/java/com/azure/ai/openai/implementation/MultipartFormDataHelper.java");
         customizeEmbeddingEncodingFormatClass(customization, logger);
         customizeEmbeddingsOptions(customization, logger);
     }
 
-    public void customizeChatCompletionsToolCall(LibraryCustomization customization, Logger logger) {
-        // remove unused class (no reference to them, after partial-update)
-        customization.getRawEditor().removeFile("src/main/java/com/azure/ai/openai/models/FileDetails.java");
-        customization.getRawEditor().removeFile("src/main/java/com/azure/ai/openai/implementation/MultipartFormDataHelper.java");
-    }
     private void customizeEmbeddingEncodingFormatClass(LibraryCustomization customization, Logger logger) {
         logger.info("Customizing the EmbeddingEncodingFormat class");
         ClassCustomization embeddingEncodingFormatClass = customization.getPackage("com.azure.ai.openai.models").getClass("EmbeddingEncodingFormat");

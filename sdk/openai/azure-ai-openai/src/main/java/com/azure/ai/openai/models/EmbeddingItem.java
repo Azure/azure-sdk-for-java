@@ -9,10 +9,8 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-
 import java.io.IOException;
 import java.util.List;
-
 import static com.azure.ai.openai.implementation.EmbeddingsUtils.convertBase64ToFloatList;
 
 /**
@@ -107,4 +105,10 @@ public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
         this.embeddingBase64 = embeddingBase64;
         this.promptIndex = promptIndex;
     }
+
+    /*
+     * List of embeddings value for the input prompt. These represent a measurement of the
+     * vector-based relatedness of the provided input.
+     */
+    private List<Double> embedding;
 }

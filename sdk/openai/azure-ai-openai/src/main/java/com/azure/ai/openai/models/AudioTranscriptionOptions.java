@@ -6,7 +6,6 @@ package com.azure.ai.openai.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
-
 import java.util.List;
 
 /**

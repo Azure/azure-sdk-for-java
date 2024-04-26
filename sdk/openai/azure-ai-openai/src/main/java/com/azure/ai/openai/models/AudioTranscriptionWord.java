@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.Duration;
 
 /**
  * Extended information about a single transcribed word, as provided on responses when the 'word' timestamp granularity
@@ -37,20 +38,6 @@ public final class AudioTranscriptionWord implements JsonSerializable<AudioTrans
     private final double end;
 
     /**
-     * Creates an instance of AudioTranscriptionWord class.
-     *
-     * @param word the word value to set.
-     * @param start the start value to set.
-     * @param end the end value to set.
-     */
-    @Generated
-    private AudioTranscriptionWord(String word, double start, double end) {
-        this.word = word;
-        this.start = start;
-        this.end = end;
-    }
-
-    /**
      * Get the word property: The textual content of the word.
      *
      * @return the word value.
@@ -66,8 +53,8 @@ public final class AudioTranscriptionWord implements JsonSerializable<AudioTrans
      * @return the start value.
      */
     @Generated
-    public double getStart() {
-        return this.start;
+    public Duration getStart() {
+        return Duration.ofNanos((long) (this.start * 1000_000_000L));
     }
 
     /**
@@ -76,8 +63,8 @@ public final class AudioTranscriptionWord implements JsonSerializable<AudioTrans
      * @return the end value.
      */
     @Generated
-    public double getEnd() {
-        return this.end;
+    public Duration getEnd() {
+        return Duration.ofNanos((long) (this.end * 1000_000_000L));
     }
 
     /**
@@ -106,22 +93,44 @@ public final class AudioTranscriptionWord implements JsonSerializable<AudioTrans
     public static AudioTranscriptionWord fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String word = null;
-            double start = 0.0;
-            double end = 0.0;
+            Duration start = null;
+            Duration end = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("word".equals(fieldName)) {
                     word = reader.getString();
                 } else if ("start".equals(fieldName)) {
-                    start = reader.getDouble();
+                    start = Duration.ofNanos((long) (reader.getDouble() * 1000_000_000L));
                 } else if ("end".equals(fieldName)) {
-                    end = reader.getDouble();
+                    end = Duration.ofNanos((long) (reader.getDouble() * 1000_000_000L));
                 } else {
                     reader.skipChildren();
                 }
             }
             return new AudioTranscriptionWord(word, start, end);
         });
+    }
+
+    /**
+     * Creates an instance of AudioTranscriptionWord class.
+     *
+     * @param word the word value to set.
+     * @param start the start value to set.
+     * @param end the end value to set.
+     */
+    @Generated
+    private AudioTranscriptionWord(String word, Duration start, Duration end) {
+        this.word = word;
+        if (start == null) {
+            this.start = 0.0;
+        } else {
+            this.start = (double) start.toNanos() / 1000_000_000L;
+        }
+        if (end == null) {
+            this.end = 0.0;
+        } else {
+            this.end = (double) end.toNanos() / 1000_000_000L;
+        }
     }
 }
