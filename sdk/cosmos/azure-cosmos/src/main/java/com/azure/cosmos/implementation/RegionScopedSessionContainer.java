@@ -480,7 +480,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
                 Map.Entry<String,  ConcurrentHashMap<String, PartitionScopedRegionLevelProgress.RegionLevelProgress>> entry = iterator.next();
 
                 String partitionKeyRangeId = entry.getKey();
-                String sessionTokenAsString = entry.getValue().get(PartitionScopedRegionLevelProgress.GlobalProgressKey).getVectorSessionToken().convertToString();
+                String sessionTokenAsString = entry.getValue().get(PartitionScopedRegionLevelProgress.GLOBAL_PROGRESS_KEY).getVectorSessionToken().convertToString();
 
                 result = result.append(partitionKeyRangeId).append(":").append(sessionTokenAsString);
                 if (iterator.hasNext()) {
@@ -602,9 +602,6 @@ public class RegionScopedSessionContainer implements ISessionContainer {
     }
 
     private static String stringifyConfig() {
-        return String.format(
-          "(rssc: true, expins:%s, ffprate: %s)",
-          Configs.getPkBasedBloomFilterExpectedInsertionCount(),
-          Configs.getPkBasedBloomFilterExpectedFfpRate());
+        return "(rssc: true, expins: " + Configs.getPkBasedBloomFilterExpectedInsertionCount() + ", ffprate: " + Configs.getPkBasedBloomFilterExpectedFfpRate() + ")";
     }
 }

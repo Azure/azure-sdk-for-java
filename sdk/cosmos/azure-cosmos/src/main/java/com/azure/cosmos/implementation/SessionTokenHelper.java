@@ -124,7 +124,7 @@ public class SessionTokenHelper {
                 ISessionToken parentSessionToken = null;
 
                 Collection<String> parents = request.requestContext.resolvedPartitionKeyRange.getParents();
-                if (parents != null) {
+                if (parents != null && !parents.isEmpty()) {
                     List<String> parentsList = new ArrayList<>(parents);
                     for (int i = parentsList.size() - 1; i >= 0; i--) {
                         String parentId = parentsList.get(i);
@@ -197,7 +197,7 @@ public class SessionTokenHelper {
                 ISessionToken parentSessionToken = null;
 
                 Collection<String> parents = request.requestContext.resolvedPartitionKeyRange.getParents();
-                if (parents != null) {
+                if (parents != null && !parents.isEmpty()) {
                     List<String> parentsList = new ArrayList<>(parents);
                     for (int i = parentsList.size() - 1; i >= 0; i--) {
                         String parentPkRangeId = parentsList.get(i);

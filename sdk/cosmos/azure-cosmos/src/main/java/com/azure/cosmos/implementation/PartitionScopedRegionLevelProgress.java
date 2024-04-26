@@ -24,7 +24,7 @@ public class PartitionScopedRegionLevelProgress {
 
     private final ConcurrentHashMap<String, String> normalizedRegionLookupMap;
 
-    public final static String GlobalProgressKey = "global";
+    public final static String GLOBAL_PROGRESS_KEY = "global";
 
     public PartitionScopedRegionLevelProgress() {
         this.partitionKeyRangeIdToRegionLevelProgress = new ConcurrentHashMap<>();
@@ -52,7 +52,7 @@ public class PartitionScopedRegionLevelProgress {
                 VectorSessionToken vectorSessionToken = (VectorSessionToken) parsedSessionToken;
 
                 // store the global merged progress of the session token for a given physical partition
-                regionLevelProgressAsVal.merge(GlobalProgressKey, new RegionLevelProgress(Long.MIN_VALUE, Long.MIN_VALUE, vectorSessionToken), (regionLevelProgressExisting, regionLevelProgressNew) -> {
+                regionLevelProgressAsVal.merge(GLOBAL_PROGRESS_KEY, new RegionLevelProgress(Long.MIN_VALUE, Long.MIN_VALUE, vectorSessionToken), (regionLevelProgressExisting, regionLevelProgressNew) -> {
 
                     VectorSessionToken existingVectorSessionToken = regionLevelProgressExisting.vectorSessionToken;
                     VectorSessionToken newVectorSessionToken = regionLevelProgressNew.vectorSessionToken;
@@ -142,7 +142,7 @@ public class PartitionScopedRegionLevelProgress {
         boolean canUseRegionScopedSessionTokens) {
 
         try {
-            RegionLevelProgress globalLevelProgress = resolvePartitionKeyRangeIdBasedProgress(partitionKeyRangeId, GlobalProgressKey);
+            RegionLevelProgress globalLevelProgress = resolvePartitionKeyRangeIdBasedProgress(partitionKeyRangeId, GLOBAL_PROGRESS_KEY);
             VectorSessionToken globalSessionToken = globalLevelProgress.vectorSessionToken;
 
             // if region level scoping is not allowed, then resolve to the global session token

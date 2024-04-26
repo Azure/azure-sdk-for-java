@@ -464,7 +464,7 @@ public class RegionScopedSessionContainerTest {
         assertThat(collectionResourceIdToRegionScopedSessionTokens.get(collectionRidAsLong).getPartitionKeyRangeIdToRegionLevelProgress()).isNotNull();
         assertThat(collectionResourceIdToRegionScopedSessionTokens.get(collectionRidAsLong).getPartitionKeyRangeIdToRegionLevelProgress().get(partitionKeyRangeId)).isNotNull();
         assertThat(collectionResourceIdToRegionScopedSessionTokens.get(collectionRidAsLong).getPartitionKeyRangeIdToRegionLevelProgress().get(partitionKeyRangeId)).isNotNull();
-        assertThat(collectionResourceIdToRegionScopedSessionTokens.get(collectionRidAsLong).getPartitionKeyRangeIdToRegionLevelProgress().get(partitionKeyRangeId).get(PartitionScopedRegionLevelProgress.GlobalProgressKey).getVectorSessionToken().convertToString()).isEqualTo(sessionToken);
+        assertThat(collectionResourceIdToRegionScopedSessionTokens.get(collectionRidAsLong).getPartitionKeyRangeIdToRegionLevelProgress().get(partitionKeyRangeId).get(PartitionScopedRegionLevelProgress.GLOBAL_PROGRESS_KEY).getVectorSessionToken().convertToString()).isEqualTo(sessionToken);
 
         RxDocumentServiceRequest request2 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Read, ResourceType.Document,
             collectionName + "/docs",  Utils.getUTF8Bytes(""), new HashMap<>());
