@@ -46,7 +46,7 @@ public final class NonIdempotentWriteRetryOptions {
      * upper limit), the usage of this system property can be disabled by setting this parameter to false. This means
      * there could be a higher level of 409/312 due to retries - and applications would need to handle them gracefully
      * on their own.
-     * @returna flag indicating whether write operations can use the
+     * @return a flag indicating whether write operations can use the
      * trackingId system property '/_trackingId' to allow identification of conflicts and pre-condition failures due
      * to retries.
      */
