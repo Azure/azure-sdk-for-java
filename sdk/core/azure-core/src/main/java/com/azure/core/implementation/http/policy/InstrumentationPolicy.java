@@ -82,12 +82,11 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
             return next.process();
         }
 
-        return Mono.using(() -> startSpan(context),
-            span -> next.process().map(response -> {
-                    onResponseCode(response, span);
-                    // TODO: maybe we can optimize it? https://github.com/Azure/azure-sdk-for-java/issues/38228
-                    return TraceableResponse.create(response, tracer, span);
-                })
+        return Mono.using(() -> startSpan(context), span -> next.process().map(response -> {
+            onResponseCode(response, span);
+            // TODO: maybe we can optimize it? https://github.com/Azure/azure-sdk-for-java/issues/38228
+            return TraceableResponse.create(response, tracer, span);
+        })
             .doOnCancel(() -> tracer.end(CANCELLED_ERROR_TYPE, null, span))
             .doOnError(exception -> tracer.end(null, exception, span)), __ -> {
             });
