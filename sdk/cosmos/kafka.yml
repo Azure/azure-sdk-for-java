@@ -36,14 +36,14 @@ extends:
               displayName: Building azure-cosmos package
               inputs:
                 mavenPOMFile: pom.xml
-                goals: 'package'
+                goals: 'install'
                 options: '$(DefaultOptions) -T 1 -Ppackage-assembly -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl com.azure:azure-cosmos'
                 publishJUnitResults: false
             - task: Maven@3
               displayName: Building azure-cosmos-test package
               inputs:
                 mavenPOMFile: pom.xml
-                goals: 'package'
+                goals: 'install'
                 options: '$(DefaultOptions) -T 1 -Ppackage-assembly -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl com.azure:azure-cosmos-test'
                 publishJUnitResults: false
             - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
