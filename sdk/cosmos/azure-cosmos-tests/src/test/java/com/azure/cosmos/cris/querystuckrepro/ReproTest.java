@@ -116,7 +116,7 @@ public class ReproTest extends TestSuiteBase {
         };
 
         assertThat(numberOfRecordsRetrievedFromDatabase.get()).isEqualTo(1000);
-        assertThat(numberOfPagesRetrievedFromDatabase.get()).isEqualTo(2002);
+        assertThat(numberOfPagesRetrievedFromDatabase.get()).isEqualTo(1000);
     }
 
     private ObjectNode getDocumentDefinition(String documentId, String pkId) throws JsonProcessingException {

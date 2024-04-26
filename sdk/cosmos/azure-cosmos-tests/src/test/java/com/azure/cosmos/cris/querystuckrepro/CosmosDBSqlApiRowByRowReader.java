@@ -5,11 +5,10 @@ package com.azure.cosmos.cris.querystuckrepro;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Consumer;
 
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.util.CosmosPagedFlux;
+import com.azure.cosmos.util.CosmosPagedIterable;
 
 public class CosmosDBSqlApiRowByRowReader extends AbstractCosmosDBSqlApiReader {
 
@@ -98,12 +97,13 @@ public class CosmosDBSqlApiRowByRowReader extends AbstractCosmosDBSqlApiReader {
                                    List<Object> dataRows, String query) throws SDKException {
         int rowsRead = 0;
 
-        CosmosPagedFlux<Document> pagedFluxResponse = aduc.getCosmosPagedResponse();
+        Iterator<FeedResponse<Document>> pagedIterable = aduc.getCosmosPagedIterable();
 
-        if (pagedFluxResponse == null) {
+        if (pagedIterable == null) {
             try {
-                pagedFluxResponse = readContainer
-                    .queryItems(query, Document.class);
+                pagedIterable = new CosmosPagedIterable<>(readContainer.queryItems(query, Document.class), pageSize)
+                    .iterableByPage(pageSize)
+                    .iterator();
             } catch (IllegalStateException e) {
                 String errMsg = String.format("Error occurred while executing query [%s] against collection [%s], %s",
                     query, this.readContainer.getId(), e.getMessage());
@@ -111,18 +111,18 @@ public class CosmosDBSqlApiRowByRowReader extends AbstractCosmosDBSqlApiReader {
                 throw new SDKExceptionImpl(e.getMessage());
             }
 
-            aduc.setCosmosPagedResponse(pagedFluxResponse);
+            aduc.setCosmosPagedIterable(pagedIterable);
         }
 
         FeedResponse<Document> feedResponse = null;
         Iterator<Document> docList = null;
         try {
-            if (aduc.getContinuationToken() == null) {
-                feedResponse = pagedFluxResponse.byPage(pageSize).next().block();
-            } else {
-                feedResponse = pagedFluxResponse.byPage(aduc.getContinuationToken(), pageSize).next().block();
-            }
-            aduc.setContinuationToken(feedResponse.getContinuationToken());
+            feedResponse = pagedIterable.next();
+
+            // if still needed for persisted bookmarking etc. the continuation token can still be persisted in aduc
+            // here via feedResponse.getContinuationToken()
+            // just removed it because it is not strictly necessary since the Iterable<FeedResponse<Document>>
+            // keeps track of the continuation token internally as well.
             docList = feedResponse.getResults().iterator();
         } catch (Exception e) {
             String errMsg = String.format(
@@ -143,7 +143,7 @@ public class CosmosDBSqlApiRowByRowReader extends AbstractCosmosDBSqlApiReader {
             }
         }
 
-        if (aduc.getContinuationToken()==null) {
+        if (!pagedIterable.hasNext()) {
             aduc.setNoMoreRecords(true);
         }
 

@@ -1,35 +1,25 @@
 package com.azure.cosmos.cris.querystuckrepro;
 
-import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.util.CosmosPagedFlux;
 
+import java.util.Iterator;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class DataSession {
 
-    private String continuationToken;
-    private Queue<Object> recordQueue = new LinkedBlockingQueue<>();
+    private final Queue<Object> recordQueue = new LinkedBlockingQueue<>();
 
-    private AtomicLong numberOfRecordsRead = new AtomicLong(0);
+    private final AtomicLong numberOfRecordsRead = new AtomicLong(0);
 
     private boolean isNoMoreRecords = false;
 
-    private CosmosPagedFlux<Document> pagedResponse = null;
+    private Iterator<FeedResponse<Document>> pagedIterable = null;
 
     public DataSession() {
 
-    }
-
-    public String getContinuationToken() {
-        return this.continuationToken;
-    }
-
-    public void setContinuationToken(String token) {
-        this.continuationToken = token;
     }
 
     public Queue<Object> getRecordQueue() {
@@ -52,11 +42,11 @@ public class DataSession {
         return this.numberOfRecordsRead.get();
     }
 
-    public CosmosPagedFlux<Document> getCosmosPagedResponse() {
-        return this.pagedResponse;
+    public Iterator<FeedResponse<Document>> getCosmosPagedIterable() {
+        return this.pagedIterable;
     }
 
-    public void setCosmosPagedResponse(CosmosPagedFlux<Document> value) {
-        this.pagedResponse= value;
+    public void setCosmosPagedIterable(Iterator<FeedResponse<Document>> value) {
+        this.pagedIterable= value;
     }
 }

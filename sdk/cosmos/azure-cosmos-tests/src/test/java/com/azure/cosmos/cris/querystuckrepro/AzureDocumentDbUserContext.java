@@ -1,8 +1,9 @@
 package com.azure.cosmos.cris.querystuckrepro;
 
 import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.util.CosmosPagedFlux;
+import com.azure.cosmos.models.FeedResponse;
 
+import java.util.Iterator;
 import java.util.Queue;
 
 public class AzureDocumentDbUserContext {
@@ -26,14 +27,6 @@ public class AzureDocumentDbUserContext {
         return this.session.getRecordQueue();
     }
 
-    public void setContinuationToken(String token) {
-        this.session.setContinuationToken(token);
-    }
-
-    public String getContinuationToken() {
-        return this.session.getContinuationToken();
-    }
-
     public void IncrementNoOfRecordRead() {
         this.session.IncrementNoOfRecordRead();
     }
@@ -42,11 +35,11 @@ public class AzureDocumentDbUserContext {
         return this.session.getNoOfRecordRead();
     }
 
-    public CosmosPagedFlux<Document> getCosmosPagedResponse() {
-        return this.session.getCosmosPagedResponse();
+    public Iterator<FeedResponse<Document>> getCosmosPagedIterable() {
+        return this.session.getCosmosPagedIterable();
     }
 
-    public void setCosmosPagedResponse(CosmosPagedFlux<Document> value) {
-        this.session.setCosmosPagedResponse(value);
+    public void setCosmosPagedIterable(Iterator<FeedResponse<Document>> value) {
+        this.session.setCosmosPagedIterable(value);
     }
 }
