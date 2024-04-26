@@ -105,7 +105,7 @@ public class TracingOptions {
 
     /**
      * Gets the set of query parameter names that are allowed to be recorded in the URL.
-     * @return
+     * @return The set of query parameter names that are allowed to be recorded in the URL.
      */
     public Set<String> getAllowedQueryParamNames() {
         return allowedQueryParamNames;
