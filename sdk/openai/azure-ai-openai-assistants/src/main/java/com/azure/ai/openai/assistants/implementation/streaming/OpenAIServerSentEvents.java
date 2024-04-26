@@ -67,6 +67,9 @@ public final class OpenAIServerSentEvents {
                             outStream = new ByteArrayOutputStream();
                         }
                     } else {
+                        // In some cases line breaks can contain both the line feed and carriage return characters.
+                        // We want to reset the count only if a consecutive character isn't a carriage return.
+                        // That is the assumption we are making with this implementation.
                         if (!isByteCarriageReturn(currentByte)) {
                             lineBreakCharsEncountered = 0;
                         }
