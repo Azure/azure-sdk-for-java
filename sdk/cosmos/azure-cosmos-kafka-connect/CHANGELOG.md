@@ -1,6 +1,6 @@
 ## Release History
 
-### 1.0.0-beta.1 (2024-04-25)
+### 1.0.0-beta.1 (2024-04-26)
 
 #### Features Added
 * Added Source connector. See [PR 39410](https://github.com/Azure/azure-sdk-for-java/pull/39410) and [PR 39919](https://github.com/Azure/azure-sdk-for-java/pull/39919)
