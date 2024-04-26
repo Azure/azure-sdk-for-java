@@ -54,6 +54,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -246,11 +247,11 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
     @Test(groups = { "encryption" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT)
     public void pointOperationsAndQueryWithPojo(CosmosItemSerializer requestLevelSerializer) {
         String id = UUID.randomUUID().toString();
-        TestDocument doc = TestDocument.create(id);
+        Supplier<TestDocument> docProvider = () -> TestDocument.create(id);
         Consumer<TestDocument> onBeforeReplace = item -> item.someNumber = 999;
         BiFunction<TestDocument, Boolean, CosmosPatchOperations> onBeforePatch = (item, isEnvelopeWrapped) -> {
 
-            doc.someNumber = 555;
+            item.someNumber = 555;
             if (!isEnvelopeWrapped) {
                 return CosmosPatchOperations
                     .create()
@@ -263,7 +264,7 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
         };
 
         runPointOperationAndQueryTestCase(
-            doc,
+            docProvider,
             id,
             onBeforeReplace,
             onBeforePatch,
@@ -274,7 +275,7 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
     @Test(groups = { "encryption" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
     public void pointOperationsAndQueryWithObjectNode(CosmosItemSerializer requestLevelSerializer) {
         String id = UUID.randomUUID().toString();
-        ObjectNode doc = TestDocument.createAsObjectNode(id);
+        Supplier<ObjectNode> docProvider = () -> TestDocument.createAsObjectNode(id);
         Consumer<ObjectNode> onBeforeReplace = item -> item.put("someNumber", 999);
         BiFunction<ObjectNode, Boolean, CosmosPatchOperations> onBeforePatch = (item, isEnvelopeWrapped) -> {
 
@@ -292,7 +293,7 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
         };
 
         runPointOperationAndQueryTestCase(
-            doc,
+            docProvider,
             id,
             onBeforeReplace,
             onBeforePatch,
@@ -301,7 +302,7 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
     }
 
     private <T> void runPointOperationAndQueryTestCase(
-        T doc,
+        Supplier<T> docProvider,
         String id,
         Consumer<T> beforeReplace,
         BiFunction<T, Boolean, CosmosPatchOperations> beforePatch,
@@ -328,6 +329,7 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
 
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions()
             .setCustomItemSerializer(requestLevelSerializer);
+        T doc = docProvider.get();
         CosmosItemResponse<T> pojoResponse = container.createItem(doc, new PartitionKey(id), requestOptions);
 
         if (this.isContentOnWriteEnabled) {
@@ -338,6 +340,7 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
 
         container.deleteItem(doc, requestOptions);
 
+        doc = docProvider.get();
         pojoResponse = container.createItem(doc, requestOptions);
 
         if (this.isContentOnWriteEnabled) {

@@ -849,10 +849,17 @@ public final class CosmosEncryptionAsyncContainer {
         this.setRequestHeaders(requestOptions);
         CosmosItemSerializer effectiveItemSerializer =
             cosmosEncryptionAsyncClient.getEffectiveItemSerializer(requestOptions.getCustomItemSerializer());
+
+        // The actual replace happens on the already encrypted document
+        // so any custom serialization/deserialization happens here in the encryption wrapper
+        CosmosItemRequestOptions requestOptionsWithDefaultSerializer = ModelBridgeInternal
+            .clone(requestOptions)
+            .setCustomItemSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER);
+
         return this.encryptionProcessor.encrypt(streamPayload)
             .flatMap(encryptedPayload -> this.container.createItem(
                 encryptedPayload,
-                requestOptions)
+                requestOptionsWithDefaultSerializer)
                 .publishOn(encryptionScheduler)
                 .flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
                     this.encryptionProcessor.decrypt(
