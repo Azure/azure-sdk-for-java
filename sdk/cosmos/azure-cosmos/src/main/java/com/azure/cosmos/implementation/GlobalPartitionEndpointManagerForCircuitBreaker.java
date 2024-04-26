@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,12 +20,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalPartitionEndpointManager {
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalPartitionEndpointManagerForCircuitBreaker.class);
 
     private final GlobalEndpointManager globalEndpointManager;
-    private final ConcurrentHashMap<PartitionKeyRange, PartitionLevelFailoverInfo> partitionKeyRangeToFailoverInfo;
+    private final ConcurrentHashMap<PartitionKeyRange, PartitionLevelLocationUnavailabilityInfo> partitionKeyRangeToFailoverInfo;
 
     public GlobalPartitionEndpointManagerForCircuitBreaker(GlobalEndpointManager globalEndpointManager) {
         this.partitionKeyRangeToFailoverInfo = new ConcurrentHashMap<>();
@@ -64,7 +67,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
         this.partitionKeyRangeToFailoverInfo.compute(partitionKeyRange, (partitionKeyRangeAsKey, partitionKeyRangeFailoverInfoAsVal) -> {
 
             if (partitionKeyRangeFailoverInfoAsVal == null) {
-                partitionKeyRangeFailoverInfoAsVal = new PartitionLevelFailoverInfo();
+                partitionKeyRangeFailoverInfoAsVal = new PartitionLevelLocationUnavailabilityInfo();
             }
 
             isFailureThresholdBreached.set(partitionKeyRangeFailoverInfoAsVal.isFailureThresholdBreachedForLocation(request));
@@ -122,7 +125,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
             this.partitionKeyRangeToFailoverInfo.compute(partitionKeyRange, (partitionKeyRangeAsKey, partitionKeyRangeFailoverInfoAsVal) -> {
 
                 if (partitionKeyRangeFailoverInfoAsVal == null) {
-                    partitionKeyRangeFailoverInfoAsVal = new PartitionLevelFailoverInfo();
+                    partitionKeyRangeFailoverInfoAsVal = new PartitionLevelLocationUnavailabilityInfo();
                 }
 
                 partitionKeyRangeFailoverInfoAsVal.bookmarkSuccess(succeededLocation);
@@ -133,60 +136,30 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
         return false;
     }
 
-    @Override
-    public boolean isRegionAvailableForPartitionKeyRange(RxDocumentServiceRequest request) {
+    public List<URI> getUnavailableLocationsForPartition(PartitionKeyRange partitionKeyRange) {
 
-        if (request.isMetadataRequest()) {
-            return true;
-        }
+        checkNotNull(partitionKeyRange, "Supplied partitionKeyRange cannot be null!");
 
-        if (request == null) {
-            throw new IllegalArgumentException("request cannot be null!");
-        }
+        PartitionLevelLocationUnavailabilityInfo partitionLevelLocationUnavailabilityInfoSnapshot =
+            this.partitionKeyRangeToFailoverInfo.get(partitionKeyRange);
 
-        if (request.requestContext == null) {
+        List<URI> unavailableLocations = new ArrayList<>();
 
-            if (logger.isDebugEnabled()) {
-                logger.warn("requestContext is null!");
-            }
+        if (partitionLevelLocationUnavailabilityInfoSnapshot != null) {
+            Map<URI, FailureMetricsForPartition> locationEndpointToFailureMetricsForPartition =
+                partitionLevelLocationUnavailabilityInfoSnapshot.locationEndpointToFailureMetricsForPartition;
 
-            return false;
-        }
+            for (Map.Entry<URI, FailureMetricsForPartition> pair : locationEndpointToFailureMetricsForPartition.entrySet()) {
+                URI location = pair.getKey();
+                FailureMetricsForPartition failureMetricsForPartition = pair.getValue();
 
-        PartitionKeyRange partitionKeyRange = request.requestContext.resolvedPartitionKeyRange;
-
-        if (partitionKeyRange == null) {
-            throw new IllegalStateException("requestContext.resolvedPartitionKeyRange cannot be null!");
-        }
-
-        URI locationWithUndeterminedAvailability = request.requestContext.locationEndpointToRoute;
-
-        if (locationWithUndeterminedAvailability == null) {
-            throw new IllegalStateException("requestContext.locationEndpointToRoute cannot be null!");
-        }
-
-        if (this.partitionKeyRangeToFailoverInfo.containsKey(partitionKeyRange)) {
-
-            // is it possible for this instance to go stale?
-            PartitionLevelFailoverInfo partitionLevelFailoverInfo = this.partitionKeyRangeToFailoverInfo.get(partitionKeyRange);
-
-            if (partitionLevelFailoverInfo.partitionLevelFailureMetadata.containsKey(locationWithUndeterminedAvailability)) {
-
-                LocationLevelMetrics locationLevelMetrics
-                    = partitionLevelFailoverInfo.partitionLevelFailureMetadata.get(locationWithUndeterminedAvailability);
-
-                if (locationLevelMetrics.partitionScopedRegionUnavailabilityStatus.get() == PartitionScopedRegionUnavailabilityStatus.FreshUnavailable) {
-                    return false;
+                if (failureMetricsForPartition.partitionScopedRegionUnavailabilityStatus.get() == PartitionScopedRegionUnavailabilityStatus.FreshUnavailable) {
+                    unavailableLocations.add(location);
                 }
             }
-
-            // there is no locationLevelFailureMetadata for locationWithUndeterminedAvailability
-            // [or] locationWithUndeterminedAvailability is still available / is stale unavailable
-            return true;
         }
 
-        // there is no partitionLevelFailoverInfo for partitionKeyRange
-        return true;
+        return UnmodifiableList.unmodifiableList(unavailableLocations);
     }
 
     private Flux<Object> updateStaleLocationInfo() {
@@ -198,14 +171,14 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
 
                 logger.info("Background updateStaleLocationInfo kicking in...");
 
-                for (Map.Entry<PartitionKeyRange, PartitionLevelFailoverInfo> pkRangeToFailoverInfo : this.partitionKeyRangeToFailoverInfo.entrySet()) {
+                for (Map.Entry<PartitionKeyRange, PartitionLevelLocationUnavailabilityInfo> pkRangeToFailoverInfo : this.partitionKeyRangeToFailoverInfo.entrySet()) {
 
-                    PartitionLevelFailoverInfo partitionLevelFailoverInfo = pkRangeToFailoverInfo.getValue();
+                    PartitionLevelLocationUnavailabilityInfo partitionLevelLocationUnavailabilityInfo = pkRangeToFailoverInfo.getValue();
 
-                    for (Map.Entry<URI, LocationLevelMetrics> locationToLocationLevelMetrics : partitionLevelFailoverInfo.partitionLevelFailureMetadata.entrySet()) {
+                    for (Map.Entry<URI, FailureMetricsForPartition> locationToLocationLevelMetrics : partitionLevelLocationUnavailabilityInfo.locationEndpointToFailureMetricsForPartition.entrySet()) {
 
-                        LocationLevelMetrics locationLevelMetrics = locationToLocationLevelMetrics.getValue();
-                        locationLevelMetrics.handleSuccess(false);
+                        FailureMetricsForPartition failureMetricsForPartition = locationToLocationLevelMetrics.getValue();
+                        failureMetricsForPartition.handleSuccess(false);
                     }
                 }
 
@@ -213,12 +186,12 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
             });
     }
 
-    static class PartitionLevelFailoverInfo {
+    private static class PartitionLevelLocationUnavailabilityInfo {
 
-        private final ConcurrentHashMap<URI, LocationLevelMetrics> partitionLevelFailureMetadata;
+        private final ConcurrentHashMap<URI, FailureMetricsForPartition> locationEndpointToFailureMetricsForPartition;
 
-        PartitionLevelFailoverInfo() {
-            this.partitionLevelFailureMetadata = new ConcurrentHashMap<>();
+        PartitionLevelLocationUnavailabilityInfo() {
+            this.locationEndpointToFailureMetricsForPartition = new ConcurrentHashMap<>();
         }
 
         public boolean isFailureThresholdBreachedForLocation(RxDocumentServiceRequest request) {
@@ -239,18 +212,18 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
                     URI location = failuresPerLocation.getKey();
                     ConcurrentHashMap<ErrorKey, Integer> errorCounts = failuresPerLocation.getValue();
 
-                    this.partitionLevelFailureMetadata.compute(location, (locationAsKey, locationLevelMetricsAsVal) -> {
+                    this.locationEndpointToFailureMetricsForPartition.compute(location, (locationAsKey, failureMetricsForPartitionAsVal) -> {
 
-                        if (locationLevelMetricsAsVal == null) {
-                            locationLevelMetricsAsVal = new LocationLevelMetrics();
+                        if (failureMetricsForPartitionAsVal == null) {
+                            failureMetricsForPartitionAsVal = new FailureMetricsForPartition();
                         }
 
                         for (Map.Entry<ErrorKey, Integer> countForError : errorCounts.entrySet()) {
-                            locationLevelMetricsAsVal.handleFailure(countForError.getValue());
+                            failureMetricsForPartitionAsVal.handleFailure(countForError.getValue());
                         }
 
-                        isFailureThresholdBreached.set(locationLevelMetricsAsVal.isFailureThresholdBreached());
-                        return locationLevelMetricsAsVal;
+                        isFailureThresholdBreached.set(failureMetricsForPartitionAsVal.isFailureThresholdBreached());
+                        return failureMetricsForPartitionAsVal;
                     });
                 }
             }
@@ -259,46 +232,46 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
         }
 
         public void bookmarkSuccess(URI succeededLocation) {
-            this.partitionLevelFailureMetadata.compute(succeededLocation, (locationAsKey, locationLevelMetricsAsVal) -> {
+            this.locationEndpointToFailureMetricsForPartition.compute(succeededLocation, (locationAsKey, failureMetricsForPartitionAsVal) -> {
 
-                if (locationLevelMetricsAsVal != null) {
-                    locationLevelMetricsAsVal.handleSuccess(false);;
+                if (failureMetricsForPartitionAsVal != null) {
+                    failureMetricsForPartitionAsVal.handleSuccess(false);;
                 }
 
-                return locationLevelMetricsAsVal;
+                return failureMetricsForPartitionAsVal;
             });
         }
 
         public boolean areLocationsAvailableForPartitionKeyRange(List<URI> availableLocationsAtAccountLevel) {
 
             for (URI availableLocation : availableLocationsAtAccountLevel) {
-                if (!this.partitionLevelFailureMetadata.containsKey(availableLocation)) {
+                if (!this.locationEndpointToFailureMetricsForPartition.containsKey(availableLocation)) {
                     return true;
                 } else {
-                    LocationLevelMetrics locationLevelMetrics = this.partitionLevelFailureMetadata.get(availableLocation);
+                    FailureMetricsForPartition failureMetricsForPartition = this.locationEndpointToFailureMetricsForPartition.get(availableLocation);
 
-                    if (locationLevelMetrics.isRegionAvailableToProcessRequests()) {
+                    if (failureMetricsForPartition.isRegionAvailableToProcessRequests()) {
                         return true;
                     }
                 }
             }
 
             Instant mostStaleUnavailableTimeAcrossRegions = Instant.MAX;
-            LocationLevelMetrics locationLevelFailureMetadataForMostStaleLocation = null;
+            FailureMetricsForPartition locationLevelFailureMetadataForMostStaleLocation = null;
 
             // find region with most 'stale' unavailability
-            for (Map.Entry<URI, LocationLevelMetrics> uriToLocationLevelFailureMetadata : this.partitionLevelFailureMetadata.entrySet()) {
-                LocationLevelMetrics locationLevelMetrics = uriToLocationLevelFailureMetadata.getValue();
+            for (Map.Entry<URI, FailureMetricsForPartition> uriToLocationLevelFailureMetadata : this.locationEndpointToFailureMetricsForPartition.entrySet()) {
+                FailureMetricsForPartition failureMetricsForPartition = uriToLocationLevelFailureMetadata.getValue();
 
-                if (locationLevelMetrics.isRegionAvailableToProcessRequests()) {
+                if (failureMetricsForPartition.isRegionAvailableToProcessRequests()) {
                     return true;
                 }
 
-                Instant unavailableSinceSnapshot = locationLevelMetrics.unavailableSince.get();
+                Instant unavailableSinceSnapshot = failureMetricsForPartition.unavailableSince.get();
 
                 if (mostStaleUnavailableTimeAcrossRegions.isAfter(unavailableSinceSnapshot)) {
                     mostStaleUnavailableTimeAcrossRegions = unavailableSinceSnapshot;
-                    locationLevelFailureMetadataForMostStaleLocation = locationLevelMetrics;
+                    locationLevelFailureMetadataForMostStaleLocation = failureMetricsForPartition;
                 }
             }
 
@@ -311,7 +284,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
         }
     }
 
-    private static class LocationLevelMetrics {
+    private static class FailureMetricsForPartition {
         private final AtomicInteger failureCount = new AtomicInteger(0);
         private final AtomicInteger successCount = new AtomicInteger(0);
         private final AtomicReference<Instant> unavailableSince = new AtomicReference<>(Instant.MAX);
@@ -334,14 +307,10 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
                     break;
                 case StaleUnavailable:
                     if (!forceStateChange) {
-                        if (successCount.get() < 10) {
-                            successCount.incrementAndGet();
-                        } else {
-                            if ((double) failureCount.get() / (double) successCount.get() < allowedFailureRatio) {
-
-                                this.setHealthStatus(PartitionScopedRegionUnavailabilityStatus.Available);
-                                logger.info("Partition marked as Available");
-                            }
+                        successCount.incrementAndGet();
+                        if (successCount.get() > 10 && (double) failureCount.get() / (double) successCount.get() < allowedFailureRatio) {
+                            this.setHealthStatus(PartitionScopedRegionUnavailabilityStatus.Available);
+                            logger.info("Partition marked as Available");
                         }
                     }
                     break;
@@ -465,7 +434,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
         }
     }
 
-    enum PartitionScopedRegionUnavailabilityStatus {
+    private enum PartitionScopedRegionUnavailabilityStatus {
         Available(100),
         FreshUnavailable(200),
         StaleUnavailable(300);

@@ -57,6 +57,8 @@ public class RequestOptions {
 
     private final AtomicReference<Runnable> markE2ETimeoutInRequestContextCallbackHook;
 
+    private PartitionKeyRange resolvedPartitionKeyRange;
+
     public RequestOptions() {
         this.markE2ETimeoutInRequestContextCallbackHook = new AtomicReference<>(null);
     }
@@ -85,6 +87,7 @@ public class RequestOptions {
         this.endToEndOperationLatencyConfig = toBeCloned.endToEndOperationLatencyConfig;
         this.diagnosticsCtxSupplier = toBeCloned.diagnosticsCtxSupplier;
         this.markE2ETimeoutInRequestContextCallbackHook = new AtomicReference<>(null);
+        this.resolvedPartitionKeyRange = toBeCloned.resolvedPartitionKeyRange;
 
         if (toBeCloned.customOptions != null) {
             this.customOptions = new HashMap<>(toBeCloned.customOptions);
@@ -535,5 +538,13 @@ public class RequestOptions {
 
     public AtomicReference<Runnable> getMarkE2ETimeoutInRequestContextCallbackHook() {
         return this.markE2ETimeoutInRequestContextCallbackHook;
+    }
+
+    public void setResolvedPartitionKeyRange(PartitionKeyRange resolvedPartitionKeyRange) {
+        this.resolvedPartitionKeyRange = resolvedPartitionKeyRange;
+    }
+
+    public PartitionKeyRange getResolvedPartitionKeyRange() {
+        return resolvedPartitionKeyRange;
     }
 }

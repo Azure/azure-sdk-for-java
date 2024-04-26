@@ -47,6 +47,8 @@ public class GlobalEndpointManager implements AutoCloseable {
 
     private volatile Throwable latestDatabaseRefreshError;
 
+    private GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker;
+
     public void setLatestDatabaseRefreshError(Throwable latestDatabaseRefreshError) {
         this.latestDatabaseRefreshError = latestDatabaseRefreshError;
     }
@@ -104,12 +106,12 @@ public class GlobalEndpointManager implements AutoCloseable {
 
     public UnmodifiableList<URI> getApplicableReadEndpoints(List<String> excludedRegions) {
         // readonly
-        return this.locationCache.getApplicableReadEndpoints(excludedRegions);
+        return this.locationCache.getApplicableReadEndpoints(excludedRegions, new ArrayList<>());
     }
 
     public UnmodifiableList<URI> getApplicableWriteEndpoints(List<String> excludedRegions) {
         //readonly
-        return this.locationCache.getApplicableWriteEndpoints(excludedRegions);
+        return this.locationCache.getApplicableWriteEndpoints(excludedRegions, new ArrayList<>());
     }
 
     public List<URI> getAvailableReadEndpoints() {
@@ -335,5 +337,13 @@ public class GlobalEndpointManager implements AutoCloseable {
 
     public String getRegionName(URI locationEndpoint, OperationType operationType) {
         return this.locationCache.getRegionName(locationEndpoint, operationType);
+    }
+
+    public GlobalPartitionEndpointManagerForCircuitBreaker getGlobalPartitionEndpointManagerForCircuitBreaker() {
+        return globalPartitionEndpointManagerForCircuitBreaker;
+    }
+
+    public void setGlobalPartitionEndpointManagerForCircuitBreaker(GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker) {
+        this.globalPartitionEndpointManagerForCircuitBreaker = globalPartitionEndpointManagerForCircuitBreaker;
     }
 }

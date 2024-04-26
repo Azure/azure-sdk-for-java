@@ -49,6 +49,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
     private AtomicBoolean isRequestCancelledOnTimeout = null;
     private volatile List<String> excludeRegions;
+    private volatile List<String> unavailableRegionsForPartition;
     private volatile boolean isRequestHedged = false;
 
     // For cancelled rntbd requests, track the response as OperationCancelledException which later will be used to populate the cosmosDiagnostics
@@ -135,6 +136,7 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.throughputControlCycleId = this.throughputControlCycleId;
         context.replicaAddressValidationEnabled = this.replicaAddressValidationEnabled;
         context.endToEndOperationLatencyPolicyConfig = this.endToEndOperationLatencyPolicyConfig;
+        context.unavailableRegionsForPartition = this.unavailableRegionsForPartition;
         return context;
     }
 
@@ -168,6 +170,14 @@ public class DocumentServiceRequestContext implements Cloneable {
 
     public boolean isRequestHedged() {
         return this.isRequestHedged;
+    }
+
+    public List<String> getUnavailableRegionsForPartition() {
+        return unavailableRegionsForPartition;
+    }
+
+    public void setUnavailableRegionsForPartition(List<String> unavailableRegionsForPartition) {
+        this.unavailableRegionsForPartition = unavailableRegionsForPartition;
     }
 }
 

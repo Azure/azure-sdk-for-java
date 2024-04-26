@@ -2170,6 +2170,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             return requestObs
                     .flatMap(request -> {
+
+                        if (Configs.isPartitionLevelCircuitBreakerEnabled()) {
+                            List<URI> unavailableLocationsForPartition =
+                                ((GlobalPartitionEndpointManagerForCircuitBreaker) this.globalPartitionEndpointManager).getUnavailableLocationsForPartition(options.getResolvedPartitionKeyRange());
+
+                            List<String> unavailableRegionsForPartition = unavailableLocationsForPartition.stream().map(uri -> this.globalEndpointManager.getRegionName(uri, request.getOperationType())).collect(Collectors.toList());
+                            request.requestContext.setUnavailableRegionsForPartition(unavailableRegionsForPartition);
+                        }
+
                         documentServiceRequestReference.set(request);
                         return create(request, requestRetryPolicy, getOperationContextAndListenerTuple(options));
                     })
@@ -2349,6 +2358,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return reqObs
                 .flatMap(request -> {
                     requestReference.set(request);
+
+                    if (Configs.isPartitionLevelCircuitBreakerEnabled()) {
+                        List<URI> unavailableLocationsForPartition =
+                            ((GlobalPartitionEndpointManagerForCircuitBreaker) this.globalPartitionEndpointManager).getUnavailableLocationsForPartition(options.getResolvedPartitionKeyRange());
+
+                        List<String> unavailableRegionsForPartition = unavailableLocationsForPartition.stream().map(uri -> this.globalEndpointManager.getRegionName(uri, request.getOperationType())).collect(Collectors.toList());
+                        request.requestContext.setUnavailableRegionsForPartition(unavailableRegionsForPartition);
+                    }
+
                     return upsert(request, retryPolicyInstance, getOperationContextAndListenerTuple(options));
                 })
                 .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
@@ -2584,8 +2602,20 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             addPartitionKeyInformation(request, content, document, options, collectionObs);
 
         return requestObs
-            .flatMap(req -> replace(request, retryPolicyInstance)
-                .map(resp -> toResourceResponse(resp, Document.class)));
+            .flatMap(req -> {
+                requestReference.set(req);
+
+                if (Configs.isPartitionLevelCircuitBreakerEnabled()) {
+                    List<URI> unavailableLocationsForPartition =
+                        ((GlobalPartitionEndpointManagerForCircuitBreaker) this.globalPartitionEndpointManager).getUnavailableLocationsForPartition(options.getResolvedPartitionKeyRange());
+
+                    List<String> unavailableRegionsForPartition = unavailableLocationsForPartition.stream().map(uri -> this.globalEndpointManager.getRegionName(uri, request.getOperationType())).collect(Collectors.toList());
+                    request.requestContext.setUnavailableRegionsForPartition(unavailableRegionsForPartition);
+                }
+
+                return replace(request, retryPolicyInstance);
+            })
+            .map(resp -> toResourceResponse(resp, Document.class));
     }
 
     private CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(
@@ -2738,6 +2768,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return requestObs
             .flatMap(req -> {
                 requestReference.set(req);
+
+                if (Configs.isPartitionLevelCircuitBreakerEnabled()) {
+                    List<URI> unavailableLocationsForPartition =
+                        ((GlobalPartitionEndpointManagerForCircuitBreaker) this.globalPartitionEndpointManager).getUnavailableLocationsForPartition(options.getResolvedPartitionKeyRange());
+
+                    List<String> unavailableRegionsForPartition = unavailableLocationsForPartition.stream().map(uri -> this.globalEndpointManager.getRegionName(uri, request.getOperationType())).collect(Collectors.toList());
+                    request.requestContext.setUnavailableRegionsForPartition(unavailableRegionsForPartition);
+                }
+
                 return patch(request, retryPolicyInstance);
             })
             .map(resp -> toResourceResponse(resp, Document.class));
@@ -2852,6 +2891,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return requestObs
                     .flatMap(req -> {
                         requestReference.set(req);
+
+                        if (Configs.isPartitionLevelCircuitBreakerEnabled()) {
+                            List<URI> unavailableLocationsForPartition =
+                                ((GlobalPartitionEndpointManagerForCircuitBreaker) this.globalPartitionEndpointManager).getUnavailableLocationsForPartition(options.getResolvedPartitionKeyRange());
+
+                            List<String> unavailableRegionsForPartition = unavailableLocationsForPartition.stream().map(uri -> this.globalEndpointManager.getRegionName(uri, request.getOperationType())).collect(Collectors.toList());
+                            request.requestContext.setUnavailableRegionsForPartition(unavailableRegionsForPartition);
+                        }
+
                         return this.delete(req, retryPolicyInstance, getOperationContextAndListenerTuple(options));
                     })
                     .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
@@ -2971,6 +3019,24 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
             request.requestContext.setExcludeRegions(options.getExcludeRegions());
 
+            if (Configs.isPartitionLevelCircuitBreakerEnabled()) {
+                List<URI> unavailableLocationsForPartition =
+                    ((GlobalPartitionEndpointManagerForCircuitBreaker) this.globalPartitionEndpointManager).getUnavailableLocationsForPartition(options.getResolvedPartitionKeyRange());
+
+                List<String> unavailableRegionsForPartition = unavailableLocationsForPartition.stream().map(uri -> this.globalEndpointManager.getRegionName(uri, request.getOperationType())).collect(Collectors.toList());
+
+                logger.info("Printing unavailable region for partition");
+
+                for (String unavailableRegionForPartition : unavailableRegionsForPartition) {
+                    logger.info("Unavailable region : {}", unavailableRegionForPartition);
+                }
+
+                if (!unavailableRegionsForPartition.isEmpty()) {
+                    request.requestContext.setUnavailableRegionsForPartition(unavailableRegionsForPartition);
+                }
+                request.requestContext.setUnavailableRegionsForPartition(unavailableRegionsForPartition);
+            }
+
             if (retryPolicyInstance != null) {
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
@@ -2981,6 +3047,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             return requestObs.flatMap(req -> {
                 requestReference.set(req);
+
+
                 return this.read(request, retryPolicyInstance)
                         .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
             });
@@ -5442,41 +5510,55 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DiagnosticsClientContext innerDiagnosticsFactory,
         String collectionLink) {
 
-        checkNotNull(resourceType, "Argument 'resourceType' must not be null.");
-        checkNotNull(operationType, "Argument 'operationType' must not be null.");
-        checkNotNull(callback, "Argument 'callback' must not be null.");
-
-        final RequestOptions nonNullRequestOptions =
-            initialRequestOptions != null ? initialRequestOptions : new RequestOptions();
-
-        checkArgument(
-            resourceType == ResourceType.Document,
-            "This method can only be used for document point operations.");
-
-        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
-            getEndToEndOperationLatencyPolicyConfig(nonNullRequestOptions, resourceType, operationType);
-
-        List<String> orderedApplicableRegionsForSpeculation = getApplicableRegionsForSpeculation(
-            endToEndPolicyConfig,
-            resourceType,
-            operationType,
-            idempotentWriteRetriesEnabled,
-            nonNullRequestOptions);
-
-        if (orderedApplicableRegionsForSpeculation.size() < 2) {
-            // There is at most one applicable region - no hedging possible
-            return callback.apply(nonNullRequestOptions, endToEndPolicyConfig, innerDiagnosticsFactory, false);
-        }
-
-        ThresholdBasedAvailabilityStrategy availabilityStrategy =
-            (ThresholdBasedAvailabilityStrategy) endToEndPolicyConfig.getAvailabilityStrategy();
-        List<Mono<NonTransientPointOperationResult>> monoList = new ArrayList<>();
-
-        final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(innerDiagnosticsFactory, false);
+//        checkNotNull(resourceType, "Argument 'resourceType' must not be null.");
+//        checkNotNull(operationType, "Argument 'operationType' must not be null.");
+//        checkNotNull(callback, "Argument 'callback' must not be null.");
+//
+//        final RequestOptions nonNullRequestOptions =
+//            initialRequestOptions != null ? initialRequestOptions : new RequestOptions();
+//
+//        checkArgument(
+//            resourceType == ResourceType.Document,
+//            "This method can only be used for document point operations.");
+//
+//        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
+//            getEndToEndOperationLatencyPolicyConfig(nonNullRequestOptions, resourceType, operationType);
+//
+//        List<String> orderedApplicableRegionsForSpeculation = getApplicableRegionsForSpeculation(
+//            endToEndPolicyConfig,
+//            resourceType,
+//            operationType,
+//            idempotentWriteRetriesEnabled,
+//            nonNullRequestOptions);
+//
+//        if (orderedApplicableRegionsForSpeculation.size() < 2) {
+//            // There is at most one applicable region - no hedging possible
+//            return callback.apply(nonNullRequestOptions, endToEndPolicyConfig, innerDiagnosticsFactory, false);
+//        }
+//
+//        ThresholdBasedAvailabilityStrategy availabilityStrategy =
+//            (ThresholdBasedAvailabilityStrategy) endToEndPolicyConfig.getAvailabilityStrategy();
+//        List<Mono<NonTransientPointOperationResult>> monoList = new ArrayList<>();
+//
+//        final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(innerDiagnosticsFactory, false);
 
         return this.collectionCache.resolveByNameAsync(null, collectionLink, null)
             .flatMap(collection -> this.partitionKeyRangeCache.tryLookupAsync(null, collection.getResourceId(), null, null)
                 .flatMap(collectionRoutingMapValueHolder -> {
+
+                    checkNotNull(resourceType, "Argument 'resourceType' must not be null.");
+                    checkNotNull(operationType, "Argument 'operationType' must not be null.");
+                    checkNotNull(callback, "Argument 'callback' must not be null.");
+
+                    final RequestOptions nonNullRequestOptions =
+                        initialRequestOptions != null ? initialRequestOptions : new RequestOptions();
+
+                    checkArgument(
+                        resourceType == ResourceType.Document,
+                        "This method can only be used for document point operations.");
+
+                    CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
+                        getEndToEndOperationLatencyPolicyConfig(nonNullRequestOptions, resourceType, operationType);
 
                     PartitionKeyDefinition partitionKeyDefinition = collection.getPartitionKey();
                     PartitionKey partitionKey = nonNullRequestOptions.getPartitionKey();
@@ -5491,6 +5573,26 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         PartitionKeyInternalHelper.getEffectivePartitionKeyString(
                             ModelBridgeInternal.getPartitionKeyInternal(partitionKey),
                             partitionKeyDefinition));
+
+                    nonNullRequestOptions.setResolvedPartitionKeyRange(partitionKeyRange);
+
+                    List<String> orderedApplicableRegionsForSpeculation = getApplicableRegionsForSpeculation(
+                        endToEndPolicyConfig,
+                        resourceType,
+                        operationType,
+                        idempotentWriteRetriesEnabled,
+                        nonNullRequestOptions);
+
+                    if (orderedApplicableRegionsForSpeculation.size() < 2) {
+                        // There is at most one applicable region - no hedging possible
+                        return callback.apply(nonNullRequestOptions, endToEndPolicyConfig, innerDiagnosticsFactory, false);
+                    }
+
+                    ThresholdBasedAvailabilityStrategy availabilityStrategy =
+                        (ThresholdBasedAvailabilityStrategy) endToEndPolicyConfig.getAvailabilityStrategy();
+                    List<Mono<NonTransientPointOperationResult>> monoList = new ArrayList<>();
+
+                    final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(innerDiagnosticsFactory, false);
 
                     orderedApplicableRegionsForSpeculation
                         .forEach(region -> {
@@ -5813,8 +5915,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             resourceType,
             operationType,
             false,
-            initialExcludedRegions
-        );
+            initialExcludedRegions);
 
         if (orderedApplicableRegionsForSpeculation.size() < 2) {
             // There is at most one applicable region - no hedging possible

@@ -544,10 +544,6 @@ public class RxGatewayStoreModel implements RxStoreModel {
 
     private Mono<RxDocumentServiceResponse> invokeAsync(RxDocumentServiceRequest request) {
 
-        if (!this.globalPartitionEndpointManager.isRegionAvailableForPartitionKeyRange(request)) {
-            return Mono.error(new ServiceUnavailableException("PkRange is unavailable at region", null, request.requestContext.locationEndpointToRoute, HttpConstants.SubStatusCodes.UNKNOWN));
-        }
-
         Callable<Mono<RxDocumentServiceResponse>> funcDelegate = () -> invokeAsyncInternal(request).single().doOnSuccess(ignore -> this.globalPartitionEndpointManager.tryBookmarkRegionSuccessForPartitionKeyRange(request));
 
         MetadataRequestRetryPolicy metadataRequestRetryPolicy = new MetadataRequestRetryPolicy(this.globalEndpointManager);

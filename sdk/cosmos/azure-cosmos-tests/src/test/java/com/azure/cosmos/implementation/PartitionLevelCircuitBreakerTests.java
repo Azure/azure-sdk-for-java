@@ -13,6 +13,7 @@ import com.azure.cosmos.TestObject;
 import com.azure.cosmos.faultinjection.FaultInjectionTestBase;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKey;
@@ -41,6 +42,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.fail;
 
 
@@ -121,11 +123,18 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 .configureFaultInjectionRules(container, Arrays.asList(serviceUnavailableRule))
                 .block();
 
-            container.createItem(testObject).block();
+            container.createItem(testObject, new PartitionKey(itemIdMappingToUnhealthyPartition), new CosmosItemRequestOptions()).block();
 
             for (int i = 1; i <= 15; i++) {
                 CosmosItemResponse<TestObject> response = container.readItem(itemIdMappingToUnhealthyPartition, new PartitionKey(itemIdMappingToUnhealthyPartition), TestObject.class).block();
                 logger.info("Hit count : {}", serviceUnavailableRule.getHitCount());
+
+                assertThat(response).isNotNull();
+                assertThat(response.getDiagnostics()).isNotNull();
+
+                response.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
+                    regionContacted -> logger.info("Region contacted : {}", regionContacted)
+                );
             }
 
             CosmosItemResponse<TestObject> response = container.readItem(itemIdMappingToUnhealthyPartition, new PartitionKey(itemIdMappingToUnhealthyPartition), TestObject.class).block();
@@ -136,6 +145,13 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             for (int i = 1; i <= 30; i++) {
                 response = container.readItem(itemIdMappingToUnhealthyPartition, new PartitionKey(itemIdMappingToUnhealthyPartition), TestObject.class).block();
                 logger.info("Hit count : {}", serviceUnavailableRule.getHitCount());
+
+                assertThat(response).isNotNull();
+                assertThat(response.getDiagnostics()).isNotNull();
+
+                response.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
+                    regionContacted -> logger.info("Region contacted : {}", regionContacted)
+                );
             }
 
 
@@ -152,7 +168,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         }
     }
 
-    private Map<String, String> getRegionMap(DatabaseAccount databaseAccount, boolean writeOnly) {
+    private static Map<String, String> getRegionMap(DatabaseAccount databaseAccount, boolean writeOnly) {
         Iterator<DatabaseAccountLocation> locationIterator =
             writeOnly ? databaseAccount.getWritableLocations().iterator() : databaseAccount.getReadableLocations().iterator();
         Map<String, String> regionMap = new ConcurrentHashMap<>();
