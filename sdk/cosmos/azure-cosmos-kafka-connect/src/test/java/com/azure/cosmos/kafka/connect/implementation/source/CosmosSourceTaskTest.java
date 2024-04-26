@@ -43,6 +43,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
         sourceConfigMap.put("azure.cosmos.source.database.name", databaseName);
         List<String> containersIncludedList = Arrays.asList(testContainerName);
         sourceConfigMap.put("azure.cosmos.source.containers.includedList", containersIncludedList.toString());
+        sourceConfigMap.put("azure.cosmos.source.task.id", UUID.randomUUID().toString());
 
         CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConfigMap);
         CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sourceConfig.getAccountConfig(), "testKafkaConnector");
@@ -143,6 +144,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
         sourceConfigMap.put("azure.cosmos.source.database.name", databaseName);
         List<String> containersIncludedList = Arrays.asList(multiPartitionContainerName);
         sourceConfigMap.put("azure.cosmos.source.containers.includedList", containersIncludedList.toString());
+        sourceConfigMap.put("azure.cosmos.source.task.id", UUID.randomUUID().toString());
 
         CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConfigMap);
         CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sourceConfig.getAccountConfig(), "testKafkaConnector");
@@ -215,6 +217,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
         sourceConfigMap.put("azure.cosmos.throughputControl.targetThroughput", "100");
         sourceConfigMap.put("azure.cosmos.throughputControl.globalControl.database.name", databaseName);
         sourceConfigMap.put("azure.cosmos.throughputControl.globalControl.container.name", throughputControlContainerName);
+        sourceConfigMap.put("azure.cosmos.source.task.id", UUID.randomUUID().toString());
 
         CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConfigMap);
         CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sourceConfig.getAccountConfig(), "testKafkaConnector");
