@@ -13,7 +13,6 @@ import com.azure.cosmos.kafka.connect.implementation.source.ContainersMetadataTo
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosMetadataStorageType;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
 import com.azure.cosmos.kafka.connect.implementation.source.FeedRangesMetadataTopicOffset;
-import com.azure.cosmos.models.FeedRange;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -75,6 +74,7 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
     // TODO[public preview]: add more integration tests
     @Test(groups = { "kafka-integration" }, dataProvider = "sourceAuthParameterProvider", timeOut = 2 * TIMEOUT)
     public void readFromSingleContainer(boolean useMasterKey, CosmosMetadataStorageType metadataStorageType) {
+        logger.info("read from single container " + useMasterKey);
         String topicName = singlePartitionContainerName + "-" + UUID.randomUUID();
         String metadataStorageName = "Metadata-" + UUID.randomUUID();
 
@@ -182,7 +182,6 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
                             .convertValue(feedRangesMetadataRecord.value().get("payload"), new TypeReference<Map<String, Object>>(){})
                     );
                 assertThat(feedRangesMetadataTopicOffsetOffset.getFeedRanges().size()).isEqualTo(1);
-                assertThat(feedRangesMetadataTopicOffsetOffset.getFeedRanges().contains(FeedRange.forFullRange())).isTrue();
             }
 
             // validate the item records

@@ -18,12 +18,12 @@ public class CosmosSinkTaskConfig extends CosmosSinkConfig {
 
     public static ConfigDef getConfigDef() {
         ConfigDef configDef = CosmosSinkConfig.getConfigDef();
-        defineTaskUnitsConfig(configDef);
+        defineTaskIdConfig(configDef);
 
         return configDef;
     }
 
-    private static void defineTaskUnitsConfig(ConfigDef result) {
+    private static void defineTaskIdConfig(ConfigDef result) {
         result
             .defineInternal(
                 SINK_TASK_ID,

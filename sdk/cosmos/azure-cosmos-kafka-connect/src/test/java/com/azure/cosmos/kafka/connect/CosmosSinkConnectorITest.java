@@ -70,6 +70,7 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
 
     @Test(groups = { "kafka-integration" }, dataProvider = "sinkAuthParameterProvider", timeOut = TIMEOUT)
     public void sinkToSingleContainer(boolean useMasterKey) throws InterruptedException {
+        logger.info("sinkToSingleContainer " + useMasterKey);
         Map<String, String> sinkConnectorConfig = new HashMap<>();
         String topicName = singlePartitionContainerName + "-" + UUID.randomUUID();
 
@@ -99,6 +100,8 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
         String connectorName = "simpleTest-" + UUID.randomUUID();
         try {
             // register the sink connector
+            logger.info("Registering connector " + connectorName);
+            Thread.sleep(5000); // before registering the connector give it some time
             kafkaCosmosConnectContainer.registerConnector(connectorName, sinkConnectorConfig);
 
             Properties producerProperties = kafkaCosmosConnectContainer.getProducerProperties();

@@ -113,6 +113,7 @@ public class MetadataTaskUnit implements ITaskUnit {
     @Override
     public String toString() {
         return "MetadataTaskUnit{"
+            + "connectorName='" + connectorName + '\''
             + "databaseName='" + databaseName + '\''
             + ", containerRids=" + containerRids
             + ", containersEffectiveRangesMap=" + containersEffectiveRangesMap
@@ -130,7 +131,8 @@ public class MetadataTaskUnit implements ITaskUnit {
             return false;
         }
         MetadataTaskUnit that = (MetadataTaskUnit) o;
-        return Objects.equals(databaseName, that.databaseName)
+        return Objects.equals(connectorName, that.connectorName)
+            && Objects.equals(databaseName, that.databaseName)
             && Objects.equals(containerRids, that.containerRids)
             && Objects.equals(containersEffectiveRangesMap, that.containersEffectiveRangesMap)
             && Objects.equals(storageName, that.storageName)
@@ -139,7 +141,7 @@ public class MetadataTaskUnit implements ITaskUnit {
 
     @Override
     public int hashCode() {
-        return Objects.hash(databaseName, containerRids, containersEffectiveRangesMap, storageName, storageType);
+        return Objects.hash(connectorName, databaseName, containerRids, containersEffectiveRangesMap, storageName, storageType);
     }
 
     public static class MetadataTaskUnitSerializer extends com.fasterxml.jackson.databind.JsonSerializer<MetadataTaskUnit> {

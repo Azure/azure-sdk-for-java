@@ -5,11 +5,10 @@ package com.azure.cosmos.kafka.connect.implementation.sink;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
-import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
 import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlHelper;
+import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
 import org.apache.kafka.connect.sink.SinkRecord;
 import org.apache.kafka.connect.sink.SinkTask;
 import org.slf4j.Logger;
@@ -38,6 +37,7 @@ public class CosmosSinkTask extends SinkTask {
         LOGGER.info("Starting the kafka cosmos sink task");
         this.sinkTaskConfig = new CosmosSinkTaskConfig(props);
         this.cosmosClient = CosmosClientStore.getCosmosClient(this.sinkTaskConfig.getAccountConfig(), this.sinkTaskConfig.getTaskId());
+        LOGGER.info("The taskId is " + this.sinkTaskConfig.getTaskId());
         this.throughputControlClient = this.getThroughputControlCosmosClient();
         this.sinkRecordTransformer = new SinkRecordTransformer(this.sinkTaskConfig);
 
