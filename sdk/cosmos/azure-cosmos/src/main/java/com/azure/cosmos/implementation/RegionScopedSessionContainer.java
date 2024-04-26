@@ -21,6 +21,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 public class RegionScopedSessionContainer implements ISessionContainer {
 
     private final Logger logger = LoggerFactory.getLogger(RegionScopedSessionContainer.class);
@@ -592,7 +594,10 @@ public class RegionScopedSessionContainer implements ISessionContainer {
         String normalizedRegion) {
 
         String effectivePartitionKeyString = PartitionKeyInternalHelper.getEffectivePartitionKeyString(internalPartitionKey, partitionKeyDefinition);
-        Long collectionRid = this.collectionNameToCollectionResourceId.getOrDefault(collectionId, -1L);
+        Long collectionRid = this.collectionNameToCollectionResourceId.get(collectionId);
+
+        checkNotNull(collectionRid, "collectionRid cannot be null!");
+
         return this.partitionKeyBasedBloomFilter.isPartitionKeyResolvedToARegion(
             effectivePartitionKeyString, normalizedRegion, collectionRid);
     }

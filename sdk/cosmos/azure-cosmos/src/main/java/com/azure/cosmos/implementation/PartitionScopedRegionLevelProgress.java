@@ -16,6 +16,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 public class PartitionScopedRegionLevelProgress {
 
     private static final Logger logger = LoggerFactory.getLogger(PartitionScopedRegionLevelProgress.class);
@@ -143,7 +145,12 @@ public class PartitionScopedRegionLevelProgress {
 
         try {
             RegionLevelProgress globalLevelProgress = resolvePartitionKeyRangeIdBasedProgress(partitionKeyRangeId, GLOBAL_PROGRESS_KEY);
+
+            checkNotNull(globalLevelProgress, "globalLevelProgress cannot be null!");
+
             VectorSessionToken globalSessionToken = globalLevelProgress.vectorSessionToken;
+
+            checkNotNull(globalLevelProgress.vectorSessionToken, "The session token corresponding to global progress cannot be null!");
 
             // if region level scoping is not allowed, then resolve to the global session token
             // region level scoping is allowed in the following cases:
@@ -224,7 +231,15 @@ public class PartitionScopedRegionLevelProgress {
     }
 
     private RegionLevelProgress resolvePartitionKeyRangeIdBasedProgress(String partitionKeyRangeId, String progressScope) {
-        return this.partitionKeyRangeIdToRegionLevelProgress.get(partitionKeyRangeId).get(progressScope);
+
+        ConcurrentHashMap<String, RegionLevelProgress> regionToRegionLevelProgress
+            = this.partitionKeyRangeIdToRegionLevelProgress.get(partitionKeyRangeId);
+
+        if (regionToRegionLevelProgress != null) {
+            return regionToRegionLevelProgress.get(progressScope);
+        }
+
+        return null;
     }
 
     static class RegionLevelProgress {
