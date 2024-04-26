@@ -30,15 +30,16 @@ extends:
             - name: azure-cosmos
               groupId: com.azure
               safeName: azurecosmos
-            - name: azure-cosmos-tests
+            - name: azure-cosmos-test
               groupId: com.azure
+              safeName: azurecosmostest
             - name: azure-cosmos-kafka-connect
               groupId: com.azure.cosmos.kafka
               safeName: azurecosmoskafkaconnect
           TimeoutInMinutes: 120
           PreSteps:
             - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-          TestGoals: 'clean verify'
+          TestGoals: 'clean install'
           TestOptions: '$(ProfileFlag) $(AdditionalArgs)'
           AdditionalVariables:
             - name: AdditionalArgs
