@@ -1,5 +1,6 @@
 package com.azure.cosmos.cris.querystuckrepro;
 
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -15,9 +16,6 @@ public class DataSession {
 
     private AtomicLong numberOfRecordsRead = new AtomicLong(0);
 
-    private AtomicLong numberOfRecordsRetrievedFromDatabase = new AtomicLong(0);
-
-    private AtomicLong numberOfPagesRetrievedFromDatabase = new AtomicLong(0);
     private boolean isNoMoreRecords = false;
 
     private CosmosPagedFlux<Document> pagedResponse = null;
@@ -60,30 +58,5 @@ public class DataSession {
 
     public void setCosmosPagedResponse(CosmosPagedFlux<Document> value) {
         this.pagedResponse= value;
-    }
-
-    public void registerPageRetrievedFromDatabase(FeedResponse<Document> responsePage) {
-        if (responsePage == null) {
-            return;
-        }
-
-        this.numberOfPagesRetrievedFromDatabase.incrementAndGet();
-        this.numberOfRecordsRetrievedFromDatabase.addAndGet(responsePage.getResults().size());
-    }
-
-    public long getNumberOfPagesRetrievedFromDatabase() {
-        return this.numberOfPagesRetrievedFromDatabase.get();
-    }
-
-    public long getNumberOfRecordsRetrievedFromDatabase() {
-        return this.numberOfRecordsRetrievedFromDatabase.get();
-    }
-
-
-    public String getRetrievedFromDatabaseStatus() {
-        return String.format(
-            ", retrieved from database: pages [%d], records [%d]",
-            this.numberOfPagesRetrievedFromDatabase.get(),
-            this.numberOfRecordsRetrievedFromDatabase.get());
     }
 }

@@ -1,8 +1,13 @@
 package com.azure.cosmos.cris.querystuckrepro;
 
+import com.azure.core.util.Context;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosDiagnosticsContext;
+import com.azure.cosmos.CosmosDiagnosticsHandler;
+import com.azure.cosmos.CosmosDiagnosticsThresholds;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
@@ -14,7 +19,9 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
+import java.time.Duration;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,6 +29,11 @@ public class ReproTest extends TestSuiteBase {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private CosmosAsyncClient client;
     private CosmosAsyncContainer container;
+
+    private AtomicLong numberOfRecordsRetrievedFromDatabase = new AtomicLong(0);
+
+    private AtomicLong numberOfPagesRetrievedFromDatabase = new AtomicLong(0);
+
 
     @Factory(dataProvider = "simpleGatewayClient")
     public ReproTest(CosmosClientBuilder clientBuilder) {
@@ -31,7 +43,27 @@ public class ReproTest extends TestSuiteBase {
     @BeforeClass(groups = {"fast"}, timeOut = SETUP_TIMEOUT)
     public void before_ReproTest() {
         assertThat(this.client).isNull();
-        this.client = getClientBuilder().buildAsyncClient();
+        CosmosDiagnosticsHandler diagnosticsHandler = new CosmosDiagnosticsHandler() {
+            @Override
+            public void handleDiagnostics(CosmosDiagnosticsContext ctx, Context traceContext) {
+                if (ctx == null || ctx.getResourceType() != "Document" || ctx.getOperationType() != "Query") {
+                    return;
+                }
+
+                numberOfPagesRetrievedFromDatabase.incrementAndGet();
+                if (ctx.getActualItemCount() != null) {
+                    numberOfRecordsRetrievedFromDatabase.addAndGet(ctx.getActualItemCount());
+                }
+            }
+        };
+
+        this.client = getClientBuilder()
+            .clientTelemetryConfig(
+                new CosmosClientTelemetryConfig()
+                    .diagnosticsHandler(diagnosticsHandler)
+                    .diagnosticsThresholds(new CosmosDiagnosticsThresholds().setNonPointOperationLatencyThreshold(Duration.ZERO))
+            )
+            .buildAsyncClient();
         this.container = getSharedSinglePartitionCosmosContainer(this.client);
         logger.info("Using Container - {}:{} ({})",
             this.container.getDatabase().getId(),
@@ -47,6 +79,9 @@ public class ReproTest extends TestSuiteBase {
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT * 1_000_000)
     public void runICM497415681OriginalReproTest() throws Exception {
+        numberOfRecordsRetrievedFromDatabase.set(0);
+        numberOfPagesRetrievedFromDatabase.set(0);
+
         logger.info("Creating test docs");
         for (int i = 0; i < 1000; i++) {
             String id = UUID.randomUUID().toString();
@@ -69,6 +104,8 @@ public class ReproTest extends TestSuiteBase {
             "/mypk"
         );
 
+        numberOfRecordsRetrievedFromDatabase.set(0);
+        numberOfPagesRetrievedFromDatabase.set(0);
         DataSession session = new DataSession();
         CosmosDBSqlApiRowByRowReader reader = new CosmosDBSqlApiRowByRowReader(dto);
         while (true) {
@@ -78,8 +115,8 @@ public class ReproTest extends TestSuiteBase {
             }
         };
 
-        assertThat(session.getNumberOfRecordsRetrievedFromDatabase()).isEqualTo(2000);
-        assertThat(session.getNumberOfPagesRetrievedFromDatabase()).isEqualTo(2000);
+        assertThat(numberOfRecordsRetrievedFromDatabase.get()).isEqualTo(2000);
+        assertThat(numberOfPagesRetrievedFromDatabase.get()).isEqualTo(2000);
     }
 
     private ObjectNode getDocumentDefinition(String documentId, String pkId) throws JsonProcessingException {

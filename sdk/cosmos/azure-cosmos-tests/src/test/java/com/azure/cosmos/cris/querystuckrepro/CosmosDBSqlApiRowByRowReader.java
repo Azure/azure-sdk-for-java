@@ -56,12 +56,7 @@ public class CosmosDBSqlApiRowByRowReader extends AbstractCosmosDBSqlApiReader {
             //until the while condition satisfies
             List<Object> dataRows = new ArrayList<>();
             rowsReadFromSource = rowsReadFromSource
-                + readDatafromSource(
-                    pageSize,
-                    aduc,
-                    isPartitionedColl,
-                    dataRows,
-                    this.query, r -> dataSession.registerPageRetrievedFromDatabase(r));
+                + readDatafromSource(pageSize, aduc, isPartitionedColl, dataRows, this.query);
 
             int rowsToProcess = remainingRowsToRead < dataRows.size() ? remainingRowsToRead : dataRows.size();
             List<Object> dataRowsToProcess = dataRows.subList(0, rowsToProcess);
@@ -72,14 +67,15 @@ public class CosmosDBSqlApiRowByRowReader extends AbstractCosmosDBSqlApiReader {
 
             dataRowsToPushInQueue.stream().forEach(e -> aduc.getRecordQueue().offer(e.toString()));
         } while (remainingRowsToRead > 0 && !aduc.isNoMoreRecords());
+
         rowsFaildToParse = errors.size();
         rowsRead = rowsToRead - remainingRowsToRead;
         readAttr.setNumRowsRead(rowsRead);
         logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_VERBOSE_DATA, String.format(
             "Record fetch completed with total records read [%d], rows failed to parse [%d], rowsToRead [%d], "
-                + "pageSize [%d], partitionKey [%s] ,throughput [%d] and filter query [%s] %s",
+                + "pageSize [%d], partitionKey [%s] ,throughput [%d] and filter query [%s]",
             rowsRead, rowsFaildToParse, rowsToRead, pageSize, partitionKeyStr, throughput,
-            filterQueryOverride, dataSession.getRetrievedFromDatabaseStatus()));
+            filterQueryOverride));
 
         if (tpUpdated) {
             // revert throughput with the original throughput
@@ -92,14 +88,14 @@ public class CosmosDBSqlApiRowByRowReader extends AbstractCosmosDBSqlApiReader {
         }
 
         if (aduc.isNoMoreRecords() && aduc.getRecordQueue().isEmpty()) {
-            logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NONE, "Read finished" + dataSession.getRetrievedFromDatabaseStatus());
+            logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NONE, "Read finished");
             return EReturnStatus.NO_MORE_DATA;
         }
         return EReturnStatus.SUCCESS;
     }
 
     private int readDatafromSource(int pageSize, AzureDocumentDbUserContext aduc, boolean isPartitionedColl,
-                                   List<Object> dataRows, String query, Consumer<FeedResponse<Document>> responseFromDatabaseHandler) throws SDKException {
+                                   List<Object> dataRows, String query) throws SDKException {
         int rowsRead = 0;
 
         CosmosPagedFlux<Document> pagedFluxResponse = aduc.getCosmosPagedResponse();
@@ -107,8 +103,7 @@ public class CosmosDBSqlApiRowByRowReader extends AbstractCosmosDBSqlApiReader {
         if (pagedFluxResponse == null) {
             try {
                 pagedFluxResponse = readContainer
-                    .queryItems(query, Document.class)
-                    .handle(responseFromDatabaseHandler);
+                    .queryItems(query, Document.class);
             } catch (IllegalStateException e) {
                 String errMsg = String.format("Error occurred while executing query [%s] against collection [%s], %s",
                     query, this.readContainer.getId(), e.getMessage());
