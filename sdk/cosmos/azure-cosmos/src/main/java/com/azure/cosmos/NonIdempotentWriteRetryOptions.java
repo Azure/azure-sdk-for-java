@@ -63,7 +63,8 @@ public final class NonIdempotentWriteRetryOptions {
      * upper limit), the usage of this system property can be disabled by setting this parameter to false. This means
      * there could be a higher level of 409/312 due to retries - and applications would need to handle them gracefully
      * on their own.
-     * @param useTrackingIdForCreateAndReplace
+     * @param useTrackingIdForCreateAndReplace indicates whether a system property '/_trackingId' should be used to
+     * allow identification of conflicts and pre-condition failures due to retries.
      * @return current options
      */
     public NonIdempotentWriteRetryOptions setTrackingIdUsed(boolean useTrackingIdForCreateAndReplace) {
