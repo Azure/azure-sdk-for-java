@@ -9,7 +9,9 @@ import com.azure.resourcemanager.devcenter.fluent.models.DevCenterInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Result of the list devcenters operation. */
+/**
+ * Result of the list devcenters operation.
+ */
 @Immutable
 public final class DevCenterListResult {
     /*
@@ -24,13 +26,15 @@ public final class DevCenterListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of DevCenterListResult class. */
+    /**
+     * Creates an instance of DevCenterListResult class.
+     */
     public DevCenterListResult() {
     }
 
     /**
      * Get the value property: Current page of results.
-     *
+     * 
      * @return the value value.
      */
     public List<DevCenterInner> value() {
@@ -39,7 +43,7 @@ public final class DevCenterListResult {
 
     /**
      * Get the nextLink property: URL to get the next set of results if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class DevCenterListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

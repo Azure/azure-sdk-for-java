@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Describes the license core type (pCore or vCore). */
+/**
+ * Describes the license core type (pCore or vCore).
+ */
 public final class LicenseCoreType extends ExpandableStringEnum<LicenseCoreType> {
-    /** Static value pCore for LicenseCoreType. */
+    /**
+     * Static value pCore for LicenseCoreType.
+     */
     public static final LicenseCoreType P_CORE = fromString("pCore");
 
-    /** Static value vCore for LicenseCoreType. */
+    /**
+     * Static value vCore for LicenseCoreType.
+     */
     public static final LicenseCoreType V_CORE = fromString("vCore");
 
     /**
      * Creates a new instance of LicenseCoreType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class LicenseCoreType extends ExpandableStringEnum<LicenseCoreType>
 
     /**
      * Creates or finds a LicenseCoreType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LicenseCoreType.
      */
@@ -38,7 +44,7 @@ public final class LicenseCoreType extends ExpandableStringEnum<LicenseCoreType>
 
     /**
      * Gets known LicenseCoreType values.
-     *
+     * 
      * @return known LicenseCoreType values.
      */
     public static Collection<LicenseCoreType> values() {

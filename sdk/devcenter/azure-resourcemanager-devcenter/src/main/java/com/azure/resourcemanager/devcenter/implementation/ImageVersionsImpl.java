@@ -21,52 +21,42 @@ public final class ImageVersionsImpl implements ImageVersions {
 
     private final com.azure.resourcemanager.devcenter.DevCenterManager serviceManager;
 
-    public ImageVersionsImpl(
-        ImageVersionsClient innerClient, com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
+    public ImageVersionsImpl(ImageVersionsClient innerClient,
+        com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<ImageVersion> listByImage(
-        String resourceGroupName, String devCenterName, String galleryName, String imageName) {
-        PagedIterable<ImageVersionInner> inner =
-            this.serviceClient().listByImage(resourceGroupName, devCenterName, galleryName, imageName);
-        return Utils.mapPage(inner, inner1 -> new ImageVersionImpl(inner1, this.manager()));
+    public PagedIterable<ImageVersion> listByImage(String resourceGroupName, String devCenterName, String galleryName,
+        String imageName) {
+        PagedIterable<ImageVersionInner> inner
+            = this.serviceClient().listByImage(resourceGroupName, devCenterName, galleryName, imageName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ImageVersionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ImageVersion> listByImage(
-        String resourceGroupName, String devCenterName, String galleryName, String imageName, Context context) {
-        PagedIterable<ImageVersionInner> inner =
-            this.serviceClient().listByImage(resourceGroupName, devCenterName, galleryName, imageName, context);
-        return Utils.mapPage(inner, inner1 -> new ImageVersionImpl(inner1, this.manager()));
+    public PagedIterable<ImageVersion> listByImage(String resourceGroupName, String devCenterName, String galleryName,
+        String imageName, Context context) {
+        PagedIterable<ImageVersionInner> inner
+            = this.serviceClient().listByImage(resourceGroupName, devCenterName, galleryName, imageName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ImageVersionImpl(inner1, this.manager()));
     }
 
-    public Response<ImageVersion> getWithResponse(
-        String resourceGroupName,
-        String devCenterName,
-        String galleryName,
-        String imageName,
-        String versionName,
-        Context context) {
-        Response<ImageVersionInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, devCenterName, galleryName, imageName, versionName, context);
+    public Response<ImageVersion> getWithResponse(String resourceGroupName, String devCenterName, String galleryName,
+        String imageName, String versionName, Context context) {
+        Response<ImageVersionInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, devCenterName, galleryName, imageName, versionName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ImageVersionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ImageVersion get(
-        String resourceGroupName, String devCenterName, String galleryName, String imageName, String versionName) {
-        ImageVersionInner inner =
-            this.serviceClient().get(resourceGroupName, devCenterName, galleryName, imageName, versionName);
+    public ImageVersion get(String resourceGroupName, String devCenterName, String galleryName, String imageName,
+        String versionName) {
+        ImageVersionInner inner
+            = this.serviceClient().get(resourceGroupName, devCenterName, galleryName, imageName, versionName);
         if (inner != null) {
             return new ImageVersionImpl(inner, this.manager());
         } else {

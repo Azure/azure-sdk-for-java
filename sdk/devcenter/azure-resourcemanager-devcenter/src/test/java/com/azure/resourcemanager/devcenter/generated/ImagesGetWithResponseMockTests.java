@@ -6,62 +6,33 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
 import com.azure.resourcemanager.devcenter.models.Image;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ImagesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"description\":\"clnapxbiygnugjkn\",\"publisher\":\"mfcttux\",\"offer\":\"yilflqoiquvrehmr\",\"sku\":\"hvsujztc\",\"recommendedMachineConfiguration\":{\"memory\":{\"min\":51352608,\"max\":221110799},\"vCPUs\":{\"min\":1863941224,\"max\":897856665}},\"provisioningState\":\"Canceled\",\"hibernateSupport\":\"Disabled\"},\"id\":\"letlx\",\"name\":\"mr\",\"type\":\"ddoui\"}";
 
-        String responseStr =
-            "{\"properties\":{\"description\":\"d\",\"publisher\":\"nsiru\",\"offer\":\"z\",\"sku\":\"es\",\"recommendedMachineConfiguration\":{\"memory\":{\"min\":1975861158,\"max\":2124776241},\"vCPUs\":{\"min\":1885722966,\"max\":1771051614}},\"provisioningState\":\"Canceled\",\"hibernateSupport\":\"Enabled\"},\"id\":\"xwmdboxd\",\"name\":\"gsftufqobrjlnacg\",\"type\":\"ckknhxkizvy\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DevCenterManager manager = DevCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Image response = manager.images()
+            .getWithResponse("zvzbglbyv", "ctctbrxkjz", "rgxffmshkw", "bkgozxwopdbydpi",
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        DevCenterManager manager =
-            DevCenterManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Image response =
-            manager
-                .images()
-                .getWithResponse("dmdqb", "pypqtgsfj", "cbslhhx", "db", com.azure.core.util.Context.NONE)
-                .getValue();
     }
 }

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.devcenter.models.UsageName;
 import com.azure.resourcemanager.devcenter.models.UsageUnit;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The core usage details. */
+/**
+ * The core usage details.
+ */
 @Fluent
 public final class UsageInner {
     /*
@@ -42,13 +44,15 @@ public final class UsageInner {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of UsageInner class. */
+    /**
+     * Creates an instance of UsageInner class.
+     */
     public UsageInner() {
     }
 
     /**
      * Get the currentValue property: The current usage.
-     *
+     * 
      * @return the currentValue value.
      */
     public Long currentValue() {
@@ -57,7 +61,7 @@ public final class UsageInner {
 
     /**
      * Set the currentValue property: The current usage.
-     *
+     * 
      * @param currentValue the currentValue value to set.
      * @return the UsageInner object itself.
      */
@@ -68,7 +72,7 @@ public final class UsageInner {
 
     /**
      * Get the limit property: The limit integer.
-     *
+     * 
      * @return the limit value.
      */
     public Long limit() {
@@ -77,7 +81,7 @@ public final class UsageInner {
 
     /**
      * Set the limit property: The limit integer.
-     *
+     * 
      * @param limit the limit value to set.
      * @return the UsageInner object itself.
      */
@@ -88,7 +92,7 @@ public final class UsageInner {
 
     /**
      * Get the unit property: The unit details.
-     *
+     * 
      * @return the unit value.
      */
     public UsageUnit unit() {
@@ -97,7 +101,7 @@ public final class UsageInner {
 
     /**
      * Set the unit property: The unit details.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the UsageInner object itself.
      */
@@ -108,7 +112,7 @@ public final class UsageInner {
 
     /**
      * Get the name property: The name.
-     *
+     * 
      * @return the name value.
      */
     public UsageName name() {
@@ -117,7 +121,7 @@ public final class UsageInner {
 
     /**
      * Set the name property: The name.
-     *
+     * 
      * @param name the name value to set.
      * @return the UsageInner object itself.
      */
@@ -128,7 +132,7 @@ public final class UsageInner {
 
     /**
      * Get the id property: The fully qualified arm resource id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -137,7 +141,7 @@ public final class UsageInner {
 
     /**
      * Set the id property: The fully qualified arm resource id.
-     *
+     * 
      * @param id the id value to set.
      * @return the UsageInner object itself.
      */
@@ -148,7 +152,7 @@ public final class UsageInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

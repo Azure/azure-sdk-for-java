@@ -50,7 +50,7 @@ public interface ServicesClient {
     /**
      * Gets a specific Azure service for support ticket creation.
      * 
-     * @param serviceName Name of the Azure service for which the problem classifications need to be retrieved.
+     * @param serviceName Name of the Azure service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -63,7 +63,7 @@ public interface ServicesClient {
     /**
      * Gets a specific Azure service for support ticket creation.
      * 
-     * @param serviceName Name of the Azure service for which the problem classifications need to be retrieved.
+     * @param serviceName Name of the Azure service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

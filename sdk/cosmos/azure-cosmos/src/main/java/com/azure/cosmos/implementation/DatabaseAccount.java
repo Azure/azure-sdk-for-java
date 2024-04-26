@@ -3,8 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BridgeInternal;
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.azure.cosmos.implementation.apachecommons.lang.ObjectUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -39,7 +38,7 @@ public final class DatabaseAccount extends Resource {
      * Constructor.
      */
     public DatabaseAccount() {
-        BridgeInternal.setResourceSelfLink(this, "");
+        this.setSelfLink("");
     }
 
     /**
@@ -66,7 +65,7 @@ public final class DatabaseAccount extends Resource {
      * @param databasesLink the databases link.
      */
     void setDatabasesLink(String databasesLink) {
-        BridgeInternal.setProperty(this, Constants.Properties.DATABASES_LINK, databasesLink);
+        this.set(Constants.Properties.DATABASES_LINK, databasesLink, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     /**
@@ -84,7 +83,7 @@ public final class DatabaseAccount extends Resource {
      * @param medialink the media link.
      */
     void setMediaLink(String medialink) {
-        BridgeInternal.setProperty(this, Constants.Properties.MEDIA_LINK, medialink);
+        this.set(Constants.Properties.MEDIA_LINK, medialink, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     /**
@@ -102,7 +101,7 @@ public final class DatabaseAccount extends Resource {
      * @param addresseslink the addresses link.
      */
     void setAddressesLink(String addresseslink) {
-        BridgeInternal.setProperty(this, Constants.Properties.ADDRESS_LINK, addresseslink);
+        this.set(Constants.Properties.ADDRESS_LINK, addresseslink, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     /**
@@ -197,11 +196,10 @@ public final class DatabaseAccount extends Resource {
             String queryEngineConfigurationJsonString = super.getObject(Constants.Properties.QUERY_ENGINE_CONFIGURATION,
                 String.class);
             if (StringUtils.isNotEmpty(queryEngineConfigurationJsonString)) {
-                TypeReference<HashMap<String, Object>> typeRef = new TypeReference<HashMap<String, Object>>() {
-                };
                 try {
-                    this.queryEngineConfiguration = Utils.getSimpleObjectMapper()
-                                                        .readValue(queryEngineConfigurationJsonString, typeRef);
+                    this.queryEngineConfiguration = Utils
+                        .getSimpleObjectMapper()
+                        .readValue(queryEngineConfigurationJsonString, ObjectNodeMap.JACKSON_MAP_TYPE);
                 } catch (IOException e) {
                     throw new IllegalArgumentException(e);
                 }
@@ -231,7 +229,7 @@ public final class DatabaseAccount extends Resource {
      * @param locations the list of writable locations.
      */
     public void setWritableLocations(Iterable<DatabaseAccountLocation> locations) {
-        BridgeInternal.setProperty(this, Constants.Properties.WRITABLE_LOCATIONS, locations);
+        this.set(Constants.Properties.WRITABLE_LOCATIONS, locations, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     /**
@@ -251,7 +249,7 @@ public final class DatabaseAccount extends Resource {
      * @param locations the list of readable locations.
      */
     public void setReadableLocations(Iterable<DatabaseAccountLocation> locations) {
-        BridgeInternal.setProperty(this, Constants.Properties.READABLE_LOCATIONS, locations);
+        this.set(Constants.Properties.READABLE_LOCATIONS, locations, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     /**
@@ -264,14 +262,17 @@ public final class DatabaseAccount extends Resource {
     }
 
     public void setEnableMultipleWriteLocations(boolean value) {
-        BridgeInternal.setProperty(this, Constants.Properties.ENABLE_MULTIPLE_WRITE_LOCATIONS, value);
+        this.set(Constants.Properties.ENABLE_MULTIPLE_WRITE_LOCATIONS, value, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     public void populatePropertyBag() {
         super.populatePropertyBag();
         if (this.consistencyPolicy != null) {
             this.consistencyPolicy.populatePropertyBag();
-            BridgeInternal.setProperty(this, Constants.Properties.USER_CONSISTENCY_POLICY, this.consistencyPolicy);
+            this.set(
+                Constants.Properties.USER_CONSISTENCY_POLICY,
+                this.consistencyPolicy,
+                CosmosItemSerializer.DEFAULT_SERIALIZER);
         }
     }
 

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.hybridcompute.fluent.models.MachineExtensionInn
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes the Machine Extensions List Result. */
+/**
+ * Describes the Machine Extensions List Result.
+ */
 @Fluent
 public final class MachineExtensionsListResult {
     /*
@@ -19,19 +21,20 @@ public final class MachineExtensionsListResult {
     private List<MachineExtensionInner> value;
 
     /*
-     * The uri to fetch the next page of machine extensions. Call ListNext() with this to fetch the next page of
-     * extensions.
+     * The uri to fetch the next page of machine extensions. Call ListNext() with this to fetch the next page of extensions.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of MachineExtensionsListResult class. */
+    /**
+     * Creates an instance of MachineExtensionsListResult class.
+     */
     public MachineExtensionsListResult() {
     }
 
     /**
      * Get the value property: The list of extensions.
-     *
+     * 
      * @return the value value.
      */
     public List<MachineExtensionInner> value() {
@@ -40,7 +43,7 @@ public final class MachineExtensionsListResult {
 
     /**
      * Set the value property: The list of extensions.
-     *
+     * 
      * @param value the value value to set.
      * @return the MachineExtensionsListResult object itself.
      */
@@ -52,7 +55,7 @@ public final class MachineExtensionsListResult {
     /**
      * Get the nextLink property: The uri to fetch the next page of machine extensions. Call ListNext() with this to
      * fetch the next page of extensions.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +65,7 @@ public final class MachineExtensionsListResult {
     /**
      * Set the nextLink property: The uri to fetch the next page of machine extensions. Call ListNext() with this to
      * fetch the next page of extensions.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the MachineExtensionsListResult object itself.
      */
@@ -73,7 +76,7 @@ public final class MachineExtensionsListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

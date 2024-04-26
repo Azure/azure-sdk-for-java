@@ -49,30 +49,28 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
         };
     }
 
-    // TODO[public preview]: add more integration tests
-    @Test(groups = { "kafka-integration"}, dataProvider = "sinkAuthParameterProvider", timeOut = TIMEOUT)
+    @Test(groups = { "kafka-integration" }, dataProvider = "sinkAuthParameterProvider", timeOut = TIMEOUT)
     public void sinkToSingleContainer(boolean useMasterKey) throws InterruptedException {
         Map<String, String> sinkConnectorConfig = new HashMap<>();
         String topicName = singlePartitionContainerName + "-" + UUID.randomUUID();
 
         sinkConnectorConfig.put("topics", topicName);
         sinkConnectorConfig.put("value.converter", JsonConverter.class.getName());
-        // TODO[Public Preview]: add tests for with schema
         sinkConnectorConfig.put("value.converter.schemas.enable", "false");
         sinkConnectorConfig.put("key.converter", StringConverter.class.getName());
         sinkConnectorConfig.put("connector.class", "com.azure.cosmos.kafka.connect.CosmosSinkConnector");
-        sinkConnectorConfig.put("kafka.connect.cosmos.accountEndpoint", KafkaCosmosTestConfigurations.HOST);
-        sinkConnectorConfig.put("kafka.connect.cosmos.applicationName", "Test");
-        sinkConnectorConfig.put("kafka.connect.cosmos.sink.database.name", databaseName);
-        sinkConnectorConfig.put("kafka.connect.cosmos.sink.containers.topicMap", topicName + "#" + singlePartitionContainerName);
+        sinkConnectorConfig.put("azure.cosmos.account.endpoint", KafkaCosmosTestConfigurations.HOST);
+        sinkConnectorConfig.put("azure.cosmos.application.name", "Test");
+        sinkConnectorConfig.put("azure.cosmos.sink.database.name", databaseName);
+        sinkConnectorConfig.put("azure.cosmos.sink.containers.topicMap", topicName + "#" + singlePartitionContainerName);
 
         if (useMasterKey) {
-            sinkConnectorConfig.put("kafka.connect.cosmos.accountKey", KafkaCosmosTestConfigurations.MASTER_KEY);
+            sinkConnectorConfig.put("azure.cosmos.account.key", KafkaCosmosTestConfigurations.MASTER_KEY);
         } else {
-            sinkConnectorConfig.put("kafka.connect.cosmos.auth.type", CosmosAuthType.SERVICE_PRINCIPAL.getName());
-            sinkConnectorConfig.put("kafka.connect.cosmos.account.tenantId", KafkaCosmosTestConfigurations.ACCOUNT_TENANT_ID);
-            sinkConnectorConfig.put("kafka.connect.cosmos.auth.aad.clientId", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_ID);
-            sinkConnectorConfig.put("kafka.connect.cosmos.auth.aad.clientSecret", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_SECRET);
+            sinkConnectorConfig.put("azure.cosmos.auth.type", CosmosAuthType.SERVICE_PRINCIPAL.getName());
+            sinkConnectorConfig.put("azure.cosmos.account.tenantId", KafkaCosmosTestConfigurations.ACCOUNT_TENANT_ID);
+            sinkConnectorConfig.put("azure.cosmos.auth.aad.clientId", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_ID);
+            sinkConnectorConfig.put("azure.cosmos.auth.aad.clientSecret", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_SECRET);
         }
 
         // Create topic ahead of time
@@ -131,18 +129,18 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
         }
     }
 
-    @Test(groups = { "kafka-integration"}, timeOut = 10 * TIMEOUT)
+    @Test(groups = { "kafka-integration" }, timeOut = 10 * TIMEOUT)
     public void postAvroMessage() throws InterruptedException {
         Map<String, String> sinkConnectorConfig = new HashMap<>();
         String topicName = singlePartitionContainerName + "-avro-" + UUID.randomUUID();
 
         sinkConnectorConfig.put("topics", topicName);
         sinkConnectorConfig.put("connector.class", "com.azure.cosmos.kafka.connect.CosmosSinkConnector");
-        sinkConnectorConfig.put("kafka.connect.cosmos.accountEndpoint", KafkaCosmosTestConfigurations.HOST);
-        sinkConnectorConfig.put("kafka.connect.cosmos.accountKey", KafkaCosmosTestConfigurations.MASTER_KEY);
-        sinkConnectorConfig.put("kafka.connect.cosmos.applicationName", "Test");
-        sinkConnectorConfig.put("kafka.connect.cosmos.sink.database.name", databaseName);
-        sinkConnectorConfig.put("kafka.connect.cosmos.sink.containers.topicMap", topicName + "#" + singlePartitionContainerName);
+        sinkConnectorConfig.put("azure.cosmos.account.endpoint", KafkaCosmosTestConfigurations.HOST);
+        sinkConnectorConfig.put("azure.cosmos.account.key", KafkaCosmosTestConfigurations.MASTER_KEY);
+        sinkConnectorConfig.put("azure.cosmos.application.name", "Test");
+        sinkConnectorConfig.put("azure.cosmos.sink.database.name", databaseName);
+        sinkConnectorConfig.put("azure.cosmos.sink.containers.topicMap", topicName + "#" + singlePartitionContainerName);
         addAvroConverterForValue(sinkConnectorConfig);
         addAvroConverterForKey(sinkConnectorConfig);
 
@@ -209,20 +207,20 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
         }
     }
 
-    @Test(groups = { "kafka-integration"}, timeOut = 10 * TIMEOUT)
+    @Test(groups = { "kafka-integration" }, timeOut = 10 * TIMEOUT)
     public void postAvroMessageWithTemplateIdStrategy() throws InterruptedException {
         Map<String, String> sinkConnectorConfig = new HashMap<>();
         String topicName = singlePartitionContainerName + "-avro-" + UUID.randomUUID();
 
         sinkConnectorConfig.put("topics", topicName);
         sinkConnectorConfig.put("connector.class", "com.azure.cosmos.kafka.connect.CosmosSinkConnector");
-        sinkConnectorConfig.put("kafka.connect.cosmos.accountEndpoint", KafkaCosmosTestConfigurations.HOST);
-        sinkConnectorConfig.put("kafka.connect.cosmos.accountKey", KafkaCosmosTestConfigurations.MASTER_KEY);
-        sinkConnectorConfig.put("kafka.connect.cosmos.applicationName", "Test");
-        sinkConnectorConfig.put("kafka.connect.cosmos.sink.database.name", databaseName);
-        sinkConnectorConfig.put("kafka.connect.cosmos.sink.containers.topicMap", topicName + "#" + singlePartitionContainerName);
-        sinkConnectorConfig.put("kafka.connect.cosmos.sink.id.strategy", IdStrategyType.TEMPLATE_STRATEGY.getName());
-        sinkConnectorConfig.put("kafka.connect.cosmos.sink.id.strategy.template", "${topic}-${key}");
+        sinkConnectorConfig.put("azure.cosmos.account.endpoint", KafkaCosmosTestConfigurations.HOST);
+        sinkConnectorConfig.put("azure.cosmos.account.key", KafkaCosmosTestConfigurations.MASTER_KEY);
+        sinkConnectorConfig.put("azure.cosmos.application.name", "Test");
+        sinkConnectorConfig.put("azure.cosmos.sink.database.name", databaseName);
+        sinkConnectorConfig.put("azure.cosmos.sink.containers.topicMap", topicName + "#" + singlePartitionContainerName);
+        sinkConnectorConfig.put("azure.cosmos.sink.id.strategy", IdStrategyType.TEMPLATE_STRATEGY.getName());
+        sinkConnectorConfig.put("azure.cosmos.sink.id.strategy.template", "${topic}-${key}");
 
         addAvroConverterForValue(sinkConnectorConfig);
         addAvroConverterForKey(sinkConnectorConfig);
@@ -281,20 +279,20 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
         }
     }
 
-    @Test(groups = { "kafka-integration"}, timeOut = 10 * TIMEOUT)
+    @Test(groups = { "kafka-integration" }, timeOut = 10 * TIMEOUT)
     public void postAvroMessageWithJsonPathInProvidedInKeyStrategy() throws InterruptedException {
         Map<String, String> sinkConnectorConfig = new HashMap<>();
         String topicName = singlePartitionContainerName + "-avro-" + UUID.randomUUID();
 
         sinkConnectorConfig.put("topics", topicName);
         sinkConnectorConfig.put("connector.class", "com.azure.cosmos.kafka.connect.CosmosSinkConnector");
-        sinkConnectorConfig.put("kafka.connect.cosmos.accountEndpoint", KafkaCosmosTestConfigurations.HOST);
-        sinkConnectorConfig.put("kafka.connect.cosmos.accountKey", KafkaCosmosTestConfigurations.MASTER_KEY);
-        sinkConnectorConfig.put("kafka.connect.cosmos.applicationName", "Test");
-        sinkConnectorConfig.put("kafka.connect.cosmos.sink.database.name", databaseName);
-        sinkConnectorConfig.put("kafka.connect.cosmos.sink.containers.topicMap", topicName + "#" + singlePartitionContainerName);
-        sinkConnectorConfig.put("kafka.connect.cosmos.sink.id.strategy", IdStrategyType.PROVIDED_IN_KEY_STRATEGY.getName());
-        sinkConnectorConfig.put("kafka.connect.cosmos.sink.id.strategy.jsonPath", "$.key");
+        sinkConnectorConfig.put("azure.cosmos.account.endpoint", KafkaCosmosTestConfigurations.HOST);
+        sinkConnectorConfig.put("azure.cosmos.account.key", KafkaCosmosTestConfigurations.MASTER_KEY);
+        sinkConnectorConfig.put("azure.cosmos.application.name", "Test");
+        sinkConnectorConfig.put("azure.cosmos.sink.database.name", databaseName);
+        sinkConnectorConfig.put("azure.cosmos.sink.containers.topicMap", topicName + "#" + singlePartitionContainerName);
+        sinkConnectorConfig.put("azure.cosmos.sink.id.strategy", IdStrategyType.PROVIDED_IN_KEY_STRATEGY.getName());
+        sinkConnectorConfig.put("azure.cosmos.sink.id.strategy.jsonPath", "$.key");
 
         addAvroConverterForValue(sinkConnectorConfig);
         addAvroConverterForKey(sinkConnectorConfig);

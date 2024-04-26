@@ -11,6 +11,7 @@ import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
 public class ServiceBusClientBuilderUnitTest {
 
@@ -85,48 +86,54 @@ public class ServiceBusClientBuilderUnitTest {
 
     @Test
     public void testThrowsIfNegativeMaxLockDuration() {
-        assertThrows(IllegalArgumentException.class,
+        assertThrowsExactly(IllegalArgumentException.class,
             () -> createMinimalValidClientBuilder()
                 .sessionReceiver()
                 .maxAutoLockRenewDuration(Duration.ofSeconds(-1))
                 .queueName("fakequeue")
-                .buildAsyncClient());
-        assertThrows(IllegalArgumentException.class,
+                .buildAsyncClient(),
+                "'maxAutoLockRenewDuration' cannot be negative.");
+        assertThrowsExactly(IllegalArgumentException.class,
             () -> createMinimalValidClientBuilder()
                 .receiver()
                 .maxAutoLockRenewDuration(Duration.ofSeconds(-1))
                 .queueName("fakequeue")
-                .buildClient());
-        assertThrows(IllegalArgumentException.class,
+                .buildClient(),
+            "'maxAutoLockRenewDuration' cannot be negative.");
+        assertThrowsExactly(IllegalArgumentException.class,
             () -> createMinimalValidClientBuilder()
                 .processor()
                 .maxAutoLockRenewDuration(Duration.ofSeconds(-1))
                 .queueName("fakequeue")
                 .processMessage(x -> { })
                 .processError(x -> { })
-                .buildProcessorClient());
-        assertThrows(IllegalArgumentException.class,
+                .buildProcessorClient(),
+            "'maxAutoLockRenewDuration' cannot be negative.");
+        assertThrowsExactly(IllegalArgumentException.class,
             () -> createMinimalValidClientBuilder()
                 .sessionProcessor()
                 .maxAutoLockRenewDuration(Duration.ofSeconds(-1))
                 .queueName("fakequeue")
-                .buildProcessorClient());
+                .buildProcessorClient(),
+            "'maxAutoLockRenewDuration' cannot be negative.");
     }
 
     @Test
     public void testThrowsIfNegativeSessionIdle() {
-        assertThrows(IllegalArgumentException.class,
+        assertThrowsExactly(IllegalArgumentException.class,
             () -> createMinimalValidClientBuilder()
                 .sessionReceiver()
                 .sessionIdleTimeout(Duration.ofSeconds(-1))
                 .queueName("fakequeue")
-                .buildAsyncClient());
-        assertThrows(IllegalArgumentException.class,
+                .buildAsyncClient(),
+            "'sessionIdleTimeout' cannot be negative.");
+        assertThrowsExactly(IllegalArgumentException.class,
             () -> createMinimalValidClientBuilder()
                 .sessionProcessor()
                 .sessionIdleTimeout(Duration.ofSeconds(-1))
                 .queueName("fakequeue")
-                .buildProcessorClient());
+                .buildProcessorClient(),
+            "'sessionIdleTimeout' cannot be negative.");
     }
 
     @Test

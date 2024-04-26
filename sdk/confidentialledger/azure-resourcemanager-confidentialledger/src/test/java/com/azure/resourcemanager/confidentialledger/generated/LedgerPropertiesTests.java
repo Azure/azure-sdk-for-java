@@ -9,6 +9,7 @@ import com.azure.resourcemanager.confidentialledger.models.AadBasedSecurityPrinc
 import com.azure.resourcemanager.confidentialledger.models.CertBasedSecurityPrincipal;
 import com.azure.resourcemanager.confidentialledger.models.LedgerProperties;
 import com.azure.resourcemanager.confidentialledger.models.LedgerRoleName;
+import com.azure.resourcemanager.confidentialledger.models.LedgerSku;
 import com.azure.resourcemanager.confidentialledger.models.LedgerType;
 import com.azure.resourcemanager.confidentialledger.models.RunningState;
 import java.util.Arrays;
@@ -17,65 +18,48 @@ import org.junit.jupiter.api.Assertions;
 public final class LedgerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LedgerProperties model =
-            BinaryData
-                .fromString(
-                    "{\"ledgerName\":\"mfdatscmdvpj\",\"ledgerUri\":\"lsuuvmkjozkrwfnd\",\"identityServiceUri\":\"djpslw\",\"ledgerInternalNamespace\":\"dpvwryoqpsoaccta\",\"runningState\":\"Active\",\"ledgerType\":\"Unknown\",\"provisioningState\":\"Succeeded\",\"aadBasedSecurityPrincipals\":[{\"principalId\":\"ryffdfdosy\",\"tenantId\":\"xpaojakhmsbz\",\"ledgerRoleName\":\"Administrator\"},{\"principalId\":\"zevdphlx\",\"tenantId\":\"lthqtrgqjbp\",\"ledgerRoleName\":\"Administrator\"},{\"principalId\":\"inzgvfcj\",\"tenantId\":\"zoxxjtf\",\"ledgerRoleName\":\"Administrator\"}],\"certBasedSecurityPrincipals\":[{\"cert\":\"zitonpeqfpjkjl\",\"ledgerRoleName\":\"Reader\"},{\"cert\":\"dvhpfxxypininm\",\"ledgerRoleName\":\"Administrator\"},{\"cert\":\"ybb\",\"ledgerRoleName\":\"Contributor\"},{\"cert\":\"epoo\",\"ledgerRoleName\":\"Administrator\"}]}")
-                .toObject(LedgerProperties.class);
-        Assertions.assertEquals(RunningState.ACTIVE, model.runningState());
+        LedgerProperties model = BinaryData.fromString(
+            "{\"ledgerName\":\"crzevdphlx\",\"ledgerUri\":\"lthqtrgqjbp\",\"identityServiceUri\":\"fsinzgvfcjrwzoxx\",\"ledgerInternalNamespace\":\"felluwfzitonpe\",\"runningState\":\"Paused\",\"ledgerType\":\"Unknown\",\"provisioningState\":\"Canceled\",\"ledgerSku\":\"Standard\",\"aadBasedSecurityPrincipals\":[{\"principalId\":\"vhpfxxypininmay\",\"tenantId\":\"ybb\",\"ledgerRoleName\":\"Contributor\"},{\"principalId\":\"epoo\",\"tenantId\":\"nuvamiheogna\",\"ledgerRoleName\":\"Administrator\"},{\"principalId\":\"theotusiv\",\"tenantId\":\"v\",\"ledgerRoleName\":\"Administrator\"}],\"certBasedSecurityPrincipals\":[{\"cert\":\"nhungbw\",\"ledgerRoleName\":\"Administrator\"},{\"cert\":\"fygxgispemvtzfk\",\"ledgerRoleName\":\"Reader\"}]}")
+            .toObject(LedgerProperties.class);
+        Assertions.assertEquals(RunningState.PAUSED, model.runningState());
         Assertions.assertEquals(LedgerType.UNKNOWN, model.ledgerType());
-        Assertions.assertEquals("ryffdfdosy", model.aadBasedSecurityPrincipals().get(0).principalId());
-        Assertions.assertEquals("xpaojakhmsbz", model.aadBasedSecurityPrincipals().get(0).tenantId());
-        Assertions
-            .assertEquals(LedgerRoleName.ADMINISTRATOR, model.aadBasedSecurityPrincipals().get(0).ledgerRoleName());
-        Assertions.assertEquals("zitonpeqfpjkjl", model.certBasedSecurityPrincipals().get(0).cert());
-        Assertions.assertEquals(LedgerRoleName.READER, model.certBasedSecurityPrincipals().get(0).ledgerRoleName());
+        Assertions.assertEquals(LedgerSku.STANDARD, model.ledgerSku());
+        Assertions.assertEquals("vhpfxxypininmay", model.aadBasedSecurityPrincipals().get(0).principalId());
+        Assertions.assertEquals("ybb", model.aadBasedSecurityPrincipals().get(0).tenantId());
+        Assertions.assertEquals(LedgerRoleName.CONTRIBUTOR, model.aadBasedSecurityPrincipals().get(0).ledgerRoleName());
+        Assertions.assertEquals("nhungbw", model.certBasedSecurityPrincipals().get(0).cert());
+        Assertions.assertEquals(LedgerRoleName.ADMINISTRATOR,
+            model.certBasedSecurityPrincipals().get(0).ledgerRoleName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LedgerProperties model =
-            new LedgerProperties()
-                .withRunningState(RunningState.ACTIVE)
-                .withLedgerType(LedgerType.UNKNOWN)
-                .withAadBasedSecurityPrincipals(
-                    Arrays
-                        .asList(
-                            new AadBasedSecurityPrincipal()
-                                .withPrincipalId("ryffdfdosy")
-                                .withTenantId("xpaojakhmsbz")
-                                .withLedgerRoleName(LedgerRoleName.ADMINISTRATOR),
-                            new AadBasedSecurityPrincipal()
-                                .withPrincipalId("zevdphlx")
-                                .withTenantId("lthqtrgqjbp")
-                                .withLedgerRoleName(LedgerRoleName.ADMINISTRATOR),
-                            new AadBasedSecurityPrincipal()
-                                .withPrincipalId("inzgvfcj")
-                                .withTenantId("zoxxjtf")
-                                .withLedgerRoleName(LedgerRoleName.ADMINISTRATOR)))
-                .withCertBasedSecurityPrincipals(
-                    Arrays
-                        .asList(
-                            new CertBasedSecurityPrincipal()
-                                .withCert("zitonpeqfpjkjl")
-                                .withLedgerRoleName(LedgerRoleName.READER),
-                            new CertBasedSecurityPrincipal()
-                                .withCert("dvhpfxxypininm")
-                                .withLedgerRoleName(LedgerRoleName.ADMINISTRATOR),
-                            new CertBasedSecurityPrincipal()
-                                .withCert("ybb")
-                                .withLedgerRoleName(LedgerRoleName.CONTRIBUTOR),
-                            new CertBasedSecurityPrincipal()
-                                .withCert("epoo")
-                                .withLedgerRoleName(LedgerRoleName.ADMINISTRATOR)));
+        LedgerProperties model = new LedgerProperties().withRunningState(RunningState.PAUSED)
+            .withLedgerType(LedgerType.UNKNOWN)
+            .withLedgerSku(LedgerSku.STANDARD)
+            .withAadBasedSecurityPrincipals(Arrays.asList(
+                new AadBasedSecurityPrincipal().withPrincipalId("vhpfxxypininmay")
+                    .withTenantId("ybb")
+                    .withLedgerRoleName(LedgerRoleName.CONTRIBUTOR),
+                new AadBasedSecurityPrincipal().withPrincipalId("epoo")
+                    .withTenantId("nuvamiheogna")
+                    .withLedgerRoleName(LedgerRoleName.ADMINISTRATOR),
+                new AadBasedSecurityPrincipal().withPrincipalId("theotusiv")
+                    .withTenantId("v")
+                    .withLedgerRoleName(LedgerRoleName.ADMINISTRATOR)))
+            .withCertBasedSecurityPrincipals(Arrays.asList(
+                new CertBasedSecurityPrincipal().withCert("nhungbw").withLedgerRoleName(LedgerRoleName.ADMINISTRATOR),
+                new CertBasedSecurityPrincipal().withCert("fygxgispemvtzfk")
+                    .withLedgerRoleName(LedgerRoleName.READER)));
         model = BinaryData.fromObject(model).toObject(LedgerProperties.class);
-        Assertions.assertEquals(RunningState.ACTIVE, model.runningState());
+        Assertions.assertEquals(RunningState.PAUSED, model.runningState());
         Assertions.assertEquals(LedgerType.UNKNOWN, model.ledgerType());
-        Assertions.assertEquals("ryffdfdosy", model.aadBasedSecurityPrincipals().get(0).principalId());
-        Assertions.assertEquals("xpaojakhmsbz", model.aadBasedSecurityPrincipals().get(0).tenantId());
-        Assertions
-            .assertEquals(LedgerRoleName.ADMINISTRATOR, model.aadBasedSecurityPrincipals().get(0).ledgerRoleName());
-        Assertions.assertEquals("zitonpeqfpjkjl", model.certBasedSecurityPrincipals().get(0).cert());
-        Assertions.assertEquals(LedgerRoleName.READER, model.certBasedSecurityPrincipals().get(0).ledgerRoleName());
+        Assertions.assertEquals(LedgerSku.STANDARD, model.ledgerSku());
+        Assertions.assertEquals("vhpfxxypininmay", model.aadBasedSecurityPrincipals().get(0).principalId());
+        Assertions.assertEquals("ybb", model.aadBasedSecurityPrincipals().get(0).tenantId());
+        Assertions.assertEquals(LedgerRoleName.CONTRIBUTOR, model.aadBasedSecurityPrincipals().get(0).ledgerRoleName());
+        Assertions.assertEquals("nhungbw", model.certBasedSecurityPrincipals().get(0).cert());
+        Assertions.assertEquals(LedgerRoleName.ADMINISTRATOR,
+            model.certBasedSecurityPrincipals().get(0).ledgerRoleName());
     }
 }

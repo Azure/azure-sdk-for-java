@@ -21,25 +21,24 @@ import java.util.Map;
 public class CosmosSourceConfig extends KafkaCosmosConfig {
 
     // configuration only targets to source connector
-    private static final String SOURCE_CONFIG_PREFIX = "kafka.connect.cosmos.source.";
 
     // database name
-    private static final String DATABASE_NAME_CONF = SOURCE_CONFIG_PREFIX + "database.name";
+    private static final String DATABASE_NAME_CONF = "azure.cosmos.source.database.name";
     private static final String DATABASE_NAME_CONF_DOC = "Cosmos DB database name.";
     private static final String DATABASE_NAME_CONF_DISPLAY = "Cosmos DB database name.";
 
     // Source containers config
-    private static final String CONTAINERS_INCLUDE_ALL_CONFIG = SOURCE_CONFIG_PREFIX + "containers.includeAll";
+    private static final String CONTAINERS_INCLUDE_ALL_CONFIG = "azure.cosmos.source.containers.includeAll";
     private static final String CONTAINERS_INCLUDE_ALL_CONFIG_DOC = "Flag to indicate whether reading from all containers.";
     private static final String CONTAINERS_INCLUDE_ALL_CONFIG_DISPLAY = "Include all containers.";
     private static final boolean DEFAULT_CONTAINERS_INCLUDE_ALL = false;
 
-    private static final String CONTAINERS_INCLUDED_LIST_CONFIG = SOURCE_CONFIG_PREFIX + "containers.includedList";
+    private static final String CONTAINERS_INCLUDED_LIST_CONFIG = "azure.cosmos.source.containers.includedList";
     private static final String CONTAINERS_INCLUDED_LIST_CONFIG_DOC =
-        "Containers included. This config will be ignored if kafka.connect.cosmos.source.includeAllContainers is true.";
+        "Containers included. This config will be ignored if kafka.connect.cosmos.source.containers.includeAll is true.";
     private static final String CONTAINERS_INCLUDED_LIST_CONFIG_DISPLAY = "Containers included.";
 
-    private static final String CONTAINERS_TOPIC_MAP_CONFIG = SOURCE_CONFIG_PREFIX + "containers.topicMap";
+    private static final String CONTAINERS_TOPIC_MAP_CONFIG = "azure.cosmos.source.containers.topicMap";
     private static final String CONTAINERS_TOPIC_MAP_CONFIG_DOC =
         "A comma delimited list of Kafka topics mapped to Cosmos containers. For example: topic1#con1,topic2#con2. "
             + "By default, container name is used as the name of the kafka topic to publish data to, "
@@ -47,18 +46,18 @@ public class CosmosSourceConfig extends KafkaCosmosConfig {
     private static final String CONTAINERS_TOPIC_MAP_CONFIG_DISPLAY = "Cosmos container topic map.";
 
     // changeFeed config
-    private static final String CHANGE_FEED_START_FROM_CONFIG = SOURCE_CONFIG_PREFIX + "changeFeed.startFrom";
+    private static final String CHANGE_FEED_START_FROM_CONFIG = "azure.cosmos.source.changeFeed.startFrom";
     private static final String CHANGE_FEED_START_FROM_CONFIG_DOC = "ChangeFeed Start from settings (Now, Beginning "
         + "or a certain point in time (UTC) for example 2020-02-10T14:15:03) - the default value is 'Beginning'. ";
     private static final String CHANGE_FEED_START_FROM_CONFIG_DISPLAY = "Change feed start from.";
     private static final String DEFAULT_CHANGE_FEED_START_FROM = CosmosChangeFeedStartFromMode.BEGINNING.getName();
 
-    private static final String CHANGE_FEED_MODE_CONFIG = SOURCE_CONFIG_PREFIX + "changeFeed.mode";
+    private static final String CHANGE_FEED_MODE_CONFIG = "azure.cosmos.source.changeFeed.mode";
     private static final String CHANGE_FEED_MODE_CONFIG_DOC = "ChangeFeed mode (LatestVersion or AllVersionsAndDeletes)";
     private static final String CHANGE_FEED_MODE_CONFIG_DISPLAY = "ChangeFeed mode (LatestVersion or AllVersionsAndDeletes)";
     private static final String DEFAULT_CHANGE_FEED_MODE = CosmosChangeFeedMode.LATEST_VERSION.getName();
 
-    private static final String CHANGE_FEED_MAX_ITEM_COUNT_CONFIG = SOURCE_CONFIG_PREFIX + "changeFeed.maxItemCountHint";
+    private static final String CHANGE_FEED_MAX_ITEM_COUNT_CONFIG = "azure.cosmos.source.changeFeed.maxItemCountHint";
     private static final String CHANGE_FEED_MAX_ITEM_COUNT_CONFIG_DOC =
         "The maximum number of documents returned in a single change feed request."
             + " But the number of items received might be higher than the specified value if multiple items are changed by the same transaction."
@@ -67,34 +66,34 @@ public class CosmosSourceConfig extends KafkaCosmosConfig {
     private static final int DEFAULT_CHANGE_FEED_MAX_ITEM_COUNT = 1000;
 
     // Metadata config
-    private static final String METADATA_POLL_DELAY_MS_CONFIG = SOURCE_CONFIG_PREFIX + "metadata.poll.delay.ms";
+    private static final String METADATA_POLL_DELAY_MS_CONFIG = "azure.cosmos.source.metadata.poll.delay.ms";
     private static final String METADATA_POLL_DELAY_MS_CONFIG_DOC =
         "Indicates how often to check the metadata changes (including container split/merge, adding/removing/recreated containers). "
             + "When changes are detected, it will reconfigure the tasks. Default is 5 minutes.";
     private static final String METADATA_POLL_DELAY_MS_CONFIG_DISPLAY = "Metadata polling delay in ms.";
     private static final int DEFAULT_METADATA_POLL_DELAY_MS = 5 * 60 * 1000; // default is every 5 minutes
 
-    private static final String METADATA_STORAGE_TYPE = SOURCE_CONFIG_PREFIX + "metadata.storage.type";
+    private static final String METADATA_STORAGE_TYPE = "azure.cosmos.source.metadata.storage.type";
     private static final String METADATA_STORAGE_TYPE_DOC = "The storage type of the metadata. Two types are supported: Cosmos, Kafka.";
     private static final String METADATA_STORAGE_TYPE_DISPLAY = "The storage source of the metadata.";
     private static final String DEFAULT_METADATA_STORAGE_TYPE = CosmosMetadataStorageType.KAFKA.getName();
 
-    private static final String METADATA_STORAGE_NAME = SOURCE_CONFIG_PREFIX + "metadata.storage.name";
+    private static final String METADATA_STORAGE_NAME =  "azure.cosmos.source.metadata.storage.name";
     private static final String METADATA_STORAGE_NAME_DOC = "The resource name of the metadata storage. If metadata storage type is Kafka topic, then this config refers to kafka topic name, the metadata topic will be created if it does not already exist, else it will use the pre-created topic."
         + " If metadata storage type is CosmosDB container, then this config refers to container name, please pre-create the metadata container partitioned by /id.";
     private static final String METADATA_STORAGE_NAME_DISPLAY = "The metadata storage name.";
     private static final String DEFAULT_METADATA_STORAGE_NAME = "_cosmos.metadata.topic";
 
     // messageKey
-    private static final String MESSAGE_KEY_ENABLED_CONF = SOURCE_CONFIG_PREFIX + "messageKey.enabled";
+    private static final String MESSAGE_KEY_ENABLED_CONF = "azure.cosmos.source.messageKey.enabled";
     private static final String MESSAGE_KEY_ENABLED_CONF_DOC = "Whether to set the kafka record message key.";
     private static final String MESSAGE_KEY_ENABLED_CONF_DISPLAY = "Kafka record message key enabled.";
     private static final boolean DEFAULT_MESSAGE_KEY_ENABLED = true;
 
-    private static final String MESSAGE_KEY_FIELD_CONFIG = SOURCE_CONFIG_PREFIX + "messageKey.field";
+    private static final String MESSAGE_KEY_FIELD_CONFIG = "azure.cosmos.source.messageKey.field";
     private static final String MESSAGE_KEY_FIELD_CONFIG_DOC = "The field to use as the message key.";
     private static final String MESSAGE_KEY_FIELD_CONFIG_DISPLAY = "Kafka message key field.";
-    private static final String DEFAULT_MESSAGE_KEY_FIELD = "id"; // TODO: should we use pk instead?
+    private static final String DEFAULT_MESSAGE_KEY_FIELD = "id";
 
     private final CosmosSourceContainersConfig containersConfig;
     private final CosmosMetadataConfig metadataConfig;
