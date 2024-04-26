@@ -26,7 +26,7 @@ public class CosmosClientStore {
         ACTIVE_DIRECTORY_ENDPOINT_MAP.put(CosmosAzureEnvironment.AZURE_GERMANY, "https://login.microsoftonline.de/");
     }
 
-    public static CosmosAsyncClient getCosmosClient(CosmosAccountConfig accountConfig) {
+    public static CosmosAsyncClient getCosmosClient(CosmosAccountConfig accountConfig, String sourceName) {
         if (accountConfig == null) {
             return null;
         }
@@ -38,7 +38,7 @@ public class CosmosClientStore {
                 new ThrottlingRetryOptions()
                     .setMaxRetryAttemptsOnThrottledRequests(Integer.MAX_VALUE)
                     .setMaxRetryWaitTime(Duration.ofSeconds((Integer.MAX_VALUE / 1000) - 1)))
-            .userAgentSuffix(getUserAgentSuffix(accountConfig));
+            .userAgentSuffix(getUserAgentSuffix(accountConfig, sourceName));
 
         if (accountConfig.isUseGatewayMode()) {
             cosmosClientBuilder.gatewayMode(new GatewayConnectionConfig().setMaxConnectionPoolSize(10000));
@@ -63,11 +63,16 @@ public class CosmosClientStore {
         return cosmosClientBuilder.buildAsyncClient();
     }
 
-    private static String getUserAgentSuffix(CosmosAccountConfig accountConfig) {
-        if (StringUtils.isNotEmpty(accountConfig.getApplicationName())) {
-            return KafkaCosmosConstants.USER_AGENT_SUFFIX + "|" + accountConfig.getApplicationName();
+    private static String getUserAgentSuffix(CosmosAccountConfig accountConfig, String sourceName) {
+        String userAgentSuffix = KafkaCosmosConstants.USER_AGENT_SUFFIX;
+        if (StringUtils.isNotEmpty(sourceName)) {
+            userAgentSuffix += "|" + sourceName;
         }
 
-        return KafkaCosmosConstants.USER_AGENT_SUFFIX;
+        if (StringUtils.isNotEmpty(accountConfig.getApplicationName())) {
+            userAgentSuffix += "|" + accountConfig.getApplicationName();
+        }
+
+        return userAgentSuffix;
     }
 }
