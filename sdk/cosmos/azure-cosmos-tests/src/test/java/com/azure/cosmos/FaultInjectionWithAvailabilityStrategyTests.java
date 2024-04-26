@@ -5277,7 +5277,9 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
         if (nonIdempotentWriteRetriesEnabled != null) {
             builder.nonIdempotentWriteRetryPolicy(
-                nonIdempotentWriteRetriesEnabled, true);
+                new NonIdempotentWriteRetryOptions()
+                    .setEnabled(nonIdempotentWriteRetriesEnabled)
+                    .setTrackingIdUsage(true));
         }
 
         if (endToEndOperationLatencyPolicyConfig != null) {

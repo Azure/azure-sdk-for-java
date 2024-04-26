@@ -39,6 +39,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 import static com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Helper class to build {@link CosmosAsyncClient} and {@link CosmosClient}
@@ -730,26 +731,16 @@ public class CosmosClientBuilder implements
      * to be carefully reviewed and tests - which is wht retries for patch can only be enabled on request options
      * - any CosmosClient wide configuration will be ignored.
      * <br/>
-     * Bulk/Delete by PK/Transactional Batch/Stroed Procedure execution: No automatic retries are supported.
-     * @param nonIdempotentWriteRetriesEnabled  a flag indicating whether the SDK should enable automatic retries for
-     * an operation when idempotency can't be guaranteed because for the previous attempt a request has been sent
-     * on the network.
-     * @param useTrackingIdPropertyForCreateAndReplace a flag indicating whether write operations can use the
-     * trackingId system property '/_trackingId' to allow identification of conflicts and pre-condition failures due
-     * to retries. If enabled, each document being created or replaced will have an additional '/_trackingId' property
-     * for which the value will be updated by the SDK. If it is not desired to add this new json property (for example
-     * due to the RU-increase based on the payload size or because it causes documents to exceed the max payload size
-     * upper limit), the usage of this system property can be disabled by setting this parameter to false. This means
-     * there could be a higher level of 409/312 due to retries - and applications would need to handle them gracefully
-     * on their own.
+     * Bulk/Delete by PK/Transactional Batch/Stored Procedure execution: No automatic retries are supported.
+     * @param options the options controlling whether non-idempotent write operations should be retried and whether
+     * trackingIds can be used.
      * @return the CosmosItemRequestOptions
      */
-    public CosmosClientBuilder nonIdempotentWriteRetryPolicy(
-        boolean nonIdempotentWriteRetriesEnabled,
-        boolean useTrackingIdPropertyForCreateAndReplace) {
+    public CosmosClientBuilder nonIdempotentWriteRetryPolicy(NonIdempotentWriteRetryOptions options) {
+        checkNotNull(options, "Argument 'options' must not be null.");
 
-        if (nonIdempotentWriteRetriesEnabled) {
-            if (useTrackingIdPropertyForCreateAndReplace) {
+        if (options.isEnabled()) {
+            if (options.isTrackingIdUsed()) {
                 this.writeRetryPolicy = WriteRetryPolicy.WITH_TRACKING_ID;
             } else {
                 this.writeRetryPolicy = WriteRetryPolicy.WITH_RETRIES;
@@ -757,6 +748,7 @@ public class CosmosClientBuilder implements
         } else {
             this.writeRetryPolicy = WriteRetryPolicy.DISABLED;
         }
+
         return this;
     }
 
@@ -1067,16 +1059,16 @@ public class CosmosClientBuilder implements
      * Sets a custom serializer that should be used for conversion between POJOs and Json payload stored in the
      * Cosmos DB service. The custom serializer can also be specified in request options. If defined here and
      * in request options the serializer defined in request options will be used.
-     * @param serializer the custom serialzier to be used for payload transformations
+     * @param customItemSerializer the custom serializer to be used for item payload transformations
      * @return current CosmosClientBuilder
      */
-    public CosmosClientBuilder customSerializer(CosmosItemSerializer serializer) {
-        this.defaultCustomSerializer = serializer;
+    public CosmosClientBuilder customItemSerializer(CosmosItemSerializer customItemSerializer) {
+        this.defaultCustomSerializer = customItemSerializer;
 
         return this;
     }
 
-    CosmosItemSerializer getCustomSerializer() {
+    CosmosItemSerializer getCustomItemSerializer() {
         return this.defaultCustomSerializer;
     }
 
@@ -1319,7 +1311,7 @@ public class CosmosClientBuilder implements
 
                 @Override
                 public CosmosItemSerializer getDefaultCustomSerializer(CosmosClientBuilder builder) {
-                    return builder.getCustomSerializer();
+                    return builder.getCustomItemSerializer();
                 }
             });
     }

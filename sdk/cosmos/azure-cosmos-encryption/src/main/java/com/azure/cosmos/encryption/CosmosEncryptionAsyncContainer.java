@@ -488,7 +488,7 @@ public final class CosmosEncryptionAsyncContainer {
 
         Mono<CosmosItemResponse<byte[]>> responseMessageMono = this.readItemHelper(id, partitionKey, options, false);
         CosmosItemSerializer effectiveItemSerializer =
-            cosmosEncryptionAsyncClient.getEffectiveItemSerializer(options.getCustomSerializer());
+            cosmosEncryptionAsyncClient.getEffectiveItemSerializer(options.getCustomItemSerializer());
 
         return responseMessageMono.publishOn(encryptionScheduler).flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
             this.encryptionProcessor.decrypt(
@@ -729,11 +729,11 @@ public final class CosmosEncryptionAsyncContainer {
 
         setRequestHeaders(requestOptions);
         CosmosItemSerializer effectiveItemSerializer =
-            cosmosEncryptionAsyncClient.getEffectiveItemSerializer(requestOptions.getCustomSerializer());
+            cosmosEncryptionAsyncClient.getEffectiveItemSerializer(requestOptions.getCustomItemSerializer());
         CosmosPatchItemRequestOptions requestOptionsWithDefaultSerializer = requestOptions != null
             ? (CosmosPatchItemRequestOptions)cosmosItemRequestOptionsAccessor
                 .clonePatchItemRequestOptions(requestOptions)
-                .setCustomSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER)
+                .setCustomItemSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER)
             : new CosmosPatchItemRequestOptions();
         return this.encryptionProcessor.initEncryptionSettingsIfNotInitializedAsync()
             .thenReturn(this.encryptionProcessor.getEncryptionSettings())
@@ -784,7 +784,7 @@ public final class CosmosEncryptionAsyncContainer {
 
     CosmosItemSerializer getEffectiveItemSerializer(CosmosItemRequestOptions requestOptions) {
         return getEffectiveItemSerializer(
-            requestOptions != null ? requestOptions.getCustomSerializer() : null);
+            requestOptions != null ? requestOptions.getCustomItemSerializer() : null);
     }
 
     CosmosItemSerializer getEffectiveItemSerializer(CosmosItemSerializer requestLevelItemSerializer) {
@@ -848,7 +848,7 @@ public final class CosmosEncryptionAsyncContainer {
                                                              boolean isRetry) {
         this.setRequestHeaders(requestOptions);
         CosmosItemSerializer effectiveItemSerializer =
-            cosmosEncryptionAsyncClient.getEffectiveItemSerializer(requestOptions.getCustomSerializer());
+            cosmosEncryptionAsyncClient.getEffectiveItemSerializer(requestOptions.getCustomItemSerializer());
         return this.encryptionProcessor.encrypt(streamPayload)
             .flatMap(encryptedPayload -> this.container.createItem(
                 encryptedPayload,
@@ -880,13 +880,13 @@ public final class CosmosEncryptionAsyncContainer {
                                                              boolean isRetry) {
         this.setRequestHeaders(requestOptions);
         CosmosItemSerializer effectiveItemSerializer =
-            cosmosEncryptionAsyncClient.getEffectiveItemSerializer(requestOptions.getCustomSerializer());
+            cosmosEncryptionAsyncClient.getEffectiveItemSerializer(requestOptions.getCustomItemSerializer());
 
         // The actual replace happens on the already encrypted document
         // so any custom serialization/deserialization happens here in the encryption wrapper
         CosmosItemRequestOptions requestOptionsWithDefaultSerializer = ModelBridgeInternal
             .clone(requestOptions)
-            .setCustomSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER);
+            .setCustomItemSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER);
 
         AtomicReference<PartitionKey> encryptedPK = new AtomicReference<>();
         Mono<byte[]> encryptedPayloadMono =
@@ -930,13 +930,13 @@ public final class CosmosEncryptionAsyncContainer {
         this.setRequestHeaders(requestOptions);
 
         CosmosItemSerializer effectiveItemSerializer =
-            cosmosEncryptionAsyncClient.getEffectiveItemSerializer(requestOptions.getCustomSerializer());
+            cosmosEncryptionAsyncClient.getEffectiveItemSerializer(requestOptions.getCustomItemSerializer());
 
         // The actual replace happens on the already encrypted document
         // so any custom serialization/deserialization happens her in the encryption wrapper
         CosmosItemRequestOptions requestOptionsWithDefaultSerializer = ModelBridgeInternal
             .clone(requestOptions)
-            .setCustomSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER);
+            .setCustomItemSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER);
 
         return this.encryptionProcessor.encrypt(streamPayload)
             .flatMap(encryptedPayload -> this.container.upsertItem(
@@ -970,13 +970,13 @@ public final class CosmosEncryptionAsyncContainer {
         this.setRequestHeaders(requestOptions);
 
         CosmosItemSerializer effectiveItemSerializer =
-            cosmosEncryptionAsyncClient.getEffectiveItemSerializer(requestOptions.getCustomSerializer());
+            cosmosEncryptionAsyncClient.getEffectiveItemSerializer(requestOptions.getCustomItemSerializer());
 
         // The actual replace happens on the already encrypted document
         // so any custom serialization/deserialization happens her in the encryption wrapper
         CosmosItemRequestOptions requestOptionsWithDefaultSerializer = ModelBridgeInternal
             .clone(requestOptions)
-            .setCustomSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER);
+            .setCustomItemSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER);
 
         AtomicReference<PartitionKey> encryptedPK = new AtomicReference<>();
         Mono<byte[]> encryptedPayloadMono = this.encryptionProcessor.initEncryptionSettingsIfNotInitializedAsync()
@@ -1020,7 +1020,7 @@ public final class CosmosEncryptionAsyncContainer {
                                                              boolean isRetry) {
         this.setRequestHeaders(requestOptions);
         CosmosItemSerializer effectiveItemSerializer =
-            cosmosEncryptionAsyncClient.getEffectiveItemSerializer(requestOptions.getCustomSerializer());
+            cosmosEncryptionAsyncClient.getEffectiveItemSerializer(requestOptions.getCustomItemSerializer());
         AtomicReference<PartitionKey> encryptedPK = new AtomicReference<>();
         AtomicReference<String> encryptedId = new AtomicReference<>();
         Mono<byte[]> encryptedPayloadMono = this.encryptionProcessor.initEncryptionSettingsIfNotInitializedAsync()
@@ -1038,7 +1038,7 @@ public final class CosmosEncryptionAsyncContainer {
         // so any custom serialization/deserialization happens her in the encryption wrapper
         CosmosItemRequestOptions requestOptionsWithDefaultSerializer = ModelBridgeInternal
             .clone(requestOptions)
-            .setCustomSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER);
+            .setCustomItemSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER);
 
         return encryptedPayloadMono
             .flatMap(encryptedPayload -> this.container.replaceItem(
@@ -1073,7 +1073,7 @@ public final class CosmosEncryptionAsyncContainer {
 
         CosmosItemSerializer effectiveSerializer = this
             .getCosmosEncryptionAsyncClient()
-            .getEffectiveItemSerializer(options != null ? options.getCustomSerializer(): null);
+            .getEffectiveItemSerializer(options != null ? options.getCustomItemSerializer(): null);
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             AtomicBoolean shouldRetry = new AtomicBoolean(!isRetry);
             Transformer<T> transformer = new CosmosEncryptionQueryTransformer<T>(
@@ -1125,7 +1125,7 @@ public final class CosmosEncryptionAsyncContainer {
 
         CosmosQueryRequestOptions finalOptions = setRequestHeaders(cosmosQueryRequestOptionsAccessor
             .clone(queryRequestOptions)
-            .setCustomSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER));
+            .setCustomItemSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER));
 
         return transformer.transform(
             cosmosAsyncContainerAccessor.queryItemsInternalFunc(
@@ -1145,7 +1145,7 @@ public final class CosmosEncryptionAsyncContainer {
 
         CosmosChangeFeedRequestOptions finalOptions = setRequestHeaders(
             cosmosChangeFeedRequestOptionsAccessor.clone(changeFeedRequestOptions)
-                .setCustomSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER));
+                .setCustomItemSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER));
         getEffectiveCosmosChangeFeedRequestOptions(pagedFluxOptions, finalOptions);
 
         return transformer.transform(
@@ -1166,7 +1166,7 @@ public final class CosmosEncryptionAsyncContainer {
 
         CosmosQueryRequestOptions finalOptions = setRequestHeaders(cosmosQueryRequestOptionsAccessor
             .clone(options)
-            .setCustomSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER));
+            .setCustomItemSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER));
 
         return transformer.transform(
             cosmosAsyncContainerAccessor.queryItemsInternalFuncWithMonoSqlQuerySpec(
@@ -1185,7 +1185,7 @@ public final class CosmosEncryptionAsyncContainer {
 
         CosmosItemSerializer effectiveSerializer = this
             .getCosmosEncryptionAsyncClient()
-            .getEffectiveItemSerializer(options != null ? options.getCustomSerializer() : null);
+            .getEffectiveItemSerializer(options != null ? options.getCustomItemSerializer() : null);
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             AtomicBoolean shouldRetry = new AtomicBoolean(!isRetry);
 
@@ -1238,7 +1238,7 @@ public final class CosmosEncryptionAsyncContainer {
 
         CosmosItemSerializer effectiveSerializer = this
             .getCosmosEncryptionAsyncClient()
-            .getEffectiveItemSerializer(options != null ? options.getCustomSerializer(): null);
+            .getEffectiveItemSerializer(options != null ? options.getCustomItemSerializer(): null);
 
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             AtomicBoolean shouldRetry = new AtomicBoolean(!isRetry);
@@ -1351,7 +1351,7 @@ public final class CosmosEncryptionAsyncContainer {
             .orElse(new CosmosBatchRequestOptions());
 
         final CosmosItemSerializer effectiveItemSerializer = this
-            .getEffectiveItemSerializer(cosmosBatchRequestOptions.getCustomSerializer());
+            .getEffectiveItemSerializer(cosmosBatchRequestOptions.getCustomItemSerializer());
 
         List<Mono<ItemBatchOperation<?>>> monoList = new ArrayList<>();
         for (ItemBatchOperation<?> itemBatchOperation : cosmosBatchAccessor.getOperationsInternal(cosmosBatch)) {
@@ -1417,7 +1417,7 @@ public final class CosmosEncryptionAsyncContainer {
 
         CosmosBatchRequestOptions batchRequestOptionsWithDefaultSerializer = cosmosBatchRequestOptionsAccessor
             .clone(cosmosBatchRequestOptions)
-            .setCustomSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER);
+            .setCustomItemSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER);
 
         return encryptedOperationListMono.flatMap(itemBatchOperations -> {
             cosmosBatchAccessor.getOperationsInternal(encryptedCosmosBatch).addAll(itemBatchOperations);
@@ -1555,7 +1555,7 @@ public final class CosmosEncryptionAsyncContainer {
             .orElse(new CosmosBulkExecutionOptions());
 
         CosmosItemSerializer effectiveItemSerializer =
-            this.getEffectiveItemSerializer(cosmosBulkExecutionOptions.getCustomSerializer());
+            this.getEffectiveItemSerializer(cosmosBulkExecutionOptions.getCustomItemSerializer());
         Flux<CosmosItemOperation> operationFlux = operations.flatMap(cosmosItemOperation -> {
             Mono<CosmosItemOperation> cosmosItemOperationMono = null;
             if (cosmosItemOperation.getItem() != null) {
@@ -1614,7 +1614,7 @@ public final class CosmosEncryptionAsyncContainer {
 
         CosmosBulkExecutionOptions executionOptionsWithDefaultSerializer = cosmosBulkExecutionOptionsAccessor
             .clone(cosmosBulkExecutionOptions)
-            .setCustomSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER);
+            .setCustomItemSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER);
 
         return executeBulkOperationsHelper(
             operationFlux, executionOptionsWithDefaultSerializer,  effectiveItemSerializer);
