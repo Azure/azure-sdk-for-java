@@ -175,6 +175,7 @@ extends:
       - name: azure-cosmos-kafka-connect
         groupId: com.azure.cosmos.kafka
         safeName: azurecosmoskafkaconnect
+        uberJar: true
         skipPublishDocGithubIo: true
         skipPublishDocMs: true
         releaseInBatch: ${{ parameters.release_azurecosmoskafka }}
