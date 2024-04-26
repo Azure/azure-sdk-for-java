@@ -7,12 +7,13 @@ import reactor.test.StepVerifier;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class OpenAIServerSentEventsTest {
 
     @Test
-    public void eventsEmissionCount() {
+    public void eventsEmissionCountWithCarriageReturn() {
         BinaryData testFile = BinaryData.fromFile(AssistantsClientTestBase.openResourceFile("create_thread_run.dump"));
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testFile.toFluxByteBuffer());
 
@@ -21,9 +22,7 @@ public class OpenAIServerSentEventsTest {
         StepVerifier.create(
             openAIServerSentEvents.getEvents()
                 .doOnNext(event -> {
-                    System.out.println("Event number: " + i.getAndIncrement());
-                    System.out.println(BinaryData.fromObject(event));
-                    System.out.println();
+                    assertFalse(BinaryData.fromObject(event).toString().isBlank());
                 })
             ).expectNextCount(30)
             .verifyComplete();

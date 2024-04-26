@@ -19,6 +19,7 @@ import com.azure.ai.openai.assistants.implementation.models.UpdateMessageRequest
 import com.azure.ai.openai.assistants.implementation.models.UpdateRunRequest;
 import com.azure.ai.openai.assistants.implementation.models.UpdateThreadRequest;
 import com.azure.ai.openai.assistants.implementation.models.UploadFileRequest;
+import com.azure.ai.openai.assistants.implementation.streaming.OpenAIServerSentEvents;
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantDeletionStatus;
@@ -36,6 +37,7 @@ import com.azure.ai.openai.assistants.models.MessageFile;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
 import com.azure.ai.openai.assistants.models.RunStep;
+import com.azure.ai.openai.assistants.models.StreamUpdate;
 import com.azure.ai.openai.assistants.models.ThreadDeletionStatus;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
@@ -52,12 +54,16 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+
+import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import static com.azure.ai.openai.assistants.implementation.OpenAIUtils.addAzureVersionToRequestOptions;
 import com.azure.ai.openai.assistants.implementation.accesshelpers.PageableListAccessHelper;
 import com.azure.ai.openai.assistants.models.PageableList;
+import com.azure.core.util.IterableStream;
+import reactor.core.publisher.Flux;
 
 /**
  * Initializes a new instance of the synchronous AssistantsClient type.
@@ -2315,6 +2321,19 @@ public final class AssistantsClient {
             .toObject(ThreadRun.class);
     }
 
+    // TODO add documentation
+    public IterableStream<StreamUpdate> createThreadAndRunStream(CreateAndRunThreadOptions createAndRunThreadOptions) {
+        RequestOptions requestOptions = new RequestOptions();
+        createAndRunThreadOptions.setStream(true);
+
+        Flux<ByteBuffer> responseStream = createThreadAndRunWithResponse(BinaryData.fromObject(createAndRunThreadOptions), requestOptions)
+            .getValue().toFluxByteBuffer();
+
+        OpenAIServerSentEvents eventStream = new OpenAIServerSentEvents(responseStream);
+        return new IterableStream<>(eventStream.getEvents());
+
+    }
+
     /**
      * Gets a single run step from a thread run.
      *
@@ -3057,7 +3076,7 @@ public final class AssistantsClient {
     /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * byte[]
      * }</pre>

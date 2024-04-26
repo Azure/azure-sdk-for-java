@@ -26,7 +26,7 @@ public final class OpenAIServerSentEvents {
     private final StreamTypeFactory streamTypeFactory = new StreamTypeFactory();
 
     // Server sent events are divided by 2 line breaks, therefore we need to account for 4 bytes containing 2 CRLF characters.
-    private static final int LINE_BREAK_CHAR_COUNT_THRESHOLD = 4;
+    private static final int LINE_BREAK_CHAR_COUNT_THRESHOLD = 2;
 
 
     private final Flux<ByteBuffer> source;
@@ -56,7 +56,7 @@ public final class OpenAIServerSentEvents {
 
                 for (byte currentByte : byteArray) {
                     outStream.write(currentByte);
-                    if (isLineBreakCharacter(currentByte)) {
+                    if (isByteLineFeed(currentByte)) {
                         lineBreakCharsEncountered++;
 
                         // We are looking for 2 line breaks to signify the end of a server sent event.
@@ -71,7 +71,9 @@ public final class OpenAIServerSentEvents {
                             outStream = new ByteArrayOutputStream();
                         }
                     } else {
-                        lineBreakCharsEncountered = 0;
+                        if (!isByteCarriageReturn(currentByte)) {
+                            lineBreakCharsEncountered = 0;
+                        }
                     }
                 }
 
@@ -90,13 +92,23 @@ public final class OpenAIServerSentEvents {
     }
 
     /**
-     * Determines if character is either a line feed (0xA) or carriage return (0xD).
+     * Determines if character is a line feed (0xA).
      *
      * @param character The character to check.
-     * @return True if character is a line break character, false otherwise.
+     * @return True if character is a line feed character, false otherwise.
      */
-    private boolean isLineBreakCharacter(byte character) {
-        return character == 0xA || character == 0xD;
+    private boolean isByteLineFeed(byte character) {
+        return character == 0xA;
+    }
+
+    /**
+     * Determines if character is a carriage return (0xD).
+     *
+     * @param character The character to check.
+     * @return True if character is a carriage return character, false otherwise.
+     */
+    private boolean isByteCarriageReturn(byte character) {
+        return character == 0xD;
     }
 
     /**
@@ -108,7 +120,11 @@ public final class OpenAIServerSentEvents {
      * @throws IllegalStateException If the current event contains a server side error.
      */
     private void handleCurrentEvent(String currentEvent, List<StreamUpdate> values) throws JsonEOFException, IllegalStateException, IOException {
-        String[] lines = currentEvent.split("\r\n");
+        if (currentEvent.isEmpty()) {
+            return;
+        }
+
+        String[] lines = currentEvent.split("\n");
 
         String eventName = lines[0].substring(6).trim(); // removing "event:" prefix
         String eventJson = lines[1].substring(5).trim(); // removing "data:" prefix
