@@ -68,8 +68,9 @@ public final class OpenAIServerSentEvents {
                         }
                     } else {
                         // In some cases line breaks can contain both the line feed and carriage return characters.
-                        // We want to reset the count only if a consecutive character isn't a carriage return.
-                        // That is the assumption we are making with this implementation.
+                        // We don't want to reset the line break count if we encounter a carriage return character.
+                        // We are assuming that line feeds and carriage returns, if both present, are always paired.
+                        // With this assumption, we are able to operate when carriage returns aren't present in the input also.
                         if (!isByteCarriageReturn(currentByte)) {
                             lineBreakCharsEncountered = 0;
                         }
