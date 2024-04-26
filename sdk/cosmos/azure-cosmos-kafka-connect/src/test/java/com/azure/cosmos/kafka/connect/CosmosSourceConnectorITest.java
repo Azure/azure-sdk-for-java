@@ -85,7 +85,7 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
         kafkaCosmosConnectContainer.createTopic(topicName, 1);
 
         CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConnectorConfig);
-        CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sourceConfig.getAccountConfig());
+        CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sourceConfig.getAccountConfig(), "testKafkaConnector");
         CosmosAsyncContainer container = client.getDatabase(databaseName).getContainer(singlePartitionContainerName);
         String containerRid = container.read().block().getProperties().getResourceId();
 

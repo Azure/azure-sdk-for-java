@@ -5,6 +5,7 @@ package com.azure.cosmos.kafka.connect.implementation.sink;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
@@ -36,7 +37,7 @@ public class CosmosSinkTask extends SinkTask {
     public void start(Map<String, String> props) {
         LOGGER.info("Starting the kafka cosmos sink task");
         this.sinkTaskConfig = new CosmosSinkTaskConfig(props);
-        this.cosmosClient = CosmosClientStore.getCosmosClient(this.sinkTaskConfig.getAccountConfig());
+        this.cosmosClient = CosmosClientStore.getCosmosClient(this.sinkTaskConfig.getAccountConfig(), this.sinkTaskConfig.getTaskId());
         this.throughputControlClient = this.getThroughputControlCosmosClient();
         this.sinkRecordTransformer = new SinkRecordTransformer(this.sinkTaskConfig);
 
@@ -59,7 +60,9 @@ public class CosmosSinkTask extends SinkTask {
         if (this.sinkTaskConfig.getThroughputControlConfig().isThroughputControlEnabled()
             && this.sinkTaskConfig.getThroughputControlConfig().getThroughputControlAccountConfig() != null) {
             // throughput control is using a different database account config
-            return CosmosClientStore.getCosmosClient(this.sinkTaskConfig.getThroughputControlConfig().getThroughputControlAccountConfig());
+            return CosmosClientStore.getCosmosClient(
+                this.sinkTaskConfig.getThroughputControlConfig().getThroughputControlAccountConfig(),
+                this.sinkTaskConfig.getTaskId());
         } else {
             return this.cosmosClient;
         }

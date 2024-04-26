@@ -62,7 +62,7 @@ public class CosmosSourceTask extends SourceTask {
         LOGGER.info("Creating the cosmos client");
 
         // TODO[GA]: optimize the client creation, client metadata cache?
-        this.cosmosClient = CosmosClientStore.getCosmosClient(this.taskConfig.getAccountConfig());
+        this.cosmosClient = CosmosClientStore.getCosmosClient(this.taskConfig.getAccountConfig(), this.taskConfig.getTaskId());
         this.throughputControlCosmosClient = this.getThroughputControlCosmosClient();
     }
 
@@ -70,7 +70,9 @@ public class CosmosSourceTask extends SourceTask {
         if (this.taskConfig.getThroughputControlConfig().isThroughputControlEnabled()
             && this.taskConfig.getThroughputControlConfig().getThroughputControlAccountConfig() != null) {
             // throughput control is using a different database account config
-            return CosmosClientStore.getCosmosClient(this.taskConfig.getThroughputControlConfig().getThroughputControlAccountConfig());
+            return CosmosClientStore.getCosmosClient(
+                this.taskConfig.getThroughputControlConfig().getThroughputControlAccountConfig(),
+                this.taskConfig.getTaskId());
         } else {
             return this.cosmosClient;
         }

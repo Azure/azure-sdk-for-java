@@ -77,7 +77,7 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
         kafkaCosmosConnectContainer.createTopic(topicName, 1);
 
         CosmosSinkConfig sinkConfig = new CosmosSinkConfig(sinkConnectorConfig);
-        CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sinkConfig.getAccountConfig());
+        CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sinkConfig.getAccountConfig(), "testKafkaConnector");
         CosmosAsyncContainer container = client.getDatabase(databaseName).getContainer(singlePartitionContainerName);
 
         String connectorName = "simpleTest-" + UUID.randomUUID();
@@ -148,7 +148,7 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
         kafkaCosmosConnectContainer.createTopic(topicName, 1);
 
         CosmosSinkConfig sinkConfig = new CosmosSinkConfig(sinkConnectorConfig);
-        CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sinkConfig.getAccountConfig());
+        CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sinkConfig.getAccountConfig(), "testKafkaConnector");
         CosmosAsyncContainer container = client.getDatabase(databaseName).getContainer(singlePartitionContainerName);
 
         String connectorName = "simpleTest-" + UUID.randomUUID();
@@ -229,7 +229,7 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
         kafkaCosmosConnectContainer.createTopic(topicName, 1);
 
         CosmosSinkConfig sinkConfig = new CosmosSinkConfig(sinkConnectorConfig);
-        CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sinkConfig.getAccountConfig());
+        CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sinkConfig.getAccountConfig(), "testKafkaConnector");
         CosmosAsyncContainer container = client.getDatabase(databaseName).getContainer(singlePartitionContainerName);
 
         String connectorName = "simpleTest-" + UUID.randomUUID();
@@ -301,7 +301,7 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
         kafkaCosmosConnectContainer.createTopic(topicName, 1);
 
         CosmosSinkConfig sinkConfig = new CosmosSinkConfig(sinkConnectorConfig);
-        CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sinkConfig.getAccountConfig());
+        CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sinkConfig.getAccountConfig(), "testKafkaConnector");
         CosmosAsyncContainer container = client.getDatabase(databaseName).getContainer(singlePartitionContainerName);
 
         String connectorName = "simpleTest-" + UUID.randomUUID();

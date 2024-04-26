@@ -21,7 +21,7 @@ public class ContainersMetadataTopicPartition {
         checkArgument(StringUtils.isNotEmpty(databaseName), "Argument 'databaseName' can not be null");
 
         this.databaseName = databaseName;
-        this.connectorName = StringUtils.isEmpty(connectorName) ? StringUtils.EMPTY : connectorName;
+        this.connectorName = StringUtils.isEmpty(connectorName) ? "EMPTY" : connectorName;
     }
 
     public String getDatabaseName() {

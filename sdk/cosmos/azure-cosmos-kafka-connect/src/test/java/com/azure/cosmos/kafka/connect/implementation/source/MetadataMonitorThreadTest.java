@@ -50,7 +50,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
             "requestTaskReconfigurationTest",
             false,
             new ArrayList<String>());
-        this.client = CosmosClientStore.getCosmosClient(accountConfig);
+        this.client = CosmosClientStore.getCosmosClient(accountConfig, "testKafkaConnector");
     }
 
     @AfterClass(groups = { "kafka", "kafka-emulator" }, timeOut = TIMEOUT)

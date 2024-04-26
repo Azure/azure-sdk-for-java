@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.apachecommons.lang.RandomUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
@@ -69,12 +70,12 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
     public void start(Map<String, String> props) {
         LOGGER.info("Starting the kafka cosmos source connector");
         this.config = new CosmosSourceConfig(props);
-        this.cosmosClient = CosmosClientStore.getCosmosClient(this.config.getAccountConfig());
+        this.connectorName = props.containsKey(CONNECTOR_NAME) ? props.get(CONNECTOR_NAME).toString() : "EMPTY";
+        this.cosmosClient = CosmosClientStore.getCosmosClient(this.config.getAccountConfig(), connectorName);
 
         // IMPORTANT: sequence matters
         this.kafkaOffsetStorageReader = new MetadataKafkaStorageManager(this.context().offsetStorageReader());
         this.metadataReader = this.getMetadataReader();
-        this.connectorName = props.containsKey(CONNECTOR_NAME) ? props.get(CONNECTOR_NAME).toString() : Strings.Emtpy;
         this.monitorThread = new MetadataMonitorThread(
             connectorName,
             this.config.getContainersConfig(),
@@ -205,6 +206,11 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
             Map<String, String> taskConfigs = this.config.originalsStrings();
             taskConfigs.putAll(
                 CosmosSourceTaskConfig.getFeedRangeTaskUnitsConfigMap(feedRangeTaskUnits));
+            taskConfigs.put(CosmosSourceTaskConfig.SOURCE_TASK_ID,
+                String.format("%s-%s-%d",
+                    "source",
+                    this.connectorName,
+                    RandomUtils.nextInt(1, 9999999)));
             feedRangeTaskConfigs.add(taskConfigs);
         });
 

@@ -80,4 +80,8 @@ public class KafkaCosmosReflectionUtils {
     public static void setConnectorName(CosmosSourceConnector sourceConnector, String connectorName) {
         set(sourceConnector, connectorName,"connectorName");
     }
+
+    public static void setConnectorName(CosmosSinkConnector sinkConnector, String connectorName) {
+        set(sinkConnector, connectorName,"connectorName");
+    }
 }

@@ -3,9 +3,13 @@
 
 package com.azure.cosmos.kafka.connect;
 
+import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.apachecommons.lang.RandomUtils;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkConfig;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkTask;
+import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkTaskConfig;
+import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceTaskConfig;
 import org.apache.kafka.common.config.Config;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.common.config.ConfigValue;
@@ -29,13 +33,16 @@ import static com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig.va
  */
 public final class CosmosSinkConnector extends SinkConnector {
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosSinkConnector.class);
+    private static final String CONNECTOR_NAME = "name";
 
     private CosmosSinkConfig sinkConfig;
+    private String connectorName;
 
     @Override
     public void start(Map<String, String> props) {
         LOGGER.info("Starting the kafka cosmos sink connector");
         this.sinkConfig = new CosmosSinkConfig(props);
+        this.connectorName = props.containsKey(CONNECTOR_NAME) ? props.get(CONNECTOR_NAME).toString() : "EMPTY";
     }
 
     @Override
@@ -48,7 +55,13 @@ public final class CosmosSinkConnector extends SinkConnector {
         LOGGER.info("Setting task configurations with maxTasks {}", maxTasks);
         List<Map<String, String>> configs = new ArrayList<>();
         for (int i = 0; i < maxTasks; i++) {
-            configs.add(this.sinkConfig.originalsStrings());
+            Map<String, String> taskConfigs = this.sinkConfig.originalsStrings();
+            taskConfigs.put(CosmosSinkTaskConfig.SINK_TASK_ID,
+                String.format("%s-%s-%d",
+                    "sink",
+                    this.connectorName,
+                    RandomUtils.nextInt(1, 9999999)));
+            configs.add(taskConfigs);
         }
 
         return configs;

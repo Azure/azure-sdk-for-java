@@ -45,7 +45,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
         sourceConfigMap.put("azure.cosmos.source.containers.includedList", containersIncludedList.toString());
 
         CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConfigMap);
-        CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sourceConfig.getAccountConfig());
+        CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sourceConfig.getAccountConfig(), "testKafkaConnector");
 
         // create a new container as we are going to trigger split as well, isolate the possible impact for other tests
         CosmosContainerProperties testContainer =
@@ -145,7 +145,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
         sourceConfigMap.put("azure.cosmos.source.containers.includedList", containersIncludedList.toString());
 
         CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConfigMap);
-        CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sourceConfig.getAccountConfig());
+        CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sourceConfig.getAccountConfig(), "testKafkaConnector");
 
         try {
             Map<String, String> taskConfigMap = sourceConfig.originalsStrings();
@@ -217,7 +217,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
         sourceConfigMap.put("azure.cosmos.throughputControl.globalControl.container.name", throughputControlContainerName);
 
         CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConfigMap);
-        CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sourceConfig.getAccountConfig());
+        CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sourceConfig.getAccountConfig(), "testKafkaConnector");
         CosmosAsyncContainer throughputControlContainer = client.getDatabase(databaseName).getContainer(throughputControlContainerName);
         CosmosContainerProperties singlePartitionContainer = getSinglePartitionContainer(client);
         try {

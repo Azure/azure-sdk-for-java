@@ -24,7 +24,7 @@ public class FeedRangesMetadataTopicPartition {
 
         this.databaseName = databaseName;
         this.containerRid = containerRid;
-        this.connectorName = StringUtils.isEmpty(connectorName) ? StringUtils.EMPTY : connectorName;
+        this.connectorName = StringUtils.isEmpty(connectorName) ? "EMPTY" : connectorName;
     }
 
     public String getDatabaseName() {
