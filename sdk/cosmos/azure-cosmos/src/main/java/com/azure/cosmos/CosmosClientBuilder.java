@@ -736,7 +736,7 @@ public class CosmosClientBuilder implements
      * trackingIds can be used.
      * @return the CosmosItemRequestOptions
      */
-    public CosmosClientBuilder nonIdempotentWriteRetryPolicy(NonIdempotentWriteRetryOptions options) {
+    public CosmosClientBuilder nonIdempotentWriteRetryOptions(NonIdempotentWriteRetryOptions options) {
         checkNotNull(options, "Argument 'options' must not be null.");
 
         if (options.isEnabled()) {

@@ -5276,10 +5276,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         }
 
         if (nonIdempotentWriteRetriesEnabled != null) {
-            builder.nonIdempotentWriteRetryPolicy(
+            builder.nonIdempotentWriteRetryOptions(
                 new NonIdempotentWriteRetryOptions()
                     .setEnabled(nonIdempotentWriteRetriesEnabled)
-                    .setTrackingIdUsage(true));
+                    .setTrackingIdUsed(true));
         }
 
         if (endToEndOperationLatencyPolicyConfig != null) {

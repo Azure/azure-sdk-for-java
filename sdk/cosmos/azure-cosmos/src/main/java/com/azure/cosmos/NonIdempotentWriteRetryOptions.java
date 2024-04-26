@@ -66,7 +66,7 @@ public final class NonIdempotentWriteRetryOptions {
      * @param useTrackingIdForCreateAndReplace
      * @return current options
      */
-    public NonIdempotentWriteRetryOptions setTrackingIdUsage(boolean useTrackingIdForCreateAndReplace) {
+    public NonIdempotentWriteRetryOptions setTrackingIdUsed(boolean useTrackingIdForCreateAndReplace) {
         this.useTrackingId = useTrackingIdForCreateAndReplace;
 
         return this;

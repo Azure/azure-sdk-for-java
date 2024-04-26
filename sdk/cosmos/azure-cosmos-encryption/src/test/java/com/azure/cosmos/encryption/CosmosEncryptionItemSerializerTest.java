@@ -125,10 +125,10 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
                         for (Object[] wrappedProvider : providersCurrentTestCase) {
                             CosmosClientBuilder clientBuilder = (CosmosClientBuilder) wrappedProvider[0];
                             clientBuilder.customItemSerializer(serializer);
-                            clientBuilder.nonIdempotentWriteRetryPolicy(
+                            clientBuilder.nonIdempotentWriteRetryOptions(
                                 new NonIdempotentWriteRetryOptions()
                                     .setEnabled(nonIdempotentWriteRetriesEnabled)
-                                    .setTrackingIdUsage(trackingIdUsageForWriteRetriesEnabled));
+                                    .setTrackingIdUsed(trackingIdUsageForWriteRetriesEnabled));
                         }
 
                         providers.addAll(providersCurrentTestCase);
