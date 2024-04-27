@@ -54,8 +54,9 @@ public final class DynamicsAXResourceDatasetTypeProperties {
      */
     public void validate() {
         if (path() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property path in model DynamicsAXResourceDatasetTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property path in model DynamicsAXResourceDatasetTypeProperties"));
         }
     }
 

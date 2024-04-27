@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.SapCloudForCustomerLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,21 @@ import java.util.Map;
 /**
  * Linked service for SAP Cloud for Customer.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = SapCloudForCustomerLinkedService.class,
+    visible = true)
 @JsonTypeName("SapCloudForCustomer")
 @Fluent
 public final class SapCloudForCustomerLinkedService extends LinkedService {
+    /*
+     * Type of linked service.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "SapCloudForCustomer";
+
     /*
      * SAP Cloud for Customer linked service properties.
      */
@@ -31,6 +43,16 @@ public final class SapCloudForCustomerLinkedService extends LinkedService {
      * Creates an instance of SapCloudForCustomerLinkedService class.
      */
     public SapCloudForCustomerLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -152,9 +174,9 @@ public final class SapCloudForCustomerLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Either encryptedCredential or username/password must
-     * be provided. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Either encryptedCredential or username/password must be
+     * provided. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -163,9 +185,9 @@ public final class SapCloudForCustomerLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Either encryptedCredential or username/password must
-     * be provided. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Either encryptedCredential or username/password must be
+     * provided. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SapCloudForCustomerLinkedService object itself.
@@ -187,8 +209,9 @@ public final class SapCloudForCustomerLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model SapCloudForCustomerLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model SapCloudForCustomerLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

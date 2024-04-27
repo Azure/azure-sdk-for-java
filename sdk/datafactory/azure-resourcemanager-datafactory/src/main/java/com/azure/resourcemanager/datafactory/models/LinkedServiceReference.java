@@ -107,8 +107,9 @@ public final class LinkedServiceReference {
      */
     public void validate() {
         if (referenceName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property referenceName in model LinkedServiceReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property referenceName in model LinkedServiceReference"));
         }
     }
 

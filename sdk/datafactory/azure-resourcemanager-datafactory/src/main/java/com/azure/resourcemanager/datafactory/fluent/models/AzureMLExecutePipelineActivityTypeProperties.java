@@ -31,39 +31,31 @@ public final class AzureMLExecutePipelineActivityTypeProperties {
     private Object version;
 
     /*
-     * Run history experiment name of the pipeline run. This information will be passed in the ExperimentName property
-     * of the published pipeline execution request. Type: string (or Expression with resultType string).
+     * Run history experiment name of the pipeline run. This information will be passed in the ExperimentName property of the published pipeline execution request. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "experimentName")
     private Object experimentName;
 
     /*
-     * Key,Value pairs to be passed to the published Azure ML pipeline endpoint. Keys must match the names of pipeline
-     * parameters defined in the published pipeline. Values will be passed in the ParameterAssignments property of the
-     * published pipeline execution request. Type: object with key value pairs (or Expression with resultType object).
+     * Key,Value pairs to be passed to the published Azure ML pipeline endpoint. Keys must match the names of pipeline parameters defined in the published pipeline. Values will be passed in the ParameterAssignments property of the published pipeline execution request. Type: object with key value pairs (or Expression with resultType object).
      */
     @JsonProperty(value = "mlPipelineParameters")
     private Object mlPipelineParameters;
 
     /*
-     * Dictionary used for changing data path assignments without retraining. Values will be passed in the
-     * dataPathAssignments property of the published pipeline execution request. Type: object (or Expression with
-     * resultType object).
+     * Dictionary used for changing data path assignments without retraining. Values will be passed in the dataPathAssignments property of the published pipeline execution request. Type: object (or Expression with resultType object).
      */
     @JsonProperty(value = "dataPathAssignments")
     private Object dataPathAssignments;
 
     /*
-     * The parent Azure ML Service pipeline run id. This information will be passed in the ParentRunId property of the
-     * published pipeline execution request. Type: string (or Expression with resultType string).
+     * The parent Azure ML Service pipeline run id. This information will be passed in the ParentRunId property of the published pipeline execution request. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "mlParentRunId")
     private Object mlParentRunId;
 
     /*
-     * Whether to continue execution of other steps in the PipelineRun if a step fails. This information will be passed
-     * in the continueOnStepFailure property of the published pipeline execution request. Type: boolean (or Expression
-     * with resultType boolean).
+     * Whether to continue execution of other steps in the PipelineRun if a step fails. This information will be passed in the continueOnStepFailure property of the published pipeline execution request. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "continueOnStepFailure")
     private Object continueOnStepFailure;
@@ -75,8 +67,8 @@ public final class AzureMLExecutePipelineActivityTypeProperties {
     }
 
     /**
-     * Get the mlPipelineId property: ID of the published Azure ML pipeline. Type: string (or Expression with
-     * resultType string).
+     * Get the mlPipelineId property: ID of the published Azure ML pipeline. Type: string (or Expression with resultType
+     * string).
      * 
      * @return the mlPipelineId value.
      */
@@ -85,8 +77,8 @@ public final class AzureMLExecutePipelineActivityTypeProperties {
     }
 
     /**
-     * Set the mlPipelineId property: ID of the published Azure ML pipeline. Type: string (or Expression with
-     * resultType string).
+     * Set the mlPipelineId property: ID of the published Azure ML pipeline. Type: string (or Expression with resultType
+     * string).
      * 
      * @param mlPipelineId the mlPipelineId value to set.
      * @return the AzureMLExecutePipelineActivityTypeProperties object itself.
@@ -141,9 +133,9 @@ public final class AzureMLExecutePipelineActivityTypeProperties {
     }
 
     /**
-     * Get the experimentName property: Run history experiment name of the pipeline run. This information will be
-     * passed in the ExperimentName property of the published pipeline execution request. Type: string (or Expression
-     * with resultType string).
+     * Get the experimentName property: Run history experiment name of the pipeline run. This information will be passed
+     * in the ExperimentName property of the published pipeline execution request. Type: string (or Expression with
+     * resultType string).
      * 
      * @return the experimentName value.
      */
@@ -152,9 +144,9 @@ public final class AzureMLExecutePipelineActivityTypeProperties {
     }
 
     /**
-     * Set the experimentName property: Run history experiment name of the pipeline run. This information will be
-     * passed in the ExperimentName property of the published pipeline execution request. Type: string (or Expression
-     * with resultType string).
+     * Set the experimentName property: Run history experiment name of the pipeline run. This information will be passed
+     * in the ExperimentName property of the published pipeline execution request. Type: string (or Expression with
+     * resultType string).
      * 
      * @param experimentName the experimentName value to set.
      * @return the AzureMLExecutePipelineActivityTypeProperties object itself.
@@ -216,8 +208,8 @@ public final class AzureMLExecutePipelineActivityTypeProperties {
 
     /**
      * Get the mlParentRunId property: The parent Azure ML Service pipeline run id. This information will be passed in
-     * the ParentRunId property of the published pipeline execution request. Type: string (or Expression with
-     * resultType string).
+     * the ParentRunId property of the published pipeline execution request. Type: string (or Expression with resultType
+     * string).
      * 
      * @return the mlParentRunId value.
      */
@@ -227,8 +219,8 @@ public final class AzureMLExecutePipelineActivityTypeProperties {
 
     /**
      * Set the mlParentRunId property: The parent Azure ML Service pipeline run id. This information will be passed in
-     * the ParentRunId property of the published pipeline execution request. Type: string (or Expression with
-     * resultType string).
+     * the ParentRunId property of the published pipeline execution request. Type: string (or Expression with resultType
+     * string).
      * 
      * @param mlParentRunId the mlParentRunId value to set.
      * @return the AzureMLExecutePipelineActivityTypeProperties object itself.
@@ -239,9 +231,9 @@ public final class AzureMLExecutePipelineActivityTypeProperties {
     }
 
     /**
-     * Get the continueOnStepFailure property: Whether to continue execution of other steps in the PipelineRun if a
-     * step fails. This information will be passed in the continueOnStepFailure property of the published pipeline
-     * execution request. Type: boolean (or Expression with resultType boolean).
+     * Get the continueOnStepFailure property: Whether to continue execution of other steps in the PipelineRun if a step
+     * fails. This information will be passed in the continueOnStepFailure property of the published pipeline execution
+     * request. Type: boolean (or Expression with resultType boolean).
      * 
      * @return the continueOnStepFailure value.
      */
@@ -250,9 +242,9 @@ public final class AzureMLExecutePipelineActivityTypeProperties {
     }
 
     /**
-     * Set the continueOnStepFailure property: Whether to continue execution of other steps in the PipelineRun if a
-     * step fails. This information will be passed in the continueOnStepFailure property of the published pipeline
-     * execution request. Type: boolean (or Expression with resultType boolean).
+     * Set the continueOnStepFailure property: Whether to continue execution of other steps in the PipelineRun if a step
+     * fails. This information will be passed in the continueOnStepFailure property of the published pipeline execution
+     * request. Type: boolean (or Expression with resultType boolean).
      * 
      * @param continueOnStepFailure the continueOnStepFailure value to set.
      * @return the AzureMLExecutePipelineActivityTypeProperties object itself.

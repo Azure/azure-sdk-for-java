@@ -130,15 +130,17 @@ public final class GitHubAccessTokenRequest {
      */
     public void validate() {
         if (gitHubAccessCode() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property gitHubAccessCode in model GitHubAccessTokenRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property gitHubAccessCode in model GitHubAccessTokenRequest"));
         }
         if (gitHubClientSecret() != null) {
             gitHubClientSecret().validate();
         }
         if (gitHubAccessTokenBaseUrl() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property gitHubAccessTokenBaseUrl in model GitHubAccessTokenRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property gitHubAccessTokenBaseUrl in model GitHubAccessTokenRequest"));
         }
     }
 

@@ -56,8 +56,8 @@ public final class DiagnosticResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the globalParameters property: Global parameters is an optional map which can be used to add key and value
-     * to request body to improve the diagnostics results.
+     * Get the globalParameters property: Global parameters is an optional map which can be used to add key and value to
+     * request body to improve the diagnostics results.
      * 
      * @return the globalParameters value.
      */
@@ -66,8 +66,8 @@ public final class DiagnosticResourceInner extends ProxyResource {
     }
 
     /**
-     * Set the globalParameters property: Global parameters is an optional map which can be used to add key and value
-     * to request body to improve the diagnostics results.
+     * Set the globalParameters property: Global parameters is an optional map which can be used to add key and value to
+     * request body to improve the diagnostics results.
      * 
      * @param globalParameters the globalParameters value to set.
      * @return the DiagnosticResourceInner object itself.

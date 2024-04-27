@@ -6,7 +6,11 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -15,33 +19,29 @@ import java.util.Map;
  * exists only when associated with an entity.
  */
 @Fluent
-public final class AtlasClassification {
+public final class AtlasClassification implements JsonSerializable<AtlasClassification> {
     /*
      * The attributes of the struct.
      */
     @Generated
-    @JsonProperty(value = "attributes")
     private Map<String, Object> attributes;
 
     /*
      * The name of the type.
      */
     @Generated
-    @JsonProperty(value = "typeName")
     private String typeName;
 
     /*
      * ETag for concurrency control.
      */
     @Generated
-    @JsonProperty(value = "lastModifiedTS")
     private String lastModifiedTS;
 
     /*
      * The GUID of the entity.
      */
     @Generated
-    @JsonProperty(value = "entityGuid")
     private String entityGuid;
 
     /*
@@ -49,21 +49,18 @@ public final class AtlasClassification {
      * removed.
      */
     @Generated
-    @JsonProperty(value = "entityStatus")
     private EntityStatus entityStatus;
 
     /*
      * Determines if propagations will be removed on entity deletion.
      */
     @Generated
-    @JsonProperty(value = "removePropagationsOnEntityDelete")
     private Boolean removePropagationsOnEntityDelete;
 
     /*
      * An array of time boundaries indicating validity periods.
      */
     @Generated
-    @JsonProperty(value = "validityPeriods")
     private List<TimeBoundary> validityPeriods;
 
     /**
@@ -186,8 +183,7 @@ public final class AtlasClassification {
     }
 
     /**
-     * Get the removePropagationsOnEntityDelete property: Determines if propagations will be removed on entity
-     * deletion.
+     * Get the removePropagationsOnEntityDelete property: Determines if propagations will be removed on entity deletion.
      * 
      * @return the removePropagationsOnEntityDelete value.
      */
@@ -197,8 +193,7 @@ public final class AtlasClassification {
     }
 
     /**
-     * Set the removePropagationsOnEntityDelete property: Determines if propagations will be removed on entity
-     * deletion.
+     * Set the removePropagationsOnEntityDelete property: Determines if propagations will be removed on entity deletion.
      * 
      * @param removePropagationsOnEntityDelete the removePropagationsOnEntityDelete value to set.
      * @return the AtlasClassification object itself.
@@ -229,5 +224,65 @@ public final class AtlasClassification {
     public AtlasClassification setValidityPeriods(List<TimeBoundary> validityPeriods) {
         this.validityPeriods = validityPeriods;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("attributes", this.attributes, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("typeName", this.typeName);
+        jsonWriter.writeStringField("lastModifiedTS", this.lastModifiedTS);
+        jsonWriter.writeStringField("entityGuid", this.entityGuid);
+        jsonWriter.writeStringField("entityStatus", this.entityStatus == null ? null : this.entityStatus.toString());
+        jsonWriter.writeBooleanField("removePropagationsOnEntityDelete", this.removePropagationsOnEntityDelete);
+        jsonWriter.writeArrayField("validityPeriods", this.validityPeriods,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AtlasClassification from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AtlasClassification if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AtlasClassification.
+     */
+    @Generated
+    public static AtlasClassification fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AtlasClassification deserializedAtlasClassification = new AtlasClassification();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("attributes".equals(fieldName)) {
+                    Map<String, Object> attributes = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedAtlasClassification.attributes = attributes;
+                } else if ("typeName".equals(fieldName)) {
+                    deserializedAtlasClassification.typeName = reader.getString();
+                } else if ("lastModifiedTS".equals(fieldName)) {
+                    deserializedAtlasClassification.lastModifiedTS = reader.getString();
+                } else if ("entityGuid".equals(fieldName)) {
+                    deserializedAtlasClassification.entityGuid = reader.getString();
+                } else if ("entityStatus".equals(fieldName)) {
+                    deserializedAtlasClassification.entityStatus = EntityStatus.fromString(reader.getString());
+                } else if ("removePropagationsOnEntityDelete".equals(fieldName)) {
+                    deserializedAtlasClassification.removePropagationsOnEntityDelete
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("validityPeriods".equals(fieldName)) {
+                    List<TimeBoundary> validityPeriods = reader.readArray(reader1 -> TimeBoundary.fromJson(reader1));
+                    deserializedAtlasClassification.validityPeriods = validityPeriods;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAtlasClassification;
+        });
     }
 }

@@ -235,7 +235,7 @@ public final class CallDialogsImpl {
      *
      * @param callConnectionId The call connection id.
      * @param dialogId The dialog id.
-     * @param operationCallbackUri Opeation callback URI.
+     * @param operationCallbackUri Operation callback URI.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -262,7 +262,7 @@ public final class CallDialogsImpl {
      *
      * @param callConnectionId The call connection id.
      * @param dialogId The dialog id.
-     * @param operationCallbackUri Opeation callback URI.
+     * @param operationCallbackUri Operation callback URI.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -288,7 +288,7 @@ public final class CallDialogsImpl {
      *
      * @param callConnectionId The call connection id.
      * @param dialogId The dialog id.
-     * @param operationCallbackUri Opeation callback URI.
+     * @param operationCallbackUri Operation callback URI.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -305,7 +305,7 @@ public final class CallDialogsImpl {
      *
      * @param callConnectionId The call connection id.
      * @param dialogId The dialog id.
-     * @param operationCallbackUri Opeation callback URI.
+     * @param operationCallbackUri Operation callback URI.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -324,7 +324,7 @@ public final class CallDialogsImpl {
      *
      * @param callConnectionId The call connection id.
      * @param dialogId The dialog id.
-     * @param operationCallbackUri Opeation callback URI.
+     * @param operationCallbackUri Operation callback URI.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -339,7 +339,7 @@ public final class CallDialogsImpl {
      *
      * @param callConnectionId The call connection id.
      * @param dialogId The dialog id.
-     * @param operationCallbackUri Opeation callback URI.
+     * @param operationCallbackUri Operation callback URI.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.

@@ -7,11 +7,13 @@ package com.azure.resourcemanager.hybridcompute.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of NetworkProfiles. */
+/**
+ * Resource collection API of NetworkProfiles.
+ */
 public interface NetworkProfiles {
     /**
      * The operation to get network information of hybrid machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param context The context to associate with this operation.
@@ -24,7 +26,7 @@ public interface NetworkProfiles {
 
     /**
      * The operation to get network information of hybrid machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

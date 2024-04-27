@@ -9,8 +9,7 @@ package com.azure.resourcemanager.support.generated;
  */
 public final class CommunicationsNoSubscriptionGetSamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/
-     * GetCommunicationDetailsForSupportTicket.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/GetCommunicationDetailsForSupportTicket.json
      */
     /**
      * Sample code: Get communication details for a no-subscription support ticket.
@@ -19,7 +18,7 @@ public final class CommunicationsNoSubscriptionGetSamples {
      */
     public static void getCommunicationDetailsForANoSubscriptionSupportTicket(
         com.azure.resourcemanager.support.SupportManager manager) {
-        manager.communicationsNoSubscriptions().getWithResponse("testticket", "testmessage",
-            com.azure.core.util.Context.NONE);
+        manager.communicationsNoSubscriptions()
+            .getWithResponse("testticket", "testmessage", com.azure.core.util.Context.NONE);
     }
 }

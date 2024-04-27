@@ -9,8 +9,7 @@ package com.azure.resourcemanager.datafactory.generated;
  */
 public final class FactoriesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_Delete.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_Delete.json
      */
     /**
      * Sample code: Factories_Delete.
@@ -18,7 +17,8 @@ public final class FactoriesDeleteSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void factoriesDelete(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.factories().deleteByResourceGroupWithResponse("exampleResourceGroup", "exampleFactoryName",
-            com.azure.core.util.Context.NONE);
+        manager.factories()
+            .deleteByResourceGroupWithResponse("exampleResourceGroup", "exampleFactoryName",
+                com.azure.core.util.Context.NONE);
     }
 }

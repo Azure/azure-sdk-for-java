@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cdn.models.IpAddressGroup;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The JSON object that contains the properties required to create an edgenode. */
+/**
+ * The JSON object that contains the properties required to create an edgenode.
+ */
 @Fluent
 public final class EdgeNodeProperties {
     /*
@@ -19,13 +21,15 @@ public final class EdgeNodeProperties {
     @JsonProperty(value = "ipAddressGroups", required = true)
     private List<IpAddressGroup> ipAddressGroups;
 
-    /** Creates an instance of EdgeNodeProperties class. */
+    /**
+     * Creates an instance of EdgeNodeProperties class.
+     */
     public EdgeNodeProperties() {
     }
 
     /**
      * Get the ipAddressGroups property: List of ip address groups.
-     *
+     * 
      * @return the ipAddressGroups value.
      */
     public List<IpAddressGroup> ipAddressGroups() {
@@ -34,7 +38,7 @@ public final class EdgeNodeProperties {
 
     /**
      * Set the ipAddressGroups property: List of ip address groups.
-     *
+     * 
      * @param ipAddressGroups the ipAddressGroups value to set.
      * @return the EdgeNodeProperties object itself.
      */
@@ -45,15 +49,13 @@ public final class EdgeNodeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ipAddressGroups() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ipAddressGroups in model EdgeNodeProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property ipAddressGroups in model EdgeNodeProperties"));
         } else {
             ipAddressGroups().forEach(e -> e.validate());
         }

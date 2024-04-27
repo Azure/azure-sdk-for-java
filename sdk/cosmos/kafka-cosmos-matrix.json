@@ -1,0 +1,13 @@
+{
+  "matrix": {
+    "Cosmos": {
+      "Session_Integration": {
+        "ArmTemplateParameters": "@{ defaultConsistencyLevel = 'Session'; enableMultipleWriteLocations = $false }",
+        "ProfileFlag": "-Pkafka",
+        "Pool": "env:LINUXPOOL",
+        "OSVmImage": "env:LINUXVMIMAGE"
+      }
+    },
+    "JavaTestVersion": ["1.8", "1.11", "1.17", "1.21"]
+  }
+}

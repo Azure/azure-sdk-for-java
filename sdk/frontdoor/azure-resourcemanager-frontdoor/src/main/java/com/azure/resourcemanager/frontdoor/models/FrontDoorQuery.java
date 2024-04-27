@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Treatment of URL query terms when forming the cache key. */
+/**
+ * Treatment of URL query terms when forming the cache key.
+ */
 public final class FrontDoorQuery extends ExpandableStringEnum<FrontDoorQuery> {
-    /** Static value StripNone for FrontDoorQuery. */
+    /**
+     * Static value StripNone for FrontDoorQuery.
+     */
     public static final FrontDoorQuery STRIP_NONE = fromString("StripNone");
 
-    /** Static value StripAll for FrontDoorQuery. */
+    /**
+     * Static value StripAll for FrontDoorQuery.
+     */
     public static final FrontDoorQuery STRIP_ALL = fromString("StripAll");
 
-    /** Static value StripOnly for FrontDoorQuery. */
+    /**
+     * Static value StripOnly for FrontDoorQuery.
+     */
     public static final FrontDoorQuery STRIP_ONLY = fromString("StripOnly");
 
-    /** Static value StripAllExcept for FrontDoorQuery. */
+    /**
+     * Static value StripAllExcept for FrontDoorQuery.
+     */
     public static final FrontDoorQuery STRIP_ALL_EXCEPT = fromString("StripAllExcept");
 
     /**
      * Creates a new instance of FrontDoorQuery value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class FrontDoorQuery extends ExpandableStringEnum<FrontDoorQuery> {
 
     /**
      * Creates or finds a FrontDoorQuery from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FrontDoorQuery.
      */
@@ -44,7 +54,7 @@ public final class FrontDoorQuery extends ExpandableStringEnum<FrontDoorQuery> {
 
     /**
      * Gets known FrontDoorQuery values.
-     *
+     * 
      * @return known FrontDoorQuery values.
      */
     public static Collection<FrontDoorQuery> values() {

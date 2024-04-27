@@ -3,10 +3,7 @@
 
 package com.azure.cosmos.kafka.connect.implementation;
 
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-
 import java.time.Duration;
-import java.util.List;
 
 public class CosmosThroughputControlConfig {
     private final boolean throughputControlEnabled;
@@ -22,11 +19,7 @@ public class CosmosThroughputControlConfig {
 
     public CosmosThroughputControlConfig(
         boolean throughputControlEnabled,
-        String throughputControlAccountEndpoint,
-        String throughputControlAccountKey,
-        List<String> throughputControlAccountPreferredRegionList,
-        boolean throughputControlUseGatewayMode,
-        String applicationName,
+        CosmosAccountConfig throughputControlAccountConfig,
         String throughputControlGroupName,
         int targetThroughput,
         double targetThroughputThreshold,
@@ -37,17 +30,7 @@ public class CosmosThroughputControlConfig {
         int globalThroughputControlExpireIntervalInMs) {
 
         this.throughputControlEnabled = throughputControlEnabled;
-        if (!throughputControlEnabled || StringUtils.isEmpty(throughputControlAccountEndpoint)) {
-            this.throughputControlAccountConfig = null;
-        } else {
-            this.throughputControlAccountConfig =
-                new CosmosAccountConfig(
-                    throughputControlAccountEndpoint,
-                    throughputControlAccountKey,
-                    applicationName,
-                    throughputControlUseGatewayMode,
-                    throughputControlAccountPreferredRegionList);
-        }
+        this.throughputControlAccountConfig = throughputControlAccountConfig;
         this.throughputControlGroupName = throughputControlGroupName;
         this.targetThroughput = targetThroughput;
         this.targetThroughputThreshold = targetThroughputThreshold;

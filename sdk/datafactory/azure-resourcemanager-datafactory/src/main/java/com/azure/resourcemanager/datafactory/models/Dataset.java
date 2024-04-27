@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
@@ -22,11 +23,7 @@ import java.util.Map;
  * The Azure Data Factory nested object which identifies data within different data stores, such as tables, files,
  * folders, and documents.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = Dataset.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = Dataset.class, visible = true)
 @JsonTypeName("Dataset")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AmazonS3Object", value = AmazonS3Dataset.class),
@@ -136,21 +133,26 @@ import java.util.Map;
 @Fluent
 public class Dataset {
     /*
+     * Type of dataset.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type;
+
+    /*
      * Dataset description.
      */
     @JsonProperty(value = "description")
     private String description;
 
     /*
-     * Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType:
-     * DatasetDataElement.
+     * Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
      */
     @JsonProperty(value = "structure")
     private Object structure;
 
     /*
-     * Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array),
-     * itemType: DatasetSchemaDataElement.
+     * Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType: DatasetSchemaDataElement.
      */
     @JsonProperty(value = "schema")
     private Object schema;
@@ -181,8 +183,7 @@ public class Dataset {
     private DatasetFolder folder;
 
     /*
-     * The Azure Data Factory nested object which identifies data within different data stores, such as tables, files,
-     * folders, and documents.
+     * The Azure Data Factory nested object which identifies data within different data stores, such as tables, files, folders, and documents.
      */
     @JsonIgnore
     private Map<String, Object> additionalProperties;
@@ -191,6 +192,16 @@ public class Dataset {
      * Creates an instance of Dataset class.
      */
     public Dataset() {
+        this.type = "Dataset";
+    }
+
+    /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -377,8 +388,8 @@ public class Dataset {
      */
     public void validate() {
         if (linkedServiceName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property linkedServiceName in model Dataset"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property linkedServiceName in model Dataset"));
         } else {
             linkedServiceName().validate();
         }

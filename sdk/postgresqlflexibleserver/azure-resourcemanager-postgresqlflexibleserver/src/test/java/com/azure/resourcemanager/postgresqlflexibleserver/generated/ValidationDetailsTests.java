@@ -18,100 +18,88 @@ public final class ValidationDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidationDetails model = BinaryData.fromString(
-            "{\"status\":\"Warning\",\"validationStartTimeInUtc\":\"2021-05-04T12:21:26Z\",\"validationEndTimeInUtc\":\"2021-11-16T20:18:39Z\",\"serverLevelValidationDetails\":[{\"type\":\"frxtrthzvaytdwk\",\"state\":\"Failed\",\"messages\":[{\"state\":\"Failed\",\"message\":\"xhexiilivpdti\"},{\"state\":\"Warning\",\"message\":\"d\"}]},{\"type\":\"axoruzfgsquy\",\"state\":\"Failed\",\"messages\":[{\"state\":\"Failed\",\"message\":\"tramxjez\"},{\"state\":\"Succeeded\",\"message\":\"wxuqlcvydypatdoo\"},{\"state\":\"Warning\",\"message\":\"niodkooeb\"}]},{\"type\":\"ujhemmsbvdkcrodt\",\"state\":\"Succeeded\",\"messages\":[{\"state\":\"Warning\",\"message\":\"lt\"}]},{\"type\":\"cjvefkdlfo\",\"state\":\"Warning\",\"messages\":[{\"state\":\"Succeeded\",\"message\":\"gaowpulpqblylsyx\"},{\"state\":\"Failed\",\"message\":\"sjervti\"}]}],\"dbLevelValidationDetails\":[{\"databaseName\":\"dszue\",\"startedOn\":\"2021-01-27T10:36:07Z\",\"endedOn\":\"2021-04-15T09:10:21Z\",\"summary\":[{\"type\":\"beyvpnqicvinvkjj\",\"state\":\"Warning\",\"messages\":[{},{},{},{}]}]},{\"databaseName\":\"ukzclewyhmlwpaz\",\"startedOn\":\"2021-08-27T08:18:45Z\",\"endedOn\":\"2021-01-30T03:38:42Z\",\"summary\":[{\"type\":\"kwyfzqwhxxbuyqax\",\"state\":\"Succeeded\",\"messages\":[{},{},{},{}]},{\"type\":\"ppriol\",\"state\":\"Warning\",\"messages\":[{},{}]},{\"type\":\"tolmncwsobqw\",\"state\":\"Succeeded\",\"messages\":[{},{}]},{\"type\":\"dcfhucqdpf\",\"state\":\"Succeeded\",\"messages\":[{},{}]}]},{\"databaseName\":\"jjcanvxbvtv\",\"startedOn\":\"2021-04-07T04:06:35Z\",\"endedOn\":\"2021-10-07T13:15:31Z\",\"summary\":[{\"type\":\"mr\",\"state\":\"Warning\",\"messages\":[{},{}]},{\"type\":\"ofudflvkgju\",\"state\":\"Warning\",\"messages\":[{},{}]},{\"type\":\"qvsaznqntorud\",\"state\":\"Warning\",\"messages\":[{}]},{\"type\":\"kycgrauwj\",\"state\":\"Failed\",\"messages\":[{},{}]}]}]}")
+            "{\"status\":\"Failed\",\"validationStartTimeInUtc\":\"2021-10-25T10:37:02Z\",\"validationEndTimeInUtc\":\"2020-12-24T15:22:03Z\",\"serverLevelValidationDetails\":[{\"type\":\"wosytxitcskf\",\"state\":\"Failed\",\"messages\":[{\"state\":\"Succeeded\",\"message\":\"kkezzikhlyfjhdgq\"},{\"state\":\"Failed\",\"message\":\"dunyg\"},{\"state\":\"Succeeded\",\"message\":\"db\"}]},{\"type\":\"atpxl\",\"state\":\"Succeeded\",\"messages\":[{\"state\":\"Failed\",\"message\":\"a\"},{\"state\":\"Warning\",\"message\":\"arm\"}]}],\"dbLevelValidationDetails\":[{\"databaseName\":\"jsjqbjhhyx\",\"startedOn\":\"2021-08-08T09:59:53Z\",\"endedOn\":\"2021-08-21T13:48:09Z\",\"summary\":[{\"type\":\"uhpkxkgymar\",\"state\":\"Succeeded\",\"messages\":[{},{},{}]},{\"type\":\"qugjhkycube\",\"state\":\"Failed\",\"messages\":[{},{},{},{}]}]},{\"databaseName\":\"fwqmzqalkrmn\",\"startedOn\":\"2021-01-22T20:56:52Z\",\"endedOn\":\"2021-12-03T00:29:17Z\",\"summary\":[{\"type\":\"qudf\",\"state\":\"Succeeded\",\"messages\":[{}]},{\"type\":\"aabjyvayffimrz\",\"state\":\"Failed\",\"messages\":[{},{},{}]}]}]}")
             .toObject(ValidationDetails.class);
-        Assertions.assertEquals(ValidationState.WARNING, model.status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-04T12:21:26Z"), model.validationStartTimeInUtc());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-16T20:18:39Z"), model.validationEndTimeInUtc());
-        Assertions.assertEquals("frxtrthzvaytdwk", model.serverLevelValidationDetails().get(0).type());
+        Assertions.assertEquals(ValidationState.FAILED, model.status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-25T10:37:02Z"), model.validationStartTimeInUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-24T15:22:03Z"), model.validationEndTimeInUtc());
+        Assertions.assertEquals("wosytxitcskf", model.serverLevelValidationDetails().get(0).type());
         Assertions.assertEquals(ValidationState.FAILED, model.serverLevelValidationDetails().get(0).state());
-        Assertions.assertEquals(ValidationState.FAILED,
+        Assertions.assertEquals(ValidationState.SUCCEEDED,
             model.serverLevelValidationDetails().get(0).messages().get(0).state());
-        Assertions.assertEquals("xhexiilivpdti",
+        Assertions.assertEquals("kkezzikhlyfjhdgq",
             model.serverLevelValidationDetails().get(0).messages().get(0).message());
-        Assertions.assertEquals("dszue", model.dbLevelValidationDetails().get(0).databaseName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-27T10:36:07Z"),
+        Assertions.assertEquals("jsjqbjhhyx", model.dbLevelValidationDetails().get(0).databaseName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-08T09:59:53Z"),
             model.dbLevelValidationDetails().get(0).startedOn());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-15T09:10:21Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-21T13:48:09Z"),
             model.dbLevelValidationDetails().get(0).endedOn());
-        Assertions.assertEquals("beyvpnqicvinvkjj", model.dbLevelValidationDetails().get(0).summary().get(0).type());
-        Assertions.assertEquals(ValidationState.WARNING,
+        Assertions.assertEquals("uhpkxkgymar", model.dbLevelValidationDetails().get(0).summary().get(0).type());
+        Assertions.assertEquals(ValidationState.SUCCEEDED,
             model.dbLevelValidationDetails().get(0).summary().get(0).state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ValidationDetails model = new ValidationDetails().withStatus(ValidationState.WARNING)
-            .withValidationStartTimeInUtc(OffsetDateTime.parse("2021-05-04T12:21:26Z"))
-            .withValidationEndTimeInUtc(OffsetDateTime.parse("2021-11-16T20:18:39Z"))
-            .withServerLevelValidationDetails(Arrays.asList(
-                new ValidationSummaryItem().withType("frxtrthzvaytdwk").withState(ValidationState.FAILED)
-                    .withMessages(Arrays.asList(
-                        new ValidationMessage().withState(ValidationState.FAILED).withMessage("xhexiilivpdti"),
-                        new ValidationMessage().withState(ValidationState.WARNING).withMessage("d"))),
-                new ValidationSummaryItem().withType("axoruzfgsquy").withState(ValidationState.FAILED).withMessages(
-                    Arrays.asList(new ValidationMessage().withState(ValidationState.FAILED).withMessage("tramxjez"),
-                        new ValidationMessage().withState(ValidationState.SUCCEEDED).withMessage("wxuqlcvydypatdoo"),
-                        new ValidationMessage().withState(ValidationState.WARNING).withMessage("niodkooeb"))),
-                new ValidationSummaryItem().withType("ujhemmsbvdkcrodt").withState(ValidationState.SUCCEEDED)
-                    .withMessages(
-                        Arrays.asList(new ValidationMessage().withState(ValidationState.WARNING).withMessage("lt"))),
-                new ValidationSummaryItem().withType("cjvefkdlfo").withState(ValidationState.WARNING)
-                    .withMessages(Arrays.asList(
-                        new ValidationMessage().withState(ValidationState.SUCCEEDED).withMessage("gaowpulpqblylsyx"),
-                        new ValidationMessage().withState(ValidationState.FAILED).withMessage("sjervti")))))
-            .withDbLevelValidationDetails(
-                Arrays.asList(
-                    new DbLevelValidationStatus().withDatabaseName("dszue")
-                        .withStartedOn(OffsetDateTime.parse("2021-01-27T10:36:07Z"))
-                        .withEndedOn(OffsetDateTime.parse("2021-04-15T09:10:21Z"))
-                        .withSummary(Arrays.asList(new ValidationSummaryItem().withType("beyvpnqicvinvkjj")
-                            .withState(ValidationState.WARNING)
-                            .withMessages(Arrays.asList(new ValidationMessage(), new ValidationMessage(),
-                                new ValidationMessage(), new ValidationMessage())))),
-                    new DbLevelValidationStatus().withDatabaseName("ukzclewyhmlwpaz")
-                        .withStartedOn(OffsetDateTime.parse("2021-08-27T08:18:45Z"))
-                        .withEndedOn(OffsetDateTime.parse("2021-01-30T03:38:42Z"))
+        ValidationDetails model
+            = new ValidationDetails().withStatus(ValidationState.FAILED)
+                .withValidationStartTimeInUtc(OffsetDateTime.parse("2021-10-25T10:37:02Z"))
+                .withValidationEndTimeInUtc(OffsetDateTime.parse("2020-12-24T15:22:03Z"))
+                .withServerLevelValidationDetails(
+                    Arrays.asList(
+                        new ValidationSummaryItem().withType("wosytxitcskf")
+                            .withState(ValidationState.FAILED)
+                            .withMessages(Arrays.asList(
+                                new ValidationMessage().withState(ValidationState.SUCCEEDED)
+                                    .withMessage("kkezzikhlyfjhdgq"),
+                                new ValidationMessage().withState(ValidationState.FAILED).withMessage("dunyg"),
+                                new ValidationMessage().withState(ValidationState.SUCCEEDED).withMessage("db"))),
+                        new ValidationSummaryItem().withType("atpxl")
+                            .withState(ValidationState.SUCCEEDED)
+                            .withMessages(Arrays.asList(
+                                new ValidationMessage().withState(ValidationState.FAILED).withMessage("a"),
+                                new ValidationMessage().withState(ValidationState.WARNING).withMessage("arm")))))
+                .withDbLevelValidationDetails(Arrays.asList(
+                    new DbLevelValidationStatus().withDatabaseName("jsjqbjhhyx")
+                        .withStartedOn(OffsetDateTime.parse("2021-08-08T09:59:53Z"))
+                        .withEndedOn(OffsetDateTime.parse("2021-08-21T13:48:09Z"))
                         .withSummary(Arrays.asList(
-                            new ValidationSummaryItem()
-                                .withType("kwyfzqwhxxbuyqax").withState(ValidationState.SUCCEEDED)
+                            new ValidationSummaryItem().withType("uhpkxkgymar")
+                                .withState(ValidationState.SUCCEEDED)
                                 .withMessages(Arrays.asList(new ValidationMessage(), new ValidationMessage(),
-                                    new ValidationMessage(), new ValidationMessage())),
-                            new ValidationSummaryItem().withType("ppriol").withState(ValidationState.WARNING)
-                                .withMessages(Arrays.asList(new ValidationMessage(), new ValidationMessage())),
-                            new ValidationSummaryItem().withType("tolmncwsobqw").withState(ValidationState.SUCCEEDED)
-                                .withMessages(Arrays.asList(new ValidationMessage(), new ValidationMessage())),
-                            new ValidationSummaryItem().withType("dcfhucqdpf").withState(ValidationState.SUCCEEDED)
-                                .withMessages(Arrays.asList(new ValidationMessage(), new ValidationMessage())))),
-                    new DbLevelValidationStatus().withDatabaseName("jjcanvxbvtv")
-                        .withStartedOn(OffsetDateTime.parse("2021-04-07T04:06:35Z"))
-                        .withEndedOn(OffsetDateTime.parse("2021-10-07T13:15:31Z"))
+                                    new ValidationMessage())),
+                            new ValidationSummaryItem().withType("qugjhkycube")
+                                .withState(ValidationState.FAILED)
+                                .withMessages(Arrays.asList(new ValidationMessage(), new ValidationMessage(),
+                                    new ValidationMessage(), new ValidationMessage())))),
+                    new DbLevelValidationStatus().withDatabaseName("fwqmzqalkrmn")
+                        .withStartedOn(OffsetDateTime.parse("2021-01-22T20:56:52Z"))
+                        .withEndedOn(OffsetDateTime.parse("2021-12-03T00:29:17Z"))
                         .withSummary(Arrays.asList(
-                            new ValidationSummaryItem().withType("mr").withState(ValidationState.WARNING)
-                                .withMessages(Arrays.asList(new ValidationMessage(), new ValidationMessage())),
-                            new ValidationSummaryItem().withType("ofudflvkgju").withState(ValidationState.WARNING)
-                                .withMessages(Arrays.asList(new ValidationMessage(), new ValidationMessage())),
-                            new ValidationSummaryItem().withType("qvsaznqntorud").withState(ValidationState.WARNING)
+                            new ValidationSummaryItem().withType("qudf")
+                                .withState(ValidationState.SUCCEEDED)
                                 .withMessages(Arrays.asList(new ValidationMessage())),
-                            new ValidationSummaryItem().withType("kycgrauwj").withState(ValidationState.FAILED)
-                                .withMessages(Arrays.asList(new ValidationMessage(), new ValidationMessage()))))));
+                            new ValidationSummaryItem().withType("aabjyvayffimrz")
+                                .withState(ValidationState.FAILED)
+                                .withMessages(Arrays.asList(new ValidationMessage(), new ValidationMessage(),
+                                    new ValidationMessage()))))));
         model = BinaryData.fromObject(model).toObject(ValidationDetails.class);
-        Assertions.assertEquals(ValidationState.WARNING, model.status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-04T12:21:26Z"), model.validationStartTimeInUtc());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-16T20:18:39Z"), model.validationEndTimeInUtc());
-        Assertions.assertEquals("frxtrthzvaytdwk", model.serverLevelValidationDetails().get(0).type());
+        Assertions.assertEquals(ValidationState.FAILED, model.status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-25T10:37:02Z"), model.validationStartTimeInUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-24T15:22:03Z"), model.validationEndTimeInUtc());
+        Assertions.assertEquals("wosytxitcskf", model.serverLevelValidationDetails().get(0).type());
         Assertions.assertEquals(ValidationState.FAILED, model.serverLevelValidationDetails().get(0).state());
-        Assertions.assertEquals(ValidationState.FAILED,
+        Assertions.assertEquals(ValidationState.SUCCEEDED,
             model.serverLevelValidationDetails().get(0).messages().get(0).state());
-        Assertions.assertEquals("xhexiilivpdti",
+        Assertions.assertEquals("kkezzikhlyfjhdgq",
             model.serverLevelValidationDetails().get(0).messages().get(0).message());
-        Assertions.assertEquals("dszue", model.dbLevelValidationDetails().get(0).databaseName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-27T10:36:07Z"),
+        Assertions.assertEquals("jsjqbjhhyx", model.dbLevelValidationDetails().get(0).databaseName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-08T09:59:53Z"),
             model.dbLevelValidationDetails().get(0).startedOn());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-15T09:10:21Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-21T13:48:09Z"),
             model.dbLevelValidationDetails().get(0).endedOn());
-        Assertions.assertEquals("beyvpnqicvinvkjj", model.dbLevelValidationDetails().get(0).summary().get(0).type());
-        Assertions.assertEquals(ValidationState.WARNING,
+        Assertions.assertEquals("uhpkxkgymar", model.dbLevelValidationDetails().get(0).summary().get(0).type());
+        Assertions.assertEquals(ValidationState.SUCCEEDED,
             model.dbLevelValidationDetails().get(0).summary().get(0).state());
     }
 }

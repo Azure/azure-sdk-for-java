@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Describes the action that shall be taken when the certificate is removed from Key Vault. */
+/**
+ * Describes the action that shall be taken when the certificate is removed from Key Vault.
+ */
 public final class DeleteRule extends ExpandableStringEnum<DeleteRule> {
-    /** Static value NoAction for DeleteRule. */
+    /**
+     * Static value NoAction for DeleteRule.
+     */
     public static final DeleteRule NO_ACTION = fromString("NoAction");
 
     /**
      * Creates a new instance of DeleteRule value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,7 +28,7 @@ public final class DeleteRule extends ExpandableStringEnum<DeleteRule> {
 
     /**
      * Creates or finds a DeleteRule from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DeleteRule.
      */
@@ -35,7 +39,7 @@ public final class DeleteRule extends ExpandableStringEnum<DeleteRule> {
 
     /**
      * Gets known DeleteRule values.
-     *
+     * 
      * @return known DeleteRule values.
      */
     public static Collection<DeleteRule> values() {

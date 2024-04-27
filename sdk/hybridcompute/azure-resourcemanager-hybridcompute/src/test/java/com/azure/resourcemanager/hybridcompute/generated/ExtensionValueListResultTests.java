@@ -10,11 +10,9 @@ import com.azure.resourcemanager.hybridcompute.models.ExtensionValueListResult;
 public final class ExtensionValueListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExtensionValueListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"version\":\"waboe\",\"extensionType\":\"v\",\"publisher\":\"lns\"},\"id\":\"bxwyjsflhhcaa\",\"name\":\"n\",\"type\":\"ixisxyawjoy\"},{\"properties\":{\"version\":\"slyjpkiid\",\"extensionType\":\"exznelixhnr\",\"publisher\":\"folhbnxknal\"},\"id\":\"lp\",\"name\":\"ggdtpnapnyiro\",\"type\":\"uhpigvp\"},{\"properties\":{\"version\":\"gqgitxmedjvcsl\",\"extensionType\":\"qwwncw\",\"publisher\":\"hxg\"},\"id\":\"rmgucnap\",\"name\":\"t\",\"type\":\"oellwp\"}]}")
-                .toObject(ExtensionValueListResult.class);
+        ExtensionValueListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"version\":\"uoujmkcjhwqy\",\"extensionType\":\"r\",\"publisher\":\"n\"},\"id\":\"ewgdrjervn\",\"name\":\"enq\",\"type\":\"eh\"},{\"properties\":{\"version\":\"oygmift\",\"extensionType\":\"zdnds\",\"publisher\":\"nayqi\"},\"id\":\"nduhavhqlkthum\",\"name\":\"qolbgyc\",\"type\":\"uie\"},{\"properties\":{\"version\":\"ccymvaolpsslql\",\"extensionType\":\"mdnbbglzpswiy\",\"publisher\":\"cwyhzdxssa\"},\"id\":\"zmnvdfznudaod\",\"name\":\"xzb\",\"type\":\"cblylpstdbhhxsr\"}]}")
+            .toObject(ExtensionValueListResult.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The provisioning state of the last accepted operation. */
+/**
+ * The provisioning state of the last accepted operation.
+ */
 public final class FleetMemberProvisioningState extends ExpandableStringEnum<FleetMemberProvisioningState> {
-    /** Static value Succeeded for FleetMemberProvisioningState. */
+    /**
+     * Static value Succeeded for FleetMemberProvisioningState.
+     */
     public static final FleetMemberProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for FleetMemberProvisioningState. */
+    /**
+     * Static value Failed for FleetMemberProvisioningState.
+     */
     public static final FleetMemberProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Canceled for FleetMemberProvisioningState. */
+    /**
+     * Static value Canceled for FleetMemberProvisioningState.
+     */
     public static final FleetMemberProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value Joining for FleetMemberProvisioningState. */
+    /**
+     * Static value Joining for FleetMemberProvisioningState.
+     */
     public static final FleetMemberProvisioningState JOINING = fromString("Joining");
 
-    /** Static value Leaving for FleetMemberProvisioningState. */
+    /**
+     * Static value Leaving for FleetMemberProvisioningState.
+     */
     public static final FleetMemberProvisioningState LEAVING = fromString("Leaving");
 
-    /** Static value Updating for FleetMemberProvisioningState. */
+    /**
+     * Static value Updating for FleetMemberProvisioningState.
+     */
     public static final FleetMemberProvisioningState UPDATING = fromString("Updating");
 
     /**
      * Creates a new instance of FleetMemberProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +53,7 @@ public final class FleetMemberProvisioningState extends ExpandableStringEnum<Fle
 
     /**
      * Creates or finds a FleetMemberProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FleetMemberProvisioningState.
      */
@@ -50,7 +64,7 @@ public final class FleetMemberProvisioningState extends ExpandableStringEnum<Fle
 
     /**
      * Gets known FleetMemberProvisioningState values.
-     *
+     * 
      * @return known FleetMemberProvisioningState values.
      */
     public static Collection<FleetMemberProvisioningState> values() {

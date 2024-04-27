@@ -43,7 +43,7 @@ public final class EmbeddingsOptions {
      */
     @Generated
     @JsonProperty(value = "input")
-    private List<String> input;
+    private final List<String> input;
 
     /**
      * Creates an instance of EmbeddingsOptions class.
@@ -150,16 +150,15 @@ public final class EmbeddingsOptions {
     }
 
     /*
-     * The number of dimensions the resulting output embeddings should have. Only supported in `text-embedding-3` and
-     * later models.
+     * The number of dimensions the resulting output embeddings should have. Only supported in `text-embedding-3` and later models.
      */
     @Generated
     @JsonProperty(value = "dimensions")
     private Integer dimensions;
 
     /**
-     * Get the dimensions property: The number of dimensions the resulting output embeddings should have. Only
-     * supported in `text-embedding-3` and later models.
+     * Get the dimensions property: The number of dimensions the resulting output embeddings should have. Only supported
+     * in `text-embedding-3` and later models.
      *
      * @return the dimensions value.
      */
@@ -169,8 +168,8 @@ public final class EmbeddingsOptions {
     }
 
     /**
-     * Set the dimensions property: The number of dimensions the resulting output embeddings should have. Only
-     * supported in `text-embedding-3` and later models.
+     * Set the dimensions property: The number of dimensions the resulting output embeddings should have. Only supported
+     * in `text-embedding-3` and later models.
      *
      * @param dimensions the dimensions value to set.
      * @return the EmbeddingsOptions object itself.

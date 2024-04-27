@@ -93,7 +93,7 @@ public abstract class SearchTestBase extends TestProxyTestBase {
     // This has to be used in all test modes as this is more retry counts than the standard policy.
     // Change the delay based on the mode.
     static final RetryPolicy SERVICE_THROTTLE_SAFE_RETRY_POLICY = new RetryPolicy(new FixedDelay(4,
-            TEST_MODE == TestMode.PLAYBACK ? Duration.ofMillis(1) : Duration.ofSeconds(15)));
+            TEST_MODE == TestMode.PLAYBACK ? Duration.ofMillis(1) : Duration.ofSeconds(30)));
 
     protected String createHotelIndex() {
         return setupIndexFromJsonFile(HOTELS_TESTS_INDEX_DATA_JSON);
@@ -445,7 +445,14 @@ public abstract class SearchTestBase extends TestProxyTestBase {
 
     protected <T> void compareMaps(Map<String, T> expectedMap, Map<String, T> actualMap,
         BiConsumer<T, T> comparisonFunction) {
-        assertEquals(expectedMap.size(), actualMap.size());
+        compareMaps(expectedMap, actualMap, comparisonFunction, true);
+    }
+
+    protected <T> void compareMaps(Map<String, T> expectedMap, Map<String, T> actualMap,
+        BiConsumer<T, T> comparisonFunction, boolean checkSize) {
+        if (checkSize) {
+            assertEquals(expectedMap.size(), actualMap.size());
+        }
 
         actualMap.forEach((key, actual) -> {
             T expected = expectedMap.get(key);

@@ -45,7 +45,7 @@ class SentShareClientTest extends PurviewShareTestBase {
     void createSentShareUserInvitation() {
 
         UUID sentShareId = UUID.fromString(testResourceNamer.randomUuid());
-        String sentShareInvitationId = testResourceNamer.randomUuid(); 
+        String sentShareInvitationId = testResourceNamer.randomUuid();
 
         this.createSentShare(sentShareId);
 
@@ -99,8 +99,8 @@ class SentShareClientTest extends PurviewShareTestBase {
         UUID sentShareId = UUID.fromString(testResourceNamer.randomUuid());
         SentShare sentShare = super.createSentShare(sentShareId);
 
-        SyncPoller<BinaryData, Void> syncPoller = super.sentSharesClient.beginDeleteSentShare(sentShareId.toString(),
-                new RequestOptions());
+        SyncPoller<BinaryData, Void> syncPoller = setPlaybackSyncPollerPollInterval(
+            super.sentSharesClient.beginDeleteSentShare(sentShareId.toString(), new RequestOptions()));
 
         PollResponse<BinaryData> result = syncPoller.waitForCompletion();
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, result.getStatus());
@@ -161,11 +161,12 @@ class SentShareClientTest extends PurviewShareTestBase {
 
         Response<BinaryData> invitationResponse = super.createSentShareAndServiceInvitation(sentShareId,
                 sentShareInvitationId);
-        
+
         ServiceInvitation invitation = invitationResponse.getValue().toObject(ServiceInvitation.class);
 
-        SyncPoller<BinaryData, Void> syncPoller = super.sentSharesClient.beginDeleteSentShareInvitation(
-                sentShareId.toString(), sentShareInvitationId.toString(), new RequestOptions());
+        SyncPoller<BinaryData, Void> syncPoller = setPlaybackSyncPollerPollInterval(
+            super.sentSharesClient.beginDeleteSentShareInvitation(sentShareId.toString(),
+                sentShareInvitationId.toString(), new RequestOptions()));
 
         PollResponse<BinaryData> result = syncPoller.waitForCompletion();
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, result.getStatus());

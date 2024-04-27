@@ -48,22 +48,22 @@ public final class QuotasImpl implements Quotas {
 
     public PagedIterable<CurrentQuotaLimitBase> list(String scope) {
         PagedIterable<CurrentQuotaLimitBaseInner> inner = this.serviceClient().list(scope);
-        return Utils.mapPage(inner, inner1 -> new CurrentQuotaLimitBaseImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CurrentQuotaLimitBaseImpl(inner1, this.manager()));
     }
 
     public PagedIterable<CurrentQuotaLimitBase> list(String scope, Context context) {
         PagedIterable<CurrentQuotaLimitBaseInner> inner = this.serviceClient().list(scope, context);
-        return Utils.mapPage(inner, inner1 -> new CurrentQuotaLimitBaseImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CurrentQuotaLimitBaseImpl(inner1, this.manager()));
     }
 
     public CurrentQuotaLimitBase getById(String id) {
-        String resourceName = Utils.getValueFromIdByParameterName(id,
+        String resourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.Quota/quotas/{resourceName}", "resourceName");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'quotas'.", id)));
         }
-        String scope = Utils.getValueFromIdByParameterName(id,
+        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.Quota/quotas/{resourceName}", "scope");
         if (scope == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -73,13 +73,13 @@ public final class QuotasImpl implements Quotas {
     }
 
     public Response<CurrentQuotaLimitBase> getByIdWithResponse(String id, Context context) {
-        String resourceName = Utils.getValueFromIdByParameterName(id,
+        String resourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.Quota/quotas/{resourceName}", "resourceName");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'quotas'.", id)));
         }
-        String scope = Utils.getValueFromIdByParameterName(id,
+        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.Quota/quotas/{resourceName}", "scope");
         if (scope == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(

@@ -113,7 +113,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     protected final static ConsistencyLevel accountConsistency;
     protected static final ImmutableList<String> preferredLocations;
     private static final ImmutableList<ConsistencyLevel> desiredConsistencies;
-    private static final ImmutableList<Protocol> protocols;
+    protected static final ImmutableList<Protocol> protocols;
 
     protected static final AzureKeyCredential credential;
 
@@ -203,7 +203,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     @BeforeSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator", "split", "query", "cfp-split"}, timeOut = SUITE_SETUP_TIMEOUT)
-    public static void beforeSuite() {
+    public void beforeSuite() {
 
         logger.info("beforeSuite Started");
 
@@ -219,7 +219,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     @AfterSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator", "split", "query", "cfp-split"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
-    public static void afterSuite() {
+    public void afterSuite() {
 
         logger.info("afterSuite Started");
 
@@ -253,7 +253,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                 Object propertyValue = null;
                 if (paths != null && !paths.isEmpty()) {
                     List<String> pkPath = PathParser.getPathParts(paths.get(0));
-                    propertyValue = ModelBridgeInternal.getObjectByPathFromJsonSerializable(doc, pkPath);
+                    propertyValue = doc.getObjectByPath(pkPath);
                     if (propertyValue == null) {
                         partitionKey = PartitionKey.NONE;
                     } else {
@@ -293,7 +293,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                            Object propertyValue = null;
                            if (paths != null && !paths.isEmpty()) {
                                List<String> pkPath = PathParser.getPathParts(paths.get(0));
-                               propertyValue = ModelBridgeInternal.getObjectByPathFromJsonSerializable(doc, pkPath);
+                               propertyValue = doc.getObjectByPath(pkPath);
                                if (propertyValue == null) {
                                    partitionKey = PartitionKey.NONE;
                                } else {
@@ -1136,6 +1136,13 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         };
     }
 
+    @DataProvider
+    public static Object[][] simpleGatewayClient() {
+        return new Object[][] {
+            { createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true, true) }
+        };
+    }
+
     private static Object[][] simpleClientBuildersWithDirect(
         boolean contentResponseOnWriteEnabled,
         Protocol... protocols) {
@@ -1267,11 +1274,11 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         return clientBuildersWithDirectSession(true, true);
     }
 
-    static Protocol[] toArray(List<Protocol> protocols) {
+    protected static Protocol[] toArray(List<Protocol> protocols) {
         return protocols.toArray(new Protocol[protocols.size()]);
     }
 
-    private static Object[][] clientBuildersWithDirectSession(boolean contentResponseOnWriteEnabled, boolean retryOnThrottledRequests, Protocol... protocols) {
+    protected static Object[][] clientBuildersWithDirectSession(boolean contentResponseOnWriteEnabled, boolean retryOnThrottledRequests, Protocol... protocols) {
         return clientBuildersWithDirect(new ArrayList<ConsistencyLevel>() {{
             add(ConsistencyLevel.SESSION);
         }}, contentResponseOnWriteEnabled, retryOnThrottledRequests, protocols);

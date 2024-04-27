@@ -74,12 +74,11 @@ public final class ShareFileProperties {
      * completely encrypted using the specified algorithm. Otherwise, the value is set to false.
      * @param smbProperties The SMB properties of the file.
      */
-    public ShareFileProperties(final String eTag, final OffsetDateTime lastModified, final Map<String, String> metadata,
-        final String fileType, final Long contentLength, final String contentType, final byte[] contentMd5,
-        final String contentEncoding, final String cacheControl, final String contentDisposition,
-        final OffsetDateTime copyCompletionTime, final String copyStatusDescription, final String copyId,
-        final String copyProgress, final String copySource, final CopyStatusType copyStatus,
-        final Boolean isServerEncrypted, final FileSmbProperties smbProperties) {
+    public ShareFileProperties(String eTag, OffsetDateTime lastModified, Map<String, String> metadata, String fileType,
+        Long contentLength, String contentType, byte[] contentMd5, String contentEncoding, String cacheControl,
+        String contentDisposition, OffsetDateTime copyCompletionTime, String copyStatusDescription, String copyId,
+        String copyProgress, String copySource, CopyStatusType copyStatus, Boolean isServerEncrypted,
+        FileSmbProperties smbProperties) {
         this(eTag, lastModified, metadata, fileType, contentLength, contentType, contentMd5, contentEncoding,
             cacheControl, contentDisposition, null, null, null, copyCompletionTime, copyStatusDescription, copyId,
             copyProgress, copySource, copyStatus, isServerEncrypted, smbProperties);
@@ -125,13 +124,12 @@ public final class ShareFileProperties {
      * completely encrypted using the specified algorithm. Otherwise, the value is set to false.
      * @param smbProperties The SMB properties of the file.
      */
-    public ShareFileProperties(final String eTag, final OffsetDateTime lastModified, final Map<String, String> metadata,
-        final String fileType, final Long contentLength, final String contentType, final byte[] contentMd5,
-        final String contentEncoding, final String cacheControl, final String contentDisposition,
-        final LeaseStatusType leaseStatusType, final LeaseStateType leaseStateType,
-        final LeaseDurationType leaseDurationType, final OffsetDateTime copyCompletionTime,
-        final String copyStatusDescription, final String copyId, final String copyProgress, final String copySource,
-        final CopyStatusType copyStatus, final Boolean isServerEncrypted, final FileSmbProperties smbProperties) {
+    public ShareFileProperties(String eTag, OffsetDateTime lastModified, Map<String, String> metadata, String fileType,
+        Long contentLength, String contentType, byte[] contentMd5, String contentEncoding, String cacheControl,
+        String contentDisposition, LeaseStatusType leaseStatusType, LeaseStateType leaseStateType,
+        LeaseDurationType leaseDurationType, OffsetDateTime copyCompletionTime, String copyStatusDescription,
+        String copyId, String copyProgress, String copySource, CopyStatusType copyStatus, Boolean isServerEncrypted,
+        FileSmbProperties smbProperties) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.metadata = metadata;
@@ -156,6 +154,8 @@ public final class ShareFileProperties {
     }
 
     /**
+     * Gets the entity tag that corresponds to the directory.
+     *
      * @return Entity tag that corresponds to the directory.
      */
     public String getETag() {
@@ -163,6 +163,8 @@ public final class ShareFileProperties {
     }
 
     /**
+     * Gets the last time the directory was modified.
+     *
      * @return Last time the directory was modified.
      */
     public OffsetDateTime getLastModified() {
@@ -170,6 +172,8 @@ public final class ShareFileProperties {
     }
 
     /**
+     * Gets a set of name-value pairs associated with this file as user-defined metadata.
+     *
      * @return A set of name-value pairs associated with this file as user-defined metadata.
      */
     public Map<String, String> getMetadata() {
@@ -177,6 +181,8 @@ public final class ShareFileProperties {
     }
 
     /**
+     * Gets the number of bytes present in the response body.
+     *
      * @return The number of bytes present in the response body.
      */
     public Long getContentLength() {
@@ -184,6 +190,8 @@ public final class ShareFileProperties {
     }
 
     /**
+     * Gets the type of the file.
+     *
      * @return The type of the file.
      */
     public String getFileType() {
@@ -191,6 +199,8 @@ public final class ShareFileProperties {
     }
 
     /**
+     * Gets the content type specified for the file. The default content type is application/octet-stream.
+     *
      * @return The content type specified for the file. The default content type is application/octet-stream.
      */
     public String getContentType() {
@@ -198,6 +208,8 @@ public final class ShareFileProperties {
     }
 
     /**
+     * Gets the MD5 hash of the file.
+     *
      * @return The MD5 hash of the file.
      */
     public byte[] getContentMd5() {
@@ -205,6 +217,8 @@ public final class ShareFileProperties {
     }
 
     /**
+     * Gets the value that was specified for the Content-Encoding request header.
+     *
      * @return The value that was specified for the Content-Encoding request header.
      */
     public String getContentEncoding() {
@@ -212,6 +226,8 @@ public final class ShareFileProperties {
     }
 
     /**
+     * Gets the value that was specified for the Content-Encoding request header.
+     *
      * @return This header is returned if it was previously specified for the file.
      */
     public String getCacheControl() {
@@ -219,6 +235,9 @@ public final class ShareFileProperties {
     }
 
     /**
+     * Gets the value that was specified for the x-ms-content-disposition header and specifies how to process the
+     * response.
+     *
      * @return The value that was specified for the x-ms-content-disposition header and specifies how to process the
      * response.
      */
@@ -227,6 +246,8 @@ public final class ShareFileProperties {
     }
 
     /**
+     * Gets the lease status of the file.
+     *
      * @return the lease status of the file
      */
     public LeaseStatusType getLeaseStatus() {
@@ -234,6 +255,8 @@ public final class ShareFileProperties {
     }
 
     /**
+     * Gets the lease state of the file.
+     *
      * @return the lease state of the file
      */
     public LeaseStateType getLeaseState() {
@@ -241,6 +264,8 @@ public final class ShareFileProperties {
     }
 
     /**
+     * Gets the lease duration if the file is leased.
+     *
      * @return the lease duration if the file is leased
      */
     public LeaseDurationType getLeaseDuration() {
@@ -248,6 +273,8 @@ public final class ShareFileProperties {
     }
 
     /**
+     * Gets the conclusion time of the last attempted Copy File operation where this file was the destination file.
+     *
      * @return Conclusion time of the last attempted Copy File operation where this file was the destination file.
      */
     public OffsetDateTime getCopyCompletionTime() {
@@ -255,6 +282,8 @@ public final class ShareFileProperties {
     }
 
     /**
+     * Gets the cause of fatal or non-fatal copy operation failure.
+     *
      * @return When x-ms-copy-status is failed or pending. Describes cause of fatal or non-fatal copy operation failure.
      */
     public String getCopyStatusDescription() {
@@ -262,6 +291,8 @@ public final class ShareFileProperties {
     }
 
     /**
+     * Gets the string identifier for the last attempted Copy File operation where this file was the destination file.
+     *
      * @return String identifier for the last attempted Copy File operation where this file was the destination file.
      */
     public String getCopyId() {
@@ -269,6 +300,9 @@ public final class ShareFileProperties {
     }
 
     /**
+     * Gets the number of bytes copied and the total bytes in the source in the last attempted Copy File operation where
+     * this file was the destination file.
+     *
      * @return The number of bytes copied and the total bytes in the source in the last attempted Copy File operation
      * where this file was the destination file.
      */
@@ -277,6 +311,8 @@ public final class ShareFileProperties {
     }
 
     /**
+     * Gets the source file used in the last attempted Copy File operation where this file was the destination file.
+     *
      * @return URL up to 2KB in length that specifies the source file used in the last attempted Copy File operation
      * where this file was the destination file.
      */
@@ -285,6 +321,8 @@ public final class ShareFileProperties {
     }
 
     /**
+     * Gets the state of the copy operation identified by x-ms-copy-id.
+     *
      * @return State of the copy operation identified by x-ms-copy-id, with these values: - success: Copy completed
      * successfully. - pending: Copy is in progress. Check x-ms-copy-status-description if intermittent, non-fatal
      * errors impede copy progress but don't cause failure. - aborted: Copy was ended by Abort Copy File. - failed: Copy
@@ -295,6 +333,8 @@ public final class ShareFileProperties {
     }
 
     /**
+     * Gets whether the file data and application metadata are completely encrypted using the specified algorithm.
+     *
      * @return True if the file data and application metadata are completely encrypted using the specified algorithm.
      * Otherwise, return false.
      */
@@ -303,6 +343,8 @@ public final class ShareFileProperties {
     }
 
     /**
+     * Gets the SMB properties of the file.
+     *
      * @return The SMB properties of the file.
      */
     public FileSmbProperties getSmbProperties() {

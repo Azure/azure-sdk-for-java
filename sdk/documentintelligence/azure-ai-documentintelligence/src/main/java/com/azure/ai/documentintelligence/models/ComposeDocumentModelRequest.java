@@ -6,8 +6,11 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -15,33 +18,29 @@ import java.util.Map;
  * Request body to create a composed document model from component document models.
  */
 @Fluent
-public final class ComposeDocumentModelRequest {
+public final class ComposeDocumentModelRequest implements JsonSerializable<ComposeDocumentModelRequest> {
     /*
      * Unique document model name.
      */
     @Generated
-    @JsonProperty(value = "modelId")
-    private String modelId;
+    private final String modelId;
 
     /*
      * Document model description.
      */
     @Generated
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * List of component document models to compose.
      */
     @Generated
-    @JsonProperty(value = "componentModels")
-    private List<ComponentDocumentModelDetails> componentModels;
+    private final List<ComponentDocumentModelDetails> componentModels;
 
     /*
      * List of key-value tag attributes associated with the document model.
      */
     @Generated
-    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /**
@@ -51,9 +50,7 @@ public final class ComposeDocumentModelRequest {
      * @param componentModels the componentModels value to set.
      */
     @Generated
-    @JsonCreator
-    public ComposeDocumentModelRequest(@JsonProperty(value = "modelId") String modelId,
-        @JsonProperty(value = "componentModels") List<ComponentDocumentModelDetails> componentModels) {
+    public ComposeDocumentModelRequest(String modelId, List<ComponentDocumentModelDetails> componentModels) {
         this.modelId = modelId;
         this.componentModels = componentModels;
     }
@@ -120,5 +117,61 @@ public final class ComposeDocumentModelRequest {
     public ComposeDocumentModelRequest setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("modelId", this.modelId);
+        jsonWriter.writeArrayField("componentModels", this.componentModels,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ComposeDocumentModelRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ComposeDocumentModelRequest if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ComposeDocumentModelRequest.
+     */
+    @Generated
+    public static ComposeDocumentModelRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String modelId = null;
+            List<ComponentDocumentModelDetails> componentModels = null;
+            String description = null;
+            Map<String, String> tags = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("modelId".equals(fieldName)) {
+                    modelId = reader.getString();
+                } else if ("componentModels".equals(fieldName)) {
+                    componentModels = reader.readArray(reader1 -> ComponentDocumentModelDetails.fromJson(reader1));
+                } else if ("description".equals(fieldName)) {
+                    description = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    tags = reader.readMap(reader1 -> reader1.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            ComposeDocumentModelRequest deserializedComposeDocumentModelRequest
+                = new ComposeDocumentModelRequest(modelId, componentModels);
+            deserializedComposeDocumentModelRequest.description = description;
+            deserializedComposeDocumentModelRequest.tags = tags;
+
+            return deserializedComposeDocumentModelRequest;
+        });
     }
 }

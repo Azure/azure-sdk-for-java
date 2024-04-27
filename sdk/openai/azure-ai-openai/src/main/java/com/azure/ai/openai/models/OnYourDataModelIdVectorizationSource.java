@@ -7,15 +7,19 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * The details of a a vectorization source, used by Azure OpenAI On Your Data when applying vector search, that is
- * based
+ * The details of a a vectorization source, used by Azure OpenAI On Your Data when applying vector search, that is based
  * on a search service model ID. Currently only supported by Elasticsearch®.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = OnYourDataModelIdVectorizationSource.class,
+    visible = true)
 @JsonTypeName("model_id")
 @Immutable
 public final class OnYourDataModelIdVectorizationSource extends OnYourDataVectorizationSource {
@@ -25,7 +29,7 @@ public final class OnYourDataModelIdVectorizationSource extends OnYourDataVector
      */
     @Generated
     @JsonProperty(value = "model_id")
-    private String modelId;
+    private final String modelId;
 
     /**
      * Creates an instance of OnYourDataModelIdVectorizationSource class.
@@ -47,5 +51,24 @@ public final class OnYourDataModelIdVectorizationSource extends OnYourDataVector
     @Generated
     public String getModelId() {
         return this.modelId;
+    }
+
+    /*
+     * The type of vectorization source to use.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "type")
+    private OnYourDataVectorizationSourceType type = OnYourDataVectorizationSourceType.MODEL_ID;
+
+    /**
+     * Get the type property: The type of vectorization source to use.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public OnYourDataVectorizationSourceType getType() {
+        return this.type;
     }
 }

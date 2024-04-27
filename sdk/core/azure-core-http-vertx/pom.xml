@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-vertx</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.17</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;current} -->
+  <version>1.0.0-beta.18</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;current} -->
 
   <name>Microsoft Azure Vert.x HTTP Client Library</name>
   <description>This package contains the Vert.x HTTP client plugin for azure-core.</description>
@@ -65,6 +65,7 @@
     <spotbugs.skip>false</spotbugs.skip>
     <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
     <spotless.skip>false</spotless.skip>
+    <animal.sniffer.skip>false</animal.sniffer.skip>
   </properties>
 
   <developers>
@@ -78,34 +79,34 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.48.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.49.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <!-- Required to satisfy the -Xlint:classfile compiler option -->
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-codegen</artifactId>
-      <version>4.5.5</version> <!-- {x-version-update;io.vertx:vertx-codegen;external_dependency} -->
+      <version>4.5.7</version> <!-- {x-version-update;io.vertx:vertx-codegen;external_dependency} -->
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-core</artifactId>
-      <version>4.5.5</version> <!-- {x-version-update;io.vertx:vertx-core;external_dependency} -->
+      <version>4.5.7</version> <!-- {x-version-update;io.vertx:vertx-core;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-reactive-streams</artifactId>
-      <version>4.5.5</version> <!-- {x-version-update;io.vertx:vertx-reactive-streams;external_dependency} -->
+      <version>4.5.7</version> <!-- {x-version-update;io.vertx:vertx-reactive-streams;external_dependency} -->
     </dependency>
 
     <!-- test dependencies on azure-core, because we want to run tests inherited from this module using Vert.x Web Client -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.48.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.49.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
@@ -175,14 +176,14 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.vertx:vertx-codegen:[4.5.5]</include> <!-- {x-include-update;io.vertx:vertx-codegen;external_dependency} -->
-                <include>io.vertx:vertx-core:[4.5.5]</include> <!-- {x-include-update;io.vertx:vertx-core;external_dependency} -->
-                <include>io.vertx:vertx-reactive-streams:[4.5.5]</include> <!-- {x-include-update;io.vertx:vertx-reactive-streams;external_dependency} -->
+                <include>io.vertx:vertx-codegen:[4.5.7]</include> <!-- {x-include-update;io.vertx:vertx-codegen;external_dependency} -->
+                <include>io.vertx:vertx-core:[4.5.7]</include> <!-- {x-include-update;io.vertx:vertx-core;external_dependency} -->
+                <include>io.vertx:vertx-reactive-streams:[4.5.7]</include> <!-- {x-include-update;io.vertx:vertx-reactive-streams;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

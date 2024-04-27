@@ -13,10 +13,17 @@ public class ShareProtocols {
     private static final ClientLogger LOGGER = new ClientLogger(ShareProtocols.class);
 
     private boolean smbEnabled;
-
     private boolean nfsEnabled;
 
     /**
+     * Creates a new instance of {@link ShareProtocols}.
+     */
+    public ShareProtocols() {
+    }
+
+    /**
+     * Whether SMB is enabled.
+     *
      * @return Enable SMB
      */
     public boolean isSmbEnabled() {
@@ -24,6 +31,8 @@ public class ShareProtocols {
     }
 
     /**
+     * Whether NFS is enabled.
+     *
      * @return Enable NFS
      */
     public boolean isNfsEnabled() {
@@ -31,6 +40,8 @@ public class ShareProtocols {
     }
 
     /**
+     * Sets whether SMB is enabled.
+     *
      * @param smb Enable SMB
      * @return The updated object
      */
@@ -40,6 +51,8 @@ public class ShareProtocols {
     }
 
     /**
+     * Sets whether NFS is enabled.
+     *
      * @param nfs Enable NFS
      * @return The updated object
      */
