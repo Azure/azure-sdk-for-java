@@ -158,6 +158,7 @@ public class ClientSideRequestStatistics {
         if (request.requestContext != null) {
 
             this.approximateInsertionCountInBloomFilter = request.requestContext.getApproximateBloomFilterInsertionCount();
+            storeResponseStatistics.sessionTokenEvaluationResults = request.requestContext.getSessionTokenEvaluationResults();
 
             if (request.requestContext.getEndToEndOperationLatencyPolicyConfig() != null) {
                 storeResponseStatistics.e2ePolicyCfg =
@@ -222,6 +223,10 @@ public class ClientSideRequestStatistics {
                 gatewayStatistics.operationType = rxDocumentServiceRequest.getOperationType();
                 gatewayStatistics.resourceType = rxDocumentServiceRequest.getResourceType();
                 this.requestPayloadSizeInBytes = rxDocumentServiceRequest.getContentLength();
+
+                if (rxDocumentServiceRequest.requestContext != null) {
+                    gatewayStatistics.sessionTokenEvaluationResults = rxDocumentServiceRequest.requestContext.getSessionTokenEvaluationResults();
+                }
             }
             gatewayStatistics.statusCode = storeResponseDiagnostics.getStatusCode();
             gatewayStatistics.subStatusCode = storeResponseDiagnostics.getSubStatusCode();
@@ -614,6 +619,9 @@ public class ClientSideRequestStatistics {
         @JsonIgnore
         private String regionName;
 
+        @JsonSerialize
+        private Set<String> sessionTokenEvaluationResults;
+
         public String getExcludedRegions() { return this.excludedRegions; }
 
         public StoreResultDiagnostics getStoreResult() {
@@ -639,6 +647,10 @@ public class ClientSideRequestStatistics {
         public String getRegionName() { return regionName; }
 
         public String getRequestSessionToken() { return requestSessionToken; }
+
+        public Set<String> getSessionTokenEvaluationResults() {
+            return sessionTokenEvaluationResults;
+        }
 
         @JsonIgnore
         public Duration getDuration() {
@@ -797,6 +809,7 @@ public class ClientSideRequestStatistics {
         private int responsePayloadSizeInBytes;
         private String faultInjectionRuleId;
         private List<String> faultInjectionEvaluationResults;
+        private Set<String> sessionTokenEvaluationResults;
 
         public String getSessionToken() {
             return sessionToken;
@@ -850,6 +863,10 @@ public class ClientSideRequestStatistics {
             return faultInjectionEvaluationResults;
         }
 
+        public Set<String> getSessionTokenEvaluationResults() {
+            return sessionTokenEvaluationResults;
+        }
+
         public static class GatewayStatisticsSerializer extends StdSerializer<GatewayStatistics> {
             private static final long serialVersionUID = 1L;
 
@@ -882,6 +899,7 @@ public class ClientSideRequestStatistics {
                         gatewayStatistics.getFaultInjectionEvaluationResults());
                 }
 
+                this.writeNonEmptyStringSetField(jsonGenerator, "sessionTokenEvaluationResults", gatewayStatistics.getSessionTokenEvaluationResults());
                 jsonGenerator.writeEndObject();
             }
 
@@ -899,6 +917,14 @@ public class ClientSideRequestStatistics {
                 }
 
                 jsonGenerator.writeObjectField(fieldName, values);
+            }
+
+            private void writeNonEmptyStringSetField(JsonGenerator jsonGenerator, String fieldName, Set<String> values) throws IOException {
+                if (values == null || values.isEmpty()) {
+                    return;
+                }
+
+                jsonGenerator.writePOJOField(fieldName, values);
             }
         }
     }

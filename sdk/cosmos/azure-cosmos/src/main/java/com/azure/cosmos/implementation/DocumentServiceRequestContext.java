@@ -50,6 +50,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     private AtomicBoolean isRequestCancelledOnTimeout = null;
     private volatile List<String> excludeRegions;
     private volatile long approximateBloomFilterInsertionCount;
+    private final Set<String> sessionTokenEvaluationResults = ConcurrentHashMap.newKeySet();
 
     // For cancelled rntbd requests, track the response as OperationCancelledException which later will be used to populate the cosmosDiagnostics
     public final Map<String, CosmosException> rntbdCancelledRequestMap = new ConcurrentHashMap<>();
@@ -168,6 +169,10 @@ public class DocumentServiceRequestContext implements Cloneable {
 
     public void setApproximateBloomFilterInsertionCount(long approximateBloomFilterInsertionCount) {
         this.approximateBloomFilterInsertionCount = approximateBloomFilterInsertionCount;
+    }
+
+    public Set<String> getSessionTokenEvaluationResults() {
+        return sessionTokenEvaluationResults;
     }
 }
 

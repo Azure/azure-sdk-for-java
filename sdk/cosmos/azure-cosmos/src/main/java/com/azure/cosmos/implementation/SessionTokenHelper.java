@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -170,6 +171,7 @@ public class SessionTokenHelper {
 
                     return partitionScopedRegionLevelProgress
                         .tryResolveSessionToken(
+                            request,
                             partitionKeyPossibleRegions,
                             partitionKeyRangeId,
                             firstEffectivePreferredReadableRegion,
@@ -179,6 +181,7 @@ public class SessionTokenHelper {
 
                 return partitionScopedRegionLevelProgress
                     .tryResolveSessionToken(
+                        request,
                         partitionKeyPossibleRegions,
                         partitionKeyRangeId,
                         firstEffectivePreferredReadableRegion,
@@ -208,6 +211,7 @@ public class SessionTokenHelper {
 
                             resolvedSessionTokenForParentPkRangeId = partitionScopedRegionLevelProgress
                                 .tryResolveSessionToken(
+                                    request,
                                     partitionKeyPossibleRegions,
                                     parentPkRangeId,
                                     firstEffectivePreferredReadableRegion,
@@ -261,5 +265,28 @@ public class SessionTokenHelper {
     public static  String concatPartitionKeyRangeIdWithSessionToken(String partitionKeyRangeRid, String sessionToken) {
         // e.g., "1:xyz"
         return partitionKeyRangeRid + ":" + sessionToken;
+    }
+
+    public static boolean tryEvaluateLocalLsnByRegionMappingWithNullSafety(ISessionToken sessionToken, Utils.ValueHolder<UnmodifiableMap<Integer, Long>> localLsnByRegion) {
+
+        if (sessionToken instanceof VectorSessionToken) {
+            VectorSessionToken castVectorSessionToken = Utils.as(sessionToken, VectorSessionToken.class);
+            localLsnByRegion.v = castVectorSessionToken.getLocalLsnByRegion();
+
+            return localLsnByRegion.v != null;
+        }
+
+        return false;
+    }
+
+    public static boolean tryEvaluateVersion(ISessionToken sessionToken, Utils.ValueHolder<Long> version) {
+
+        if (sessionToken instanceof VectorSessionToken) {
+            VectorSessionToken castVectorSessionToken = Utils.as(sessionToken, VectorSessionToken.class);
+            version.v = castVectorSessionToken.getVersion();
+            return true;
+        }
+
+        return false;
     }
 }

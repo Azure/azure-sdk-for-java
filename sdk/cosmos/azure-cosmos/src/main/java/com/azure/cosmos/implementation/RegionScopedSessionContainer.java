@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -375,12 +376,14 @@ public class RegionScopedSessionContainer implements ISessionContainer {
     }
 
     private void recordRegionScopedSessionToken(
+        RxDocumentServiceRequest request,
         PartitionScopedRegionLevelProgress partitionScopedRegionLevelProgress,
         ISessionToken parsedSessionToken,
         String partitionKeyRangeId,
         String regionRoutedTo) {
 
         partitionScopedRegionLevelProgress.tryRecordSessionToken(
+            request,
             parsedSessionToken,
             partitionKeyRangeId,
             this.firstPreferredReadableRegionCached.get(),
@@ -425,6 +428,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
             }
 
             this.recordRegionScopedSessionToken(
+                request,
                 partitionScopedRegionLevelProgress,
                 parsedSessionToken,
                 partitionKeyRangeId,
@@ -450,6 +454,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
 
             if (partitionScopedRegionLevelProgress != null) {
                 this.recordRegionScopedSessionToken(
+                    request,
                     partitionScopedRegionLevelProgress,
                     parsedSessionToken,
                     partitionKeyRangeId,
@@ -482,7 +487,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
                 Map.Entry<String,  ConcurrentHashMap<String, PartitionScopedRegionLevelProgress.RegionLevelProgress>> entry = iterator.next();
 
                 String partitionKeyRangeId = entry.getKey();
-                String sessionTokenAsString = entry.getValue().get(PartitionScopedRegionLevelProgress.GLOBAL_PROGRESS_KEY).getVectorSessionToken().convertToString();
+                String sessionTokenAsString = entry.getValue().get(PartitionScopedRegionLevelProgress.GLOBAL_PROGRESS_KEY).getSessionToken().convertToString();
 
                 result = result.append(partitionKeyRangeId).append(":").append(sessionTokenAsString);
                 if (iterator.hasNext()) {
@@ -560,31 +565,21 @@ public class RegionScopedSessionContainer implements ISessionContainer {
 
     private static String extractFirstEffectivePreferredReadableRegion(GlobalEndpointManager globalEndpointManager) {
 
-        if (globalEndpointManager == null) {
-            return StringUtils.EMPTY;
+        checkNotNull(globalEndpointManager, "globalEndpointManager cannot be null!");
+
+        List<String> regionNamesForRead = globalEndpointManager
+            .getReadEndpoints()
+            .stream()
+            .map(endpoint -> globalEndpointManager.getRegionName(endpoint, OperationType.Read))
+            .collect(Collectors.toList());
+
+        checkNotNull(regionNamesForRead, "regionNamesForRead cannot be null!");
+
+        if (!regionNamesForRead.isEmpty()) {
+            return regionNamesForRead.get(0).toLowerCase(Locale.ROOT).trim().replace(" ", "");
         }
 
-        ConnectionPolicy connectionPolicy = globalEndpointManager.getConnectionPolicy();
-
-        if (connectionPolicy != null) {
-            List<String> preferredRegions = connectionPolicy.getPreferredRegions();
-
-            if (preferredRegions != null && !preferredRegions.isEmpty()) {
-                return preferredRegions.get(0).toLowerCase(Locale.ROOT).trim().replace(" ", "");
-            }
-        }
-
-        DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
-
-        if (databaseAccount != null) {
-            Iterator<DatabaseAccountLocation> databaseAccountLocationIterator = databaseAccount.getReadableLocations().iterator();
-
-            if (databaseAccountLocationIterator.hasNext()) {
-                DatabaseAccountLocation databaseAccountLocation = databaseAccountLocationIterator.next();
-                return databaseAccountLocation.getName().toLowerCase(Locale.ROOT).trim().replace(" ", "");
-            }
-        }
-        return StringUtils.EMPTY;
+        throw new IllegalStateException("regionNamesForRead cannot be empty!");
     }
 
     public boolean isPartitionKeyResolvedToARegion(

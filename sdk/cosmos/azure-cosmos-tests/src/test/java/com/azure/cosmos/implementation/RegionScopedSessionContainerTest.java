@@ -463,10 +463,15 @@ public class RegionScopedSessionContainerTest {
         assertThat(collectionResourceIdToRegionScopedSessionTokens.get(collectionRidAsLong)).isNotNull();
         assertThat(collectionResourceIdToRegionScopedSessionTokens.get(collectionRidAsLong).getPartitionKeyRangeIdToRegionLevelProgress()).isNotNull();
         assertThat(collectionResourceIdToRegionScopedSessionTokens.get(collectionRidAsLong).getPartitionKeyRangeIdToRegionLevelProgress().get(partitionKeyRangeId)).isNotNull();
-        assertThat(collectionResourceIdToRegionScopedSessionTokens.get(collectionRidAsLong).getPartitionKeyRangeIdToRegionLevelProgress().get(partitionKeyRangeId)).isNotNull();
-        assertThat(collectionResourceIdToRegionScopedSessionTokens.get(collectionRidAsLong).getPartitionKeyRangeIdToRegionLevelProgress().get(partitionKeyRangeId).get(PartitionScopedRegionLevelProgress.GLOBAL_PROGRESS_KEY).getVectorSessionToken().convertToString()).isEqualTo(sessionToken);
 
-        RxDocumentServiceRequest request2 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Read, ResourceType.Document,
+        PartitionScopedRegionLevelProgress.RegionLevelProgress globalProgress = collectionResourceIdToRegionScopedSessionTokens.get(collectionRidAsLong).getPartitionKeyRangeIdToRegionLevelProgress().get(partitionKeyRangeId).get(PartitionScopedRegionLevelProgress.GLOBAL_PROGRESS_KEY);
+
+        assertThat(globalProgress).isNotNull();
+        assertThat(globalProgress.getSessionToken()).isNotNull();
+        assertThat(globalProgress.getSessionToken().convertToString()).isNotNull();
+        assertThat(globalProgress.getSessionToken().convertToString()).isEqualTo(sessionToken);
+
+        RxDocumentServiceRequest request2 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document,
             collectionName + "/docs",  Utils.getUTF8Bytes(""), new HashMap<>());
         request2.requestContext.locationEndpointToRoute = endpointContacted;
 
