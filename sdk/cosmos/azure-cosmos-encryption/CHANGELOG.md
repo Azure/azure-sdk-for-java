@@ -1,6 +1,8 @@
 ## Release History
 
 ### 2.11.0 (2024-04-26)
+#### Other Changes
+* Updated `azure-cosmos` to version `4.59.0`.
 
 #### Features Added
 * Added public APIs `getCustomItemSerializer` and `setCustomItemSerializer` to allow customers to specify custom payload transformations or serialization settings. - See [PR 38997](https://github.com/Azure/azure-sdk-for-java/pull/38997)
