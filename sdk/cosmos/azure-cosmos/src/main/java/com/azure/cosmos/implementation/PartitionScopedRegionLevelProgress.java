@@ -39,6 +39,9 @@ public class PartitionScopedRegionLevelProgress {
 
     public void tryRecordSessionToken(RxDocumentServiceRequest request, ISessionToken parsedSessionToken, String partitionKeyRangeId, String firstEffectivePreferredReadableRegion, String regionRoutedTo) {
 
+        checkNotNull(request, "request cannot be null!");
+        checkNotNull(request.requestContext, "requestContext cannot be null!");
+
         this.partitionKeyRangeIdToRegionLevelProgress.compute(partitionKeyRangeId, (partitionKeyRangeIdAsKey, regionLevelProgressAsVal) -> {
 
             try {
@@ -150,6 +153,9 @@ public class PartitionScopedRegionLevelProgress {
         String partitionKeyRangeId,
         String firstEffectivePreferredReadableRegion,
         boolean canUseRegionScopedSessionTokens) {
+
+        checkNotNull(request, "request cannot be null!");
+        checkNotNull(request.requestContext, "requestContext cannot be null!");
 
         try {
             RegionLevelProgress globalLevelProgress = resolvePartitionKeyRangeIdBasedProgress(partitionKeyRangeId, GLOBAL_PROGRESS_KEY);
