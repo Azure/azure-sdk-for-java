@@ -6,8 +6,8 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.SerializableWrapper;
-import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.ChangeFeedPolicy;
+import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.ComputedProperty;
 import com.azure.cosmos.models.ConflictResolutionPolicy;
 import com.azure.cosmos.models.CosmosVectorEmbeddingPolicy;
@@ -25,7 +25,6 @@ import java.io.ObjectOutputStream;
 import java.util.Collection;
 import java.util.Collections;
 
-import static com.azure.cosmos.BridgeInternal.setProperty;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -439,8 +438,7 @@ public final class DocumentCollection extends Resource {
      */
     public void setVectorEmbeddingPolicy(CosmosVectorEmbeddingPolicy value) {
         checkNotNull(value, "cosmosVectorEmbeddingPolicy cannot be null");
-        this.cosmosVectorEmbeddingPolicy = value;
-        setProperty(this, Constants.Properties.VECTOR_EMBEDDING_POLICY, value);
+        this.set(Constants.Properties.VECTOR_EMBEDDING_POLICY, value, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     public void populatePropertyBag() {

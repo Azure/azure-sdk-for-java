@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
 
@@ -35,7 +36,7 @@ public final class CosmosVectorIndexSpec {
      * @return the SpatialSpec.
      */
     public CosmosVectorIndexSpec setPath(String path) {
-        this.jsonSerializable.set(Constants.Properties.PATH, path);
+        this.jsonSerializable.set(Constants.Properties.PATH, path, CosmosItemSerializer.DEFAULT_SERIALIZER);
         return this;
     }
 
@@ -63,7 +64,7 @@ public final class CosmosVectorIndexSpec {
      */
     public CosmosVectorIndexSpec setType(String type) {
         this.type = type;
-        this.jsonSerializable.set(Constants.Properties.VECTOR_INDEX_TYPE, this.type);
+        this.jsonSerializable.set(Constants.Properties.VECTOR_INDEX_TYPE, this.type, CosmosItemSerializer.DEFAULT_SERIALIZER);
         return this;
     }
 

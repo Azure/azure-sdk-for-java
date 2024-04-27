@@ -305,7 +305,7 @@ public final class IndexingPolicy {
      */
     public IndexingPolicy setVectorIndexes(List<CosmosVectorIndexSpec> vectorIndexes) {
         this.vectorIndexes = vectorIndexes;
-        this.jsonSerializable.set(Constants.Properties.VECTOR_INDEXES,this.vectorIndexes);
+        this.jsonSerializable.set(Constants.Properties.VECTOR_INDEXES,this.vectorIndexes, CosmosItemSerializer.DEFAULT_SERIALIZER);
         return this;
     }
 
