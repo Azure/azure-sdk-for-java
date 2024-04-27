@@ -32,7 +32,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import reactor.core.publisher.Mono;
 import com.azure.core.models.CloudEvent;
-import com.azure.messaging.eventgrid.namespaces.models.ReleaseDelay;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerEncoding;
 import java.io.IOException;
@@ -590,36 +589,6 @@ public final class EventGridAsyncClient {
         return acknowledgeCloudEventsWithResponse(topicName, eventSubscriptionName,
             BinaryData.fromObject(acknowledgeOptions), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AcknowledgeResult.class));
-    }
-
-    /**
-     * Release batch of Cloud Events. The server responds with an HTTP 200 status code if the request is successfully
-     * accepted. The response body will include the set of successfully released lockTokens, along with other failed
-     * lockTokens with their corresponding error information.
-     *
-     * @param topicName Topic Name.
-     * @param eventSubscriptionName Event Subscription Name.
-     * @param releaseOptions ReleaseOptions.
-     * @param releaseDelayInSeconds Release cloud events with the specified delay in seconds.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the Release operation on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ReleaseResult> releaseCloudEvents(String topicName, String eventSubscriptionName,
-        ReleaseOptions releaseOptions, ReleaseDelay releaseDelayInSeconds) {
-        // Generated convenience method for releaseCloudEventsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (releaseDelayInSeconds != null) {
-            requestOptions.addQueryParam("releaseDelayInSeconds", String.valueOf(releaseDelayInSeconds), false);
-        }
-        return releaseCloudEventsWithResponse(topicName, eventSubscriptionName, BinaryData.fromObject(releaseOptions),
-            requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ReleaseResult.class));
     }
 
     /**
