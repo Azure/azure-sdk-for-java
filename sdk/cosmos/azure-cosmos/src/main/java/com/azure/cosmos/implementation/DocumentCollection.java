@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import static com.azure.cosmos.BridgeInternal.setProperty;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Represents a document collection in the Azure Cosmos DB database service. A collection is a named logical container
@@ -436,9 +437,7 @@ public final class DocumentCollection extends Resource {
      * @param value the Vector Embedding Policy.
      */
     public void setVectorEmbeddingPolicy(CosmosVectorEmbeddingPolicy value) {
-        if (value == null) {
-            throw new NullPointerException("VectorEmbeddingPolicy cannot be null.");
-        }
+        checkNotNull(value, "cosmosVectorEmbeddingPolicy cannot be null");
         this.cosmosVectorEmbeddingPolicy = value;
         setProperty(this, Constants.Properties.VECTOR_EMBEDDING_POLICY, value);
     }

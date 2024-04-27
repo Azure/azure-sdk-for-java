@@ -5,7 +5,9 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Embedding settings within {@link CosmosVectorEmbeddingPolicy}
@@ -14,11 +16,11 @@ public final class CosmosVectorEmbedding {
     @JsonProperty(Constants.Properties.PATH)
     private String path;
     @JsonProperty(Constants.Properties.VECTOR_DATA_TYPE)
-    private String cosmosVectorDataType;
+    private String dataType;
     @JsonProperty(Constants.Properties.VECTOR_DIMENSIONS)
     private Long dimensions;
     @JsonProperty(Constants.Properties.DISTANCE_FUNCTION)
-    private String cosmosVectorDistanceFunction;
+    private String distanceFunction;
     private JsonSerializable jsonSerializable;
 
     /**
@@ -44,6 +46,14 @@ public final class CosmosVectorEmbedding {
      * @return CosmosVectorEmbedding
      */
     public CosmosVectorEmbedding setPath(String path) {
+        if (StringUtils.isEmpty(path)) {
+            throw new NullPointerException("embedding path is empty");
+        }
+
+        if (path.charAt(0) != '/' || path.lastIndexOf('/') != 0) {
+            throw new IllegalArgumentException("");
+        }
+
         this.path = path;
         return this;
     }
@@ -51,20 +61,21 @@ public final class CosmosVectorEmbedding {
     /**
      * Gets the data type for the cosmosVectorEmbedding.
      *
-     * @return cosmosVectorDataType
+     * @return dataType
      */
-    public CosmosVectorDataType getVectorDataType() {
-        return CosmosVectorDataType.valueOf(cosmosVectorDataType);
+    public CosmosVectorDataType getDataType() {
+        return CosmosVectorDataType.fromString(dataType);
     }
 
     /**
      * Sets the data type for the cosmosVectorEmbedding.
      *
-     * @param cosmosVectorDataType the data type for the cosmosVectorEmbedding
+     * @param dataType the data type for the cosmosVectorEmbedding
      * @return CosmosVectorEmbedding
      */
-    public CosmosVectorEmbedding setVectorDataType(CosmosVectorDataType cosmosVectorDataType) {
-        this.cosmosVectorDataType = cosmosVectorDataType.toString();
+    public CosmosVectorEmbedding setDataType(CosmosVectorDataType dataType) {
+        checkNotNull(dataType, "cosmosVectorDataType cannot be empty");
+        this.dataType = dataType.toString();
         return this;
     }
 
@@ -84,6 +95,12 @@ public final class CosmosVectorEmbedding {
      * @return CosmosVectorEmbedding
      */
     public CosmosVectorEmbedding setDimensions(Long dimensions) {
+        checkNotNull(dimensions, "dimensions cannot be empty");
+        if (dimensions < 1) {
+            throw new IllegalArgumentException("Dimensions for the embedding has to be a long value greater than 1 " +
+                "for the vector embedding policy");
+        }
+
         this.dimensions = dimensions;
         return this;
     }
@@ -91,20 +108,21 @@ public final class CosmosVectorEmbedding {
     /**
      * Gets the distanceFunction for the cosmosVectorEmbedding.
      *
-     * @return cosmosVectorDistanceFunction
+     * @return distanceFunction
      */
-    public CosmosVectorDistanceFunction getVectorDistanceFunction() {
-        return CosmosVectorDistanceFunction.valueOf(cosmosVectorDistanceFunction);
+    public CosmosVectorDistanceFunction getDistanceFunction() {
+        return CosmosVectorDistanceFunction.fromString(distanceFunction);
     }
 
     /**
      * Sets the distanceFunction for the cosmosVectorEmbedding.
      *
-     * @param cosmosVectorDistanceFunction the distanceFunction for the cosmosVectorEmbedding
+     * @param distanceFunction the distanceFunction for the cosmosVectorEmbedding
      * @return CosmosVectorEmbedding
      */
-    public CosmosVectorEmbedding setVectorDistanceFunction(CosmosVectorDistanceFunction cosmosVectorDistanceFunction) {
-        this.cosmosVectorDistanceFunction = cosmosVectorDistanceFunction.toString();
+    public CosmosVectorEmbedding setDistanceFunction(CosmosVectorDistanceFunction distanceFunction) {
+        checkNotNull(distanceFunction, "cosmosVectorDistanceFunction cannot be empty");
+        this.distanceFunction = distanceFunction.toString();
         return this;
     }
 }

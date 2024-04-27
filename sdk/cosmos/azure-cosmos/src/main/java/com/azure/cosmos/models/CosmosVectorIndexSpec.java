@@ -5,32 +5,19 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Vector Indexes spec for Azure CosmosDB service.
  */
 public final class CosmosVectorIndexSpec {
 
-    private final JsonSerializable jsonSerializable;
+    private JsonSerializable jsonSerializable;
     private String type;
 
     /**
      * Constructor
-     *
-     * @param path the path.
      */
-    public CosmosVectorIndexSpec(String path) {
-        this.jsonSerializable = new JsonSerializable();
-        this.setPath(path);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param objectNode the object node that represents the included path.
-     */
-    private CosmosVectorIndexSpec(ObjectNode objectNode) { this.jsonSerializable = new JsonSerializable(objectNode); }
+    public CosmosVectorIndexSpec() { this.jsonSerializable = new JsonSerializable(); }
 
     /**
      * Gets path.

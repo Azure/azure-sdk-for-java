@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.models;
 
+import java.util.Arrays;
+
 /**
  * Data types for the embeddings in Cosmos DB database service.
  */
@@ -36,5 +38,18 @@ public enum CosmosVectorDataType {
     @Override
     public String toString() {
         return this.overWireValue;
+    }
+
+    /**
+     * Method to retrieve the enum constant by its overWireValue.
+     * @param value the overWire value of the enum constant
+     * @return the matching CosmosVectorDataType
+     * @throws IllegalArgumentException if no matching enum constant is found
+     */
+    public static CosmosVectorDataType fromString(String value) {
+        return Arrays.stream(CosmosVectorDataType.values())
+            .filter(vectorDataType -> vectorDataType.toString().equalsIgnoreCase(value))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("Invalid vector data type for the vector embedding policy."));
     }
 }

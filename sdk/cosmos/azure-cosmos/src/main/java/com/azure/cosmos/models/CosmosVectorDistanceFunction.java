@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.models;
 
+import java.util.Arrays;
+
 /**
  * Distance Function for the embeddings in the Cosmos DB database service.
  */
@@ -31,5 +33,18 @@ public enum CosmosVectorDistanceFunction {
     @Override
     public String toString() {
         return this.overWireValue;
+    }
+
+    /**
+     * Method to retrieve the enum constant by its overWireValue.
+     * @param value the overWire value of the enum constant
+     * @return the matching CosmosVectorDataType
+     * @throws IllegalArgumentException if no matching enum constant is found
+     */
+    public static CosmosVectorDistanceFunction fromString(String value) {
+        return Arrays.stream(CosmosVectorDistanceFunction.values())
+            .filter(vectorDistanceFunction -> vectorDistanceFunction.toString().equalsIgnoreCase(value))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("Invalid distance function for the vector embedding policy."));
     }
 }
