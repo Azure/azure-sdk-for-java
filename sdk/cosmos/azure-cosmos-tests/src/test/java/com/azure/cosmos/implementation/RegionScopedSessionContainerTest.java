@@ -111,8 +111,7 @@ public class RegionScopedSessionContainerTest {
                     LocationEastUsEndpointToLocationPair,
                     LocationEastUs2EndpointToLocationPair,
                     LocationCentralUsEndpointToLocationPair),
-                new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig())
-                    .setPreferredRegions(ImmutableList.of(LocationEastUsEndpointToLocationPair.getRight(), LocationEastUs2EndpointToLocationPair.getRight(), LocationCentralUsEndpointToLocationPair.getRight())),
+                ImmutableList.of(LocationEastUsEndpointToLocationPair.getLeft(), LocationEastUs2EndpointToLocationPair.getLeft(), LocationCentralUsEndpointToLocationPair.getLeft()),
                 true,
                 "range_0",
                 "pk1",
@@ -167,8 +166,7 @@ public class RegionScopedSessionContainerTest {
                     LocationEastUsEndpointToLocationPair,
                     LocationEastUs2EndpointToLocationPair,
                     LocationCentralUsEndpointToLocationPair),
-                new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig())
-                    .setPreferredRegions(ImmutableList.of(LocationEastUsEndpointToLocationPair.getValue(), LocationEastUs2EndpointToLocationPair.getValue(), LocationCentralUsEndpointToLocationPair.getValue())),
+                ImmutableList.of(LocationEastUsEndpointToLocationPair.getLeft(), LocationEastUs2EndpointToLocationPair.getLeft(), LocationCentralUsEndpointToLocationPair.getLeft()),
                 true,
                 "range_0",
                 "pk1",
@@ -223,8 +221,7 @@ public class RegionScopedSessionContainerTest {
                     LocationEastUsEndpointToLocationPair,
                     LocationEastUs2EndpointToLocationPair,
                     LocationCentralUsEndpointToLocationPair),
-                new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig())
-                    .setPreferredRegions(ImmutableList.of(LocationEastUsEndpointToLocationPair.getRight(), LocationEastUs2EndpointToLocationPair.getRight())),
+                ImmutableList.of(LocationEastUsEndpointToLocationPair.getLeft(), LocationEastUs2EndpointToLocationPair.getLeft()),
                 true,
                 "range_0",
                 "pk3",
@@ -293,8 +290,7 @@ public class RegionScopedSessionContainerTest {
                     LocationEastUs2EndpointToLocationPair,
                     LocationCentralUsEndpointToLocationPair,
                     LocationWestUsEndpointToLocationPair),
-                new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig())
-                    .setPreferredRegions(ImmutableList.of(LocationEastUsEndpointToLocationPair.getRight(), LocationEastUs2EndpointToLocationPair.getRight(), LocationCentralUsEndpointToLocationPair.getRight(), LocationWestUsEndpointToLocationPair.getRight())),
+                ImmutableList.of(LocationEastUsEndpointToLocationPair.getLeft(), LocationEastUs2EndpointToLocationPair.getLeft(), LocationCentralUsEndpointToLocationPair.getLeft(), LocationWestUsEndpointToLocationPair.getLeft()),
                 true,
                 "range_0",
                 "pk3",
@@ -361,8 +357,7 @@ public class RegionScopedSessionContainerTest {
                     LocationEastUs2EndpointToLocationPair,
                     LocationCentralUsEndpointToLocationPair,
                     LocationWestUsEndpointToLocationPair),
-                new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig())
-                    .setPreferredRegions(ImmutableList.of(LocationEastUsEndpointToLocationPair.getRight(), LocationEastUs2EndpointToLocationPair.getRight(), LocationCentralUsEndpointToLocationPair.getRight(), LocationWestUsEndpointToLocationPair.getRight())),
+                ImmutableList.of(LocationEastUsEndpointToLocationPair.getLeft(), LocationEastUs2EndpointToLocationPair.getLeft(), LocationCentralUsEndpointToLocationPair.getLeft(), LocationWestUsEndpointToLocationPair.getLeft()),
                 true,
                 "range_0",
                 null,
@@ -380,6 +375,9 @@ public class RegionScopedSessionContainerTest {
         int numPartitionKeyRangeIds = 5;
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
 
+        UnmodifiableList<URI> endpoints = new UnmodifiableList<>(ImmutableList.of(LocationEastUsEndpointToLocationPair.getLeft(), LocationEastUs2EndpointToLocationPair.getLeft(), LocationCentralUsEndpointToLocationPair.getLeft()));
+
+        Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(LocationEastUsEndpointToLocationPair.getLeft()), Mockito.any())).thenReturn(regionContacted);
 
         for (int i = 0; i < numCollections; i++) {
@@ -436,6 +434,10 @@ public class RegionScopedSessionContainerTest {
 
         GlobalEndpointManager globalEndpointManagerMock = Mockito.mock(GlobalEndpointManager.class);
         ISessionContainer sessionContainer = new RegionScopedSessionContainer("127.0.0.1", false, globalEndpointManagerMock);
+
+        UnmodifiableList<URI> endpoints = new UnmodifiableList<>(ImmutableList.of(LocationEastUsEndpointToLocationPair.getLeft(), LocationEastUs2EndpointToLocationPair.getLeft(), LocationCentralUsEndpointToLocationPair.getLeft()));
+
+        Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(endpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Create, ResourceType.Document,
@@ -495,6 +497,10 @@ public class RegionScopedSessionContainerTest {
 
         GlobalEndpointManager globalEndpointManagerMock = Mockito.mock(GlobalEndpointManager.class);
         RegionScopedSessionContainer sessionContainer = new RegionScopedSessionContainer("127.0.0.1", false, globalEndpointManagerMock);
+
+        UnmodifiableList<URI> endpoints = new UnmodifiableList<>(ImmutableList.of(LocationEastUsEndpointToLocationPair.getLeft(), LocationEastUs2EndpointToLocationPair.getLeft(), LocationCentralUsEndpointToLocationPair.getLeft()));
+
+        Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Create, ResourceType.Document,
@@ -549,6 +555,10 @@ public class RegionScopedSessionContainerTest {
 
         GlobalEndpointManager globalEndpointManagerMock = Mockito.mock(GlobalEndpointManager.class);
         RegionScopedSessionContainer sessionContainer = new RegionScopedSessionContainer("127.0.0.1", false, globalEndpointManagerMock);
+
+        UnmodifiableList<URI> endpoints = new UnmodifiableList<>(ImmutableList.of(LocationEastUsEndpointToLocationPair.getLeft(), LocationEastUs2EndpointToLocationPair.getLeft(), LocationCentralUsEndpointToLocationPair.getLeft()));
+
+        Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest collectionCreateRequest = RxDocumentServiceRequest.create(
@@ -574,6 +584,9 @@ public class RegionScopedSessionContainerTest {
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
 
+        UnmodifiableList<URI> endpoints = new UnmodifiableList<>(ImmutableList.of(LocationEastUsEndpointToLocationPair.getLeft(), LocationEastUs2EndpointToLocationPair.getLeft(), LocationCentralUsEndpointToLocationPair.getLeft()));
+
+        Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
@@ -613,6 +626,9 @@ public class RegionScopedSessionContainerTest {
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
 
+        UnmodifiableList<URI> endpoints = new UnmodifiableList<>(ImmutableList.of(LocationEastUsEndpointToLocationPair.getLeft(), LocationEastUs2EndpointToLocationPair.getLeft(), LocationCentralUsEndpointToLocationPair.getLeft()));
+
+        Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
@@ -654,6 +670,9 @@ public class RegionScopedSessionContainerTest {
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
 
+        UnmodifiableList<URI> endpoints = new UnmodifiableList<>(ImmutableList.of(LocationEastUsEndpointToLocationPair.getLeft(), LocationEastUs2EndpointToLocationPair.getLeft(), LocationCentralUsEndpointToLocationPair.getLeft()));
+
+        Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
@@ -691,6 +710,9 @@ public class RegionScopedSessionContainerTest {
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
 
+        UnmodifiableList<URI> endpoints = new UnmodifiableList<>(ImmutableList.of(LocationEastUsEndpointToLocationPair.getLeft(), LocationEastUs2EndpointToLocationPair.getLeft(), LocationCentralUsEndpointToLocationPair.getLeft()));
+
+        Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
@@ -733,6 +755,9 @@ public class RegionScopedSessionContainerTest {
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
 
+        UnmodifiableList<URI> endpoints = new UnmodifiableList<>(ImmutableList.of(LocationEastUsEndpointToLocationPair.getLeft(), LocationEastUs2EndpointToLocationPair.getLeft(), LocationCentralUsEndpointToLocationPair.getLeft()));
+
+        Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
@@ -771,6 +796,9 @@ public class RegionScopedSessionContainerTest {
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
 
+        UnmodifiableList<URI> endpoints = new UnmodifiableList<>(ImmutableList.of(LocationEastUsEndpointToLocationPair.getLeft(), LocationEastUs2EndpointToLocationPair.getLeft(), LocationCentralUsEndpointToLocationPair.getLeft()));
+
+        Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
@@ -807,6 +835,9 @@ public class RegionScopedSessionContainerTest {
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
 
+        UnmodifiableList<URI> endpoints = new UnmodifiableList<>(ImmutableList.of(LocationEastUsEndpointToLocationPair.getLeft(), LocationEastUs2EndpointToLocationPair.getLeft(), LocationCentralUsEndpointToLocationPair.getLeft()));
+
+        Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
@@ -846,6 +877,9 @@ public class RegionScopedSessionContainerTest {
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
         String unparsedSessionToken = "range_0:1#100#1=20#2=5#3=30";
 
+        UnmodifiableList<URI> endpoints = new UnmodifiableList<>(ImmutableList.of(LocationEastUsEndpointToLocationPair.getLeft(), LocationEastUs2EndpointToLocationPair.getLeft(), LocationCentralUsEndpointToLocationPair.getLeft()));
+
+        Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest documentCollectionCreateRequest = createRequestEntity(OperationType.Create, ResourceType.DocumentCollection, LocationEastUsEndpointToLocationPair.getLeft());
@@ -902,6 +936,9 @@ public class RegionScopedSessionContainerTest {
 
         String unparsedSessionToken = "range_0:1#100#1=20#2=5#3=30";
 
+        UnmodifiableList<URI> endpoints = new UnmodifiableList<>(ImmutableList.of(LocationEastUsEndpointToLocationPair.getLeft(), LocationEastUs2EndpointToLocationPair.getLeft(), LocationCentralUsEndpointToLocationPair.getLeft()));
+
+        Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest documentCollectionCreateRequest = createRequestEntity(OperationType.Create, ResourceType.DocumentCollection, LocationEastUsEndpointToLocationPair.getLeft());
@@ -959,6 +996,9 @@ public class RegionScopedSessionContainerTest {
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
         String unparsedSessionToken = "range_0:1#100#1=20#2=5#3=30";
 
+        UnmodifiableList<URI> endpoints = new UnmodifiableList<>(ImmutableList.of(LocationEastUsEndpointToLocationPair.getLeft(), LocationEastUs2EndpointToLocationPair.getLeft(), LocationCentralUsEndpointToLocationPair.getLeft()));
+
+        Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest documentCollectionCreateRequest = createRequestEntity(OperationType.Create, ResourceType.DocumentCollection, LocationEastUsEndpointToLocationPair.getLeft());
@@ -1011,6 +1051,9 @@ public class RegionScopedSessionContainerTest {
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
 
+        UnmodifiableList<URI> endpoints = new UnmodifiableList<>(ImmutableList.of(LocationEastUsEndpointToLocationPair.getLeft(), LocationEastUs2EndpointToLocationPair.getLeft(), LocationCentralUsEndpointToLocationPair.getLeft()));
+
+        Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Read,
@@ -1046,6 +1089,9 @@ public class RegionScopedSessionContainerTest {
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
 
+        UnmodifiableList<URI> endpoints = new UnmodifiableList<>(ImmutableList.of(LocationEastUsEndpointToLocationPair.getLeft(), LocationEastUs2EndpointToLocationPair.getLeft(), LocationCentralUsEndpointToLocationPair.getLeft()));
+
+        Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Read,
@@ -1086,6 +1132,9 @@ public class RegionScopedSessionContainerTest {
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
 
+        UnmodifiableList<URI> endpoints = new UnmodifiableList<>(ImmutableList.of(LocationEastUsEndpointToLocationPair.getLeft(), LocationEastUs2EndpointToLocationPair.getLeft(), LocationCentralUsEndpointToLocationPair.getLeft()));
+
+        Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Read,
@@ -1133,6 +1182,9 @@ public class RegionScopedSessionContainerTest {
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
 
+        UnmodifiableList<URI> endpoints = new UnmodifiableList<>(ImmutableList.of(LocationEastUsEndpointToLocationPair.getLeft(), LocationEastUs2EndpointToLocationPair.getLeft(), LocationCentralUsEndpointToLocationPair.getLeft()));
+
+        Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(LocationEastUsEndpointToLocationPair.getLeft()), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),OperationType.Read,
@@ -1194,6 +1246,9 @@ public class RegionScopedSessionContainerTest {
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
 
+        UnmodifiableList<URI> endpoints = new UnmodifiableList<>(ImmutableList.of(LocationEastUsEndpointToLocationPair.getLeft(), LocationEastUs2EndpointToLocationPair.getLeft(), LocationCentralUsEndpointToLocationPair.getLeft()));
+
+        Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Read,
@@ -1235,6 +1290,9 @@ public class RegionScopedSessionContainerTest {
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
 
+        UnmodifiableList<URI> endpoints = new UnmodifiableList<>(ImmutableList.of(LocationEastUsEndpointToLocationPair.getLeft(), LocationEastUs2EndpointToLocationPair.getLeft(), LocationCentralUsEndpointToLocationPair.getLeft()));
+
+        Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Read,
@@ -1275,6 +1333,9 @@ public class RegionScopedSessionContainerTest {
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
 
+        UnmodifiableList<URI> endpoints = new UnmodifiableList<>(ImmutableList.of(LocationEastUsEndpointToLocationPair.getLeft(), LocationEastUs2EndpointToLocationPair.getLeft(), LocationCentralUsEndpointToLocationPair.getLeft()));
+
+        Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest docReadRequest1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
@@ -1364,6 +1425,9 @@ public class RegionScopedSessionContainerTest {
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
 
+        UnmodifiableList<URI> endpoints = new UnmodifiableList<>(ImmutableList.of(LocationEastUsEndpointToLocationPair.getLeft(), LocationEastUs2EndpointToLocationPair.getLeft(), LocationCentralUsEndpointToLocationPair.getLeft()));
+
+        Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         // Set token for the parent
@@ -1409,6 +1473,9 @@ public class RegionScopedSessionContainerTest {
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
 
+        UnmodifiableList<URI> endpoints = new UnmodifiableList<>(ImmutableList.of(LocationEastUsEndpointToLocationPair.getLeft(), LocationEastUs2EndpointToLocationPair.getLeft(), LocationCentralUsEndpointToLocationPair.getLeft()));
+
+        Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         // Set token for the parent
@@ -1487,7 +1554,7 @@ public class RegionScopedSessionContainerTest {
         List<RequestMetadata> requestMetadataList,
         List<Pair<URI, String>> writableURIToLocationMappings,
         List<Pair<URI, String>> readableURIToLocationMappings,
-        ConnectionPolicy connectionPolicy,
+        List<URI> readEndpoints,
         boolean canUseMultipleWritableLocations,
         String pkRangeIdToBeUsedForSessionTokenResolution,
         String pkToBeUsedForSessionTokenResolution,
@@ -1518,9 +1585,11 @@ public class RegionScopedSessionContainerTest {
                 .when(globalEndpointManagerMock.getLatestDatabaseAccount())
                 .thenReturn(databaseAccount);
 
+            UnmodifiableList<URI> readEndpointsInUnmodifiableList = new UnmodifiableList<>(readEndpoints);
+
             Mockito
-                .when(globalEndpointManagerMock.getConnectionPolicy())
-                .thenReturn(connectionPolicy);
+                .when(globalEndpointManagerMock.getReadEndpoints())
+                .thenReturn(readEndpointsInUnmodifiableList);
 
             Mockito
                 .when(globalEndpointManagerMock.getApplicableWriteEndpoints(Mockito.anyList()))
