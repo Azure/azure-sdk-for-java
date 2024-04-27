@@ -62,7 +62,7 @@ public class CosmosSourceTask extends SourceTask {
         LOGGER.info("Creating the cosmos client");
 
         // TODO[GA]: optimize the client creation, client metadata cache?
-        this.cosmosClient = CosmosClientStore.getCosmosClient(this.taskConfig.getAccountConfig());
+        this.cosmosClient = CosmosClientStore.getCosmosClient(this.taskConfig.getAccountConfig(), this.taskConfig.getTaskId());
         this.throughputControlCosmosClient = this.getThroughputControlCosmosClient();
     }
 
@@ -70,7 +70,9 @@ public class CosmosSourceTask extends SourceTask {
         if (this.taskConfig.getThroughputControlConfig().isThroughputControlEnabled()
             && this.taskConfig.getThroughputControlConfig().getThroughputControlAccountConfig() != null) {
             // throughput control is using a different database account config
-            return CosmosClientStore.getCosmosClient(this.taskConfig.getThroughputControlConfig().getThroughputControlAccountConfig());
+            return CosmosClientStore.getCosmosClient(
+                this.taskConfig.getThroughputControlConfig().getThroughputControlAccountConfig(),
+                this.taskConfig.getTaskId());
         } else {
             return this.cosmosClient;
         }
@@ -145,7 +147,7 @@ public class CosmosSourceTask extends SourceTask {
                 ContainersMetadataTopicOffset.toMap(containersMetadata.getRight()),
                 taskUnit.getStorageName(),
                 Schema.STRING_SCHEMA,
-                containersMetadata.getLeft().getDatabaseName(),
+                getContainersMetadataItemId(containersMetadata.getLeft().getDatabaseName(), containersMetadata.getLeft().getConnectorName()),
                 containersMetadataSchemaAndValue.schema(),
                 containersMetadataSchemaAndValue.value()));
 
@@ -162,13 +164,24 @@ public class CosmosSourceTask extends SourceTask {
                     FeedRangesMetadataTopicOffset.toMap(feedRangesMetadata.getRight()),
                     taskUnit.getStorageName(),
                     Schema.STRING_SCHEMA,
-                    feedRangesMetadata.getLeft().getDatabaseName() + "_" + feedRangesMetadata.getLeft().getContainerRid(),
+                    this.getFeedRangesMetadataItemId(
+                        feedRangesMetadata.getLeft().getDatabaseName(),
+                        feedRangesMetadata.getLeft().getContainerRid(),
+                        feedRangesMetadata.getLeft().getConnectorName()
+                    ),
                     feedRangeMetadataSchemaAndValue.schema(),
                     feedRangeMetadataSchemaAndValue.value()));
         }
 
         LOGGER.info("There are {} metadata records being created/updated", sourceRecords.size());
         return sourceRecords;
+    }
+
+    private String getContainersMetadataItemId(String databaseName, String connectorName) {
+        return databaseName + "_" + connectorName;
+    }
+    private String getFeedRangesMetadataItemId(String databaseName, String collectionRid, String connectorName) {
+        return databaseName + "_" + collectionRid + "_" + connectorName;
     }
 
     private Pair<List<SourceRecord>, Boolean> executeFeedRangeTask(FeedRangeTaskUnit feedRangeTaskUnit) {

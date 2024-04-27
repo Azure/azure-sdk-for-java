@@ -145,7 +145,7 @@ private case class ItemsPartitionReader
   queryOptions.setFeedRange(SparkBridgeImplementationInternal.toFeedRange(feedRange))
 
   queryOptions
-    .setCustomSerializer(
+    .setCustomItemSerializer(
       new CosmosItemSerializer {
         override def serialize[T](item: T): util.Map[String, AnyRef] = ???
 

@@ -3,7 +3,7 @@
 ### 2.11.0-beta.1 (Unreleased)
 
 #### Features Added
-* Added public APIs `getCustomeSerializer` and `setCustomSerializer` to allow customers to specify custom payload transformations or serialization settings. - See [PR 38997](https://github.com/Azure/azure-sdk-for-java/pull/38997)
+* Added public APIs `getCustomItemSerializer` and `setCustomItemSerializer` to allow customers to specify custom payload transformations or serialization settings. - See [PR 38997](https://github.com/Azure/azure-sdk-for-java/pull/38997)
 
 #### Breaking Changes
 
