@@ -3,6 +3,7 @@
 package com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence;
 
 import java.time.DayOfWeek;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -12,7 +13,7 @@ public class RecurrencePattern {
     /**
      * The recurrence pattern type
      */
-    private String type;
+    private RecurrencePatternType type;
 
     /**
      * The number of units between occurrences, where units can be in days, weeks, months, or years,
@@ -34,14 +35,15 @@ public class RecurrencePattern {
      * @return the recurrence pattern type
      * */
     public String getType() {
-        return type;
+        return type.toString();
     }
 
     /**
      * @param type pattern type to be set
      * */
     public void setType(String type) {
-        this.type = type;
+        this.type = Arrays.stream(RecurrencePatternType.values())
+            .filter(e -> e.name().equalsIgnoreCase(type)).findAny().orElse(null);
     }
 
     /**
