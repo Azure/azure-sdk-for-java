@@ -19,7 +19,7 @@ import java.time.LocalTime;
 public final class DevBoxSchedule implements JsonSerializable<DevBoxSchedule> {
 
     /*
-     * Display name for the Schedule
+     * Display name for the Schedule.
      */
     @Generated
     private String name;

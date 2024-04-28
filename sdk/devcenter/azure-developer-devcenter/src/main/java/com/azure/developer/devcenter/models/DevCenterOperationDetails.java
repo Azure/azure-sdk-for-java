@@ -27,7 +27,7 @@ public final class DevCenterOperationDetails implements JsonSerializable<DevCent
     private String id;
 
     /*
-     * The operation id name
+     * The operation id name.
      */
     @Generated
     private String name;
@@ -45,19 +45,19 @@ public final class DevCenterOperationDetails implements JsonSerializable<DevCent
     private String resourceId;
 
     /*
-     * The start time of the operation
+     * The start time of the operation.
      */
     @Generated
     private OffsetDateTime startTime;
 
     /*
-     * The end time of the operation
+     * The end time of the operation.
      */
     @Generated
     private OffsetDateTime endTime;
 
     /*
-     * Percent of the operation that is complete
+     * Percent of the operation that is complete.
      */
     @Generated
     private Double percentComplete;
@@ -69,7 +69,7 @@ public final class DevCenterOperationDetails implements JsonSerializable<DevCent
     private Object properties;
 
     /*
-     * Operation Error message
+     * Operation Error message.
      */
     @Generated
     private ResponseError error;
@@ -182,7 +182,6 @@ public final class DevCenterOperationDetails implements JsonSerializable<DevCent
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
-        jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("resourceId", this.resourceId);
         jsonWriter.writeStringField("startTime",
             this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
@@ -207,8 +206,8 @@ public final class DevCenterOperationDetails implements JsonSerializable<DevCent
     public static DevCenterOperationDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
-            DevCenterOperationStatus status = null;
             String name = null;
+            DevCenterOperationStatus status = null;
             String resourceId = null;
             OffsetDateTime startTime = null;
             OffsetDateTime endTime = null;
@@ -220,10 +219,10 @@ public final class DevCenterOperationDetails implements JsonSerializable<DevCent
                 reader.nextToken();
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
-                } else if ("status".equals(fieldName)) {
-                    status = DevCenterOperationStatus.fromString(reader.getString());
                 } else if ("name".equals(fieldName)) {
                     name = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    status = DevCenterOperationStatus.fromString(reader.getString());
                 } else if ("resourceId".equals(fieldName)) {
                     resourceId = reader.getString();
                 } else if ("startTime".equals(fieldName)) {
