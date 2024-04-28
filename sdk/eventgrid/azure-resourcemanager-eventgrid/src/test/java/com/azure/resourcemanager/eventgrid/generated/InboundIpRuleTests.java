@@ -12,17 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class InboundIpRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InboundIpRule model = BinaryData.fromString("{\"ipMask\":\"mtsavjcbpwxqp\",\"action\":\"Allow\"}")
-            .toObject(InboundIpRule.class);
-        Assertions.assertEquals("mtsavjcbpwxqp", model.ipMask());
+        InboundIpRule model
+            = BinaryData.fromString("{\"ipMask\":\"rhdwbavxbniw\",\"action\":\"Allow\"}").toObject(InboundIpRule.class);
+        Assertions.assertEquals("rhdwbavxbniw", model.ipMask());
         Assertions.assertEquals(IpActionType.ALLOW, model.action());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InboundIpRule model = new InboundIpRule().withIpMask("mtsavjcbpwxqp").withAction(IpActionType.ALLOW);
+        InboundIpRule model = new InboundIpRule().withIpMask("rhdwbavxbniw").withAction(IpActionType.ALLOW);
         model = BinaryData.fromObject(model).toObject(InboundIpRule.class);
-        Assertions.assertEquals("mtsavjcbpwxqp", model.ipMask());
+        Assertions.assertEquals("rhdwbavxbniw", model.ipMask());
         Assertions.assertEquals(IpActionType.ALLOW, model.action());
     }
 }

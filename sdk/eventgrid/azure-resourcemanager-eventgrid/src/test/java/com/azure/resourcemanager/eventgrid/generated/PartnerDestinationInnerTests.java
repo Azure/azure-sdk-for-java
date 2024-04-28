@@ -17,38 +17,39 @@ public final class PartnerDestinationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerDestinationInner model = BinaryData.fromString(
-            "{\"properties\":{\"partnerRegistrationImmutableId\":\"d42db7eb-6cc4-4a01-b159-5c0507c3cf57\",\"endpointServiceContext\":\"kmoyxcdyuibh\",\"expirationTimeIfNotActivatedUtc\":\"2021-11-27T11:22:53Z\",\"provisioningState\":\"Canceled\",\"activationState\":\"Activated\",\"endpointBaseUrl\":\"vfvfcj\",\"messageForActivation\":\"eoisrvhmgor\"},\"location\":\"ukiscvwmzhw\",\"tags\":{\"btgn\":\"faxvxil\",\"zqlqhyc\":\"nzeyqxtjj\",\"mieknlraria\":\"vodggxdbee\"},\"id\":\"wiuagydwqf\",\"name\":\"ylyrfgiagtco\",\"type\":\"ocqwogfnzjvus\"}")
+            "{\"properties\":{\"partnerRegistrationImmutableId\":\"eee2707e-7b65-4e1d-a7ad-49e6c4715702\",\"endpointServiceContext\":\"pvdwxf\",\"expirationTimeIfNotActivatedUtc\":\"2021-09-25T09:52:18Z\",\"provisioningState\":\"IdleDueToMirroredChannelResourceDeletion\",\"activationState\":\"Activated\",\"endpointBaseUrl\":\"hyzsxjrkamb\",\"messageForActivation\":\"negvmnvuqe\"},\"location\":\"lds\",\"tags\":{\"kdmflvestmjlx\":\"tjb\",\"zapeewchpx\":\"ril\",\"levufuztcktyhj\":\"ktwkuziyc\"},\"id\":\"qedcgzulwm\",\"name\":\"rqzz\",\"type\":\"rjvpglydzgkrvqee\"}")
             .toObject(PartnerDestinationInner.class);
-        Assertions.assertEquals("ukiscvwmzhw", model.location());
-        Assertions.assertEquals("faxvxil", model.tags().get("btgn"));
-        Assertions.assertEquals(UUID.fromString("d42db7eb-6cc4-4a01-b159-5c0507c3cf57"),
+        Assertions.assertEquals("lds", model.location());
+        Assertions.assertEquals("tjb", model.tags().get("kdmflvestmjlx"));
+        Assertions.assertEquals(UUID.fromString("eee2707e-7b65-4e1d-a7ad-49e6c4715702"),
             model.partnerRegistrationImmutableId());
-        Assertions.assertEquals("kmoyxcdyuibh", model.endpointServiceContext());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-27T11:22:53Z"), model.expirationTimeIfNotActivatedUtc());
+        Assertions.assertEquals("pvdwxf", model.endpointServiceContext());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-25T09:52:18Z"), model.expirationTimeIfNotActivatedUtc());
         Assertions.assertEquals(PartnerDestinationActivationState.ACTIVATED, model.activationState());
-        Assertions.assertEquals("vfvfcj", model.endpointBaseUrl());
-        Assertions.assertEquals("eoisrvhmgor", model.messageForActivation());
+        Assertions.assertEquals("hyzsxjrkamb", model.endpointBaseUrl());
+        Assertions.assertEquals("negvmnvuqe", model.messageForActivation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PartnerDestinationInner model = new PartnerDestinationInner().withLocation("ukiscvwmzhw")
-            .withTags(mapOf("btgn", "faxvxil", "zqlqhyc", "nzeyqxtjj", "mieknlraria", "vodggxdbee"))
-            .withPartnerRegistrationImmutableId(UUID.fromString("d42db7eb-6cc4-4a01-b159-5c0507c3cf57"))
-            .withEndpointServiceContext("kmoyxcdyuibh")
-            .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-11-27T11:22:53Z"))
-            .withActivationState(PartnerDestinationActivationState.ACTIVATED).withEndpointBaseUrl("vfvfcj")
-            .withMessageForActivation("eoisrvhmgor");
+        PartnerDestinationInner model = new PartnerDestinationInner().withLocation("lds")
+            .withTags(mapOf("kdmflvestmjlx", "tjb", "zapeewchpx", "ril", "levufuztcktyhj", "ktwkuziyc"))
+            .withPartnerRegistrationImmutableId(UUID.fromString("eee2707e-7b65-4e1d-a7ad-49e6c4715702"))
+            .withEndpointServiceContext("pvdwxf")
+            .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-09-25T09:52:18Z"))
+            .withActivationState(PartnerDestinationActivationState.ACTIVATED)
+            .withEndpointBaseUrl("hyzsxjrkamb")
+            .withMessageForActivation("negvmnvuqe");
         model = BinaryData.fromObject(model).toObject(PartnerDestinationInner.class);
-        Assertions.assertEquals("ukiscvwmzhw", model.location());
-        Assertions.assertEquals("faxvxil", model.tags().get("btgn"));
-        Assertions.assertEquals(UUID.fromString("d42db7eb-6cc4-4a01-b159-5c0507c3cf57"),
+        Assertions.assertEquals("lds", model.location());
+        Assertions.assertEquals("tjb", model.tags().get("kdmflvestmjlx"));
+        Assertions.assertEquals(UUID.fromString("eee2707e-7b65-4e1d-a7ad-49e6c4715702"),
             model.partnerRegistrationImmutableId());
-        Assertions.assertEquals("kmoyxcdyuibh", model.endpointServiceContext());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-27T11:22:53Z"), model.expirationTimeIfNotActivatedUtc());
+        Assertions.assertEquals("pvdwxf", model.endpointServiceContext());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-25T09:52:18Z"), model.expirationTimeIfNotActivatedUtc());
         Assertions.assertEquals(PartnerDestinationActivationState.ACTIVATED, model.activationState());
-        Assertions.assertEquals("vfvfcj", model.endpointBaseUrl());
-        Assertions.assertEquals("eoisrvhmgor", model.messageForActivation());
+        Assertions.assertEquals("hyzsxjrkamb", model.endpointBaseUrl());
+        Assertions.assertEquals("negvmnvuqe", model.messageForActivation());
     }
 
     // Use "Map.of" if available

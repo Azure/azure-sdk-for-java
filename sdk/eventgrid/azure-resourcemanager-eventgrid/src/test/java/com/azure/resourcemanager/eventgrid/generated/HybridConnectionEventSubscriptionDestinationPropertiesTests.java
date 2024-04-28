@@ -6,7 +6,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.eventgrid.fluent.models.HybridConnectionEventSubscriptionDestinationProperties;
-import com.azure.resourcemanager.eventgrid.models.DeliveryAttributeMapping;
+import com.azure.resourcemanager.eventgrid.models.DynamicDeliveryAttributeMapping;
+import com.azure.resourcemanager.eventgrid.models.StaticDeliveryAttributeMapping;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -14,22 +15,21 @@ public final class HybridConnectionEventSubscriptionDestinationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HybridConnectionEventSubscriptionDestinationProperties model = BinaryData.fromString(
-            "{\"resourceId\":\"dexyionofninbdb\",\"deliveryAttributeMappings\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"wqqrsmpcbbprtuga\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"zbcyksiv\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"ogd\"}]}")
+            "{\"resourceId\":\"fokpysthhzagjfw\",\"deliveryAttributeMappings\":[{\"type\":\"Dynamic\",\"name\":\"enuzejg\"},{\"type\":\"Static\",\"name\":\"baqszllrzlsmmd\"},{\"type\":\"Dynamic\",\"name\":\"hzpimcq\"}]}")
             .toObject(HybridConnectionEventSubscriptionDestinationProperties.class);
-        Assertions.assertEquals("dexyionofninbdb", model.resourceId());
-        Assertions.assertEquals("wqqrsmpcbbprtuga", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("fokpysthhzagjfw", model.resourceId());
+        Assertions.assertEquals("enuzejg", model.deliveryAttributeMappings().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HybridConnectionEventSubscriptionDestinationProperties model
-            = new HybridConnectionEventSubscriptionDestinationProperties().withResourceId("dexyionofninbdb")
-                .withDeliveryAttributeMappings(
-                    Arrays.asList(new DeliveryAttributeMapping().withName("wqqrsmpcbbprtuga"),
-                        new DeliveryAttributeMapping().withName("zbcyksiv"),
-                        new DeliveryAttributeMapping().withName("ogd")));
+            = new HybridConnectionEventSubscriptionDestinationProperties().withResourceId("fokpysthhzagjfw")
+                .withDeliveryAttributeMappings(Arrays.asList(new DynamicDeliveryAttributeMapping().withName("enuzejg"),
+                    new StaticDeliveryAttributeMapping().withName("baqszllrzlsmmd"),
+                    new DynamicDeliveryAttributeMapping().withName("hzpimcq")));
         model = BinaryData.fromObject(model).toObject(HybridConnectionEventSubscriptionDestinationProperties.class);
-        Assertions.assertEquals("dexyionofninbdb", model.resourceId());
-        Assertions.assertEquals("wqqrsmpcbbprtuga", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("fokpysthhzagjfw", model.resourceId());
+        Assertions.assertEquals("enuzejg", model.deliveryAttributeMappings().get(0).name());
     }
 }

@@ -8,8 +8,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.eventgrid.fluent.models.ClientInner;
 import com.azure.resourcemanager.eventgrid.models.ClientCertificateAuthentication;
 import com.azure.resourcemanager.eventgrid.models.ClientCertificateValidationScheme;
-import com.azure.resourcemanager.eventgrid.models.ClientState;
 import com.azure.resourcemanager.eventgrid.models.ClientsListResult;
+import com.azure.resourcemanager.eventgrid.models.ClientState;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,59 +19,53 @@ public final class ClientsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClientsListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"description\":\"pjhvmdajvnys\",\"authenticationName\":\"nqecanoaeup\",\"clientCertificateAuthentication\":{\"validationScheme\":\"EmailMatchesAuthenticationName\",\"allowedThumbprints\":[\"rpmopjmc\",\"atuokthfuiu\"]},\"state\":\"Disabled\",\"attributes\":{\"ozmyzydagfu\":\"datacpkvxodp\"},\"provisioningState\":\"Failed\"},\"id\":\"zyiuokk\",\"name\":\"whrdxwzywqsmbsu\",\"type\":\"exim\"},{\"properties\":{\"description\":\"ocfs\",\"authenticationName\":\"s\",\"clientCertificateAuthentication\":{\"validationScheme\":\"DnsMatchesAuthenticationName\",\"allowedThumbprints\":[\"tki\",\"uxh\",\"yudxorrqnbp\"]},\"state\":\"Disabled\",\"attributes\":{\"qrvkdv\":\"datai\",\"vvdfwatkpnpul\":\"datasllr\",\"wiqzbqjvsovmyo\":\"dataxxbczwtr\",\"zdobpxjmflbvvnch\":\"dataacspkwl\"},\"provisioningState\":\"Succeeded\"},\"id\":\"iwwzjuqk\",\"name\":\"rsa\",\"type\":\"iwkuofos\"},{\"properties\":{\"description\":\"sauuimj\",\"authenticationName\":\"xieduugidyjrr\",\"clientCertificateAuthentication\":{\"validationScheme\":\"UriMatchesAuthenticationName\",\"allowedThumbprints\":[\"v\",\"xc\",\"onpc\",\"hocohslkev\"]},\"state\":\"Enabled\",\"attributes\":{\"ithlvmezyvshxm\":\"datafbuhfmvfaxkffe\",\"gigr\":\"datasbbzo\"},\"provisioningState\":\"Updating\"},\"id\":\"rvjx\",\"name\":\"jnspydp\",\"type\":\"koen\"},{\"properties\":{\"description\":\"knvudwtiukb\",\"authenticationName\":\"ngkpocipazy\",\"clientCertificateAuthentication\":{\"validationScheme\":\"UriMatchesAuthenticationName\",\"allowedThumbprints\":[\"g\"]},\"state\":\"Enabled\",\"attributes\":{\"zntypmrb\":\"datacgygev\",\"ydnfyhxdeoejz\":\"dataizcdrqjsd\",\"jttgzf\":\"datacwif\"},\"provisioningState\":\"Creating\"},\"id\":\"cbkhajdeyeamdph\",\"name\":\"g\",\"type\":\"lpbuxwgipwhonowk\"}],\"nextLink\":\"hwankixzbinjepu\"}")
+            "{\"value\":[{\"properties\":{\"description\":\"lbjnpgacftadehx\",\"authenticationName\":\"tyfsoppusuesn\",\"clientCertificateAuthentication\":{\"validationScheme\":\"ThumbprintMatch\",\"allowedThumbprints\":[\"avo\"]},\"state\":\"Disabled\",\"attributes\":{\"ndnvo\":\"dataohctbqvudwx\",\"lazjdyggdtjixhbk\":\"datagujjugwdkcglh\"},\"provisioningState\":\"Failed\"},\"id\":\"wey\",\"name\":\"hmenevfyexfwhybc\",\"type\":\"bvyvdcsity\"},{\"properties\":{\"description\":\"amdecte\",\"authenticationName\":\"iqscjeypv\",\"clientCertificateAuthentication\":{\"validationScheme\":\"DnsMatchesAuthenticationName\",\"allowedThumbprints\":[\"q\",\"c\",\"refovgmkqsleyyvx\"]},\"state\":\"Disabled\",\"attributes\":{\"jh\":\"datacattpngjcrcczsq\"},\"provisioningState\":\"Canceled\"},\"id\":\"jvnysounqe\",\"name\":\"a\",\"type\":\"oaeupfhyhltrpmo\"},{\"properties\":{\"description\":\"cma\",\"authenticationName\":\"okth\",\"clientCertificateAuthentication\":{\"validationScheme\":\"SubjectMatchesAuthenticationName\",\"allowedThumbprints\":[\"dsfcpkvxodpuoz\",\"yzydagfuaxbezyi\",\"okktwhrdxw\",\"ywqsmbsurexim\"]},\"state\":\"Enabled\",\"attributes\":{\"i\":\"datafsfksymddyst\"},\"provisioningState\":\"Creating\"},\"id\":\"qyud\",\"name\":\"o\",\"type\":\"rq\"}],\"nextLink\":\"poczvyifqrvkdvjs\"}")
             .toObject(ClientsListResult.class);
-        Assertions.assertEquals("pjhvmdajvnys", model.value().get(0).description());
-        Assertions.assertEquals("nqecanoaeup", model.value().get(0).authenticationName());
-        Assertions.assertEquals(ClientCertificateValidationScheme.EMAIL_MATCHES_AUTHENTICATION_NAME,
+        Assertions.assertEquals("lbjnpgacftadehx", model.value().get(0).description());
+        Assertions.assertEquals("tyfsoppusuesn", model.value().get(0).authenticationName());
+        Assertions.assertEquals(ClientCertificateValidationScheme.THUMBPRINT_MATCH,
             model.value().get(0).clientCertificateAuthentication().validationScheme());
-        Assertions.assertEquals("rpmopjmc",
+        Assertions.assertEquals("avo",
             model.value().get(0).clientCertificateAuthentication().allowedThumbprints().get(0));
         Assertions.assertEquals(ClientState.DISABLED, model.value().get(0).state());
-        Assertions.assertEquals("hwankixzbinjepu", model.nextLink());
+        Assertions.assertEquals("poczvyifqrvkdvjs", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClientsListResult model
-            = new ClientsListResult()
-                .withValue(
-                    Arrays.asList(
-                        new ClientInner().withDescription("pjhvmdajvnys").withAuthenticationName("nqecanoaeup")
-                            .withClientCertificateAuthentication(new ClientCertificateAuthentication()
-                                .withValidationScheme(
-                                    ClientCertificateValidationScheme.EMAIL_MATCHES_AUTHENTICATION_NAME)
-                                .withAllowedThumbprints(Arrays.asList("rpmopjmc", "atuokthfuiu")))
-                            .withState(ClientState.DISABLED).withAttributes(mapOf("ozmyzydagfu", "datacpkvxodp")),
-                        new ClientInner().withDescription("ocfs").withAuthenticationName("s")
-                            .withClientCertificateAuthentication(new ClientCertificateAuthentication()
-                                .withValidationScheme(ClientCertificateValidationScheme.DNS_MATCHES_AUTHENTICATION_NAME)
-                                .withAllowedThumbprints(Arrays.asList("tki", "uxh", "yudxorrqnbp")))
-                            .withState(ClientState.DISABLED)
-                            .withAttributes(mapOf("qrvkdv", "datai", "vvdfwatkpnpul", "datasllr", "wiqzbqjvsovmyo",
-                                "dataxxbczwtr", "zdobpxjmflbvvnch", "dataacspkwl")),
-                        new ClientInner().withDescription("sauuimj").withAuthenticationName("xieduugidyjrr")
-                            .withClientCertificateAuthentication(new ClientCertificateAuthentication()
-                                .withValidationScheme(ClientCertificateValidationScheme.URI_MATCHES_AUTHENTICATION_NAME)
-                                .withAllowedThumbprints(Arrays.asList("v", "xc", "onpc", "hocohslkev")))
-                            .withState(ClientState.ENABLED)
-                            .withAttributes(mapOf("ithlvmezyvshxm", "datafbuhfmvfaxkffe", "gigr", "datasbbzo")),
-                        new ClientInner().withDescription("knvudwtiukb").withAuthenticationName("ngkpocipazy")
-                            .withClientCertificateAuthentication(new ClientCertificateAuthentication()
-                                .withValidationScheme(ClientCertificateValidationScheme.URI_MATCHES_AUTHENTICATION_NAME)
-                                .withAllowedThumbprints(Arrays.asList("g")))
-                            .withState(ClientState.ENABLED).withAttributes(mapOf("zntypmrb", "datacgygev",
-                                "ydnfyhxdeoejz", "dataizcdrqjsd", "jttgzf", "datacwif"))))
-                .withNextLink("hwankixzbinjepu");
+        ClientsListResult model = new ClientsListResult().withValue(Arrays.asList(
+            new ClientInner().withDescription("lbjnpgacftadehx")
+                .withAuthenticationName("tyfsoppusuesn")
+                .withClientCertificateAuthentication(new ClientCertificateAuthentication()
+                    .withValidationScheme(ClientCertificateValidationScheme.THUMBPRINT_MATCH)
+                    .withAllowedThumbprints(Arrays.asList("avo")))
+                .withState(ClientState.DISABLED)
+                .withAttributes(mapOf("ndnvo", "dataohctbqvudwx", "lazjdyggdtjixhbk", "datagujjugwdkcglh")),
+            new ClientInner().withDescription("amdecte")
+                .withAuthenticationName("iqscjeypv")
+                .withClientCertificateAuthentication(new ClientCertificateAuthentication()
+                    .withValidationScheme(ClientCertificateValidationScheme.DNS_MATCHES_AUTHENTICATION_NAME)
+                    .withAllowedThumbprints(Arrays.asList("q", "c", "refovgmkqsleyyvx")))
+                .withState(ClientState.DISABLED)
+                .withAttributes(mapOf("jh", "datacattpngjcrcczsq")),
+            new ClientInner().withDescription("cma")
+                .withAuthenticationName("okth")
+                .withClientCertificateAuthentication(new ClientCertificateAuthentication()
+                    .withValidationScheme(ClientCertificateValidationScheme.SUBJECT_MATCHES_AUTHENTICATION_NAME)
+                    .withAllowedThumbprints(
+                        Arrays.asList("dsfcpkvxodpuoz", "yzydagfuaxbezyi", "okktwhrdxw", "ywqsmbsurexim")))
+                .withState(ClientState.ENABLED)
+                .withAttributes(mapOf("i", "datafsfksymddyst"))))
+            .withNextLink("poczvyifqrvkdvjs");
         model = BinaryData.fromObject(model).toObject(ClientsListResult.class);
-        Assertions.assertEquals("pjhvmdajvnys", model.value().get(0).description());
-        Assertions.assertEquals("nqecanoaeup", model.value().get(0).authenticationName());
-        Assertions.assertEquals(ClientCertificateValidationScheme.EMAIL_MATCHES_AUTHENTICATION_NAME,
+        Assertions.assertEquals("lbjnpgacftadehx", model.value().get(0).description());
+        Assertions.assertEquals("tyfsoppusuesn", model.value().get(0).authenticationName());
+        Assertions.assertEquals(ClientCertificateValidationScheme.THUMBPRINT_MATCH,
             model.value().get(0).clientCertificateAuthentication().validationScheme());
-        Assertions.assertEquals("rpmopjmc",
+        Assertions.assertEquals("avo",
             model.value().get(0).clientCertificateAuthentication().allowedThumbprints().get(0));
         Assertions.assertEquals(ClientState.DISABLED, model.value().get(0).state());
-        Assertions.assertEquals("hwankixzbinjepu", model.nextLink());
+        Assertions.assertEquals("poczvyifqrvkdvjs", model.nextLink());
     }
 
     // Use "Map.of" if available

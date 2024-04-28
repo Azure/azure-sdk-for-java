@@ -17,32 +17,37 @@ public final class SystemTopicUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SystemTopicUpdateParameters model = BinaryData.fromString(
-            "{\"tags\":{\"ucygvo\":\"lfpya\"},\"identity\":{\"type\":\"SystemAssigned, UserAssigned\",\"principalId\":\"ssxlghieegjlg\",\"tenantId\":\"paseksgb\",\"userAssignedIdentities\":{\"i\":{\"principalId\":\"tu\",\"clientId\":\"dhga\"},\"hcbjpibk\":{\"principalId\":\"rpiwrqofulo\",\"clientId\":\"jnlex\"},\"qpbrlc\":{\"principalId\":\"hu\",\"clientId\":\"erctatoyin\"},\"rrp\":{\"principalId\":\"duczkgof\",\"clientId\":\"fsrucv\"}}}}")
+            "{\"tags\":{\"mkoisqcssf\":\"df\"},\"identity\":{\"type\":\"SystemAssigned, UserAssigned\",\"principalId\":\"mcs\",\"tenantId\":\"obkdqzrdzsyl\",\"userAssignedIdentities\":{\"xrdcoxnbkkja\":{\"principalId\":\"trczzydmxzjijp\",\"clientId\":\"aurkihcirlde\"},\"ogypxrxvbfihwu\":{\"principalId\":\"rnnqb\",\"clientId\":\"bpizxqltgr\"}}}}")
             .toObject(SystemTopicUpdateParameters.class);
-        Assertions.assertEquals("lfpya", model.tags().get("ucygvo"));
+        Assertions.assertEquals("df", model.tags().get("mkoisqcssf"));
         Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("ssxlghieegjlg", model.identity().principalId());
-        Assertions.assertEquals("paseksgb", model.identity().tenantId());
-        Assertions.assertEquals("tu", model.identity().userAssignedIdentities().get("i").principalId());
-        Assertions.assertEquals("dhga", model.identity().userAssignedIdentities().get("i").clientId());
+        Assertions.assertEquals("mcs", model.identity().principalId());
+        Assertions.assertEquals("obkdqzrdzsyl", model.identity().tenantId());
+        Assertions.assertEquals("trczzydmxzjijp",
+            model.identity().userAssignedIdentities().get("xrdcoxnbkkja").principalId());
+        Assertions.assertEquals("aurkihcirlde",
+            model.identity().userAssignedIdentities().get("xrdcoxnbkkja").clientId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SystemTopicUpdateParameters model = new SystemTopicUpdateParameters().withTags(mapOf("ucygvo", "lfpya"))
+        SystemTopicUpdateParameters model = new SystemTopicUpdateParameters().withTags(mapOf("mkoisqcssf", "df"))
             .withIdentity(new IdentityInfo().withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                .withPrincipalId("ssxlghieegjlg").withTenantId("paseksgb").withUserAssignedIdentities(
-                    mapOf("i", new UserIdentityProperties().withPrincipalId("tu").withClientId("dhga"), "hcbjpibk",
-                        new UserIdentityProperties().withPrincipalId("rpiwrqofulo").withClientId("jnlex"), "qpbrlc",
-                        new UserIdentityProperties().withPrincipalId("hu").withClientId("erctatoyin"), "rrp",
-                        new UserIdentityProperties().withPrincipalId("duczkgof").withClientId("fsrucv"))));
+                .withPrincipalId("mcs")
+                .withTenantId("obkdqzrdzsyl")
+                .withUserAssignedIdentities(mapOf("xrdcoxnbkkja",
+                    new UserIdentityProperties().withPrincipalId("trczzydmxzjijp").withClientId("aurkihcirlde"),
+                    "ogypxrxvbfihwu",
+                    new UserIdentityProperties().withPrincipalId("rnnqb").withClientId("bpizxqltgr"))));
         model = BinaryData.fromObject(model).toObject(SystemTopicUpdateParameters.class);
-        Assertions.assertEquals("lfpya", model.tags().get("ucygvo"));
+        Assertions.assertEquals("df", model.tags().get("mkoisqcssf"));
         Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("ssxlghieegjlg", model.identity().principalId());
-        Assertions.assertEquals("paseksgb", model.identity().tenantId());
-        Assertions.assertEquals("tu", model.identity().userAssignedIdentities().get("i").principalId());
-        Assertions.assertEquals("dhga", model.identity().userAssignedIdentities().get("i").clientId());
+        Assertions.assertEquals("mcs", model.identity().principalId());
+        Assertions.assertEquals("obkdqzrdzsyl", model.identity().tenantId());
+        Assertions.assertEquals("trczzydmxzjijp",
+            model.identity().userAssignedIdentities().get("xrdcoxnbkkja").principalId());
+        Assertions.assertEquals("aurkihcirlde",
+            model.identity().userAssignedIdentities().get("xrdcoxnbkkja").clientId());
     }
 
     // Use "Map.of" if available

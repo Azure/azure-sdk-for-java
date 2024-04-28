@@ -18,31 +18,32 @@ public final class ClientPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClientProperties model = BinaryData.fromString(
-            "{\"description\":\"ctbqvudwx\",\"authenticationName\":\"dnvowg\",\"clientCertificateAuthentication\":{\"validationScheme\":\"ThumbprintMatch\",\"allowedThumbprints\":[\"dkcglhsl\",\"zj\",\"yggdtjixh\"]},\"state\":\"Enabled\",\"attributes\":{\"yexfwh\":\"dataqweykhmenev\",\"amdecte\":\"databcibvyvdcsitynn\",\"qsc\":\"dataf\"},\"provisioningState\":\"Updating\"}")
+            "{\"description\":\"bxetqgtzxdpn\",\"authenticationName\":\"qqwx\",\"clientCertificateAuthentication\":{\"validationScheme\":\"IpMatchesAuthenticationName\",\"allowedThumbprints\":[\"lnwsubisn\",\"ampmngnz\"]},\"state\":\"Disabled\",\"attributes\":{\"cbonqvpk\":\"datawooc\",\"f\":\"datalrxnjeaseiphe\",\"dlwtgrhpdj\":\"dataokeyyienj\"},\"provisioningState\":\"Canceled\"}")
             .toObject(ClientProperties.class);
-        Assertions.assertEquals("ctbqvudwx", model.description());
-        Assertions.assertEquals("dnvowg", model.authenticationName());
-        Assertions.assertEquals(ClientCertificateValidationScheme.THUMBPRINT_MATCH,
+        Assertions.assertEquals("bxetqgtzxdpn", model.description());
+        Assertions.assertEquals("qqwx", model.authenticationName());
+        Assertions.assertEquals(ClientCertificateValidationScheme.IP_MATCHES_AUTHENTICATION_NAME,
             model.clientCertificateAuthentication().validationScheme());
-        Assertions.assertEquals("dkcglhsl", model.clientCertificateAuthentication().allowedThumbprints().get(0));
-        Assertions.assertEquals(ClientState.ENABLED, model.state());
+        Assertions.assertEquals("lnwsubisn", model.clientCertificateAuthentication().allowedThumbprints().get(0));
+        Assertions.assertEquals(ClientState.DISABLED, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClientProperties model = new ClientProperties().withDescription("ctbqvudwx").withAuthenticationName("dnvowg")
+        ClientProperties model = new ClientProperties().withDescription("bxetqgtzxdpn")
+            .withAuthenticationName("qqwx")
             .withClientCertificateAuthentication(new ClientCertificateAuthentication()
-                .withValidationScheme(ClientCertificateValidationScheme.THUMBPRINT_MATCH)
-                .withAllowedThumbprints(Arrays.asList("dkcglhsl", "zj", "yggdtjixh")))
-            .withState(ClientState.ENABLED)
-            .withAttributes(mapOf("yexfwh", "dataqweykhmenev", "amdecte", "databcibvyvdcsitynn", "qsc", "dataf"));
+                .withValidationScheme(ClientCertificateValidationScheme.IP_MATCHES_AUTHENTICATION_NAME)
+                .withAllowedThumbprints(Arrays.asList("lnwsubisn", "ampmngnz")))
+            .withState(ClientState.DISABLED)
+            .withAttributes(mapOf("cbonqvpk", "datawooc", "f", "datalrxnjeaseiphe", "dlwtgrhpdj", "dataokeyyienj"));
         model = BinaryData.fromObject(model).toObject(ClientProperties.class);
-        Assertions.assertEquals("ctbqvudwx", model.description());
-        Assertions.assertEquals("dnvowg", model.authenticationName());
-        Assertions.assertEquals(ClientCertificateValidationScheme.THUMBPRINT_MATCH,
+        Assertions.assertEquals("bxetqgtzxdpn", model.description());
+        Assertions.assertEquals("qqwx", model.authenticationName());
+        Assertions.assertEquals(ClientCertificateValidationScheme.IP_MATCHES_AUTHENTICATION_NAME,
             model.clientCertificateAuthentication().validationScheme());
-        Assertions.assertEquals("dkcglhsl", model.clientCertificateAuthentication().allowedThumbprints().get(0));
-        Assertions.assertEquals(ClientState.ENABLED, model.state());
+        Assertions.assertEquals("lnwsubisn", model.clientCertificateAuthentication().allowedThumbprints().get(0));
+        Assertions.assertEquals(ClientState.DISABLED, model.state());
     }
 
     // Use "Map.of" if available

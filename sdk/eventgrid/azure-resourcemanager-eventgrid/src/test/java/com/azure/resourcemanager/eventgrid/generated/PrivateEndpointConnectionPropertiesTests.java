@@ -17,29 +17,31 @@ public final class PrivateEndpointConnectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateEndpointConnectionProperties model = BinaryData.fromString(
-            "{\"privateEndpoint\":{\"id\":\"ualupjmkh\"},\"groupIds\":[\"bbcswsrtjri\"],\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"bewtghfg\",\"actionsRequired\":\"c\"},\"provisioningState\":\"Deleting\"}")
+            "{\"privateEndpoint\":{\"id\":\"clha\"},\"groupIds\":[\"babphlwrqlfk\",\"sthsu\"],\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"yyazttbt\",\"actionsRequired\":\"rq\"},\"provisioningState\":\"Canceled\"}")
             .toObject(PrivateEndpointConnectionProperties.class);
-        Assertions.assertEquals("ualupjmkh", model.privateEndpoint().id());
-        Assertions.assertEquals("bbcswsrtjri", model.groupIds().get(0));
-        Assertions.assertEquals(PersistedConnectionStatus.REJECTED, model.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("bewtghfg", model.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("c", model.privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals(ResourceProvisioningState.DELETING, model.provisioningState());
+        Assertions.assertEquals("clha", model.privateEndpoint().id());
+        Assertions.assertEquals("babphlwrqlfk", model.groupIds().get(0));
+        Assertions.assertEquals(PersistedConnectionStatus.APPROVED, model.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("yyazttbt", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("rq", model.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals(ResourceProvisioningState.CANCELED, model.provisioningState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateEndpointConnectionProperties model = new PrivateEndpointConnectionProperties()
-            .withPrivateEndpoint(new PrivateEndpoint().withId("ualupjmkh")).withGroupIds(Arrays.asList("bbcswsrtjri"))
-            .withPrivateLinkServiceConnectionState(new ConnectionState().withStatus(PersistedConnectionStatus.REJECTED)
-                .withDescription("bewtghfg").withActionsRequired("c"))
-            .withProvisioningState(ResourceProvisioningState.DELETING);
+            .withPrivateEndpoint(new PrivateEndpoint().withId("clha"))
+            .withGroupIds(Arrays.asList("babphlwrqlfk", "sthsu"))
+            .withPrivateLinkServiceConnectionState(new ConnectionState().withStatus(PersistedConnectionStatus.APPROVED)
+                .withDescription("yyazttbt")
+                .withActionsRequired("rq"))
+            .withProvisioningState(ResourceProvisioningState.CANCELED);
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionProperties.class);
-        Assertions.assertEquals("ualupjmkh", model.privateEndpoint().id());
-        Assertions.assertEquals("bbcswsrtjri", model.groupIds().get(0));
-        Assertions.assertEquals(PersistedConnectionStatus.REJECTED, model.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("bewtghfg", model.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("c", model.privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals(ResourceProvisioningState.DELETING, model.provisioningState());
+        Assertions.assertEquals("clha", model.privateEndpoint().id());
+        Assertions.assertEquals("babphlwrqlfk", model.groupIds().get(0));
+        Assertions.assertEquals(PersistedConnectionStatus.APPROVED, model.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("yyazttbt", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("rq", model.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals(ResourceProvisioningState.CANCELED, model.provisioningState());
     }
 }

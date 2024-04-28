@@ -12,22 +12,24 @@ public final class InlineEventPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InlineEventProperties model = BinaryData.fromString(
-            "{\"description\":\"cukjf\",\"displayName\":\"iawxklry\",\"documentationUrl\":\"wckbasyypnd\",\"dataSchemaUrl\":\"sgcbac\"}")
+            "{\"description\":\"nhutjeltmrldhugj\",\"displayName\":\"datqxhocdgeabl\",\"documentationUrl\":\"huticndvkao\",\"dataSchemaUrl\":\"yiftyhxhuro\"}")
             .toObject(InlineEventProperties.class);
-        Assertions.assertEquals("cukjf", model.description());
-        Assertions.assertEquals("iawxklry", model.displayName());
-        Assertions.assertEquals("wckbasyypnd", model.documentationUrl());
-        Assertions.assertEquals("sgcbac", model.dataSchemaUrl());
+        Assertions.assertEquals("nhutjeltmrldhugj", model.description());
+        Assertions.assertEquals("datqxhocdgeabl", model.displayName());
+        Assertions.assertEquals("huticndvkao", model.documentationUrl());
+        Assertions.assertEquals("yiftyhxhuro", model.dataSchemaUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InlineEventProperties model = new InlineEventProperties().withDescription("cukjf").withDisplayName("iawxklry")
-            .withDocumentationUrl("wckbasyypnd").withDataSchemaUrl("sgcbac");
+        InlineEventProperties model = new InlineEventProperties().withDescription("nhutjeltmrldhugj")
+            .withDisplayName("datqxhocdgeabl")
+            .withDocumentationUrl("huticndvkao")
+            .withDataSchemaUrl("yiftyhxhuro");
         model = BinaryData.fromObject(model).toObject(InlineEventProperties.class);
-        Assertions.assertEquals("cukjf", model.description());
-        Assertions.assertEquals("iawxklry", model.displayName());
-        Assertions.assertEquals("wckbasyypnd", model.documentationUrl());
-        Assertions.assertEquals("sgcbac", model.dataSchemaUrl());
+        Assertions.assertEquals("nhutjeltmrldhugj", model.description());
+        Assertions.assertEquals("datqxhocdgeabl", model.displayName());
+        Assertions.assertEquals("huticndvkao", model.documentationUrl());
+        Assertions.assertEquals("yiftyhxhuro", model.dataSchemaUrl());
     }
 }

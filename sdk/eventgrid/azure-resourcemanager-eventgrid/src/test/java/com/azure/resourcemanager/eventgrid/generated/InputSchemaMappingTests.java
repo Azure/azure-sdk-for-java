@@ -6,17 +6,18 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.eventgrid.models.InputSchemaMapping;
+import com.azure.resourcemanager.eventgrid.models.JsonInputSchemaMapping;
 
 public final class InputSchemaMappingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InputSchemaMapping model = BinaryData.fromString("{\"inputSchemaMappingType\":\"InputSchemaMapping\"}")
-            .toObject(InputSchemaMapping.class);
+        InputSchemaMapping model
+            = BinaryData.fromString("{\"inputSchemaMappingType\":\"Json\"}").toObject(InputSchemaMapping.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InputSchemaMapping model = new InputSchemaMapping();
+        InputSchemaMapping model = new JsonInputSchemaMapping();
         model = BinaryData.fromObject(model).toObject(InputSchemaMapping.class);
     }
 }

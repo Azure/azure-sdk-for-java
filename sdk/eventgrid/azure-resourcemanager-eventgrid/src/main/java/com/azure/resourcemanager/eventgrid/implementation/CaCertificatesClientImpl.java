@@ -495,7 +495,8 @@ public final class CaCertificatesClientImpl implements CaCertificatesClient {
     private Mono<CaCertificateInner> createOrUpdateAsync(String resourceGroupName, String namespaceName,
         String caCertificateName, CaCertificateInner caCertificateInfo, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, namespaceName, caCertificateName, caCertificateInfo, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

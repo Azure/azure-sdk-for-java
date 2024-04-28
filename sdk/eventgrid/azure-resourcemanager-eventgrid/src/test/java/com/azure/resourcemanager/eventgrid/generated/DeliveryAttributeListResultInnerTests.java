@@ -6,7 +6,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.eventgrid.fluent.models.DeliveryAttributeListResultInner;
-import com.azure.resourcemanager.eventgrid.models.DeliveryAttributeMapping;
+import com.azure.resourcemanager.eventgrid.models.DynamicDeliveryAttributeMapping;
+import com.azure.resourcemanager.eventgrid.models.StaticDeliveryAttributeMapping;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -14,16 +15,19 @@ public final class DeliveryAttributeListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeliveryAttributeListResultInner model = BinaryData.fromString(
-            "{\"value\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"iolxor\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"lt\"}]}")
+            "{\"value\":[{\"type\":\"Dynamic\",\"name\":\"qgbdbuta\"},{\"type\":\"Dynamic\",\"name\":\"tkuwhhmhykojo\"},{\"type\":\"Static\",\"name\":\"nd\"},{\"type\":\"Dynamic\",\"name\":\"hkoymkcdyhbp\"}]}")
             .toObject(DeliveryAttributeListResultInner.class);
-        Assertions.assertEquals("iolxor", model.value().get(0).name());
+        Assertions.assertEquals("qgbdbuta", model.value().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeliveryAttributeListResultInner model = new DeliveryAttributeListResultInner().withValue(Arrays
-            .asList(new DeliveryAttributeMapping().withName("iolxor"), new DeliveryAttributeMapping().withName("lt")));
+        DeliveryAttributeListResultInner model = new DeliveryAttributeListResultInner()
+            .withValue(Arrays.asList(new DynamicDeliveryAttributeMapping().withName("qgbdbuta"),
+                new DynamicDeliveryAttributeMapping().withName("tkuwhhmhykojo"),
+                new StaticDeliveryAttributeMapping().withName("nd"),
+                new DynamicDeliveryAttributeMapping().withName("hkoymkcdyhbp")));
         model = BinaryData.fromObject(model).toObject(DeliveryAttributeListResultInner.class);
-        Assertions.assertEquals("iolxor", model.value().get(0).name());
+        Assertions.assertEquals("qgbdbuta", model.value().get(0).name());
     }
 }

@@ -11,19 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureADPartnerClientAuthenticationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureADPartnerClientAuthenticationProperties model = BinaryData.fromString(
-            "{\"azureActiveDirectoryTenantId\":\"joedx\",\"azureActiveDirectoryApplicationIdOrUri\":\"ucaifpaurwwgilf\"}")
+        AzureADPartnerClientAuthenticationProperties model = BinaryData
+            .fromString(
+                "{\"azureActiveDirectoryTenantId\":\"rtui\",\"azureActiveDirectoryApplicationIdOrUri\":\"siw\"}")
             .toObject(AzureADPartnerClientAuthenticationProperties.class);
-        Assertions.assertEquals("joedx", model.azureActiveDirectoryTenantId());
-        Assertions.assertEquals("ucaifpaurwwgilf", model.azureActiveDirectoryApplicationIdOrUri());
+        Assertions.assertEquals("rtui", model.azureActiveDirectoryTenantId());
+        Assertions.assertEquals("siw", model.azureActiveDirectoryApplicationIdOrUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureADPartnerClientAuthenticationProperties model = new AzureADPartnerClientAuthenticationProperties()
-            .withAzureActiveDirectoryTenantId("joedx").withAzureActiveDirectoryApplicationIdOrUri("ucaifpaurwwgilf");
+        AzureADPartnerClientAuthenticationProperties model
+            = new AzureADPartnerClientAuthenticationProperties().withAzureActiveDirectoryTenantId("rtui")
+                .withAzureActiveDirectoryApplicationIdOrUri("siw");
         model = BinaryData.fromObject(model).toObject(AzureADPartnerClientAuthenticationProperties.class);
-        Assertions.assertEquals("joedx", model.azureActiveDirectoryTenantId());
-        Assertions.assertEquals("ucaifpaurwwgilf", model.azureActiveDirectoryApplicationIdOrUri());
+        Assertions.assertEquals("rtui", model.azureActiveDirectoryTenantId());
+        Assertions.assertEquals("siw", model.azureActiveDirectoryApplicationIdOrUri());
     }
 }

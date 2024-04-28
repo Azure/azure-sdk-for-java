@@ -19,11 +19,11 @@ public final class PartnerNamespaceUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerNamespaceUpdateParameters model = BinaryData.fromString(
-            "{\"tags\":{\"xkyxvxevblbj\":\"idjks\"},\"properties\":{\"publicNetworkAccess\":\"SecuredByPerimeter\",\"inboundIpRules\":[{\"ipMask\":\"geuaulx\",\"action\":\"Allow\"},{\"ipMask\":\"jbnkpp\",\"action\":\"Allow\"},{\"ipMask\":\"nlsvxeiz\",\"action\":\"Allow\"}],\"minimumTlsVersionAllowed\":\"1.0\",\"disableLocalAuth\":true}}")
+            "{\"tags\":{\"lcsethwwnpj\":\"z\"},\"properties\":{\"publicNetworkAccess\":\"SecuredByPerimeter\",\"inboundIpRules\":[{\"ipMask\":\"ch\",\"action\":\"Allow\"},{\"ipMask\":\"bousn\",\"action\":\"Allow\"}],\"minimumTlsVersionAllowed\":\"1.0\",\"disableLocalAuth\":true}}")
             .toObject(PartnerNamespaceUpdateParameters.class);
-        Assertions.assertEquals("idjks", model.tags().get("xkyxvxevblbj"));
+        Assertions.assertEquals("z", model.tags().get("lcsethwwnpj"));
         Assertions.assertEquals(PublicNetworkAccess.SECURED_BY_PERIMETER, model.publicNetworkAccess());
-        Assertions.assertEquals("geuaulx", model.inboundIpRules().get(0).ipMask());
+        Assertions.assertEquals("ch", model.inboundIpRules().get(0).ipMask());
         Assertions.assertEquals(IpActionType.ALLOW, model.inboundIpRules().get(0).action());
         Assertions.assertEquals(TlsVersion.ONE_ZERO, model.minimumTlsVersionAllowed());
         Assertions.assertEquals(true, model.disableLocalAuth());
@@ -31,16 +31,17 @@ public final class PartnerNamespaceUpdateParametersTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PartnerNamespaceUpdateParameters model = new PartnerNamespaceUpdateParameters()
-            .withTags(mapOf("xkyxvxevblbj", "idjks")).withPublicNetworkAccess(PublicNetworkAccess.SECURED_BY_PERIMETER)
-            .withInboundIpRules(Arrays.asList(new InboundIpRule().withIpMask("geuaulx").withAction(IpActionType.ALLOW),
-                new InboundIpRule().withIpMask("jbnkpp").withAction(IpActionType.ALLOW),
-                new InboundIpRule().withIpMask("nlsvxeiz").withAction(IpActionType.ALLOW)))
-            .withMinimumTlsVersionAllowed(TlsVersion.ONE_ZERO).withDisableLocalAuth(true);
+        PartnerNamespaceUpdateParameters model
+            = new PartnerNamespaceUpdateParameters().withTags(mapOf("lcsethwwnpj", "z"))
+                .withPublicNetworkAccess(PublicNetworkAccess.SECURED_BY_PERIMETER)
+                .withInboundIpRules(Arrays.asList(new InboundIpRule().withIpMask("ch").withAction(IpActionType.ALLOW),
+                    new InboundIpRule().withIpMask("bousn").withAction(IpActionType.ALLOW)))
+                .withMinimumTlsVersionAllowed(TlsVersion.ONE_ZERO)
+                .withDisableLocalAuth(true);
         model = BinaryData.fromObject(model).toObject(PartnerNamespaceUpdateParameters.class);
-        Assertions.assertEquals("idjks", model.tags().get("xkyxvxevblbj"));
+        Assertions.assertEquals("z", model.tags().get("lcsethwwnpj"));
         Assertions.assertEquals(PublicNetworkAccess.SECURED_BY_PERIMETER, model.publicNetworkAccess());
-        Assertions.assertEquals("geuaulx", model.inboundIpRules().get(0).ipMask());
+        Assertions.assertEquals("ch", model.inboundIpRules().get(0).ipMask());
         Assertions.assertEquals(IpActionType.ALLOW, model.inboundIpRules().get(0).action());
         Assertions.assertEquals(TlsVersion.ONE_ZERO, model.minimumTlsVersionAllowed());
         Assertions.assertEquals(true, model.disableLocalAuth());

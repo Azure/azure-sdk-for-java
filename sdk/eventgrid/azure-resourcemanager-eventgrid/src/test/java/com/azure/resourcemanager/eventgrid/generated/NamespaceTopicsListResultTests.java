@@ -16,24 +16,28 @@ public final class NamespaceTopicsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NamespaceTopicsListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"DeleteFailed\",\"publisherType\":\"Custom\",\"inputSchema\":\"CloudEventSchemaV1_0\",\"eventRetentionInDays\":1430433647},\"id\":\"vofqzhvfc\",\"name\":\"byfmowuxr\",\"type\":\"jpvd\"}],\"nextLink\":\"fzwiivwzjbhyz\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"publisherType\":\"Custom\",\"inputSchema\":\"CloudEventSchemaV1_0\",\"eventRetentionInDays\":1386374066},\"id\":\"qqxhrnxrxcpj\",\"name\":\"isavok\",\"type\":\"dzf\"},{\"properties\":{\"provisioningState\":\"UpdatedFailed\",\"publisherType\":\"Custom\",\"inputSchema\":\"CloudEventSchemaV1_0\",\"eventRetentionInDays\":1551479002},\"id\":\"tbajlkatn\",\"name\":\"xyiopidkqqfku\",\"type\":\"s\"}],\"nextLink\":\"kdmligovi\"}")
             .toObject(NamespaceTopicsListResult.class);
         Assertions.assertEquals(PublisherType.CUSTOM, model.value().get(0).publisherType());
         Assertions.assertEquals(EventInputSchema.CLOUD_EVENT_SCHEMA_V1_0, model.value().get(0).inputSchema());
-        Assertions.assertEquals(1430433647, model.value().get(0).eventRetentionInDays());
-        Assertions.assertEquals("fzwiivwzjbhyz", model.nextLink());
+        Assertions.assertEquals(1386374066, model.value().get(0).eventRetentionInDays());
+        Assertions.assertEquals("kdmligovi", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NamespaceTopicsListResult model = new NamespaceTopicsListResult()
-            .withValue(Arrays.asList(new NamespaceTopicInner().withPublisherType(PublisherType.CUSTOM)
-                .withInputSchema(EventInputSchema.CLOUD_EVENT_SCHEMA_V1_0).withEventRetentionInDays(1430433647)))
-            .withNextLink("fzwiivwzjbhyz");
+        NamespaceTopicsListResult model = new NamespaceTopicsListResult().withValue(Arrays.asList(
+            new NamespaceTopicInner().withPublisherType(PublisherType.CUSTOM)
+                .withInputSchema(EventInputSchema.CLOUD_EVENT_SCHEMA_V1_0)
+                .withEventRetentionInDays(1386374066),
+            new NamespaceTopicInner().withPublisherType(PublisherType.CUSTOM)
+                .withInputSchema(EventInputSchema.CLOUD_EVENT_SCHEMA_V1_0)
+                .withEventRetentionInDays(1551479002)))
+            .withNextLink("kdmligovi");
         model = BinaryData.fromObject(model).toObject(NamespaceTopicsListResult.class);
         Assertions.assertEquals(PublisherType.CUSTOM, model.value().get(0).publisherType());
         Assertions.assertEquals(EventInputSchema.CLOUD_EVENT_SCHEMA_V1_0, model.value().get(0).inputSchema());
-        Assertions.assertEquals(1430433647, model.value().get(0).eventRetentionInDays());
-        Assertions.assertEquals("fzwiivwzjbhyz", model.nextLink());
+        Assertions.assertEquals(1386374066, model.value().get(0).eventRetentionInDays());
+        Assertions.assertEquals("kdmligovi", model.nextLink());
     }
 }

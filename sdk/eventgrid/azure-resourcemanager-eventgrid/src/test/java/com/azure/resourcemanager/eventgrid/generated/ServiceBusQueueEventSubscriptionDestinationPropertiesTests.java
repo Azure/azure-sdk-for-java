@@ -6,7 +6,7 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.eventgrid.fluent.models.ServiceBusQueueEventSubscriptionDestinationProperties;
-import com.azure.resourcemanager.eventgrid.models.DeliveryAttributeMapping;
+import com.azure.resourcemanager.eventgrid.models.StaticDeliveryAttributeMapping;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -14,19 +14,21 @@ public final class ServiceBusQueueEventSubscriptionDestinationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceBusQueueEventSubscriptionDestinationProperties model = BinaryData.fromString(
-            "{\"resourceId\":\"eyngjg\",\"deliveryAttributeMappings\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"vpygglp\"}]}")
+            "{\"resourceId\":\"xuqreblu\",\"deliveryAttributeMappings\":[{\"type\":\"Static\",\"name\":\"sfgtdmbvxekra\"},{\"type\":\"Static\",\"name\":\"budbt\"}]}")
             .toObject(ServiceBusQueueEventSubscriptionDestinationProperties.class);
-        Assertions.assertEquals("eyngjg", model.resourceId());
-        Assertions.assertEquals("vpygglp", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("xuqreblu", model.resourceId());
+        Assertions.assertEquals("sfgtdmbvxekra", model.deliveryAttributeMappings().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ServiceBusQueueEventSubscriptionDestinationProperties model
-            = new ServiceBusQueueEventSubscriptionDestinationProperties().withResourceId("eyngjg")
-                .withDeliveryAttributeMappings(Arrays.asList(new DeliveryAttributeMapping().withName("vpygglp")));
+            = new ServiceBusQueueEventSubscriptionDestinationProperties().withResourceId("xuqreblu")
+                .withDeliveryAttributeMappings(
+                    Arrays.asList(new StaticDeliveryAttributeMapping().withName("sfgtdmbvxekra"),
+                        new StaticDeliveryAttributeMapping().withName("budbt")));
         model = BinaryData.fromObject(model).toObject(ServiceBusQueueEventSubscriptionDestinationProperties.class);
-        Assertions.assertEquals("eyngjg", model.resourceId());
-        Assertions.assertEquals("vpygglp", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("xuqreblu", model.resourceId());
+        Assertions.assertEquals("sfgtdmbvxekra", model.deliveryAttributeMappings().get(0).name());
     }
 }

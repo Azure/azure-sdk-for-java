@@ -6,63 +6,45 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.VerifiedPartner;
 import com.azure.resourcemanager.eventgrid.models.VerifiedPartnerProvisioningState;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class VerifiedPartnersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"18b6775c-e4b8-4a8d-bc06-9cec35517875\",\"organizationName\":\"fmvswx\",\"partnerDisplayName\":\"el\",\"partnerTopicDetails\":{\"description\":\"qhdxtwwulkryb\",\"longDescription\":\"evy\",\"setupUri\":\"yjecrqkwakkch\"},\"partnerDestinationDetails\":{\"description\":\"ulborcxuibsdq\",\"longDescription\":\"yblpectsmwpgwe\",\"setupUri\":\"hbjq\"},\"provisioningState\":\"Canceled\"},\"id\":\"lerufollcshju\",\"name\":\"ihbymjjvtpne\",\"type\":\"xvjeazrah\"}";
+            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"de97d782-4844-427e-b2c7-c7db3f1ea589\",\"organizationName\":\"meqmduvtvodqxxpq\",\"partnerDisplayName\":\"lqibtblmcvrjaz\",\"partnerTopicDetails\":{\"description\":\"d\",\"longDescription\":\"qvpbq\",\"setupUri\":\"qkpsbqsb\"},\"partnerDestinationDetails\":{\"description\":\"taftazgcx\",\"longDescription\":\"qlc\",\"setupUri\":\"fylamxowbgcjoyut\"},\"provisioningState\":\"Failed\"},\"id\":\"arvtipq\",\"name\":\"ksxiknsgofunswh\",\"type\":\"cekggvmfnnb\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        EventGridManager manager = EventGridManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        EventGridManager manager = EventGridManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         VerifiedPartner response
-            = manager.verifiedPartners().getWithResponse("nry", com.azure.core.util.Context.NONE).getValue();
+            = manager.verifiedPartners().getWithResponse("xxkdevpxim", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(UUID.fromString("18b6775c-e4b8-4a8d-bc06-9cec35517875"),
+        Assertions.assertEquals(UUID.fromString("de97d782-4844-427e-b2c7-c7db3f1ea589"),
             response.partnerRegistrationImmutableId());
-        Assertions.assertEquals("fmvswx", response.organizationName());
-        Assertions.assertEquals("el", response.partnerDisplayName());
-        Assertions.assertEquals("qhdxtwwulkryb", response.partnerTopicDetails().description());
-        Assertions.assertEquals("evy", response.partnerTopicDetails().longDescription());
-        Assertions.assertEquals("yjecrqkwakkch", response.partnerTopicDetails().setupUri());
-        Assertions.assertEquals("ulborcxuibsdq", response.partnerDestinationDetails().description());
-        Assertions.assertEquals("yblpectsmwpgwe", response.partnerDestinationDetails().longDescription());
-        Assertions.assertEquals("hbjq", response.partnerDestinationDetails().setupUri());
-        Assertions.assertEquals(VerifiedPartnerProvisioningState.CANCELED, response.provisioningState());
+        Assertions.assertEquals("meqmduvtvodqxxpq", response.organizationName());
+        Assertions.assertEquals("lqibtblmcvrjaz", response.partnerDisplayName());
+        Assertions.assertEquals("d", response.partnerTopicDetails().description());
+        Assertions.assertEquals("qvpbq", response.partnerTopicDetails().longDescription());
+        Assertions.assertEquals("qkpsbqsb", response.partnerTopicDetails().setupUri());
+        Assertions.assertEquals("taftazgcx", response.partnerDestinationDetails().description());
+        Assertions.assertEquals("qlc", response.partnerDestinationDetails().longDescription());
+        Assertions.assertEquals("fylamxowbgcjoyut", response.partnerDestinationDetails().setupUri());
+        Assertions.assertEquals(VerifiedPartnerProvisioningState.FAILED, response.provisioningState());
     }
 }

@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class PartnerEventSubscriptionDestinationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PartnerEventSubscriptionDestination model = BinaryData
-            .fromString("{\"endpointType\":\"PartnerDestination\",\"properties\":{\"resourceId\":\"dqgmih\"}}")
-            .toObject(PartnerEventSubscriptionDestination.class);
-        Assertions.assertEquals("dqgmih", model.resourceId());
+        PartnerEventSubscriptionDestination model
+            = BinaryData.fromString("{\"endpointType\":\"StorageQueue\",\"properties\":{\"resourceId\":\"zi\"}}")
+                .toObject(PartnerEventSubscriptionDestination.class);
+        Assertions.assertEquals("zi", model.resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PartnerEventSubscriptionDestination model = new PartnerEventSubscriptionDestination().withResourceId("dqgmih");
+        PartnerEventSubscriptionDestination model = new PartnerEventSubscriptionDestination().withResourceId("zi");
         model = BinaryData.fromObject(model).toObject(PartnerEventSubscriptionDestination.class);
-        Assertions.assertEquals("dqgmih", model.resourceId());
+        Assertions.assertEquals("zi", model.resourceId());
     }
 }

@@ -14,21 +14,20 @@ public final class PartnerConfigurationUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerConfigurationUpdateParameters model = BinaryData.fromString(
-            "{\"tags\":{\"hlfkqojpy\":\"hihfrbbcevqagtlt\",\"ymbrnysuxmpraf\":\"vgtrdcnifmzzs\",\"khocxvdfffwaf\":\"g\",\"spave\":\"roud\"},\"properties\":{\"defaultMaximumExpirationTimeInDays\":597801422}}")
+            "{\"tags\":{\"zkdnc\":\"ivsiy\",\"wyrpgogtqxepnyl\":\"dxonbzoggculap\",\"tlvofq\":\"fuajly\"},\"properties\":{\"defaultMaximumExpirationTimeInDays\":1407902982}}")
             .toObject(PartnerConfigurationUpdateParameters.class);
-        Assertions.assertEquals("hihfrbbcevqagtlt", model.tags().get("hlfkqojpy"));
-        Assertions.assertEquals(597801422, model.defaultMaximumExpirationTimeInDays());
+        Assertions.assertEquals("ivsiy", model.tags().get("zkdnc"));
+        Assertions.assertEquals(1407902982, model.defaultMaximumExpirationTimeInDays());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PartnerConfigurationUpdateParameters model = new PartnerConfigurationUpdateParameters()
-            .withTags(mapOf("hlfkqojpy", "hihfrbbcevqagtlt", "ymbrnysuxmpraf", "vgtrdcnifmzzs", "khocxvdfffwaf", "g",
-                "spave", "roud"))
-            .withDefaultMaximumExpirationTimeInDays(597801422);
+            .withTags(mapOf("zkdnc", "ivsiy", "wyrpgogtqxepnyl", "dxonbzoggculap", "tlvofq", "fuajly"))
+            .withDefaultMaximumExpirationTimeInDays(1407902982);
         model = BinaryData.fromObject(model).toObject(PartnerConfigurationUpdateParameters.class);
-        Assertions.assertEquals("hihfrbbcevqagtlt", model.tags().get("hlfkqojpy"));
-        Assertions.assertEquals(597801422, model.defaultMaximumExpirationTimeInDays());
+        Assertions.assertEquals("ivsiy", model.tags().get("zkdnc"));
+        Assertions.assertEquals(1407902982, model.defaultMaximumExpirationTimeInDays());
     }
 
     // Use "Map.of" if available

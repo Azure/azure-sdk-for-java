@@ -6,21 +6,21 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.eventgrid.models.DeliveryAttributeMapping;
+import com.azure.resourcemanager.eventgrid.models.DynamicDeliveryAttributeMapping;
 import org.junit.jupiter.api.Assertions;
 
 public final class DeliveryAttributeMappingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeliveryAttributeMapping model
-            = BinaryData.fromString("{\"type\":\"DeliveryAttributeMapping\",\"name\":\"mncwsobqwcsdb\"}")
-                .toObject(DeliveryAttributeMapping.class);
-        Assertions.assertEquals("mncwsobqwcsdb", model.name());
+        DeliveryAttributeMapping model = BinaryData.fromString("{\"type\":\"Dynamic\",\"name\":\"dreqnovvqf\"}")
+            .toObject(DeliveryAttributeMapping.class);
+        Assertions.assertEquals("dreqnovvqf", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeliveryAttributeMapping model = new DeliveryAttributeMapping().withName("mncwsobqwcsdb");
+        DeliveryAttributeMapping model = new DynamicDeliveryAttributeMapping().withName("dreqnovvqf");
         model = BinaryData.fromObject(model).toObject(DeliveryAttributeMapping.class);
-        Assertions.assertEquals("mncwsobqwcsdb", model.name());
+        Assertions.assertEquals("dreqnovvqf", model.name());
     }
 }

@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.eventgrid.models.PartnerClientAuthentication;
+import com.azure.resourcemanager.eventgrid.models.AzureADPartnerClientAuthentication;
 import com.azure.resourcemanager.eventgrid.models.WebhookUpdatePartnerDestinationInfo;
 import org.junit.jupiter.api.Assertions;
 
@@ -13,18 +13,20 @@ public final class WebhookUpdatePartnerDestinationInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WebhookUpdatePartnerDestinationInfo model = BinaryData.fromString(
-            "{\"endpointType\":\"WebHook\",\"properties\":{\"endpointUrl\":\"ejsxt\",\"endpointBaseUrl\":\"flwfgziiuci\",\"clientAuthentication\":{\"clientAuthenticationType\":\"PartnerClientAuthentication\"}}}")
+            "{\"endpointType\":\"WebHook\",\"properties\":{\"endpointUrl\":\"llfryvdmvxadq\",\"endpointBaseUrl\":\"frgnawbabgfbktyj\",\"clientAuthentication\":{\"clientAuthenticationType\":\"AzureAD\"}}}")
             .toObject(WebhookUpdatePartnerDestinationInfo.class);
-        Assertions.assertEquals("ejsxt", model.endpointUrl());
-        Assertions.assertEquals("flwfgziiuci", model.endpointBaseUrl());
+        Assertions.assertEquals("llfryvdmvxadq", model.endpointUrl());
+        Assertions.assertEquals("frgnawbabgfbktyj", model.endpointBaseUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WebhookUpdatePartnerDestinationInfo model = new WebhookUpdatePartnerDestinationInfo().withEndpointUrl("ejsxt")
-            .withEndpointBaseUrl("flwfgziiuci").withClientAuthentication(new PartnerClientAuthentication());
+        WebhookUpdatePartnerDestinationInfo model
+            = new WebhookUpdatePartnerDestinationInfo().withEndpointUrl("llfryvdmvxadq")
+                .withEndpointBaseUrl("frgnawbabgfbktyj")
+                .withClientAuthentication(new AzureADPartnerClientAuthentication());
         model = BinaryData.fromObject(model).toObject(WebhookUpdatePartnerDestinationInfo.class);
-        Assertions.assertEquals("ejsxt", model.endpointUrl());
-        Assertions.assertEquals("flwfgziiuci", model.endpointBaseUrl());
+        Assertions.assertEquals("llfryvdmvxadq", model.endpointUrl());
+        Assertions.assertEquals("frgnawbabgfbktyj", model.endpointBaseUrl());
     }
 }

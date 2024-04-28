@@ -12,16 +12,16 @@ public final class NamespaceTopicEventSubscriptionDestinationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NamespaceTopicEventSubscriptionDestination model = BinaryData
-            .fromString("{\"endpointType\":\"NamespaceTopic\",\"properties\":{\"resourceId\":\"bluimmbw\"}}")
+            .fromString("{\"endpointType\":\"PartnerDestination\",\"properties\":{\"resourceId\":\"ggjh\"}}")
             .toObject(NamespaceTopicEventSubscriptionDestination.class);
-        Assertions.assertEquals("bluimmbw", model.resourceId());
+        Assertions.assertEquals("ggjh", model.resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NamespaceTopicEventSubscriptionDestination model
-            = new NamespaceTopicEventSubscriptionDestination().withResourceId("bluimmbw");
+            = new NamespaceTopicEventSubscriptionDestination().withResourceId("ggjh");
         model = BinaryData.fromObject(model).toObject(NamespaceTopicEventSubscriptionDestination.class);
-        Assertions.assertEquals("bluimmbw", model.resourceId());
+        Assertions.assertEquals("ggjh", model.resourceId());
     }
 }

@@ -6,26 +6,26 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.eventgrid.fluent.models.WebhookPartnerDestinationProperties;
-import com.azure.resourcemanager.eventgrid.models.PartnerClientAuthentication;
+import com.azure.resourcemanager.eventgrid.models.AzureADPartnerClientAuthentication;
 import org.junit.jupiter.api.Assertions;
 
 public final class WebhookPartnerDestinationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WebhookPartnerDestinationProperties model = BinaryData.fromString(
-            "{\"endpointUrl\":\"etgzdgvpy\",\"endpointBaseUrl\":\"daqqilzdc\",\"clientAuthentication\":{\"clientAuthenticationType\":\"PartnerClientAuthentication\"}}")
+            "{\"endpointUrl\":\"qqa\",\"endpointBaseUrl\":\"mkxwxdcvjwcyziak\",\"clientAuthentication\":{\"clientAuthenticationType\":\"AzureAD\"}}")
             .toObject(WebhookPartnerDestinationProperties.class);
-        Assertions.assertEquals("etgzdgvpy", model.endpointUrl());
-        Assertions.assertEquals("daqqilzdc", model.endpointBaseUrl());
+        Assertions.assertEquals("qqa", model.endpointUrl());
+        Assertions.assertEquals("mkxwxdcvjwcyziak", model.endpointBaseUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WebhookPartnerDestinationProperties model
-            = new WebhookPartnerDestinationProperties().withEndpointUrl("etgzdgvpy").withEndpointBaseUrl("daqqilzdc")
-                .withClientAuthentication(new PartnerClientAuthentication());
+        WebhookPartnerDestinationProperties model = new WebhookPartnerDestinationProperties().withEndpointUrl("qqa")
+            .withEndpointBaseUrl("mkxwxdcvjwcyziak")
+            .withClientAuthentication(new AzureADPartnerClientAuthentication());
         model = BinaryData.fromObject(model).toObject(WebhookPartnerDestinationProperties.class);
-        Assertions.assertEquals("etgzdgvpy", model.endpointUrl());
-        Assertions.assertEquals("daqqilzdc", model.endpointBaseUrl());
+        Assertions.assertEquals("qqa", model.endpointUrl());
+        Assertions.assertEquals("mkxwxdcvjwcyziak", model.endpointBaseUrl());
     }
 }

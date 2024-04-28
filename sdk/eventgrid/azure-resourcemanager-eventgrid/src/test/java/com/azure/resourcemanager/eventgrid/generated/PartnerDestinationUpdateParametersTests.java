@@ -13,17 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class PartnerDestinationUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PartnerDestinationUpdateParameters model = BinaryData.fromString("{\"tags\":{\"foj\":\"ojcmisofieyp\"}}")
+        PartnerDestinationUpdateParameters model = BinaryData.fromString("{\"tags\":{\"ndtic\":\"riglaec\"}}")
             .toObject(PartnerDestinationUpdateParameters.class);
-        Assertions.assertEquals("ojcmisofieyp", model.tags().get("foj"));
+        Assertions.assertEquals("riglaec", model.tags().get("ndtic"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PartnerDestinationUpdateParameters model
-            = new PartnerDestinationUpdateParameters().withTags(mapOf("foj", "ojcmisofieyp"));
+            = new PartnerDestinationUpdateParameters().withTags(mapOf("ndtic", "riglaec"));
         model = BinaryData.fromObject(model).toObject(PartnerDestinationUpdateParameters.class);
-        Assertions.assertEquals("ojcmisofieyp", model.tags().get("foj"));
+        Assertions.assertEquals("riglaec", model.tags().get("ndtic"));
     }
 
     // Use "Map.of" if available

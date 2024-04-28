@@ -6,7 +6,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.eventgrid.fluent.models.AzureFunctionEventSubscriptionDestinationProperties;
-import com.azure.resourcemanager.eventgrid.models.DeliveryAttributeMapping;
+import com.azure.resourcemanager.eventgrid.models.DynamicDeliveryAttributeMapping;
+import com.azure.resourcemanager.eventgrid.models.StaticDeliveryAttributeMapping;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -14,24 +15,28 @@ public final class AzureFunctionEventSubscriptionDestinationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureFunctionEventSubscriptionDestinationProperties model = BinaryData.fromString(
-            "{\"resourceId\":\"xqlehmc\",\"maxEventsPerBatch\":543031169,\"preferredBatchSizeInKilobytes\":910557396,\"deliveryAttributeMappings\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"hokamvfej\"}]}")
+            "{\"resourceId\":\"oywsxvjabjqqaxu\",\"maxEventsPerBatch\":235250330,\"preferredBatchSizeInKilobytes\":557006736,\"deliveryAttributeMappings\":[{\"type\":\"Dynamic\",\"name\":\"oabhjxwxqweuip\"},{\"type\":\"Static\",\"name\":\"smitnsqxtlt\"},{\"type\":\"Dynamic\",\"name\":\"dpqgfhyrfr\"}]}")
             .toObject(AzureFunctionEventSubscriptionDestinationProperties.class);
-        Assertions.assertEquals("xqlehmc", model.resourceId());
-        Assertions.assertEquals(543031169, model.maxEventsPerBatch());
-        Assertions.assertEquals(910557396, model.preferredBatchSizeInKilobytes());
-        Assertions.assertEquals("hokamvfej", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("oywsxvjabjqqaxu", model.resourceId());
+        Assertions.assertEquals(235250330, model.maxEventsPerBatch());
+        Assertions.assertEquals(557006736, model.preferredBatchSizeInKilobytes());
+        Assertions.assertEquals("oabhjxwxqweuip", model.deliveryAttributeMappings().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureFunctionEventSubscriptionDestinationProperties model
-            = new AzureFunctionEventSubscriptionDestinationProperties().withResourceId("xqlehmc")
-                .withMaxEventsPerBatch(543031169).withPreferredBatchSizeInKilobytes(910557396)
-                .withDeliveryAttributeMappings(Arrays.asList(new DeliveryAttributeMapping().withName("hokamvfej")));
+            = new AzureFunctionEventSubscriptionDestinationProperties().withResourceId("oywsxvjabjqqaxu")
+                .withMaxEventsPerBatch(235250330)
+                .withPreferredBatchSizeInKilobytes(557006736)
+                .withDeliveryAttributeMappings(
+                    Arrays.asList(new DynamicDeliveryAttributeMapping().withName("oabhjxwxqweuip"),
+                        new StaticDeliveryAttributeMapping().withName("smitnsqxtlt"),
+                        new DynamicDeliveryAttributeMapping().withName("dpqgfhyrfr")));
         model = BinaryData.fromObject(model).toObject(AzureFunctionEventSubscriptionDestinationProperties.class);
-        Assertions.assertEquals("xqlehmc", model.resourceId());
-        Assertions.assertEquals(543031169, model.maxEventsPerBatch());
-        Assertions.assertEquals(910557396, model.preferredBatchSizeInKilobytes());
-        Assertions.assertEquals("hokamvfej", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("oywsxvjabjqqaxu", model.resourceId());
+        Assertions.assertEquals(235250330, model.maxEventsPerBatch());
+        Assertions.assertEquals(557006736, model.preferredBatchSizeInKilobytes());
+        Assertions.assertEquals("oabhjxwxqweuip", model.deliveryAttributeMappings().get(0).name());
     }
 }

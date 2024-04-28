@@ -6,18 +6,18 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.eventgrid.models.PartnerUpdateDestinationInfo;
+import com.azure.resourcemanager.eventgrid.models.WebhookUpdatePartnerDestinationInfo;
 
 public final class PartnerUpdateDestinationInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerUpdateDestinationInfo model
-            = BinaryData.fromString("{\"endpointType\":\"PartnerUpdateDestinationInfo\"}")
-                .toObject(PartnerUpdateDestinationInfo.class);
+            = BinaryData.fromString("{\"endpointType\":\"WebHook\"}").toObject(PartnerUpdateDestinationInfo.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PartnerUpdateDestinationInfo model = new PartnerUpdateDestinationInfo();
+        PartnerUpdateDestinationInfo model = new WebhookUpdatePartnerDestinationInfo();
         model = BinaryData.fromObject(model).toObject(PartnerUpdateDestinationInfo.class);
     }
 }
