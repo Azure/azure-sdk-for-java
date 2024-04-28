@@ -17,33 +17,37 @@ public final class PartnerUpdateTopicInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerUpdateTopicInfo model = BinaryData.fromString(
-            "{\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"cyshurzafbljjgp\":{\"description\":\"i\",\"displayName\":\"xsqwpgrjbznorc\",\"documentationUrl\":\"vsnb\",\"dataSchemaUrl\":\"qabnmoc\"}}}}")
+            "{\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"idtqajzyu\":{\"description\":\"bnmo\",\"displayName\":\"cyshurzafbljjgp\",\"documentationUrl\":\"oq\",\"dataSchemaUrl\":\"mkljavb\"},\"aierhhb\":{\"description\":\"kudjkrlkhb\",\"displayName\":\"fepgzgq\",\"documentationUrl\":\"zloc\",\"dataSchemaUrl\":\"c\"}}}}")
             .toObject(PartnerUpdateTopicInfo.class);
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.eventTypeInfo().kind());
-        Assertions.assertEquals("i", model.eventTypeInfo().inlineEventTypes().get("cyshurzafbljjgp").description());
-        Assertions.assertEquals("xsqwpgrjbznorc",
-            model.eventTypeInfo().inlineEventTypes().get("cyshurzafbljjgp").displayName());
-        Assertions.assertEquals("vsnb",
-            model.eventTypeInfo().inlineEventTypes().get("cyshurzafbljjgp").documentationUrl());
-        Assertions.assertEquals("qabnmoc",
-            model.eventTypeInfo().inlineEventTypes().get("cyshurzafbljjgp").dataSchemaUrl());
+        Assertions.assertEquals("bnmo", model.eventTypeInfo().inlineEventTypes().get("idtqajzyu").description());
+        Assertions.assertEquals("cyshurzafbljjgp",
+            model.eventTypeInfo().inlineEventTypes().get("idtqajzyu").displayName());
+        Assertions.assertEquals("oq", model.eventTypeInfo().inlineEventTypes().get("idtqajzyu").documentationUrl());
+        Assertions.assertEquals("mkljavb", model.eventTypeInfo().inlineEventTypes().get("idtqajzyu").dataSchemaUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PartnerUpdateTopicInfo model
             = new PartnerUpdateTopicInfo().withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
-                .withInlineEventTypes(mapOf("cyshurzafbljjgp", new InlineEventProperties().withDescription("i")
-                    .withDisplayName("xsqwpgrjbznorc").withDocumentationUrl("vsnb").withDataSchemaUrl("qabnmoc"))));
+                .withInlineEventTypes(mapOf("idtqajzyu",
+                    new InlineEventProperties().withDescription("bnmo")
+                        .withDisplayName("cyshurzafbljjgp")
+                        .withDocumentationUrl("oq")
+                        .withDataSchemaUrl("mkljavb"),
+                    "aierhhb",
+                    new InlineEventProperties().withDescription("kudjkrlkhb")
+                        .withDisplayName("fepgzgq")
+                        .withDocumentationUrl("zloc")
+                        .withDataSchemaUrl("c"))));
         model = BinaryData.fromObject(model).toObject(PartnerUpdateTopicInfo.class);
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.eventTypeInfo().kind());
-        Assertions.assertEquals("i", model.eventTypeInfo().inlineEventTypes().get("cyshurzafbljjgp").description());
-        Assertions.assertEquals("xsqwpgrjbznorc",
-            model.eventTypeInfo().inlineEventTypes().get("cyshurzafbljjgp").displayName());
-        Assertions.assertEquals("vsnb",
-            model.eventTypeInfo().inlineEventTypes().get("cyshurzafbljjgp").documentationUrl());
-        Assertions.assertEquals("qabnmoc",
-            model.eventTypeInfo().inlineEventTypes().get("cyshurzafbljjgp").dataSchemaUrl());
+        Assertions.assertEquals("bnmo", model.eventTypeInfo().inlineEventTypes().get("idtqajzyu").description());
+        Assertions.assertEquals("cyshurzafbljjgp",
+            model.eventTypeInfo().inlineEventTypes().get("idtqajzyu").displayName());
+        Assertions.assertEquals("oq", model.eventTypeInfo().inlineEventTypes().get("idtqajzyu").documentationUrl());
+        Assertions.assertEquals("mkljavb", model.eventTypeInfo().inlineEventTypes().get("idtqajzyu").dataSchemaUrl());
     }
 
     // Use "Map.of" if available

@@ -12,16 +12,16 @@ public final class PartnerConfigurationUpdateParameterPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerConfigurationUpdateParameterProperties model
-            = BinaryData.fromString("{\"defaultMaximumExpirationTimeInDays\":221531853}")
+            = BinaryData.fromString("{\"defaultMaximumExpirationTimeInDays\":1580266173}")
                 .toObject(PartnerConfigurationUpdateParameterProperties.class);
-        Assertions.assertEquals(221531853, model.defaultMaximumExpirationTimeInDays());
+        Assertions.assertEquals(1580266173, model.defaultMaximumExpirationTimeInDays());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PartnerConfigurationUpdateParameterProperties model
-            = new PartnerConfigurationUpdateParameterProperties().withDefaultMaximumExpirationTimeInDays(221531853);
+            = new PartnerConfigurationUpdateParameterProperties().withDefaultMaximumExpirationTimeInDays(1580266173);
         model = BinaryData.fromObject(model).toObject(PartnerConfigurationUpdateParameterProperties.class);
-        Assertions.assertEquals(221531853, model.defaultMaximumExpirationTimeInDays());
+        Assertions.assertEquals(1580266173, model.defaultMaximumExpirationTimeInDays());
     }
 }

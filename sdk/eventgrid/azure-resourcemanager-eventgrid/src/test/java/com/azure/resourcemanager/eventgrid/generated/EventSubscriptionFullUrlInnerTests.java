@@ -12,14 +12,14 @@ public final class EventSubscriptionFullUrlInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EventSubscriptionFullUrlInner model
-            = BinaryData.fromString("{\"endpointUrl\":\"uexhdzx\"}").toObject(EventSubscriptionFullUrlInner.class);
-        Assertions.assertEquals("uexhdzx", model.endpointUrl());
+            = BinaryData.fromString("{\"endpointUrl\":\"aoqvuh\"}").toObject(EventSubscriptionFullUrlInner.class);
+        Assertions.assertEquals("aoqvuh", model.endpointUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventSubscriptionFullUrlInner model = new EventSubscriptionFullUrlInner().withEndpointUrl("uexhdzx");
+        EventSubscriptionFullUrlInner model = new EventSubscriptionFullUrlInner().withEndpointUrl("aoqvuh");
         model = BinaryData.fromObject(model).toObject(EventSubscriptionFullUrlInner.class);
-        Assertions.assertEquals("uexhdzx", model.endpointUrl());
+        Assertions.assertEquals("aoqvuh", model.endpointUrl());
     }
 }

@@ -11,7 +11,7 @@ public final class DomainTopicInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DomainTopicInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"id\":\"oakggkfpag\",\"name\":\"owpulpq\",\"type\":\"lyls\"}")
+            "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"id\":\"xsdqrhzoymibmrqy\",\"name\":\"bahwfl\",\"type\":\"szdtmhrkwof\"}")
             .toObject(DomainTopicInner.class);
     }
 

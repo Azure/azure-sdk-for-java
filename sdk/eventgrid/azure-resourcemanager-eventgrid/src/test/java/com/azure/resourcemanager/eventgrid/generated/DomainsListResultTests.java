@@ -15,8 +15,8 @@ import com.azure.resourcemanager.eventgrid.models.IdentityType;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.InlineEventProperties;
 import com.azure.resourcemanager.eventgrid.models.InputSchema;
-import com.azure.resourcemanager.eventgrid.models.InputSchemaMapping;
 import com.azure.resourcemanager.eventgrid.models.IpActionType;
+import com.azure.resourcemanager.eventgrid.models.JsonInputSchemaMapping;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
 import com.azure.resourcemanager.eventgrid.models.ResourceSku;
 import com.azure.resourcemanager.eventgrid.models.Sku;
@@ -31,178 +31,166 @@ public final class DomainsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DomainsListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"privateEndpointConnections\":[{\"properties\":{},\"id\":\"ccymvaolpsslql\",\"name\":\"mmdnbbglzps\",\"type\":\"iydmcwyhzdxs\"},{\"properties\":{},\"id\":\"dbzm\",\"name\":\"vdfznudaodvxzb\",\"type\":\"cblylpstdbhhxsr\"},{\"properties\":{},\"id\":\"zucerscdntnev\",\"name\":\"iwjmygtdssls\",\"type\":\"tmweriofzpyq\"},{\"properties\":{},\"id\":\"mwabnetshhszhedp\",\"name\":\"vwiwubmwmbesld\",\"type\":\"k\"}],\"provisioningState\":\"Canceled\",\"minimumTlsVersionAllowed\":\"1.0\",\"endpoint\":\"flcxoga\",\"inputSchema\":\"CloudEventSchemaV1_0\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"ikvmkqzeqqk\":{},\"l\":{},\"fzxmhhvhgureodkw\":{},\"bdagxt\":{}}},\"inputSchemaMapping\":{\"inputSchemaMappingType\":\"InputSchemaMapping\"},\"metricResourceId\":\"dxbx\",\"publicNetworkAccess\":\"SecuredByPerimeter\",\"inboundIpRules\":[{\"ipMask\":\"qxn\",\"action\":\"Allow\"},{\"ipMask\":\"gxhuriplbp\",\"action\":\"Allow\"},{\"ipMask\":\"nkbebxmuby\",\"action\":\"Allow\"},{\"ipMask\":\"lrb\",\"action\":\"Allow\"}],\"disableLocalAuth\":true,\"autoCreateTopicWithFirstSubscription\":true,\"autoDeleteTopicWithLastSubscription\":false,\"dataResidencyBoundary\":\"WithinGeopair\"},\"sku\":{\"name\":\"Premium\"},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"u\",\"tenantId\":\"auwzizxbmpgc\",\"userAssignedIdentities\":{\"bhjpglkfgohdne\":{\"principalId\":\"zmuvpbttdumorppx\",\"clientId\":\"mnzb\"},\"uvxzxclvi\":{\"principalId\":\"lfphsdyhtozfikd\",\"clientId\":\"wq\"},\"jutiiswacff\":{\"principalId\":\"hqzonosggbhcoh\",\"clientId\":\"dsjnka\"}}},\"location\":\"k\",\"tags\":{\"ppfufl\":\"wkfvhqcrailvp\",\"gafcnihgwqapnedg\":\"wdmhdlxyjrxs\",\"cvdrhvoodsot\":\"bcvkcvqvpkeq\"},\"id\":\"obzdopcjwvnhdl\",\"name\":\"wmgxcxrsl\",\"type\":\"mutwuoe\"},{\"properties\":{\"privateEndpointConnections\":[{\"properties\":{},\"id\":\"jw\",\"name\":\"iyq\",\"type\":\"luicpdggkzzlvmbm\"},{\"properties\":{},\"id\":\"xmodf\",\"name\":\"uefywsbpfvmwy\",\"type\":\"rfouyftaakcpw\"}],\"provisioningState\":\"Canceled\",\"minimumTlsVersionAllowed\":\"1.1\",\"endpoint\":\"mnubexkpzksmond\",\"inputSchema\":\"CloudEventSchemaV1_0\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"omgkopkwho\":{},\"v\":{},\"ajqgxy\":{},\"mocmbqfqvmk\":{}}},\"inputSchemaMapping\":{\"inputSchemaMappingType\":\"InputSchemaMapping\"},\"metricResourceId\":\"zapvhelx\",\"publicNetworkAccess\":\"SecuredByPerimeter\",\"inboundIpRules\":[{\"ipMask\":\"tddckcb\",\"action\":\"Allow\"}],\"disableLocalAuth\":true,\"autoCreateTopicWithFirstSubscription\":false,\"autoDeleteTopicWithLastSubscription\":true,\"dataResidencyBoundary\":\"WithinRegion\"},\"sku\":{\"name\":\"Basic\"},\"identity\":{\"type\":\"SystemAssigned, UserAssigned\",\"principalId\":\"sdqrhzoymibmrq\",\"tenantId\":\"bahwfl\",\"userAssignedIdentities\":{\"nwashrtd\":{\"principalId\":\"tmhrkwofyyvoqacp\",\"clientId\":\"xpbtgiwbwo\"},\"i\":{\"principalId\":\"cnqxwbpokulpi\",\"clientId\":\"waasip\"},\"fbtkuwhhmhyk\":{\"principalId\":\"byuqerpqlp\",\"clientId\":\"cciuqgbdbutau\"}}},\"location\":\"oxafn\",\"tags\":{\"bpkkpwdre\":\"pichkoymkcdy\",\"suwsyrsnds\":\"novvqfovljxy\"},\"id\":\"tgadgvraeaen\",\"name\":\"qnzarrwl\",\"type\":\"uu\"},{\"properties\":{\"privateEndpointConnections\":[{\"properties\":{},\"id\":\"acewiipfpubjibw\",\"name\":\"iftohqkvpu\",\"type\":\"ksgplsa\"},{\"properties\":{},\"id\":\"ynfs\",\"name\":\"n\",\"type\":\"jphuopxodlqi\"}],\"provisioningState\":\"Succeeded\",\"minimumTlsVersionAllowed\":\"1.1\",\"endpoint\":\"ihleos\",\"inputSchema\":\"CustomEventSchema\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"yzrpzbchckqqzq\":{},\"ox\":{},\"ysuiizynkedya\":{},\"rwyhqmibzyhwitsm\":{}}},\"inputSchemaMapping\":{\"inputSchemaMappingType\":\"InputSchemaMapping\"},\"metricResourceId\":\"ynpcdpumnzgmwznm\",\"publicNetworkAccess\":\"Enabled\",\"inboundIpRules\":[{\"ipMask\":\"orgjhxbldt\",\"action\":\"Allow\"},{\"ipMask\":\"lkdmtncvokotllxd\",\"action\":\"Allow\"},{\"ipMask\":\"y\",\"action\":\"Allow\"}],\"disableLocalAuth\":false,\"autoCreateTopicWithFirstSubscription\":true,\"autoDeleteTopicWithLastSubscription\":false,\"dataResidencyBoundary\":\"WithinGeopair\"},\"sku\":{\"name\":\"Premium\"},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"rkvcikhnvpa\",\"tenantId\":\"gxqquezik\",\"userAssignedIdentities\":{\"cjzkzivgvvcna\":{\"principalId\":\"xkalla\",\"clientId\":\"elwuipi\"},\"lmfmtdaay\":{\"principalId\":\"hyrnxxmu\",\"clientId\":\"dndrdvstkwqqtche\"},\"xg\":{\"principalId\":\"v\",\"clientId\":\"gpiohgwxrtfudxe\"},\"dblx\":{\"principalId\":\"agvrvmnpkuk\",\"clientId\":\"i\"}}},\"location\":\"imfnjhfjx\",\"tags\":{\"foqreyfkzik\":\"zk\",\"wczelpci\":\"jawneaiv\",\"abfatkl\":\"elsfeaen\"},\"id\":\"dxbjhwuaanozj\",\"name\":\"sphyoulpjrvxa\",\"type\":\"l\"},{\"properties\":{\"privateEndpointConnections\":[{\"properties\":{},\"id\":\"wosytxitcskf\",\"name\":\"k\",\"type\":\"qumiek\"},{\"properties\":{},\"id\":\"zzikhlyfjhdg\",\"name\":\"gge\",\"type\":\"dunyg\"}],\"provisioningState\":\"Canceled\",\"minimumTlsVersionAllowed\":\"1.2\",\"endpoint\":\"qfatpxllrxcyjm\",\"inputSchema\":\"EventGridSchema\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"m\":{}}},\"inputSchemaMapping\":{\"inputSchemaMappingType\":\"InputSchemaMapping\"},\"metricResourceId\":\"mjsjqb\",\"publicNetworkAccess\":\"Enabled\",\"inboundIpRules\":[{\"ipMask\":\"rw\",\"action\":\"Allow\"}],\"disableLocalAuth\":false,\"autoCreateTopicWithFirstSubscription\":false,\"autoDeleteTopicWithLastSubscription\":true,\"dataResidencyBoundary\":\"WithinRegion\"},\"sku\":{\"name\":\"Premium\"},\"identity\":{\"type\":\"SystemAssigned, UserAssigned\",\"principalId\":\"n\",\"tenantId\":\"xqugjhkycubedd\",\"userAssignedIdentities\":{\"qudf\":{\"principalId\":\"fwqmzqalkrmn\",\"clientId\":\"jpxac\"},\"zrtuzq\":{\"principalId\":\"yxbaaabjyvayf\",\"clientId\":\"m\"},\"uzsoi\":{\"principalId\":\"sexnevfdnw\",\"clientId\":\"mewzsyyc\"},\"rthzvaytdwkqbrqu\":{\"principalId\":\"ud\",\"clientId\":\"rx\"}}},\"location\":\"axhexiilivp\",\"tags\":{\"oruzfgsquyfxrxx\":\"irqtdqoa\",\"xje\":\"eptra\"},\"id\":\"wlwnwxuqlcv\",\"name\":\"dy\",\"type\":\"atdooaojkniod\"}],\"nextLink\":\"oebwnujhemms\"}")
+            "{\"value\":[{\"properties\":{\"privateEndpointConnections\":[{\"properties\":{},\"id\":\"bcswsrt\",\"name\":\"riplrbpbewtg\",\"type\":\"fgb\"}],\"provisioningState\":\"Deleting\",\"minimumTlsVersionAllowed\":\"1.2\",\"endpoint\":\"vlvqhjkbegi\",\"inputSchema\":\"EventGridSchema\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"wwaloayqcgwrt\":{},\"j\":{}}},\"inputSchemaMapping\":{\"inputSchemaMappingType\":\"Json\"},\"metricResourceId\":\"zmh\",\"publicNetworkAccess\":\"SecuredByPerimeter\",\"inboundIpRules\":[{\"ipMask\":\"ts\",\"action\":\"Allow\"},{\"ipMask\":\"bp\",\"action\":\"Allow\"},{\"ipMask\":\"srknftguv\",\"action\":\"Allow\"},{\"ipMask\":\"prwmdyvxqt\",\"action\":\"Allow\"}],\"disableLocalAuth\":false,\"autoCreateTopicWithFirstSubscription\":false,\"autoDeleteTopicWithLastSubscription\":true,\"dataResidencyBoundary\":\"WithinGeopair\"},\"sku\":{\"name\":\"Basic\"},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"bycnojvkn\",\"tenantId\":\"fqsgzvahapjy\",\"userAssignedIdentities\":{\"vu\":{\"principalId\":\"gqzcjr\",\"clientId\":\"djzlmwlx\"},\"rnxipei\":{\"principalId\":\"hzovawjvzunlut\",\"clientId\":\"n\"},\"uh\":{\"principalId\":\"jzuaejxdultskzbb\",\"clientId\":\"zumveekgpwo\"},\"waboe\":{\"principalId\":\"p\",\"clientId\":\"jyofdxluusdtto\"}}},\"location\":\"v\",\"tags\":{\"flhhcaal\":\"nsmvbxwyj\"},\"id\":\"jixisxyawjoyaqcs\",\"name\":\"yjpkiidzyexz\",\"type\":\"eli\"},{\"properties\":{\"privateEndpointConnections\":[{\"properties\":{},\"id\":\"tfolhbnx\",\"name\":\"nalaulppg\",\"type\":\"dtpnapnyiropuhp\"}],\"provisioningState\":\"Canceled\",\"minimumTlsVersionAllowed\":\"1.1\",\"endpoint\":\"lgqg\",\"inputSchema\":\"EventGridSchema\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"c\":{}}},\"inputSchemaMapping\":{\"inputSchemaMappingType\":\"Json\"},\"metricResourceId\":\"wwncwzzhxgk\",\"publicNetworkAccess\":\"Disabled\",\"inboundIpRules\":[{\"ipMask\":\"napkteoellw\",\"action\":\"Allow\"},{\"ipMask\":\"ygpfqb\",\"action\":\"Allow\"},{\"ipMask\":\"op\",\"action\":\"Allow\"},{\"ipMask\":\"hhuao\",\"action\":\"Allow\"}],\"disableLocalAuth\":false,\"autoCreateTopicWithFirstSubscription\":true,\"autoDeleteTopicWithLastSubscription\":false,\"dataResidencyBoundary\":\"WithinGeopair\"},\"sku\":{\"name\":\"Basic\"},\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"obgbkdmoizp\",\"tenantId\":\"tmgrcfbun\",\"userAssignedIdentities\":{\"swbxqz\":{\"principalId\":\"jhhkxbp\",\"clientId\":\"ymjhxxjyngudivkr\"},\"ivetvtcq\":{\"principalId\":\"zjf\",\"clientId\":\"vjfdx\"},\"fxoblytkb\":{\"principalId\":\"tdo\",\"clientId\":\"cbxvwvxyslqbh\"},\"shqjohxcrsbf\":{\"principalId\":\"pe\",\"clientId\":\"wfbkrvrns\"}}},\"location\":\"asrru\",\"tags\":{\"bsrfbj\":\"hsqfsubcgjbirxbp\",\"otftpvjzbexilz\":\"dtws\",\"qtaruoujmkcjhwq\":\"nfqqnvwp\",\"ervnaenqpehi\":\"tjrybnwjewgdr\"},\"id\":\"doy\",\"name\":\"mifthnzdnd\",\"type\":\"l\"},{\"properties\":{\"privateEndpointConnections\":[{\"properties\":{},\"id\":\"igynduhavhqlk\",\"name\":\"humaqolbgyc\",\"type\":\"uie\"}],\"provisioningState\":\"Failed\",\"minimumTlsVersionAllowed\":\"1.0\",\"endpoint\":\"mvaolps\",\"inputSchema\":\"CustomEventSchema\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"n\":{},\"bglzpswi\":{},\"d\":{}}},\"inputSchemaMapping\":{\"inputSchemaMappingType\":\"Json\"},\"metricResourceId\":\"zdxss\",\"publicNetworkAccess\":\"Enabled\",\"inboundIpRules\":[{\"ipMask\":\"vdfznudaodvxzb\",\"action\":\"Allow\"},{\"ipMask\":\"ylpstdbhhxsrzdz\",\"action\":\"Allow\"}],\"disableLocalAuth\":true,\"autoCreateTopicWithFirstSubscription\":false,\"autoDeleteTopicWithLastSubscription\":false,\"dataResidencyBoundary\":\"WithinRegion\"},\"sku\":{\"name\":\"Premium\"},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"gtdsslswt\",\"tenantId\":\"eriofzpyqs\",\"userAssignedIdentities\":{\"d\":{\"principalId\":\"bnetshh\",\"clientId\":\"h\"}}},\"location\":\"vwiwubmwmbesld\",\"tags\":{\"z\":\"wtppjflcxogaoko\",\"fzxmhhvhgureodkw\":\"nsikvmkqzeqqkdl\"},\"id\":\"bdagxt\",\"name\":\"bqdxbx\",\"type\":\"akbogqxndlkzgxh\"},{\"properties\":{\"privateEndpointConnections\":[{\"properties\":{},\"id\":\"bpodxunkbebxm\",\"name\":\"byyntwlrbqt\",\"type\":\"oievseotgqrlltm\"},{\"properties\":{},\"id\":\"lauwzizxbmpgcjef\",\"name\":\"zmuvpbttdumorppx\",\"type\":\"bmnzbtbhjpgl\"},{\"properties\":{},\"id\":\"gohdneuelfphsd\",\"name\":\"htozfikdow\",\"type\":\"quuvxzxcl\"}],\"provisioningState\":\"Deleting\",\"minimumTlsVersionAllowed\":\"1.0\",\"endpoint\":\"zonosgg\",\"inputSchema\":\"CustomEventSchema\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"sjnkal\":{},\"utiiswacf\":{}}},\"inputSchemaMapping\":{\"inputSchemaMappingType\":\"Json\"},\"metricResourceId\":\"zewk\",\"publicNetworkAccess\":\"SecuredByPerimeter\",\"inboundIpRules\":[{\"ipMask\":\"a\",\"action\":\"Allow\"},{\"ipMask\":\"n\",\"action\":\"Allow\"}],\"disableLocalAuth\":false,\"autoCreateTopicWithFirstSubscription\":true,\"autoDeleteTopicWithLastSubscription\":true,\"dataResidencyBoundary\":\"WithinRegion\"},\"sku\":{\"name\":\"Premium\"},\"identity\":{\"type\":\"SystemAssigned, UserAssigned\",\"principalId\":\"sag\",\"tenantId\":\"cnihgwqapnedgfbc\",\"userAssignedIdentities\":{\"tbobz\":{\"principalId\":\"q\",\"clientId\":\"keqdcvdrhvoods\"},\"rslpmutwuoeg\":{\"principalId\":\"pcjwv\",\"clientId\":\"dldwmgxc\"},\"ggkzzlvmbmpa\":{\"principalId\":\"khjwn\",\"clientId\":\"qsluicp\"}}},\"location\":\"odfvuefywsbp\",\"tags\":{\"wiyzvqtmnubexkp\":\"wyhrfouyftaakc\",\"mquxvypo\":\"ksmond\"},\"id\":\"gkopkwhojvpajqgx\",\"name\":\"smocmbq\",\"type\":\"qvmkcxo\"}],\"nextLink\":\"pvhelxprg\"}")
             .toObject(DomainsListResult.class);
-        Assertions.assertEquals("k", model.value().get(0).location());
-        Assertions.assertEquals("wkfvhqcrailvp", model.value().get(0).tags().get("ppfufl"));
-        Assertions.assertEquals(Sku.PREMIUM, model.value().get(0).sku().name());
+        Assertions.assertEquals("v", model.value().get(0).location());
+        Assertions.assertEquals("nsmvbxwyj", model.value().get(0).tags().get("flhhcaal"));
+        Assertions.assertEquals(Sku.BASIC, model.value().get(0).sku().name());
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.value().get(0).identity().type());
-        Assertions.assertEquals("u", model.value().get(0).identity().principalId());
-        Assertions.assertEquals("auwzizxbmpgc", model.value().get(0).identity().tenantId());
-        Assertions.assertEquals("zmuvpbttdumorppx",
-            model.value().get(0).identity().userAssignedIdentities().get("bhjpglkfgohdne").principalId());
-        Assertions.assertEquals("mnzb",
-            model.value().get(0).identity().userAssignedIdentities().get("bhjpglkfgohdne").clientId());
-        Assertions.assertEquals(TlsVersion.ONE_ZERO, model.value().get(0).minimumTlsVersionAllowed());
-        Assertions.assertEquals(InputSchema.CLOUD_EVENT_SCHEMA_V1_0, model.value().get(0).inputSchema());
+        Assertions.assertEquals("bycnojvkn", model.value().get(0).identity().principalId());
+        Assertions.assertEquals("fqsgzvahapjy", model.value().get(0).identity().tenantId());
+        Assertions.assertEquals("gqzcjr",
+            model.value().get(0).identity().userAssignedIdentities().get("vu").principalId());
+        Assertions.assertEquals("djzlmwlx",
+            model.value().get(0).identity().userAssignedIdentities().get("vu").clientId());
+        Assertions.assertEquals(TlsVersion.ONE_TWO, model.value().get(0).minimumTlsVersionAllowed());
+        Assertions.assertEquals(InputSchema.EVENT_GRID_SCHEMA, model.value().get(0).inputSchema());
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.value().get(0).eventTypeInfo().kind());
         Assertions.assertEquals(PublicNetworkAccess.SECURED_BY_PERIMETER, model.value().get(0).publicNetworkAccess());
-        Assertions.assertEquals("qxn", model.value().get(0).inboundIpRules().get(0).ipMask());
+        Assertions.assertEquals("ts", model.value().get(0).inboundIpRules().get(0).ipMask());
         Assertions.assertEquals(IpActionType.ALLOW, model.value().get(0).inboundIpRules().get(0).action());
-        Assertions.assertEquals(true, model.value().get(0).disableLocalAuth());
-        Assertions.assertEquals(true, model.value().get(0).autoCreateTopicWithFirstSubscription());
-        Assertions.assertEquals(false, model.value().get(0).autoDeleteTopicWithLastSubscription());
+        Assertions.assertEquals(false, model.value().get(0).disableLocalAuth());
+        Assertions.assertEquals(false, model.value().get(0).autoCreateTopicWithFirstSubscription());
+        Assertions.assertEquals(true, model.value().get(0).autoDeleteTopicWithLastSubscription());
         Assertions.assertEquals(DataResidencyBoundary.WITHIN_GEOPAIR, model.value().get(0).dataResidencyBoundary());
-        Assertions.assertEquals("oebwnujhemms", model.nextLink());
+        Assertions.assertEquals("pvhelxprg", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DomainsListResult model
-            = new DomainsListResult()
-                .withValue(
-                    Arrays.asList(
-                        new DomainInner().withLocation("k")
-                            .withTags(mapOf("ppfufl", "wkfvhqcrailvp", "gafcnihgwqapnedg", "wdmhdlxyjrxs",
-                                "cvdrhvoodsot", "bcvkcvqvpkeq"))
-                            .withSku(new ResourceSku().withName(Sku.PREMIUM))
-                            .withIdentity(new IdentityInfo().withType(IdentityType.USER_ASSIGNED).withPrincipalId("u")
-                                .withTenantId("auwzizxbmpgc")
-                                .withUserAssignedIdentities(mapOf("bhjpglkfgohdne",
-                                    new UserIdentityProperties().withPrincipalId("zmuvpbttdumorppx")
-                                        .withClientId("mnzb"),
-                                    "uvxzxclvi",
-                                    new UserIdentityProperties().withPrincipalId("lfphsdyhtozfikd").withClientId("wq"),
-                                    "jutiiswacff",
-                                    new UserIdentityProperties().withPrincipalId("hqzonosggbhcoh")
-                                        .withClientId("dsjnka"))))
-                            .withMinimumTlsVersionAllowed(TlsVersion.ONE_ZERO)
-                            .withInputSchema(InputSchema.CLOUD_EVENT_SCHEMA_V1_0)
-                            .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
-                                .withInlineEventTypes(mapOf("ikvmkqzeqqk", new InlineEventProperties(), "l",
-                                    new InlineEventProperties(), "fzxmhhvhgureodkw", new InlineEventProperties(),
-                                    "bdagxt", new InlineEventProperties())))
-                            .withInputSchemaMapping(new InputSchemaMapping())
-                            .withPublicNetworkAccess(PublicNetworkAccess.SECURED_BY_PERIMETER)
-                            .withInboundIpRules(
-                                Arrays.asList(new InboundIpRule().withIpMask("qxn").withAction(IpActionType.ALLOW),
-                                    new InboundIpRule().withIpMask("gxhuriplbp").withAction(IpActionType.ALLOW),
-                                    new InboundIpRule().withIpMask("nkbebxmuby")
-                                        .withAction(IpActionType.ALLOW),
-                                    new InboundIpRule().withIpMask("lrb").withAction(IpActionType.ALLOW)))
-                            .withDisableLocalAuth(true).withAutoCreateTopicWithFirstSubscription(true)
-                            .withAutoDeleteTopicWithLastSubscription(false)
-                            .withDataResidencyBoundary(DataResidencyBoundary.WITHIN_GEOPAIR),
-                        new DomainInner().withLocation("oxafn")
-                            .withTags(mapOf("bpkkpwdre", "pichkoymkcdy", "suwsyrsnds", "novvqfovljxy"))
-                            .withSku(new ResourceSku().withName(Sku.BASIC))
-                            .withIdentity(
-                                new IdentityInfo().withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                                    .withPrincipalId("sdqrhzoymibmrq").withTenantId(
-                                        "bahwfl")
-                                    .withUserAssignedIdentities(
-                                        mapOf("nwashrtd",
-                                            new UserIdentityProperties().withPrincipalId("tmhrkwofyyvoqacp")
-                                                .withClientId("xpbtgiwbwo"),
-                                            "i",
-                                            new UserIdentityProperties()
-                                                .withPrincipalId("cnqxwbpokulpi").withClientId("waasip"),
-                                            "fbtkuwhhmhyk",
-                                            new UserIdentityProperties().withPrincipalId("byuqerpqlp")
-                                                .withClientId("cciuqgbdbutau"))))
-                            .withMinimumTlsVersionAllowed(TlsVersion.ONE_ONE)
-                            .withInputSchema(InputSchema.CLOUD_EVENT_SCHEMA_V1_0)
-                            .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
-                                .withInlineEventTypes(mapOf("omgkopkwho", new InlineEventProperties(), "v",
-                                    new InlineEventProperties(), "ajqgxy", new InlineEventProperties(), "mocmbqfqvmk",
-                                    new InlineEventProperties())))
-                            .withInputSchemaMapping(new InputSchemaMapping())
-                            .withPublicNetworkAccess(PublicNetworkAccess.SECURED_BY_PERIMETER)
-                            .withInboundIpRules(
-                                Arrays.asList(new InboundIpRule().withIpMask("tddckcb").withAction(IpActionType.ALLOW)))
-                            .withDisableLocalAuth(true).withAutoCreateTopicWithFirstSubscription(false)
-                            .withAutoDeleteTopicWithLastSubscription(true)
-                            .withDataResidencyBoundary(DataResidencyBoundary.WITHIN_REGION),
-                        new DomainInner().withLocation("imfnjhfjx")
-                            .withTags(mapOf("foqreyfkzik", "zk", "wczelpci", "jawneaiv", "abfatkl", "elsfeaen"))
-                            .withSku(new ResourceSku().withName(Sku.PREMIUM))
-                            .withIdentity(new IdentityInfo().withType(IdentityType.USER_ASSIGNED)
-                                .withPrincipalId("rkvcikhnvpa").withTenantId("gxqquezik")
-                                .withUserAssignedIdentities(mapOf("cjzkzivgvvcna",
-                                    new UserIdentityProperties().withPrincipalId("xkalla").withClientId("elwuipi"),
-                                    "lmfmtdaay",
-                                    new UserIdentityProperties()
-                                        .withPrincipalId("hyrnxxmu").withClientId("dndrdvstkwqqtche"),
-                                    "xg",
-                                    new UserIdentityProperties().withPrincipalId("v").withClientId("gpiohgwxrtfudxe"),
-                                    "dblx",
-                                    new UserIdentityProperties().withPrincipalId("agvrvmnpkuk").withClientId("i"))))
-                            .withMinimumTlsVersionAllowed(TlsVersion.ONE_ONE)
-                            .withInputSchema(InputSchema.CUSTOM_EVENT_SCHEMA)
-                            .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
-                                .withInlineEventTypes(mapOf("yzrpzbchckqqzq", new InlineEventProperties(), "ox",
-                                    new InlineEventProperties(), "ysuiizynkedya", new InlineEventProperties(),
-                                    "rwyhqmibzyhwitsm", new InlineEventProperties())))
-                            .withInputSchemaMapping(new InputSchemaMapping())
-                            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
-                            .withInboundIpRules(Arrays.asList(
-                                new InboundIpRule().withIpMask("orgjhxbldt").withAction(IpActionType.ALLOW),
-                                new InboundIpRule().withIpMask("lkdmtncvokotllxd")
-                                    .withAction(IpActionType.ALLOW),
-                                new InboundIpRule().withIpMask("y").withAction(IpActionType.ALLOW)))
-                            .withDisableLocalAuth(false).withAutoCreateTopicWithFirstSubscription(true)
-                            .withAutoDeleteTopicWithLastSubscription(false)
-                            .withDataResidencyBoundary(DataResidencyBoundary.WITHIN_GEOPAIR),
-                        new DomainInner().withLocation("axhexiilivp")
-                            .withTags(mapOf("oruzfgsquyfxrxx", "irqtdqoa", "xje", "eptra"))
-                            .withSku(new ResourceSku().withName(Sku.PREMIUM))
-                            .withIdentity(
-                                new IdentityInfo().withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                                    .withPrincipalId("n").withTenantId("xqugjhkycubedd")
-                                    .withUserAssignedIdentities(mapOf("qudf",
-                                        new UserIdentityProperties().withPrincipalId("fwqmzqalkrmn")
-                                            .withClientId("jpxac"),
-                                        "zrtuzq",
-                                        new UserIdentityProperties().withPrincipalId("yxbaaabjyvayf").withClientId("m"),
-                                        "uzsoi",
-                                        new UserIdentityProperties().withPrincipalId("sexnevfdnw")
-                                            .withClientId("mewzsyyc"),
-                                        "rthzvaytdwkqbrqu",
-                                        new UserIdentityProperties().withPrincipalId("ud").withClientId("rx"))))
-                            .withMinimumTlsVersionAllowed(TlsVersion.ONE_TWO)
-                            .withInputSchema(InputSchema.EVENT_GRID_SCHEMA)
-                            .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
-                                .withInlineEventTypes(mapOf("m", new InlineEventProperties())))
-                            .withInputSchemaMapping(new InputSchemaMapping())
-                            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
-                            .withInboundIpRules(
-                                Arrays.asList(new InboundIpRule().withIpMask("rw").withAction(IpActionType.ALLOW)))
-                            .withDisableLocalAuth(false).withAutoCreateTopicWithFirstSubscription(false)
-                            .withAutoDeleteTopicWithLastSubscription(true)
-                            .withDataResidencyBoundary(DataResidencyBoundary.WITHIN_REGION)))
-                .withNextLink("oebwnujhemms");
+            = new DomainsListResult().withValue(Arrays.asList(
+                new DomainInner().withLocation("v")
+                    .withTags(mapOf("flhhcaal", "nsmvbxwyj"))
+                    .withSku(new ResourceSku().withName(Sku.BASIC))
+                    .withIdentity(new IdentityInfo().withType(IdentityType.USER_ASSIGNED)
+                        .withPrincipalId("bycnojvkn")
+                        .withTenantId("fqsgzvahapjy")
+                        .withUserAssignedIdentities(mapOf("vu",
+                            new UserIdentityProperties().withPrincipalId("gqzcjr").withClientId("djzlmwlx"), "rnxipei",
+                            new UserIdentityProperties().withPrincipalId("hzovawjvzunlut").withClientId("n"), "uh",
+                            new UserIdentityProperties().withPrincipalId("jzuaejxdultskzbb")
+                                .withClientId("zumveekgpwo"),
+                            "waboe", new UserIdentityProperties().withPrincipalId("p").withClientId("jyofdxluusdtto"))))
+                    .withMinimumTlsVersionAllowed(TlsVersion.ONE_TWO)
+                    .withInputSchema(InputSchema.EVENT_GRID_SCHEMA)
+                    .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
+                        .withInlineEventTypes(
+                            mapOf("wwaloayqcgwrt", new InlineEventProperties(), "j", new InlineEventProperties())))
+                    .withInputSchemaMapping(new JsonInputSchemaMapping())
+                    .withPublicNetworkAccess(PublicNetworkAccess.SECURED_BY_PERIMETER)
+                    .withInboundIpRules(
+                        Arrays.asList(new InboundIpRule().withIpMask("ts").withAction(IpActionType.ALLOW),
+                            new InboundIpRule().withIpMask("bp").withAction(IpActionType.ALLOW),
+                            new InboundIpRule().withIpMask(
+                                "srknftguv").withAction(IpActionType.ALLOW),
+                            new InboundIpRule().withIpMask("prwmdyvxqt").withAction(IpActionType.ALLOW)))
+                    .withDisableLocalAuth(false)
+                    .withAutoCreateTopicWithFirstSubscription(false)
+                    .withAutoDeleteTopicWithLastSubscription(true)
+                    .withDataResidencyBoundary(DataResidencyBoundary.WITHIN_GEOPAIR),
+                new DomainInner().withLocation("asrru")
+                    .withTags(mapOf("bsrfbj", "hsqfsubcgjbirxbp", "otftpvjzbexilz", "dtws", "qtaruoujmkcjhwq",
+                        "nfqqnvwp", "ervnaenqpehi", "tjrybnwjewgdr"))
+                    .withSku(new ResourceSku().withName(Sku.BASIC))
+                    .withIdentity(
+                        new IdentityInfo().withType(IdentityType.SYSTEM_ASSIGNED)
+                            .withPrincipalId("obgbkdmoizp")
+                            .withTenantId("tmgrcfbun")
+                            .withUserAssignedIdentities(mapOf("swbxqz",
+                                new UserIdentityProperties().withPrincipalId("jhhkxbp")
+                                    .withClientId("ymjhxxjyngudivkr"),
+                                "ivetvtcq", new UserIdentityProperties().withPrincipalId("zjf").withClientId("vjfdx"),
+                                "fxoblytkb",
+                                new UserIdentityProperties().withPrincipalId("tdo").withClientId("cbxvwvxyslqbh"),
+                                "shqjohxcrsbf",
+                                new UserIdentityProperties().withPrincipalId("pe").withClientId("wfbkrvrns"))))
+                    .withMinimumTlsVersionAllowed(TlsVersion.ONE_ONE)
+                    .withInputSchema(InputSchema.EVENT_GRID_SCHEMA)
+                    .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
+                        .withInlineEventTypes(mapOf("c", new InlineEventProperties())))
+                    .withInputSchemaMapping(new JsonInputSchemaMapping())
+                    .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
+                    .withInboundIpRules(
+                        Arrays.asList(new InboundIpRule().withIpMask("napkteoellw").withAction(IpActionType.ALLOW),
+                            new InboundIpRule().withIpMask("ygpfqb").withAction(IpActionType.ALLOW),
+                            new InboundIpRule().withIpMask("op").withAction(IpActionType.ALLOW),
+                            new InboundIpRule().withIpMask("hhuao").withAction(IpActionType.ALLOW)))
+                    .withDisableLocalAuth(false)
+                    .withAutoCreateTopicWithFirstSubscription(true)
+                    .withAutoDeleteTopicWithLastSubscription(false)
+                    .withDataResidencyBoundary(DataResidencyBoundary.WITHIN_GEOPAIR),
+                new DomainInner().withLocation("vwiwubmwmbesld")
+                    .withTags(mapOf("z", "wtppjflcxogaoko", "fzxmhhvhgureodkw", "nsikvmkqzeqqkdl"))
+                    .withSku(new ResourceSku().withName(Sku.PREMIUM))
+                    .withIdentity(new IdentityInfo().withType(IdentityType.USER_ASSIGNED)
+                        .withPrincipalId("gtdsslswt")
+                        .withTenantId("eriofzpyqs")
+                        .withUserAssignedIdentities(
+                            mapOf("d", new UserIdentityProperties().withPrincipalId("bnetshh").withClientId("h"))))
+                    .withMinimumTlsVersionAllowed(TlsVersion.ONE_ZERO)
+                    .withInputSchema(InputSchema.CUSTOM_EVENT_SCHEMA)
+                    .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
+                        .withInlineEventTypes(mapOf("n", new InlineEventProperties(), "bglzpswi",
+                            new InlineEventProperties(), "d", new InlineEventProperties())))
+                    .withInputSchemaMapping(new JsonInputSchemaMapping())
+                    .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                    .withInboundIpRules(Arrays.asList(
+                        new InboundIpRule().withIpMask("vdfznudaodvxzb").withAction(IpActionType.ALLOW),
+                        new InboundIpRule().withIpMask("ylpstdbhhxsrzdz").withAction(IpActionType.ALLOW)))
+                    .withDisableLocalAuth(true)
+                    .withAutoCreateTopicWithFirstSubscription(false)
+                    .withAutoDeleteTopicWithLastSubscription(false)
+                    .withDataResidencyBoundary(DataResidencyBoundary.WITHIN_REGION),
+                new DomainInner().withLocation("odfvuefywsbp")
+                    .withTags(mapOf("wiyzvqtmnubexkp", "wyhrfouyftaakc", "mquxvypo", "ksmond"))
+                    .withSku(new ResourceSku().withName(Sku.PREMIUM))
+                    .withIdentity(new IdentityInfo().withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                        .withPrincipalId("sag")
+                        .withTenantId("cnihgwqapnedgfbc")
+                        .withUserAssignedIdentities(mapOf("tbobz",
+                            new UserIdentityProperties().withPrincipalId("q").withClientId("keqdcvdrhvoods"),
+                            "rslpmutwuoeg",
+                            new UserIdentityProperties().withPrincipalId("pcjwv").withClientId("dldwmgxc"),
+                            "ggkzzlvmbmpa",
+                            new UserIdentityProperties().withPrincipalId("khjwn").withClientId("qsluicp"))))
+                    .withMinimumTlsVersionAllowed(TlsVersion.ONE_ZERO)
+                    .withInputSchema(InputSchema.CUSTOM_EVENT_SCHEMA)
+                    .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
+                        .withInlineEventTypes(
+                            mapOf("sjnkal", new InlineEventProperties(), "utiiswacf", new InlineEventProperties())))
+                    .withInputSchemaMapping(new JsonInputSchemaMapping())
+                    .withPublicNetworkAccess(PublicNetworkAccess.SECURED_BY_PERIMETER)
+                    .withInboundIpRules(
+                        Arrays.asList(new InboundIpRule().withIpMask("a").withAction(IpActionType.ALLOW),
+                            new InboundIpRule().withIpMask("n").withAction(IpActionType.ALLOW)))
+                    .withDisableLocalAuth(false)
+                    .withAutoCreateTopicWithFirstSubscription(true)
+                    .withAutoDeleteTopicWithLastSubscription(true)
+                    .withDataResidencyBoundary(DataResidencyBoundary.WITHIN_REGION)))
+                .withNextLink("pvhelxprg");
         model = BinaryData.fromObject(model).toObject(DomainsListResult.class);
-        Assertions.assertEquals("k", model.value().get(0).location());
-        Assertions.assertEquals("wkfvhqcrailvp", model.value().get(0).tags().get("ppfufl"));
-        Assertions.assertEquals(Sku.PREMIUM, model.value().get(0).sku().name());
+        Assertions.assertEquals("v", model.value().get(0).location());
+        Assertions.assertEquals("nsmvbxwyj", model.value().get(0).tags().get("flhhcaal"));
+        Assertions.assertEquals(Sku.BASIC, model.value().get(0).sku().name());
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.value().get(0).identity().type());
-        Assertions.assertEquals("u", model.value().get(0).identity().principalId());
-        Assertions.assertEquals("auwzizxbmpgc", model.value().get(0).identity().tenantId());
-        Assertions.assertEquals("zmuvpbttdumorppx",
-            model.value().get(0).identity().userAssignedIdentities().get("bhjpglkfgohdne").principalId());
-        Assertions.assertEquals("mnzb",
-            model.value().get(0).identity().userAssignedIdentities().get("bhjpglkfgohdne").clientId());
-        Assertions.assertEquals(TlsVersion.ONE_ZERO, model.value().get(0).minimumTlsVersionAllowed());
-        Assertions.assertEquals(InputSchema.CLOUD_EVENT_SCHEMA_V1_0, model.value().get(0).inputSchema());
+        Assertions.assertEquals("bycnojvkn", model.value().get(0).identity().principalId());
+        Assertions.assertEquals("fqsgzvahapjy", model.value().get(0).identity().tenantId());
+        Assertions.assertEquals("gqzcjr",
+            model.value().get(0).identity().userAssignedIdentities().get("vu").principalId());
+        Assertions.assertEquals("djzlmwlx",
+            model.value().get(0).identity().userAssignedIdentities().get("vu").clientId());
+        Assertions.assertEquals(TlsVersion.ONE_TWO, model.value().get(0).minimumTlsVersionAllowed());
+        Assertions.assertEquals(InputSchema.EVENT_GRID_SCHEMA, model.value().get(0).inputSchema());
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.value().get(0).eventTypeInfo().kind());
         Assertions.assertEquals(PublicNetworkAccess.SECURED_BY_PERIMETER, model.value().get(0).publicNetworkAccess());
-        Assertions.assertEquals("qxn", model.value().get(0).inboundIpRules().get(0).ipMask());
+        Assertions.assertEquals("ts", model.value().get(0).inboundIpRules().get(0).ipMask());
         Assertions.assertEquals(IpActionType.ALLOW, model.value().get(0).inboundIpRules().get(0).action());
-        Assertions.assertEquals(true, model.value().get(0).disableLocalAuth());
-        Assertions.assertEquals(true, model.value().get(0).autoCreateTopicWithFirstSubscription());
-        Assertions.assertEquals(false, model.value().get(0).autoDeleteTopicWithLastSubscription());
+        Assertions.assertEquals(false, model.value().get(0).disableLocalAuth());
+        Assertions.assertEquals(false, model.value().get(0).autoCreateTopicWithFirstSubscription());
+        Assertions.assertEquals(true, model.value().get(0).autoDeleteTopicWithLastSubscription());
         Assertions.assertEquals(DataResidencyBoundary.WITHIN_GEOPAIR, model.value().get(0).dataResidencyBoundary());
-        Assertions.assertEquals("oebwnujhemms", model.nextLink());
+        Assertions.assertEquals("pvhelxprg", model.nextLink());
     }
 
     // Use "Map.of" if available

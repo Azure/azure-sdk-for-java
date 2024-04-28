@@ -5,11 +5,11 @@
 package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.eventgrid.models.DeadLetterDestination;
 import com.azure.resourcemanager.eventgrid.models.DeadLetterWithResourceIdentity;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionIdentity;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionIdentityType;
 import com.azure.resourcemanager.eventgrid.models.QueueInfo;
+import com.azure.resourcemanager.eventgrid.models.StorageBlobDeadLetterDestination;
 import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
 
@@ -17,33 +17,33 @@ public final class QueueInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QueueInfo model = BinaryData.fromString(
-            "{\"receiveLockDurationInSeconds\":2064405603,\"maxDeliveryCount\":1037639668,\"deadLetterDestinationWithResourceIdentity\":{\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"q\"},\"deadLetterDestination\":{\"endpointType\":\"DeadLetterDestination\"}},\"eventTimeToLive\":\"PT96H24M47S\"}")
+            "{\"receiveLockDurationInSeconds\":1951861279,\"maxDeliveryCount\":96926313,\"deadLetterDestinationWithResourceIdentity\":{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"aayg\"},\"deadLetterDestination\":{\"endpointType\":\"StorageBlob\"}},\"eventTimeToLive\":\"PT160H21M8S\"}")
             .toObject(QueueInfo.class);
-        Assertions.assertEquals(2064405603, model.receiveLockDurationInSeconds());
-        Assertions.assertEquals(1037639668, model.maxDeliveryCount());
-        Assertions.assertEquals(EventSubscriptionIdentityType.SYSTEM_ASSIGNED,
+        Assertions.assertEquals(1951861279, model.receiveLockDurationInSeconds());
+        Assertions.assertEquals(96926313, model.maxDeliveryCount());
+        Assertions.assertEquals(EventSubscriptionIdentityType.USER_ASSIGNED,
             model.deadLetterDestinationWithResourceIdentity().identity().type());
-        Assertions.assertEquals("q",
+        Assertions.assertEquals("aayg",
             model.deadLetterDestinationWithResourceIdentity().identity().userAssignedIdentity());
-        Assertions.assertEquals(Duration.parse("PT96H24M47S"), model.eventTimeToLive());
+        Assertions.assertEquals(Duration.parse("PT160H21M8S"), model.eventTimeToLive());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QueueInfo model
-            = new QueueInfo().withReceiveLockDurationInSeconds(2064405603).withMaxDeliveryCount(1037639668)
-                .withDeadLetterDestinationWithResourceIdentity(new DeadLetterWithResourceIdentity()
-                    .withIdentity(new EventSubscriptionIdentity()
-                        .withType(EventSubscriptionIdentityType.SYSTEM_ASSIGNED).withUserAssignedIdentity("q"))
-                    .withDeadLetterDestination(new DeadLetterDestination()))
-                .withEventTimeToLive(Duration.parse("PT96H24M47S"));
+        QueueInfo model = new QueueInfo().withReceiveLockDurationInSeconds(1951861279)
+            .withMaxDeliveryCount(96926313)
+            .withDeadLetterDestinationWithResourceIdentity(new DeadLetterWithResourceIdentity()
+                .withIdentity(new EventSubscriptionIdentity().withType(EventSubscriptionIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentity("aayg"))
+                .withDeadLetterDestination(new StorageBlobDeadLetterDestination()))
+            .withEventTimeToLive(Duration.parse("PT160H21M8S"));
         model = BinaryData.fromObject(model).toObject(QueueInfo.class);
-        Assertions.assertEquals(2064405603, model.receiveLockDurationInSeconds());
-        Assertions.assertEquals(1037639668, model.maxDeliveryCount());
-        Assertions.assertEquals(EventSubscriptionIdentityType.SYSTEM_ASSIGNED,
+        Assertions.assertEquals(1951861279, model.receiveLockDurationInSeconds());
+        Assertions.assertEquals(96926313, model.maxDeliveryCount());
+        Assertions.assertEquals(EventSubscriptionIdentityType.USER_ASSIGNED,
             model.deadLetterDestinationWithResourceIdentity().identity().type());
-        Assertions.assertEquals("q",
+        Assertions.assertEquals("aayg",
             model.deadLetterDestinationWithResourceIdentity().identity().userAssignedIdentity());
-        Assertions.assertEquals(Duration.parse("PT96H24M47S"), model.eventTimeToLive());
+        Assertions.assertEquals(Duration.parse("PT160H21M8S"), model.eventTimeToLive());
     }
 }

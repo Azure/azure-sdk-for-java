@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.eventgrid.models.NetworkSecurityPerimeterConfigurationIssues;
 import com.azure.resourcemanager.eventgrid.models.NetworkSecurityPerimeterConfigurationIssueSeverity;
 import com.azure.resourcemanager.eventgrid.models.NetworkSecurityPerimeterConfigurationIssueType;
-import com.azure.resourcemanager.eventgrid.models.NetworkSecurityPerimeterConfigurationIssues;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -15,32 +15,33 @@ public final class NetworkSecurityPerimeterConfigurationIssuesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSecurityPerimeterConfigurationIssues model = BinaryData.fromString(
-            "{\"name\":\"hxuicbuewmrs\",\"properties\":{\"issueType\":\"MissingPerimeterConfiguration\",\"severity\":\"Error\",\"description\":\"rhwpus\",\"suggestedResourceIds\":[\"aqehg\",\"dohzjq\",\"tu\"],\"suggestedAccessRules\":[\"gebx\",\"cnwfepbnwgfmxjg\",\"g\",\"jbgdlfgtdysnaquf\"]}}")
+            "{\"name\":\"knlqwzdvpiwhxqsz\",\"properties\":{\"issueType\":\"ConfigurationPropagationFailure\",\"severity\":\"Error\",\"description\":\"uhuxylrjvmtyg\",\"suggestedResourceIds\":[\"zyos\",\"spshckfkyjp\",\"sp\"],\"suggestedAccessRules\":[\"sdfppyogtie\",\"ujtv\"]}}")
             .toObject(NetworkSecurityPerimeterConfigurationIssues.class);
-        Assertions.assertEquals("hxuicbuewmrs", model.name());
-        Assertions.assertEquals(NetworkSecurityPerimeterConfigurationIssueType.MISSING_PERIMETER_CONFIGURATION,
+        Assertions.assertEquals("knlqwzdvpiwhxqsz", model.name());
+        Assertions.assertEquals(NetworkSecurityPerimeterConfigurationIssueType.CONFIGURATION_PROPAGATION_FAILURE,
             model.issueType());
         Assertions.assertEquals(NetworkSecurityPerimeterConfigurationIssueSeverity.ERROR, model.severity());
-        Assertions.assertEquals("rhwpus", model.description());
-        Assertions.assertEquals("aqehg", model.suggestedResourceIds().get(0));
-        Assertions.assertEquals("gebx", model.suggestedAccessRules().get(0));
+        Assertions.assertEquals("uhuxylrjvmtyg", model.description());
+        Assertions.assertEquals("zyos", model.suggestedResourceIds().get(0));
+        Assertions.assertEquals("sdfppyogtie", model.suggestedAccessRules().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkSecurityPerimeterConfigurationIssues model
-            = new NetworkSecurityPerimeterConfigurationIssues().withName("hxuicbuewmrs")
-                .withIssueType(NetworkSecurityPerimeterConfigurationIssueType.MISSING_PERIMETER_CONFIGURATION)
-                .withSeverity(NetworkSecurityPerimeterConfigurationIssueSeverity.ERROR).withDescription("rhwpus")
-                .withSuggestedResourceIds(Arrays.asList("aqehg", "dohzjq", "tu"))
-                .withSuggestedAccessRules(Arrays.asList("gebx", "cnwfepbnwgfmxjg", "g", "jbgdlfgtdysnaquf"));
+            = new NetworkSecurityPerimeterConfigurationIssues().withName("knlqwzdvpiwhxqsz")
+                .withIssueType(NetworkSecurityPerimeterConfigurationIssueType.CONFIGURATION_PROPAGATION_FAILURE)
+                .withSeverity(NetworkSecurityPerimeterConfigurationIssueSeverity.ERROR)
+                .withDescription("uhuxylrjvmtyg")
+                .withSuggestedResourceIds(Arrays.asList("zyos", "spshckfkyjp", "sp"))
+                .withSuggestedAccessRules(Arrays.asList("sdfppyogtie", "ujtv"));
         model = BinaryData.fromObject(model).toObject(NetworkSecurityPerimeterConfigurationIssues.class);
-        Assertions.assertEquals("hxuicbuewmrs", model.name());
-        Assertions.assertEquals(NetworkSecurityPerimeterConfigurationIssueType.MISSING_PERIMETER_CONFIGURATION,
+        Assertions.assertEquals("knlqwzdvpiwhxqsz", model.name());
+        Assertions.assertEquals(NetworkSecurityPerimeterConfigurationIssueType.CONFIGURATION_PROPAGATION_FAILURE,
             model.issueType());
         Assertions.assertEquals(NetworkSecurityPerimeterConfigurationIssueSeverity.ERROR, model.severity());
-        Assertions.assertEquals("rhwpus", model.description());
-        Assertions.assertEquals("aqehg", model.suggestedResourceIds().get(0));
-        Assertions.assertEquals("gebx", model.suggestedAccessRules().get(0));
+        Assertions.assertEquals("uhuxylrjvmtyg", model.description());
+        Assertions.assertEquals("zyos", model.suggestedResourceIds().get(0));
+        Assertions.assertEquals("sdfppyogtie", model.suggestedAccessRules().get(0));
     }
 }

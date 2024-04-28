@@ -6,29 +6,29 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.eventgrid.models.DeliveryWithResourceIdentity;
-import com.azure.resourcemanager.eventgrid.models.EventSubscriptionDestination;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionIdentity;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionIdentityType;
+import com.azure.resourcemanager.eventgrid.models.NamespaceTopicEventSubscriptionDestination;
 import org.junit.jupiter.api.Assertions;
 
 public final class DeliveryWithResourceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeliveryWithResourceIdentity model = BinaryData.fromString(
-            "{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"ngqqmoakuf\"},\"destination\":{\"endpointType\":\"EventSubscriptionDestination\"}}")
+            "{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"pcirelsfeaen\"},\"destination\":{\"endpointType\":\"NamespaceTopic\"}}")
             .toObject(DeliveryWithResourceIdentity.class);
         Assertions.assertEquals(EventSubscriptionIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("ngqqmoakuf", model.identity().userAssignedIdentity());
+        Assertions.assertEquals("pcirelsfeaen", model.identity().userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DeliveryWithResourceIdentity model = new DeliveryWithResourceIdentity()
             .withIdentity(new EventSubscriptionIdentity().withType(EventSubscriptionIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentity("ngqqmoakuf"))
-            .withDestination(new EventSubscriptionDestination());
+                .withUserAssignedIdentity("pcirelsfeaen"))
+            .withDestination(new NamespaceTopicEventSubscriptionDestination());
         model = BinaryData.fromObject(model).toObject(DeliveryWithResourceIdentity.class);
         Assertions.assertEquals(EventSubscriptionIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("ngqqmoakuf", model.identity().userAssignedIdentity());
+        Assertions.assertEquals("pcirelsfeaen", model.identity().userAssignedIdentity());
     }
 }

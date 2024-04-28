@@ -15,30 +15,31 @@ public final class NetworkSecurityPerimeterConfigurationIssuesPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSecurityPerimeterConfigurationIssuesProperties model = BinaryData.fromString(
-            "{\"issueType\":\"ConfigurationPropagationFailure\",\"severity\":\"Error\",\"description\":\"hamzjrwdkqze\",\"suggestedResourceIds\":[\"leziunjxdfzant\",\"wcegyamlbn\",\"eqacjjvpilguooq\"],\"suggestedAccessRules\":[\"m\",\"itgueiookjbs\",\"hrtdtpdelq\",\"cslmotoebnfxo\"]}")
+            "{\"issueType\":\"MissingIdentityConfiguration\",\"severity\":\"Warning\",\"description\":\"xrx\",\"suggestedResourceIds\":[\"jdxvglnkvxlxpa\",\"lqivbgkcv\",\"hpzvuqdflvoniyp\"],\"suggestedAccessRules\":[\"bcpzgpxtivh\",\"knidib\",\"qjxgpnrhgovfgp\"]}")
             .toObject(NetworkSecurityPerimeterConfigurationIssuesProperties.class);
-        Assertions.assertEquals(NetworkSecurityPerimeterConfigurationIssueType.CONFIGURATION_PROPAGATION_FAILURE,
+        Assertions.assertEquals(NetworkSecurityPerimeterConfigurationIssueType.MISSING_IDENTITY_CONFIGURATION,
             model.issueType());
-        Assertions.assertEquals(NetworkSecurityPerimeterConfigurationIssueSeverity.ERROR, model.severity());
-        Assertions.assertEquals("hamzjrwdkqze", model.description());
-        Assertions.assertEquals("leziunjxdfzant", model.suggestedResourceIds().get(0));
-        Assertions.assertEquals("m", model.suggestedAccessRules().get(0));
+        Assertions.assertEquals(NetworkSecurityPerimeterConfigurationIssueSeverity.WARNING, model.severity());
+        Assertions.assertEquals("xrx", model.description());
+        Assertions.assertEquals("jdxvglnkvxlxpa", model.suggestedResourceIds().get(0));
+        Assertions.assertEquals("bcpzgpxtivh", model.suggestedAccessRules().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkSecurityPerimeterConfigurationIssuesProperties model
             = new NetworkSecurityPerimeterConfigurationIssuesProperties()
-                .withIssueType(NetworkSecurityPerimeterConfigurationIssueType.CONFIGURATION_PROPAGATION_FAILURE)
-                .withSeverity(NetworkSecurityPerimeterConfigurationIssueSeverity.ERROR).withDescription("hamzjrwdkqze")
-                .withSuggestedResourceIds(Arrays.asList("leziunjxdfzant", "wcegyamlbn", "eqacjjvpilguooq"))
-                .withSuggestedAccessRules(Arrays.asList("m", "itgueiookjbs", "hrtdtpdelq", "cslmotoebnfxo"));
+                .withIssueType(NetworkSecurityPerimeterConfigurationIssueType.MISSING_IDENTITY_CONFIGURATION)
+                .withSeverity(NetworkSecurityPerimeterConfigurationIssueSeverity.WARNING)
+                .withDescription("xrx")
+                .withSuggestedResourceIds(Arrays.asList("jdxvglnkvxlxpa", "lqivbgkcv", "hpzvuqdflvoniyp"))
+                .withSuggestedAccessRules(Arrays.asList("bcpzgpxtivh", "knidib", "qjxgpnrhgovfgp"));
         model = BinaryData.fromObject(model).toObject(NetworkSecurityPerimeterConfigurationIssuesProperties.class);
-        Assertions.assertEquals(NetworkSecurityPerimeterConfigurationIssueType.CONFIGURATION_PROPAGATION_FAILURE,
+        Assertions.assertEquals(NetworkSecurityPerimeterConfigurationIssueType.MISSING_IDENTITY_CONFIGURATION,
             model.issueType());
-        Assertions.assertEquals(NetworkSecurityPerimeterConfigurationIssueSeverity.ERROR, model.severity());
-        Assertions.assertEquals("hamzjrwdkqze", model.description());
-        Assertions.assertEquals("leziunjxdfzant", model.suggestedResourceIds().get(0));
-        Assertions.assertEquals("m", model.suggestedAccessRules().get(0));
+        Assertions.assertEquals(NetworkSecurityPerimeterConfigurationIssueSeverity.WARNING, model.severity());
+        Assertions.assertEquals("xrx", model.description());
+        Assertions.assertEquals("jdxvglnkvxlxpa", model.suggestedResourceIds().get(0));
+        Assertions.assertEquals("bcpzgpxtivh", model.suggestedAccessRules().get(0));
     }
 }

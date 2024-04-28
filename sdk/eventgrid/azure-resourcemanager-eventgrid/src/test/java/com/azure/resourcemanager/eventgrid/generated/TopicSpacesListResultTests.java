@@ -14,26 +14,25 @@ public final class TopicSpacesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TopicSpacesListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"description\":\"maupxvpi\",\"topicTemplates\":[\"aifyzyzeyuubeids\"],\"provisioningState\":\"Creating\"},\"id\":\"toi\",\"name\":\"hgygvfltgvd\",\"type\":\"hoynk\"},{\"properties\":{\"description\":\"etwkdrcyrucpc\",\"topicTemplates\":[\"uzdqumoenod\",\"aienhqhsknd\"],\"provisioningState\":\"Creating\"},\"id\":\"kaa\",\"name\":\"lknwfoanniyop\",\"type\":\"txiv\"},{\"properties\":{\"description\":\"lyxnucaephb\",\"topicTemplates\":[\"qp\",\"tv\",\"qsdtcjbctvivuzq\",\"mtuowogtgitsqhzv\"],\"provisioningState\":\"Creating\"},\"id\":\"dbanfznd\",\"name\":\"cxmxeatkdb\",\"type\":\"wnrdjyibqbnaom\"},{\"properties\":{\"description\":\"mk\",\"topicTemplates\":[\"axljal\",\"i\",\"cjmobcanc\"],\"provisioningState\":\"Failed\"},\"id\":\"qcwgaxfgvaknokz\",\"name\":\"jjzr\",\"type\":\"tixldzyyfytpqs\"}],\"nextLink\":\"ymmpujivy\"}")
+            "{\"value\":[{\"properties\":{\"description\":\"dndsbdweade\",\"topicTemplates\":[\"wntopag\",\"tmvmmagoaqylkjz\",\"jiuazjc\",\"mxitpfinzcpd\"],\"provisioningState\":\"Creating\"},\"id\":\"lgjmtbd\",\"name\":\"vcqguefzh\",\"type\":\"mpheqdur\"},{\"properties\":{\"description\":\"ujlfyoumpcky\",\"topicTemplates\":[\"cdigpt\"],\"provisioningState\":\"Deleting\"},\"id\":\"zmqxucyci\",\"name\":\"oclxiut\",\"type\":\"jc\"},{\"properties\":{\"description\":\"zjd\",\"topicTemplates\":[\"jb\",\"xjeaoqaqbzgyh\",\"w\",\"v\"],\"provisioningState\":\"Creating\"},\"id\":\"wbqamteuliy\",\"name\":\"lpkcvmwfauxxep\",\"type\":\"ywbo\"}],\"nextLink\":\"c\"}")
             .toObject(TopicSpacesListResult.class);
-        Assertions.assertEquals("maupxvpi", model.value().get(0).description());
-        Assertions.assertEquals("aifyzyzeyuubeids", model.value().get(0).topicTemplates().get(0));
-        Assertions.assertEquals("ymmpujivy", model.nextLink());
+        Assertions.assertEquals("dndsbdweade", model.value().get(0).description());
+        Assertions.assertEquals("wntopag", model.value().get(0).topicTemplates().get(0));
+        Assertions.assertEquals("c", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TopicSpacesListResult model = new TopicSpacesListResult().withValue(Arrays.asList(
-            new TopicSpaceInner().withDescription("maupxvpi").withTopicTemplates(Arrays.asList("aifyzyzeyuubeids")),
-            new TopicSpaceInner().withDescription("etwkdrcyrucpc")
-                .withTopicTemplates(Arrays.asList("uzdqumoenod", "aienhqhsknd")),
-            new TopicSpaceInner().withDescription("lyxnucaephb")
-                .withTopicTemplates(Arrays.asList("qp", "tv", "qsdtcjbctvivuzq", "mtuowogtgitsqhzv")),
-            new TopicSpaceInner().withDescription("mk").withTopicTemplates(Arrays.asList("axljal", "i", "cjmobcanc"))))
-            .withNextLink("ymmpujivy");
+            new TopicSpaceInner().withDescription("dndsbdweade")
+                .withTopicTemplates(Arrays.asList("wntopag", "tmvmmagoaqylkjz", "jiuazjc", "mxitpfinzcpd")),
+            new TopicSpaceInner().withDescription("ujlfyoumpcky").withTopicTemplates(Arrays.asList("cdigpt")),
+            new TopicSpaceInner().withDescription("zjd")
+                .withTopicTemplates(Arrays.asList("jb", "xjeaoqaqbzgyh", "w", "v"))))
+            .withNextLink("c");
         model = BinaryData.fromObject(model).toObject(TopicSpacesListResult.class);
-        Assertions.assertEquals("maupxvpi", model.value().get(0).description());
-        Assertions.assertEquals("aifyzyzeyuubeids", model.value().get(0).topicTemplates().get(0));
-        Assertions.assertEquals("ymmpujivy", model.nextLink());
+        Assertions.assertEquals("dndsbdweade", model.value().get(0).description());
+        Assertions.assertEquals("wntopag", model.value().get(0).topicTemplates().get(0));
+        Assertions.assertEquals("c", model.nextLink());
     }
 }

@@ -18,31 +18,32 @@ public final class ClientInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClientInner model = BinaryData.fromString(
-            "{\"properties\":{\"description\":\"xnj\",\"authenticationName\":\"seiphe\",\"clientCertificateAuthentication\":{\"validationScheme\":\"ThumbprintMatch\",\"allowedThumbprints\":[\"yyien\"]},\"state\":\"Disabled\",\"attributes\":{\"azjpqyegualhbxxh\":\"datatgrhpdjpjumas\",\"zvdudgwdslfhotwm\":\"datajj\",\"pgacftadehxnlty\":\"dataynpwlbj\"},\"provisioningState\":\"Updating\"},\"id\":\"pusuesn\",\"name\":\"wd\",\"type\":\"jbavorxzdm\"}")
+            "{\"properties\":{\"description\":\"drabhjybige\",\"authenticationName\":\"qfbow\",\"clientCertificateAuthentication\":{\"validationScheme\":\"SubjectMatchesAuthenticationName\",\"allowedThumbprints\":[\"tzlcuiywgqywgn\",\"rvynhzgpph\",\"cgyncocpecf\"]},\"state\":\"Enabled\",\"attributes\":{\"zevgb\":\"dataofsx\"},\"provisioningState\":\"Updating\"},\"id\":\"abcypmivk\",\"name\":\"lzu\",\"type\":\"ccfwnfnbacfion\"}")
             .toObject(ClientInner.class);
-        Assertions.assertEquals("xnj", model.description());
-        Assertions.assertEquals("seiphe", model.authenticationName());
-        Assertions.assertEquals(ClientCertificateValidationScheme.THUMBPRINT_MATCH,
+        Assertions.assertEquals("drabhjybige", model.description());
+        Assertions.assertEquals("qfbow", model.authenticationName());
+        Assertions.assertEquals(ClientCertificateValidationScheme.SUBJECT_MATCHES_AUTHENTICATION_NAME,
             model.clientCertificateAuthentication().validationScheme());
-        Assertions.assertEquals("yyien", model.clientCertificateAuthentication().allowedThumbprints().get(0));
-        Assertions.assertEquals(ClientState.DISABLED, model.state());
+        Assertions.assertEquals("tzlcuiywgqywgn", model.clientCertificateAuthentication().allowedThumbprints().get(0));
+        Assertions.assertEquals(ClientState.ENABLED, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClientInner model = new ClientInner().withDescription("xnj").withAuthenticationName("seiphe")
+        ClientInner model = new ClientInner().withDescription("drabhjybige")
+            .withAuthenticationName("qfbow")
             .withClientCertificateAuthentication(new ClientCertificateAuthentication()
-                .withValidationScheme(ClientCertificateValidationScheme.THUMBPRINT_MATCH)
-                .withAllowedThumbprints(Arrays.asList("yyien")))
-            .withState(ClientState.DISABLED).withAttributes(mapOf("azjpqyegualhbxxh", "datatgrhpdjpjumas",
-                "zvdudgwdslfhotwm", "datajj", "pgacftadehxnlty", "dataynpwlbj"));
+                .withValidationScheme(ClientCertificateValidationScheme.SUBJECT_MATCHES_AUTHENTICATION_NAME)
+                .withAllowedThumbprints(Arrays.asList("tzlcuiywgqywgn", "rvynhzgpph", "cgyncocpecf")))
+            .withState(ClientState.ENABLED)
+            .withAttributes(mapOf("zevgb", "dataofsx"));
         model = BinaryData.fromObject(model).toObject(ClientInner.class);
-        Assertions.assertEquals("xnj", model.description());
-        Assertions.assertEquals("seiphe", model.authenticationName());
-        Assertions.assertEquals(ClientCertificateValidationScheme.THUMBPRINT_MATCH,
+        Assertions.assertEquals("drabhjybige", model.description());
+        Assertions.assertEquals("qfbow", model.authenticationName());
+        Assertions.assertEquals(ClientCertificateValidationScheme.SUBJECT_MATCHES_AUTHENTICATION_NAME,
             model.clientCertificateAuthentication().validationScheme());
-        Assertions.assertEquals("yyien", model.clientCertificateAuthentication().allowedThumbprints().get(0));
-        Assertions.assertEquals(ClientState.DISABLED, model.state());
+        Assertions.assertEquals("tzlcuiywgqywgn", model.clientCertificateAuthentication().allowedThumbprints().get(0));
+        Assertions.assertEquals(ClientState.ENABLED, model.state());
     }
 
     // Use "Map.of" if available

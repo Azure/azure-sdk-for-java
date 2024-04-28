@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.eventgrid.models.DeadLetterDestination;
 import com.azure.resourcemanager.eventgrid.models.DeadLetterWithResourceIdentity;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionIdentity;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionIdentityType;
+import com.azure.resourcemanager.eventgrid.models.StorageBlobDeadLetterDestination;
 import org.junit.jupiter.api.Assertions;
 
 public final class DeadLetterWithResourceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeadLetterWithResourceIdentity model = BinaryData.fromString(
-            "{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"imerqfobwyznk\"},\"deadLetterDestination\":{\"endpointType\":\"DeadLetterDestination\"}}")
+            "{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"wxrt\"},\"deadLetterDestination\":{\"endpointType\":\"StorageBlob\"}}")
             .toObject(DeadLetterWithResourceIdentity.class);
         Assertions.assertEquals(EventSubscriptionIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("imerqfobwyznk", model.identity().userAssignedIdentity());
+        Assertions.assertEquals("wxrt", model.identity().userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeadLetterWithResourceIdentity model = new DeadLetterWithResourceIdentity()
-            .withIdentity(new EventSubscriptionIdentity().withType(EventSubscriptionIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentity("imerqfobwyznk"))
-            .withDeadLetterDestination(new DeadLetterDestination());
+        DeadLetterWithResourceIdentity model
+            = new DeadLetterWithResourceIdentity()
+                .withIdentity(new EventSubscriptionIdentity().withType(EventSubscriptionIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentity("wxrt"))
+                .withDeadLetterDestination(new StorageBlobDeadLetterDestination());
         model = BinaryData.fromObject(model).toObject(DeadLetterWithResourceIdentity.class);
         Assertions.assertEquals(EventSubscriptionIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("imerqfobwyznk", model.identity().userAssignedIdentity());
+        Assertions.assertEquals("wxrt", model.identity().userAssignedIdentity());
     }
 }

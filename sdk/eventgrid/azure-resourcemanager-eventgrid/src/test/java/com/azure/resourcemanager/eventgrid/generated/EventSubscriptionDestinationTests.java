@@ -6,18 +6,18 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionDestination;
+import com.azure.resourcemanager.eventgrid.models.StorageQueueEventSubscriptionDestination;
 
 public final class EventSubscriptionDestinationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EventSubscriptionDestination model
-            = BinaryData.fromString("{\"endpointType\":\"EventSubscriptionDestination\"}")
-                .toObject(EventSubscriptionDestination.class);
+            = BinaryData.fromString("{\"endpointType\":\"StorageQueue\"}").toObject(EventSubscriptionDestination.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventSubscriptionDestination model = new EventSubscriptionDestination();
+        EventSubscriptionDestination model = new StorageQueueEventSubscriptionDestination();
         model = BinaryData.fromObject(model).toObject(EventSubscriptionDestination.class);
     }
 }

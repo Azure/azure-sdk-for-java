@@ -12,18 +12,18 @@ public final class StorageBlobDeadLetterDestinationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageBlobDeadLetterDestinationProperties model
-            = BinaryData.fromString("{\"resourceId\":\"abmvmsxbaevwjc\",\"blobContainerName\":\"ot\"}")
+            = BinaryData.fromString("{\"resourceId\":\"ry\",\"blobContainerName\":\"ufptb\"}")
                 .toObject(StorageBlobDeadLetterDestinationProperties.class);
-        Assertions.assertEquals("abmvmsxbaevwjc", model.resourceId());
-        Assertions.assertEquals("ot", model.blobContainerName());
+        Assertions.assertEquals("ry", model.resourceId());
+        Assertions.assertEquals("ufptb", model.blobContainerName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageBlobDeadLetterDestinationProperties model = new StorageBlobDeadLetterDestinationProperties()
-            .withResourceId("abmvmsxbaevwjc").withBlobContainerName("ot");
+        StorageBlobDeadLetterDestinationProperties model
+            = new StorageBlobDeadLetterDestinationProperties().withResourceId("ry").withBlobContainerName("ufptb");
         model = BinaryData.fromObject(model).toObject(StorageBlobDeadLetterDestinationProperties.class);
-        Assertions.assertEquals("abmvmsxbaevwjc", model.resourceId());
-        Assertions.assertEquals("ot", model.blobContainerName());
+        Assertions.assertEquals("ry", model.resourceId());
+        Assertions.assertEquals("ufptb", model.blobContainerName());
     }
 }

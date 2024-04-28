@@ -6,65 +6,48 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.VerifiedPartner;
 import com.azure.resourcemanager.eventgrid.models.VerifiedPartnerProvisioningState;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class VerifiedPartnersListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"974c45ee-e468-4bfe-9250-748cc69a778f\",\"organizationName\":\"thtpqgfzdosi\",\"partnerDisplayName\":\"d\",\"partnerTopicDetails\":{\"description\":\"flgzh\",\"longDescription\":\"jg\",\"setupUri\":\"hcrx\"},\"partnerDestinationDetails\":{\"description\":\"rutvnpccxz\",\"longDescription\":\"xpmhzghhhk\",\"setupUri\":\"njdtujqzvhnj\"},\"provisioningState\":\"Updating\"},\"id\":\"n\",\"name\":\"tmzstql\",\"type\":\"xolrwvtlg\"}]}";
+            = "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"eada60ca-8b92-4aee-8a1e-88bc243e584c\",\"organizationName\":\"ede\",\"partnerDisplayName\":\"xtpwcvgi\",\"partnerTopicDetails\":{\"description\":\"unjzija\",\"longDescription\":\"wmmpd\",\"setupUri\":\"donb\"},\"partnerDestinationDetails\":{\"description\":\"nfzyviiwsuanz\",\"longDescription\":\"syuifkzqqhbtflo\",\"setupUri\":\"mkfbeoiipj\"},\"provisioningState\":\"Failed\"},\"id\":\"yvuoikdlps\",\"name\":\"ntugfwi\",\"type\":\"qn\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        EventGridManager manager = EventGridManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        EventGridManager manager = EventGridManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<VerifiedPartner> response
-            = manager.verifiedPartners().list("lhbimyii", 832518528, com.azure.core.util.Context.NONE);
+            = manager.verifiedPartners().list("xn", 1701492040, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(UUID.fromString("974c45ee-e468-4bfe-9250-748cc69a778f"),
+        Assertions.assertEquals(UUID.fromString("eada60ca-8b92-4aee-8a1e-88bc243e584c"),
             response.iterator().next().partnerRegistrationImmutableId());
-        Assertions.assertEquals("thtpqgfzdosi", response.iterator().next().organizationName());
-        Assertions.assertEquals("d", response.iterator().next().partnerDisplayName());
-        Assertions.assertEquals("flgzh", response.iterator().next().partnerTopicDetails().description());
-        Assertions.assertEquals("jg", response.iterator().next().partnerTopicDetails().longDescription());
-        Assertions.assertEquals("hcrx", response.iterator().next().partnerTopicDetails().setupUri());
-        Assertions.assertEquals("rutvnpccxz", response.iterator().next().partnerDestinationDetails().description());
-        Assertions.assertEquals("xpmhzghhhk", response.iterator().next().partnerDestinationDetails().longDescription());
-        Assertions.assertEquals("njdtujqzvhnj", response.iterator().next().partnerDestinationDetails().setupUri());
-        Assertions.assertEquals(VerifiedPartnerProvisioningState.UPDATING,
+        Assertions.assertEquals("ede", response.iterator().next().organizationName());
+        Assertions.assertEquals("xtpwcvgi", response.iterator().next().partnerDisplayName());
+        Assertions.assertEquals("unjzija", response.iterator().next().partnerTopicDetails().description());
+        Assertions.assertEquals("wmmpd", response.iterator().next().partnerTopicDetails().longDescription());
+        Assertions.assertEquals("donb", response.iterator().next().partnerTopicDetails().setupUri());
+        Assertions.assertEquals("nfzyviiwsuanz", response.iterator().next().partnerDestinationDetails().description());
+        Assertions.assertEquals("syuifkzqqhbtflo",
+            response.iterator().next().partnerDestinationDetails().longDescription());
+        Assertions.assertEquals("mkfbeoiipj", response.iterator().next().partnerDestinationDetails().setupUri());
+        Assertions.assertEquals(VerifiedPartnerProvisioningState.FAILED,
             response.iterator().next().provisioningState());
     }
 }

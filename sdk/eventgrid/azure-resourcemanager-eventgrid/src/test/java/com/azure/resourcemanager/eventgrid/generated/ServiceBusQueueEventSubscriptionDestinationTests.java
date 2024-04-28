@@ -5,8 +5,9 @@
 package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.eventgrid.models.DeliveryAttributeMapping;
+import com.azure.resourcemanager.eventgrid.models.DynamicDeliveryAttributeMapping;
 import com.azure.resourcemanager.eventgrid.models.ServiceBusQueueEventSubscriptionDestination;
+import com.azure.resourcemanager.eventgrid.models.StaticDeliveryAttributeMapping;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -14,20 +15,22 @@ public final class ServiceBusQueueEventSubscriptionDestinationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceBusQueueEventSubscriptionDestination model = BinaryData.fromString(
-            "{\"endpointType\":\"ServiceBusQueue\",\"properties\":{\"resourceId\":\"dcueljtiahxmfq\",\"deliveryAttributeMappings\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"vsxzqbglcjka\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"pth\"}]}}")
+            "{\"endpointType\":\"NamespaceTopic\",\"properties\":{\"resourceId\":\"avlyttaaknwf\",\"deliveryAttributeMappings\":[{\"type\":\"Static\",\"name\":\"hpdujdigatole\"},{\"type\":\"Dynamic\",\"name\":\"ctnanqimwbzxp\"},{\"type\":\"Dynamic\",\"name\":\"pkawnsnlaim\"},{\"type\":\"Static\",\"name\":\"ksqmudmfcoibi\"}]}}")
             .toObject(ServiceBusQueueEventSubscriptionDestination.class);
-        Assertions.assertEquals("dcueljtiahxmfq", model.resourceId());
-        Assertions.assertEquals("vsxzqbglcjka", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("avlyttaaknwf", model.resourceId());
+        Assertions.assertEquals("hpdujdigatole", model.deliveryAttributeMappings().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceBusQueueEventSubscriptionDestination model
-            = new ServiceBusQueueEventSubscriptionDestination().withResourceId("dcueljtiahxmfq")
-                .withDeliveryAttributeMappings(Arrays.asList(new DeliveryAttributeMapping().withName("vsxzqbglcjka"),
-                    new DeliveryAttributeMapping().withName("pth")));
+        ServiceBusQueueEventSubscriptionDestination model = new ServiceBusQueueEventSubscriptionDestination()
+            .withResourceId("avlyttaaknwf")
+            .withDeliveryAttributeMappings(Arrays.asList(new StaticDeliveryAttributeMapping().withName("hpdujdigatole"),
+                new DynamicDeliveryAttributeMapping().withName("ctnanqimwbzxp"),
+                new DynamicDeliveryAttributeMapping().withName("pkawnsnlaim"),
+                new StaticDeliveryAttributeMapping().withName("ksqmudmfcoibi")));
         model = BinaryData.fromObject(model).toObject(ServiceBusQueueEventSubscriptionDestination.class);
-        Assertions.assertEquals("dcueljtiahxmfq", model.resourceId());
-        Assertions.assertEquals("vsxzqbglcjka", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("avlyttaaknwf", model.resourceId());
+        Assertions.assertEquals("hpdujdigatole", model.deliveryAttributeMappings().get(0).name());
     }
 }

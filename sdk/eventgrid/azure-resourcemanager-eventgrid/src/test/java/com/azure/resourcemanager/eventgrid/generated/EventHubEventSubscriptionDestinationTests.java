@@ -5,8 +5,9 @@
 package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.eventgrid.models.DeliveryAttributeMapping;
+import com.azure.resourcemanager.eventgrid.models.DynamicDeliveryAttributeMapping;
 import com.azure.resourcemanager.eventgrid.models.EventHubEventSubscriptionDestination;
+import com.azure.resourcemanager.eventgrid.models.StaticDeliveryAttributeMapping;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -14,19 +15,20 @@ public final class EventHubEventSubscriptionDestinationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EventHubEventSubscriptionDestination model = BinaryData.fromString(
-            "{\"endpointType\":\"EventHub\",\"properties\":{\"resourceId\":\"pypefcpczshnuq\",\"deliveryAttributeMappings\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"zupfkhuytuszxhm\"}]}}")
+            "{\"endpointType\":\"PartnerDestination\",\"properties\":{\"resourceId\":\"ncknrzdajlsk\",\"deliveryAttributeMappings\":[{\"type\":\"Dynamic\",\"name\":\"lwe\"},{\"type\":\"Static\",\"name\":\"t\"}]}}")
             .toObject(EventHubEventSubscriptionDestination.class);
-        Assertions.assertEquals("pypefcpczshnuq", model.resourceId());
-        Assertions.assertEquals("zupfkhuytuszxhm", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("ncknrzdajlsk", model.resourceId());
+        Assertions.assertEquals("lwe", model.deliveryAttributeMappings().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EventHubEventSubscriptionDestination model
-            = new EventHubEventSubscriptionDestination().withResourceId("pypefcpczshnuq").withDeliveryAttributeMappings(
-                Arrays.asList(new DeliveryAttributeMapping().withName("zupfkhuytuszxhm")));
+            = new EventHubEventSubscriptionDestination().withResourceId("ncknrzdajlsk")
+                .withDeliveryAttributeMappings(Arrays.asList(new DynamicDeliveryAttributeMapping().withName("lwe"),
+                    new StaticDeliveryAttributeMapping().withName("t")));
         model = BinaryData.fromObject(model).toObject(EventHubEventSubscriptionDestination.class);
-        Assertions.assertEquals("pypefcpczshnuq", model.resourceId());
-        Assertions.assertEquals("zupfkhuytuszxhm", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("ncknrzdajlsk", model.resourceId());
+        Assertions.assertEquals("lwe", model.deliveryAttributeMappings().get(0).name());
     }
 }

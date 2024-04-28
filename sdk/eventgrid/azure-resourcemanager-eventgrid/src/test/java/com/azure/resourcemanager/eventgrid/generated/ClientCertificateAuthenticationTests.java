@@ -14,19 +14,21 @@ public final class ClientCertificateAuthenticationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClientCertificateAuthentication model = BinaryData.fromString(
-            "{\"validationScheme\":\"ThumbprintMatch\",\"allowedThumbprints\":[\"zrkgqhcjrefovg\",\"kqsleyyvxy\",\"jpkcattpng\",\"cr\"]}")
+            "{\"validationScheme\":\"UriMatchesAuthenticationName\",\"allowedThumbprints\":[\"azjpqyegualhbxxh\",\"jj\",\"zvdudgwdslfhotwm\"]}")
             .toObject(ClientCertificateAuthentication.class);
-        Assertions.assertEquals(ClientCertificateValidationScheme.THUMBPRINT_MATCH, model.validationScheme());
-        Assertions.assertEquals("zrkgqhcjrefovg", model.allowedThumbprints().get(0));
+        Assertions.assertEquals(ClientCertificateValidationScheme.URI_MATCHES_AUTHENTICATION_NAME,
+            model.validationScheme());
+        Assertions.assertEquals("azjpqyegualhbxxh", model.allowedThumbprints().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClientCertificateAuthentication model = new ClientCertificateAuthentication()
-            .withValidationScheme(ClientCertificateValidationScheme.THUMBPRINT_MATCH)
-            .withAllowedThumbprints(Arrays.asList("zrkgqhcjrefovg", "kqsleyyvxy", "jpkcattpng", "cr"));
+            .withValidationScheme(ClientCertificateValidationScheme.URI_MATCHES_AUTHENTICATION_NAME)
+            .withAllowedThumbprints(Arrays.asList("azjpqyegualhbxxh", "jj", "zvdudgwdslfhotwm"));
         model = BinaryData.fromObject(model).toObject(ClientCertificateAuthentication.class);
-        Assertions.assertEquals(ClientCertificateValidationScheme.THUMBPRINT_MATCH, model.validationScheme());
-        Assertions.assertEquals("zrkgqhcjrefovg", model.allowedThumbprints().get(0));
+        Assertions.assertEquals(ClientCertificateValidationScheme.URI_MATCHES_AUTHENTICATION_NAME,
+            model.validationScheme());
+        Assertions.assertEquals("azjpqyegualhbxxh", model.allowedThumbprints().get(0));
     }
 }

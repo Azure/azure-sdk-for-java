@@ -6,17 +6,18 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.eventgrid.models.DeadLetterDestination;
+import com.azure.resourcemanager.eventgrid.models.StorageBlobDeadLetterDestination;
 
 public final class DeadLetterDestinationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeadLetterDestination model = BinaryData.fromString("{\"endpointType\":\"DeadLetterDestination\"}")
-            .toObject(DeadLetterDestination.class);
+        DeadLetterDestination model
+            = BinaryData.fromString("{\"endpointType\":\"StorageBlob\"}").toObject(DeadLetterDestination.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeadLetterDestination model = new DeadLetterDestination();
+        DeadLetterDestination model = new StorageBlobDeadLetterDestination();
         model = BinaryData.fromObject(model).toObject(DeadLetterDestination.class);
     }
 }

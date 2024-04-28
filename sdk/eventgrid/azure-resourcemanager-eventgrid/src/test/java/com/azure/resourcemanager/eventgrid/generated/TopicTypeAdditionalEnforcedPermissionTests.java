@@ -12,18 +12,18 @@ public final class TopicTypeAdditionalEnforcedPermissionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TopicTypeAdditionalEnforcedPermission model
-            = BinaryData.fromString("{\"permissionName\":\"lnwy\",\"isDataAction\":false}")
+            = BinaryData.fromString("{\"permissionName\":\"jj\",\"isDataAction\":true}")
                 .toObject(TopicTypeAdditionalEnforcedPermission.class);
-        Assertions.assertEquals("lnwy", model.permissionName());
-        Assertions.assertEquals(false, model.isDataAction());
+        Assertions.assertEquals("jj", model.permissionName());
+        Assertions.assertEquals(true, model.isDataAction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TopicTypeAdditionalEnforcedPermission model
-            = new TopicTypeAdditionalEnforcedPermission().withPermissionName("lnwy").withIsDataAction(false);
+            = new TopicTypeAdditionalEnforcedPermission().withPermissionName("jj").withIsDataAction(true);
         model = BinaryData.fromObject(model).toObject(TopicTypeAdditionalEnforcedPermission.class);
-        Assertions.assertEquals("lnwy", model.permissionName());
-        Assertions.assertEquals(false, model.isDataAction());
+        Assertions.assertEquals("jj", model.permissionName());
+        Assertions.assertEquals(true, model.isDataAction());
     }
 }

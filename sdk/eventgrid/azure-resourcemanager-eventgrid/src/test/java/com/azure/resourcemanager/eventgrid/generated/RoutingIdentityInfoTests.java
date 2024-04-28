@@ -13,18 +13,18 @@ public final class RoutingIdentityInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RoutingIdentityInfo model
-            = BinaryData.fromString("{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"irgne\"}")
+            = BinaryData.fromString("{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"ool\"}")
                 .toObject(RoutingIdentityInfo.class);
         Assertions.assertEquals(RoutingIdentityType.USER_ASSIGNED, model.type());
-        Assertions.assertEquals("irgne", model.userAssignedIdentity());
+        Assertions.assertEquals("ool", model.userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RoutingIdentityInfo model
-            = new RoutingIdentityInfo().withType(RoutingIdentityType.USER_ASSIGNED).withUserAssignedIdentity("irgne");
+            = new RoutingIdentityInfo().withType(RoutingIdentityType.USER_ASSIGNED).withUserAssignedIdentity("ool");
         model = BinaryData.fromObject(model).toObject(RoutingIdentityInfo.class);
         Assertions.assertEquals(RoutingIdentityType.USER_ASSIGNED, model.type());
-        Assertions.assertEquals("irgne", model.userAssignedIdentity());
+        Assertions.assertEquals("ool", model.userAssignedIdentity());
     }
 }

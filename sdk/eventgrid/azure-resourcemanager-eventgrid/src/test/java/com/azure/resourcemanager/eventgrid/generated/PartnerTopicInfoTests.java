@@ -17,47 +17,41 @@ public final class PartnerTopicInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerTopicInfo model = BinaryData.fromString(
-            "{\"azureSubscriptionId\":\"qtrgqjbpfzfsinzg\",\"resourceGroupName\":\"cjrwzoxxjtfellu\",\"name\":\"zitonpeqfpjkjl\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"xzxtheo\":{\"description\":\"pfxxy\",\"displayName\":\"ninmayhuyb\",\"documentationUrl\":\"podepoo\",\"dataSchemaUrl\":\"nuvamiheogna\"},\"kufubljo\":{\"description\":\"si\",\"displayName\":\"evcciqihnhun\",\"documentationUrl\":\"wjzrnfygxgisp\",\"dataSchemaUrl\":\"vtz\"},\"clxxwrljdo\":{\"description\":\"qeof\",\"displayName\":\"e\",\"documentationUrl\":\"hqjbasvmsmj\",\"dataSchemaUrl\":\"lngsntnbybkzgcwr\"},\"qpjwnzlljfm\":{\"description\":\"kcqvkocrc\",\"displayName\":\"kwt\",\"documentationUrl\":\"xbnjbiksq\",\"dataSchemaUrl\":\"lssai\"}}},\"source\":\"eebvmgxsab\"}")
+            "{\"azureSubscriptionId\":\"hpf\",\"resourceGroupName\":\"ypininm\",\"name\":\"huyb\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"bwjzr\":{\"description\":\"ooginuvamih\",\"displayName\":\"gnarxzxtheo\",\"documentationUrl\":\"si\",\"dataSchemaUrl\":\"evcciqihnhun\"}}},\"source\":\"ygxgispemvtz\"}")
             .toObject(PartnerTopicInfo.class);
-        Assertions.assertEquals("qtrgqjbpfzfsinzg", model.azureSubscriptionId());
-        Assertions.assertEquals("cjrwzoxxjtfellu", model.resourceGroupName());
-        Assertions.assertEquals("zitonpeqfpjkjl", model.name());
+        Assertions.assertEquals("hpf", model.azureSubscriptionId());
+        Assertions.assertEquals("ypininm", model.resourceGroupName());
+        Assertions.assertEquals("huyb", model.name());
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.eventTypeInfo().kind());
-        Assertions.assertEquals("pfxxy", model.eventTypeInfo().inlineEventTypes().get("xzxtheo").description());
-        Assertions.assertEquals("ninmayhuyb", model.eventTypeInfo().inlineEventTypes().get("xzxtheo").displayName());
-        Assertions.assertEquals("podepoo", model.eventTypeInfo().inlineEventTypes().get("xzxtheo").documentationUrl());
-        Assertions.assertEquals("nuvamiheogna",
-            model.eventTypeInfo().inlineEventTypes().get("xzxtheo").dataSchemaUrl());
-        Assertions.assertEquals("eebvmgxsab", model.source());
+        Assertions.assertEquals("ooginuvamih", model.eventTypeInfo().inlineEventTypes().get("bwjzr").description());
+        Assertions.assertEquals("gnarxzxtheo", model.eventTypeInfo().inlineEventTypes().get("bwjzr").displayName());
+        Assertions.assertEquals("si", model.eventTypeInfo().inlineEventTypes().get("bwjzr").documentationUrl());
+        Assertions.assertEquals("evcciqihnhun", model.eventTypeInfo().inlineEventTypes().get("bwjzr").dataSchemaUrl());
+        Assertions.assertEquals("ygxgispemvtz", model.source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PartnerTopicInfo model = new PartnerTopicInfo().withAzureSubscriptionId("qtrgqjbpfzfsinzg")
-            .withResourceGroupName("cjrwzoxxjtfellu").withName("zitonpeqfpjkjl")
+        PartnerTopicInfo model = new PartnerTopicInfo().withAzureSubscriptionId("hpf")
+            .withResourceGroupName("ypininm")
+            .withName("huyb")
             .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
-                .withInlineEventTypes(mapOf("xzxtheo", new InlineEventProperties().withDescription("pfxxy")
-                    .withDisplayName("ninmayhuyb").withDocumentationUrl("podepoo").withDataSchemaUrl("nuvamiheogna"),
-                    "kufubljo",
-                    new InlineEventProperties().withDescription("si").withDisplayName("evcciqihnhun")
-                        .withDocumentationUrl("wjzrnfygxgisp").withDataSchemaUrl("vtz"),
-                    "clxxwrljdo",
-                    new InlineEventProperties().withDescription("qeof").withDisplayName("e")
-                        .withDocumentationUrl("hqjbasvmsmj").withDataSchemaUrl("lngsntnbybkzgcwr"),
-                    "qpjwnzlljfm", new InlineEventProperties().withDescription("kcqvkocrc").withDisplayName("kwt")
-                        .withDocumentationUrl("xbnjbiksq").withDataSchemaUrl("lssai"))))
-            .withSource("eebvmgxsab");
+                .withInlineEventTypes(mapOf("bwjzr",
+                    new InlineEventProperties().withDescription("ooginuvamih")
+                        .withDisplayName("gnarxzxtheo")
+                        .withDocumentationUrl("si")
+                        .withDataSchemaUrl("evcciqihnhun"))))
+            .withSource("ygxgispemvtz");
         model = BinaryData.fromObject(model).toObject(PartnerTopicInfo.class);
-        Assertions.assertEquals("qtrgqjbpfzfsinzg", model.azureSubscriptionId());
-        Assertions.assertEquals("cjrwzoxxjtfellu", model.resourceGroupName());
-        Assertions.assertEquals("zitonpeqfpjkjl", model.name());
+        Assertions.assertEquals("hpf", model.azureSubscriptionId());
+        Assertions.assertEquals("ypininm", model.resourceGroupName());
+        Assertions.assertEquals("huyb", model.name());
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.eventTypeInfo().kind());
-        Assertions.assertEquals("pfxxy", model.eventTypeInfo().inlineEventTypes().get("xzxtheo").description());
-        Assertions.assertEquals("ninmayhuyb", model.eventTypeInfo().inlineEventTypes().get("xzxtheo").displayName());
-        Assertions.assertEquals("podepoo", model.eventTypeInfo().inlineEventTypes().get("xzxtheo").documentationUrl());
-        Assertions.assertEquals("nuvamiheogna",
-            model.eventTypeInfo().inlineEventTypes().get("xzxtheo").dataSchemaUrl());
-        Assertions.assertEquals("eebvmgxsab", model.source());
+        Assertions.assertEquals("ooginuvamih", model.eventTypeInfo().inlineEventTypes().get("bwjzr").description());
+        Assertions.assertEquals("gnarxzxtheo", model.eventTypeInfo().inlineEventTypes().get("bwjzr").displayName());
+        Assertions.assertEquals("si", model.eventTypeInfo().inlineEventTypes().get("bwjzr").documentationUrl());
+        Assertions.assertEquals("evcciqihnhun", model.eventTypeInfo().inlineEventTypes().get("bwjzr").dataSchemaUrl());
+        Assertions.assertEquals("ygxgispemvtz", model.source());
     }
 
     // Use "Map.of" if available

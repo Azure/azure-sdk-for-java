@@ -17,30 +17,31 @@ public final class PrivateEndpointConnectionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateEndpointConnectionInner model = BinaryData.fromString(
-            "{\"properties\":{\"privateEndpoint\":{\"id\":\"eiotwmcdytdx\"},\"groupIds\":[\"xnrj\",\"wgqwgxhn\"],\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"bkpyc\",\"actionsRequired\":\"lwn\"},\"provisioningState\":\"Failed\"},\"id\":\"jdauwhvy\",\"name\":\"wzbtdhxu\",\"type\":\"znbmpowuwprzq\"}")
+            "{\"properties\":{\"privateEndpoint\":{\"id\":\"bfs\"},\"groupIds\":[\"butr\"],\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"zzmhjrunmpxttd\",\"actionsRequired\":\"rbnlankxmyskp\"},\"provisioningState\":\"Succeeded\"},\"id\":\"nbtkcxywnytnr\",\"name\":\"yn\",\"type\":\"qidybyx\"}")
             .toObject(PrivateEndpointConnectionInner.class);
-        Assertions.assertEquals("eiotwmcdytdx", model.privateEndpoint().id());
-        Assertions.assertEquals("xnrj", model.groupIds().get(0));
+        Assertions.assertEquals("bfs", model.privateEndpoint().id());
+        Assertions.assertEquals("butr", model.groupIds().get(0));
         Assertions.assertEquals(PersistedConnectionStatus.PENDING, model.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("bkpyc", model.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("lwn", model.privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals(ResourceProvisioningState.FAILED, model.provisioningState());
+        Assertions.assertEquals("zzmhjrunmpxttd", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("rbnlankxmyskp", model.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals(ResourceProvisioningState.SUCCEEDED, model.provisioningState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateEndpointConnectionInner model
-            = new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint().withId("eiotwmcdytdx"))
-                .withGroupIds(Arrays.asList("xnrj", "wgqwgxhn"))
-                .withPrivateLinkServiceConnectionState(new ConnectionState()
-                    .withStatus(PersistedConnectionStatus.PENDING).withDescription("bkpyc").withActionsRequired("lwn"))
-                .withProvisioningState(ResourceProvisioningState.FAILED);
+        PrivateEndpointConnectionInner model = new PrivateEndpointConnectionInner()
+            .withPrivateEndpoint(new PrivateEndpoint().withId("bfs"))
+            .withGroupIds(Arrays.asList("butr"))
+            .withPrivateLinkServiceConnectionState(new ConnectionState().withStatus(PersistedConnectionStatus.PENDING)
+                .withDescription("zzmhjrunmpxttd")
+                .withActionsRequired("rbnlankxmyskp"))
+            .withProvisioningState(ResourceProvisioningState.SUCCEEDED);
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionInner.class);
-        Assertions.assertEquals("eiotwmcdytdx", model.privateEndpoint().id());
-        Assertions.assertEquals("xnrj", model.groupIds().get(0));
+        Assertions.assertEquals("bfs", model.privateEndpoint().id());
+        Assertions.assertEquals("butr", model.groupIds().get(0));
         Assertions.assertEquals(PersistedConnectionStatus.PENDING, model.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("bkpyc", model.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("lwn", model.privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals(ResourceProvisioningState.FAILED, model.provisioningState());
+        Assertions.assertEquals("zzmhjrunmpxttd", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("rbnlankxmyskp", model.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals(ResourceProvisioningState.SUCCEEDED, model.provisioningState());
     }
 }

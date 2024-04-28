@@ -5,19 +5,19 @@
 package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.eventgrid.models.AzureADPartnerClientAuthentication;
 import com.azure.resourcemanager.eventgrid.models.PartnerClientAuthentication;
 
 public final class PartnerClientAuthenticationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PartnerClientAuthentication model
-            = BinaryData.fromString("{\"clientAuthenticationType\":\"PartnerClientAuthentication\"}")
-                .toObject(PartnerClientAuthentication.class);
+        PartnerClientAuthentication model = BinaryData.fromString("{\"clientAuthenticationType\":\"AzureAD\"}")
+            .toObject(PartnerClientAuthentication.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PartnerClientAuthentication model = new PartnerClientAuthentication();
+        PartnerClientAuthentication model = new AzureADPartnerClientAuthentication();
         model = BinaryData.fromObject(model).toObject(PartnerClientAuthentication.class);
     }
 }

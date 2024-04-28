@@ -13,19 +13,20 @@ public final class ResourceMoveChangeHistoryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceMoveChangeHistory model = BinaryData.fromString(
-            "{\"azureSubscriptionId\":\"modmglougpb\",\"resourceGroupName\":\"tmut\",\"changedTimeUtc\":\"2021-07-26T02:06:56Z\"}")
+            "{\"azureSubscriptionId\":\"b\",\"resourceGroupName\":\"tmut\",\"changedTimeUtc\":\"2021-07-26T02:06:56Z\"}")
             .toObject(ResourceMoveChangeHistory.class);
-        Assertions.assertEquals("modmglougpb", model.azureSubscriptionId());
+        Assertions.assertEquals("b", model.azureSubscriptionId());
         Assertions.assertEquals("tmut", model.resourceGroupName());
         Assertions.assertEquals(OffsetDateTime.parse("2021-07-26T02:06:56Z"), model.changedTimeUtc());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceMoveChangeHistory model = new ResourceMoveChangeHistory().withAzureSubscriptionId("modmglougpb")
-            .withResourceGroupName("tmut").withChangedTimeUtc(OffsetDateTime.parse("2021-07-26T02:06:56Z"));
+        ResourceMoveChangeHistory model = new ResourceMoveChangeHistory().withAzureSubscriptionId("b")
+            .withResourceGroupName("tmut")
+            .withChangedTimeUtc(OffsetDateTime.parse("2021-07-26T02:06:56Z"));
         model = BinaryData.fromObject(model).toObject(ResourceMoveChangeHistory.class);
-        Assertions.assertEquals("modmglougpb", model.azureSubscriptionId());
+        Assertions.assertEquals("b", model.azureSubscriptionId());
         Assertions.assertEquals("tmut", model.resourceGroupName());
         Assertions.assertEquals(OffsetDateTime.parse("2021-07-26T02:06:56Z"), model.changedTimeUtc());
     }

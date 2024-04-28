@@ -12,17 +12,17 @@ public final class SystemTopicPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SystemTopicProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Updating\",\"source\":\"eblydyv\",\"topicType\":\"kmrocxne\",\"metricResourceId\":\"sm\"}")
+            "{\"provisioningState\":\"Succeeded\",\"source\":\"gmnsghpxy\",\"topicType\":\"hdrwjjkh\",\"metricResourceId\":\"omacluzvxnqmhr\"}")
             .toObject(SystemTopicProperties.class);
-        Assertions.assertEquals("eblydyv", model.source());
-        Assertions.assertEquals("kmrocxne", model.topicType());
+        Assertions.assertEquals("gmnsghpxy", model.source());
+        Assertions.assertEquals("hdrwjjkh", model.topicType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SystemTopicProperties model = new SystemTopicProperties().withSource("eblydyv").withTopicType("kmrocxne");
+        SystemTopicProperties model = new SystemTopicProperties().withSource("gmnsghpxy").withTopicType("hdrwjjkh");
         model = BinaryData.fromObject(model).toObject(SystemTopicProperties.class);
-        Assertions.assertEquals("eblydyv", model.source());
-        Assertions.assertEquals("kmrocxne", model.topicType());
+        Assertions.assertEquals("gmnsghpxy", model.source());
+        Assertions.assertEquals("hdrwjjkh", model.topicType());
     }
 }
