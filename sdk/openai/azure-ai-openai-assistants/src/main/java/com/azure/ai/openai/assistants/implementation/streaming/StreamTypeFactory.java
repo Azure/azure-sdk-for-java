@@ -35,7 +35,7 @@ import static com.azure.ai.openai.assistants.implementation.models.AssistantStre
 import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.THREAD_RUN_STEP_DELTA;
 import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.THREAD_RUN_STEP_IN_PROGRESS;
 
-public final class StreamTypeFactory implements EventStringHandler<StreamUpdate> {
+public final class StreamTypeFactory {
 
     public StreamUpdate deserializeEvent(String eventName, BinaryData eventJson) throws IllegalArgumentException {
         AssistantStreamEvent event = AssistantStreamEvent.fromString(eventName);
@@ -56,43 +56,8 @@ public final class StreamTypeFactory implements EventStringHandler<StreamUpdate>
             return new StreamMessageUpdate(eventJson.toObject(MessageDeltaChunk.class));
         } else if (THREAD_RUN_STEP_DELTA.equals(event)) {
             return new StreamRunStepUpdate(eventJson.toObject(RunStepDeltaChunk.class));
-
         } else {
             throw new IllegalArgumentException("Unknown event type: " + event);
         }
-    }
-
-    /**
-     * Handles a collected event from the byte buffer which is formated as a UTF_8 string.
-     *
-     * @param currentEvent The current line of the server sent event.
-     * @param outputValues The list of values to add the current line to.
-     * @throws IllegalStateException If the current event contains a server side error.
-     */
-    @Override
-    public void handleCurrentEvent(String currentEvent, List<StreamUpdate> outputValues) throws IllegalArgumentException {
-        if (currentEvent.isEmpty()) {
-            return;
-        }
-
-        // We split the event into the event name and the event data. We don't want to split on \n in the data body.
-        String[] lines = currentEvent.split("\n", 2);
-
-        if (lines.length < 2) {
-            return;
-        }
-
-        String eventName = lines[0].substring(6).trim(); // removing "event:" prefix
-        String eventJson = lines[1].substring(5).trim(); // removing "data:" prefix
-
-        if (DONE.equals(AssistantStreamEvent.fromString(eventName))) {
-            return;
-        }
-
-        if (ERROR.equals(AssistantStreamEvent.fromString(eventName))) {
-            throw new IllegalStateException("Server sent event error occurred.");
-        }
-
-        outputValues.add(deserializeEvent(eventName, BinaryData.fromString(eventJson)));
     }
 }

@@ -1,5 +1,8 @@
 package com.azure.ai.openai.assistants.implementation.streaming;
 
+import com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent;
+import com.azure.ai.openai.assistants.models.StreamUpdate;
+import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
@@ -11,27 +14,24 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class OpenAIServerSentEvents<T> {
+import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.DONE;
+import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.ERROR;
+
+public final class OpenAIServerSentEvents {
 
     // Server sent events are divided by 2 line breaks, therefore we need to account for 4 bytes containing 2 CRLF characters.
     private static final int LINE_BREAK_CHAR_COUNT_THRESHOLD = 2;
 
-
+    private final StreamTypeFactory eventDeserializer = new StreamTypeFactory();
     private final Flux<ByteBuffer> source;
     private ByteArrayOutputStream outStream;
-    private final EventStringHandler<T> eventStringHandler;
 
     public OpenAIServerSentEvents(Flux<ByteBuffer> source) {
-        this(source, (EventStringHandler<T>) new StreamTypeFactory());
-    }
-
-    public OpenAIServerSentEvents(Flux<ByteBuffer> source, EventStringHandler<T> eventStringHandler) {
         this.source = source;
         this.outStream = new ByteArrayOutputStream();
-        this.eventStringHandler = eventStringHandler;
     }
 
-    public Flux<T> getEvents() {
+    public Flux<StreamUpdate> getEvents() {
         return mapEventStream();
     }
 
@@ -40,13 +40,16 @@ public final class OpenAIServerSentEvents<T> {
      *
      * @return A stream of server sent events deserialized into StreamUpdates.
      */
-    private Flux<T> mapEventStream() {
+    private Flux<StreamUpdate> mapEventStream() {
         return source
             .publishOn(Schedulers.boundedElastic())
             .concatMap(byteBuffer -> {
-                List<T> values = new ArrayList<>();
+                List<StreamUpdate> values = new ArrayList<>();
                 byte[] byteArray = byteBuffer.array();
-                int lineBreakCharsEncountered = 0;
+                // We check whether we ended the last byteBuffer with a line feed or not, in case we need to close this
+                // chunk immediately
+                byte[] outByteArray = outStream.toByteArray();
+                int lineBreakCharsEncountered = outByteArray.length > 0 && isByteLineFeed(outByteArray[outByteArray.length  - 1]) ? 1 : 0;
 
                 for (byte currentByte : byteArray) {
                     outStream.write(currentByte);
@@ -58,7 +61,7 @@ public final class OpenAIServerSentEvents<T> {
                             String currentLine;
                             try {
                                 currentLine = outStream.toString(StandardCharsets.UTF_8.name());
-                                eventStringHandler.handleCurrentEvent(currentLine, values);
+                                handleCurrentEvent(currentLine, values);
                             } catch (IOException e) {
                                 return Flux.error(e);
                             }
@@ -76,15 +79,16 @@ public final class OpenAIServerSentEvents<T> {
                 }
 
                 try {
-                    this.eventStringHandler.handleCurrentEvent(outStream.toString(StandardCharsets.UTF_8.name()), values);
-                    outStream = new ByteArrayOutputStream();
-                } catch (IllegalStateException | UncheckedIOException e) {
+                    handleCurrentEvent(outStream.toString(StandardCharsets.UTF_8.name()), values);
+//                    outStream = new ByteArrayOutputStream();
+                } catch (IllegalArgumentException | UncheckedIOException e) {
+                    // UncheckedIOException is thrown when we attempt to deserialize incomplete JSON
                     // Even split across different ByteBuffers, the next one will contain the rest of the event.
                     return Flux.fromIterable(values);
                 } catch (IOException e) {
                     return Flux.error(e);
                 }
-                outStream = new ByteArrayOutputStream();
+//                outStream = new ByteArrayOutputStream();
                 return Flux.fromIterable(values);
             }).cache();
     }
@@ -107,5 +111,42 @@ public final class OpenAIServerSentEvents<T> {
      */
     private boolean isByteCarriageReturn(byte character) {
         return character == 0xD;
+    }
+
+    /**
+     * Handles a collected event from the byte buffer which is formated as a UTF_8 string.
+     *
+     * @param currentEvent The current line of the server sent event.
+     * @param outputValues The list of values to add the current line to.
+     * @throws IllegalStateException If the current event contains a server side error.
+     */
+    public void handleCurrentEvent(String currentEvent, List<StreamUpdate> outputValues) throws IllegalArgumentException {
+        if (currentEvent.isEmpty()) {
+            return;
+        }
+
+        // We split the event into the event name and the event data. We don't want to split on \n in the data body.
+        String[] lines = currentEvent.split("\n", 2);
+
+        if (lines.length != 2) {
+            return;
+        }
+
+        if(lines[0].isEmpty() || lines[1].isEmpty()) {
+            return;
+        }
+
+        String eventName = lines[0].substring(6).trim(); // removing "event:" prefix
+        String eventJson = lines[1].substring(5).trim(); // removing "data:" prefix
+
+        if (DONE.equals(AssistantStreamEvent.fromString(eventName))) {
+            return;
+        }
+
+        if (ERROR.equals(AssistantStreamEvent.fromString(eventName))) {
+            throw new IllegalArgumentException("Server sent event type not supported");
+        }
+
+        outputValues.add(this.eventDeserializer.deserializeEvent(eventName, BinaryData.fromString(eventJson)));
     }
 }
