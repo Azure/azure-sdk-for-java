@@ -7,6 +7,7 @@ package com.azure.resourcemanager.eventgrid.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.eventgrid.fluent.models.AzureFunctionEventSubscriptionDestinationProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -14,10 +15,21 @@ import java.util.List;
 /**
  * Information about the azure function destination for an event subscription.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "endpointType",
+    defaultImpl = AzureFunctionEventSubscriptionDestination.class,
+    visible = true)
 @JsonTypeName("AzureFunction")
 @Fluent
 public final class AzureFunctionEventSubscriptionDestination extends EventSubscriptionDestination {
+    /*
+     * Type of the endpoint for the event subscription destination.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "endpointType", required = true)
+    private EndpointType endpointType = EndpointType.AZURE_FUNCTION;
+
     /*
      * Azure Function Properties of the event subscription destination.
      */
@@ -31,6 +43,16 @@ public final class AzureFunctionEventSubscriptionDestination extends EventSubscr
     }
 
     /**
+     * Get the endpointType property: Type of the endpoint for the event subscription destination.
+     * 
+     * @return the endpointType value.
+     */
+    @Override
+    public EndpointType endpointType() {
+        return this.endpointType;
+    }
+
+    /**
      * Get the innerProperties property: Azure Function Properties of the event subscription destination.
      * 
      * @return the innerProperties value.
@@ -40,8 +62,8 @@ public final class AzureFunctionEventSubscriptionDestination extends EventSubscr
     }
 
     /**
-     * Get the resourceId property: The Azure Resource Id that represents the endpoint of the Azure Function
-     * destination of an event subscription.
+     * Get the resourceId property: The Azure Resource Id that represents the endpoint of the Azure Function destination
+     * of an event subscription.
      * 
      * @return the resourceId value.
      */
@@ -50,8 +72,8 @@ public final class AzureFunctionEventSubscriptionDestination extends EventSubscr
     }
 
     /**
-     * Set the resourceId property: The Azure Resource Id that represents the endpoint of the Azure Function
-     * destination of an event subscription.
+     * Set the resourceId property: The Azure Resource Id that represents the endpoint of the Azure Function destination
+     * of an event subscription.
      * 
      * @param resourceId the resourceId value to set.
      * @return the AzureFunctionEventSubscriptionDestination object itself.

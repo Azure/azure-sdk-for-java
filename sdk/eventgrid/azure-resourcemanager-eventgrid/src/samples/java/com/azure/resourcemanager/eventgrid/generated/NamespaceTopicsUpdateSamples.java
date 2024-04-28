@@ -11,9 +11,7 @@ import com.azure.resourcemanager.eventgrid.models.NamespaceTopic;
  */
 public final class NamespaceTopicsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
-     * NamespaceTopics_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/NamespaceTopics_Update.json
      */
     /**
      * Sample code: NamespaceTopics_Update.
@@ -21,8 +19,10 @@ public final class NamespaceTopicsUpdateSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void namespaceTopicsUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        NamespaceTopic resource = manager.namespaceTopics().getWithResponse("examplerg", "exampleNamespaceName1",
-            "exampleNamespaceTopicName1", com.azure.core.util.Context.NONE).getValue();
+        NamespaceTopic resource = manager.namespaceTopics()
+            .getWithResponse("examplerg", "exampleNamespaceName1", "exampleNamespaceTopicName1",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withEventRetentionInDays(1).apply();
     }
 }
