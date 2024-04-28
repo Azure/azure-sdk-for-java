@@ -19,15 +19,13 @@ public final class DeliveryConfiguration {
     private DeliveryMode deliveryMode;
 
     /*
-     * This property should be populated when deliveryMode is queue and represents information about the queue
-     * subscription.
+     * This property should be populated when deliveryMode is queue and represents information about the queue subscription.
      */
     @JsonProperty(value = "queue")
     private QueueInfo queue;
 
     /*
-     * This property should be populated when deliveryMode is push and represents information about the push
-     * subscription.
+     * This property should be populated when deliveryMode is push and represents information about the push subscription.
      */
     @JsonProperty(value = "push")
     private PushInfo push;
