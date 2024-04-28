@@ -752,7 +752,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
                 .CosmosReadManyRequestOptionsHelper
                 .getCosmosReadManyRequestOptionsAccessor()
                 .getImpl(queryRequestOptions)
-                .setCustomSerializer(
+                .setCustomItemSerializer(
                     new CosmosItemSerializer() {
                         @Override
                         public <T> Map<String, Object> serialize(T item) {

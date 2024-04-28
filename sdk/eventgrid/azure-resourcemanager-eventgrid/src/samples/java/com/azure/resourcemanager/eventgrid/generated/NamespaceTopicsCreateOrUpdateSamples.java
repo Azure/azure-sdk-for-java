@@ -12,9 +12,7 @@ import com.azure.resourcemanager.eventgrid.models.PublisherType;
  */
 public final class NamespaceTopicsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
-     * NamespaceTopics_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/NamespaceTopics_CreateOrUpdate.json
      */
     /**
      * Sample code: NamespaceTopics_CreateOrUpdate.
@@ -22,8 +20,12 @@ public final class NamespaceTopicsCreateOrUpdateSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void namespaceTopicsCreateOrUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.namespaceTopics().define("examplenamespacetopic2")
-            .withExistingNamespace("examplerg", "examplenamespace2").withPublisherType(PublisherType.CUSTOM)
-            .withInputSchema(EventInputSchema.CLOUD_EVENT_SCHEMA_V1_0).withEventRetentionInDays(1).create();
+        manager.namespaceTopics()
+            .define("examplenamespacetopic2")
+            .withExistingNamespace("examplerg", "examplenamespace2")
+            .withPublisherType(PublisherType.CUSTOM)
+            .withInputSchema(EventInputSchema.CLOUD_EVENT_SCHEMA_V1_0)
+            .withEventRetentionInDays(1)
+            .create();
     }
 }

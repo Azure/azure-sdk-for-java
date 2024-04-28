@@ -10,6 +10,7 @@ import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.NonIdempotentWriteRetryOptions;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -53,6 +54,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -123,10 +125,11 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
 
                         for (Object[] wrappedProvider : providersCurrentTestCase) {
                             CosmosClientBuilder clientBuilder = (CosmosClientBuilder) wrappedProvider[0];
-                            clientBuilder.customSerializer(serializer);
-                            clientBuilder.nonIdempotentWriteRetryPolicy(
-                                nonIdempotentWriteRetriesEnabled,
-                                trackingIdUsageForWriteRetriesEnabled);
+                            clientBuilder.customItemSerializer(serializer);
+                            clientBuilder.nonIdempotentWriteRetryOptions(
+                                new NonIdempotentWriteRetryOptions()
+                                    .setEnabled(nonIdempotentWriteRetriesEnabled)
+                                    .setTrackingIdUsed(trackingIdUsageForWriteRetriesEnabled));
                         }
 
                         providers.addAll(providersCurrentTestCase);
@@ -241,14 +244,14 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
         return prefix + "|Client_" + customSerializer.getClass().getSimpleName();
     }
 
-    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT)
+    @Test(groups = { "encryption" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT)
     public void pointOperationsAndQueryWithPojo(CosmosItemSerializer requestLevelSerializer) {
         String id = UUID.randomUUID().toString();
-        TestDocument doc = TestDocument.create(id);
+        Supplier<TestDocument> docProvider = () -> TestDocument.create(id);
         Consumer<TestDocument> onBeforeReplace = item -> item.someNumber = 999;
         BiFunction<TestDocument, Boolean, CosmosPatchOperations> onBeforePatch = (item, isEnvelopeWrapped) -> {
 
-            doc.someNumber = 555;
+            item.someNumber = 555;
             if (!isEnvelopeWrapped) {
                 return CosmosPatchOperations
                     .create()
@@ -261,7 +264,7 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
         };
 
         runPointOperationAndQueryTestCase(
-            doc,
+            docProvider,
             id,
             onBeforeReplace,
             onBeforePatch,
@@ -269,10 +272,10 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
             TestDocument.class);
     }
 
-    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
+    @Test(groups = { "encryption" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
     public void pointOperationsAndQueryWithObjectNode(CosmosItemSerializer requestLevelSerializer) {
         String id = UUID.randomUUID().toString();
-        ObjectNode doc = TestDocument.createAsObjectNode(id);
+        Supplier<ObjectNode> docProvider = () -> TestDocument.createAsObjectNode(id);
         Consumer<ObjectNode> onBeforeReplace = item -> item.put("someNumber", 999);
         BiFunction<ObjectNode, Boolean, CosmosPatchOperations> onBeforePatch = (item, isEnvelopeWrapped) -> {
 
@@ -290,7 +293,7 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
         };
 
         runPointOperationAndQueryTestCase(
-            doc,
+            docProvider,
             id,
             onBeforeReplace,
             onBeforePatch,
@@ -299,7 +302,7 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
     }
 
     private <T> void runPointOperationAndQueryTestCase(
-        T doc,
+        Supplier<T> docProvider,
         String id,
         Consumer<T> beforeReplace,
         BiFunction<T, Boolean, CosmosPatchOperations> beforePatch,
@@ -325,7 +328,8 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
         }
 
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions()
-            .setCustomSerializer(requestLevelSerializer);
+            .setCustomItemSerializer(requestLevelSerializer);
+        T doc = docProvider.get();
         CosmosItemResponse<T> pojoResponse = container.createItem(doc, new PartitionKey(id), requestOptions);
 
         if (this.isContentOnWriteEnabled) {
@@ -336,6 +340,7 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
 
         container.deleteItem(doc, requestOptions);
 
+        doc = docProvider.get();
         pojoResponse = container.createItem(doc, requestOptions);
 
         if (this.isContentOnWriteEnabled) {
@@ -358,9 +363,9 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
         CosmosPatchOperations patchOperations = beforePatch.apply(doc, useEnvelopeWrapper);
         CosmosPatchItemRequestOptions patchRequestOptions = new CosmosPatchItemRequestOptions();
         if (useEnvelopeWrapper) {
-            patchRequestOptions.setCustomSerializer(EnvelopWrappingItemSerializer.INSTANCE_FOR_PATCH);
+            patchRequestOptions.setCustomItemSerializer(EnvelopWrappingItemSerializer.INSTANCE_FOR_PATCH);
         } else {
-            patchRequestOptions.setCustomSerializer(requestLevelSerializer);
+            patchRequestOptions.setCustomItemSerializer(requestLevelSerializer);
         }
 
         pojoResponse = container.patchItem(id, new PartitionKey(id), patchOperations, patchRequestOptions, classType);
@@ -379,9 +384,9 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
         }
         CosmosItemRequestOptions upsertRequestOptions = new CosmosItemRequestOptions();
         if (useEnvelopeWrapper) {
-            upsertRequestOptions.setCustomSerializer(EnvelopWrappingItemSerializer.INSTANCE_NO_TRACKING_ID_VALIDATION);
+            upsertRequestOptions.setCustomItemSerializer(EnvelopWrappingItemSerializer.INSTANCE_NO_TRACKING_ID_VALIDATION);
         } else {
-            upsertRequestOptions.setCustomSerializer(requestOptions.getCustomSerializer());
+            upsertRequestOptions.setCustomItemSerializer(requestOptions.getCustomItemSerializer());
         }
         pojoResponse = container.upsertItem(doc, new PartitionKey(id), upsertRequestOptions);
         if (this.isContentOnWriteEnabled) {
@@ -392,9 +397,9 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
 
         CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
         if (useEnvelopeWrapper) {
-            queryRequestOptions.setCustomSerializer(EnvelopWrappingItemSerializer.INSTANCE_NO_TRACKING_ID_VALIDATION);
+            queryRequestOptions.setCustomItemSerializer(EnvelopWrappingItemSerializer.INSTANCE_NO_TRACKING_ID_VALIDATION);
         } else {
-            queryRequestOptions.setCustomSerializer(requestOptions.getCustomSerializer());
+            queryRequestOptions.setCustomItemSerializer(requestOptions.getCustomItemSerializer());
         }
         List<T> results = container
             .queryItems("SELECT * FROM c where c.id = '" + id + "'", queryRequestOptions, classType)
@@ -404,7 +409,7 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
         assertSameDocument(doc, results.get(0));
     }
 
-    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
+    @Test(groups = { "encryption" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
     public void bulkAndReadManyWithObjectNode(CosmosItemSerializer requestLevelSerializer) {
 
         runBulkAndReadManyTestCase(
@@ -414,7 +419,7 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
         );
     }
 
-    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
+    @Test(groups = { "encryption" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
     public void bulkAndReadManyWithPojo(CosmosItemSerializer requestLevelSerializer) {
 
         runBulkAndReadManyTestCase(
@@ -430,7 +435,7 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
         Class<T> classType) {
 
         CosmosBulkExecutionOptions bulkExecOptions = new CosmosBulkExecutionOptions()
-            .setCustomSerializer(requestLevelSerializer);
+            .setCustomItemSerializer(requestLevelSerializer);
 
         List<CosmosItemOperation> bulkOperations = new ArrayList<>();
         Map<String, T> inputItems = new HashMap<>();
@@ -496,7 +501,7 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
         */
     }
 
-    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
+    @Test(groups = { "encryption" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
     public void batchAndChangeFeedWithObjectNode(CosmosItemSerializer requestLevelSerializer) {
 
         runBatchAndChangeFeedTestCase(
@@ -506,7 +511,7 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
         );
     }
 
-    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
+    @Test(groups = { "encryption" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
     public void batchAndChangeFeedWithPojo(CosmosItemSerializer requestLevelSerializer) {
 
         runBatchAndChangeFeedTestCase(
@@ -531,7 +536,7 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
         }
 
         CosmosBatchRequestOptions batchRequestOptions = new CosmosBatchRequestOptions()
-            .setCustomSerializer(requestLevelSerializer);
+            .setCustomItemSerializer(requestLevelSerializer);
 
         CosmosBatchResponse response = container.executeCosmosBatch(batch, batchRequestOptions);
         assertThat(response).isNotNull();
@@ -562,7 +567,7 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
             .createForProcessingFromBeginning(
                 FeedRange.forLogicalPartition(new PartitionKey(pkValue))
             )
-            .setCustomSerializer(requestLevelSerializer);
+            .setCustomItemSerializer(requestLevelSerializer);
 
         List<T> results = container
             .queryChangeFeed(changeFeedRequestOptions, classType)

@@ -198,7 +198,7 @@ public class ShareFileClientBuilder implements
         return version != null ? version : ShareServiceVersion.getLatest();
     }
 
-    private AzureFileStorageImpl constructImpl(ShareServiceVersion serviceVersion) {
+    private AzureFileStorageImpl constructImpl() {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         Objects.requireNonNull(resourcePath, "'resourcePath' cannot be null.");
         CredentialValidator.validateSingleCredentialIsPresent(
@@ -209,7 +209,7 @@ public class ShareFileClientBuilder implements
             endpoint, retryOptions, coreRetryOptions, logOptions,
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, audience, LOGGER);
 
-        return new AzureFileStorageImpl(pipeline, serviceVersion.getVersion(), shareTokenIntent, endpoint,
+        return new AzureFileStorageImpl(pipeline, getServiceVersion().getVersion(), shareTokenIntent, endpoint,
             allowTrailingDot, allowSourceTrailingDot);
     }
 
@@ -231,7 +231,7 @@ public class ShareFileClientBuilder implements
      */
     public ShareDirectoryAsyncClient buildDirectoryAsyncClient() {
         ShareServiceVersion serviceVersion = getServiceVersion();
-        return new ShareDirectoryAsyncClient(constructImpl(serviceVersion), shareName, resourcePath,
+        return new ShareDirectoryAsyncClient(constructImpl(), shareName, resourcePath,
             shareSnapshot, accountName, serviceVersion, sasToken != null ? new AzureSasCredential(sasToken) : azureSasCredential);
     }
 
@@ -252,7 +252,9 @@ public class ShareFileClientBuilder implements
      * @throws IllegalStateException If multiple credentials have been specified.
      */
     public ShareDirectoryClient buildDirectoryClient() {
-        return new ShareDirectoryClient(this.buildDirectoryAsyncClient());
+        ShareServiceVersion serviceVersion = getServiceVersion();
+        return new ShareDirectoryClient(constructImpl(), shareName, resourcePath,
+            shareSnapshot, accountName, serviceVersion, sasToken != null ? new AzureSasCredential(sasToken) : azureSasCredential);
     }
 
     /**
@@ -273,7 +275,7 @@ public class ShareFileClientBuilder implements
      */
     public ShareFileAsyncClient buildFileAsyncClient() {
         ShareServiceVersion serviceVersion = getServiceVersion();
-        return new ShareFileAsyncClient(constructImpl(serviceVersion), shareName, resourcePath, shareSnapshot,
+        return new ShareFileAsyncClient(constructImpl(), shareName, resourcePath, shareSnapshot,
             accountName, serviceVersion, sasToken != null ? new AzureSasCredential(sasToken) : azureSasCredential);
     }
 
@@ -294,7 +296,10 @@ public class ShareFileClientBuilder implements
      * @throws IllegalStateException If multiple credentials have been specified.
      */
     public ShareFileClient buildFileClient() {
-        return new ShareFileClient(this.buildFileAsyncClient());
+        ShareServiceVersion serviceVersion = getServiceVersion();
+        return new ShareFileClient(new ShareFileAsyncClient(constructImpl(), shareName, resourcePath, shareSnapshot,
+            accountName, serviceVersion, sasToken != null ? new AzureSasCredential(sasToken) : azureSasCredential), constructImpl(), shareName, resourcePath, shareSnapshot,
+            accountName, serviceVersion, sasToken != null ? new AzureSasCredential(sasToken) : azureSasCredential);
     }
 
     /**
