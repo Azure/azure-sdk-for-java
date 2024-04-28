@@ -7,6 +7,8 @@ package com.azure.spring.cloud.feature.management.implementation.timewindow.recu
 
 import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeWindowUtils;
 
+import java.time.Instant;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
 
@@ -22,12 +24,12 @@ public class RecurrenceRange {
     /**
      * The date to stop applying the recurrence pattern
      * */
-    private ZonedDateTime endDate;
+    private ZonedDateTime endDate = Instant.ofEpochMilli(Integer.MAX_VALUE).atZone(ZoneOffset.UTC);
 
     /**
      * The number of times to repeat the time window
      */
-    private Integer numberOfRecurrences;
+    private int numberOfRecurrences = Integer.MAX_VALUE;
 
     /**
      * @return the recurrence range type
@@ -61,14 +63,14 @@ public class RecurrenceRange {
     /**
      * @return the number of times to repeat the time window
      * */
-    public Integer getNumberOfRecurrences() {
+    public int getNumberOfRecurrences() {
         return numberOfRecurrences;
     }
 
     /**
      * @param numberOfRecurrences the repeat times to be set
      * */
-    public void setNumberOfRecurrences(Integer numberOfRecurrences) {
+    public void setNumberOfRecurrences(int numberOfRecurrences) {
         this.numberOfRecurrences = numberOfRecurrences;
     }
 }

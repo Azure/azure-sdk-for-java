@@ -5,6 +5,7 @@ package com.azure.spring.cloud.feature.management.filters;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeWindowFilterSettings;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceConstants;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceEvaluator;
+import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceValidator;
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -69,8 +70,9 @@ public final class TimeWindowFilter implements FeatureFilter {
         }
 
         if (settings.getRecurrence() != null) {
-            final RecurrenceEvaluator evaluator = new RecurrenceEvaluator(settings, now);
-            return evaluator.isMatch();
+            if (RecurrenceValidator.validateSettings(settings)) {
+                return RecurrenceEvaluator.isMatch(settings, now);
+            }
         }
 
         return false;
