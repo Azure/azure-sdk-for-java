@@ -60,6 +60,28 @@ public class OpenAIServerSentEventsTest {
     }
 
     @Test
+    public void eventChunkDividerInNextByteBuffers() {
+        Flux<ByteBuffer> testInput = Flux.just(
+            ByteBuffer.wrap("event: thread.created\n".getBytes()),
+            ByteBuffer.wrap("data: {\"id\":\"thread_yprSWEXT25cgpL8rCwsUchVC\",\"object\":\"thread\",\"created_at\":1710548044,\"metadata\":{}}".getBytes()),
+            ByteBuffer.wrap("\n\nevent: done\n".getBytes()),
+            ByteBuffer.wrap("data: [DONE]\n\n".getBytes())
+        );
+        AssistantThread expectedThread =
+            BinaryData.fromString("""
+                {"id":"thread_yprSWEXT25cgpL8rCwsUchVC","object":"thread","created_at":1710548044,"metadata":{}}
+                """).toObject(AssistantThread.class);
+
+        OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testInput);
+
+        StepVerifier.create(openAIServerSentEvents.getEvents())
+            .assertNext(event -> {
+                assertInstanceOf(StreamThreadCreation.class, event);
+                assertAssistantThread(expectedThread, ((StreamThreadCreation) event).getThread());
+            }).verifyComplete();
+    }
+
+    @Test
     public void eventChunkDividerInSplitByteBuffers() {
         Flux<ByteBuffer> testInput = Flux.just(
             ByteBuffer.wrap("event: thread.created\n".getBytes()),
