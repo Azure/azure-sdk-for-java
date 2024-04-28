@@ -1,6 +1,8 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-package com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence;
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+package com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.models;
 
 import java.time.DayOfWeek;
 import java.util.Arrays;
@@ -34,8 +36,8 @@ public class RecurrencePattern {
     /**
      * @return the recurrence pattern type
      * */
-    public String getType() {
-        return type.toString();
+    public RecurrencePatternType getType() {
+        return type;
     }
 
     /**

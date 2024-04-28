@@ -1,8 +1,10 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
 
 
-package com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence;
+package com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.models;
 
 /**
  * The type of {@link RecurrenceRange} specifying the frequency by which the time window repeats.

@@ -1,11 +1,13 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
 
-package com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence;
+package com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.models;
 
-import org.springframework.util.StringUtils;
+import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeWindowUtils;
 
-import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 
 /**
@@ -20,7 +22,7 @@ public class RecurrenceRange {
     /**
      * The date to stop applying the recurrence pattern
      * */
-    private LocalDate endDate;
+    private ZonedDateTime endDate;
 
     /**
      * The number of times to repeat the time window
@@ -30,8 +32,8 @@ public class RecurrenceRange {
     /**
      * @return the recurrence range type
      * */
-    public String getType() {
-        return type.toString();
+    public RecurrenceRangeType getType() {
+        return type;
     }
 
     /**
@@ -45,7 +47,7 @@ public class RecurrenceRange {
     /**
      * @return the date to stop applying the recurrence pattern
      * */
-    public LocalDate getEndDate() {
+    public ZonedDateTime getEndDate() {
         return endDate;
     }
 
@@ -53,9 +55,7 @@ public class RecurrenceRange {
      * @param endDate the end date to be set
      * */
     public void setEndDate(String endDate) {
-        this.endDate = StringUtils.hasText(endDate)
-            ? LocalDate.parse(endDate)
-            : null;
+        this.endDate = TimeWindowUtils.convertStringToDate(endDate);
     }
 
     /**

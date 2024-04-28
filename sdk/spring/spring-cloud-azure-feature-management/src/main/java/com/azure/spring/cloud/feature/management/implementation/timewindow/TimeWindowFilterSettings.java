@@ -2,12 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.implementation.timewindow;
 
-import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.Recurrence;
-import org.springframework.util.StringUtils;
+import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.models.Recurrence;
 
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 public class TimeWindowFilterSettings {
     /**
@@ -30,7 +27,7 @@ public class TimeWindowFilterSettings {
      * @param startTime the start time to determine when a feature should be enabled
      * */
     public void setStart(String startTime) {
-        this.start = convertStringToDate(startTime);
+        this.start = TimeWindowUtils.convertStringToDate(startTime);
     }
 
     /**
@@ -44,7 +41,7 @@ public class TimeWindowFilterSettings {
      * @param endTime the end time to determine when a feature should be disabled
      * */
     public void setEnd(String endTime) {
-        this.end = convertStringToDate(endTime);
+        this.end = TimeWindowUtils.convertStringToDate(endTime);
     }
 
     /**
@@ -66,16 +63,5 @@ public class TimeWindowFilterSettings {
      * */
     public Recurrence getRecurrence() {
         return recurrence;
-    }
-
-    private ZonedDateTime convertStringToDate(String timeStr) {
-        if (!StringUtils.hasText(timeStr)) {
-            return null;
-        }
-        try {
-            return ZonedDateTime.parse(timeStr, DateTimeFormatter.ISO_DATE_TIME);
-        } catch (final DateTimeParseException e) {
-            return ZonedDateTime.parse(timeStr, DateTimeFormatter.RFC_1123_DATE_TIME);
-        }
     }
 }
