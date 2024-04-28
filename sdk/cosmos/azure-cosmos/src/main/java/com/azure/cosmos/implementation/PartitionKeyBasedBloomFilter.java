@@ -17,6 +17,22 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
+/**
+ * PartitionKeyBasedBloomFilter encapsulates a bloom filter provided by the Guava library. A bloom filter
+ * is a probabilistic data structure which with full guarantee can say if an element does not exist but can
+ * only say if an element exists with some error rate.
+ * <p>
+ * The below class has the following purposes:
+ * <ul>
+ *     <li>
+ *         To store and retrieve regions in which a particular logical partition (scoped to a collection) saw requests in.
+ *     </li>
+ *     <li>
+ *         This allows the RegionScopedSessionContainer to decide which region specific progress
+ *         to include when resolving the session token for a request configured to use session consistency.
+ *     </li>
+ * </ul>
+ */
 public class PartitionKeyBasedBloomFilter {
 
     private static final long EXPECTED_INSERTIONS = Configs.getPkBasedBloomFilterExpectedInsertionCount();

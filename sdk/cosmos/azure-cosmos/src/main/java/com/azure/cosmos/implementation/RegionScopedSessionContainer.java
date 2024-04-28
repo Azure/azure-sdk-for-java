@@ -28,13 +28,32 @@ public class RegionScopedSessionContainer implements ISessionContainer {
 
     private final Logger logger = LoggerFactory.getLogger(RegionScopedSessionContainer.class);
 
-    // the map stores mappings b/w the collectionRid and region level progress for each physical partition
-    // in that collection
-    // PartitionScopedRegionLevelProgress has the following structure:
-    //      [pkRangeId1 -> {global: <global session token for pkRangeId1>; region1: (GLSN, LLSN, <session token only if first preferred region>); region2...}]
+    // collectionResourceIdToPartitionScopedRegionLevelProgress is a mapping between the collectionRid and partition-specific region level progress
+    // what is partition-specific region level progress?
+    //  - when a response is received from a replica, it returns what is known as a session token
+    //  - a session token is like a progress bookmark for a given replica of a physical partition
+    //  - a session token in the vector session token format has the following
+    //        - globalLsn: denotes the progress bookmark of a replica in the hub region
+    //        - localLsn: denotes the progress bookmark of a replica in a satellite region
+    //  - partition scoped region level progress introduces a new level of mapping - the mapping between the region and region specific progress
+    //  - such a mapping exists for each physical partition for the collection
+    //  - region specific progress has the following:
+    //        - max(globalLsn) seen for that region - in other words the max progress of a replica from the hub region seen in the region mapping to region specific progress
+    //        - max(localLsn) seen for that region
+    //        - merged session token if necessary - session token in its parsed form is only merged again if the region mapping to region specific progress
+    //          is also a first preferred readable region [or] the overall max progress of all regions for that partition is to be recorded
+    //  - partition scoped region level progress has a structure which can be summarized as below:
+    //      - for a given collection rid:
+    //          - {"global" -> (-1, -1, <merged session token representing the overall max progress of all regions for that partition is to be recorded>)}
+    //          - {"regionX" -> (max(localLsn), max(globalLsn), <merged session token if also first preferred readable region [or] session token as is if otherwise>}
+    //          - {"regionY" -> (max(localLsn), max(globalLsn), <merged session token if also first preferred readable region [or] session token as is if otherwise>}...
+    //  - why is the "global" mapping needed?
+    //        - not all operations can be scoped to a single-logical partition such as cross-partitioned queries or query which have non-point range scope
+    //        - for such operations using the merged session token seen across all replicas across all regions is necessary since the bloom filter won't help here
+    //          and the progress to follow has to at least be at physical partition level
     private final ConcurrentHashMap<Long, PartitionScopedRegionLevelProgress> collectionResourceIdToPartitionScopedRegionLevelProgress = new ConcurrentHashMap<>();
 
-    // bloom filter which stores an entry which corresponds to a triple of [collectionRid, EPK hash, region]
+    // - partitionKeyBasedBloomFilter encapsulates a Guava-based bloom filter which stores an entry which corresponds to a triple of [collectionRid, EPK hash, region]
     private final PartitionKeyBasedBloomFilter partitionKeyBasedBloomFilter;
 
     private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
