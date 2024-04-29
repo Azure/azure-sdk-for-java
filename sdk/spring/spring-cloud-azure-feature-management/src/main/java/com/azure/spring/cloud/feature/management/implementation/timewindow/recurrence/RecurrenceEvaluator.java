@@ -15,22 +15,33 @@ import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class RecurrenceEvaluator {
+    private TimeWindowFilterSettings settings;
+    private ZonedDateTime now;
+
+    public RecurrenceEvaluator(TimeWindowFilterSettings settings, ZonedDateTime now) {
+        this.settings = settings;
+        this.now = now;
+    }
 
     /**
      * Checks if a provided timestamp is within any recurring time window specified
      * by the Recurrence section in the time window filter settings.
      * @return True if the time stamp is within any recurring time window, false otherwise.
      */
-    public static boolean isMatch(TimeWindowFilterSettings settings, ZonedDateTime now) {
-        final ZonedDateTime previousOccurrence = getPreviousOccurrence(settings, now);
+    public boolean isMatch() {
+        final RecurrenceValidator validator = new RecurrenceValidator(settings);
+        if (!validator.validateSettings()) {
+            return false;
+        }
+
+        final ZonedDateTime previousOccurrence = getPreviousOccurrence();
         if (previousOccurrence == null) {
             return false;
         }
+
         final ZonedDateTime occurrenceEndDate = previousOccurrence.plus(
             Duration.between(settings.getStart(), settings.getEnd()));
         return now.isBefore(occurrenceEndDate);
@@ -41,7 +52,7 @@ public class RecurrenceEvaluator {
      *
      * @return The closest previous occurrence.
      */
-    private static ZonedDateTime getPreviousOccurrence(TimeWindowFilterSettings settings, ZonedDateTime now) {
+    private ZonedDateTime getPreviousOccurrence() {
         ZonedDateTime start = settings.getStart();
         if (now.isBefore(start)) {
             return null;
@@ -50,9 +61,9 @@ public class RecurrenceEvaluator {
         final RecurrencePatternType patternType = settings.getRecurrence().getPattern().getType();
         OccurrenceInfo occurrenceInfo;
         if (patternType == RecurrencePatternType.DAILY) {
-            occurrenceInfo = getDailyPreviousOccurrence(settings, now);
+            occurrenceInfo = getDailyPreviousOccurrence();
         } else {
-            occurrenceInfo = getWeeklyPreviousOccurrence(settings, now);
+            occurrenceInfo = getWeeklyPreviousOccurrence();
         }
 
         final RecurrenceRange range = settings.getRecurrence().getRange();
@@ -73,7 +84,7 @@ public class RecurrenceEvaluator {
      * previousOccurrence: The closest previous occurrence.
      * numberOfOccurrences: The number of complete recurrence intervals which have occurred between the time and the recurrence start.
      */
-    private static OccurrenceInfo getDailyPreviousOccurrence(TimeWindowFilterSettings settings, ZonedDateTime now) {
+    private OccurrenceInfo getDailyPreviousOccurrence() {
         final ZonedDateTime start = settings.getStart();
         final int interval = settings.getRecurrence().getPattern().getInterval();
         final int numberOfOccurrences = (int) (Duration.between(start, now).getSeconds() / Duration.ofDays(interval).getSeconds());
@@ -87,7 +98,7 @@ public class RecurrenceEvaluator {
      * previousOccurrence: The closest previous occurrence.
      * numberOfOccurrences: The number of recurring days of week which have occurred between the time and the recurrence start.
      */
-    private static OccurrenceInfo getWeeklyPreviousOccurrence(TimeWindowFilterSettings settings, ZonedDateTime now) {
+    private OccurrenceInfo getWeeklyPreviousOccurrence() {
         final RecurrencePattern pattern = settings.getRecurrence().getPattern();
         final int interval = pattern.getInterval();
         final ZonedDateTime firstDayOfFirstWeek = settings.getStart().minusDays(
@@ -131,7 +142,7 @@ public class RecurrenceEvaluator {
         return new OccurrenceInfo(mostRecentOccurrence, numberOfOccurrences);
     }
 
-    private static class OccurrenceInfo {
+    private class OccurrenceInfo {
         private final ZonedDateTime previousOccurrence;
         private final int numberOfOccurrences;
 

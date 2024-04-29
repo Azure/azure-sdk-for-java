@@ -70,9 +70,8 @@ public final class TimeWindowFilter implements FeatureFilter {
         }
 
         if (settings.getRecurrence() != null) {
-            if (RecurrenceValidator.validateSettings(settings)) {
-                return RecurrenceEvaluator.isMatch(settings, now);
-            }
+            final RecurrenceEvaluator evaluator = new RecurrenceEvaluator(settings, now);
+            return evaluator.isMatch();
         }
 
         return false;

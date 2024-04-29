@@ -43,7 +43,7 @@ public class RecurrenceRange {
      * */
     public void setType(String type) {
         this.type = Arrays.stream(RecurrenceRangeType.values())
-            .filter(e -> e.name().equalsIgnoreCase(type)).findAny().orElse(null);
+            .filter(e -> e.toString().equalsIgnoreCase(type)).findAny().orElse(null);
     }
 
     /**

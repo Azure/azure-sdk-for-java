@@ -45,7 +45,7 @@ public class RecurrencePattern {
      * */
     public void setType(String type) {
         this.type = Arrays.stream(RecurrencePatternType.values())
-            .filter(e -> e.name().equalsIgnoreCase(type)).findAny().orElse(null);
+            .filter(e -> e.toString().equalsIgnoreCase(type)).findAny().orElse(null);
     }
 
     /**
