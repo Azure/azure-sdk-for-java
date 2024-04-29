@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.mysqlflexibleserver.generated;
 
-/** Samples for Servers Delete. */
+/**
+ * Samples for Servers Delete.
+ */
 public final class ServersDeleteSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerDelete.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/ServerDelete.json
      */
     /**
      * Sample code: Delete a server.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void deleteAServer(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {

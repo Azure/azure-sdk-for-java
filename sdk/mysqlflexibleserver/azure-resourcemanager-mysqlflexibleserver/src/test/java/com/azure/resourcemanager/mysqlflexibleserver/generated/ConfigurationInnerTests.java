@@ -12,26 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ConfigurationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConfigurationInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"value\":\"qtrgqjbpfzfsinzg\",\"currentValue\":\"cjrwzoxxjtfellu\",\"description\":\"zitonpeqfpjkjl\",\"documentationLink\":\"fpdvhpfxxypi\",\"defaultValue\":\"nmayhuybb\",\"dataType\":\"odepoogin\",\"allowedValues\":\"amiheognarxz\",\"source\":\"system-default\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"False\"},\"id\":\"yevc\",\"name\":\"iqihn\",\"type\":\"un\"}")
-                .toObject(ConfigurationInner.class);
-        Assertions.assertEquals("qtrgqjbpfzfsinzg", model.value());
-        Assertions.assertEquals("cjrwzoxxjtfellu", model.currentValue());
+        ConfigurationInner model = BinaryData.fromString(
+            "{\"properties\":{\"value\":\"mrldhu\",\"currentValue\":\"zzd\",\"description\":\"qxhocdgeablgphut\",\"documentationLink\":\"ndv\",\"defaultValue\":\"ozwyiftyhxhuro\",\"dataType\":\"tyxolniwpwc\",\"allowedValues\":\"jfkgiawxk\",\"source\":\"system-default\",\"isReadOnly\":\"False\",\"isConfigPendingRestart\":\"False\",\"isDynamicConfig\":\"True\"},\"id\":\"syyp\",\"name\":\"ddhsgcbacphe\",\"type\":\"koty\"}")
+            .toObject(ConfigurationInner.class);
+        Assertions.assertEquals("mrldhu", model.value());
+        Assertions.assertEquals("zzd", model.currentValue());
         Assertions.assertEquals(ConfigurationSource.SYSTEM_DEFAULT, model.source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigurationInner model =
-            new ConfigurationInner()
-                .withValue("qtrgqjbpfzfsinzg")
-                .withCurrentValue("cjrwzoxxjtfellu")
-                .withSource(ConfigurationSource.SYSTEM_DEFAULT);
+        ConfigurationInner model = new ConfigurationInner().withValue("mrldhu")
+            .withCurrentValue("zzd")
+            .withSource(ConfigurationSource.SYSTEM_DEFAULT);
         model = BinaryData.fromObject(model).toObject(ConfigurationInner.class);
-        Assertions.assertEquals("qtrgqjbpfzfsinzg", model.value());
-        Assertions.assertEquals("cjrwzoxxjtfellu", model.currentValue());
+        Assertions.assertEquals("mrldhu", model.value());
+        Assertions.assertEquals("zzd", model.currentValue());
         Assertions.assertEquals(ConfigurationSource.SYSTEM_DEFAULT, model.source());
     }
 }

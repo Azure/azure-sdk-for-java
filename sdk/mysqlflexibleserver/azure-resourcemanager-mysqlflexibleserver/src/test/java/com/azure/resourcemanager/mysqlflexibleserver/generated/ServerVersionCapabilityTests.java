@@ -10,11 +10,9 @@ import com.azure.resourcemanager.mysqlflexibleserver.models.ServerVersionCapabil
 public final class ServerVersionCapabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerVersionCapability model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"zjuqkhrsaj\",\"supportedSkus\":[{\"name\":\"ofoskghs\",\"vCores\":7334574875693973004,\"supportedIops\":6549860277400431394,\"supportedMemoryPerVCoreMB\":5129594388409222078}]}")
-                .toObject(ServerVersionCapability.class);
+        ServerVersionCapability model = BinaryData.fromString(
+            "{\"name\":\"bwwaloa\",\"supportedSkus\":[{\"name\":\"wrtz\",\"vCores\":1900837356777018235,\"supportedIops\":2493734222555395016,\"supportedMemoryPerVCoreMB\":5304844297296220991},{\"name\":\"ongmtsa\",\"vCores\":4946607856371446692,\"supportedIops\":7752304449285326809,\"supportedMemoryPerVCoreMB\":398412434287347439},{\"name\":\"knftguvriuh\",\"vCores\":2144176809632708140,\"supportedIops\":6220323322610788577,\"supportedMemoryPerVCoreMB\":6305214480301008748}]}")
+            .toObject(ServerVersionCapability.class);
     }
 
     @org.junit.jupiter.api.Test

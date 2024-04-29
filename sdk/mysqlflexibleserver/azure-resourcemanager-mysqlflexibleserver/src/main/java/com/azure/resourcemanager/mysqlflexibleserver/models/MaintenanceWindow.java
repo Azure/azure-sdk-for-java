@@ -7,7 +7,9 @@ package com.azure.resourcemanager.mysqlflexibleserver.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Maintenance window of a server. */
+/**
+ * Maintenance window of a server.
+ */
 @Fluent
 public final class MaintenanceWindow {
     /*
@@ -34,13 +36,15 @@ public final class MaintenanceWindow {
     @JsonProperty(value = "dayOfWeek")
     private Integer dayOfWeek;
 
-    /** Creates an instance of MaintenanceWindow class. */
+    /**
+     * Creates an instance of MaintenanceWindow class.
+     */
     public MaintenanceWindow() {
     }
 
     /**
      * Get the customWindow property: indicates whether custom window is enabled or disabled.
-     *
+     * 
      * @return the customWindow value.
      */
     public String customWindow() {
@@ -49,7 +53,7 @@ public final class MaintenanceWindow {
 
     /**
      * Set the customWindow property: indicates whether custom window is enabled or disabled.
-     *
+     * 
      * @param customWindow the customWindow value to set.
      * @return the MaintenanceWindow object itself.
      */
@@ -60,7 +64,7 @@ public final class MaintenanceWindow {
 
     /**
      * Get the startHour property: start hour for maintenance window.
-     *
+     * 
      * @return the startHour value.
      */
     public Integer startHour() {
@@ -69,7 +73,7 @@ public final class MaintenanceWindow {
 
     /**
      * Set the startHour property: start hour for maintenance window.
-     *
+     * 
      * @param startHour the startHour value to set.
      * @return the MaintenanceWindow object itself.
      */
@@ -80,7 +84,7 @@ public final class MaintenanceWindow {
 
     /**
      * Get the startMinute property: start minute for maintenance window.
-     *
+     * 
      * @return the startMinute value.
      */
     public Integer startMinute() {
@@ -89,7 +93,7 @@ public final class MaintenanceWindow {
 
     /**
      * Set the startMinute property: start minute for maintenance window.
-     *
+     * 
      * @param startMinute the startMinute value to set.
      * @return the MaintenanceWindow object itself.
      */
@@ -100,7 +104,7 @@ public final class MaintenanceWindow {
 
     /**
      * Get the dayOfWeek property: day of week for maintenance window.
-     *
+     * 
      * @return the dayOfWeek value.
      */
     public Integer dayOfWeek() {
@@ -109,7 +113,7 @@ public final class MaintenanceWindow {
 
     /**
      * Set the dayOfWeek property: day of week for maintenance window.
-     *
+     * 
      * @param dayOfWeek the dayOfWeek value to set.
      * @return the MaintenanceWindow object itself.
      */
@@ -120,7 +124,7 @@ public final class MaintenanceWindow {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
