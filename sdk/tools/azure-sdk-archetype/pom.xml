@@ -55,7 +55,7 @@
             <extension>
                 <groupId>org.apache.maven.archetype</groupId>
                 <artifactId>archetype-packaging</artifactId>
-                <version>3.2.0</version> <!-- {x-version-update;org.apache.maven.archetype:archetype-packaging;external_dependency} -->
+                <version>3.2.1</version> <!-- {x-version-update;org.apache.maven.archetype:archetype-packaging;external_dependency} -->
             </extension>
         </extensions>
         <pluginManagement>
@@ -63,7 +63,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-archetype-plugin</artifactId>
-                    <version>3.2.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-archetype-plugin;external_dependency} -->
+                    <version>3.2.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-archetype-plugin;external_dependency} -->
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -73,7 +73,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.2.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-source-plugin;external_dependency} -->
+                <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-source-plugin;external_dependency} -->
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -91,7 +91,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
-                <version>3.0.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+                <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
                 <executions>
                     <execution>
                         <id>copy</id>
@@ -139,7 +139,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+                <version>3.6.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
@@ -155,7 +155,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+                <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
                 <executions>
                     <execution>
                         <id>empty-javadoc-jar-with-readme</id>
@@ -211,7 +211,7 @@
               <dependency>
                 <groupId>org.ow2.asm</groupId>
                 <artifactId>asm</artifactId>
-                <version>9.6</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+                <version>9.7</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
               </dependency>
             </dependencies>
             <configuration>
@@ -277,7 +277,7 @@
           <plugin>
             <groupId>com.azure.tools</groupId>
             <artifactId>codesnippet-maven-plugin</artifactId>
-            <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+            <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
             <configuration>
               <readmeGlob>**/*.md</readmeGlob>
             </configuration>

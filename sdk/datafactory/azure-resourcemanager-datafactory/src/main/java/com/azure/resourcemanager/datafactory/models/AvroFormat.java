@@ -5,20 +5,39 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The data stored in Avro format.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = AvroFormat.class, visible = true)
 @JsonTypeName("AvroFormat")
 @Fluent
 public final class AvroFormat extends DatasetStorageFormat {
+    /*
+     * Type of dataset storage format.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "AvroFormat";
+
     /**
      * Creates an instance of AvroFormat class.
      */
     public AvroFormat() {
+    }
+
+    /**
+     * Get the type property: Type of dataset storage format.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

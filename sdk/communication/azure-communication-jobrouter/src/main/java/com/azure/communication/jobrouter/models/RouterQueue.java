@@ -13,6 +13,11 @@ import java.util.Map;
 /** A queue that can contain jobs to be routed. */
 @Fluent
 public final class RouterQueue {
+    /**
+     * Create new instance
+     */
+    public RouterQueue() {
+    }
 
     /*
      * The Id of this queue

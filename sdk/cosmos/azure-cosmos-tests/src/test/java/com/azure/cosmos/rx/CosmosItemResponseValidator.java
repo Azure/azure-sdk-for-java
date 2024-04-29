@@ -40,8 +40,8 @@ public interface CosmosItemResponseValidator {
                 @SuppressWarnings("rawtypes")
                 public void validate(CosmosItemResponse itemResponse) {
                     assertThat(itemResponse.getItem()).isNotNull();
-                    assertThat(ModelBridgeInternal
-                        .getObjectFromJsonSerializable(InternalObjectNode.fromObject(itemResponse.getItem()), propertyName))
+                    assertThat(InternalObjectNode.fromObject(itemResponse.getItem())
+                        .get(propertyName))
                         .as("check property")
                         .isEqualTo(value);
                 }

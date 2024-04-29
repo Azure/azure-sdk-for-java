@@ -15,30 +15,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ValidationActivityTypeProperties {
     /*
-     * Specifies the timeout for the activity to run. If there is no value specified, it takes the value of
-     * TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType string), pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Specifies the timeout for the activity to run. If there is no value specified, it takes the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "timeout")
     private Object timeout;
 
     /*
-     * A delay in seconds between validation attempts. If no value is specified, 10 seconds will be used as the
-     * default. Type: integer (or Expression with resultType integer).
+     * A delay in seconds between validation attempts. If no value is specified, 10 seconds will be used as the default. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "sleep")
     private Object sleep;
 
     /*
-     * Can be used if dataset points to a file. The file must be greater than or equal in size to the value specified.
-     * Type: integer (or Expression with resultType integer).
+     * Can be used if dataset points to a file. The file must be greater than or equal in size to the value specified. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "minimumSize")
     private Object minimumSize;
 
     /*
-     * Can be used if dataset points to a folder. If set to true, the folder must have at least one file. If set to
-     * false, the folder must be empty. Type: boolean (or Expression with resultType boolean).
+     * Can be used if dataset points to a folder. If set to true, the folder must have at least one file. If set to false, the folder must be empty. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "childItems")
     private Object childItems;
@@ -56,8 +51,8 @@ public final class ValidationActivityTypeProperties {
     }
 
     /**
-     * Get the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it
-     * takes the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
+     * Get the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it takes
+     * the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
      * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      * 
      * @return the timeout value.
@@ -67,8 +62,8 @@ public final class ValidationActivityTypeProperties {
     }
 
     /**
-     * Set the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it
-     * takes the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
+     * Set the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it takes
+     * the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
      * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      * 
      * @param timeout the timeout value to set.
@@ -80,8 +75,8 @@ public final class ValidationActivityTypeProperties {
     }
 
     /**
-     * Get the sleep property: A delay in seconds between validation attempts. If no value is specified, 10 seconds
-     * will be used as the default. Type: integer (or Expression with resultType integer).
+     * Get the sleep property: A delay in seconds between validation attempts. If no value is specified, 10 seconds will
+     * be used as the default. Type: integer (or Expression with resultType integer).
      * 
      * @return the sleep value.
      */
@@ -90,8 +85,8 @@ public final class ValidationActivityTypeProperties {
     }
 
     /**
-     * Set the sleep property: A delay in seconds between validation attempts. If no value is specified, 10 seconds
-     * will be used as the default. Type: integer (or Expression with resultType integer).
+     * Set the sleep property: A delay in seconds between validation attempts. If no value is specified, 10 seconds will
+     * be used as the default. Type: integer (or Expression with resultType integer).
      * 
      * @param sleep the sleep value to set.
      * @return the ValidationActivityTypeProperties object itself.
@@ -125,8 +120,7 @@ public final class ValidationActivityTypeProperties {
 
     /**
      * Get the childItems property: Can be used if dataset points to a folder. If set to true, the folder must have at
-     * least one file. If set to false, the folder must be empty. Type: boolean (or Expression with resultType
-     * boolean).
+     * least one file. If set to false, the folder must be empty. Type: boolean (or Expression with resultType boolean).
      * 
      * @return the childItems value.
      */
@@ -136,8 +130,7 @@ public final class ValidationActivityTypeProperties {
 
     /**
      * Set the childItems property: Can be used if dataset points to a folder. If set to true, the folder must have at
-     * least one file. If set to false, the folder must be empty. Type: boolean (or Expression with resultType
-     * boolean).
+     * least one file. If set to false, the folder must be empty. Type: boolean (or Expression with resultType boolean).
      * 
      * @param childItems the childItems value to set.
      * @return the ValidationActivityTypeProperties object itself.
@@ -174,8 +167,9 @@ public final class ValidationActivityTypeProperties {
      */
     public void validate() {
         if (dataset() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property dataset in model ValidationActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataset in model ValidationActivityTypeProperties"));
         } else {
             dataset().validate();
         }

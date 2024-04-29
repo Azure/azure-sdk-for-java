@@ -91,7 +91,7 @@ public final class CosmosClientTelemetryConfig {
         this.diagnosticHandlers = new CopyOnWriteArrayList<>();
         this.tracer = null;
         this.tracingOptions = null;
-        this.samplingRate = 1;
+        this.samplingRate = Configs.getMetricsConfig().getSampleRate();
         CosmosMicrometerMetricsOptions defaultMetricsOptions = new CosmosMicrometerMetricsOptions();
         this.isClientMetricsEnabled = defaultMetricsOptions.isEnabled();
         if (this.isClientMetricsEnabled) {
@@ -673,6 +673,20 @@ public final class CosmosClientTelemetryConfig {
                     return config.isQueryTracingEnabled;
                 }
        
+                @Override
+                public double[] getDefaultPercentiles(CosmosClientTelemetryConfig config) {
+                    return config.micrometerMetricsOptions.getDefaultPercentiles();
+                }
+
+                @Override
+                public boolean shouldPublishHistograms(CosmosClientTelemetryConfig config) {
+                    return config.micrometerMetricsOptions.shouldPublishHistograms();
+                }
+
+                @Override
+                public boolean shouldApplyDiagnosticThresholdsForTransportLevelMeters(CosmosClientTelemetryConfig config) {
+                    return config.micrometerMetricsOptions.shouldApplyDiagnosticThresholdsForTransportLevelMeters();
+                }
             });
     }
 

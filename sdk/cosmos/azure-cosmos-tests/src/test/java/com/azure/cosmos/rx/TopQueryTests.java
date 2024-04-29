@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.query.LimitContinuationToken;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.InternalObjectNode;
@@ -224,16 +224,16 @@ public class TopQueryTests extends TestSuiteBase {
         for (int i = 0; i < 10; i++) {
             InternalObjectNode d = new InternalObjectNode();
             d.setId(Integer.toString(i));
-            BridgeInternal.setProperty(d, field, i);
-            BridgeInternal.setProperty(d, partitionKey, firstPk);
+            d.set(field, i, CosmosItemSerializer.DEFAULT_SERIALIZER);
+            d.set(partitionKey, firstPk, CosmosItemSerializer.DEFAULT_SERIALIZER);
             docs.add(d);
         }
 
         for (int i = 10; i < 20; i++) {
             InternalObjectNode d = new InternalObjectNode();
             d.setId(Integer.toString(i));
-            BridgeInternal.setProperty(d, field, i);
-            BridgeInternal.setProperty(d, partitionKey, secondPk);
+            d.set(field, i, CosmosItemSerializer.DEFAULT_SERIALIZER);
+            d.set(partitionKey, secondPk, CosmosItemSerializer.DEFAULT_SERIALIZER);
             docs.add(d);
         }
     }

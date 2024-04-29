@@ -11,9 +11,7 @@ import com.azure.resourcemanager.eventgrid.models.PartnerNamespaceRegenerateKeyR
  */
 public final class PartnerNamespacesRegenerateKeySamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
-     * PartnerNamespaces_RegenerateKey.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/PartnerNamespaces_RegenerateKey.json
      */
     /**
      * Sample code: PartnerNamespaces_RegenerateKey.
@@ -21,8 +19,9 @@ public final class PartnerNamespacesRegenerateKeySamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void partnerNamespacesRegenerateKey(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.partnerNamespaces().regenerateKeyWithResponse("examplerg", "examplePartnerNamespaceName1",
-            new PartnerNamespaceRegenerateKeyRequest().withKeyName("fakeTokenPlaceholder"),
-            com.azure.core.util.Context.NONE);
+        manager.partnerNamespaces()
+            .regenerateKeyWithResponse("examplerg", "examplePartnerNamespaceName1",
+                new PartnerNamespaceRegenerateKeyRequest().withKeyName("fakeTokenPlaceholder"),
+                com.azure.core.util.Context.NONE);
     }
 }

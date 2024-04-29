@@ -553,7 +553,8 @@ public final class DiagnosticsProvider {
         ConsistencyLevel consistencyLevel,
         OperationType operationType,
         ResourceType resourceType,
-        RequestOptions requestOptions) {
+        RequestOptions requestOptions,
+        Integer maxBatchSize) {
 
         checkNotNull(client, "Argument 'client' must not be null.");
 
@@ -571,9 +572,9 @@ public final class DiagnosticsProvider {
             operationType,
             resourceType,
             null,
-            null,
+            maxBatchSize,
             CosmosBatchResponse::getStatusCode,
-            (r) -> null,
+            CosmosBatchResponse::size,
             CosmosBatchResponse::getRequestCharge,
             (r, samplingRate) -> {
                 CosmosDiagnostics diagnostics = r.getDiagnostics();

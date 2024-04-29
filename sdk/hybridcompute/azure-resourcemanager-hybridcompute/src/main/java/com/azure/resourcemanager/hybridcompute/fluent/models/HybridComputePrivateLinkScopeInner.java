@@ -11,7 +11,9 @@ import com.azure.resourcemanager.hybridcompute.models.PrivateLinkScopesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** An Azure Arc PrivateLinkScope definition. */
+/**
+ * An Azure Arc PrivateLinkScope definition.
+ */
 @Fluent
 public final class HybridComputePrivateLinkScopeInner extends PrivateLinkScopesResource {
     /*
@@ -26,13 +28,15 @@ public final class HybridComputePrivateLinkScopeInner extends PrivateLinkScopesR
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of HybridComputePrivateLinkScopeInner class. */
+    /**
+     * Creates an instance of HybridComputePrivateLinkScopeInner class.
+     */
     public HybridComputePrivateLinkScopeInner() {
     }
 
     /**
      * Get the properties property: Properties that define a Azure Arc PrivateLinkScope resource.
-     *
+     * 
      * @return the properties value.
      */
     public HybridComputePrivateLinkScopeProperties properties() {
@@ -41,7 +45,7 @@ public final class HybridComputePrivateLinkScopeInner extends PrivateLinkScopesR
 
     /**
      * Set the properties property: Properties that define a Azure Arc PrivateLinkScope resource.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the HybridComputePrivateLinkScopeInner object itself.
      */
@@ -52,21 +56,25 @@ public final class HybridComputePrivateLinkScopeInner extends PrivateLinkScopesR
 
     /**
      * Get the systemData property: The system meta data relating to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HybridComputePrivateLinkScopeInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HybridComputePrivateLinkScopeInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -75,7 +83,7 @@ public final class HybridComputePrivateLinkScopeInner extends PrivateLinkScopesR
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

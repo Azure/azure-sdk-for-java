@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-// TODO[Public Preview]: Double check logic here, copied over from V1
+// TODO[GA]: Double check logic here, copied over from V1
 public class StructToJsonMap {
 
     public static Map<String, Object> toJsonMap(Struct struct) {

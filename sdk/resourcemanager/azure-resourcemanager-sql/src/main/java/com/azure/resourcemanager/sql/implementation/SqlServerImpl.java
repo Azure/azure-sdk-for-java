@@ -31,6 +31,7 @@ import com.azure.resourcemanager.sql.models.SqlFirewallRule;
 import com.azure.resourcemanager.sql.models.SqlFirewallRuleOperations;
 import com.azure.resourcemanager.sql.models.SqlRestorableDroppedDatabase;
 import com.azure.resourcemanager.sql.models.SqlServer;
+import com.azure.resourcemanager.sql.models.ServerNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.SqlServerAutomaticTuning;
 import com.azure.resourcemanager.sql.models.SqlServerDnsAliasOperations;
 import com.azure.resourcemanager.sql.models.SqlServerKeyOperations;
@@ -268,6 +269,11 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
         }
 
         return firewallRule;
+    }
+
+    @Override
+    public ServerNetworkAccessFlag publicNetworkAccess() {
+        return this.innerModel().publicNetworkAccess();
     }
 
     @Override
@@ -511,6 +517,18 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     @Override
     public SqlServerImpl withSystemAssignedManagedServiceIdentity() {
         this.innerModel().withIdentity(new ResourceIdentity().withType(IdentityType.SYSTEM_ASSIGNED));
+        return this;
+    }
+
+    @Override
+    public SqlServerImpl enablePublicNetworkAccess() {
+        this.innerModel().withPublicNetworkAccess(ServerNetworkAccessFlag.ENABLED);
+        return this;
+    }
+
+    @Override
+    public SqlServerImpl disablePublicNetworkAccess() {
+        this.innerModel().withPublicNetworkAccess(ServerNetworkAccessFlag.DISABLED);
         return this;
     }
 }

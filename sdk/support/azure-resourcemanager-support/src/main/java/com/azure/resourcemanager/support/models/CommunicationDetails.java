@@ -86,8 +86,8 @@ public interface CommunicationDetails {
     /**
      * The entirety of the CommunicationDetails definition.
      */
-    interface Definition
-        extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithParentResource,
+        DefinitionStages.WithSubject, DefinitionStages.WithBody, DefinitionStages.WithCreate {
     }
 
     /**
@@ -110,15 +110,40 @@ public interface CommunicationDetails {
              * @param supportTicketName Support ticket name.
              * @return the next definition stage.
              */
-            WithCreate withExistingSupportTicket(String supportTicketName);
+            WithSubject withExistingSupportTicket(String supportTicketName);
+        }
+
+        /**
+         * The stage of the CommunicationDetails definition allowing to specify subject.
+         */
+        interface WithSubject {
+            /**
+             * Specifies the subject property: Subject of the communication..
+             * 
+             * @param subject Subject of the communication.
+             * @return the next definition stage.
+             */
+            WithBody withSubject(String subject);
+        }
+
+        /**
+         * The stage of the CommunicationDetails definition allowing to specify body.
+         */
+        interface WithBody {
+            /**
+             * Specifies the body property: Body of the communication..
+             * 
+             * @param body Body of the communication.
+             * @return the next definition stage.
+             */
+            WithCreate withBody(String body);
         }
 
         /**
          * The stage of the CommunicationDetails definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithSender, DefinitionStages.WithSubject, DefinitionStages.WithBody {
+        interface WithCreate extends DefinitionStages.WithSender {
             /**
              * Executes the create request.
              * 
@@ -147,32 +172,6 @@ public interface CommunicationDetails {
              * @return the next definition stage.
              */
             WithCreate withSender(String sender);
-        }
-
-        /**
-         * The stage of the CommunicationDetails definition allowing to specify subject.
-         */
-        interface WithSubject {
-            /**
-             * Specifies the subject property: Subject of the communication..
-             * 
-             * @param subject Subject of the communication.
-             * @return the next definition stage.
-             */
-            WithCreate withSubject(String subject);
-        }
-
-        /**
-         * The stage of the CommunicationDetails definition allowing to specify body.
-         */
-        interface WithBody {
-            /**
-             * Specifies the body property: Body of the communication..
-             * 
-             * @param body Body of the communication.
-             * @return the next definition stage.
-             */
-            WithCreate withBody(String body);
         }
     }
 

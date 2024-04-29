@@ -12,15 +12,15 @@ import java.util.Arrays;
 public final class ExposureControlBatchResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExposureControlBatchResponseInner model = BinaryData.fromString(
-            "{\"exposureControlResponses\":[{\"featureName\":\"ez\",\"value\":\"shxmzsbbzoggigrx\"},{\"featureName\":\"ur\",\"value\":\"xxjnspydptk\"}]}")
+        ExposureControlBatchResponseInner model = BinaryData
+            .fromString("{\"exposureControlResponses\":[{\"featureName\":\"jttgzf\",\"value\":\"shcbkhajdeyeamdp\"}]}")
             .toObject(ExposureControlBatchResponseInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExposureControlBatchResponseInner model = new ExposureControlBatchResponseInner().withExposureControlResponses(
-            Arrays.asList(new ExposureControlResponseInner(), new ExposureControlResponseInner()));
+        ExposureControlBatchResponseInner model = new ExposureControlBatchResponseInner()
+            .withExposureControlResponses(Arrays.asList(new ExposureControlResponseInner()));
         model = BinaryData.fromObject(model).toObject(ExposureControlBatchResponseInner.class);
     }
 }

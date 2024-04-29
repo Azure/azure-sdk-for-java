@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hybridcompute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the Machine Extension Instance View. */
+/**
+ * Describes the Machine Extension Instance View.
+ */
 @Fluent
 public final class MachineExtensionInstanceView {
     /*
@@ -34,13 +36,15 @@ public final class MachineExtensionInstanceView {
     @JsonProperty(value = "status")
     private MachineExtensionInstanceViewStatus status;
 
-    /** Creates an instance of MachineExtensionInstanceView class. */
+    /**
+     * Creates an instance of MachineExtensionInstanceView class.
+     */
     public MachineExtensionInstanceView() {
     }
 
     /**
      * Get the name property: The machine extension name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -49,7 +53,7 @@ public final class MachineExtensionInstanceView {
 
     /**
      * Set the name property: The machine extension name.
-     *
+     * 
      * @param name the name value to set.
      * @return the MachineExtensionInstanceView object itself.
      */
@@ -60,7 +64,7 @@ public final class MachineExtensionInstanceView {
 
     /**
      * Get the type property: Specifies the type of the extension; an example is "CustomScriptExtension".
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -69,7 +73,7 @@ public final class MachineExtensionInstanceView {
 
     /**
      * Set the type property: Specifies the type of the extension; an example is "CustomScriptExtension".
-     *
+     * 
      * @param type the type value to set.
      * @return the MachineExtensionInstanceView object itself.
      */
@@ -80,7 +84,7 @@ public final class MachineExtensionInstanceView {
 
     /**
      * Get the typeHandlerVersion property: Specifies the version of the script handler.
-     *
+     * 
      * @return the typeHandlerVersion value.
      */
     public String typeHandlerVersion() {
@@ -89,7 +93,7 @@ public final class MachineExtensionInstanceView {
 
     /**
      * Set the typeHandlerVersion property: Specifies the version of the script handler.
-     *
+     * 
      * @param typeHandlerVersion the typeHandlerVersion value to set.
      * @return the MachineExtensionInstanceView object itself.
      */
@@ -100,7 +104,7 @@ public final class MachineExtensionInstanceView {
 
     /**
      * Get the status property: Instance view status.
-     *
+     * 
      * @return the status value.
      */
     public MachineExtensionInstanceViewStatus status() {
@@ -109,7 +113,7 @@ public final class MachineExtensionInstanceView {
 
     /**
      * Set the status property: Instance view status.
-     *
+     * 
      * @param status the status value to set.
      * @return the MachineExtensionInstanceView object itself.
      */
@@ -120,7 +124,7 @@ public final class MachineExtensionInstanceView {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -13,15 +13,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureADPartnerClientAuthenticationProperties {
     /*
-     * The Azure Active Directory Tenant ID to get the access token that will be included as the bearer token in
-     * delivery requests.
+     * The Azure Active Directory Tenant ID to get the access token that will be included as the bearer token in delivery requests.
      */
     @JsonProperty(value = "azureActiveDirectoryTenantId")
     private String azureActiveDirectoryTenantId;
 
     /*
-     * The Azure Active Directory Application ID or URI to get the access token that will be included as the bearer
-     * token in delivery requests.
+     * The Azure Active Directory Application ID or URI to get the access token that will be included as the bearer token in delivery requests.
      */
     @JsonProperty(value = "azureActiveDirectoryApplicationIdOrUri")
     private String azureActiveDirectoryApplicationIdOrUri;

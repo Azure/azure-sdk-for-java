@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupAndExportResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupAndExportResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"status\":\"CancelInProgress\",\"startTime\":\"2021-01-15T00:39:28Z\",\"endTime\":\"2021-04-04T07:45:50Z\",\"percentComplete\":13.198921536177277,\"properties\":{\"datasourceSizeInBytes\":8699509419424523906,\"dataTransferredInBytes\":7670793912698215607,\"backupMetadata\":\"jdpvwryo\"},\"id\":\"soacctazakl\",\"name\":\"lahbcryff\",\"type\":\"fdosyg\"}")
-                .toObject(BackupAndExportResponseInner.class);
+        BackupAndExportResponseInner model = BinaryData.fromString(
+            "{\"status\":\"CancelInProgress\",\"startTime\":\"2021-01-15T00:39:28Z\",\"endTime\":\"2021-04-04T07:45:50Z\",\"percentComplete\":13.198921536177277,\"properties\":{\"datasourceSizeInBytes\":8699509419424523906,\"dataTransferredInBytes\":7670793912698215607,\"backupMetadata\":\"jdpvwryo\"},\"id\":\"oacctaza\",\"name\":\"ljlahbcryf\",\"type\":\"dfdosygexp\"}")
+            .toObject(BackupAndExportResponseInner.class);
         Assertions.assertEquals(OperationStatus.CANCEL_IN_PROGRESS, model.status());
         Assertions.assertEquals(OffsetDateTime.parse("2021-01-15T00:39:28Z"), model.startTime());
         Assertions.assertEquals(OffsetDateTime.parse("2021-04-04T07:45:50Z"), model.endTime());
@@ -29,9 +27,8 @@ public final class BackupAndExportResponseInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupAndExportResponseInner model =
-            new BackupAndExportResponseInner()
-                .withStatus(OperationStatus.CANCEL_IN_PROGRESS)
+        BackupAndExportResponseInner model
+            = new BackupAndExportResponseInner().withStatus(OperationStatus.CANCEL_IN_PROGRESS)
                 .withStartTime(OffsetDateTime.parse("2021-01-15T00:39:28Z"))
                 .withEndTime(OffsetDateTime.parse("2021-04-04T07:45:50Z"))
                 .withPercentComplete(13.198921536177277D)

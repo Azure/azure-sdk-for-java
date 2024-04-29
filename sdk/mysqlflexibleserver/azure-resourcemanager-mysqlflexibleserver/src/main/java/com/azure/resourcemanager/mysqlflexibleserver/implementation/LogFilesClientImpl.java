@@ -30,17 +30,23 @@ import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.LogFileInner;
 import com.azure.resourcemanager.mysqlflexibleserver.models.LogFileListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LogFilesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LogFilesClient.
+ */
 public final class LogFilesClientImpl implements LogFilesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final LogFilesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MySqlManagementClientImpl client;
 
     /**
      * Initializes an instance of LogFilesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     LogFilesClientImpl(MySqlManagementClientImpl client) {
@@ -55,34 +61,27 @@ public final class LogFilesClientImpl implements LogFilesClient {
     @Host("{$host}")
     @ServiceInterface(name = "MySqlManagementClien")
     public interface LogFilesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/logFiles")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/logFiles")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LogFileListResult>> listByServer(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<LogFileListResult>> listByServer(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LogFileListResult>> listByServerNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List all the server log files in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -93,16 +92,12 @@ public final class LogFilesClientImpl implements LogFilesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LogFileInner>> listByServerSinglePageAsync(String resourceGroupName, String serverName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -111,35 +106,19 @@ public final class LogFilesClientImpl implements LogFilesClient {
         if (serverName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "2023-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByServer(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serverName,
-                            accept,
-                            context))
-            .<PagedResponse<LogFileInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByServer(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, serverName, accept, context))
+            .<PagedResponse<LogFileInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List all the server log files in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -149,19 +128,15 @@ public final class LogFilesClientImpl implements LogFilesClient {
      * @return a List of logFiles along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LogFileInner>> listByServerSinglePageAsync(
-        String resourceGroupName, String serverName, Context context) {
+    private Mono<PagedResponse<LogFileInner>> listByServerSinglePageAsync(String resourceGroupName, String serverName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -170,32 +145,19 @@ public final class LogFilesClientImpl implements LogFilesClient {
         if (serverName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "2023-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByServer(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serverName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByServer(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+                serverName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List all the server log files in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -205,14 +167,13 @@ public final class LogFilesClientImpl implements LogFilesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LogFileInner> listByServerAsync(String resourceGroupName, String serverName) {
-        return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName),
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName),
             nextLink -> listByServerNextSinglePageAsync(nextLink));
     }
 
     /**
      * List all the server log files in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -223,14 +184,13 @@ public final class LogFilesClientImpl implements LogFilesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LogFileInner> listByServerAsync(String resourceGroupName, String serverName, Context context) {
-        return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName, context),
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName, context),
             nextLink -> listByServerNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List all the server log files in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -245,7 +205,7 @@ public final class LogFilesClientImpl implements LogFilesClient {
 
     /**
      * List all the server log files in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -261,9 +221,10 @@ public final class LogFilesClientImpl implements LogFilesClient {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -275,31 +236,23 @@ public final class LogFilesClientImpl implements LogFilesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByServerNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<LogFileInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<LogFileInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -312,23 +265,13 @@ public final class LogFilesClientImpl implements LogFilesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByServerNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByServerNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

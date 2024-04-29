@@ -6,16 +6,24 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity file system sink.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = FileSystemSink.class, visible = true)
 @JsonTypeName("FileSystemSink")
 @Fluent
 public final class FileSystemSink extends CopySink {
+    /*
+     * Copy sink type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "FileSystemSink";
+
     /*
      * The type of copy behavior for copy sink.
      */
@@ -26,6 +34,16 @@ public final class FileSystemSink extends CopySink {
      * Creates an instance of FileSystemSink class.
      */
     public FileSystemSink() {
+    }
+
+    /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

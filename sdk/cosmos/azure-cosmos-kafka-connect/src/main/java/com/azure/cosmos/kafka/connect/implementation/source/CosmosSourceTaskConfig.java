@@ -18,19 +18,21 @@ import java.util.stream.Collectors;
 
 public class CosmosSourceTaskConfig extends CosmosSourceConfig {
     private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
-    private static final String SOURCE_TASK_CONFIG_PREFIX = "kafka.connect.cosmos.source.task.";
 
-    public static final String SOURCE_METADATA_TASK_UNIT = SOURCE_TASK_CONFIG_PREFIX + "metadataTaskUnit";
-    public static final String SOURCE_FEED_RANGE_TASK_UNITS = SOURCE_TASK_CONFIG_PREFIX + "feedRangeTaskUnits";
+    public static final String SOURCE_METADATA_TASK_UNIT = "azure.cosmos.source.task.metadataTaskUnit";
+    public static final String SOURCE_FEED_RANGE_TASK_UNITS = "azure.cosmos.source.task.feedRangeTaskUnits";
+    public static final String SOURCE_TASK_ID = "azure.cosmos.source.task.id";
 
     private final List<FeedRangeTaskUnit> feedRangeTaskUnits;
-    private MetadataTaskUnit metadataTaskUnit;
+    private final MetadataTaskUnit metadataTaskUnit;
+    private final String taskId;
 
     public CosmosSourceTaskConfig(Map<String, String> parsedConfigs) {
         super(getConfigDef(), parsedConfigs);
 
         this.feedRangeTaskUnits = this.parseFeedRangeTaskUnits();
         this.metadataTaskUnit = this.parseMetadataTaskUnit();
+        this.taskId = this.getString(SOURCE_TASK_ID);
     }
 
     public static ConfigDef getConfigDef() {
@@ -53,6 +55,12 @@ public class CosmosSourceTaskConfig extends CosmosSourceConfig {
                 ConfigDef.Type.STRING,
                 null,
                 ConfigDef.Importance.HIGH
+            )
+            .defineInternal(
+                SOURCE_TASK_ID,
+                ConfigDef.Type.STRING,
+                ConfigDef.NO_DEFAULT_VALUE,
+                ConfigDef.Importance.MEDIUM
             );
     }
 
@@ -135,5 +143,9 @@ public class CosmosSourceTaskConfig extends CosmosSourceConfig {
 
     public MetadataTaskUnit getMetadataTaskUnit() {
         return metadataTaskUnit;
+    }
+
+    public String getTaskId() {
+        return taskId;
     }
 }

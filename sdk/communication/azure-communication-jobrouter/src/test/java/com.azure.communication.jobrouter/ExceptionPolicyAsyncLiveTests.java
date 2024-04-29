@@ -100,7 +100,7 @@ public class ExceptionPolicyAsyncLiveTests extends JobRouterTestBase {
 
         deserialized.setExceptionRules(new ArrayList<>());
         ExceptionPolicy updatedPolicy = administrationAsyncClient.updateExceptionPolicy(
-            deserialized.getId(), deserialized, null).block();
+            deserialized.getId(), deserialized).block();
 
         assertEquals(exceptionPolicyId, updatedPolicy.getId());
         assertEquals(exceptionPolicyName, updatedPolicy.getName());

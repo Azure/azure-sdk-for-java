@@ -6,6 +6,7 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -13,10 +14,21 @@ import java.util.List;
 /**
  * Azure blobFS write settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = AzureBlobFSWriteSettings.class,
+    visible = true)
 @JsonTypeName("AzureBlobFSWriteSettings")
 @Fluent
 public final class AzureBlobFSWriteSettings extends StoreWriteSettings {
+    /*
+     * The write setting type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "AzureBlobFSWriteSettings";
+
     /*
      * Indicates the block size(MB) when writing data to blob. Type: integer (or Expression with resultType integer).
      */
@@ -27,6 +39,16 @@ public final class AzureBlobFSWriteSettings extends StoreWriteSettings {
      * Creates an instance of AzureBlobFSWriteSettings class.
      */
     public AzureBlobFSWriteSettings() {
+    }
+
+    /**
+     * Get the type property: The write setting type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

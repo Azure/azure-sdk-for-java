@@ -9,8 +9,7 @@ package com.azure.resourcemanager.datafactory.generated;
  */
 public final class IntegrationRuntimesGetConnectionInfoSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
-     * IntegrationRuntimes_GetConnectionInfo.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_GetConnectionInfo.json
      */
     /**
      * Sample code: IntegrationRuntimes_GetConnectionInfo.
@@ -19,7 +18,8 @@ public final class IntegrationRuntimesGetConnectionInfoSamples {
      */
     public static void
         integrationRuntimesGetConnectionInfo(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimes().getConnectionInfoWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleIntegrationRuntime", com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes()
+            .getConnectionInfoWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }

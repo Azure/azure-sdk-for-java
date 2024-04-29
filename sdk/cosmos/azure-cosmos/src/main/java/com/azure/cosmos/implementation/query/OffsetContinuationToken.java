@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -57,7 +57,7 @@ public final class OffsetContinuationToken extends JsonSerializable {
     }
 
     private void setSourceToken(String sourceToken) {
-        BridgeInternal.setProperty(this, TOKEN_PROPERTY_NAME, sourceToken);
+        this.set(TOKEN_PROPERTY_NAME, sourceToken, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     public int getOffset() {
@@ -65,7 +65,7 @@ public final class OffsetContinuationToken extends JsonSerializable {
     }
 
     private void setOffset(int offset) {
-        BridgeInternal.setProperty(this, OFFSET_PROPERTY_NAME, offset);
+        this.set(OFFSET_PROPERTY_NAME, offset, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     @Override

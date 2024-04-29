@@ -6,19 +6,26 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity source for a MongoDB database.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = MongoDbV2Source.class, visible = true)
 @JsonTypeName("MongoDbV2Source")
 @Fluent
 public final class MongoDbV2Source extends CopySource {
     /*
-     * Specifies selection filter using query operators. To return all documents in a collection, omit this parameter
-     * or pass an empty document ({}). Type: string (or Expression with resultType string).
+     * Copy source type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "MongoDbV2Source";
+
+    /*
+     * Specifies selection filter using query operators. To return all documents in a collection, omit this parameter or pass an empty document ({}). Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "filter")
     private Object filter;
@@ -30,23 +37,19 @@ public final class MongoDbV2Source extends CopySource {
     private MongoDbCursorMethodsProperties cursorMethods;
 
     /*
-     * Specifies the number of documents to return in each batch of the response from MongoDB instance. In most cases,
-     * modifying the batch size will not affect the user or the application. This property's main purpose is to avoid
-     * hit the limitation of response size. Type: integer (or Expression with resultType integer).
+     * Specifies the number of documents to return in each batch of the response from MongoDB instance. In most cases, modifying the batch size will not affect the user or the application. This property's main purpose is to avoid hit the limitation of response size. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "batchSize")
     private Object batchSize;
 
     /*
-     * Query timeout. Type: string (or Expression with resultType string), pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "queryTimeout")
     private Object queryTimeout;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
-     * Expression with resultType array of objects).
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with resultType array of objects).
      */
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
@@ -55,6 +58,16 @@ public final class MongoDbV2Source extends CopySource {
      * Creates an instance of MongoDbV2Source class.
      */
     public MongoDbV2Source() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.devcenter.models.EnvironmentTypeListResult;
 public final class EnvironmentTypeListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EnvironmentTypeListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"NotSpecified\",\"displayName\":\"watkpnpulexxb\"},\"tags\":{\"j\":\"truwiqzb\",\"zdobpxjmflbvvnch\":\"sovmyokacspkwl\",\"ajiwkuo\":\"kcciwwzjuqkhr\",\"sauuimj\":\"oskg\"},\"id\":\"xieduugidyjrr\",\"name\":\"byao\",\"type\":\"v\"}],\"nextLink\":\"csonpclhoco\"}")
-                .toObject(EnvironmentTypeListResult.class);
+        EnvironmentTypeListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"displayName\":\"wbcrnwbmehhseyv\"},\"tags\":{\"hspkdeemao\":\"rts\",\"gkvtmelmqkrhah\":\"mx\",\"duala\":\"ljuahaquhcdh\",\"rcrgvx\":\"xqpvfadmw\"},\"id\":\"gomz\",\"name\":\"fmisg\",\"type\":\"bnbbeldawkz\"},{\"properties\":{\"provisioningState\":\"Accepted\",\"displayName\":\"urqhaka\"},\"tags\":{\"i\":\"shsfwxosowzxcu\",\"ucww\":\"jooxdjebw\",\"bvmeuecivy\":\"vo\"},\"id\":\"ce\",\"name\":\"ojgjrwjueiotwmc\",\"type\":\"ytdxwit\"},{\"properties\":{\"provisioningState\":\"Updated\",\"displayName\":\"wgqwgxhn\"},\"tags\":{\"bkpyc\":\"x\",\"l\":\"klwndnhjdauwhv\",\"xujznbmpowu\":\"zbtd\",\"lupj\":\"przqlveu\"},\"id\":\"hfxobbcswsrtj\",\"name\":\"iplrbpbewtghfgb\",\"type\":\"c\"},{\"properties\":{\"provisioningState\":\"MovingResources\",\"displayName\":\"lvqhjkbegibtnmx\"},\"tags\":{\"j\":\"wwaloayqcgwrt\",\"yzm\":\"zg\"},\"id\":\"xongmtsavjcbpwxq\",\"name\":\"srknftguv\",\"type\":\"iuhprwmdyvxqta\"}],\"nextLink\":\"iwwroyqbexrmc\"}")
+            .toObject(EnvironmentTypeListResult.class);
     }
 
     @org.junit.jupiter.api.Test

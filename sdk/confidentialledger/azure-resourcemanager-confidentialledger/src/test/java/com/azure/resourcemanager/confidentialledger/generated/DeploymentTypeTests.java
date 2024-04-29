@@ -12,20 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class DeploymentTypeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeploymentType model =
-            BinaryData
-                .fromString("{\"languageRuntime\":\"JS\",\"appSourceUri\":\"hmuouqfprwzwbn\"}")
-                .toObject(DeploymentType.class);
+        DeploymentType model = BinaryData.fromString("{\"languageRuntime\":\"JS\",\"appSourceUri\":\"dtopbob\"}")
+            .toObject(DeploymentType.class);
         Assertions.assertEquals(LanguageRuntime.JS, model.languageRuntime());
-        Assertions.assertEquals("hmuouqfprwzwbn", model.appSourceUri());
+        Assertions.assertEquals("dtopbob", model.appSourceUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeploymentType model =
-            new DeploymentType().withLanguageRuntime(LanguageRuntime.JS).withAppSourceUri("hmuouqfprwzwbn");
+        DeploymentType model = new DeploymentType().withLanguageRuntime(LanguageRuntime.JS).withAppSourceUri("dtopbob");
         model = BinaryData.fromObject(model).toObject(DeploymentType.class);
         Assertions.assertEquals(LanguageRuntime.JS, model.languageRuntime());
-        Assertions.assertEquals("hmuouqfprwzwbn", model.appSourceUri());
+        Assertions.assertEquals("dtopbob", model.appSourceUri());
     }
 }
