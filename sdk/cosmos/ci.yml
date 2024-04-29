@@ -116,7 +116,7 @@ parameters:
   - name: release_azurecosmoskafka
     displayName: 'azure-cosmos-kafka-connect'
     type: boolean
-    default: false
+    default: true
 
 extends:
   template: /eng/pipelines/templates/stages/cosmos-sdk-client.yml #NOTE: Non-standard template.
@@ -175,6 +175,7 @@ extends:
       - name: azure-cosmos-kafka-connect
         groupId: com.azure.cosmos.kafka
         safeName: azurecosmoskafkaconnect
+        uberJar: true
         skipPublishDocGithubIo: true
         skipPublishDocMs: true
         releaseInBatch: ${{ parameters.release_azurecosmoskafka }}

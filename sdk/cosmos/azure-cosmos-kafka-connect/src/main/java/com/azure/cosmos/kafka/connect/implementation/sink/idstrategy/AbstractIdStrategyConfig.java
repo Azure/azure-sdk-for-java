@@ -9,7 +9,7 @@ import org.apache.kafka.common.config.ConfigDef;
 import java.util.Map;
 
 public class AbstractIdStrategyConfig extends AbstractConfig {
-    public static final String PREFIX = "kafka.connect.cosmos.sink.id.strategy" + ".";
+    public static final String PREFIX = "azure.cosmos.sink.id.strategy" + ".";
 
     public AbstractIdStrategyConfig(ConfigDef definition, Map<?, ?> originals) {
         super(definition, originals);

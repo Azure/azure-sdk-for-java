@@ -78,25 +78,21 @@ public final class AzureADAdministratorImpl
     }
 
     public AzureADAdministrator create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAzureADAdministrators()
-                .createOrUpdate(resourceGroupName, serverName, administratorName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureADAdministrators()
+            .createOrUpdate(resourceGroupName, serverName, administratorName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public AzureADAdministrator create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAzureADAdministrators()
-                .createOrUpdate(resourceGroupName, serverName, administratorName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureADAdministrators()
+            .createOrUpdate(resourceGroupName, serverName, administratorName, this.innerModel(), context);
         return this;
     }
 
-    AzureADAdministratorImpl(
-        AdministratorName name, com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager) {
+    AzureADAdministratorImpl(AdministratorName name,
+        com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager) {
         this.innerObject = new AzureADAdministratorInner();
         this.serviceManager = serviceManager;
         this.administratorName = name;
@@ -107,51 +103,42 @@ public final class AzureADAdministratorImpl
     }
 
     public AzureADAdministrator apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAzureADAdministrators()
-                .createOrUpdate(resourceGroupName, serverName, administratorName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureADAdministrators()
+            .createOrUpdate(resourceGroupName, serverName, administratorName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public AzureADAdministrator apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAzureADAdministrators()
-                .createOrUpdate(resourceGroupName, serverName, administratorName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureADAdministrators()
+            .createOrUpdate(resourceGroupName, serverName, administratorName, this.innerModel(), context);
         return this;
     }
 
-    AzureADAdministratorImpl(
-        AzureADAdministratorInner innerObject,
+    AzureADAdministratorImpl(AzureADAdministratorInner innerObject,
         com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serverName = Utils.getValueFromIdByName(innerObject.id(), "flexibleServers");
-        this.administratorName =
-            AdministratorName.fromString(Utils.getValueFromIdByName(innerObject.id(), "administrators"));
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "flexibleServers");
+        this.administratorName = AdministratorName
+            .fromString(ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "administrators"));
     }
 
     public AzureADAdministrator refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAzureADAdministrators()
-                .getWithResponse(resourceGroupName, serverName, administratorName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureADAdministrators()
+            .getWithResponse(resourceGroupName, serverName, administratorName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AzureADAdministrator refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAzureADAdministrators()
-                .getWithResponse(resourceGroupName, serverName, administratorName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureADAdministrators()
+            .getWithResponse(resourceGroupName, serverName, administratorName, context)
+            .getValue();
         return this;
     }
 

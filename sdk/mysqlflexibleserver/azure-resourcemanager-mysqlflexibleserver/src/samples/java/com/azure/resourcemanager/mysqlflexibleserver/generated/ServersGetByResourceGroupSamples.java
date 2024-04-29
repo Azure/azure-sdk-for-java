@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.mysqlflexibleserver.generated;
 
-/** Samples for Servers GetByResourceGroup. */
+/**
+ * Samples for Servers GetByResourceGroup.
+ */
 public final class ServersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerGetWithVnet.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/ServerGetWithVnet.json
      */
     /**
      * Sample code: Get a server with vnet.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void getAServerWithVnet(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
@@ -19,11 +21,11 @@ public final class ServersGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerGet.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/ServerGet.json
      */
     /**
      * Sample code: Get a server.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void getAServer(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {

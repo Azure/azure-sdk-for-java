@@ -30,7 +30,8 @@ public final class ClientPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClientProperties model = new ClientProperties().withDescription("ctbqvudwx").withAuthenticationName("dnvowg")
+        ClientProperties model = new ClientProperties().withDescription("ctbqvudwx")
+            .withAuthenticationName("dnvowg")
             .withClientCertificateAuthentication(new ClientCertificateAuthentication()
                 .withValidationScheme(ClientCertificateValidationScheme.THUMBPRINT_MATCH)
                 .withAllowedThumbprints(Arrays.asList("dkcglhsl", "zj", "yggdtjixh")))

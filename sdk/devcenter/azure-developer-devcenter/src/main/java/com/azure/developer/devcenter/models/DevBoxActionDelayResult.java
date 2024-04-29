@@ -25,7 +25,7 @@ public final class DevBoxActionDelayResult implements JsonSerializable<DevBoxAct
     private final String actionName;
 
     /*
-     * The delayed action
+     * The delayed action.
      */
     @Generated
     private DevBoxAction action;

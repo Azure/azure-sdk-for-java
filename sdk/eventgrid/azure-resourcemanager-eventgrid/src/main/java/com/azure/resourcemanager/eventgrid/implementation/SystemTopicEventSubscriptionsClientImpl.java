@@ -37,8 +37,8 @@ import com.azure.resourcemanager.eventgrid.fluent.SystemTopicEventSubscriptionsC
 import com.azure.resourcemanager.eventgrid.fluent.models.DeliveryAttributeListResultInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionFullUrlInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionInner;
-import com.azure.resourcemanager.eventgrid.models.EventSubscriptionUpdateParameters;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionsListResult;
+import com.azure.resourcemanager.eventgrid.models.EventSubscriptionUpdateParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -172,8 +172,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -218,8 +217,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -263,8 +261,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -284,8 +281,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -306,8 +302,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -327,8 +322,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be found.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -372,8 +366,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be found.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -416,8 +409,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be found.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -437,8 +429,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be found.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -458,8 +449,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be found.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -479,7 +469,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 64 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -532,7 +522,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 64 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -586,7 +576,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 64 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -613,7 +603,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 64 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -641,7 +631,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 64 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -666,7 +656,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 64 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -678,8 +668,10 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
     public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdate(
         String resourceGroupName, String systemTopicName, String eventSubscriptionName,
         EventSubscriptionInner eventSubscriptionInfo, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, systemTopicName, eventSubscriptionName,
-            eventSubscriptionInfo, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, systemTopicName, eventSubscriptionName, eventSubscriptionInfo,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -691,7 +683,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 64 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -714,7 +706,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 64 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -738,7 +730,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 64 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -761,7 +753,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 64 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -783,8 +775,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -826,8 +817,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -869,8 +859,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -892,8 +881,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -917,8 +905,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -937,8 +924,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -959,8 +945,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -979,8 +964,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1001,8 +985,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1019,8 +1002,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1039,8 +1021,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1091,8 +1072,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1144,8 +1124,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1170,8 +1149,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1197,8 +1175,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1209,8 +1186,10 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
     public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdate(String resourceGroupName,
         String systemTopicName, String eventSubscriptionName,
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
-        return this.beginUpdateAsync(resourceGroupName, systemTopicName, eventSubscriptionName,
-            eventSubscriptionUpdateParameters).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, systemTopicName, eventSubscriptionName,
+                eventSubscriptionUpdateParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -1220,8 +1199,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1233,8 +1211,10 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
     public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdate(String resourceGroupName,
         String systemTopicName, String eventSubscriptionName,
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters, Context context) {
-        return this.beginUpdateAsync(resourceGroupName, systemTopicName, eventSubscriptionName,
-            eventSubscriptionUpdateParameters, context).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, systemTopicName, eventSubscriptionName,
+                eventSubscriptionUpdateParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1244,8 +1224,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1266,8 +1245,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1290,8 +1268,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1312,8 +1289,7 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1329,14 +1305,13 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
     }
 
     /**
-     * Get full URL of an event subscription of a system topic
+     * Get full URL of an event subscription of a system topic.
      * 
      * Get the full endpoint URL for an event subscription of a system topic.
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1375,14 +1350,13 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
     }
 
     /**
-     * Get full URL of an event subscription of a system topic
+     * Get full URL of an event subscription of a system topic.
      * 
      * Get the full endpoint URL for an event subscription of a system topic.
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1420,14 +1394,13 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
     }
 
     /**
-     * Get full URL of an event subscription of a system topic
+     * Get full URL of an event subscription of a system topic.
      * 
      * Get the full endpoint URL for an event subscription of a system topic.
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1442,14 +1415,13 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
     }
 
     /**
-     * Get full URL of an event subscription of a system topic
+     * Get full URL of an event subscription of a system topic.
      * 
      * Get the full endpoint URL for an event subscription of a system topic.
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1463,14 +1435,13 @@ public final class SystemTopicEventSubscriptionsClientImpl implements SystemTopi
     }
 
     /**
-     * Get full URL of an event subscription of a system topic
+     * Get full URL of an event subscription of a system topic.
      * 
      * Get the full endpoint URL for an event subscription of a system topic.
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
