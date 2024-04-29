@@ -85,6 +85,9 @@ public class AttestationClientTestBase extends TestProxyTestBase {
     protected void beforeTest() {
         super.beforeTest();
 
+        GlobalOpenTelemetry.resetForTest();
+        tracer = configureLoggingExporter(testContextManager.getTestName());
+
         if (interceptorManager.isPlaybackMode()) {
             interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher()
                 .setHeadersKeyOnlyMatch(Collections.singletonList("Authorization"))));
@@ -122,21 +125,8 @@ public class AttestationClientTestBase extends TestProxyTestBase {
     }
 
     @Override
-    @BeforeEach
-    public void setupTest(TestInfo testInfo) {
+    public void afterTest() {
         GlobalOpenTelemetry.resetForTest();
-        super.setupTest(testInfo);
-        String testMethod = testInfo.getTestMethod().isPresent()
-            ? testInfo.getTestMethod().get().getName()
-            : testInfo.getDisplayName();
-        tracer = configureLoggingExporter(testMethod);
-    }
-
-    @Override
-    @AfterEach
-    public void teardownTest(TestInfo testInfo) {
-        GlobalOpenTelemetry.resetForTest();
-        super.teardownTest(testInfo);
     }
 
     @SuppressWarnings({"deprecation", "resource"})

@@ -177,7 +177,12 @@ public class TestContextManager {
         this.testIteration = testIteration;
     }
 
-    String getTrackerTestName() {
+    /**
+     * Gets the formatted name of the test used to log and track its progress.
+     *
+     * @return The formatted test name.
+     */
+    public String getTrackerTestName() {
         return trackerTestName;
     }
 }
