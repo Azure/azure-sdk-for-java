@@ -13,7 +13,6 @@ import com.azure.storage.queue.models.QueueAudience;
 import com.azure.storage.queue.models.QueueErrorCode;
 import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
-import com.azure.storage.queue.models.QueueStorageException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -43,7 +42,6 @@ import static com.azure.storage.queue.QueueTestHelper.assertExceptionStatusCodeA
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;

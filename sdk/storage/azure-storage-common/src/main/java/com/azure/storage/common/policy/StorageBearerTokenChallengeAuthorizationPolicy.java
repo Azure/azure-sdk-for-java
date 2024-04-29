@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.common.policy;
 
 import com.azure.core.credential.TokenCredential;
@@ -6,18 +9,11 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.util.AuthorizationChallengeHandler;
 import com.azure.core.util.CoreUtils;
-import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Mono;
 
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Base64;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,7 +22,7 @@ import java.util.regex.Pattern;
  */
 public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenAuthenticationPolicy {
 
-    private final String defaultScope = "/.default";
+    private static final String defaultScope = "/.default";
     private String[] scopes;
 
     private static final Pattern AUTHENTICATION_CHALLENGE_PATTERN
