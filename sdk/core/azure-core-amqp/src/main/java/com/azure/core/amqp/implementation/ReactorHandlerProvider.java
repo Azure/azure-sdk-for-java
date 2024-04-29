@@ -50,6 +50,20 @@ public class ReactorHandlerProvider {
     }
 
     /**
+     * Creates a new instance with the reactor provider to handle {@link ReactorDispatcher ReactorDispatchers} to its
+     * generated handlers.
+     *
+     * @param provider The provider that creates and manages {@link Reactor} instances.
+     *
+     * @throws NullPointerException If {@code provider} is {@code null}.
+     * @deprecated use {@link ReactorHandlerProvider#ReactorHandlerProvider(ReactorProvider, Meter)} instead.
+     */
+    @Deprecated
+    public ReactorHandlerProvider(ReactorProvider provider) {
+        this(provider, null);
+    }
+
+    /**
      * Creates a new connection handler with the given {@code connectionId} and {@code hostname}.
      *
      * @param connectionId Identifier associated with this connection.
