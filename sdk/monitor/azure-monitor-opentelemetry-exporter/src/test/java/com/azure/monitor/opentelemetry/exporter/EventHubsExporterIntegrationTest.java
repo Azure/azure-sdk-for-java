@@ -42,10 +42,8 @@ public class EventHubsExporterIntegrationTest extends MonitorExporterClientTestB
     private static final String CONTAINER_NAME = System.getenv("STORAGE_CONTAINER_NAME");
 
     @Override
-    @BeforeEach
-    public void setupTest(TestInfo testInfo) {
+    public void beforeTest() {
         Assumptions.assumeFalse(getTestMode() == TestMode.PLAYBACK, "Skipping playback tests");
-        super.setupTest(testInfo);
     }
 
     @Test

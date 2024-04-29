@@ -28,6 +28,8 @@ import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionR
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.provider.Arguments;
 import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
@@ -80,6 +82,7 @@ public abstract class IntegrationTestBase extends TestBase {
         this.logger = logger;
     }
 
+    @BeforeEach
     @Override
     public void setupTest(TestContextManager testContextManager) {
         this.testContextManager = testContextManager;
@@ -95,6 +98,7 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     // These are overridden because we don't use the Interceptor Manager.
+    @AfterEach
     @Override
     public void teardownTest() {
         logger.info("========= TEARDOWN [{}] =========", testName);

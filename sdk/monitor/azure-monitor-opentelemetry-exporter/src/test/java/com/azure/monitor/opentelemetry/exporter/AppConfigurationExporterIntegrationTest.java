@@ -41,10 +41,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class AppConfigurationExporterIntegrationTest extends MonitorExporterClientTestBase {
 
     @Override
-    @BeforeEach
-    public void setupTest(TestInfo testInfo) {
+    public void beforeTest() {
         Assumptions.assumeFalse(getTestMode() == TestMode.PLAYBACK, "Skipping playback tests");
-        super.setupTest(testInfo);
     }
 
     @Test

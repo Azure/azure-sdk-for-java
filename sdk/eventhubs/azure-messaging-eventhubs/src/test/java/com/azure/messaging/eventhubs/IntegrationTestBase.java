@@ -23,6 +23,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
 import reactor.core.Disposable;
 import reactor.core.scheduler.Scheduler;
@@ -100,10 +101,11 @@ public abstract class IntegrationTestBase extends TestBase {
         scheduler.dispose();
     }
 
+    @BeforeEach
     @Override
     public void setupTest(TestContextManager testContextManager) {
-        System.out.printf("----- [%s]: Performing integration test set-up. -----%n",
-            testContextManager.getTrackerTestName());
+        logger.info("----- {}: Performing integration test set-up. -----",
+            testContextManager.getTestPlaybackRecordingName());
 
         testName = testContextManager.getTrackerTestName();
         skipIfNotRecordMode();
@@ -124,7 +126,7 @@ public abstract class IntegrationTestBase extends TestBase {
     // These are overridden because we don't use the Interceptor Manager.
     @Override
     public void teardownTest() {
-        System.out.printf("----- [%s]: Performing test clean-up. -----%n", testName);
+        logger.info("----- {}: Performing test clean-up. -----", testName);
         afterTest();
 
         logger.info("Disposing of subscriptions, consumers and clients.");
@@ -300,7 +302,7 @@ public abstract class IntegrationTestBase extends TestBase {
             return testEventData;
         }
 
-        System.out.println("--> Adding events to Event Hubs.");
+        logger.info("--> Adding events to Event Hubs.");
         final Map<String, IntegrationTestEventData> integrationData = new HashMap<>();
 
         try (EventHubProducerClient producer = new EventHubClientBuilder()
@@ -310,7 +312,7 @@ public abstract class IntegrationTestBase extends TestBase {
             .buildProducerClient()) {
 
             producer.getPartitionIds().forEach(partitionId -> {
-                System.out.printf("--> Adding events to partition: %s%n", partitionId);
+                logger.info("--> Adding events to partition: " + partitionId);
                 final PartitionProperties partitionProperties = producer.getPartitionProperties(partitionId);
                 final String messageId = UUID.randomUUID().toString();
                 final int numberOfEvents = 15;
@@ -324,7 +326,7 @@ public abstract class IntegrationTestBase extends TestBase {
             });
 
             if (integrationData.size() != NUMBER_OF_PARTITIONS) {
-                System.out.printf("--> WARNING: Number of partitions is different. Expected: %s. Actual %s%n",
+                logger.warning("--> WARNING: Number of partitions is different. Expected: {}. Actual {}",
                     NUMBER_OF_PARTITIONS, integrationData.size());
             }
 
