@@ -41,7 +41,7 @@ public final class ListsAvailablePoolsTests extends DevCenterClientTestBase {
         DevBoxHardwareProfile firstItemHardwareProfile = firstItem.getHardwareProfile();
         Assertions.assertNotNull(firstItemHardwareProfile);
         Assertions.assertEquals(8, firstItemHardwareProfile.getVCpus());
-        Assertions.assertEquals(32, firstItemHardwareProfile.getMemoryGb());
+        Assertions.assertEquals(32, firstItemHardwareProfile.getMemoryInGb());
         // verify property "hibernateSupport"
         Assertions.assertEquals(HibernateSupport.ENABLED, firstItem.getHibernateSupport());
         // verify property "storageProfile"
@@ -49,7 +49,7 @@ public final class ListsAvailablePoolsTests extends DevCenterClientTestBase {
         Assertions.assertNotNull(firstItemStorageProfile);
         OsDisk firstItemStorageProfileOsDisk = firstItemStorageProfile.getOsDisk();
         Assertions.assertNotNull(firstItemStorageProfileOsDisk);
-        Assertions.assertEquals(1024, firstItemStorageProfileOsDisk.getDiskSizeGb());
+        Assertions.assertEquals(1024, firstItemStorageProfileOsDisk.getDiskSizeInGb());
         // verify property "imageReference"
         DevBoxImageReference firstItemImageReference = firstItem.getImageReference();
         Assertions.assertNotNull(firstItemImageReference);
@@ -60,7 +60,7 @@ public final class ListsAvailablePoolsTests extends DevCenterClientTestBase {
         StopOnDisconnectConfiguration firstItemStopOnDisconnect = firstItem.getStopOnDisconnect();
         Assertions.assertNotNull(firstItemStopOnDisconnect);
         Assertions.assertEquals(StopOnDisconnectStatus.ENABLED, firstItemStopOnDisconnect.getStatus());
-        Assertions.assertEquals(60, firstItemStopOnDisconnect.getGracePeriodMinutes());
+        Assertions.assertEquals(60, firstItemStopOnDisconnect.getGracePeriodInMinutes());
         // verify property "healthStatus"
         Assertions.assertEquals(PoolHealthStatus.HEALTHY, firstItem.getHealthStatus());
     }
