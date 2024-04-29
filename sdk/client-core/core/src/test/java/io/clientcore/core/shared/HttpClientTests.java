@@ -1772,24 +1772,24 @@ public abstract class HttpClientTests {
         final int[] i = { 0 };
         service.get(getServerUri(isSecure()), new ServerSentEventListener() {
             @Override
-            public void onEvent(ServerSentEvent sse) throws IOException {
-                if (++i[0] == 1) {
+            public void onEvent(ServerSentEvent sse) {
+                i[0]++;
+                if (i[0] == 1) {
                     assertEquals("test stream", sse.getComment());
                     assertEquals("first event", sse.getData().get(0));
                     assertEquals("1", sse.getId());
-                    throw new IOException("test exception");
-                } else {
+                } else if (i[0] == 2) {
                     assertTimeout(Duration.ofMillis(100L), () -> assertEquals("2", sse.getId()));
                     assertEquals("This is the second message, it", sse.getData().get(0));
                     assertEquals("has two lines.", sse.getData().get(1));
                 }
-                if (++i[0] > 3) {
+                if (i[0] >= 3) {
                     fail("Should not have received more than two messages.");
                 }
             }
         }).close();
 
-        assertEquals(3, i[0]);
+        assertEquals(2, i[0]);
     }
 
     /**

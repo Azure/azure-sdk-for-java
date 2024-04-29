@@ -24,8 +24,8 @@ public final class ServerSentResult {
     }
 
     /**
-     * Get the data from the text event stream.
-     * @return The data from the text event stream.
+     * Get the accumulated event data from the text event stream.
+     * @return The accumulated event data from the text event stream.
      */
     public List<String> getData() {
         return data;

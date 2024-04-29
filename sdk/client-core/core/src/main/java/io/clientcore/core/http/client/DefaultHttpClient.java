@@ -51,8 +51,8 @@ import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
 import static io.clientcore.core.http.models.ResponseBodyMode.IGNORE;
 import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
 import static io.clientcore.core.util.ServerSentEventUtils.NO_LISTENER_ERROR_MESSAGE;
+import static io.clientcore.core.util.ServerSentEventUtils.attemptReconnect;
 import static io.clientcore.core.util.ServerSentEventUtils.processTextEventStream;
-import static io.clientcore.core.util.ServerSentEventUtils.retryReconnect;
 
 /**
  * HttpClient implementation using {@link HttpURLConnection} to send requests and receive responses.
@@ -222,10 +222,14 @@ class DefaultHttpClient implements HttpClient {
 
             serverSentResult = processTextEventStream(connection.getInputStream(), listener);
 
-            if (Thread.currentThread().isInterrupted() || !retryReconnect(serverSentResult, httpRequest)) {
+            if (Thread.currentThread().isInterrupted() || serverSentResult.getException() != null) {
+                // If the thread was interrupted and an exception occurred, emit listener onError.
                 listener.onError(serverSentResult.getException());
-            } else {
-                this.send(httpRequest).close();
+            } else if (attemptReconnect(serverSentResult, httpRequest)) {
+                // If the server sent a retry after header, attempt to reconnect.
+                connection.getInputStream().close();
+                // TODO: This should be handled by the retry policy.
+                return this.send(httpRequest);
             }
         }
 

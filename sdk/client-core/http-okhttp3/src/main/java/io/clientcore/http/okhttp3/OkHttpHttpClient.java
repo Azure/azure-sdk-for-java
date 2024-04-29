@@ -38,7 +38,7 @@ import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
 import static io.clientcore.core.http.models.ResponseBodyMode.IGNORE;
 import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
 import static io.clientcore.core.util.ServerSentEventUtils.processTextEventStream;
-import static io.clientcore.core.util.ServerSentEventUtils.retryReconnect;
+import static io.clientcore.core.util.ServerSentEventUtils.attemptReconnect;
 
 /**
  * HttpClient implementation for OkHttp.
@@ -149,10 +149,13 @@ class OkHttpHttpClient implements HttpClient {
             if (listener != null) {
                 serverSentResult = processTextEventStream(response.body().byteStream(), listener);
 
-                if (Thread.currentThread().isInterrupted() || !retryReconnect(serverSentResult, request)) {
+                if (Thread.currentThread().isInterrupted() || serverSentResult.getException() != null) {
+                    // If the thread was interrupted and an exception occurred, emit listener onError.
                     listener.onError(serverSentResult.getException());
-                } else {
-                    this.send(request).close();
+                } else if (attemptReconnect(serverSentResult, request)) {
+                    // If the server sent a retry after header, attempt to reconnect.
+                    // TODO: This should be handled by the retry policy.
+                    return this.send(request);
                 }
             } else {
                 throw LOGGER.logThrowableAsError(new RuntimeException(ServerSentEventUtils.NO_LISTENER_ERROR_MESSAGE));
