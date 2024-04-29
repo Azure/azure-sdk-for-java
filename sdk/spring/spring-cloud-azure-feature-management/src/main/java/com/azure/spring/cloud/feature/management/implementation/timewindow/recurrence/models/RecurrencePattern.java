@@ -15,7 +15,7 @@ public class RecurrencePattern {
     /**
      * The recurrence pattern type
      */
-    private RecurrencePatternType type;
+    private RecurrencePatternType type = RecurrencePatternType.DAILY;
 
     /**
      * The number of units between occurrences, where units can be in days, weeks, months, or years,

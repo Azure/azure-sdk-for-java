@@ -17,12 +17,8 @@ public final class RecurrenceConstants {
     public static final String RECURRENCE_PATTERN_INTERVAL = "Interval";
     public static final String RECURRENCE_PATTERN_DAYS_OF_WEEK = "DaysOfWeek";
     public static final String RECURRENCE_PATTERN_FIRST_DAY_OF_WEEK = "FirstDayOfWeek";
-    public static final String RECURRENCE_PATTERN_DAY_OF_MONTH = "DayOfMonth";
-    public static final String RECURRENCE_PATTERN_INDEX = "Index";
-    public static final String RECURRENCE_PATTERN_MONTH = "Month";
     public static final String RECURRENCE_RANGE = "Range";
     public static final String RECURRENCE_RANGE_TYPE = "Type";
-    public static final String RECURRENCE_RANGE_RECURRENCE_TIME_ZONE = "RecurrenceTimeZone";
     public static final String RECURRENCE_RANGE_NUMBER_OF_OCCURRENCES = "NumberOfOccurrences";
     public static final String RECURRENCE_RANGE_EDN_DATE = "EndDate";
 

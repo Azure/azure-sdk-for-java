@@ -52,8 +52,8 @@ public class TimeWindowUtils {
 
         final int firstDayNum = TimeWindowUtils.convertToWeekDayNumber(firstDayOfWeek);
         Collections.sort(result, (a, b) -> {
-            int aIndex = (TimeWindowUtils.convertToWeekDayNumber(a) - firstDayNum) % 7;
-            int bIndex = (TimeWindowUtils.convertToWeekDayNumber(b) - firstDayNum) % 7;
+            int aIndex = (TimeWindowUtils.convertToWeekDayNumber(a) - firstDayNum + RecurrenceConstants.DAYS_PER_WEEK) % 7;
+            int bIndex = (TimeWindowUtils.convertToWeekDayNumber(b) - firstDayNum + RecurrenceConstants.DAYS_PER_WEEK) % 7;
             return aIndex - bIndex;
         });
         return result;

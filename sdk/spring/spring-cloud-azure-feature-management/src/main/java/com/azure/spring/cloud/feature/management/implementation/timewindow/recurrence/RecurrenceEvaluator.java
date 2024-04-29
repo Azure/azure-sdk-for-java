@@ -131,12 +131,17 @@ public class RecurrenceEvaluator {
         if (now.isBefore(dayWithMinOffset)) {  // move to last occurrence
             mostRecentOccurrence = firstDayOfMostRecentOccurrence.minusDays(interval * RecurrenceConstants.DAYS_PER_WEEK).plusDays(maxDayOffset);
         } else {
-            for (int i = sortedDaysOfWeek.indexOf(dayWithMinOffset.getDayOfWeek()) + 1;
-                 i < sortedDaysOfWeek.size() && !now.isBefore(dayWithMinOffset); i++) {
-                mostRecentOccurrence = dayWithMinOffset;
-                numberOfOccurrences++;
+            mostRecentOccurrence = dayWithMinOffset;
+            numberOfOccurrences++;
+
+            for (int i = sortedDaysOfWeek.indexOf(dayWithMinOffset.getDayOfWeek()) + 1; i < sortedDaysOfWeek.size(); i++) {
                 dayWithMinOffset = firstDayOfMostRecentOccurrence.plusDays(
                     TimeWindowUtils.passingDaysOfWeek(sortedDaysOfWeek.get(i), pattern.getFirstDayOfWeek()));
+                if (now.isAfter(dayWithMinOffset)) {
+                    break;
+                }
+                mostRecentOccurrence = dayWithMinOffset;
+                numberOfOccurrences++;
             }
         }
         return new OccurrenceInfo(mostRecentOccurrence, numberOfOccurrences);
