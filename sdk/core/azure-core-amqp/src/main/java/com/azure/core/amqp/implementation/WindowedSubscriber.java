@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.servicebus;
+package com.azure.core.amqp.implementation;
 
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
@@ -43,7 +43,7 @@ import java.util.function.Function;
  *
  * @param <T> the type of items in the window.
  */
-final class WindowedSubscriber<T> extends BaseSubscriber<T> {
+public final class WindowedSubscriber<T> extends BaseSubscriber<T> {
     private static final String WORK_ID_KEY = "workId";
     private static final String UPSTREAM_REQUESTED_KEY = "requested";
     private static final String DIFFERENCE_KEY = "difference";
@@ -62,25 +62,21 @@ final class WindowedSubscriber<T> extends BaseSubscriber<T> {
 
     private volatile Subscription s;
     @SuppressWarnings("rawtypes")
-    private static final AtomicReferenceFieldUpdater<WindowedSubscriber, Subscription> S =
-        AtomicReferenceFieldUpdater.newUpdater(WindowedSubscriber.class,
-            Subscription.class,
-            "s");
+    private static final AtomicReferenceFieldUpdater<WindowedSubscriber, Subscription> S
+        = AtomicReferenceFieldUpdater.newUpdater(WindowedSubscriber.class, Subscription.class, "s");
     private volatile long requested;
     @SuppressWarnings("rawtypes")
-    private static final AtomicLongFieldUpdater<WindowedSubscriber> REQUESTED =
-        AtomicLongFieldUpdater.newUpdater(WindowedSubscriber.class, "requested");
+    private static final AtomicLongFieldUpdater<WindowedSubscriber> REQUESTED
+        = AtomicLongFieldUpdater.newUpdater(WindowedSubscriber.class, "requested");
     private volatile int wip;
     @SuppressWarnings("rawtypes")
-    private static final AtomicIntegerFieldUpdater<WindowedSubscriber> WIP =
-        AtomicIntegerFieldUpdater.newUpdater(WindowedSubscriber.class, "wip");
+    private static final AtomicIntegerFieldUpdater<WindowedSubscriber> WIP
+        = AtomicIntegerFieldUpdater.newUpdater(WindowedSubscriber.class, "wip");
     private volatile boolean done;
     private volatile Throwable error;
     @SuppressWarnings("rawtypes")
-    private static final AtomicReferenceFieldUpdater<WindowedSubscriber, Throwable> ERROR =
-        AtomicReferenceFieldUpdater.newUpdater(WindowedSubscriber.class,
-            Throwable.class,
-            "error");
+    private static final AtomicReferenceFieldUpdater<WindowedSubscriber, Throwable> ERROR
+        = AtomicReferenceFieldUpdater.newUpdater(WindowedSubscriber.class, Throwable.class, "error");
 
     /**
      * Creates the subscriber to split upstream sequence into a series of windows.
@@ -89,7 +85,8 @@ final class WindowedSubscriber<T> extends BaseSubscriber<T> {
      * @param terminatedMessage the message to include in the error when closing a window after the subscriber termination.
      * @param options the optional configurations for the subscriber.
      */
-    WindowedSubscriber(Map<String, Object> loggingContext, String terminatedMessage, WindowedSubscriberOptions<T> options) {
+    public WindowedSubscriber(Map<String, Object> loggingContext, String terminatedMessage,
+        WindowedSubscriberOptions<T> options) {
         this.loggingContext = Objects.requireNonNull(loggingContext, "'loggingContext' cannot be null.");
         Objects.requireNonNull(terminatedMessage, "'terminatedMessage' cannot be null.");
         this.terminatedMessage = terminatedMessage + " (Reason: %s)";
@@ -130,7 +127,8 @@ final class WindowedSubscriber<T> extends BaseSubscriber<T> {
             throw logger.logExceptionAsError(new NullPointerException("'windowTimeout' cannot be null."));
         }
         if (windowTimeout.isNegative() || windowTimeout.isZero()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'windowTimeout' period must be strictly positive."));
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException("'windowTimeout' period must be strictly positive."));
         }
 
         final long workId = idGenerator.getAndIncrement();
@@ -226,7 +224,7 @@ final class WindowedSubscriber<T> extends BaseSubscriber<T> {
     private void drainLoop() {
         int missed = 1;
         // Begin: drain-loop
-        for (; ;) {
+        for (;;) {
             if (isDoneOrCanceled()) {
                 if (cleanCloseStreamingWindowOnTerminate) {
                     WindowWork<T> w0 = workQueue.peek();
@@ -249,7 +247,8 @@ final class WindowedSubscriber<T> extends BaseSubscriber<T> {
                         } else if (w0.isCanceled()) {
                             w0.terminate(WorkTerminalState.CANCELED);
                         } else {
-                            throw w0.getLogger().log(new IllegalStateException("work with unexpected state in timeout-cancel queue."));
+                            throw w0.getLogger()
+                                .log(new IllegalStateException("work with unexpected state in timeout-cancel queue."));
                         }
                     }
                 }
@@ -392,9 +391,8 @@ final class WindowedSubscriber<T> extends BaseSubscriber<T> {
         final long workDemand = w.getDemand();
         final long difference = workDemand - requested;
 
-        final LoggingEventBuilder logger = w.getLogger()
-            .addKeyValue(UPSTREAM_REQUESTED_KEY, requested)
-            .addKeyValue(DIFFERENCE_KEY, difference);
+        final LoggingEventBuilder logger
+            = w.getLogger().addKeyValue(UPSTREAM_REQUESTED_KEY, requested).addKeyValue(DIFFERENCE_KEY, difference);
 
         if (difference > 0) {
             Operators.addCap(REQUESTED, this, difference);
@@ -434,7 +432,7 @@ final class WindowedSubscriber<T> extends BaseSubscriber<T> {
      *
      * @param <T> the type of items in the windows that {@link WindowedSubscriber} produces.
      */
-    static final class WindowedSubscriberOptions<T> {
+    public static final class WindowedSubscriberOptions<T> {
         private Consumer<T> releaser;
         private Duration nextItemTimout;
         private Function<Flux<T>, Flux<T>> windowDecorator;
@@ -443,7 +441,7 @@ final class WindowedSubscriber<T> extends BaseSubscriber<T> {
         /**
          * Creates the optional configurations for {@link WindowedSubscriber}.
          */
-        WindowedSubscriberOptions() {
+        public WindowedSubscriberOptions() {
             this.releaser = null;
             this.nextItemTimout = null;
             this.windowDecorator = null;
@@ -499,7 +497,7 @@ final class WindowedSubscriber<T> extends BaseSubscriber<T> {
          * @param releaser the callback to drop the items in the absence of a window.
          * @return the updated {@link WindowedSubscriberOptions} object.
          */
-        WindowedSubscriberOptions<T> setReleaser(Consumer<T> releaser) {
+        public WindowedSubscriberOptions<T> setReleaser(Consumer<T> releaser) {
             this.releaser = Objects.requireNonNull(releaser, "'releaser' cannot be null.");
             return this;
         }
@@ -514,7 +512,7 @@ final class WindowedSubscriber<T> extends BaseSubscriber<T> {
          *  @param nextItemTimout the next window item timeout.
          * @return the updated {@link WindowedSubscriberOptions} object.
          */
-        WindowedSubscriberOptions<T> setNextItemTimeout(Duration nextItemTimout) {
+        public WindowedSubscriberOptions<T> setNextItemTimeout(Duration nextItemTimout) {
             this.nextItemTimout = Objects.requireNonNull(nextItemTimout, "'nextItemTimout' cannot be null.");
             return this;
         }
@@ -525,7 +523,7 @@ final class WindowedSubscriber<T> extends BaseSubscriber<T> {
          * @param windowDecorator the window decorator.
          * @return the updated {@link WindowedSubscriberOptions} object.
          */
-        WindowedSubscriberOptions<T> setWindowDecorator(Function<Flux<T>, Flux<T>> windowDecorator) {
+        public WindowedSubscriberOptions<T> setWindowDecorator(Function<Flux<T>, Flux<T>> windowDecorator) {
             this.windowDecorator = Objects.requireNonNull(windowDecorator, "'windowDecorator' cannot be null.");
             return this;
         }
@@ -562,7 +560,7 @@ final class WindowedSubscriber<T> extends BaseSubscriber<T> {
          *
          * @return the updated {@link WindowedSubscriberOptions} object.
          */
-        WindowedSubscriberOptions<T> cleanCloseStreamingWindowOnTerminate() {
+        public WindowedSubscriberOptions<T> cleanCloseStreamingWindowOnTerminate() {
             this.cleanCloseStreamingWindowOnTerminate = true;
             return this;
         }
@@ -721,17 +719,16 @@ final class WindowedSubscriber<T> extends BaseSubscriber<T> {
             final Function<Flux<T>, Flux<T>> decorator = parent.windowDecorator;
             final Flux<T> flux = decorator != null ? decorator.apply(sink.asFlux()) : sink.asFlux();
             if (drainOnCancel) {
-                return flux
-                    .doFinally(s -> {
-                        if (s == SignalType.CANCEL) {
-                            isCanceled.set(true);
-                            final WindowWork<T> w = this;
-                            // It's very likely that the cancel signaling happened from application (user) thread.
-                            // Offload the responsibility of drain-loop run (for rolling to next work) to worker thread,
-                            // and free up the application thread.
-                            Schedulers.boundedElastic().schedule(() -> parent.postTimedOutOrCanceledWork(w));
-                        }
-                    });
+                return flux.doFinally(s -> {
+                    if (s == SignalType.CANCEL) {
+                        isCanceled.set(true);
+                        final WindowWork<T> w = this;
+                        // It's very likely that the cancel signaling happened from application (user) thread.
+                        // Offload the responsibility of drain-loop run (for rolling to next work) to worker thread,
+                        // and free up the application thread.
+                        Schedulers.boundedElastic().schedule(() -> parent.postTimedOutOrCanceledWork(w));
+                    }
+                });
             } else {
                 return flux;
             }
@@ -768,8 +765,7 @@ final class WindowedSubscriber<T> extends BaseSubscriber<T> {
             if (emitResult == Sinks.EmitResult.OK) {
                 return EmitNextResult.OK;
             } else {
-                withPendingKey(logger.atError()).addKeyValue(EMIT_RESULT_KEY, emitResult)
-                    .log("Could not emit-next.");
+                withPendingKey(logger.atError()).addKeyValue(EMIT_RESULT_KEY, emitResult).log("Could not emit-next.");
                 return EmitNextResult.SINK_ERROR;
             }
         }
@@ -790,17 +786,13 @@ final class WindowedSubscriber<T> extends BaseSubscriber<T> {
                 timers.dispose();
             } finally {
                 if (terminalState == WorkTerminalState.SINK_ERROR) {
-                    withPendingKey(logger.atWarning())
-                        .addKeyValue("reason", "sink-error")
-                        .log(TERMINATING_WORK);
+                    withPendingKey(logger.atWarning()).addKeyValue("reason", "sink-error").log(TERMINATING_WORK);
                     return;
                 }
 
                 if (terminalState == WorkTerminalState.CANCELED) {
                     assertCondition(isCanceled(), terminalState);
-                    withPendingKey(logger.atWarning())
-                        .addKeyValue("reason", "sink-canceled")
-                        .log(TERMINATING_WORK);
+                    withPendingKey(logger.atWarning()).addKeyValue("reason", "sink-canceled").log(TERMINATING_WORK);
                     return;
                 }
 
@@ -824,13 +816,11 @@ final class WindowedSubscriber<T> extends BaseSubscriber<T> {
                     final TimeoutReason reason = timeoutReason.get();
                     final Throwable e = reason.getError();
                     if (e != null) {
-                        withPendingKey(logger.atWarning())
-                            .addKeyValue("reason", reason.getMessage())
+                        withPendingKey(logger.atWarning()).addKeyValue("reason", reason.getMessage())
                             .log(TERMINATING_WORK, e);
                         closeWindow(e);
                     } else {
-                        withPendingKey(logger.atVerbose())
-                            .addKeyValue("reason", reason.getMessage())
+                        withPendingKey(logger.atVerbose()).addKeyValue("reason", reason.getMessage())
                             .log(TERMINATING_WORK);
                         closeWindow();
                     }
@@ -847,8 +837,7 @@ final class WindowedSubscriber<T> extends BaseSubscriber<T> {
 
                 if (terminalState == WorkTerminalState.PARENT_TERMINAL_CLEAN_CLOSE) {
                     assertCondition(parent.isDoneOrCanceled() && isStreaming(), terminalState);
-                    withPendingKey(logger.atWarning())
-                        .addKeyValue("reason", "terminal-clean-close")
+                    withPendingKey(logger.atWarning()).addKeyValue("reason", "terminal-clean-close")
                         .log(TERMINATING_WORK);
                     closeWindow();
                     return;
@@ -865,8 +854,7 @@ final class WindowedSubscriber<T> extends BaseSubscriber<T> {
         private Disposable beginTimeoutTimer() {
             final Disposable disposable = Mono.delay(timeout)
                 .publishOn(Schedulers.boundedElastic())
-                .subscribe(__ -> onTimeout(TimeoutReason.TIMEOUT),
-                    e -> onTimeout(TimeoutReason.timeoutErrored(e)));
+                .subscribe(__ -> onTimeout(TimeoutReason.TIMEOUT), e -> onTimeout(TimeoutReason.timeoutErrored(e)));
             return disposable;
         }
 
@@ -1022,7 +1010,8 @@ final class WindowedSubscriber<T> extends BaseSubscriber<T> {
          */
         private static final class TimeoutReason {
             static final TimeoutReason TIMEOUT = new TimeoutReason("Timeout occurred.", null);
-            static final TimeoutReason TIMEOUT_NEXT_ITEM = new TimeoutReason("Timeout between the messages occurred.", null);
+            static final TimeoutReason TIMEOUT_NEXT_ITEM
+                = new TimeoutReason("Timeout between the messages occurred.", null);
 
             private final String message;
             private final Throwable error;
