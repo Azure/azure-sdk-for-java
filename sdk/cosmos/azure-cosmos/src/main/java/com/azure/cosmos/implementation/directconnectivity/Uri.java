@@ -60,10 +60,12 @@ public class Uri {
 
     public void setPrimary(boolean primary) {
         isPrimary = primary;
-        this.healthStatusTuple.updateAndGet(previousStatusTuple -> {
-            previousStatusTuple.diagnosticString = previousStatusTuple.diagnosticString.replace(SECONDARY, PRIMARY);
-            return previousStatusTuple;
-        });
+        if (primary) {
+            this.healthStatusTuple.updateAndGet(previousStatusTuple -> {
+                previousStatusTuple.diagnosticString = previousStatusTuple.diagnosticString.replace(SECONDARY, PRIMARY);
+                return previousStatusTuple;
+            });
+        }
     }
 
     /***
@@ -143,7 +145,7 @@ public class Uri {
                         status, previousStatusTuple, newStatus);
             }
 
-            return new HealthStatusAndDiagnosticStringTuple(this.uri, newStatus, isPrimary);
+            return new HealthStatusAndDiagnosticStringTuple(this.uri, newStatus, this.isPrimary);
         });
     }
 
