@@ -77,7 +77,9 @@ def generate(
         )
     logging.info(command)
     if os.system(command) != 0:
-        logging.error('[GENERATE] Autorest fail')
+        error_message = '[GENERATE][Error] Autorest fail'
+        logging.error(error_message)
+        print(error_message, file=sys.stderr)
         return False
 
     group = GROUP_ID
@@ -93,7 +95,9 @@ def compile_package(sdk_root, module) -> bool:
     if os.system(
             'mvn --no-transfer-progress clean verify -f {0}/pom.xml -Dmaven.javadoc.skip -Dgpg.skip -DskipTestCompile -Djacoco.skip -Drevapi.skip -pl {1}:{2} -am'.format(
                 sdk_root, GROUP_ID, module)) != 0:
-        logging.error('[COMPILE] Maven build fail')
+        error_message = '[COMPILE] Maven build fail'
+        logging.error(error_message)
+        print(error_message, file=sys.stderr)
         return False
     return True
 
@@ -321,6 +325,8 @@ def generate_typespec_project(
             tsp_project,
             re.IGNORECASE
         )
+
+        tspconfig_valid = True
         if url_match:
             # generate from remote url
             cmd = ['npx', 'tsp-client', 'init', '--debug',
@@ -328,20 +334,25 @@ def generate_typespec_project(
         else:
             # sdk automation
             tsp_dir = os.path.join(spec_root, tsp_project) if spec_root else tsp_project
+            tspconfig_valid = validate_tspconfig(tsp_dir)
             repo = remove_prefix(repo_url, 'https://github.com/')
             cmd = ['npx', 'tsp-client', 'init', '--debug',
                    '--tsp-config', tsp_dir,
                    '--commit', head_sha,
                    '--repo', repo,
                    '--local-spec-repo', tsp_dir]
-        check_call(cmd, sdk_root)
 
-        sdk_folder = find_sdk_folder(sdk_root)
-        logging.info('SDK folder: ' + sdk_folder)
-        if sdk_folder:
-            succeeded = True
+        if tspconfig_valid:
+            check_call(cmd, sdk_root)
+
+            sdk_folder = find_sdk_folder(sdk_root)
+            logging.info('SDK folder: ' + sdk_folder)
+            if sdk_folder:
+                succeeded = True
     except subprocess.CalledProcessError as error:
-        logging.error(f'tsp-client init fail: {error}')
+        error_message = f'[GENERATE][Error] tsp-client init fail: {error}'
+        logging.error(error_message)
+        print(error_message, file=sys.stderr)
 
     if succeeded:
         # check require_sdk_integration
@@ -394,3 +405,9 @@ def find_sdk_folder(sdk_root: str):
     check_call(cmd, sdk_root)
 
     return sdk_folder
+
+
+def validate_tspconfig(tsp_dir: str) -> bool:
+    if not tsp_dir.endswith('tspconfig.yaml'):
+        tsp_dir = os.path.join(tsp_dir, 'tspconfig.yaml')
+    return True
