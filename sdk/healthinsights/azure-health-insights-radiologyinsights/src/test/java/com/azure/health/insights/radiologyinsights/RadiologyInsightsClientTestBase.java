@@ -66,7 +66,7 @@ abstract class RadiologyInsightsClientTestBase extends TestProxyTestBase {
 
         RadiologyInsightsClientBuilder builder = new RadiologyInsightsClientBuilder().endpoint(endpoint);
         if (apiKey != null && !apiKey.equals(FAKE_API_KEY)) {
-        	builder = builder.credential(new AzureKeyCredential(apiKey));
+            builder = builder.credential(new AzureKeyCredential(apiKey));
         }
 
         System.out.println("Test mode: " + getTestMode());
