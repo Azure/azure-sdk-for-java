@@ -6,7 +6,6 @@ package com.azure.storage.blob.specialized;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpRange;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
@@ -34,6 +33,7 @@ import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
 import org.junit.jupiter.api.BeforeEach;
@@ -1677,19 +1677,17 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @LiveOnly
     @Test
-    public void audienceError() {
-        PageBlobAsyncClient aadBlob = instrument(new SpecializedBlobClientBuilder()
-            .endpoint(bc.getBlobUrl())
-            .credential(new MockTokenCredential())
-            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience")))
+    public void audienceErrorBearerChallengeRetry() {
+        PageBlobAsyncClient aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
+            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience"))
             .buildPageBlobAsyncClient();
 
-        StepVerifier.create(aadBlob.exists())
-            .verifyErrorSatisfies(r -> {
-                BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
-                assertTrue(e.getErrorCode() == BlobErrorCode.INVALID_AUTHENTICATION_INFO);
-            });
+        StepVerifier.create(aadBlob.getProperties())
+            .assertNext(r -> assertNotNull(r))
+            .verifyComplete();
     }
 
     @Test

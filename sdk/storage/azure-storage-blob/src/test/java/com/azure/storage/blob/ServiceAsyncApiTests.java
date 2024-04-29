@@ -1204,19 +1204,17 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @LiveOnly
     @Test
-    public void audienceError() {
-        BlobServiceAsyncClient aadService = instrument(new BlobServiceClientBuilder()
-            .endpoint(ccAsync.getBlobContainerUrl())
-            .credential(new MockTokenCredential())
-            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience")))
-            .buildAsyncClient();
+    public void audienceErrorBearerChallengeRetry() {
+        BlobServiceAsyncClient aadService = getServiceClientBuilderWithTokenCredential(ccAsync.getBlobContainerUrl())
+                .audience(BlobAudience.createBlobServiceAccountAudience("badAudience"))
+                .buildAsyncClient();
 
         StepVerifier.create(aadService.getProperties())
-            .verifyErrorSatisfies(r -> {
-                BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
-                assertTrue(e.getErrorCode() == BlobErrorCode.INVALID_AUTHENTICATION_INFO);
-            });
+            .assertNext(r -> assertNotNull(r))
+            .verifyComplete();
     }
 
     @Test

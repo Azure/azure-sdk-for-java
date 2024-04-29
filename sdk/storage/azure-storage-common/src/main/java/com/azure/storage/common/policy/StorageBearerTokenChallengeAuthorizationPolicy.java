@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
  */
 public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenAuthenticationPolicy {
 
-    private static final String defaultScope = "/.default";
+    private static final String DEFAULT_SCOPE = "/.default";
     private String[] scopes;
 
     private static final Pattern AUTHENTICATION_CHALLENGE_PATTERN
@@ -70,11 +70,10 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
 
             String scope = challenges.get("resource_id=");
             if (scope != null) {
-                scope += defaultScope;
+                scope += DEFAULT_SCOPE;
                 scopes = new String[] { scope };
                 scopes = getScopes(context, scopes);
-                setAuthorizationHeaderSync(context, new TokenRequestContext().addScopes(scopes));
-                return Mono.just(true);
+                return setAuthorizationHeader(context, new TokenRequestContext().addScopes(scopes)).thenReturn(true);
             }
             return Mono.just(false);
         });
@@ -87,7 +86,7 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
 
         String scope = challenges.get("resource_id=");
         if (scope != null) {
-            scope += defaultScope;
+            scope += DEFAULT_SCOPE;
             scopes = new String[] { scope };
             scopes = getScopes(context, scopes);
             setAuthorizationHeaderSync(context, new TokenRequestContext().addScopes(scopes));

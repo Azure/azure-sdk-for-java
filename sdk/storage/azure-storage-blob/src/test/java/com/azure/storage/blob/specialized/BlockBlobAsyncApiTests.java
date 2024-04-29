@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
@@ -2650,19 +2649,17 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .verifyComplete();
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @LiveOnly
     @Test
-    public void audienceError() {
-        BlockBlobAsyncClient aadBlob = instrument(new SpecializedBlobClientBuilder()
-            .endpoint(blockBlobAsyncClient.getBlobUrl())
-            .credential(new MockTokenCredential())
-            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience")))
+    public void audienceErrorBearerChallengeRetry() {
+        BlockBlobAsyncClient aadBlob = getSpecializedBuilderWithTokenCredential(blockBlobAsyncClient.getBlobUrl())
+            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience"))
             .buildBlockBlobAsyncClient();
 
-        StepVerifier.create(aadBlob.exists())
-            .verifyErrorSatisfies(r -> {
-                BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
-                assertTrue(e.getErrorCode() == BlobErrorCode.INVALID_AUTHENTICATION_INFO);
-            });
+        StepVerifier.create(aadBlob.getProperties())
+            .assertNext(r -> assertNotNull(r))
+            .verifyComplete();
     }
 
     @Test

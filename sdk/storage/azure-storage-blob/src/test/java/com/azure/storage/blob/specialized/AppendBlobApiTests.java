@@ -5,7 +5,6 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobServiceVersion;
@@ -25,6 +24,7 @@ import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
 import org.junit.jupiter.api.BeforeEach;
@@ -851,16 +851,15 @@ public class AppendBlobApiTests extends BlobTestBase {
         assertTrue(aadBlob.exists());
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @LiveOnly
     @Test
-    public void audienceError() {
-        AppendBlobClient aadBlob = instrument(new SpecializedBlobClientBuilder()
-            .endpoint(bc.getBlobUrl())
-            .credential(new MockTokenCredential())
-            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience")))
+    public void audienceErrorBearerChallengeRetry() {
+        AppendBlobClient aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
+            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience"))
             .buildAppendBlobClient();
 
-        BlobStorageException e = assertThrows(BlobStorageException.class, () -> aadBlob.exists());
-        assertTrue(e.getErrorCode() == BlobErrorCode.INVALID_AUTHENTICATION_INFO);
+        assertNotNull(aadBlob.getProperties());
     }
 
     @Test

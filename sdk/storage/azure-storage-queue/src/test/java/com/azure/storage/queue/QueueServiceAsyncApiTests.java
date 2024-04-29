@@ -5,6 +5,8 @@ package com.azure.storage.queue;
 
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.queue.models.QueueAnalyticsLogging;
 import com.azure.storage.queue.models.QueueAudience;
 import com.azure.storage.queue.models.QueueErrorCode;
@@ -226,17 +228,17 @@ public class QueueServiceAsyncApiTests extends QueueTestBase {
             .verifyComplete();
     }
 
+    @RequiredServiceVersion(clazz = QueueServiceVersion.class, min = "2024-08-04")
+    @LiveOnly
     @Test
-    public void audienceError() {
+    public void audienceErrorBearerChallengeRetry() {
         QueueServiceAsyncClient aadService = getOAuthServiceClientBuilder(primaryQueueServiceAsyncClient.getQueueServiceUrl())
             .audience(QueueAudience.createQueueServiceAccountAudience("badaudience"))
             .buildAsyncClient();
 
         StepVerifier.create(aadService.getProperties())
-            .verifyErrorSatisfies(r -> {
-                QueueStorageException e = assertInstanceOf(QueueStorageException.class, r);
-                assertEquals(QueueErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
-            });
+                .assertNext(r -> assertNotNull(r))
+                .verifyComplete();
     }
 
     @Test
