@@ -9,8 +9,7 @@ package com.azure.resourcemanager.datafactory.generated;
  */
 public final class ChangeDataCaptureListByFactorySamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
-     * ChangeDataCapture_ListByFactory.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ChangeDataCapture_ListByFactory.json
      */
     /**
      * Sample code: ChangeDataCapture_ListByFactory.
@@ -19,7 +18,7 @@ public final class ChangeDataCaptureListByFactorySamples {
      */
     public static void
         changeDataCaptureListByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.changeDataCaptures().listByFactory("exampleResourceGroup", "exampleFactoryName",
-            com.azure.core.util.Context.NONE);
+        manager.changeDataCaptures()
+            .listByFactory("exampleResourceGroup", "exampleFactoryName", com.azure.core.util.Context.NONE);
     }
 }

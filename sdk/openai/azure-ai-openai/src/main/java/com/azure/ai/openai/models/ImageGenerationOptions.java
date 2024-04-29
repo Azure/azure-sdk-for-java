@@ -19,7 +19,7 @@ public final class ImageGenerationOptions {
      */
     @Generated
     @JsonProperty(value = "prompt")
-    private String prompt;
+    private final String prompt;
 
     /*
      * The number of images to generate.
@@ -173,8 +173,7 @@ public final class ImageGenerationOptions {
     }
 
     /*
-     * The model name or Azure OpenAI model deployment name to use for image generation. If not specified, dall-e-2
-     * will be
+     * The model name or Azure OpenAI model deployment name to use for image generation. If not specified, dall-e-2 will be
      * inferred as a default.
      */
     @Generated

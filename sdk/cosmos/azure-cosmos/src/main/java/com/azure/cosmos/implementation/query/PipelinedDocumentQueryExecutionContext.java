@@ -2,18 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.ObjectNodeMap;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Flux;
 
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -31,9 +31,10 @@ public class PipelinedDocumentQueryExecutionContext<T>
         IDocumentQueryExecutionComponent<Document> pipelinedComponent,
         int actualPageSize,
         QueryInfo queryInfo,
-        Function<JsonNode, T> factoryMethod) {
+        CosmosItemSerializer itemSerializer,
+        Class<T> classOfT) {
 
-        super(actualPageSize, queryInfo, factoryMethod);
+        super(actualPageSize, queryInfo, itemSerializer, classOfT);
 
         this.component = pipelinedComponent;
     }
@@ -53,7 +54,7 @@ public class PipelinedDocumentQueryExecutionContext<T>
                 CosmosQueryRequestOptions orderByCosmosQueryRequestOptions =
                     qryOptAccessor.clone(requestOptions);
                 ModelBridgeInternal.setQueryRequestOptionsContinuationToken(orderByCosmosQueryRequestOptions, continuationToken);
-                qryOptAccessor.getImpl(orderByCosmosQueryRequestOptions).setItemFactoryMethod(null);
+                qryOptAccessor.getImpl(orderByCosmosQueryRequestOptions).setCustomItemSerializer(null);
 
                 documentQueryParams.setCosmosQueryRequestOptions(orderByCosmosQueryRequestOptions);
 
@@ -64,7 +65,7 @@ public class PipelinedDocumentQueryExecutionContext<T>
             createBaseComponentFunction = (continuationToken, documentQueryParams) -> {
                 CosmosQueryRequestOptions parallelCosmosQueryRequestOptions =
                     qryOptAccessor.clone(requestOptions);
-                qryOptAccessor.getImpl(parallelCosmosQueryRequestOptions).setItemFactoryMethod(null);
+                qryOptAccessor.getImpl(parallelCosmosQueryRequestOptions).setCustomItemSerializer(null);
                 ModelBridgeInternal.setQueryRequestOptionsContinuationToken(parallelCosmosQueryRequestOptions, continuationToken);
 
                 documentQueryParams.setCosmosQueryRequestOptions(parallelCosmosQueryRequestOptions);
@@ -160,7 +161,8 @@ public class PipelinedDocumentQueryExecutionContext<T>
         IDocumentQueryClient client,
         PipelinedDocumentQueryParams<T> initParams,
         int pageSize,
-        Function<JsonNode, T> factoryMethod,
+        CosmosItemSerializer itemSerializer,
+        Class<T> classOfT,
         DocumentCollection collection) {
 
         // Use nested callback pattern to unwrap the continuation token and query params at each level.
@@ -170,13 +172,12 @@ public class PipelinedDocumentQueryExecutionContext<T>
         QueryInfo queryInfo = initParams.getQueryInfo();
         CosmosQueryRequestOptions cosmosQueryRequestOptions = initParams.getCosmosQueryRequestOptions();
 
-
         return createPipelineComponentFunction
             .apply(
                 ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(cosmosQueryRequestOptions),
                 initParams.convertGenericType(Document.class))
             .map(c -> new PipelinedDocumentQueryExecutionContext<>(
-                c, pageSize, queryInfo, factoryMethod));
+                c, pageSize, queryInfo, itemSerializer, classOfT));
     }
 
     @Override
@@ -188,7 +189,7 @@ public class PipelinedDocumentQueryExecutionContext<T>
                 .FeedResponseHelper
                 .getFeedResponseAccessor().convertGenericType(
                     documentFeedResponse,
-                    (document) -> this.factoryMethod.apply(document.getPropertyBag())
+                    (document) -> this.itemSerializer.deserialize(new ObjectNodeMap(document.getPropertyBag()), this.classOfT)
                 )
             );
     }

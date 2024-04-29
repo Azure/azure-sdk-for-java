@@ -9,8 +9,7 @@ package com.azure.resourcemanager.datafactory.generated;
  */
 public final class DatasetsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Datasets_Get.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Datasets_Get.json
      */
     /**
      * Sample code: Datasets_Get.
@@ -18,7 +17,8 @@ public final class DatasetsGetSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void datasetsGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.datasets().getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleDataset", null,
-            com.azure.core.util.Context.NONE);
+        manager.datasets()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleDataset", null,
+                com.azure.core.util.Context.NONE);
     }
 }

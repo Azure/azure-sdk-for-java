@@ -13,8 +13,7 @@ import java.util.Arrays;
  */
 public final class ExposureControlQueryFeatureValuesByFactorySamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
-     * ExposureControl_QueryFeatureValuesByFactory.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ExposureControl_QueryFeatureValuesByFactory.json
      */
     /**
      * Sample code: ExposureControl_QueryFeatureValuesByFactory.
@@ -23,11 +22,12 @@ public final class ExposureControlQueryFeatureValuesByFactorySamples {
      */
     public static void
         exposureControlQueryFeatureValuesByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.exposureControls().queryFeatureValuesByFactoryWithResponse("exampleResourceGroup", "exampleFactoryName",
-            new ExposureControlBatchRequest().withExposureControlRequests(Arrays.asList(
-                new ExposureControlRequest().withFeatureName("ADFIntegrationRuntimeSharingRbac")
-                    .withFeatureType("Feature"),
-                new ExposureControlRequest().withFeatureName("ADFSampleFeature").withFeatureType("Feature"))),
-            com.azure.core.util.Context.NONE);
+        manager.exposureControls()
+            .queryFeatureValuesByFactoryWithResponse("exampleResourceGroup", "exampleFactoryName",
+                new ExposureControlBatchRequest().withExposureControlRequests(Arrays.asList(
+                    new ExposureControlRequest().withFeatureName("ADFIntegrationRuntimeSharingRbac")
+                        .withFeatureType("Feature"),
+                    new ExposureControlRequest().withFeatureName("ADFSampleFeature").withFeatureType("Feature"))),
+                com.azure.core.util.Context.NONE);
     }
 }

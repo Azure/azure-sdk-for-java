@@ -19,8 +19,7 @@ public final class UsagesProperties {
     private UsagesObject usages;
 
     /*
-     * The units for the quota usage, such as Count and Bytes. When requesting quota, use the **unit** value returned
-     * in the GET response in the request body of your PUT operation.
+     *  The units for the quota usage, such as Count and Bytes. When requesting quota, use the **unit** value returned in the GET response in the request body of your PUT operation.
      */
     @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private String unit;

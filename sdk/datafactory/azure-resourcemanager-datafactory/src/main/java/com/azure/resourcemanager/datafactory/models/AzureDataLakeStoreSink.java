@@ -6,16 +6,24 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity Azure Data Lake Store sink.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = AzureDataLakeStoreSink.class, visible = true)
 @JsonTypeName("AzureDataLakeStoreSink")
 @Fluent
 public final class AzureDataLakeStoreSink extends CopySink {
+    /*
+     * Copy sink type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "AzureDataLakeStoreSink";
+
     /*
      * The type of copy behavior for copy sink. Type: string (or Expression with resultType string).
      */
@@ -32,6 +40,16 @@ public final class AzureDataLakeStoreSink extends CopySink {
      * Creates an instance of AzureDataLakeStoreSink class.
      */
     public AzureDataLakeStoreSink() {
+    }
+
+    /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

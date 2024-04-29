@@ -9,7 +9,9 @@ import com.azure.resourcemanager.frontdoor.models.NetworkExperimentResourceState
 import com.azure.resourcemanager.frontdoor.models.State;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines the properties of an experiment. */
+/**
+ * Defines the properties of an experiment.
+ */
 @Fluent
 public final class ProfileProperties {
     /*
@@ -24,13 +26,15 @@ public final class ProfileProperties {
     @JsonProperty(value = "enabledState")
     private State enabledState;
 
-    /** Creates an instance of ProfileProperties class. */
+    /**
+     * Creates an instance of ProfileProperties class.
+     */
     public ProfileProperties() {
     }
 
     /**
      * Get the resourceState property: Resource status.
-     *
+     * 
      * @return the resourceState value.
      */
     public NetworkExperimentResourceState resourceState() {
@@ -39,7 +43,7 @@ public final class ProfileProperties {
 
     /**
      * Get the enabledState property: The state of the Experiment.
-     *
+     * 
      * @return the enabledState value.
      */
     public State enabledState() {
@@ -48,7 +52,7 @@ public final class ProfileProperties {
 
     /**
      * Set the enabledState property: The state of the Experiment.
-     *
+     * 
      * @param enabledState the enabledState value to set.
      * @return the ProfileProperties object itself.
      */
@@ -59,7 +63,7 @@ public final class ProfileProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

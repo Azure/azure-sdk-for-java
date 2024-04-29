@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Describes the properties of a Machine Extension. */
+/**
+ * Describes the properties of a Machine Extension.
+ */
 @Fluent
 public final class MachineExtensionUpdateProperties {
     /*
@@ -37,16 +39,13 @@ public final class MachineExtensionUpdateProperties {
     private String typeHandlerVersion;
 
     /*
-     * Indicates whether the extension should be automatically upgraded by the platform if there is a newer version
-     * available.
+     * Indicates whether the extension should be automatically upgraded by the platform if there is a newer version available.
      */
     @JsonProperty(value = "enableAutomaticUpgrade")
     private Boolean enableAutomaticUpgrade;
 
     /*
-     * Indicates whether the extension should use a newer minor version if one is available at deployment time. Once
-     * deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set
-     * to true.
+     * Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set to true.
      */
     @JsonProperty(value = "autoUpgradeMinorVersion")
     private Boolean autoUpgradeMinorVersion;
@@ -59,21 +58,22 @@ public final class MachineExtensionUpdateProperties {
     private Map<String, Object> settings;
 
     /*
-     * The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at
-     * all.
+     * The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all.
      */
     @JsonProperty(value = "protectedSettings")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> protectedSettings;
 
-    /** Creates an instance of MachineExtensionUpdateProperties class. */
+    /**
+     * Creates an instance of MachineExtensionUpdateProperties class.
+     */
     public MachineExtensionUpdateProperties() {
     }
 
     /**
      * Get the forceUpdateTag property: How the extension handler should be forced to update even if the extension
      * configuration has not changed.
-     *
+     * 
      * @return the forceUpdateTag value.
      */
     public String forceUpdateTag() {
@@ -83,7 +83,7 @@ public final class MachineExtensionUpdateProperties {
     /**
      * Set the forceUpdateTag property: How the extension handler should be forced to update even if the extension
      * configuration has not changed.
-     *
+     * 
      * @param forceUpdateTag the forceUpdateTag value to set.
      * @return the MachineExtensionUpdateProperties object itself.
      */
@@ -94,7 +94,7 @@ public final class MachineExtensionUpdateProperties {
 
     /**
      * Get the publisher property: The name of the extension handler publisher.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -103,7 +103,7 @@ public final class MachineExtensionUpdateProperties {
 
     /**
      * Set the publisher property: The name of the extension handler publisher.
-     *
+     * 
      * @param publisher the publisher value to set.
      * @return the MachineExtensionUpdateProperties object itself.
      */
@@ -114,7 +114,7 @@ public final class MachineExtensionUpdateProperties {
 
     /**
      * Get the type property: Specifies the type of the extension; an example is "CustomScriptExtension".
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -123,7 +123,7 @@ public final class MachineExtensionUpdateProperties {
 
     /**
      * Set the type property: Specifies the type of the extension; an example is "CustomScriptExtension".
-     *
+     * 
      * @param type the type value to set.
      * @return the MachineExtensionUpdateProperties object itself.
      */
@@ -134,7 +134,7 @@ public final class MachineExtensionUpdateProperties {
 
     /**
      * Get the typeHandlerVersion property: Specifies the version of the script handler.
-     *
+     * 
      * @return the typeHandlerVersion value.
      */
     public String typeHandlerVersion() {
@@ -143,7 +143,7 @@ public final class MachineExtensionUpdateProperties {
 
     /**
      * Set the typeHandlerVersion property: Specifies the version of the script handler.
-     *
+     * 
      * @param typeHandlerVersion the typeHandlerVersion value to set.
      * @return the MachineExtensionUpdateProperties object itself.
      */
@@ -155,7 +155,7 @@ public final class MachineExtensionUpdateProperties {
     /**
      * Get the enableAutomaticUpgrade property: Indicates whether the extension should be automatically upgraded by the
      * platform if there is a newer version available.
-     *
+     * 
      * @return the enableAutomaticUpgrade value.
      */
     public Boolean enableAutomaticUpgrade() {
@@ -165,7 +165,7 @@ public final class MachineExtensionUpdateProperties {
     /**
      * Set the enableAutomaticUpgrade property: Indicates whether the extension should be automatically upgraded by the
      * platform if there is a newer version available.
-     *
+     * 
      * @param enableAutomaticUpgrade the enableAutomaticUpgrade value to set.
      * @return the MachineExtensionUpdateProperties object itself.
      */
@@ -178,7 +178,7 @@ public final class MachineExtensionUpdateProperties {
      * Get the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if one
      * is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless
      * redeployed, even with this property set to true.
-     *
+     * 
      * @return the autoUpgradeMinorVersion value.
      */
     public Boolean autoUpgradeMinorVersion() {
@@ -189,7 +189,7 @@ public final class MachineExtensionUpdateProperties {
      * Set the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if one
      * is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless
      * redeployed, even with this property set to true.
-     *
+     * 
      * @param autoUpgradeMinorVersion the autoUpgradeMinorVersion value to set.
      * @return the MachineExtensionUpdateProperties object itself.
      */
@@ -200,7 +200,7 @@ public final class MachineExtensionUpdateProperties {
 
     /**
      * Get the settings property: Json formatted public settings for the extension.
-     *
+     * 
      * @return the settings value.
      */
     public Map<String, Object> settings() {
@@ -209,7 +209,7 @@ public final class MachineExtensionUpdateProperties {
 
     /**
      * Set the settings property: Json formatted public settings for the extension.
-     *
+     * 
      * @param settings the settings value to set.
      * @return the MachineExtensionUpdateProperties object itself.
      */
@@ -221,7 +221,7 @@ public final class MachineExtensionUpdateProperties {
     /**
      * Get the protectedSettings property: The extension can contain either protectedSettings or
      * protectedSettingsFromKeyVault or no protected settings at all.
-     *
+     * 
      * @return the protectedSettings value.
      */
     public Map<String, Object> protectedSettings() {
@@ -231,7 +231,7 @@ public final class MachineExtensionUpdateProperties {
     /**
      * Set the protectedSettings property: The extension can contain either protectedSettings or
      * protectedSettingsFromKeyVault or no protected settings at all.
-     *
+     * 
      * @param protectedSettings the protectedSettings value to set.
      * @return the MachineExtensionUpdateProperties object itself.
      */
@@ -242,7 +242,7 @@ public final class MachineExtensionUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

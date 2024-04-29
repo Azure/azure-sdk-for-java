@@ -14,8 +14,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * A Azure Data Factory object which automatically detects data changes at the source and then sends the updated data
- * to the destination.
+ * A Azure Data Factory object which automatically detects data changes at the source and then sends the updated data to
+ * the destination.
  */
 @Fluent
 public final class ChangeDataCapture {
@@ -217,20 +217,22 @@ public final class ChangeDataCapture {
             folder().validate();
         }
         if (sourceConnectionsInfo() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property sourceConnectionsInfo in model ChangeDataCapture"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceConnectionsInfo in model ChangeDataCapture"));
         } else {
             sourceConnectionsInfo().forEach(e -> e.validate());
         }
         if (targetConnectionsInfo() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property targetConnectionsInfo in model ChangeDataCapture"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetConnectionsInfo in model ChangeDataCapture"));
         } else {
             targetConnectionsInfo().forEach(e -> e.validate());
         }
         if (policy() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property policy in model ChangeDataCapture"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property policy in model ChangeDataCapture"));
         } else {
             policy().validate();
         }

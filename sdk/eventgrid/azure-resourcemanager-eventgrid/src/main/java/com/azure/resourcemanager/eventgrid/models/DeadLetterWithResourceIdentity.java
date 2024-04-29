@@ -20,8 +20,7 @@ public final class DeadLetterWithResourceIdentity {
 
     /*
      * Information about the destination where events have to be delivered for the event subscription.
-     * Uses the managed identity setup on the parent resource (namely, topic or domain) to acquire the authentication
-     * tokens being used during delivery / dead-lettering.
+     * Uses the managed identity setup on the parent resource (namely, topic or domain) to acquire the authentication tokens being used during dead-lettering.
      */
     @JsonProperty(value = "deadLetterDestination")
     private DeadLetterDestination deadLetterDestination;
@@ -56,7 +55,7 @@ public final class DeadLetterWithResourceIdentity {
      * Get the deadLetterDestination property: Information about the destination where events have to be delivered for
      * the event subscription.
      * Uses the managed identity setup on the parent resource (namely, topic or domain) to acquire the authentication
-     * tokens being used during delivery / dead-lettering.
+     * tokens being used during dead-lettering.
      * 
      * @return the deadLetterDestination value.
      */
@@ -68,7 +67,7 @@ public final class DeadLetterWithResourceIdentity {
      * Set the deadLetterDestination property: Information about the destination where events have to be delivered for
      * the event subscription.
      * Uses the managed identity setup on the parent resource (namely, topic or domain) to acquire the authentication
-     * tokens being used during delivery / dead-lettering.
+     * tokens being used during dead-lettering.
      * 
      * @param deadLetterDestination the deadLetterDestination value to set.
      * @return the DeadLetterWithResourceIdentity object itself.

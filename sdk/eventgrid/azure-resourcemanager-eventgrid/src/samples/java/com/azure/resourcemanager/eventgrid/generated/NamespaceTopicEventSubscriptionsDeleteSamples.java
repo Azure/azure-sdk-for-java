@@ -9,9 +9,7 @@ package com.azure.resourcemanager.eventgrid.generated;
  */
 public final class NamespaceTopicEventSubscriptionsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
-     * NamespaceTopicEventSubscriptions_Delete.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/NamespaceTopicEventSubscriptions_Delete.json
      */
     /**
      * Sample code: NamespaceTopicEventSubscriptions_Delete.
@@ -20,7 +18,8 @@ public final class NamespaceTopicEventSubscriptionsDeleteSamples {
      */
     public static void
         namespaceTopicEventSubscriptionsDelete(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.namespaceTopicEventSubscriptions().delete("examplerg", "examplenamespace2", "examplenamespacetopic2",
-            "examplenamespacetopicEventSub2", com.azure.core.util.Context.NONE);
+        manager.namespaceTopicEventSubscriptions()
+            .delete("examplerg", "examplenamespace2", "examplenamespacetopic2", "examplenamespacetopicEventSub2",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -6,53 +6,35 @@ package com.azure.resourcemanager.support.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.support.SupportManager;
 import com.azure.resourcemanager.support.models.FileDetails;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class FilesListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"createdOn\":\"2021-03-06T02:52:17Z\",\"chunkSize\":1179630825,\"fileSize\":863156641,\"numberOfChunks\":512301047},\"id\":\"aqtferr\",\"name\":\"wexjkmfxapjwogq\",\"type\":\"nobpudcdabtqwpw\"}]}";
+            = "{\"value\":[{\"properties\":{\"createdOn\":\"2021-02-12T18:50:03Z\",\"chunkSize\":359045420,\"fileSize\":1283952114,\"numberOfChunks\":362693256},\"id\":\"cp\",\"name\":\"cwkhihi\",\"type\":\"lhzdsqtzb\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SupportManager manager = SupportManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SupportManager manager = SupportManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        PagedIterable<FileDetails> response = manager.files().list("pe", com.azure.core.util.Context.NONE);
 
-        PagedIterable<FileDetails> response = manager.files().list("olewjwi", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals(1179630825, response.iterator().next().chunkSize());
-        Assertions.assertEquals(863156641, response.iterator().next().fileSize());
-        Assertions.assertEquals(512301047, response.iterator().next().numberOfChunks());
+        Assertions.assertEquals(359045420, response.iterator().next().chunkSize());
+        Assertions.assertEquals(1283952114, response.iterator().next().fileSize());
+        Assertions.assertEquals(362693256, response.iterator().next().numberOfChunks());
     }
 }

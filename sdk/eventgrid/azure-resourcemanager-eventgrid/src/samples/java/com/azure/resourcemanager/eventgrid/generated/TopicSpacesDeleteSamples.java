@@ -9,9 +9,7 @@ package com.azure.resourcemanager.eventgrid.generated;
  */
 public final class TopicSpacesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
-     * TopicSpaces_Delete.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/TopicSpaces_Delete.json
      */
     /**
      * Sample code: TopicSpaces_Delete.
@@ -19,7 +17,7 @@ public final class TopicSpacesDeleteSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void topicSpacesDelete(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.topicSpaces().delete("examplerg", "exampleNamespaceName1", "exampleTopicSpaceName1",
-            com.azure.core.util.Context.NONE);
+        manager.topicSpaces()
+            .delete("examplerg", "exampleNamespaceName1", "exampleTopicSpaceName1", com.azure.core.util.Context.NONE);
     }
 }

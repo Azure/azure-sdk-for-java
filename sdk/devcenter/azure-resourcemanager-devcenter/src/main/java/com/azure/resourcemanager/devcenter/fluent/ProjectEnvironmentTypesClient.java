@@ -12,11 +12,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.fluent.models.ProjectEnvironmentTypeInner;
 import com.azure.resourcemanager.devcenter.models.ProjectEnvironmentTypeUpdate;
 
-/** An instance of this class provides access to all the operations defined in ProjectEnvironmentTypesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ProjectEnvironmentTypesClient.
+ */
 public interface ProjectEnvironmentTypesClient {
     /**
      * Lists environment types for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -29,7 +31,7 @@ public interface ProjectEnvironmentTypesClient {
 
     /**
      * Lists environment types for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -40,12 +42,12 @@ public interface ProjectEnvironmentTypesClient {
      * @return result of the project environment type list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ProjectEnvironmentTypeInner> list(
-        String resourceGroupName, String projectName, Integer top, Context context);
+    PagedIterable<ProjectEnvironmentTypeInner> list(String resourceGroupName, String projectName, Integer top,
+        Context context);
 
     /**
      * Gets a project environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
@@ -56,12 +58,12 @@ public interface ProjectEnvironmentTypesClient {
      * @return a project environment type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProjectEnvironmentTypeInner> getWithResponse(
-        String resourceGroupName, String projectName, String environmentTypeName, Context context);
+    Response<ProjectEnvironmentTypeInner> getWithResponse(String resourceGroupName, String projectName,
+        String environmentTypeName, Context context);
 
     /**
      * Gets a project environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
@@ -75,7 +77,7 @@ public interface ProjectEnvironmentTypesClient {
 
     /**
      * Creates or updates a project environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
@@ -87,16 +89,12 @@ public interface ProjectEnvironmentTypesClient {
      * @return represents an environment type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProjectEnvironmentTypeInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String projectName,
-        String environmentTypeName,
-        ProjectEnvironmentTypeInner body,
-        Context context);
+    Response<ProjectEnvironmentTypeInner> createOrUpdateWithResponse(String resourceGroupName, String projectName,
+        String environmentTypeName, ProjectEnvironmentTypeInner body, Context context);
 
     /**
      * Creates or updates a project environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
@@ -107,12 +105,12 @@ public interface ProjectEnvironmentTypesClient {
      * @return represents an environment type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProjectEnvironmentTypeInner createOrUpdate(
-        String resourceGroupName, String projectName, String environmentTypeName, ProjectEnvironmentTypeInner body);
+    ProjectEnvironmentTypeInner createOrUpdate(String resourceGroupName, String projectName, String environmentTypeName,
+        ProjectEnvironmentTypeInner body);
 
     /**
      * Partially updates a project environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
@@ -124,16 +122,12 @@ public interface ProjectEnvironmentTypesClient {
      * @return represents an environment type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProjectEnvironmentTypeInner> updateWithResponse(
-        String resourceGroupName,
-        String projectName,
-        String environmentTypeName,
-        ProjectEnvironmentTypeUpdate body,
-        Context context);
+    Response<ProjectEnvironmentTypeInner> updateWithResponse(String resourceGroupName, String projectName,
+        String environmentTypeName, ProjectEnvironmentTypeUpdate body, Context context);
 
     /**
      * Partially updates a project environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
@@ -144,12 +138,12 @@ public interface ProjectEnvironmentTypesClient {
      * @return represents an environment type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProjectEnvironmentTypeInner update(
-        String resourceGroupName, String projectName, String environmentTypeName, ProjectEnvironmentTypeUpdate body);
+    ProjectEnvironmentTypeInner update(String resourceGroupName, String projectName, String environmentTypeName,
+        ProjectEnvironmentTypeUpdate body);
 
     /**
      * Deletes a project environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
@@ -160,12 +154,12 @@ public interface ProjectEnvironmentTypesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String projectName, String environmentTypeName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String projectName, String environmentTypeName,
+        Context context);
 
     /**
      * Deletes a project environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.

@@ -52,8 +52,7 @@ public interface TopicEventSubscriptions {
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
-     * @param eventSubscriptionName Name of the event subscription to be found. Event subscription names must be between
-     * 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be found.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -70,8 +69,7 @@ public interface TopicEventSubscriptions {
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
-     * @param eventSubscriptionName Name of the event subscription to be found. Event subscription names must be between
-     * 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be found.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -86,8 +84,7 @@ public interface TopicEventSubscriptions {
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
-     * @param eventSubscriptionName Name of the event subscription to be deleted. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -101,8 +98,7 @@ public interface TopicEventSubscriptions {
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
-     * @param eventSubscriptionName Name of the event subscription to be deleted. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

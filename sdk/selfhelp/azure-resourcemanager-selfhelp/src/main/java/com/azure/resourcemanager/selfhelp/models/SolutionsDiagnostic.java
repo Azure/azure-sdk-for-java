@@ -38,6 +38,12 @@ public final class SolutionsDiagnostic {
     private String replacementKey;
 
     /*
+     * Diagnostics estimated completion time in minutes
+     */
+    @JsonProperty(value = "estimatedCompletionTime")
+    private String estimatedCompletionTime;
+
+    /*
      * Required parameters of this item
      */
     @JsonProperty(value = "requiredParameters")
@@ -132,6 +138,26 @@ public final class SolutionsDiagnostic {
      */
     public SolutionsDiagnostic withReplacementKey(String replacementKey) {
         this.replacementKey = replacementKey;
+        return this;
+    }
+
+    /**
+     * Get the estimatedCompletionTime property: Diagnostics estimated completion time in minutes.
+     * 
+     * @return the estimatedCompletionTime value.
+     */
+    public String estimatedCompletionTime() {
+        return this.estimatedCompletionTime;
+    }
+
+    /**
+     * Set the estimatedCompletionTime property: Diagnostics estimated completion time in minutes.
+     * 
+     * @param estimatedCompletionTime the estimatedCompletionTime value to set.
+     * @return the SolutionsDiagnostic object itself.
+     */
+    public SolutionsDiagnostic withEstimatedCompletionTime(String estimatedCompletionTime) {
+        this.estimatedCompletionTime = estimatedCompletionTime;
         return this;
     }
 

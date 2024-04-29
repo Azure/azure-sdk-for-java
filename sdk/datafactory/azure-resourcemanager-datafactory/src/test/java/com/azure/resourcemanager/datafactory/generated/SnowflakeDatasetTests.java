@@ -19,31 +19,34 @@ public final class SnowflakeDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SnowflakeDataset model = BinaryData.fromString(
-            "{\"type\":\"SnowflakeTable\",\"typeProperties\":{\"schema\":\"dataqjfskjva\",\"table\":\"dataxrwkns\"},\"description\":\"hypbrzwiypz\",\"structure\":\"datahkecebtpgvutb\",\"schema\":\"datasfd\",\"linkedServiceName\":{\"referenceName\":\"wq\",\"parameters\":{\"dgrcifflxqqn\":\"dataowke\",\"ujticwmlf\":\"datagtcuyuwgnyjd\"}},\"parameters\":{\"ufpvvdgnmeiomn\":{\"type\":\"Float\",\"defaultValue\":\"datafmcoxbktuaj\"},\"i\":{\"type\":\"Float\",\"defaultValue\":\"dataaibcfbfyqz\"}},\"annotations\":[\"datafgvmrkmgifmy\",\"databuhdnhhcmtslptbd\",\"dataonhbl\"],\"folder\":{\"name\":\"cnuqfpzjz\"},\"\":{\"mruawqesqsqmiekx\":\"datacwtwtrchk\",\"qchf\":\"datap\",\"cu\":\"datatykkvjjlba\"}}")
+            "{\"type\":\"azburskuff\",\"typeProperties\":{\"schema\":\"datapncdocloepjz\",\"table\":\"databod\"},\"description\":\"bkvunn\",\"structure\":\"dataoasnzlawow\",\"schema\":\"datanixxwdqzur\",\"linkedServiceName\":{\"referenceName\":\"ukszk\",\"parameters\":{\"vvaeght\":\"datahh\",\"uvwa\":\"dataqonxvnmcyze\",\"shkmqfvbks\":\"dataesswbrnbox\",\"wowrmhmifhfutjy\":\"datasmq\"}},\"parameters\":{\"moygcax\":{\"type\":\"Bool\",\"defaultValue\":\"datatguqa\"},\"vgicxt\":{\"type\":\"SecureString\",\"defaultValue\":\"datadqr\"}},\"annotations\":[\"dataqgnsydksvjfgxgdp\",\"datavjk\",\"datacosc\",\"dataljjhcsgzooefzsdt\"],\"folder\":{\"name\":\"kaqdvwo\"},\"\":{\"tingzic\":\"datavfvhrqxrqgh\"}}")
             .toObject(SnowflakeDataset.class);
-        Assertions.assertEquals("hypbrzwiypz", model.description());
-        Assertions.assertEquals("wq", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("ufpvvdgnmeiomn").type());
-        Assertions.assertEquals("cnuqfpzjz", model.folder().name());
+        Assertions.assertEquals("bkvunn", model.description());
+        Assertions.assertEquals("ukszk", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("moygcax").type());
+        Assertions.assertEquals("kaqdvwo", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SnowflakeDataset model = new SnowflakeDataset().withDescription("hypbrzwiypz")
-            .withStructure("datahkecebtpgvutb").withSchema("datasfd")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("wq")
-                .withParameters(mapOf("dgrcifflxqqn", "dataowke", "ujticwmlf", "datagtcuyuwgnyjd")))
-            .withParameters(mapOf("ufpvvdgnmeiomn",
-                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datafmcoxbktuaj"), "i",
-                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataaibcfbfyqz")))
-            .withAnnotations(Arrays.asList("datafgvmrkmgifmy", "databuhdnhhcmtslptbd", "dataonhbl"))
-            .withFolder(new DatasetFolder().withName("cnuqfpzjz")).withSchemaTypePropertiesSchema("dataqjfskjva")
-            .withTable("dataxrwkns");
+        SnowflakeDataset model = new SnowflakeDataset().withDescription("bkvunn")
+            .withStructure("dataoasnzlawow")
+            .withSchema("datanixxwdqzur")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("ukszk")
+                .withParameters(mapOf("vvaeght", "datahh", "uvwa", "dataqonxvnmcyze", "shkmqfvbks", "dataesswbrnbox",
+                    "wowrmhmifhfutjy", "datasmq")))
+            .withParameters(mapOf("moygcax",
+                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datatguqa"), "vgicxt",
+                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datadqr")))
+            .withAnnotations(Arrays.asList("dataqgnsydksvjfgxgdp", "datavjk", "datacosc", "dataljjhcsgzooefzsdt"))
+            .withFolder(new DatasetFolder().withName("kaqdvwo"))
+            .withSchemaTypePropertiesSchema("datapncdocloepjz")
+            .withTable("databod");
         model = BinaryData.fromObject(model).toObject(SnowflakeDataset.class);
-        Assertions.assertEquals("hypbrzwiypz", model.description());
-        Assertions.assertEquals("wq", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("ufpvvdgnmeiomn").type());
-        Assertions.assertEquals("cnuqfpzjz", model.folder().name());
+        Assertions.assertEquals("bkvunn", model.description());
+        Assertions.assertEquals("ukszk", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("moygcax").type());
+        Assertions.assertEquals("kaqdvwo", model.folder().name());
     }
 
     // Use "Map.of" if available

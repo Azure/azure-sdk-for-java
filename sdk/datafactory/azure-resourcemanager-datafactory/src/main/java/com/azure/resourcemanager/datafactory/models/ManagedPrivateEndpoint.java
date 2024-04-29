@@ -136,8 +136,8 @@ public final class ManagedPrivateEndpoint {
     }
 
     /**
-     * Get the privateLinkResourceId property: The ARM resource ID of the resource to which the managed private
-     * endpoint is created.
+     * Get the privateLinkResourceId property: The ARM resource ID of the resource to which the managed private endpoint
+     * is created.
      * 
      * @return the privateLinkResourceId value.
      */
@@ -146,8 +146,8 @@ public final class ManagedPrivateEndpoint {
     }
 
     /**
-     * Set the privateLinkResourceId property: The ARM resource ID of the resource to which the managed private
-     * endpoint is created.
+     * Set the privateLinkResourceId property: The ARM resource ID of the resource to which the managed private endpoint
+     * is created.
      * 
      * @param privateLinkResourceId the privateLinkResourceId value to set.
      * @return the ManagedPrivateEndpoint object itself.

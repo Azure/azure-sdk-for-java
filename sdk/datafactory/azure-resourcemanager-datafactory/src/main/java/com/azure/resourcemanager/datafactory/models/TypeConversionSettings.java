@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class TypeConversionSettings {
     /*
-     * Whether to allow data truncation when converting the data. Type: boolean (or Expression with resultType
-     * boolean).
+     * Whether to allow data truncation when converting the data. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "allowDataTruncation")
     private Object allowDataTruncation;

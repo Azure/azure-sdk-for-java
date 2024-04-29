@@ -53,8 +53,9 @@ public final class ScheduleTriggerTypeProperties {
      */
     public void validate() {
         if (recurrence() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property recurrence in model ScheduleTriggerTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property recurrence in model ScheduleTriggerTypeProperties"));
         } else {
             recurrence().validate();
         }

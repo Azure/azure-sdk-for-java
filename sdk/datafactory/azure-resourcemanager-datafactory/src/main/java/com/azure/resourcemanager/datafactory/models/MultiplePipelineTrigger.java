@@ -7,6 +7,7 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,9 +17,9 @@ import java.util.List;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "type",
-    defaultImpl = MultiplePipelineTrigger.class)
+    defaultImpl = MultiplePipelineTrigger.class,
+    visible = true)
 @JsonTypeName("MultiplePipelineTrigger")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ScheduleTrigger", value = ScheduleTrigger.class),
@@ -27,6 +28,13 @@ import java.util.List;
     @JsonSubTypes.Type(name = "CustomEventsTrigger", value = CustomEventsTrigger.class) })
 @Fluent
 public class MultiplePipelineTrigger extends Trigger {
+    /*
+     * Trigger type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "MultiplePipelineTrigger";
+
     /*
      * Pipelines that need to be started.
      */
@@ -37,6 +45,16 @@ public class MultiplePipelineTrigger extends Trigger {
      * Creates an instance of MultiplePipelineTrigger class.
      */
     public MultiplePipelineTrigger() {
+    }
+
+    /**
+     * Get the type property: Trigger type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

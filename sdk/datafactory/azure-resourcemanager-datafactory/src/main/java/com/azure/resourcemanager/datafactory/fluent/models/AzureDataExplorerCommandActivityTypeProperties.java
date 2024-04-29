@@ -14,15 +14,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureDataExplorerCommandActivityTypeProperties {
     /*
-     * A control command, according to the Azure Data Explorer command syntax. Type: string (or Expression with
-     * resultType string).
+     * A control command, according to the Azure Data Explorer command syntax. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "command", required = true)
     private Object command;
 
     /*
-     * Control command timeout. Type: string (or Expression with resultType string), pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9]))..)
+     * Control command timeout. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9]))..)
      */
     @JsonProperty(value = "commandTimeout")
     private Object commandTimeout;
@@ -84,8 +82,9 @@ public final class AzureDataExplorerCommandActivityTypeProperties {
      */
     public void validate() {
         if (command() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property command in model AzureDataExplorerCommandActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property command in model AzureDataExplorerCommandActivityTypeProperties"));
         }
     }
 

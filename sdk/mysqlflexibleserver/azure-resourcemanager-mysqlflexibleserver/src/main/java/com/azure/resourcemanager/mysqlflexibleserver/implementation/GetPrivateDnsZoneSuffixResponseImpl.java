@@ -12,8 +12,7 @@ public final class GetPrivateDnsZoneSuffixResponseImpl implements GetPrivateDnsZ
 
     private final com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager;
 
-    GetPrivateDnsZoneSuffixResponseImpl(
-        GetPrivateDnsZoneSuffixResponseInner innerObject,
+    GetPrivateDnsZoneSuffixResponseImpl(GetPrivateDnsZoneSuffixResponseInner innerObject,
         com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -1156,7 +1156,7 @@ public final class ServiceBusClientBuilder implements
         private static final String SESSION_PROCESSOR_ASYNC_RECEIVE_KEY = "com.azure.messaging.servicebus.session.processor.asyncReceive.v2";
         private static final ConfigurationProperty<Boolean> SESSION_PROCESSOR_ASYNC_RECEIVE_PROPERTY = ConfigurationPropertyBuilder.ofBoolean(SESSION_PROCESSOR_ASYNC_RECEIVE_KEY)
             .environmentVariableName(SESSION_PROCESSOR_ASYNC_RECEIVE_KEY)
-            .defaultValue(false) // 'Session' Async[Processor]Receiver Client is not on the new v2 stack by default
+            .defaultValue(true) // 'Session' Async[Processor]Receiver Client is on the new v2 stack by default
             .shared(true)
             .build();
         private final AtomicReference<Boolean> sessionProcessorAsyncReceiveFlag = new AtomicReference<>();
@@ -1164,7 +1164,7 @@ public final class ServiceBusClientBuilder implements
         private static final String SESSION_REACTOR_ASYNC_RECEIVE_KEY = "com.azure.messaging.servicebus.session.reactor.asyncReceive.v2";
         private static final ConfigurationProperty<Boolean> SESSION_REACTOR_ASYNC_RECEIVE_PROPERTY = ConfigurationPropertyBuilder.ofBoolean(SESSION_REACTOR_ASYNC_RECEIVE_KEY)
             .environmentVariableName(SESSION_REACTOR_ASYNC_RECEIVE_KEY)
-            .defaultValue(false) // 'Session' Async[Reactor]Receiver Client is not on the new v2 stack by default
+            .defaultValue(true) // 'Session' Async[Reactor]Receiver Client is on the new v2 stack by default
             .shared(true)
             .build();
         private final AtomicReference<Boolean> sessionReactorAsyncReceiveFlag = new AtomicReference<>();
@@ -1213,23 +1213,23 @@ public final class ServiceBusClientBuilder implements
         }
 
         /**
-         * Session Async ProcessorClient is not on the v2 stack by default, but the application may opt into the v2 stack.
+         * Session Async ProcessorClient is on the v2 stack by default, but the application may opt out.
          *
          * @param configuration the client configuration.
          * @return true if session processor receive should use the v2 stack.
          */
         boolean isSessionProcessorAsyncReceiveEnabled(Configuration configuration) {
-            return isOptedIn(configuration, SESSION_PROCESSOR_ASYNC_RECEIVE_PROPERTY, sessionProcessorAsyncReceiveFlag);
+            return !isOptedOut(configuration, SESSION_PROCESSOR_ASYNC_RECEIVE_PROPERTY, sessionProcessorAsyncReceiveFlag);
         }
 
         /**
-         * Session Async ReactorClient is not on the v2 stack by default, but the application may opt into the v2 stack.
+         * Session Async ReactorClient is on the v2 stack by default, but the application may opt out.
          *
          * @param configuration the client configuration.
          * @return true if session reactor receive should use the v2 stack.
          */
         boolean isSessionReactorAsyncReceiveEnabled(Configuration configuration) {
-            return isOptedIn(configuration, SESSION_REACTOR_ASYNC_RECEIVE_PROPERTY, sessionReactorAsyncReceiveFlag);
+            return !isOptedOut(configuration, SESSION_REACTOR_ASYNC_RECEIVE_PROPERTY, sessionReactorAsyncReceiveFlag);
         }
 
         /**
@@ -1573,7 +1573,7 @@ public final class ServiceBusClientBuilder implements
          * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
          */
         public ServiceBusSessionProcessorClientBuilder maxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
-            validateAndThrow(maxAutoLockRenewDuration);
+            validateAndThrow(maxAutoLockRenewDuration, "maxAutoLockRenewDuration");
             sessionReceiverClientBuilder.maxAutoLockRenewDuration(maxAutoLockRenewDuration);
             return this;
         }
@@ -1593,7 +1593,7 @@ public final class ServiceBusClientBuilder implements
          * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
          */
         public ServiceBusSessionProcessorClientBuilder sessionIdleTimeout(Duration sessionIdleTimeout) {
-            validateAndThrow(sessionIdleTimeout);
+            validateAndThrow(sessionIdleTimeout, "sessionIdleTimeout");
             sessionReceiverClientBuilder.sessionIdleTimeout(sessionIdleTimeout);
             return this;
         }
@@ -1842,7 +1842,7 @@ public final class ServiceBusClientBuilder implements
          * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
          */
         public ServiceBusSessionReceiverClientBuilder maxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
-            validateAndThrow(maxAutoLockRenewDuration);
+            validateAndThrow(maxAutoLockRenewDuration, "maxAutoLockRenewDuration");
             this.maxAutoLockRenewDuration = maxAutoLockRenewDuration;
             return this;
         }
@@ -1857,7 +1857,7 @@ public final class ServiceBusClientBuilder implements
          * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
          */
         ServiceBusSessionReceiverClientBuilder sessionIdleTimeout(Duration sessionIdleTimeout) {
-            validateAndThrow(sessionIdleTimeout);
+            validateAndThrow(sessionIdleTimeout, "sessionIdleTimeout");
             this.sessionIdleTimeout = sessionIdleTimeout;
             return this;
         }
@@ -2391,7 +2391,7 @@ public final class ServiceBusClientBuilder implements
          * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
          */
         public ServiceBusProcessorClientBuilder maxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
-            validateAndThrow(maxAutoLockRenewDuration);
+            validateAndThrow(maxAutoLockRenewDuration, "maxAutoLockRenewDuration");
             serviceBusReceiverClientBuilder.maxAutoLockRenewDuration(maxAutoLockRenewDuration);
             return this;
         }
@@ -2515,7 +2515,7 @@ public final class ServiceBusClientBuilder implements
          * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
          */
         public ServiceBusReceiverClientBuilder maxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
-            validateAndThrow(maxAutoLockRenewDuration);
+            validateAndThrow(maxAutoLockRenewDuration, "maxAutoLockRenewDuration");
             this.maxAutoLockRenewDuration = maxAutoLockRenewDuration;
             return this;
         }
@@ -2796,10 +2796,10 @@ public final class ServiceBusClientBuilder implements
         }
     }
 
-    private void validateAndThrow(Duration maxLockRenewalDuration) {
+    private void validateAndThrow(Duration maxLockRenewalDuration, String parameterName) {
         if (maxLockRenewalDuration != null && maxLockRenewalDuration.isNegative()) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "'maxLockRenewalDuration' cannot be negative."));
+                String.format("'%s' cannot be negative.", parameterName)));
         }
     }
 

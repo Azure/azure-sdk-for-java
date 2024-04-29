@@ -22,8 +22,10 @@ public final class MaintenanceWindowTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MaintenanceWindow model = new MaintenanceWindow().withCustomWindow("fvovbvmeuecivy").withStartHour(343837467)
-            .withStartMinute(1240635196).withDayOfWeek(1339093969);
+        MaintenanceWindow model = new MaintenanceWindow().withCustomWindow("fvovbvmeuecivy")
+            .withStartHour(343837467)
+            .withStartMinute(1240635196)
+            .withDayOfWeek(1339093969);
         model = BinaryData.fromObject(model).toObject(MaintenanceWindow.class);
         Assertions.assertEquals("fvovbvmeuecivy", model.customWindow());
         Assertions.assertEquals(343837467, model.startHour());

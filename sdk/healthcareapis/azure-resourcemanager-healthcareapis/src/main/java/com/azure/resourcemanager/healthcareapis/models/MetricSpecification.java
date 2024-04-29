@@ -218,8 +218,8 @@ public final class MetricSpecification {
     }
 
     /**
-     * Get the aggregationType property: Only provide one value for this field. Valid values: Average, Minimum,
-     * Maximum, Total, Count.
+     * Get the aggregationType property: Only provide one value for this field. Valid values: Average, Minimum, Maximum,
+     * Total, Count.
      * 
      * @return the aggregationType value.
      */
@@ -228,8 +228,8 @@ public final class MetricSpecification {
     }
 
     /**
-     * Set the aggregationType property: Only provide one value for this field. Valid values: Average, Minimum,
-     * Maximum, Total, Count.
+     * Set the aggregationType property: Only provide one value for this field. Valid values: Average, Minimum, Maximum,
+     * Total, Count.
      * 
      * @param aggregationType the aggregationType value to set.
      * @return the MetricSpecification object itself.
@@ -280,8 +280,8 @@ public final class MetricSpecification {
     }
 
     /**
-     * Get the fillGapWithZero property: Optional. If set to true, then zero will be returned for time duration where
-     * no metric is emitted/published.
+     * Get the fillGapWithZero property: Optional. If set to true, then zero will be returned for time duration where no
+     * metric is emitted/published.
      * 
      * @return the fillGapWithZero value.
      */
@@ -290,8 +290,8 @@ public final class MetricSpecification {
     }
 
     /**
-     * Set the fillGapWithZero property: Optional. If set to true, then zero will be returned for time duration where
-     * no metric is emitted/published.
+     * Set the fillGapWithZero property: Optional. If set to true, then zero will be returned for time duration where no
+     * metric is emitted/published.
      * 
      * @param fillGapWithZero the fillGapWithZero value to set.
      * @return the MetricSpecification object itself.

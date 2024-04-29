@@ -7,7 +7,9 @@ package com.azure.resourcemanager.confidentialledger.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The check availability request body. */
+/**
+ * The check availability request body.
+ */
 @Fluent
 public final class CheckNameAvailabilityRequest {
     /*
@@ -22,13 +24,15 @@ public final class CheckNameAvailabilityRequest {
     @JsonProperty(value = "type")
     private String type;
 
-    /** Creates an instance of CheckNameAvailabilityRequest class. */
+    /**
+     * Creates an instance of CheckNameAvailabilityRequest class.
+     */
     public CheckNameAvailabilityRequest() {
     }
 
     /**
      * Get the name property: The name of the resource for which availability needs to be checked.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class CheckNameAvailabilityRequest {
 
     /**
      * Set the name property: The name of the resource for which availability needs to be checked.
-     *
+     * 
      * @param name the name value to set.
      * @return the CheckNameAvailabilityRequest object itself.
      */
@@ -48,7 +52,7 @@ public final class CheckNameAvailabilityRequest {
 
     /**
      * Get the type property: The resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -57,7 +61,7 @@ public final class CheckNameAvailabilityRequest {
 
     /**
      * Set the type property: The resource type.
-     *
+     * 
      * @param type the type value to set.
      * @return the CheckNameAvailabilityRequest object itself.
      */
@@ -68,7 +72,7 @@ public final class CheckNameAvailabilityRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

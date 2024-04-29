@@ -7,11 +7,13 @@ package com.azure.resourcemanager.hybridcompute.models;
 import com.azure.resourcemanager.hybridcompute.fluent.models.PrivateLinkScopeValidationDetailsInner;
 import java.util.List;
 
-/** An immutable client-side representation of PrivateLinkScopeValidationDetails. */
+/**
+ * An immutable client-side representation of PrivateLinkScopeValidationDetails.
+ */
 public interface PrivateLinkScopeValidationDetails {
     /**
      * Gets the id property: Azure resource Id.
-     *
+     * 
      * @return the id value.
      */
     String id();
@@ -19,14 +21,14 @@ public interface PrivateLinkScopeValidationDetails {
     /**
      * Gets the publicNetworkAccess property: Indicates whether machines associated with the private link scope can also
      * use public Azure Arc service endpoints.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     PublicNetworkAccessType publicNetworkAccess();
 
     /**
      * Gets the connectionDetails property: List of Private Endpoint Connection details.
-     *
+     * 
      * @return the connectionDetails value.
      */
     List<ConnectionDetail> connectionDetails();
@@ -34,7 +36,7 @@ public interface PrivateLinkScopeValidationDetails {
     /**
      * Gets the inner com.azure.resourcemanager.hybridcompute.fluent.models.PrivateLinkScopeValidationDetailsInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     PrivateLinkScopeValidationDetailsInner innerModel();

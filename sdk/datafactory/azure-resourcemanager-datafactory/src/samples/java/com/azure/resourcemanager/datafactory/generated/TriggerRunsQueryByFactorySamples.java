@@ -16,8 +16,7 @@ import java.util.Arrays;
  */
 public final class TriggerRunsQueryByFactorySamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
-     * TriggerRuns_QueryByFactory.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/TriggerRuns_QueryByFactory.json
      */
     /**
      * Sample code: TriggerRuns_QueryByFactory.
@@ -25,11 +24,13 @@ public final class TriggerRunsQueryByFactorySamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void triggerRunsQueryByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.triggerRuns().queryByFactoryWithResponse("exampleResourceGroup", "exampleFactoryName",
-            new RunFilterParameters().withLastUpdatedAfter(OffsetDateTime.parse("2018-06-16T00:36:44.3345758Z"))
-                .withLastUpdatedBefore(OffsetDateTime.parse("2018-06-16T00:49:48.3686473Z"))
-                .withFilters(Arrays.asList(new RunQueryFilter().withOperand(RunQueryFilterOperand.TRIGGER_NAME)
-                    .withOperator(RunQueryFilterOperator.EQUALS).withValues(Arrays.asList("exampleTrigger")))),
-            com.azure.core.util.Context.NONE);
+        manager.triggerRuns()
+            .queryByFactoryWithResponse("exampleResourceGroup", "exampleFactoryName",
+                new RunFilterParameters().withLastUpdatedAfter(OffsetDateTime.parse("2018-06-16T00:36:44.3345758Z"))
+                    .withLastUpdatedBefore(OffsetDateTime.parse("2018-06-16T00:49:48.3686473Z"))
+                    .withFilters(Arrays.asList(new RunQueryFilter().withOperand(RunQueryFilterOperand.TRIGGER_NAME)
+                        .withOperator(RunQueryFilterOperator.EQUALS)
+                        .withValues(Arrays.asList("exampleTrigger")))),
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -9,12 +9,15 @@ import com.azure.resourcemanager.hybridcompute.fluent.models.MachinePropertiesIn
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
-/** An immutable client-side representation of MachineProperties. */
+/**
+ * An immutable client-side representation of MachineProperties.
+ */
 public interface MachineProperties {
     /**
      * Gets the locationData property: Metadata pertaining to the geographic location of the resource.
-     *
+     * 
      * @return the locationData value.
      */
     LocationData locationData();
@@ -22,98 +25,98 @@ public interface MachineProperties {
     /**
      * Gets the agentConfiguration property: Configurable properties that the user can set locally via the azcmagent
      * config command, or remotely via ARM.
-     *
+     * 
      * @return the agentConfiguration value.
      */
     AgentConfiguration agentConfiguration();
 
     /**
      * Gets the serviceStatuses property: Statuses of dependent services that are reported back to ARM.
-     *
+     * 
      * @return the serviceStatuses value.
      */
     ServiceStatuses serviceStatuses();
 
     /**
      * Gets the cloudMetadata property: The metadata of the cloud environment (Azure/GCP/AWS/OCI...).
-     *
+     * 
      * @return the cloudMetadata value.
      */
     CloudMetadata cloudMetadata();
 
     /**
      * Gets the agentUpgrade property: The info of the machine w.r.t Agent Upgrade.
-     *
+     * 
      * @return the agentUpgrade value.
      */
     AgentUpgrade agentUpgrade();
 
     /**
      * Gets the osProfile property: Specifies the operating system settings for the hybrid machine.
-     *
+     * 
      * @return the osProfile value.
      */
     OSProfile osProfile();
 
     /**
-     * Gets the licenseProfile property: Specifies the ESU related properties for a machine.
-     *
+     * Gets the licenseProfile property: Specifies the License related properties for a machine.
+     * 
      * @return the licenseProfile value.
      */
     LicenseProfileMachineInstanceView licenseProfile();
 
     /**
      * Gets the provisioningState property: The provisioning state, which only appears in the response.
-     *
+     * 
      * @return the provisioningState value.
      */
     String provisioningState();
 
     /**
      * Gets the status property: The status of the hybrid machine agent.
-     *
+     * 
      * @return the status value.
      */
     StatusTypes status();
 
     /**
      * Gets the lastStatusChange property: The time of the last status change.
-     *
+     * 
      * @return the lastStatusChange value.
      */
     OffsetDateTime lastStatusChange();
 
     /**
      * Gets the errorDetails property: Details about the error state.
-     *
+     * 
      * @return the errorDetails value.
      */
     List<ManagementError> errorDetails();
 
     /**
      * Gets the agentVersion property: The hybrid machine agent full version.
-     *
+     * 
      * @return the agentVersion value.
      */
     String agentVersion();
 
     /**
      * Gets the vmId property: Specifies the hybrid machine unique ID.
-     *
+     * 
      * @return the vmId value.
      */
-    String vmId();
+    UUID vmId();
 
     /**
      * Gets the displayName property: Specifies the hybrid machine display name.
-     *
+     * 
      * @return the displayName value.
      */
     String displayName();
 
     /**
      * Gets the machineFqdn property: Specifies the hybrid machine FQDN.
-     *
+     * 
      * @return the machineFqdn value.
      */
     String machineFqdn();
@@ -121,70 +124,77 @@ public interface MachineProperties {
     /**
      * Gets the clientPublicKey property: Public Key that the client provides to be used during initial resource
      * onboarding.
-     *
+     * 
      * @return the clientPublicKey value.
      */
     String clientPublicKey();
 
     /**
      * Gets the osName property: The Operating System running on the hybrid machine.
-     *
+     * 
      * @return the osName value.
      */
     String osName();
 
     /**
      * Gets the osVersion property: The version of Operating System running on the hybrid machine.
-     *
+     * 
      * @return the osVersion value.
      */
     String osVersion();
 
     /**
      * Gets the osType property: The type of Operating System (windows/linux).
-     *
+     * 
      * @return the osType value.
      */
     String osType();
 
     /**
      * Gets the vmUuid property: Specifies the Arc Machine's unique SMBIOS ID.
-     *
+     * 
      * @return the vmUuid value.
      */
-    String vmUuid();
+    UUID vmUuid();
 
     /**
      * Gets the extensions property: Machine Extensions information (deprecated field).
-     *
+     * 
      * @return the extensions value.
      */
     List<MachineExtensionInstanceView> extensions();
 
     /**
      * Gets the osSku property: Specifies the Operating System product SKU.
-     *
+     * 
      * @return the osSku value.
      */
     String osSku();
 
     /**
+     * Gets the osEdition property: The edition of the Operating System.
+     * 
+     * @return the osEdition value.
+     */
+    String osEdition();
+
+    /**
      * Gets the domainName property: Specifies the Windows domain name.
-     *
+     * 
      * @return the domainName value.
      */
     String domainName();
 
     /**
      * Gets the adFqdn property: Specifies the AD fully qualified display name.
-     *
+     * 
      * @return the adFqdn value.
      */
     String adFqdn();
 
     /**
      * Gets the dnsFqdn property: Specifies the DNS fully qualified display name.
-     *
+     * 
      * @return the dnsFqdn value.
      */
     String dnsFqdn();
@@ -192,7 +202,7 @@ public interface MachineProperties {
     /**
      * Gets the privateLinkScopeResourceId property: The resource id of the private link scope this machine is assigned
      * to, if any.
-     *
+     * 
      * @return the privateLinkScopeResourceId value.
      */
     String privateLinkScopeResourceId();
@@ -200,35 +210,35 @@ public interface MachineProperties {
     /**
      * Gets the parentClusterResourceId property: The resource id of the parent cluster (Azure HCI) this machine is
      * assigned to, if any.
-     *
+     * 
      * @return the parentClusterResourceId value.
      */
     String parentClusterResourceId();
 
     /**
      * Gets the mssqlDiscovered property: Specifies whether any MS SQL instance is discovered on the machine.
-     *
+     * 
      * @return the mssqlDiscovered value.
      */
     String mssqlDiscovered();
 
     /**
      * Gets the detectedProperties property: Detected properties from the machine.
-     *
+     * 
      * @return the detectedProperties value.
      */
     Map<String, String> detectedProperties();
 
     /**
      * Gets the networkProfile property: Information about the network the machine is on.
-     *
+     * 
      * @return the networkProfile value.
      */
     NetworkProfile networkProfile();
 
     /**
      * Gets the inner com.azure.resourcemanager.hybridcompute.fluent.models.MachinePropertiesInner object.
-     *
+     * 
      * @return the inner object.
      */
     MachinePropertiesInner innerModel();

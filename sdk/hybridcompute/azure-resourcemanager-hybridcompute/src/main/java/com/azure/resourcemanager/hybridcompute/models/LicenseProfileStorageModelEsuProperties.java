@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** License profile storage model for ESU properties. */
+/**
+ * License profile storage model for ESU properties.
+ */
 @Immutable
 public class LicenseProfileStorageModelEsuProperties {
     /*
@@ -23,13 +25,15 @@ public class LicenseProfileStorageModelEsuProperties {
     @JsonProperty(value = "esuKeys", access = JsonProperty.Access.WRITE_ONLY)
     private List<EsuKey> esuKeys;
 
-    /** Creates an instance of LicenseProfileStorageModelEsuProperties class. */
+    /**
+     * Creates an instance of LicenseProfileStorageModelEsuProperties class.
+     */
     public LicenseProfileStorageModelEsuProperties() {
     }
 
     /**
      * Get the assignedLicenseImmutableId property: The guid id of the license.
-     *
+     * 
      * @return the assignedLicenseImmutableId value.
      */
     public String assignedLicenseImmutableId() {
@@ -38,7 +42,7 @@ public class LicenseProfileStorageModelEsuProperties {
 
     /**
      * Get the esuKeys property: The list of ESU keys.
-     *
+     * 
      * @return the esuKeys value.
      */
     public List<EsuKey> esuKeys() {
@@ -47,7 +51,7 @@ public class LicenseProfileStorageModelEsuProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

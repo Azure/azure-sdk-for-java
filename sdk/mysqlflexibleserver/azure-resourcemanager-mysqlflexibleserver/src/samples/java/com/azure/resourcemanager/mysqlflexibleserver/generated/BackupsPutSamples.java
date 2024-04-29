@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.mysqlflexibleserver.generated;
 
-/** Samples for Backups Put. */
+/**
+ * Samples for Backups Put.
+ */
 public final class BackupsPutSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Backups/preview/2022-09-30-preview/examples/BackupPut.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Backups/preview/2023-10-01-preview/examples/BackupPut.json
      */
     /**
      * Sample code: Create backup for a server.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void createBackupForAServer(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {

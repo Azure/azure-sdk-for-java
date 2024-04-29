@@ -112,8 +112,8 @@ public final class FactoryIdentity {
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property type in model FactoryIdentity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model FactoryIdentity"));
         }
     }
 
