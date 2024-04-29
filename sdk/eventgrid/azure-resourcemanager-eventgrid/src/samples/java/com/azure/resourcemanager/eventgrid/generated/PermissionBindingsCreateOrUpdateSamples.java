@@ -11,9 +11,7 @@ import com.azure.resourcemanager.eventgrid.models.PermissionType;
  */
 public final class PermissionBindingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
-     * PermissionBindings_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/PermissionBindings_CreateOrUpdate.json
      */
     /**
      * Sample code: PermissionBindings_CreateOrUpdate.
@@ -21,8 +19,12 @@ public final class PermissionBindingsCreateOrUpdateSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void permissionBindingsCreateOrUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.permissionBindings().define("examplePermissionBindingName1")
-            .withExistingNamespace("examplerg", "exampleNamespaceName1").withTopicSpaceName("exampleTopicSpaceName1")
-            .withPermission(PermissionType.PUBLISHER).withClientGroupName("exampleClientGroupName1").create();
+        manager.permissionBindings()
+            .define("examplePermissionBindingName1")
+            .withExistingNamespace("examplerg", "exampleNamespaceName1")
+            .withTopicSpaceName("exampleTopicSpaceName1")
+            .withPermission(PermissionType.PUBLISHER)
+            .withClientGroupName("exampleClientGroupName1")
+            .create();
     }
 }

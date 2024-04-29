@@ -6,6 +6,7 @@ package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Properties of the Topic Spaces Configuration.
@@ -19,10 +20,8 @@ public final class TopicSpacesConfiguration {
     private TopicSpacesConfigurationState state;
 
     /*
-     * Fully qualified Azure Resource Id for the Event Grid Topic to which events will be routed to from TopicSpaces
-     * under a namespace.
-     * This property should be in the following format
-     * '/subscriptions/{subId}/resourcegroups/{resourceGroupName}/providers/microsoft.EventGrid/topics/{topicName}'.
+     * Fully qualified Azure Resource Id for the Event Grid Topic to which events will be routed to from TopicSpaces under a namespace.
+     * This property should be in the following format '/subscriptions/{subId}/resourcegroups/{resourceGroupName}/providers/microsoft.EventGrid/topics/{topicName}'.
      * This topic should reside in the same region where namespace is located.
      */
     @JsonProperty(value = "routeTopicResourceId")
@@ -66,6 +65,12 @@ public final class TopicSpacesConfiguration {
     @JsonProperty(value = "routingIdentityInfo")
     private RoutingIdentityInfo routingIdentityInfo;
 
+    /*
+     * List of custom domain configurations for the namespace.
+     */
+    @JsonProperty(value = "customDomains")
+    private List<CustomDomainConfiguration> customDomains;
+
     /**
      * Creates an instance of TopicSpacesConfiguration class.
      */
@@ -73,8 +78,7 @@ public final class TopicSpacesConfiguration {
     }
 
     /**
-     * Get the state property: Indicate if Topic Spaces Configuration is enabled for the namespace. Default is
-     * Disabled.
+     * Get the state property: Indicate if Topic Spaces Configuration is enabled for the namespace. Default is Disabled.
      * 
      * @return the state value.
      */
@@ -83,8 +87,7 @@ public final class TopicSpacesConfiguration {
     }
 
     /**
-     * Set the state property: Indicate if Topic Spaces Configuration is enabled for the namespace. Default is
-     * Disabled.
+     * Set the state property: Indicate if Topic Spaces Configuration is enabled for the namespace. Default is Disabled.
      * 
      * @param state the state value to set.
      * @return the TopicSpacesConfiguration object itself.
@@ -95,8 +98,8 @@ public final class TopicSpacesConfiguration {
     }
 
     /**
-     * Get the routeTopicResourceId property: Fully qualified Azure Resource Id for the Event Grid Topic to which
-     * events will be routed to from TopicSpaces under a namespace.
+     * Get the routeTopicResourceId property: Fully qualified Azure Resource Id for the Event Grid Topic to which events
+     * will be routed to from TopicSpaces under a namespace.
      * This property should be in the following format
      * '/subscriptions/{subId}/resourcegroups/{resourceGroupName}/providers/microsoft.EventGrid/topics/{topicName}'.
      * This topic should reside in the same region where namespace is located.
@@ -108,8 +111,8 @@ public final class TopicSpacesConfiguration {
     }
 
     /**
-     * Set the routeTopicResourceId property: Fully qualified Azure Resource Id for the Event Grid Topic to which
-     * events will be routed to from TopicSpaces under a namespace.
+     * Set the routeTopicResourceId property: Fully qualified Azure Resource Id for the Event Grid Topic to which events
+     * will be routed to from TopicSpaces under a namespace.
      * This property should be in the following format
      * '/subscriptions/{subId}/resourcegroups/{resourceGroupName}/providers/microsoft.EventGrid/topics/{topicName}'.
      * This topic should reside in the same region where namespace is located.
@@ -241,6 +244,26 @@ public final class TopicSpacesConfiguration {
     }
 
     /**
+     * Get the customDomains property: List of custom domain configurations for the namespace.
+     * 
+     * @return the customDomains value.
+     */
+    public List<CustomDomainConfiguration> customDomains() {
+        return this.customDomains;
+    }
+
+    /**
+     * Set the customDomains property: List of custom domain configurations for the namespace.
+     * 
+     * @param customDomains the customDomains value to set.
+     * @return the TopicSpacesConfiguration object itself.
+     */
+    public TopicSpacesConfiguration withCustomDomains(List<CustomDomainConfiguration> customDomains) {
+        this.customDomains = customDomains;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -254,6 +277,9 @@ public final class TopicSpacesConfiguration {
         }
         if (routingIdentityInfo() != null) {
             routingIdentityInfo().validate();
+        }
+        if (customDomains() != null) {
+            customDomains().forEach(e -> e.validate());
         }
     }
 }

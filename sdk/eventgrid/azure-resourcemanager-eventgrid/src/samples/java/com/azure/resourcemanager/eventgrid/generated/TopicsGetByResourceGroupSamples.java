@@ -9,8 +9,7 @@ package com.azure.resourcemanager.eventgrid.generated;
  */
 public final class TopicsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/Topics_Get.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/Topics_Get.json
      */
     /**
      * Sample code: Topics_Get.

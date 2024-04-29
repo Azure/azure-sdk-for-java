@@ -7,7 +7,9 @@ package com.azure.resourcemanager.mysqlflexibleserver.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The date encryption for cmk. */
+/**
+ * The date encryption for cmk.
+ */
 @Fluent
 public final class DataEncryption {
     /*
@@ -40,13 +42,15 @@ public final class DataEncryption {
     @JsonProperty(value = "type")
     private DataEncryptionType type;
 
-    /** Creates an instance of DataEncryption class. */
+    /**
+     * Creates an instance of DataEncryption class.
+     */
     public DataEncryption() {
     }
 
     /**
      * Get the primaryUserAssignedIdentityId property: Primary user identity resource id.
-     *
+     * 
      * @return the primaryUserAssignedIdentityId value.
      */
     public String primaryUserAssignedIdentityId() {
@@ -55,7 +59,7 @@ public final class DataEncryption {
 
     /**
      * Set the primaryUserAssignedIdentityId property: Primary user identity resource id.
-     *
+     * 
      * @param primaryUserAssignedIdentityId the primaryUserAssignedIdentityId value to set.
      * @return the DataEncryption object itself.
      */
@@ -66,7 +70,7 @@ public final class DataEncryption {
 
     /**
      * Get the primaryKeyUri property: Primary key uri.
-     *
+     * 
      * @return the primaryKeyUri value.
      */
     public String primaryKeyUri() {
@@ -75,7 +79,7 @@ public final class DataEncryption {
 
     /**
      * Set the primaryKeyUri property: Primary key uri.
-     *
+     * 
      * @param primaryKeyUri the primaryKeyUri value to set.
      * @return the DataEncryption object itself.
      */
@@ -87,7 +91,7 @@ public final class DataEncryption {
     /**
      * Get the geoBackupUserAssignedIdentityId property: Geo backup user identity resource id as identity can't cross
      * region, need identity in same region as geo backup.
-     *
+     * 
      * @return the geoBackupUserAssignedIdentityId value.
      */
     public String geoBackupUserAssignedIdentityId() {
@@ -97,7 +101,7 @@ public final class DataEncryption {
     /**
      * Set the geoBackupUserAssignedIdentityId property: Geo backup user identity resource id as identity can't cross
      * region, need identity in same region as geo backup.
-     *
+     * 
      * @param geoBackupUserAssignedIdentityId the geoBackupUserAssignedIdentityId value to set.
      * @return the DataEncryption object itself.
      */
@@ -109,7 +113,7 @@ public final class DataEncryption {
     /**
      * Get the geoBackupKeyUri property: Geo backup key uri as key vault can't cross region, need cmk in same region as
      * geo backup.
-     *
+     * 
      * @return the geoBackupKeyUri value.
      */
     public String geoBackupKeyUri() {
@@ -119,7 +123,7 @@ public final class DataEncryption {
     /**
      * Set the geoBackupKeyUri property: Geo backup key uri as key vault can't cross region, need cmk in same region as
      * geo backup.
-     *
+     * 
      * @param geoBackupKeyUri the geoBackupKeyUri value to set.
      * @return the DataEncryption object itself.
      */
@@ -130,7 +134,7 @@ public final class DataEncryption {
 
     /**
      * Get the type property: The key type, AzureKeyVault for enable cmk, SystemManaged for disable cmk.
-     *
+     * 
      * @return the type value.
      */
     public DataEncryptionType type() {
@@ -139,7 +143,7 @@ public final class DataEncryption {
 
     /**
      * Set the type property: The key type, AzureKeyVault for enable cmk, SystemManaged for disable cmk.
-     *
+     * 
      * @param type the type value to set.
      * @return the DataEncryption object itself.
      */
@@ -150,7 +154,7 @@ public final class DataEncryption {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

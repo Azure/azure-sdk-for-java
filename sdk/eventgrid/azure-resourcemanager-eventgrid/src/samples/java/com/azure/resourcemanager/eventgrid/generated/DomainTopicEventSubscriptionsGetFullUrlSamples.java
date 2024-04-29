@@ -9,9 +9,7 @@ package com.azure.resourcemanager.eventgrid.generated;
  */
 public final class DomainTopicEventSubscriptionsGetFullUrlSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
-     * DomainTopicEventSubscriptions_GetFullUrl.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/DomainTopicEventSubscriptions_GetFullUrl.json
      */
     /**
      * Sample code: DomainTopicEventSubscriptions_GetFullUrl.
@@ -20,7 +18,8 @@ public final class DomainTopicEventSubscriptionsGetFullUrlSamples {
      */
     public static void
         domainTopicEventSubscriptionsGetFullUrl(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.domainTopicEventSubscriptions().getFullUrlWithResponse("examplerg", "exampleDomain1",
-            "exampleDomainTopic1", "examplesubscription1", com.azure.core.util.Context.NONE);
+        manager.domainTopicEventSubscriptions()
+            .getFullUrlWithResponse("examplerg", "exampleDomain1", "exampleDomainTopic1", "examplesubscription1",
+                com.azure.core.util.Context.NONE);
     }
 }

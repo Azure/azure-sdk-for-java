@@ -196,22 +196,10 @@ public class ShareClientBuilder implements
      * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public ShareAsyncClient buildAsyncClient() {
-        Objects.requireNonNull(shareName, "'shareName' cannot be null.");
-        CredentialValidator.validateSingleCredentialIsPresent(
-            storageSharedKeyCredential, null, azureSasCredential, sasToken, LOGGER);
-        ShareServiceVersion serviceVersion = version != null ? version : ShareServiceVersion.getLatest();
-
+        AzureFileStorageImpl azureFileStorage = buildFileStorageImplClient();
         AzureSasCredential azureSasCredentialFromSasToken = sasToken != null ? new AzureSasCredential(sasToken) : null;
 
-        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
-            endpoint, retryOptions, coreRetryOptions, logOptions,
-            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, audience, LOGGER);
-
-        AzureFileStorageImpl azureFileStorage = new AzureFileStorageImpl(pipeline, serviceVersion.getVersion(),
-            shareTokenIntent, endpoint, allowTrailingDot, allowSourceTrailingDot);
-
-        return new ShareAsyncClient(azureFileStorage, shareName, snapshot, accountName, serviceVersion,
+        return new ShareAsyncClient(azureFileStorage, shareName, snapshot, accountName, this.version,
             azureSasCredentialFromSasToken != null ? azureSasCredentialFromSasToken : azureSasCredential);
     }
 
@@ -234,7 +222,11 @@ public class ShareClientBuilder implements
      * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public ShareClient buildClient() {
-        return new ShareClient(buildAsyncClient());
+        AzureFileStorageImpl azureFileStorage = buildFileStorageImplClient();
+        AzureSasCredential azureSasCredentialFromSasToken = sasToken != null ? new AzureSasCredential(sasToken) : null;
+
+        return new ShareClient(azureFileStorage, shareName, snapshot, accountName, this.version,
+            azureSasCredentialFromSasToken != null ? azureSasCredentialFromSasToken : azureSasCredential);
     }
 
     /**
@@ -666,5 +658,21 @@ public class ShareClientBuilder implements
     public ShareClientBuilder audience(ShareAudience audience) {
         this.audience = audience;
         return this;
+    }
+
+    AzureFileStorageImpl buildFileStorageImplClient() {
+        Objects.requireNonNull(shareName, "'shareName' cannot be null.");
+        CredentialValidator.validateSingleCredentialIsPresent(
+            storageSharedKeyCredential, null, azureSasCredential, sasToken, LOGGER);
+        ShareServiceVersion serviceVersion = version != null ? version : ShareServiceVersion.getLatest();
+        this.serviceVersion(serviceVersion);
+
+        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
+            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+            endpoint, retryOptions, coreRetryOptions, logOptions,
+            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, audience, LOGGER);
+
+        return new AzureFileStorageImpl(pipeline, serviceVersion.getVersion(),
+            shareTokenIntent, endpoint, allowTrailingDot, allowSourceTrailingDot);
     }
 }

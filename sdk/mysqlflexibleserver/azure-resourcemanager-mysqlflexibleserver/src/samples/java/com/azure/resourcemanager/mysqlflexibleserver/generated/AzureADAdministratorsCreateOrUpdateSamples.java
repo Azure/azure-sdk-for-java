@@ -7,20 +7,21 @@ package com.azure.resourcemanager.mysqlflexibleserver.generated;
 import com.azure.resourcemanager.mysqlflexibleserver.models.AdministratorName;
 import com.azure.resourcemanager.mysqlflexibleserver.models.AdministratorType;
 
-/** Samples for AzureADAdministrators CreateOrUpdate. */
+/**
+ * Samples for AzureADAdministrators CreateOrUpdate.
+ */
 public final class AzureADAdministratorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/AAD/preview/2021-12-01-preview/examples/AzureADAdministratorCreate.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/AAD/preview/2023-06-01-preview/examples/AzureADAdministratorCreate.json
      */
     /**
      * Sample code: Create an azure ad administrator.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
-    public static void createAnAzureAdAdministrator(
-        com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager
-            .azureADAdministrators()
+    public static void
+        createAnAzureAdAdministrator(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
+        manager.azureADAdministrators()
             .define(AdministratorName.ACTIVE_DIRECTORY)
             .withExistingFlexibleServer("testrg", "mysqltestsvc4")
             .withAdministratorType(AdministratorType.ACTIVE_DIRECTORY)
