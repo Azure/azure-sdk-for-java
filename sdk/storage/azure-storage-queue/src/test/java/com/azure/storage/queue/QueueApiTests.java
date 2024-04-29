@@ -8,6 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.queue.models.PeekedMessageItem;
 import com.azure.storage.queue.models.QueueAccessPolicy;
 import com.azure.storage.queue.models.QueueAudience;
@@ -867,6 +868,7 @@ public class QueueApiTests extends QueueTestBase {
         assertNotNull(aadQueue.getProperties());
     }
 
+    @LiveOnly
     @Test
     public void audienceErrorBearerChallengeRetry() {
         queueClient.createIfNotExists();
