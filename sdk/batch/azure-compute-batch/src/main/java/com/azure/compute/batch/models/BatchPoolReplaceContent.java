@@ -130,7 +130,6 @@ public final class BatchPoolReplaceContent implements JsonSerializable<BatchPool
         // TODO: Remove this and re-add @Generated tag once certificateReferences is removed from the server side
         jsonWriter.writeStartArray("certificateReferences");
         jsonWriter.writeEndArray();
-
         jsonWriter.writeArrayField("applicationPackageReferences", this.applicationPackageReferences,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("metadata", this.metadata, (writer, element) -> writer.writeJson(element));
