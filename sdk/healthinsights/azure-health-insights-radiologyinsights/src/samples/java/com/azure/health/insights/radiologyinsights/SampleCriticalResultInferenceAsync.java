@@ -89,9 +89,12 @@ public class SampleCriticalResultInferenceAsync {
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
         String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_API_KEY");
         
-        RadiologyInsightsAsyncClient radiologyInsightsAsyncClient = new RadiologyInsightsClientBuilder()
-                .endpoint(endpoint).serviceVersion(RadiologyInsightsServiceVersion.getLatest())
-                .credential(new AzureKeyCredential(apiKey)).buildAsyncClient();
+        RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder()
+                .endpoint(endpoint).serviceVersion(RadiologyInsightsServiceVersion.getLatest());
+        if (apiKey != null && !apiKey.equals("")) {
+        	clientBuilder = clientBuilder.credential(new AzureKeyCredential(apiKey));
+        }
+		RadiologyInsightsAsyncClient radiologyInsightsAsyncClient = clientBuilder.buildAsyncClient();
         // END: com.azure.health.insights.radiologyinsights.buildasyncclient
 
         // BEGIN: com.azure.health.insights.radiologyinsights.inferradiologyinsights

@@ -53,23 +53,29 @@ to authenticate the client. You may choose to build a **synchronous** or **async
 Build a **synchronous** client:
 
 ```java com.azure.health.insights.radiologyinsights.buildsyncclient
-String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
-String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_API_KEY");
-
-RadiologyInsightsClient radiologyInsightsClient = new RadiologyInsightsClientBuilder()
-        .endpoint(endpoint).serviceVersion(RadiologyInsightsServiceVersion.getLatest())
-        .credential(new AzureKeyCredential(apiKey)).buildClient();
+      String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
+      String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_API_KEY");
+      
+      RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder()
+              .endpoint(endpoint).serviceVersion(RadiologyInsightsServiceVersion.getLatest());
+      if (apiKey != null && !apiKey.equals("")) {
+      	clientBuilder = clientBuilder.credential(new AzureKeyCredential(apiKey));
+      }
+RadiologyInsightsClient radiologyInsightsClient = clientBuilder.buildClient();
 ```
 
 Build an **asynchronous** client:
 
 ```java com.azure.health.insights.radiologyinsights.buildasyncclient
-String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
-String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_API_KEY");
-
-RadiologyInsightsAsyncClient radiologyInsightsAsyncClient = new RadiologyInsightsClientBuilder()
-        .endpoint(endpoint).serviceVersion(RadiologyInsightsServiceVersion.getLatest())
-        .credential(new AzureKeyCredential(apiKey)).buildAsyncClient();
+      String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
+      String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_API_KEY");
+      
+      RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder()
+              .endpoint(endpoint).serviceVersion(RadiologyInsightsServiceVersion.getLatest());
+      if (apiKey != null && !apiKey.equals("")) {
+      	clientBuilder = clientBuilder.credential(new AzureKeyCredential(apiKey));
+      }
+RadiologyInsightsAsyncClient radiologyInsightsAsyncClient = clientBuilder.buildAsyncClient();
 ```
 
 ## Key concepts
@@ -435,7 +441,7 @@ private static void displayFollowupCommunications(RadiologyInsightsInferenceResu
             if (inference instanceof FollowupCommunicationInference) {
                 System.out.println("Followup Communication Inference found");
                 FollowupCommunicationInference followupCommunicationInference = (FollowupCommunicationInference) inference;
-                System.out.println("   Date/time: ");
+                System.out.println("   Communicated at: ");
                 List<OffsetDateTime> dateTimeList = followupCommunicationInference.getCommunicatedAt();
                 if (dateTimeList != null) {
                     for (OffsetDateTime dateTime : dateTimeList) {

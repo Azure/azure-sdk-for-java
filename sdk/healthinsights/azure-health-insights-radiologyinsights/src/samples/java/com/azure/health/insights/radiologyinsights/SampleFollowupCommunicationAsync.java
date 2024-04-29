@@ -90,9 +90,12 @@ public class SampleFollowupCommunicationAsync {
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
         String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_API_KEY");
 
-        RadiologyInsightsAsyncClient radiologyInsightsAsyncClient = new RadiologyInsightsClientBuilder()
-                .endpoint(endpoint).serviceVersion(RadiologyInsightsServiceVersion.getLatest())
-                .credential(new AzureKeyCredential(apiKey)).buildAsyncClient();
+        RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder()
+                .endpoint(endpoint).serviceVersion(RadiologyInsightsServiceVersion.getLatest());
+        if (apiKey != null && !apiKey.equals("")) {
+        	clientBuilder = clientBuilder.credential(new AzureKeyCredential(apiKey));
+        }
+		RadiologyInsightsAsyncClient radiologyInsightsAsyncClient = clientBuilder.buildAsyncClient();
 
         PollerFlux<RadiologyInsightsJob, RadiologyInsightsJob> asyncPoller = radiologyInsightsAsyncClient
                 .beginInferRadiologyInsights("job" + new Date().getTime(), createRadiologyInsightsJob());
@@ -132,7 +135,7 @@ public class SampleFollowupCommunicationAsync {
                 if (inference instanceof FollowupCommunicationInference) {
                     System.out.println("Followup Communication Inference found");
                     FollowupCommunicationInference followupCommunicationInference = (FollowupCommunicationInference) inference;
-                    System.out.println("   Date/time: ");
+                    System.out.println("   Communicated at: ");
                     List<OffsetDateTime> dateTimeList = followupCommunicationInference.getCommunicatedAt();
                     if (dateTimeList != null) {
                         for (OffsetDateTime dateTime : dateTimeList) {
