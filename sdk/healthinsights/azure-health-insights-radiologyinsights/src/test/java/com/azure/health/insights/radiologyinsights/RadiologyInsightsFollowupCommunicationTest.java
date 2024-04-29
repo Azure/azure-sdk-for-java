@@ -70,21 +70,6 @@ public class RadiologyInsightsFollowupCommunicationTest extends RadiologyInsight
                 RadiologyInsightsInference inference = inferences.get(0);
                 assertTrue(inference instanceof FollowupCommunicationInference, "Inference should be an instance of FollowupCommunicationInference");
                 
-                FollowupCommunicationInference followupCommunicationInference = (FollowupCommunicationInference) inference;
-
-//                System.out.println("   Date/time: ");
-//                List<OffsetDateTime> dateTimeList = followupCommunicationInference.getCommunicatedAt();
-//                for (OffsetDateTime dateTime : dateTimeList) {
-//                    System.out.println("      " + dateTime);
-//                }
-//                System.out.println("   Recipient: ");
-//                List<MedicalProfessionalType> recipientList = followupCommunicationInference.getRecipient();
-//                for (MedicalProfessionalType recipient : recipientList) {
-//                    System.out.println("      " + recipient);
-//                }
-//                System.out.println("   Aknowledged: " + followupCommunicationInference.isWasAcknowledged());
-
-
             });
 
         } catch (Throwable t) {
