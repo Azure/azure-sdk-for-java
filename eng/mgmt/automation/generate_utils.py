@@ -11,6 +11,7 @@ import tempfile
 import subprocess
 import urllib.parse
 from typing import Tuple, List, Union
+from typespec_utils import validate_tspconfig
 
 pwd = os.getcwd()
 #os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])))
@@ -405,9 +406,3 @@ def find_sdk_folder(sdk_root: str):
     check_call(cmd, sdk_root)
 
     return sdk_folder
-
-
-def validate_tspconfig(tsp_dir: str) -> bool:
-    if not tsp_dir.endswith('tspconfig.yaml'):
-        tsp_dir = os.path.join(tsp_dir, 'tspconfig.yaml')
-    return True
