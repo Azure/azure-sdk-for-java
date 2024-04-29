@@ -14,50 +14,36 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"nrs\",\"display\":{\"provider\":\"qidybyx\",\"resource\":\"fclhaaxdbabphlwr\",\"operation\":\"fkts\",\"description\":\"sucocmnyyazttbtw\"},\"origin\":\"qpuedckzywbiex\",\"properties\":{\"qwalmuzyoxaepd\":\"datayueaxibxujwb\",\"d\":\"datazjancuxr\",\"dbpgnxytxhp\":\"databavxbniwdjswzt\",\"lcuhxwtctyqiklb\":\"dataxbzpfzab\"}}")
-                .toObject(OperationInner.class);
-        Assertions.assertEquals("nrs", model.name());
-        Assertions.assertEquals("qidybyx", model.display().provider());
-        Assertions.assertEquals("fclhaaxdbabphlwr", model.display().resource());
-        Assertions.assertEquals("fkts", model.display().operation());
-        Assertions.assertEquals("sucocmnyyazttbtw", model.display().description());
-        Assertions.assertEquals("qpuedckzywbiex", model.origin());
+        OperationInner model = BinaryData.fromString(
+            "{\"name\":\"f\",\"display\":{\"provider\":\"txhojujb\",\"resource\":\"elmcuvhixbjxyfw\",\"operation\":\"lrcoolsttpki\",\"description\":\"kbnujr\"},\"origin\":\"vtylbfpncu\",\"properties\":{\"htywubxcbihwq\":\"dataiwii\",\"wjchrdg\":\"datanfdn\",\"uu\":\"dataihxumwctondzj\"}}")
+            .toObject(OperationInner.class);
+        Assertions.assertEquals("f", model.name());
+        Assertions.assertEquals("txhojujb", model.display().provider());
+        Assertions.assertEquals("elmcuvhixbjxyfw", model.display().resource());
+        Assertions.assertEquals("lrcoolsttpki", model.display().operation());
+        Assertions.assertEquals("kbnujr", model.display().description());
+        Assertions.assertEquals("vtylbfpncu", model.origin());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationInner model =
-            new OperationInner()
-                .withName("nrs")
-                .withDisplay(
-                    new OperationDisplay()
-                        .withProvider("qidybyx")
-                        .withResource("fclhaaxdbabphlwr")
-                        .withOperation("fkts")
-                        .withDescription("sucocmnyyazttbtw"))
-                .withOrigin("qpuedckzywbiex")
-                .withProperties(
-                    mapOf(
-                        "qwalmuzyoxaepd",
-                        "datayueaxibxujwb",
-                        "d",
-                        "datazjancuxr",
-                        "dbpgnxytxhp",
-                        "databavxbniwdjswzt",
-                        "lcuhxwtctyqiklb",
-                        "dataxbzpfzab"));
+        OperationInner model = new OperationInner().withName("f")
+            .withDisplay(new OperationDisplay().withProvider("txhojujb")
+                .withResource("elmcuvhixbjxyfw")
+                .withOperation("lrcoolsttpki")
+                .withDescription("kbnujr"))
+            .withOrigin("vtylbfpncu")
+            .withProperties(mapOf("htywubxcbihwq", "dataiwii", "wjchrdg", "datanfdn", "uu", "dataihxumwctondzj"));
         model = BinaryData.fromObject(model).toObject(OperationInner.class);
-        Assertions.assertEquals("nrs", model.name());
-        Assertions.assertEquals("qidybyx", model.display().provider());
-        Assertions.assertEquals("fclhaaxdbabphlwr", model.display().resource());
-        Assertions.assertEquals("fkts", model.display().operation());
-        Assertions.assertEquals("sucocmnyyazttbtw", model.display().description());
-        Assertions.assertEquals("qpuedckzywbiex", model.origin());
+        Assertions.assertEquals("f", model.name());
+        Assertions.assertEquals("txhojujb", model.display().provider());
+        Assertions.assertEquals("elmcuvhixbjxyfw", model.display().resource());
+        Assertions.assertEquals("lrcoolsttpki", model.display().operation());
+        Assertions.assertEquals("kbnujr", model.display().description());
+        Assertions.assertEquals("vtylbfpncu", model.origin());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

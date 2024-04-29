@@ -13,38 +13,34 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupAndExportResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupAndExportResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"status\":\"CancelInProgress\",\"startTime\":\"2021-01-15T00:39:28Z\",\"endTime\":\"2021-04-04T07:45:50Z\",\"percentComplete\":13.198921536177277,\"properties\":{\"datasourceSizeInBytes\":8699509419424523906,\"dataTransferredInBytes\":7670793912698215607,\"backupMetadata\":\"jdpvwryo\"},\"id\":\"soacctazakl\",\"name\":\"lahbcryff\",\"type\":\"fdosyg\"}")
-                .toObject(BackupAndExportResponseInner.class);
-        Assertions.assertEquals(OperationStatus.CANCEL_IN_PROGRESS, model.status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-15T00:39:28Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-04T07:45:50Z"), model.endTime());
-        Assertions.assertEquals(13.198921536177277D, model.percentComplete());
-        Assertions.assertEquals(8699509419424523906L, model.datasourceSizeInBytes());
-        Assertions.assertEquals(7670793912698215607L, model.dataTransferredInBytes());
-        Assertions.assertEquals("jdpvwryo", model.backupMetadata());
+        BackupAndExportResponseInner model = BinaryData.fromString(
+            "{\"status\":\"InProgress\",\"startTime\":\"2021-02-19T06:09:33Z\",\"endTime\":\"2021-01-02T14:29:41Z\",\"percentComplete\":74.66286399423657,\"properties\":{\"datasourceSizeInBytes\":3668022483866930425,\"dataTransferredInBytes\":4913566338802076766,\"backupMetadata\":\"akl\"},\"id\":\"hbcryffdfdosyge\",\"name\":\"paojakhmsbzjh\",\"type\":\"rzevdphlxaol\"}")
+            .toObject(BackupAndExportResponseInner.class);
+        Assertions.assertEquals(OperationStatus.IN_PROGRESS, model.status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-19T06:09:33Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-02T14:29:41Z"), model.endTime());
+        Assertions.assertEquals(74.66286399423657D, model.percentComplete());
+        Assertions.assertEquals(3668022483866930425L, model.datasourceSizeInBytes());
+        Assertions.assertEquals(4913566338802076766L, model.dataTransferredInBytes());
+        Assertions.assertEquals("akl", model.backupMetadata());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupAndExportResponseInner model =
-            new BackupAndExportResponseInner()
-                .withStatus(OperationStatus.CANCEL_IN_PROGRESS)
-                .withStartTime(OffsetDateTime.parse("2021-01-15T00:39:28Z"))
-                .withEndTime(OffsetDateTime.parse("2021-04-04T07:45:50Z"))
-                .withPercentComplete(13.198921536177277D)
-                .withDatasourceSizeInBytes(8699509419424523906L)
-                .withDataTransferredInBytes(7670793912698215607L)
-                .withBackupMetadata("jdpvwryo");
+        BackupAndExportResponseInner model = new BackupAndExportResponseInner().withStatus(OperationStatus.IN_PROGRESS)
+            .withStartTime(OffsetDateTime.parse("2021-02-19T06:09:33Z"))
+            .withEndTime(OffsetDateTime.parse("2021-01-02T14:29:41Z"))
+            .withPercentComplete(74.66286399423657D)
+            .withDatasourceSizeInBytes(3668022483866930425L)
+            .withDataTransferredInBytes(4913566338802076766L)
+            .withBackupMetadata("akl");
         model = BinaryData.fromObject(model).toObject(BackupAndExportResponseInner.class);
-        Assertions.assertEquals(OperationStatus.CANCEL_IN_PROGRESS, model.status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-15T00:39:28Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-04T07:45:50Z"), model.endTime());
-        Assertions.assertEquals(13.198921536177277D, model.percentComplete());
-        Assertions.assertEquals(8699509419424523906L, model.datasourceSizeInBytes());
-        Assertions.assertEquals(7670793912698215607L, model.dataTransferredInBytes());
-        Assertions.assertEquals("jdpvwryo", model.backupMetadata());
+        Assertions.assertEquals(OperationStatus.IN_PROGRESS, model.status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-19T06:09:33Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-02T14:29:41Z"), model.endTime());
+        Assertions.assertEquals(74.66286399423657D, model.percentComplete());
+        Assertions.assertEquals(3668022483866930425L, model.datasourceSizeInBytes());
+        Assertions.assertEquals(4913566338802076766L, model.dataTransferredInBytes());
+        Assertions.assertEquals("akl", model.backupMetadata());
     }
 }

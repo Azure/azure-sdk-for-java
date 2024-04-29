@@ -14,26 +14,21 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupAndExportRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupAndExportRequest model =
-            BinaryData
-                .fromString(
-                    "{\"targetDetails\":{\"objectType\":\"BackupStoreDetails\"},\"backupSettings\":{\"backupName\":\"ixjsprozvcputeg\",\"backupFormat\":\"CollatedFormat\"}}")
-                .toObject(BackupAndExportRequest.class);
-        Assertions.assertEquals("ixjsprozvcputeg", model.backupSettings().backupName());
+        BackupAndExportRequest model = BinaryData.fromString(
+            "{\"targetDetails\":{\"objectType\":\"xj\"},\"backupSettings\":{\"backupName\":\"prozvcputegjvwmf\",\"backupFormat\":\"CollatedFormat\"}}")
+            .toObject(BackupAndExportRequest.class);
+        Assertions.assertEquals("prozvcputegjvwmf", model.backupSettings().backupName());
         Assertions.assertEquals(BackupFormat.COLLATED_FORMAT, model.backupSettings().backupFormat());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupAndExportRequest model =
-            new BackupAndExportRequest()
-                .withBackupSettings(
-                    new BackupSettings()
-                        .withBackupName("ixjsprozvcputeg")
-                        .withBackupFormat(BackupFormat.COLLATED_FORMAT))
-                .withTargetDetails(new BackupStoreDetails());
+        BackupAndExportRequest model = new BackupAndExportRequest()
+            .withBackupSettings(
+                new BackupSettings().withBackupName("prozvcputegjvwmf").withBackupFormat(BackupFormat.COLLATED_FORMAT))
+            .withTargetDetails(new BackupStoreDetails());
         model = BinaryData.fromObject(model).toObject(BackupAndExportRequest.class);
-        Assertions.assertEquals("ixjsprozvcputeg", model.backupSettings().backupName());
+        Assertions.assertEquals("prozvcputegjvwmf", model.backupSettings().backupName());
         Assertions.assertEquals(BackupFormat.COLLATED_FORMAT, model.backupSettings().backupFormat());
     }
 }

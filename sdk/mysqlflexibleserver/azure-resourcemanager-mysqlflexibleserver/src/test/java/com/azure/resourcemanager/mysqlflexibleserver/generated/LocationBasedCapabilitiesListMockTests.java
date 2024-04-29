@@ -6,60 +6,32 @@ package com.azure.resourcemanager.mysqlflexibleserver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mysqlflexibleserver.MySqlManager;
 import com.azure.resourcemanager.mysqlflexibleserver.models.CapabilityProperties;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class LocationBasedCapabilitiesListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"zone\":\"spkcdqzh\",\"supportedHAMode\":[\"d\",\"unqndyfpchrqb\"],\"supportedGeoBackupRegions\":[\"rcgegydcwboxjum\"],\"supportedFlexibleServerEditions\":[{\"name\":\"lihrraiouaubr\",\"supportedStorageEditions\":[{\"name\":\"qxfuojrngif\",\"minStorageSize\":830410140163746235,\"maxStorageSize\":1555196494956757044,\"minBackupRetentionDays\":5394588020483902059,\"maxBackupRetentionDays\":7631584210516257592,\"minBackupIntervalHours\":6769546219149410070,\"maxBackupIntervalHours\":7690948358154905818},{\"name\":\"qwmkyoquf\",\"minStorageSize\":8988386950065089446,\"maxStorageSize\":5981507074287160981,\"minBackupRetentionDays\":4593019119911991064,\"maxBackupRetentionDays\":4049476752060700818,\"minBackupIntervalHours\":8722667505029355091,\"maxBackupIntervalHours\":6443361634418266911},{\"name\":\"tngfdgugeyzihgr\",\"minStorageSize\":1736754757501785012,\"maxStorageSize\":8465106244309134216,\"minBackupRetentionDays\":5121316650807142747,\"maxBackupRetentionDays\":5261779800039268630,\"minBackupIntervalHours\":6510974356016534844,\"maxBackupIntervalHours\":3022266831235922849},{\"name\":\"hyhsgzfczbg\",\"minStorageSize\":6788751410838737774,\"maxStorageSize\":6852573035191430605,\"minBackupRetentionDays\":9099678242859302945,\"maxBackupRetentionDays\":7388900047782896057,\"minBackupIntervalHours\":719074565419932973,\"maxBackupIntervalHours\":566359286330686935}],\"supportedServerVersions\":[{\"name\":\"nkrrf\",\"supportedSkus\":[{},{},{}]},{\"name\":\"btijvacvbm\",\"supportedSkus\":[{},{}]},{\"name\":\"q\",\"supportedSkus\":[{}]}]}]}]}";
 
-        String responseStr =
-            "{\"value\":[{\"zone\":\"jwosytxitcskfck\",\"supportedHAMode\":[\"miekkezzikhlyfjh\",\"gqggebdunygae\",\"idb\"],\"supportedGeoBackupRegions\":[\"t\",\"xllrxcyjm\"],\"supportedFlexibleServerEditions\":[{\"name\":\"uvarmywdmjsjq\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[]},{\"name\":\"xrwlyc\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[]},{\"name\":\"xkgymareqnajxqu\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[]},{\"name\":\"ubeddg\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[]}]}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MySqlManager manager = MySqlManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<CapabilityProperties> response
+            = manager.locationBasedCapabilities().list("uncuw", com.azure.core.util.Context.NONE);
 
-        MySqlManager manager =
-            MySqlManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<CapabilityProperties> response =
-            manager.locationBasedCapabilities().list("jrvxaglrv", com.azure.core.util.Context.NONE);
     }
 }

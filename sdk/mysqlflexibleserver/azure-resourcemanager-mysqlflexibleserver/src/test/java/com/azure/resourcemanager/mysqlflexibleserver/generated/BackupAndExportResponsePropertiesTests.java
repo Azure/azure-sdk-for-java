@@ -11,26 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupAndExportResponsePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupAndExportResponseProperties model =
-            BinaryData
-                .fromString(
-                    "{\"datasourceSizeInBytes\":4700894301237220319,\"dataTransferredInBytes\":1611067142281819203,\"backupMetadata\":\"hmsbzjhcrzevdp\"}")
-                .toObject(BackupAndExportResponseProperties.class);
-        Assertions.assertEquals(4700894301237220319L, model.datasourceSizeInBytes());
-        Assertions.assertEquals(1611067142281819203L, model.dataTransferredInBytes());
-        Assertions.assertEquals("hmsbzjhcrzevdp", model.backupMetadata());
+        BackupAndExportResponseProperties model = BinaryData.fromString(
+            "{\"datasourceSizeInBytes\":8622826594592540845,\"dataTransferredInBytes\":2343470507309759072,\"backupMetadata\":\"bpf\"}")
+            .toObject(BackupAndExportResponseProperties.class);
+        Assertions.assertEquals(8622826594592540845L, model.datasourceSizeInBytes());
+        Assertions.assertEquals(2343470507309759072L, model.dataTransferredInBytes());
+        Assertions.assertEquals("bpf", model.backupMetadata());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupAndExportResponseProperties model =
-            new BackupAndExportResponseProperties()
-                .withDatasourceSizeInBytes(4700894301237220319L)
-                .withDataTransferredInBytes(1611067142281819203L)
-                .withBackupMetadata("hmsbzjhcrzevdp");
+        BackupAndExportResponseProperties model
+            = new BackupAndExportResponseProperties().withDatasourceSizeInBytes(8622826594592540845L)
+                .withDataTransferredInBytes(2343470507309759072L)
+                .withBackupMetadata("bpf");
         model = BinaryData.fromObject(model).toObject(BackupAndExportResponseProperties.class);
-        Assertions.assertEquals(4700894301237220319L, model.datasourceSizeInBytes());
-        Assertions.assertEquals(1611067142281819203L, model.dataTransferredInBytes());
-        Assertions.assertEquals("hmsbzjhcrzevdp", model.backupMetadata());
+        Assertions.assertEquals(8622826594592540845L, model.datasourceSizeInBytes());
+        Assertions.assertEquals(2343470507309759072L, model.dataTransferredInBytes());
+        Assertions.assertEquals("bpf", model.backupMetadata());
     }
 }

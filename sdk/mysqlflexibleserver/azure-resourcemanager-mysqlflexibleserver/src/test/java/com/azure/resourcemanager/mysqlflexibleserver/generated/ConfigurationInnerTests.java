@@ -12,26 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ConfigurationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConfigurationInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"value\":\"qtrgqjbpfzfsinzg\",\"currentValue\":\"cjrwzoxxjtfellu\",\"description\":\"zitonpeqfpjkjl\",\"documentationLink\":\"fpdvhpfxxypi\",\"defaultValue\":\"nmayhuybb\",\"dataType\":\"odepoogin\",\"allowedValues\":\"amiheognarxz\",\"source\":\"system-default\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"False\"},\"id\":\"yevc\",\"name\":\"iqihn\",\"type\":\"un\"}")
-                .toObject(ConfigurationInner.class);
-        Assertions.assertEquals("qtrgqjbpfzfsinzg", model.value());
-        Assertions.assertEquals("cjrwzoxxjtfellu", model.currentValue());
-        Assertions.assertEquals(ConfigurationSource.SYSTEM_DEFAULT, model.source());
+        ConfigurationInner model = BinaryData.fromString(
+            "{\"properties\":{\"value\":\"ofx\",\"currentValue\":\"ofjaeqjhqjb\",\"description\":\"v\",\"documentationLink\":\"mjqulngsn\",\"defaultValue\":\"bybkzgcwrwclxx\",\"dataType\":\"ljdousk\",\"allowedValues\":\"vkocrcjdkwtn\",\"source\":\"user-override\",\"isReadOnly\":\"False\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"False\"},\"id\":\"rglssainqpj\",\"name\":\"nzl\",\"type\":\"jfm\"}")
+            .toObject(ConfigurationInner.class);
+        Assertions.assertEquals("ofx", model.value());
+        Assertions.assertEquals("ofjaeqjhqjb", model.currentValue());
+        Assertions.assertEquals(ConfigurationSource.USER_OVERRIDE, model.source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigurationInner model =
-            new ConfigurationInner()
-                .withValue("qtrgqjbpfzfsinzg")
-                .withCurrentValue("cjrwzoxxjtfellu")
-                .withSource(ConfigurationSource.SYSTEM_DEFAULT);
+        ConfigurationInner model = new ConfigurationInner().withValue("ofx")
+            .withCurrentValue("ofjaeqjhqjb")
+            .withSource(ConfigurationSource.USER_OVERRIDE);
         model = BinaryData.fromObject(model).toObject(ConfigurationInner.class);
-        Assertions.assertEquals("qtrgqjbpfzfsinzg", model.value());
-        Assertions.assertEquals("cjrwzoxxjtfellu", model.currentValue());
-        Assertions.assertEquals(ConfigurationSource.SYSTEM_DEFAULT, model.source());
+        Assertions.assertEquals("ofx", model.value());
+        Assertions.assertEquals("ofjaeqjhqjb", model.currentValue());
+        Assertions.assertEquals(ConfigurationSource.USER_OVERRIDE, model.source());
     }
 }

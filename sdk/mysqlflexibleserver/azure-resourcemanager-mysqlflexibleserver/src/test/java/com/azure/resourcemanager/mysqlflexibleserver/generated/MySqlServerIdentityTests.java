@@ -5,33 +5,31 @@
 package com.azure.resourcemanager.mysqlflexibleserver.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.mysqlflexibleserver.models.Identity;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.mysqlflexibleserver.models.MySqlServerIdentity;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
-public final class IdentityTests {
+public final class MySqlServerIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Identity model =
-            BinaryData
-                .fromString(
-                    "{\"principalId\":\"icxm\",\"tenantId\":\"iwqvhkh\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"og\":\"datadtopbob\",\"w\":\"datam\",\"a\":\"dataa\"}}")
-                .toObject(Identity.class);
+        MySqlServerIdentity model = BinaryData.fromString(
+            "{\"principalId\":\"hzrvqd\",\"tenantId\":\"bhj\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"qfbow\":\"datah\",\"ywgndrv\":\"datakanyktzlcuiywg\",\"ocpecfvmmco\":\"datanhzgpphrcgyn\"}}")
+            .toObject(MySqlServerIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Identity model =
-            new Identity()
-                .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("og", "datadtopbob", "w", "datam", "a", "dataa"));
-        model = BinaryData.fromObject(model).toObject(Identity.class);
+        MySqlServerIdentity model = new MySqlServerIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+            .withUserAssignedIdentities(
+                mapOf("qfbow", "datah", "ywgndrv", "datakanyktzlcuiywg", "ocpecfvmmco", "datanhzgpphrcgyn"));
+        model = BinaryData.fromObject(model).toObject(MySqlServerIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
