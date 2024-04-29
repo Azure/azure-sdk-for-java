@@ -77,9 +77,9 @@ public class SampleLateralityDiscrepancyInferenceAsync {
         RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder()
                 .endpoint(endpoint).serviceVersion(RadiologyInsightsServiceVersion.getLatest());
         if (apiKey != null && !apiKey.equals("")) {
-        	clientBuilder = clientBuilder.credential(new AzureKeyCredential(apiKey));
+            clientBuilder = clientBuilder.credential(new AzureKeyCredential(apiKey));
         }
-		RadiologyInsightsAsyncClient radiologyInsightsAsyncClient = clientBuilder.buildAsyncClient();
+        RadiologyInsightsAsyncClient radiologyInsightsAsyncClient = clientBuilder.buildAsyncClient();
 
         PollerFlux<RadiologyInsightsJob, RadiologyInsightsJob> asyncPoller = radiologyInsightsAsyncClient
                 .beginInferRadiologyInsights("job" + new Date().getTime(), createRadiologyInsightsJob());
