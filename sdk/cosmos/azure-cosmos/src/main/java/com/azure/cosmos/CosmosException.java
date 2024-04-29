@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -139,7 +140,7 @@ public class CosmosException extends AzureException {
     /***
      * All selectable replica status.
      */
-    private final List<String> replicaStatusList = new ArrayList<>();
+    private final Map<String, List<String>> replicaStatusList = new HashMap<>();
 
     /**
      * Fault injection ruleId
@@ -610,7 +611,7 @@ public class CosmosException extends AzureException {
         return this.faultInjectionEvaluationResults;
     }
 
-    List<String> getReplicaStatusList() {
+    Map<String, List<String>> getReplicaStatusList() {
         return this.replicaStatusList;
     }
 
@@ -626,7 +627,7 @@ public class CosmosException extends AzureException {
                     }
 
                     @Override
-                    public List<String> getReplicaStatusList(CosmosException cosmosException) {
+                    public Map<String, List<String>> getReplicaStatusList(CosmosException cosmosException) {
                         return cosmosException.getReplicaStatusList();
                     }
 

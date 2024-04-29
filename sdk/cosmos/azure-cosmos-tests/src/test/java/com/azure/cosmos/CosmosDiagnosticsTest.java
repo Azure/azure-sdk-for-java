@@ -26,6 +26,7 @@ import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache;
 import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
+import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
@@ -977,14 +978,13 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(responseStatisticsList.size()).isGreaterThan(0);
             JsonNode storeResult = responseStatisticsList.get(0).get("storeResult");
             assertThat(storeResult).isNotNull();
-            JsonNode replicaStatusList = storeResult.get("replicaStatusList");
-            assertThat(replicaStatusList.isArray()).isTrue();
-            assertThat(replicaStatusList.size()).isGreaterThan(0);
-            int quorumAcked = storeResult.get("quorumAckedLSN").asInt(-1);
-            assertThat(quorumAcked).isGreaterThan(0);
             int currentReplicaSetSize = storeResult.get("currentReplicaSetSize").asInt(-1);
             assertThat(currentReplicaSetSize).isGreaterThan(0);
-
+            JsonNode replicaStatusList = storeResult.get("replicaStatusList");
+            assertThat(replicaStatusList.isObject()).isTrue();
+            assertThat(replicaStatusList.get(Uri.ATTEMPTING).size()).isEqualTo(currentReplicaSetSize);
+            int quorumAcked = storeResult.get("quorumAckedLSN").asInt(-1);
+            assertThat(quorumAcked).isGreaterThan(0);
         }
     }
 
@@ -1230,9 +1230,10 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         int replicaSetSize = storeResult.get("currentReplicaSetSize").asInt(-1);
         assertThat(replicaSetSize).isGreaterThan(0);
         JsonNode replicaStatusList = storeResult.get("replicaStatusList");
-        assertThat(replicaStatusList.isArray()).isTrue();
-        assertThat(replicaStatusList.size()).isEqualTo(replicaSetSize);
-        String replicaStatusTxt = replicaStatusList.get(0).asText();
+        assertThat(replicaStatusList.isObject()).isTrue();
+        int replicasNum = replicaStatusList.get(Uri.ATTEMPTING).size() + replicaStatusList.get(Uri.NOT_ATTEMPTING).size();
+        assertThat(replicasNum).isEqualTo(replicaSetSize);
+        String replicaStatusTxt = replicaStatusList.get(Uri.ATTEMPTING).get(0).asText();
         assertThat(replicaStatusTxt.contains("Primary")).isTrue();
         assertThat(replicaStatusTxt.contains("Connected")).isTrue();
         // validate serviceEndpointStatistics

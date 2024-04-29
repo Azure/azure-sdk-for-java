@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * This represents diagnostics from store response OR from cosmos exception
@@ -40,7 +41,7 @@ public class StoreResponseDiagnostics {
     private final int rntbdResponseLength;
     private final String exceptionMessage;
     private final String exceptionResponseHeaders;
-    private final List<String> replicaStatusList;
+    private final Map<String, List<String>> replicaStatusList;
     private final String faultInjectionRuleId;
     private final List<String> faultInjectionEvaluationResults;
 
@@ -196,5 +197,5 @@ public class StoreResponseDiagnostics {
         return this.faultInjectionEvaluationResults;
     }
 
-    public List<String> getReplicaStatusList() { return this.replicaStatusList; }
+    public Map<String, List<String>> getReplicaStatusList() { return this.replicaStatusList; }
 }

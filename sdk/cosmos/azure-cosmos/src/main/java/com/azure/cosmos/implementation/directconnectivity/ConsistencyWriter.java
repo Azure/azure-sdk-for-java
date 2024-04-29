@@ -37,6 +37,7 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -169,7 +170,7 @@ public class ConsistencyWriter {
 
             Mono<List<AddressInformation>> replicaAddressesObs = this.addressSelector.resolveAddressesAsync(request, forceRefresh);
             AtomicReference<Uri> primaryURI = new AtomicReference<>();
-            AtomicReference<List<String>> replicaStatusList = new AtomicReference<>();
+            Map<String, List<String>> replicaStatusList = new ConcurrentHashMap<>();
             Map<Uri, String> replicaStatuses = new ConcurrentHashMap<>();
 
             return replicaAddressesObs.flatMap(replicaAddresses -> {
@@ -204,10 +205,9 @@ public class ConsistencyWriter {
                 } catch (Exception e) {
                     return Mono.error(e);
                 }
-                primaryUri.setHealthStatusTuplePrimary(true);
-                primaryUri.setHealthStatusTupleAttempting(true);
-                replicaStatuses.replace(primaryUri, primaryUri.getHealthStatusDiagnosticString());
-                replicaStatusList.set(new ArrayList<>(replicaStatuses.values()));
+                replicaStatuses.remove(primaryUri);
+                replicaStatusList.put(Uri.NOT_ATTEMPTING, new ArrayList<>(replicaStatuses.values()));
+                replicaStatusList.put(Uri.ATTEMPTING,Arrays.asList(primaryUri.getHealthStatusDiagnosticString()));
 
                 return this.transportClient.invokeResourceOperationAsync(primaryUri, request)
                                            .doOnError(
@@ -230,7 +230,7 @@ public class ConsistencyWriter {
                                                            false,
                                                            false,
                                                            primaryUri,
-                                                           replicaStatusList.get());
+                                                           replicaStatusList);
                                                        String value = ex != null ?
                                                            ex
                                                                .getResponseHeaders()
@@ -267,7 +267,7 @@ public class ConsistencyWriter {
                         false,
                         false,
                         primaryURI.get(),
-                        replicaStatusList.get());
+                        replicaStatusList);
                 return barrierForGlobalStrong(request, response);
             })
             .doFinally(signalType -> {
@@ -279,7 +279,7 @@ public class ConsistencyWriter {
                     request,
                     false,
                     false,
-                    replicaStatusList.get());
+                    replicaStatusList);
             });
         } else {
 

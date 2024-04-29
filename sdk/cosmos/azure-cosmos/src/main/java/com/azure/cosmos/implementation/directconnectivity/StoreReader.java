@@ -34,6 +34,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
 import reactor.core.scheduler.Schedulers;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -148,7 +149,7 @@ public class StoreReader {
         Pair<Flux<StoreResponse>, Uri> storeRespAndURI,
         ReadMode readMode,
         boolean requiresValidLsn,
-        List<String> replicaStatusList) {
+        Map<String, List<String>> replicaStatusList) {
 
         return storeRespAndURI.getLeft()
                 .flatMap(storeResponse -> {
@@ -219,20 +220,23 @@ public class StoreReader {
             return Flux.error(new GoneException());
         }
         List<Pair<Flux<StoreResponse>, Uri>> readStoreTasks = new ArrayList<>();
-        Map<Uri, String> replicaStatuses = new HashMap<>();
+        Map<Uri, String> replicaStatusesAttempting = new HashMap<>();
+        Map<Uri, String> replicaStatusesNotAttempting = new HashMap<>();
+
         resolveApiResults.forEach(uri -> {
-            replicaStatuses.put(uri, uri.getHealthStatusDiagnosticString());
+            replicaStatusesNotAttempting.put(uri, uri.getHealthStatusDiagnosticString());
         });
         List<Uri> addressRandomPermutation = AddressEnumerator.getTransportAddresses(entity, resolveApiResults);
 
         // The health status of the Uri will change as the time goes by
         // what we really want to track is the health status snapshot at this moment
         addressRandomPermutation.forEach(uri -> {
-            uri.setHealthStatusTupleAttempting(true);
-            replicaStatuses.replace(uri, uri.getHealthStatusDiagnosticString());
+            replicaStatusesNotAttempting.remove(uri);
+            replicaStatusesAttempting.put(uri, uri.getHealthStatusDiagnosticString());
         });
-        // how to add primary
-        List<String> replicaStatusList = new ArrayList<>(replicaStatuses.values());
+        Map<String, List<String>> replicaStatusList = new HashMap<>();
+        replicaStatusList.put(Uri.ATTEMPTING ,new ArrayList<>(replicaStatusesAttempting.values()));
+        replicaStatusList.put(Uri.NOT_ATTEMPTING, new ArrayList<>(replicaStatusesNotAttempting.values()));
 
         int startIndex = 0;
 
@@ -329,7 +333,7 @@ public class StoreReader {
         RxDocumentServiceRequest request,
         boolean requiresValidLsn,
         boolean useLocalLSNBasedHeaders,
-        List<String> replicaStatusList) {
+        Map<String, List<String>> replicaStatusList) {
         // record the diagnostics for in-progress requests
         for (CosmosException cosmosException : request.requestContext.rntbdCancelledRequestMap.values()) {
             Uri storePhysicalAddress =
@@ -575,7 +579,7 @@ public class StoreReader {
                 entity,
                 entity.requestContext.forceRefreshAddressCache, replicaStatuses);
 
-        AtomicReference<List<String>> replicaStatusList = new AtomicReference<>();
+        Map<String, List<String>> replicaStatusList = new ConcurrentHashMap<>();
 
         AtomicReference<Uri> primaryUriReference = new AtomicReference<>(null);
 
@@ -596,9 +600,9 @@ public class StoreReader {
                             this.readFromStoreAsync(
                                 primaryUri,
                                 entity);
-                        primaryUri.setHealthStatusTuplePrimary(true);
-                        replicaStatuses.replace(primaryUri, primaryUri.getHealthStatusDiagnosticString());
-                        replicaStatusList.set(new ArrayList<>(replicaStatuses.values()));
+                        replicaStatuses.remove(primaryUri);
+                        replicaStatusList.put(Uri.NOT_ATTEMPTING, new ArrayList<>(replicaStatuses.values()));
+                        replicaStatusList.put(Uri.ATTEMPTING, Arrays.asList(primaryUri.getHealthStatusDiagnosticString()));
 
                         return storeResponseObsAndUri.getLeft().flatMap(
                                 storeResponse -> {
@@ -611,7 +615,7 @@ public class StoreReader {
                                             requiresValidLsn,
                                             true,
                                             storeResponse != null ? storeResponseObsAndUri.getRight() : null,
-                                            replicaStatusList.get());
+                                            replicaStatusList);
 
                                         return Mono.just(storeResult);
                                     } catch (CosmosException e) {
@@ -644,7 +648,7 @@ public class StoreReader {
                         requiresValidLsn,
                         true,
                         primaryUriReference.get(),
-                        replicaStatusList.get());
+                        replicaStatusList);
                 return Mono.just(storeResult);
             } catch (CosmosException e) {
                 // RxJava1 doesn't allow throwing checked exception from Observable operators
@@ -656,7 +660,7 @@ public class StoreReader {
                 return;
             }
 
-            this.createAndRecordStoreResultForCancelledRequest(entity, requiresValidLsn, true, replicaStatusList.get());
+            this.createAndRecordStoreResultForCancelledRequest(entity, requiresValidLsn, true, replicaStatusList);
         });
 
         return storeResultObs.map(storeResult -> {
@@ -752,7 +756,7 @@ public class StoreReader {
         boolean requiresValidLsn,
         boolean useLocalLSNBasedHeaders,
         Uri storePhysicalAddress,
-        List<String> replicaStatusList) {
+        Map<String, List<String>> replicaStatusList) {
 
         StoreResult storeResult =
                 this.createStoreResult(
@@ -784,7 +788,7 @@ public class StoreReader {
                                   boolean requiresValidLsn,
                                   boolean useLocalLSNBasedHeaders,
                                   Uri storePhysicalAddress,
-                                  List<String> replicaStatusList) {
+                                  Map<String, List<String>> replicaStatusList) {
 
         if (responseException == null) {
             String headerValue = null;
@@ -798,7 +802,7 @@ public class StoreReader {
             long itemLSN = -1;
 
             if (replicaStatusList != null) {
-                storeResponse.getReplicaStatusList().addAll(replicaStatusList);
+                storeResponse.getReplicaStatusList().putAll(replicaStatusList);
             }
 
             if ((headerValue = storeResponse.getHeaderValue(
@@ -907,7 +911,7 @@ public class StoreReader {
                             .CosmosExceptionHelper
                             .getCosmosExceptionAccessor()
                             .getReplicaStatusList(cosmosException)
-                            .addAll(replicaStatusList);
+                            .putAll(replicaStatusList);
                 }
 
                 String headerValue = cosmosException.getResponseHeaders().get(useLocalLSNBasedHeaders ? WFConstants.BackendHeaders.QUORUM_ACKED_LOCAL_LSN : WFConstants.BackendHeaders.QUORUM_ACKED_LSN);

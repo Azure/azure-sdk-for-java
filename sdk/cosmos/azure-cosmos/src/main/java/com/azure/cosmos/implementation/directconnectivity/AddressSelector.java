@@ -32,12 +32,7 @@ public class AddressSelector {
         boolean forceRefresh) {
         Mono<List<AddressInformation>> allReplicaAddressesObs = this.resolveAddressesAsync(request, forceRefresh);
         return allReplicaAddressesObs.map(allReplicaAddresses -> allReplicaAddresses.stream().filter(a -> includePrimary || !a.isPrimary())
-            .map(a -> {
-                    if (includePrimary && a.isPrimary()) {
-                        a.getPhysicalUri().setHealthStatusTuplePrimary(true);
-                    }
-                    return a.getPhysicalUri();
-            }).collect(Collectors.toList()));
+            .map(a -> a.getPhysicalUri()).collect(Collectors.toList()));
     }
 
     public Mono<Uri> resolvePrimaryUriAsync(RxDocumentServiceRequest request, boolean forceAddressRefresh) {

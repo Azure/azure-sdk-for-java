@@ -1408,7 +1408,7 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosExceptionAccessor {
             CosmosException createCosmosException(int statusCode, Exception innerException);
-            List<String> getReplicaStatusList(CosmosException cosmosException);
+            Map<String, List<String>> getReplicaStatusList(CosmosException cosmosException);
             CosmosException setRntbdChannelStatistics(CosmosException cosmosException, RntbdChannelStatistics rntbdChannelStatistics);
             RntbdChannelStatistics getRntbdChannelStatistics(CosmosException cosmosException);
 

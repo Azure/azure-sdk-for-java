@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.implementation.cpu.CpuMemoryReader;
 import com.azure.cosmos.implementation.directconnectivity.addressEnumerator.AddressEnumerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +24,10 @@ public class Uri {
     private volatile Instant lastUnhealthyPendingTimestamp;
     private volatile Instant lastTransitionToUnhealthyTimestamp;
     private volatile boolean isPrimary;
+    public static final String ATTEMPTING = "Attempting";
+    public static final String NOT_ATTEMPTING = "NotAttempting";
+    private static final String PRIMARY = "Primary";
+    private static final String SECONDARY = "Secondary";
 
     public static Uri create(String uriAsString) {
         return new Uri(uriAsString);
@@ -55,12 +58,12 @@ public class Uri {
         return this.uriAsString;
     }
 
-    /***
-     * Attention: This is only used for fault injection to easier decide whether the address is primary address.
-     * @param primary
-     */
     public void setPrimary(boolean primary) {
         isPrimary = primary;
+        this.healthStatusTuple.updateAndGet(previousStatusTuple -> {
+            previousStatusTuple.diagnosticString = previousStatusTuple.diagnosticString.replace(SECONDARY, PRIMARY);
+            return previousStatusTuple;
+        });
     }
 
     /***
@@ -140,7 +143,7 @@ public class Uri {
                         status, previousStatusTuple, newStatus);
             }
 
-            return new HealthStatusAndDiagnosticStringTuple(this.uri, newStatus);
+            return new HealthStatusAndDiagnosticStringTuple(this.uri, newStatus, isPrimary);
         });
     }
 
@@ -184,25 +187,7 @@ public class Uri {
     }
 
     public String getHealthStatusDiagnosticString() {
-        return this.healthStatusTuple.get().getDiagnsoticString();
-    }
-
-    public void setHealthStatusTupleAttempting(boolean attempting) {
-        this.healthStatusTuple.updateAndGet(previousStatusTuple ->
-            {
-                previousStatusTuple.setAttempting(attempting);
-                return previousStatusTuple;
-            }
-        );
-    }
-
-    public void setHealthStatusTuplePrimary(boolean primary) {
-        this.healthStatusTuple.updateAndGet(previousStatusTuple ->
-            {
-                previousStatusTuple.setPrimary(primary);
-                return previousStatusTuple;
-            }
-        );
+        return this.healthStatusTuple.get().diagnosticString;
     }
 
     @Override
@@ -249,31 +234,15 @@ public class Uri {
     }
 
     static class HealthStatusAndDiagnosticStringTuple {
+        private String diagnosticString;
         private final HealthStatus status;
-        private final String ATTEMPTING = "Attempting";
-        private final String NOT_ATTEMPTING = "NotAttempting";
-        private final String PRIMARY = "Primary";
-        private final String SECONDARY = "Secondary";
-        private final URI uri;
-        private boolean isAttempting;
-        private boolean isPrimary;
-
         public HealthStatusAndDiagnosticStringTuple(URI uri, HealthStatus status) {
-            this.uri = uri;
+            this.diagnosticString = uri.getPort() + ":" + Uri.SECONDARY + ":" + status;
             this.status = status;
         }
-
-        public String getDiagnsoticString() {
-            return uri.getPort() + ":" + (isPrimary ? PRIMARY : SECONDARY) + ":" +
-                status + "|" + (isAttempting ? ATTEMPTING : NOT_ATTEMPTING);
-        }
-
-        public void setAttempting(boolean attempting) {
-            isAttempting = attempting;
-        }
-
-        public void setPrimary(boolean primary) {
-            isPrimary = primary;
+        public HealthStatusAndDiagnosticStringTuple(URI uri, HealthStatus status, boolean isPrimary) {
+            this.diagnosticString = uri.getPort() + ":" + (isPrimary ? Uri.PRIMARY : Uri.SECONDARY) + ":" + status;
+            this.status = status;
         }
     }
 }
