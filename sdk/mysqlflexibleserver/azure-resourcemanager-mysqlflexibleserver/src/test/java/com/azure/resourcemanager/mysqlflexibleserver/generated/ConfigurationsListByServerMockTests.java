@@ -23,7 +23,7 @@ public final class ConfigurationsListByServerMockTests {
     @Test
     public void testListByServer() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"value\":\"o\",\"currentValue\":\"rsg\",\"description\":\"b\",\"documentationLink\":\"uzqgnjdgkynsc\",\"defaultValue\":\"qhzvhxnkomt\",\"dataType\":\"bo\",\"allowedValues\":\"pnvdxz\",\"source\":\"user-override\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"True\"},\"id\":\"vqagtltdhlf\",\"name\":\"qojpy\",\"type\":\"vgtrdcnifmzzs\"}]}";
+            = "{\"value\":[{\"properties\":{\"value\":\"h\",\"currentValue\":\"vkbunzozudh\",\"description\":\"gkmoyxcdyuibhmfd\",\"documentationLink\":\"zydvfvf\",\"defaultValue\":\"naeo\",\"dataType\":\"rvhmgor\",\"allowedValues\":\"ukiscvwmzhw\",\"source\":\"user-override\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"False\"},\"id\":\"cbtgnhnz\",\"name\":\"yqxtjjfzql\",\"type\":\"hycav\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class ConfigurationsListByServerMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Configuration> response = manager.configurations()
-            .listByServer("onkp", "hqyikvy", "auy", "vluwmncsttij", 262275374, 1869546664,
+            .listByServer("nifmzzsdymbrnysu", "m", "rafwgckhocxvdf", "fwafqrouda", 1715905241, 1222177326,
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("o", response.iterator().next().value());
-        Assertions.assertEquals("rsg", response.iterator().next().currentValue());
+        Assertions.assertEquals("h", response.iterator().next().value());
+        Assertions.assertEquals("vkbunzozudh", response.iterator().next().currentValue());
         Assertions.assertEquals(ConfigurationSource.USER_OVERRIDE, response.iterator().next().source());
     }
 }

@@ -22,7 +22,7 @@ public final class ConfigurationsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"value\":\"gxdbeesmie\",\"currentValue\":\"lrariaawiu\",\"description\":\"ydwqfbylyrf\",\"documentationLink\":\"agt\",\"defaultValue\":\"jocqwogfnzjvusf\",\"dataType\":\"dmozu\",\"allowedValues\":\"lfsbtkadpysow\",\"source\":\"user-override\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"True\"},\"id\":\"qctojcmisof\",\"name\":\"eypefojyqd\",\"type\":\"cuplcplcwkhih\"}";
+            = "{\"properties\":{\"value\":\"xmwoteyowcluqo\",\"currentValue\":\"kqvgqouw\",\"description\":\"zmpjwyiv\",\"documentationLink\":\"kfxcvhrfs\",\"defaultValue\":\"uagrttikteusqc\",\"dataType\":\"vyklxuby\",\"allowedValues\":\"ff\",\"source\":\"system-default\",\"isReadOnly\":\"False\",\"isConfigPendingRestart\":\"False\",\"isDynamicConfig\":\"True\"},\"id\":\"bgq\",\"name\":\"brta\",\"type\":\"metttwgd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,15 @@ public final class ConfigurationsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Configuration response = manager.configurations()
-            .define("khocxvdfffwaf")
-            .withExistingFlexibleServer("ymbrnysuxmpraf", "g")
-            .withValue("udaspavehh")
-            .withCurrentValue("kbunzoz")
+            .define("wqfbylyrfgiagt")
+            .withExistingFlexibleServer("dggxdbeesmi", "knlrariaawiuagy")
+            .withValue("ocqwogfnzjvus")
+            .withCurrentValue("ld")
             .withSource(ConfigurationSource.USER_OVERRIDE)
             .create();
 
-        Assertions.assertEquals("gxdbeesmie", response.value());
-        Assertions.assertEquals("lrariaawiu", response.currentValue());
-        Assertions.assertEquals(ConfigurationSource.USER_OVERRIDE, response.source());
+        Assertions.assertEquals("xmwoteyowcluqo", response.value());
+        Assertions.assertEquals("kqvgqouw", response.currentValue());
+        Assertions.assertEquals(ConfigurationSource.SYSTEM_DEFAULT, response.source());
     }
 }

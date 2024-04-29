@@ -21,7 +21,7 @@ public final class OperationResultsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"abtqwpwyawbzasqb\":\"datajwogqqnobpudc\",\"kyexaoguyaipi\":\"dataclj\",\"um\":\"datasdaultxij\"},\"id\":\"waz\",\"resourceId\":\"qnmcjngzqdqx\",\"name\":\"jw\",\"status\":\"nyfusfzsvtuikzh\",\"percentComplete\":97.57446,\"startTime\":\"2021-03-17T22:07:36Z\",\"endTime\":\"2021-03-11T22:00:52Z\",\"operations\":[{\"id\":\"rqryxynqn\",\"resourceId\":\"dpsovwxznptgo\",\"name\":\"ybbabpfhvfsl\",\"status\":\"vntjlrigjk\",\"percentComplete\":19.841623,\"startTime\":\"2021-08-21T05:50:17Z\",\"endTime\":\"2021-02-22T17:46:16Z\",\"operations\":[{\"id\":\"dsxwaab\",\"resourceId\":\"ifrygzn\",\"name\":\"axri\",\"status\":\"kzobgopxlhsln\",\"percentComplete\":73.85414,\"startTime\":\"2021-05-24T14:46:14Z\",\"endTime\":\"2021-01-25T13:08:28Z\",\"operations\":[{\"status\":\"llxecwc\"},{\"status\":\"ojphslhc\"}]}]},{\"id\":\"tifdwfmvi\",\"resourceId\":\"rqjb\",\"name\":\"zhraglkafh\",\"status\":\"n\",\"percentComplete\":41.36698,\"startTime\":\"2021-12-07T11:29:57Z\",\"endTime\":\"2021-06-22T12:59:46Z\",\"operations\":[{\"id\":\"vcpopmxe\",\"resourceId\":\"wcltyjede\",\"name\":\"mlfmkqs\",\"status\":\"azuawx\",\"percentComplete\":0.3758669,\"startTime\":\"2021-01-18T18:15:51Z\",\"endTime\":\"2021-05-20T10:02:10Z\",\"operations\":[{\"status\":\"bzxrvxcushsphai\"},{\"status\":\"mxyasflvgsgzw\"},{\"status\":\"wakoihkn\"},{\"status\":\"mjblmljhlny\"}]},{\"id\":\"tqyryuzcbmqqv\",\"resourceId\":\"vwf\",\"name\":\"ayxonsupeujl\",\"status\":\"qnhcvsqltnzoibg\",\"percentComplete\":21.69999,\"startTime\":\"2021-03-11T11:00:33Z\",\"endTime\":\"2021-08-07T07:11:11Z\",\"operations\":[{\"status\":\"nmpqoxwdofdb\"},{\"status\":\"iqxeiiqbimht\"},{\"status\":\"wwinhehf\"}]},{\"id\":\"fvwbcb\",\"resourceId\":\"mbnkb\",\"name\":\"qvxkd\",\"status\":\"vqihebwtswbzuwf\",\"percentComplete\":34.457104,\"startTime\":\"2021-04-25T12:17:15Z\",\"endTime\":\"2021-01-25T01:53:42Z\",\"operations\":[{\"status\":\"zvcjfelisdjubggb\"},{\"status\":\"igkxkbsazga\"}]},{\"id\":\"cyrcmjdmspo\",\"resourceId\":\"pv\",\"name\":\"rylniofrzg\",\"status\":\"zjedmstkvnlv\",\"percentComplete\":2.6657462,\"startTime\":\"2021-02-07T05:40:32Z\",\"endTime\":\"2021-08-21T17:03:38Z\",\"operations\":[{\"status\":\"twfans\"},{\"status\":\"v\"}]}]},{\"id\":\"mik\",\"resourceId\":\"tbzbkiwbuqnyophz\",\"name\":\"l\",\"status\":\"gcrpfbcun\",\"percentComplete\":69.6509,\"startTime\":\"2021-03-22T15:20:36Z\",\"endTime\":\"2021-06-16T02:10:41Z\",\"operations\":[{\"id\":\"yfwlwxjwet\",\"resourceId\":\"sihclafzvaylp\",\"name\":\"sqqw\",\"status\":\"tcmwqkchc\",\"percentComplete\":24.182432,\"startTime\":\"2021-03-27T13:01:29Z\",\"endTime\":\"2021-10-21T01:45:32Z\",\"operations\":[{\"status\":\"kjexfdeqvhp\"},{\"status\":\"ylkkshkbffmbm\"}]},{\"id\":\"rgywwp\",\"resourceId\":\"xs\",\"name\":\"tf\",\"status\":\"jgicgaao\",\"percentComplete\":54.031826,\"startTime\":\"2021-07-31T03:17:47Z\",\"endTime\":\"2021-04-02T22:27:46Z\",\"operations\":[{\"status\":\"ewemxs\"},{\"status\":\"vru\"},{\"status\":\"nz\"}]},{\"id\":\"ehkfkimrtixok\",\"resourceId\":\"qyinl\",\"name\":\"epqw\",\"status\":\"ixmonstshiyxg\",\"percentComplete\":35.385735,\"startTime\":\"2021-09-10T16:03:17Z\",\"endTime\":\"2021-07-06T17:30:57Z\",\"operations\":[{\"status\":\"cb\"}]}]}]}";
+            = "{\"properties\":{\"qpofvwbc\":\"datainheh\",\"qihebw\":\"datalembnkbwvqvxkdi\",\"izvcjfe\":\"dataswbzuwfmdurage\"},\"id\":\"sdjubggbqigkxkbs\",\"resourceId\":\"gak\",\"name\":\"cyrcmjdmspo\",\"status\":\"apvu\",\"percentComplete\":27.490759,\"startTime\":\"2021-03-18T05:33:07Z\",\"endTime\":\"2021-07-24T11:45:08Z\",\"operations\":[{\"id\":\"gbzjedmstkv\",\"resourceId\":\"v\",\"name\":\"c\",\"status\":\"iiznktwfan\",\"percentComplete\":4.799801,\"startTime\":\"2021-10-26T06:08:35Z\",\"endTime\":\"2021-05-05T18:43:08Z\",\"operations\":[{\"id\":\"ostbzbkiwb\",\"resourceId\":\"n\",\"name\":\"phzfylsgcrp\",\"status\":\"bcunezzceze\",\"percentComplete\":5.057555,\"startTime\":\"2021-03-29T21:38:18Z\",\"endTime\":\"2021-08-20T21:06:50Z\",\"operations\":[{\"status\":\"jwetnpsihcla\"},{\"status\":\"zvaylptrsqqw\"}]},{\"id\":\"mwqkchcxwaxf\",\"resourceId\":\"zjkjexfdeqv\",\"name\":\"sylkks\",\"status\":\"kbffmbmx\",\"percentComplete\":35.081665,\"startTime\":\"2021-06-05T21:01:18Z\",\"endTime\":\"2021-08-22T08:07:52Z\",\"operations\":[{\"status\":\"jx\"},{\"status\":\"nptfujgi\"},{\"status\":\"gaao\"}]},{\"id\":\"taqutdewem\",\"resourceId\":\"wvruunzzj\",\"name\":\"hkfkimrtixokf\",\"status\":\"qyinl\",\"percentComplete\":22.83907,\"startTime\":\"2021-02-16T03:43:05Z\",\"endTime\":\"2021-06-20T19:43:14Z\",\"operations\":[{\"status\":\"monstshiyxgve\"},{\"status\":\"fclduccbirdsv\"},{\"status\":\"wcobie\"}]},{\"id\":\"mninwjizcilng\",\"resourceId\":\"shejjtbxqm\",\"name\":\"uxlxqzvners\",\"status\":\"ycucrwnamikzeb\",\"percentComplete\":58.452225,\"startTime\":\"2021-08-14T09:18:40Z\",\"endTime\":\"2021-01-21T14:33:26Z\",\"operations\":[{\"status\":\"qgfuhokzru\"}]}]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,30 +31,30 @@ public final class OperationResultsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         OperationStatusExtendedResult response = manager.operationResults()
-            .getWithResponse("ap", "qtferrqwexjkmf", com.azure.core.util.Context.NONE)
+            .getWithResponse("qonmpqoxwdof", "bxiqxeiiqbimht", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("waz", response.id());
-        Assertions.assertEquals("jw", response.name());
-        Assertions.assertEquals("nyfusfzsvtuikzh", response.status());
-        Assertions.assertEquals(97.57446F, response.percentComplete());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-17T22:07:36Z"), response.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-11T22:00:52Z"), response.endTime());
-        Assertions.assertEquals("rqryxynqn", response.operations().get(0).id());
-        Assertions.assertEquals("ybbabpfhvfsl", response.operations().get(0).name());
-        Assertions.assertEquals("vntjlrigjk", response.operations().get(0).status());
-        Assertions.assertEquals(19.841623F, response.operations().get(0).percentComplete());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-21T05:50:17Z"), response.operations().get(0).startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-22T17:46:16Z"), response.operations().get(0).endTime());
-        Assertions.assertEquals("dsxwaab", response.operations().get(0).operations().get(0).id());
-        Assertions.assertEquals("axri", response.operations().get(0).operations().get(0).name());
-        Assertions.assertEquals("kzobgopxlhsln", response.operations().get(0).operations().get(0).status());
-        Assertions.assertEquals(73.85414F, response.operations().get(0).operations().get(0).percentComplete());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-24T14:46:14Z"),
+        Assertions.assertEquals("sdjubggbqigkxkbs", response.id());
+        Assertions.assertEquals("cyrcmjdmspo", response.name());
+        Assertions.assertEquals("apvu", response.status());
+        Assertions.assertEquals(27.490759F, response.percentComplete());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-18T05:33:07Z"), response.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-24T11:45:08Z"), response.endTime());
+        Assertions.assertEquals("gbzjedmstkv", response.operations().get(0).id());
+        Assertions.assertEquals("c", response.operations().get(0).name());
+        Assertions.assertEquals("iiznktwfan", response.operations().get(0).status());
+        Assertions.assertEquals(4.799801F, response.operations().get(0).percentComplete());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-26T06:08:35Z"), response.operations().get(0).startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-05T18:43:08Z"), response.operations().get(0).endTime());
+        Assertions.assertEquals("ostbzbkiwb", response.operations().get(0).operations().get(0).id());
+        Assertions.assertEquals("phzfylsgcrp", response.operations().get(0).operations().get(0).name());
+        Assertions.assertEquals("bcunezzceze", response.operations().get(0).operations().get(0).status());
+        Assertions.assertEquals(5.057555F, response.operations().get(0).operations().get(0).percentComplete());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-29T21:38:18Z"),
             response.operations().get(0).operations().get(0).startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-25T13:08:28Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-20T21:06:50Z"),
             response.operations().get(0).operations().get(0).endTime());
-        Assertions.assertEquals("llxecwc",
+        Assertions.assertEquals("jwetnpsihcla",
             response.operations().get(0).operations().get(0).operations().get(0).status());
     }
 }

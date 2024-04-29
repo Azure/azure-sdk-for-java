@@ -20,7 +20,7 @@ public final class LocationBasedCapabilitySetsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"supportedGeoBackupRegions\":[\"undmbx\",\"ugcmjkavlgorb\",\"ftpmdtzfjltfv\"],\"supportedFlexibleServerEditions\":[{\"name\":\"jtotpvopvpbd\",\"defaultSku\":\"qgqqihedsvqwthmk\",\"defaultStorageSize\":1468707412,\"supportedStorageEditions\":[{}],\"supportedSkus\":[{},{}]},{\"name\":\"sgqcwdho\",\"defaultSku\":\"dtmcd\",\"defaultStorageSize\":223413800,\"supportedStorageEditions\":[{},{}],\"supportedSkus\":[{},{}]},{\"name\":\"xbzlmc\",\"defaultSku\":\"apcvhdbe\",\"defaultStorageSize\":15684677,\"supportedStorageEditions\":[{},{},{},{}],\"supportedSkus\":[{},{},{}]}],\"supportedServerVersions\":[{\"name\":\"nqzi\"}]},\"id\":\"fkbg\",\"name\":\"z\",\"type\":\"owxeqocljmy\"}";
+            = "{\"properties\":{\"supportedGeoBackupRegions\":[\"xynqnz\",\"dpsovwxznptgo\"],\"supportedFlexibleServerEditions\":[{\"name\":\"b\",\"defaultSku\":\"pfhvfslk\",\"defaultStorageSize\":774606511,\"supportedStorageEditions\":[{},{},{}],\"supportedSkus\":[{},{},{}]},{\"name\":\"jkskyr\",\"defaultSku\":\"ovzidsx\",\"defaultStorageSize\":2100581785,\"supportedStorageEditions\":[{}],\"supportedSkus\":[{},{}]},{\"name\":\"rygznmmaxriz\",\"defaultSku\":\"obgop\",\"defaultStorageSize\":840646010,\"supportedStorageEditions\":[{},{},{}],\"supportedSkus\":[{},{},{},{}]}],\"supportedServerVersions\":[{\"name\":\"eixynllxecwcroj\"},{\"name\":\"slhcawjutifd\"},{\"name\":\"mvi\"}]},\"id\":\"rqjb\",\"name\":\"tzh\",\"type\":\"aglkafhon\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class LocationBasedCapabilitySetsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Capability response = manager.locationBasedCapabilitySets()
-            .getWithResponse("or", "cgyypro", com.azure.core.util.Context.NONE)
+            .getWithResponse("fh", "l", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

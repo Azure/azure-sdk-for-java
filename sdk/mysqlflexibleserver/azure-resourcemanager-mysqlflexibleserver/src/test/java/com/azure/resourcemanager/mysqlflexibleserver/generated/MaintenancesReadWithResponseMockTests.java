@@ -21,7 +21,7 @@ public final class MaintenancesReadWithResponseMockTests {
     @Test
     public void testReadWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"maintenanceType\":\"HotFixes\",\"maintenanceState\":\"Scheduled\",\"maintenanceStartTime\":\"2021-07-22T05:03:40Z\",\"maintenanceEndTime\":\"2021-05-11T18:42:54Z\",\"maintenanceExecutionStartTime\":\"2021-04-17T00:48:23Z\",\"maintenanceExecutionEndTime\":\"2021-04-28T20:38:18Z\",\"maintenanceAvailableScheduleMinTime\":\"2021-10-09T16:57:19Z\",\"maintenanceAvailableScheduleMaxTime\":\"2021-12-10T06:33:21Z\",\"maintenanceTitle\":\"vxcnqmxqps\",\"maintenanceDescription\":\"kmvkhl\",\"provisioningState\":\"Deleting\"},\"id\":\"bemzqkzszuwi\",\"name\":\"tglxx\",\"type\":\"ljfp\"}";
+            = "{\"properties\":{\"maintenanceType\":\"MinorVersionUpgrade\",\"maintenanceState\":\"Completed\",\"maintenanceStartTime\":\"2021-08-29T15:14:45Z\",\"maintenanceEndTime\":\"2021-11-10T18:44:54Z\",\"maintenanceExecutionStartTime\":\"2021-02-15T04:02:17Z\",\"maintenanceExecutionEndTime\":\"2021-11-04T15:42:17Z\",\"maintenanceAvailableScheduleMinTime\":\"2021-09-04T03:19:32Z\",\"maintenanceAvailableScheduleMaxTime\":\"2021-12-06T18:26:45Z\",\"maintenanceTitle\":\"tozipqwj\",\"maintenanceDescription\":\"mur\",\"provisioningState\":\"Succeeded\"},\"id\":\"ewpktvqy\",\"name\":\"kmqp\",\"type\":\"o\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class MaintenancesReadWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Maintenance response = manager.maintenances()
-            .readWithResponse("ivhjknidi", "gqjxgpnrhgovfgp", "kqmhhaowjr", com.azure.core.util.Context.NONE)
+            .readWithResponse("vtxnjmxmcuqud", "cvclxynpdk", "gfabuiyjibuzphdu", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-22T05:03:40Z"), response.maintenanceStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-29T15:14:45Z"), response.maintenanceStartTime());
     }
 }

@@ -14,16 +14,16 @@ public final class ImportFromStorageResponseTypeTests {
     public void testDeserialize() throws Exception {
         ImportFromStorageResponseType model = BinaryData
             .fromString(
-                "{\"objectType\":\"ImportFromStorageResponse\",\"estimatedCompletionTime\":\"2021-09-14T02:22:36Z\"}")
+                "{\"objectType\":\"ImportFromStorageResponse\",\"estimatedCompletionTime\":\"2021-07-03T12:52:54Z\"}")
             .toObject(ImportFromStorageResponseType.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-14T02:22:36Z"), model.estimatedCompletionTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-03T12:52:54Z"), model.estimatedCompletionTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ImportFromStorageResponseType model = new ImportFromStorageResponseType()
-            .withEstimatedCompletionTime(OffsetDateTime.parse("2021-09-14T02:22:36Z"));
+            .withEstimatedCompletionTime(OffsetDateTime.parse("2021-07-03T12:52:54Z"));
         model = BinaryData.fromObject(model).toObject(ImportFromStorageResponseType.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-14T02:22:36Z"), model.estimatedCompletionTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-03T12:52:54Z"), model.estimatedCompletionTime());
     }
 }

@@ -13,16 +13,16 @@ public final class MaintenanceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MaintenanceInner model = BinaryData.fromString(
-            "{\"properties\":{\"maintenanceType\":\"SecurityPatches\",\"maintenanceState\":\"Canceled\",\"maintenanceStartTime\":\"2021-06-28T02:21:18Z\",\"maintenanceEndTime\":\"2021-03-24T12:07:41Z\",\"maintenanceExecutionStartTime\":\"2020-12-24T06:43:01Z\",\"maintenanceExecutionEndTime\":\"2021-08-19T01:34:13Z\",\"maintenanceAvailableScheduleMinTime\":\"2021-01-09T04:43:14Z\",\"maintenanceAvailableScheduleMaxTime\":\"2021-06-05T19:19:34Z\",\"maintenanceTitle\":\"zzronasx\",\"maintenanceDescription\":\"tozqyzhftwesgo\",\"provisioningState\":\"Failed\"},\"id\":\"onnxkrlgnyhm\",\"name\":\"ssxkkgthr\",\"type\":\"gh\"}")
+            "{\"properties\":{\"maintenanceType\":\"RoutineMaintenance\",\"maintenanceState\":\"Scheduled\",\"maintenanceStartTime\":\"2021-01-11T17:56:17Z\",\"maintenanceEndTime\":\"2021-11-14T23:26:30Z\",\"maintenanceExecutionStartTime\":\"2021-12-04T11:44:33Z\",\"maintenanceExecutionEndTime\":\"2021-07-10T12:02:53Z\",\"maintenanceAvailableScheduleMinTime\":\"2020-12-27T04:23:31Z\",\"maintenanceAvailableScheduleMaxTime\":\"2021-11-09T11:24:19Z\",\"maintenanceTitle\":\"c\",\"maintenanceDescription\":\"tizzronasxif\",\"provisioningState\":\"Succeeded\"},\"id\":\"yzhftwesgogczh\",\"name\":\"nnxk\",\"type\":\"lgnyhmo\"}")
             .toObject(MaintenanceInner.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-28T02:21:18Z"), model.maintenanceStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-11T17:56:17Z"), model.maintenanceStartTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MaintenanceInner model
-            = new MaintenanceInner().withMaintenanceStartTime(OffsetDateTime.parse("2021-06-28T02:21:18Z"));
+            = new MaintenanceInner().withMaintenanceStartTime(OffsetDateTime.parse("2021-01-11T17:56:17Z"));
         model = BinaryData.fromObject(model).toObject(MaintenanceInner.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-28T02:21:18Z"), model.maintenanceStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-11T17:56:17Z"), model.maintenanceStartTime());
     }
 }

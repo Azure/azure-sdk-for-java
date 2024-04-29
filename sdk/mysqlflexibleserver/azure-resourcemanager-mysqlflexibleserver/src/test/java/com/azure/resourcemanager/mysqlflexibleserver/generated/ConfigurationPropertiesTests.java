@@ -13,21 +13,21 @@ public final class ConfigurationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfigurationProperties model = BinaryData.fromString(
-            "{\"value\":\"eebvmgxsab\",\"currentValue\":\"qduujitcjczdz\",\"description\":\"ndhkrw\",\"documentationLink\":\"appd\",\"defaultValue\":\"dkvwrwjfe\",\"dataType\":\"nhutjeltmrldhugj\",\"allowedValues\":\"datqxhocdgeabl\",\"source\":\"user-override\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"False\",\"isDynamicConfig\":\"True\"}")
+            "{\"value\":\"gou\",\"currentValue\":\"ndlik\",\"description\":\"qkgfgibma\",\"documentationLink\":\"akeqs\",\"defaultValue\":\"yb\",\"dataType\":\"qedqytbciqfoufl\",\"allowedValues\":\"nkzsmodmglou\",\"source\":\"system-default\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"False\",\"isDynamicConfig\":\"False\"}")
             .toObject(ConfigurationProperties.class);
-        Assertions.assertEquals("eebvmgxsab", model.value());
-        Assertions.assertEquals("qduujitcjczdz", model.currentValue());
-        Assertions.assertEquals(ConfigurationSource.USER_OVERRIDE, model.source());
+        Assertions.assertEquals("gou", model.value());
+        Assertions.assertEquals("ndlik", model.currentValue());
+        Assertions.assertEquals(ConfigurationSource.SYSTEM_DEFAULT, model.source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigurationProperties model = new ConfigurationProperties().withValue("eebvmgxsab")
-            .withCurrentValue("qduujitcjczdz")
-            .withSource(ConfigurationSource.USER_OVERRIDE);
+        ConfigurationProperties model = new ConfigurationProperties().withValue("gou")
+            .withCurrentValue("ndlik")
+            .withSource(ConfigurationSource.SYSTEM_DEFAULT);
         model = BinaryData.fromObject(model).toObject(ConfigurationProperties.class);
-        Assertions.assertEquals("eebvmgxsab", model.value());
-        Assertions.assertEquals("qduujitcjczdz", model.currentValue());
-        Assertions.assertEquals(ConfigurationSource.USER_OVERRIDE, model.source());
+        Assertions.assertEquals("gou", model.value());
+        Assertions.assertEquals("ndlik", model.currentValue());
+        Assertions.assertEquals(ConfigurationSource.SYSTEM_DEFAULT, model.source());
     }
 }

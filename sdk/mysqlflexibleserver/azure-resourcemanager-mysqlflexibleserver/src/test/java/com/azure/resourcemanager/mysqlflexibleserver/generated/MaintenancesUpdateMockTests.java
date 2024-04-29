@@ -22,7 +22,7 @@ public final class MaintenancesUpdateMockTests {
     @Test
     public void testUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"maintenanceType\":\"HotFixes\",\"maintenanceState\":\"Completed\",\"maintenanceStartTime\":\"2021-07-14T22:56:45Z\",\"maintenanceEndTime\":\"2021-04-12T21:41:10Z\",\"maintenanceExecutionStartTime\":\"2021-04-13T12:15:59Z\",\"maintenanceExecutionEndTime\":\"2021-11-12T10:49:29Z\",\"maintenanceAvailableScheduleMinTime\":\"2021-11-03T03:19:16Z\",\"maintenanceAvailableScheduleMaxTime\":\"2020-12-23T06:32:18Z\",\"maintenanceTitle\":\"fz\",\"maintenanceDescription\":\"vux\",\"provisioningState\":\"Succeeded\"},\"id\":\"svth\",\"name\":\"wpztekovmribia\",\"type\":\"tgplucfota\"}";
+            = "{\"properties\":{\"maintenanceType\":\"MinorVersionUpgrade\",\"maintenanceState\":\"Processing\",\"maintenanceStartTime\":\"2021-09-17T12:34:15Z\",\"maintenanceEndTime\":\"2021-01-27T18:27:01Z\",\"maintenanceExecutionStartTime\":\"2021-05-24T18:45:57Z\",\"maintenanceExecutionEndTime\":\"2021-09-03T01:26:59Z\",\"maintenanceAvailableScheduleMinTime\":\"2021-05-12T03:58:05Z\",\"maintenanceAvailableScheduleMaxTime\":\"2021-01-21T09:59:18Z\",\"maintenanceTitle\":\"w\",\"maintenanceDescription\":\"ilkmk\",\"provisioningState\":\"Succeeded\"},\"id\":\"vdndviauo\",\"name\":\"phuartv\",\"type\":\"iukyefchnmna\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class MaintenancesUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Maintenance response = manager.maintenances()
-            .update("picrmnzhrgmqgjsx", "pqcbfrmbodthsq", "gvriibakclac",
-                new MaintenanceUpdate().withMaintenanceStartTime(OffsetDateTime.parse("2021-11-04T08:18:17Z")),
+            .update("hlfbcgwgc", "oxoebqi", "jipnwj",
+                new MaintenanceUpdate().withMaintenanceStartTime(OffsetDateTime.parse("2021-07-15T16:39:33Z")),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-14T22:56:45Z"), response.maintenanceStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-17T12:34:15Z"), response.maintenanceStartTime());
     }
 }

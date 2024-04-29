@@ -22,7 +22,7 @@ public final class LongRunningBackupsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"backupNameV2\":\"lkatnwxyiopidkqq\",\"backupType\":\"FULL\",\"completedTime\":\"2021-10-17T16:33:45Z\",\"source\":\"xkdmligo\",\"provisioningState\":\"Succeeded\"},\"id\":\"xk\",\"name\":\"mloazuru\",\"type\":\"cbgoor\"}";
+            = "{\"properties\":{\"backupNameV2\":\"yhgk\",\"backupType\":\"FULL\",\"completedTime\":\"2021-07-25T09:50:13Z\",\"source\":\"owzfttsttkt\",\"provisioningState\":\"Succeeded\"},\"id\":\"qactxtgzukxitmmq\",\"name\":\"gqqqxh\",\"type\":\"n\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,17 +32,17 @@ public final class LongRunningBackupsCreateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ServerBackupV2 response = manager.longRunningBackups()
-            .define("minsgowzf")
-            .withExistingFlexibleServer("k", "ubdyhgk")
-            .withBackupNameV2("ttktlahbq")
+            .define("smsks")
+            .withExistingFlexibleServer("oqytibyowbblgy", "vutpthjoxo")
+            .withBackupNameV2("mlqoljx")
             .withBackupType(BackupType.FULL)
-            .withCompletedTime(OffsetDateTime.parse("2020-12-23T17:02:35Z"))
-            .withSource("zukxitmmqtgqq")
+            .withCompletedTime(OffsetDateTime.parse("2021-09-22T22:00:27Z"))
+            .withSource("xsffgcviz")
             .create();
 
-        Assertions.assertEquals("lkatnwxyiopidkqq", response.backupNameV2());
+        Assertions.assertEquals("yhgk", response.backupNameV2());
         Assertions.assertEquals(BackupType.FULL, response.backupType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-17T16:33:45Z"), response.completedTime());
-        Assertions.assertEquals("xkdmligo", response.source());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-25T09:50:13Z"), response.completedTime());
+        Assertions.assertEquals("owzfttsttkt", response.source());
     }
 }

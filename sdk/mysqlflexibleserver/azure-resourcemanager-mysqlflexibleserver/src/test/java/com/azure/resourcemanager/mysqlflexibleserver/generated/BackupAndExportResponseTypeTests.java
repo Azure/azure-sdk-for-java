@@ -12,22 +12,22 @@ public final class BackupAndExportResponseTypeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupAndExportResponseType model = BinaryData.fromString(
-            "{\"objectType\":\"ImportFromStorageResponse\",\"datasourceSizeInBytes\":8471752008479329663,\"dataTransferredInBytes\":6378276005014889532,\"backupMetadata\":\"wnawjslbiw\"}")
+            "{\"objectType\":\"BackupAndExportResponse\",\"datasourceSizeInBytes\":5028173088217913035,\"dataTransferredInBytes\":2004834361163016327,\"backupMetadata\":\"lw\"}")
             .toObject(BackupAndExportResponseType.class);
-        Assertions.assertEquals(8471752008479329663L, model.datasourceSizeInBytes());
-        Assertions.assertEquals(6378276005014889532L, model.dataTransferredInBytes());
-        Assertions.assertEquals("wnawjslbiw", model.backupMetadata());
+        Assertions.assertEquals(5028173088217913035L, model.datasourceSizeInBytes());
+        Assertions.assertEquals(2004834361163016327L, model.dataTransferredInBytes());
+        Assertions.assertEquals("lw", model.backupMetadata());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BackupAndExportResponseType model
-            = new BackupAndExportResponseType().withDatasourceSizeInBytes(8471752008479329663L)
-                .withDataTransferredInBytes(6378276005014889532L)
-                .withBackupMetadata("wnawjslbiw");
+            = new BackupAndExportResponseType().withDatasourceSizeInBytes(5028173088217913035L)
+                .withDataTransferredInBytes(2004834361163016327L)
+                .withBackupMetadata("lw");
         model = BinaryData.fromObject(model).toObject(BackupAndExportResponseType.class);
-        Assertions.assertEquals(8471752008479329663L, model.datasourceSizeInBytes());
-        Assertions.assertEquals(6378276005014889532L, model.dataTransferredInBytes());
-        Assertions.assertEquals("wnawjslbiw", model.backupMetadata());
+        Assertions.assertEquals(5028173088217913035L, model.datasourceSizeInBytes());
+        Assertions.assertEquals(2004834361163016327L, model.dataTransferredInBytes());
+        Assertions.assertEquals("lw", model.backupMetadata());
     }
 }

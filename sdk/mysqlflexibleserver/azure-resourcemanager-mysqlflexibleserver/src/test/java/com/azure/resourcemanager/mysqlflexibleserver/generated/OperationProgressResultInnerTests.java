@@ -6,7 +6,7 @@ package com.azure.resourcemanager.mysqlflexibleserver.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.OperationProgressResultInner;
-import com.azure.resourcemanager.mysqlflexibleserver.models.BackupAndExportResponseType;
+import com.azure.resourcemanager.mysqlflexibleserver.models.OperationProgressResponseType;
 import com.azure.resourcemanager.mysqlflexibleserver.models.OperationStatusResult;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -16,9 +16,9 @@ public final class OperationProgressResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationProgressResultInner model = BinaryData.fromString(
-            "{\"properties\":{\"objectType\":\"BackupAndExportResponse\"},\"id\":\"ojnal\",\"resourceId\":\"fk\",\"name\":\"vsexsowuelu\",\"status\":\"hhahhxvrhmzkwpjg\",\"percentComplete\":69.94035,\"startTime\":\"2021-02-08T16:54:53Z\",\"endTime\":\"2021-03-26T20:29:02Z\",\"operations\":[{\"id\":\"sxhqxujx\",\"resourceId\":\"ndxdigrjguufzdm\",\"name\":\"qtfihwhbotzinga\",\"status\":\"vppho\",\"percentComplete\":41.892742,\"startTime\":\"2021-10-18T15:07:25Z\",\"endTime\":\"2021-11-21T07:49:51Z\",\"operations\":[{\"id\":\"mvdk\",\"resourceId\":\"ynwcvtbv\",\"name\":\"yhmtnvyqiat\",\"status\":\"zwpcnpwzcjaesg\",\"percentComplete\":56.94007,\"startTime\":\"2021-07-14T16:40:38Z\",\"endTime\":\"2021-03-29T04:52:48Z\",\"operations\":[{\"status\":\"uq\"}]},{\"id\":\"ygz\",\"resourceId\":\"dnkfx\",\"name\":\"emdwzrmuhapfc\",\"status\":\"dpsqx\",\"percentComplete\":52.910114,\"startTime\":\"2021-06-15T01:28:22Z\",\"endTime\":\"2021-04-21T12:11:06Z\",\"operations\":[{\"status\":\"gc\"},{\"status\":\"elvezrypq\"},{\"status\":\"mfe\"},{\"status\":\"kerqwkyh\"}]},{\"id\":\"opgxedkowepb\",\"resourceId\":\"cr\",\"name\":\"bwccsnjvcdwxlpqe\",\"status\":\"ftnkhtj\",\"percentComplete\":1.9628167,\"startTime\":\"2021-09-20T22:34:13Z\",\"endTime\":\"2021-09-11T08:24:22Z\",\"operations\":[{\"status\":\"tmtdhtmdvypgik\"},{\"status\":\"gszywk\"},{\"status\":\"irryuzhlh\"}]},{\"id\":\"qrvqq\",\"resourceId\":\"t\",\"name\":\"nrvgoupmfiibfgg\",\"status\":\"ioolvrwxkvtkkgll\",\"percentComplete\":57.97699,\"startTime\":\"2021-10-01T00:49:04Z\",\"endTime\":\"2021-07-24T13:52:35Z\",\"operations\":[{\"status\":\"vblm\"},{\"status\":\"vkzuhbxvvyhgso\"},{\"status\":\"byrqufeg\"}]}]}]}")
+            "{\"properties\":{\"objectType\":\"OperationProgressResponseType\"},\"id\":\"iiojnal\",\"resourceId\":\"fk\",\"name\":\"vsexsowuelu\",\"status\":\"hhahhxvrhmzkwpjg\",\"percentComplete\":69.94035,\"startTime\":\"2021-02-08T16:54:53Z\",\"endTime\":\"2021-03-26T20:29:02Z\",\"operations\":[{\"id\":\"sxhqxujx\",\"resourceId\":\"ndxdigrjguufzdm\",\"name\":\"qtfihwhbotzinga\",\"status\":\"vppho\",\"percentComplete\":41.892742,\"startTime\":\"2021-10-18T15:07:25Z\",\"endTime\":\"2021-11-21T07:49:51Z\",\"operations\":[{\"id\":\"mvdk\",\"resourceId\":\"ynwcvtbv\",\"name\":\"yhmtnvyqiat\",\"status\":\"zwpcnpwzcjaesg\",\"percentComplete\":56.94007,\"startTime\":\"2021-07-14T16:40:38Z\",\"endTime\":\"2021-03-29T04:52:48Z\",\"operations\":[{\"status\":\"uq\"}]},{\"id\":\"ygz\",\"resourceId\":\"dnkfx\",\"name\":\"emdwzrmuhapfc\",\"status\":\"dpsqx\",\"percentComplete\":52.910114,\"startTime\":\"2021-06-15T01:28:22Z\",\"endTime\":\"2021-04-21T12:11:06Z\",\"operations\":[{\"status\":\"gc\"},{\"status\":\"elvezrypq\"},{\"status\":\"mfe\"},{\"status\":\"kerqwkyh\"}]},{\"id\":\"opgxedkowepb\",\"resourceId\":\"cr\",\"name\":\"bwccsnjvcdwxlpqe\",\"status\":\"ftnkhtj\",\"percentComplete\":1.9628167,\"startTime\":\"2021-09-20T22:34:13Z\",\"endTime\":\"2021-09-11T08:24:22Z\",\"operations\":[{\"status\":\"tmtdhtmdvypgik\"},{\"status\":\"gszywk\"},{\"status\":\"irryuzhlh\"}]},{\"id\":\"qrvqq\",\"resourceId\":\"t\",\"name\":\"nrvgoupmfiibfgg\",\"status\":\"ioolvrwxkvtkkgll\",\"percentComplete\":57.97699,\"startTime\":\"2021-10-01T00:49:04Z\",\"endTime\":\"2021-07-24T13:52:35Z\",\"operations\":[{\"status\":\"vblm\"},{\"status\":\"vkzuhbxvvyhgso\"},{\"status\":\"byrqufeg\"}]}]}]}")
             .toObject(OperationProgressResultInner.class);
-        Assertions.assertEquals("ojnal", model.id());
+        Assertions.assertEquals("iiojnal", model.id());
         Assertions.assertEquals("vsexsowuelu", model.name());
         Assertions.assertEquals("hhahhxvrhmzkwpjg", model.status());
         Assertions.assertEquals(69.94035F, model.percentComplete());
@@ -43,7 +43,7 @@ public final class OperationProgressResultInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationProgressResultInner model = new OperationProgressResultInner().withId("ojnal")
+        OperationProgressResultInner model = new OperationProgressResultInner().withId("iiojnal")
             .withName("vsexsowuelu")
             .withStatus("hhahhxvrhmzkwpjg")
             .withPercentComplete(69.94035F)
@@ -91,9 +91,9 @@ public final class OperationProgressResultInnerTests {
                         .withOperations(Arrays.asList(new OperationStatusResult().withStatus("vblm"),
                             new OperationStatusResult().withStatus("vkzuhbxvvyhgso"),
                             new OperationStatusResult().withStatus("byrqufeg")))))))
-            .withProperties(new BackupAndExportResponseType());
+            .withProperties(new OperationProgressResponseType());
         model = BinaryData.fromObject(model).toObject(OperationProgressResultInner.class);
-        Assertions.assertEquals("ojnal", model.id());
+        Assertions.assertEquals("iiojnal", model.id());
         Assertions.assertEquals("vsexsowuelu", model.name());
         Assertions.assertEquals("hhahhxvrhmzkwpjg", model.status());
         Assertions.assertEquals(69.94035F, model.percentComplete());

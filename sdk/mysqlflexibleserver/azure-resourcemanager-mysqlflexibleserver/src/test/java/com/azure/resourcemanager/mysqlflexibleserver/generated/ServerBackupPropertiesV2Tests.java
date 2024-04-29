@@ -14,24 +14,24 @@ public final class ServerBackupPropertiesV2Tests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServerBackupPropertiesV2 model = BinaryData.fromString(
-            "{\"backupNameV2\":\"i\",\"backupType\":\"FULL\",\"completedTime\":\"2020-12-20T00:37:56Z\",\"source\":\"ybb\",\"provisioningState\":\"Failed\"}")
+            "{\"backupNameV2\":\"odepoogin\",\"backupType\":\"FULL\",\"completedTime\":\"2021-11-03T11:27:22Z\",\"source\":\"eognarxzxtheotu\",\"provisioningState\":\"Deleting\"}")
             .toObject(ServerBackupPropertiesV2.class);
-        Assertions.assertEquals("i", model.backupNameV2());
+        Assertions.assertEquals("odepoogin", model.backupNameV2());
         Assertions.assertEquals(BackupType.FULL, model.backupType());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-20T00:37:56Z"), model.completedTime());
-        Assertions.assertEquals("ybb", model.source());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-03T11:27:22Z"), model.completedTime());
+        Assertions.assertEquals("eognarxzxtheotu", model.source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerBackupPropertiesV2 model = new ServerBackupPropertiesV2().withBackupNameV2("i")
+        ServerBackupPropertiesV2 model = new ServerBackupPropertiesV2().withBackupNameV2("odepoogin")
             .withBackupType(BackupType.FULL)
-            .withCompletedTime(OffsetDateTime.parse("2020-12-20T00:37:56Z"))
-            .withSource("ybb");
+            .withCompletedTime(OffsetDateTime.parse("2021-11-03T11:27:22Z"))
+            .withSource("eognarxzxtheotu");
         model = BinaryData.fromObject(model).toObject(ServerBackupPropertiesV2.class);
-        Assertions.assertEquals("i", model.backupNameV2());
+        Assertions.assertEquals("odepoogin", model.backupNameV2());
         Assertions.assertEquals(BackupType.FULL, model.backupType());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-20T00:37:56Z"), model.completedTime());
-        Assertions.assertEquals("ybb", model.source());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-03T11:27:22Z"), model.completedTime());
+        Assertions.assertEquals("eognarxzxtheotu", model.source());
     }
 }

@@ -15,25 +15,24 @@ public final class ConfigurationListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfigurationListResultInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"value\":\"qqedqytbciqfou\",\"currentValue\":\"mmnkzsmodmgl\",\"description\":\"gpbkwtmut\",\"documentationLink\":\"qktapspwgcuert\",\"defaultValue\":\"kdosvqw\",\"dataType\":\"mdgbbjfdd\",\"allowedValues\":\"bmbexppbhtqqro\",\"source\":\"system-default\",\"isReadOnly\":\"False\",\"isConfigPendingRestart\":\"False\",\"isDynamicConfig\":\"True\"},\"id\":\"qux\",\"name\":\"gjyjgzjaoyfhrtxi\",\"type\":\"n\"}],\"nextLink\":\"kujysvlejuvfq\"}")
+            "{\"value\":[{\"properties\":{\"value\":\"szdnr\",\"currentValue\":\"qguhmuo\",\"description\":\"f\",\"documentationLink\":\"wzwbnguitn\",\"defaultValue\":\"izgazxu\",\"dataType\":\"zuckyfi\",\"allowedValues\":\"fidfvzw\",\"source\":\"system-default\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"False\",\"isDynamicConfig\":\"False\"},\"id\":\"dkfthwxmnt\",\"name\":\"i\",\"type\":\"aop\"}],\"nextLink\":\"mijcmmxdcufufs\"}")
             .toObject(ConfigurationListResultInner.class);
-        Assertions.assertEquals("qqedqytbciqfou", model.value().get(0).value());
-        Assertions.assertEquals("mmnkzsmodmgl", model.value().get(0).currentValue());
+        Assertions.assertEquals("szdnr", model.value().get(0).value());
+        Assertions.assertEquals("qguhmuo", model.value().get(0).currentValue());
         Assertions.assertEquals(ConfigurationSource.SYSTEM_DEFAULT, model.value().get(0).source());
-        Assertions.assertEquals("kujysvlejuvfq", model.nextLink());
+        Assertions.assertEquals("mijcmmxdcufufs", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigurationListResultInner model = new ConfigurationListResultInner()
-            .withValue(Arrays.asList(new ConfigurationInner().withValue("qqedqytbciqfou")
-                .withCurrentValue("mmnkzsmodmgl")
-                .withSource(ConfigurationSource.SYSTEM_DEFAULT)))
-            .withNextLink("kujysvlejuvfq");
+        ConfigurationListResultInner model
+            = new ConfigurationListResultInner().withValue(Arrays.asList(new ConfigurationInner().withValue("szdnr")
+                .withCurrentValue("qguhmuo")
+                .withSource(ConfigurationSource.SYSTEM_DEFAULT))).withNextLink("mijcmmxdcufufs");
         model = BinaryData.fromObject(model).toObject(ConfigurationListResultInner.class);
-        Assertions.assertEquals("qqedqytbciqfou", model.value().get(0).value());
-        Assertions.assertEquals("mmnkzsmodmgl", model.value().get(0).currentValue());
+        Assertions.assertEquals("szdnr", model.value().get(0).value());
+        Assertions.assertEquals("qguhmuo", model.value().get(0).currentValue());
         Assertions.assertEquals(ConfigurationSource.SYSTEM_DEFAULT, model.value().get(0).source());
-        Assertions.assertEquals("kujysvlejuvfq", model.nextLink());
+        Assertions.assertEquals("mijcmmxdcufufs", model.nextLink());
     }
 }

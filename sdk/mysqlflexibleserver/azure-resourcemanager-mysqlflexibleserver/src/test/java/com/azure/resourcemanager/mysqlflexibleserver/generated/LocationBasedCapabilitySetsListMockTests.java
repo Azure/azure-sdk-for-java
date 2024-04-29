@@ -21,7 +21,7 @@ public final class LocationBasedCapabilitySetsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"supportedGeoBackupRegions\":[\"uyxoaf\",\"aoqltfaey\"],\"supportedFlexibleServerEditions\":[{\"name\":\"fgvxirpghriypoqe\",\"defaultSku\":\"lqhykprlpyz\",\"defaultStorageSize\":1860731641,\"supportedStorageEditions\":[{},{},{}],\"supportedSkus\":[{},{},{}]}],\"supportedServerVersions\":[{\"name\":\"iitdfuxt\"}]},\"id\":\"siibmiybnnustgn\",\"name\":\"jh\",\"type\":\"mgixhcmavmqfou\"}]}";
+            = "{\"value\":[{\"properties\":{\"supportedGeoBackupRegions\":[\"wwyyurmoch\",\"prprsnmokay\"],\"supportedFlexibleServerEditions\":[{\"name\":\"hlb\",\"defaultSku\":\"bzpcpiljhahzvec\",\"defaultStorageSize\":693211194,\"supportedStorageEditions\":[{},{},{}],\"supportedSkus\":[{},{},{}]},{\"name\":\"hol\",\"defaultSku\":\"jwiuubwefqsfapaq\",\"defaultStorageSize\":175578063,\"supportedStorageEditions\":[{},{},{},{}],\"supportedSkus\":[{},{},{},{}]},{\"name\":\"x\",\"defaultSku\":\"mfxapjwogqqno\",\"defaultStorageSize\":1623831151,\"supportedStorageEditions\":[{},{},{}],\"supportedSkus\":[{},{},{},{}]},{\"name\":\"tqwpwya\",\"defaultSku\":\"zasqbucljgkyexao\",\"defaultStorageSize\":241996681,\"supportedStorageEditions\":[{}],\"supportedSkus\":[{}]}],\"supportedServerVersions\":[{\"name\":\"ault\"},{\"name\":\"jjum\"},{\"name\":\"waz\"}]},\"id\":\"qnmcjngzqdqx\",\"name\":\"bjwgnyfus\",\"type\":\"zsvtuikzhajqgl\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class LocationBasedCapabilitySetsListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Capability> response
-            = manager.locationBasedCapabilitySets().list("jrnwxacev", com.azure.core.util.Context.NONE);
+            = manager.locationBasedCapabilitySets().list("zlbiojlvfhrbbpn", com.azure.core.util.Context.NONE);
 
     }
 }

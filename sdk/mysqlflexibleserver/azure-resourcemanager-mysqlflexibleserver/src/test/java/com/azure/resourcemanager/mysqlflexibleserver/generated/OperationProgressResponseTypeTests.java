@@ -5,19 +5,19 @@
 package com.azure.resourcemanager.mysqlflexibleserver.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.mysqlflexibleserver.models.BackupAndExportResponseType;
 import com.azure.resourcemanager.mysqlflexibleserver.models.OperationProgressResponseType;
 
 public final class OperationProgressResponseTypeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationProgressResponseType model = BinaryData.fromString("{\"objectType\":\"BackupAndExportResponse\"}")
-            .toObject(OperationProgressResponseType.class);
+        OperationProgressResponseType model
+            = BinaryData.fromString("{\"objectType\":\"OperationProgressResponseType\"}")
+                .toObject(OperationProgressResponseType.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationProgressResponseType model = new BackupAndExportResponseType();
+        OperationProgressResponseType model = new OperationProgressResponseType();
         model = BinaryData.fromObject(model).toObject(OperationProgressResponseType.class);
     }
 }

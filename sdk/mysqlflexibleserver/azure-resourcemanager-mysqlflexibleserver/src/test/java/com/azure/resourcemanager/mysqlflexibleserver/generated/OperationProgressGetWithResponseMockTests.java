@@ -21,7 +21,7 @@ public final class OperationProgressGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"objectType\":\"ImportFromStorageResponse\"},\"id\":\"bxqmu\",\"resourceId\":\"xlxqzvn\",\"name\":\"sbycucrwnamikz\",\"status\":\"brqbsmswzi\",\"percentComplete\":29.676771,\"startTime\":\"2021-02-04T13:53:52Z\",\"endTime\":\"2021-07-01T19:40:28Z\",\"operations\":[{\"id\":\"swhvhczznvfbycj\",\"resourceId\":\"jww\",\"name\":\"z\",\"status\":\"umwmxqhnd\",\"percentComplete\":30.209976,\"startTime\":\"2021-08-27T14:40:44Z\",\"endTime\":\"2021-09-19T04:21:59Z\",\"operations\":[{\"id\":\"aohdjh\",\"resourceId\":\"lzok\",\"name\":\"ox\",\"status\":\"e\",\"percentComplete\":82.300064,\"startTime\":\"2021-04-30T08:42:32Z\",\"endTime\":\"2021-09-27T19:01:20Z\",\"operations\":[{\"status\":\"sxoa\"},{\"status\":\"ftgz\"},{\"status\":\"npbs\"}]},{\"id\":\"floccsrmozih\",\"resourceId\":\"pgawtxxpkyjcxcjx\",\"name\":\"ytfmpc\",\"status\":\"cil\",\"percentComplete\":67.122246,\"startTime\":\"2021-03-25T07:38:12Z\",\"endTime\":\"2021-01-01T22:41:02Z\",\"operations\":[{\"status\":\"oxuztrksx\"},{\"status\":\"pndfcpfnznt\"},{\"status\":\"jtwkjaos\"}]},{\"id\":\"zvoamktc\",\"resourceId\":\"os\",\"name\":\"bzahgxqd\",\"status\":\"yrtltlaprltzkat\",\"percentComplete\":11.608601,\"startTime\":\"2021-11-05T23:53:12Z\",\"endTime\":\"2021-01-20T21:27:07Z\",\"operations\":[{\"status\":\"oqeq\"}]}]},{\"id\":\"vlagun\",\"resourceId\":\"gfebwlnb\",\"name\":\"yreeudz\",\"status\":\"av\",\"percentComplete\":39.677246,\"startTime\":\"2021-04-26T09:28:14Z\",\"endTime\":\"2021-05-31T02:44:53Z\",\"operations\":[{\"id\":\"zg\",\"resourceId\":\"ouwtl\",\"name\":\"jyuojqtobaxkjeyt\",\"status\":\"nlb\",\"percentComplete\":18.071533,\"startTime\":\"2021-01-21T02:32:08Z\",\"endTime\":\"2021-04-06T04:03:32Z\",\"operations\":[{\"status\":\"qbhsyrq\"}]},{\"id\":\"qhd\",\"resourceId\":\"xaulkpakdkifmjnn\",\"name\":\"tqabpxuckpgg\",\"status\":\"oweyirdhlis\",\"percentComplete\":13.974935,\"startTime\":\"2021-07-25T17:04:59Z\",\"endTime\":\"2021-06-30T03:10:24Z\",\"operations\":[{\"status\":\"izruwnpqxpxiwfc\"},{\"status\":\"gjsaasiixtm\"},{\"status\":\"zjvkviirhgfgrws\"},{\"status\":\"pgratzvzbglbyvi\"}]},{\"id\":\"tbrxkjz\",\"resourceId\":\"gxffmshkwf\",\"name\":\"gozxw\",\"status\":\"pdbydpizqacln\",\"percentComplete\":91.000725,\"startTime\":\"2021-10-06T23:20:34Z\",\"endTime\":\"2020-12-25T22:51:58Z\",\"operations\":[{\"status\":\"j\"}]},{\"id\":\"smfcttuxuuyilfl\",\"resourceId\":\"iquvrehm\",\"name\":\"jhvsujztczyt\",\"status\":\"jtwhauunf\",\"percentComplete\":19.094223,\"startTime\":\"2021-06-07T06:06:17Z\",\"endTime\":\"2021-05-26T04:45:22Z\",\"operations\":[{\"status\":\"s\"},{\"status\":\"rpddouifamo\"},{\"status\":\"aziynknlqwzdv\"},{\"status\":\"iwhxqszdtmaajq\"}]}]}]}";
+            = "{\"properties\":{\"objectType\":\"OperationProgressResponseType\"},\"id\":\"i\",\"resourceId\":\"vumwmxqh\",\"name\":\"vnoamldseha\",\"status\":\"hdjhhflz\",\"percentComplete\":66.91231,\"startTime\":\"2021-01-13T01:47:16Z\",\"endTime\":\"2021-05-28T20:09:21Z\",\"operations\":[{\"id\":\"jetagltsxoatft\",\"resourceId\":\"pnpbswveflocc\",\"name\":\"mozi\",\"status\":\"m\",\"percentComplete\":5.020833,\"startTime\":\"2021-04-14T23:51:02Z\",\"endTime\":\"2021-11-19T09:15:01Z\",\"operations\":[{\"id\":\"y\",\"resourceId\":\"xcjxgrytfmpcy\",\"name\":\"lrmcaykg\",\"status\":\"noxuztrksx\",\"percentComplete\":37.622272,\"startTime\":\"2021-05-07T07:31:07Z\",\"endTime\":\"2021-01-21T22:39:06Z\",\"operations\":[{\"status\":\"znth\"},{\"status\":\"twk\"}]},{\"id\":\"srxuzvoam\",\"resourceId\":\"cqiosmgbza\",\"name\":\"xqdlyrtltlapr\",\"status\":\"tz\",\"percentComplete\":80.98418,\"startTime\":\"2021-10-09T19:13:43Z\",\"endTime\":\"2021-10-17T10:38:23Z\",\"operations\":[{\"status\":\"nbsoqeqalarv\"},{\"status\":\"agunbtgfebw\"},{\"status\":\"nbmhyree\"}]},{\"id\":\"qavbpdqmj\",\"resourceId\":\"yyzglgouwtlmjjy\",\"name\":\"j\",\"status\":\"tob\",\"percentComplete\":47.482197,\"startTime\":\"2021-05-24T14:07:59Z\",\"endTime\":\"2021-04-18T22:03:42Z\",\"operations\":[{\"status\":\"lbfjkwr\"}]},{\"id\":\"kqbh\",\"resourceId\":\"rqunjq\",\"name\":\"enx\",\"status\":\"ulkpakd\",\"percentComplete\":60.852154,\"startTime\":\"2021-10-26T11:32:42Z\",\"endTime\":\"2021-05-24T00:54:47Z\",\"operations\":[{\"status\":\"tqabpxuckpgg\"},{\"status\":\"oweyirdhlis\"},{\"status\":\"gwflq\"}]}]},{\"id\":\"zruwn\",\"resourceId\":\"xpxiwfcngjs\",\"name\":\"sii\",\"status\":\"tmkzjvkviirhgfgr\",\"percentComplete\":25.038736,\"startTime\":\"2021-05-20T10:14:07Z\",\"endTime\":\"2021-04-27T20:58:15Z\",\"operations\":[{\"id\":\"zb\",\"resourceId\":\"byvi\",\"name\":\"ctbrxkjzwrgxffm\",\"status\":\"hkwfbkgozxwop\",\"percentComplete\":12.357336,\"startTime\":\"2021-06-10T05:25:23Z\",\"endTime\":\"2021-04-25T08:18:32Z\",\"operations\":[{\"status\":\"clnapxbiygnugjkn\"},{\"status\":\"smfcttuxuuyilfl\"},{\"status\":\"oiquvrehmrnjhvs\"},{\"status\":\"jztczytqj\"}]},{\"id\":\"auunfprnjletlx\",\"resourceId\":\"rpddouifamo\",\"name\":\"z\",\"status\":\"yn\",\"percentComplete\":86.37498,\"startTime\":\"2021-09-09T09:30:34Z\",\"endTime\":\"2021-09-20T14:41:41Z\",\"operations\":[{\"status\":\"iwhxqszdtmaajq\"},{\"status\":\"huxy\"}]},{\"id\":\"vmtygj\",\"resourceId\":\"zyos\",\"name\":\"p\",\"status\":\"hckfkyjpmspbps\",\"percentComplete\":97.769455,\"startTime\":\"2021-10-10T20:16:17Z\",\"endTime\":\"2021-03-29T12:30:22Z\",\"operations\":[{\"status\":\"eyujtvczkcnyxrx\"},{\"status\":\"unjdx\"}]}]},{\"id\":\"kvxlxpa\",\"resourceId\":\"qivbgkcvkh\",\"name\":\"vuqd\",\"status\":\"lvoniy\",\"percentComplete\":89.86916,\"startTime\":\"2021-10-26T12:39:28Z\",\"endTime\":\"2021-01-27T05:34Z\",\"operations\":[{\"id\":\"xtiv\",\"resourceId\":\"knidib\",\"name\":\"jxgpnrhgovfg\",\"status\":\"ik\",\"percentComplete\":10.271984,\"startTime\":\"2021-03-05T20:29:17Z\",\"endTime\":\"2021-02-15T17:50:36Z\",\"operations\":[{\"status\":\"mzvupor\"},{\"status\":\"zdfuydzvkfvxcnqm\"}]}]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,29 +31,29 @@ public final class OperationProgressGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         OperationProgressResult response = manager.operationProgress()
-            .getWithResponse("vuwcobiegstmnin", "jizcilnghgs", com.azure.core.util.Context.NONE)
+            .getWithResponse("hczznvf", "ycjsx", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("bxqmu", response.id());
-        Assertions.assertEquals("sbycucrwnamikz", response.name());
-        Assertions.assertEquals("brqbsmswzi", response.status());
-        Assertions.assertEquals(29.676771F, response.percentComplete());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-04T13:53:52Z"), response.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-01T19:40:28Z"), response.endTime());
-        Assertions.assertEquals("swhvhczznvfbycj", response.operations().get(0).id());
-        Assertions.assertEquals("z", response.operations().get(0).name());
-        Assertions.assertEquals("umwmxqhnd", response.operations().get(0).status());
-        Assertions.assertEquals(30.209976F, response.operations().get(0).percentComplete());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-27T14:40:44Z"), response.operations().get(0).startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-19T04:21:59Z"), response.operations().get(0).endTime());
-        Assertions.assertEquals("aohdjh", response.operations().get(0).operations().get(0).id());
-        Assertions.assertEquals("ox", response.operations().get(0).operations().get(0).name());
-        Assertions.assertEquals("e", response.operations().get(0).operations().get(0).status());
-        Assertions.assertEquals(82.300064F, response.operations().get(0).operations().get(0).percentComplete());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-30T08:42:32Z"),
+        Assertions.assertEquals("i", response.id());
+        Assertions.assertEquals("vnoamldseha", response.name());
+        Assertions.assertEquals("hdjhhflz", response.status());
+        Assertions.assertEquals(66.91231F, response.percentComplete());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-13T01:47:16Z"), response.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-28T20:09:21Z"), response.endTime());
+        Assertions.assertEquals("jetagltsxoatft", response.operations().get(0).id());
+        Assertions.assertEquals("mozi", response.operations().get(0).name());
+        Assertions.assertEquals("m", response.operations().get(0).status());
+        Assertions.assertEquals(5.020833F, response.operations().get(0).percentComplete());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-14T23:51:02Z"), response.operations().get(0).startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-19T09:15:01Z"), response.operations().get(0).endTime());
+        Assertions.assertEquals("y", response.operations().get(0).operations().get(0).id());
+        Assertions.assertEquals("lrmcaykg", response.operations().get(0).operations().get(0).name());
+        Assertions.assertEquals("noxuztrksx", response.operations().get(0).operations().get(0).status());
+        Assertions.assertEquals(37.622272F, response.operations().get(0).operations().get(0).percentComplete());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-07T07:31:07Z"),
             response.operations().get(0).operations().get(0).startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-27T19:01:20Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-21T22:39:06Z"),
             response.operations().get(0).operations().get(0).endTime());
-        Assertions.assertEquals("sxoa", response.operations().get(0).operations().get(0).operations().get(0).status());
+        Assertions.assertEquals("znth", response.operations().get(0).operations().get(0).operations().get(0).status());
     }
 }

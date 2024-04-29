@@ -26,7 +26,7 @@ public final class BackupAndExportsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"status\":\"CancelInProgress\",\"startTime\":\"2021-06-07T03:49:21Z\",\"endTime\":\"2021-11-02T20:40:47Z\",\"percentComplete\":7.642341464154823,\"properties\":{\"datasourceSizeInBytes\":5557233869903086465,\"dataTransferredInBytes\":1652806718775648575,\"backupMetadata\":\"pthjoxo\"},\"id\":\"sks\",\"name\":\"pi\",\"type\":\"lqol\"}";
+            = "{\"status\":\"Succeeded\",\"startTime\":\"2021-03-25T23:54:59Z\",\"endTime\":\"2021-08-09T20:51:46Z\",\"percentComplete\":80.53391473097852,\"properties\":{\"datasourceSizeInBytes\":7194165159471944548,\"dataTransferredInBytes\":6966224071626794024,\"backupMetadata\":\"jeknizshq\"},\"id\":\"m\",\"name\":\"ev\",\"type\":\"gmblrri\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,19 +36,19 @@ public final class BackupAndExportsCreateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         BackupAndExportResponse response = manager.backupAndExports()
-            .create("gmblrri", "bywdxsmicc",
+            .create("xmsivfomiloxggdu", "iqndieuzaofj",
                 new BackupAndExportRequest()
                     .withBackupSettings(
-                        new BackupSettings().withBackupName("nszqujiz").withBackupFormat(BackupFormat.RAW))
+                        new BackupSettings().withBackupName("hvcyyysfg").withBackupFormat(BackupFormat.RAW))
                     .withTargetDetails(new BackupStoreDetails()),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(OperationStatus.CANCEL_IN_PROGRESS, response.status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-07T03:49:21Z"), response.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-02T20:40:47Z"), response.endTime());
-        Assertions.assertEquals(7.642341464154823D, response.percentComplete());
-        Assertions.assertEquals(5557233869903086465L, response.datasourceSizeInBytes());
-        Assertions.assertEquals(1652806718775648575L, response.dataTransferredInBytes());
-        Assertions.assertEquals("pthjoxo", response.backupMetadata());
+        Assertions.assertEquals(OperationStatus.SUCCEEDED, response.status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-25T23:54:59Z"), response.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-09T20:51:46Z"), response.endTime());
+        Assertions.assertEquals(80.53391473097852D, response.percentComplete());
+        Assertions.assertEquals(7194165159471944548L, response.datasourceSizeInBytes());
+        Assertions.assertEquals(6966224071626794024L, response.dataTransferredInBytes());
+        Assertions.assertEquals("jeknizshq", response.backupMetadata());
     }
 }

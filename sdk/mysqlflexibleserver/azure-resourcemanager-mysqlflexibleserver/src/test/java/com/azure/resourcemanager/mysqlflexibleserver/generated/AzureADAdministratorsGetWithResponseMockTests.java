@@ -23,7 +23,7 @@ public final class AzureADAdministratorsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"administratorType\":\"ActiveDirectory\",\"login\":\"hbejdznxcvdsrhnj\",\"sid\":\"olvtnovqfzge\",\"tenantId\":\"dftuljltduce\",\"identityResourceId\":\"tmczuomejwcwwqi\"},\"id\":\"nssxmojmsvpk\",\"name\":\"prvkwcfzqljyxgtc\",\"type\":\"heyd\"}";
+            = "{\"properties\":{\"administratorType\":\"ActiveDirectory\",\"login\":\"kslircizjxvydfc\",\"sid\":\"cvlhv\",\"tenantId\":\"dyftumrtwna\",\"identityResourceId\":\"slbi\"},\"id\":\"ojgcyzt\",\"name\":\"fmznba\",\"type\":\"qphchqnrnrpxehuw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,14 @@ public final class AzureADAdministratorsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AzureADAdministrator response = manager.azureADAdministrators()
-            .getWithResponse("k", "gaifmvik", AdministratorName.ACTIVE_DIRECTORY, com.azure.core.util.Context.NONE)
+            .getWithResponse("qg", "zpnfqntcypsxj", AdministratorName.ACTIVE_DIRECTORY,
+                com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(AdministratorType.ACTIVE_DIRECTORY, response.administratorType());
-        Assertions.assertEquals("hbejdznxcvdsrhnj", response.login());
-        Assertions.assertEquals("olvtnovqfzge", response.sid());
-        Assertions.assertEquals("dftuljltduce", response.tenantId());
-        Assertions.assertEquals("tmczuomejwcwwqi", response.identityResourceId());
+        Assertions.assertEquals("kslircizjxvydfc", response.login());
+        Assertions.assertEquals("cvlhv", response.sid());
+        Assertions.assertEquals("dyftumrtwna", response.tenantId());
+        Assertions.assertEquals("slbi", response.identityResourceId());
     }
 }

@@ -12,17 +12,17 @@ public final class DatabaseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatabaseInner model = BinaryData.fromString(
-            "{\"properties\":{\"charset\":\"lyxwjkcprbnwbx\",\"collation\":\"vtb\"},\"id\":\"ysszdnrujqguh\",\"name\":\"uouq\",\"type\":\"prwzwbnguitnwui\"}")
+            "{\"properties\":{\"charset\":\"mzidnsezcxtb\",\"collation\":\"gfycc\"},\"id\":\"ewmdw\",\"name\":\"jeiachboosfl\",\"type\":\"ro\"}")
             .toObject(DatabaseInner.class);
-        Assertions.assertEquals("lyxwjkcprbnwbx", model.charset());
-        Assertions.assertEquals("vtb", model.collation());
+        Assertions.assertEquals("mzidnsezcxtb", model.charset());
+        Assertions.assertEquals("gfycc", model.collation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatabaseInner model = new DatabaseInner().withCharset("lyxwjkcprbnwbx").withCollation("vtb");
+        DatabaseInner model = new DatabaseInner().withCharset("mzidnsezcxtb").withCollation("gfycc");
         model = BinaryData.fromObject(model).toObject(DatabaseInner.class);
-        Assertions.assertEquals("lyxwjkcprbnwbx", model.charset());
-        Assertions.assertEquals("vtb", model.collation());
+        Assertions.assertEquals("mzidnsezcxtb", model.charset());
+        Assertions.assertEquals("gfycc", model.collation());
     }
 }

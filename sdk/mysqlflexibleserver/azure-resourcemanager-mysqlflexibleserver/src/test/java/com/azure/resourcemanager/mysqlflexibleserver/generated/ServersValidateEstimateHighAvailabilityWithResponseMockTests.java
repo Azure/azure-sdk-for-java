@@ -22,7 +22,7 @@ public final class ServersValidateEstimateHighAvailabilityWithResponseMockTests 
     @Test
     public void testValidateEstimateHighAvailabilityWithResponse() throws Exception {
         String responseStr
-            = "{\"estimatedDowntime\":244729787,\"scheduledStandbyAvailabilityZone\":\"qgukkjqnv\",\"expectedStandbyAvailabilityZone\":\"oylaxxul\"}";
+            = "{\"estimatedDowntime\":101207087,\"scheduledStandbyAvailabilityZone\":\"xgccknfnw\",\"expectedStandbyAvailabilityZone\":\"tmvpdvjdhtt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class ServersValidateEstimateHighAvailabilityWithResponseMockTests 
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         HighAvailabilityValidationEstimation response = manager.servers()
-            .validateEstimateHighAvailabilityWithResponse("obrjlnacgcc", "knh",
-                new HighAvailabilityValidationEstimationInner().withExpectedStandbyAvailabilityZone("nrzvuljraaer"),
+            .validateEstimateHighAvailabilityWithResponse("cdisd", "sfjbjsvg",
+                new HighAvailabilityValidationEstimationInner().withExpectedStandbyAvailabilityZone("ycy"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("oylaxxul", response.expectedStandbyAvailabilityZone());
+        Assertions.assertEquals("tmvpdvjdhtt", response.expectedStandbyAvailabilityZone());
     }
 }

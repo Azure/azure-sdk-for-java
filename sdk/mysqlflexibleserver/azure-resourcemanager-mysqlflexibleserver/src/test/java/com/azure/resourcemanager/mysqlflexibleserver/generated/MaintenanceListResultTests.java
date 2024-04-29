@@ -15,25 +15,24 @@ public final class MaintenanceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MaintenanceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"maintenanceType\":\"RoutineMaintenance\",\"maintenanceState\":\"Canceled\",\"maintenanceStartTime\":\"2021-02-05T08:12:45Z\",\"maintenanceEndTime\":\"2021-09-11T06:06:10Z\",\"maintenanceExecutionStartTime\":\"2021-06-22T14:25:15Z\",\"maintenanceExecutionEndTime\":\"2021-05-05T23:09:26Z\",\"maintenanceAvailableScheduleMinTime\":\"2021-04-18T12:38:21Z\",\"maintenanceAvailableScheduleMaxTime\":\"2021-07-14T22:05:57Z\",\"maintenanceTitle\":\"wgioilqukry\",\"maintenanceDescription\":\"tqmieox\",\"provisioningState\":\"Deleting\"},\"id\":\"ufhyaomtbgh\",\"name\":\"avgrvkffovjz\",\"type\":\"pjbi\"},{\"properties\":{\"maintenanceType\":\"MinorVersionUpgrade\",\"maintenanceState\":\"Completed\",\"maintenanceStartTime\":\"2021-07-15T10:24:31Z\",\"maintenanceEndTime\":\"2021-08-27T14:48:10Z\",\"maintenanceExecutionStartTime\":\"2021-05-24T08:40:21Z\",\"maintenanceExecutionEndTime\":\"2021-09-05T08:14:57Z\",\"maintenanceAvailableScheduleMinTime\":\"2021-01-01T04:04:42Z\",\"maintenanceAvailableScheduleMaxTime\":\"2021-05-30T07:45:57Z\",\"maintenanceTitle\":\"nbkfezzxscy\",\"maintenanceDescription\":\"zdgiruj\",\"provisioningState\":\"Deleting\"},\"id\":\"mvzzbtdcqvp\",\"name\":\"iyujviylwdshfs\",\"type\":\"n\"},{\"properties\":{\"maintenanceType\":\"RoutineMaintenance\",\"maintenanceState\":\"InPreparation\",\"maintenanceStartTime\":\"2021-02-17T11:04:17Z\",\"maintenanceEndTime\":\"2021-04-26T20:36:36Z\",\"maintenanceExecutionStartTime\":\"2020-12-31T10:27:06Z\",\"maintenanceExecutionEndTime\":\"2020-12-23T00:32:06Z\",\"maintenanceAvailableScheduleMinTime\":\"2021-06-20T15:38:21Z\",\"maintenanceAvailableScheduleMaxTime\":\"2021-04-12T13:12:30Z\",\"maintenanceTitle\":\"cotmr\",\"maintenanceDescription\":\"irctymoxoftpipiw\",\"provisioningState\":\"Succeeded\"},\"id\":\"hxacpqjlihhyu\",\"name\":\"pskasdvlmfwdg\",\"type\":\"x\"},{\"properties\":{\"maintenanceType\":\"MinorVersionUpgrade\",\"maintenanceState\":\"Completed\",\"maintenanceStartTime\":\"2021-04-02T21:01:47Z\",\"maintenanceEndTime\":\"2021-12-09T14:22:52Z\",\"maintenanceExecutionStartTime\":\"2021-07-04T20:55:26Z\",\"maintenanceExecutionEndTime\":\"2021-11-11T05:22:52Z\",\"maintenanceAvailableScheduleMinTime\":\"2021-11-06T01:04:21Z\",\"maintenanceAvailableScheduleMaxTime\":\"2021-02-07T18:03:01Z\",\"maintenanceTitle\":\"i\",\"maintenanceDescription\":\"nhn\",\"provisioningState\":\"Deleting\"},\"id\":\"fq\",\"name\":\"zgxmr\",\"type\":\"ublwpcesutrg\"}],\"nextLink\":\"pauutpw\"}")
+            "{\"value\":[{\"properties\":{\"maintenanceType\":\"MinorVersionUpgrade\",\"maintenanceState\":\"Completed\",\"maintenanceStartTime\":\"2021-08-13T04:34:19Z\",\"maintenanceEndTime\":\"2021-04-02T14:41:37Z\",\"maintenanceExecutionStartTime\":\"2021-01-10T15:25:32Z\",\"maintenanceExecutionEndTime\":\"2021-10-08T05:52:02Z\",\"maintenanceAvailableScheduleMinTime\":\"2021-03-11T23:46:52Z\",\"maintenanceAvailableScheduleMaxTime\":\"2021-10-13T21:08:10Z\",\"maintenanceTitle\":\"zirtxdyuxzejntps\",\"maintenanceDescription\":\"gioilqu\",\"provisioningState\":\"Creating\"},\"id\":\"xtqmieoxor\",\"name\":\"gufhyaomtbg\",\"type\":\"havgrvk\"},{\"properties\":{\"maintenanceType\":\"HotFixes\",\"maintenanceState\":\"Canceled\",\"maintenanceStartTime\":\"2021-09-28T04:32:09Z\",\"maintenanceEndTime\":\"2021-04-30T07:32:09Z\",\"maintenanceExecutionStartTime\":\"2021-10-06T16:12:23Z\",\"maintenanceExecutionEndTime\":\"2021-07-16T09:53:39Z\",\"maintenanceAvailableScheduleMinTime\":\"2021-06-20T08:58:19Z\",\"maintenanceAvailableScheduleMaxTime\":\"2021-02-15T17:49:17Z\",\"maintenanceTitle\":\"mv\",\"maintenanceDescription\":\"luyovwxnbkfezzx\",\"provisioningState\":\"Deleting\"},\"id\":\"wzdgirujbzbo\",\"name\":\"vzzbtdcq\",\"type\":\"pniyujviyl\"},{\"properties\":{\"maintenanceType\":\"SecurityPatches\",\"maintenanceState\":\"Canceled\",\"maintenanceStartTime\":\"2021-06-27T03:16:26Z\",\"maintenanceEndTime\":\"2021-10-02T20:28:41Z\",\"maintenanceExecutionStartTime\":\"2021-10-15T12:19:25Z\",\"maintenanceExecutionEndTime\":\"2021-08-09T21:16:26Z\",\"maintenanceAvailableScheduleMinTime\":\"2021-02-17T11:04:17Z\",\"maintenanceAvailableScheduleMaxTime\":\"2021-04-26T20:36:36Z\",\"maintenanceTitle\":\"gaojf\",\"maintenanceDescription\":\"nc\",\"provisioningState\":\"Deleting\"},\"id\":\"fhir\",\"name\":\"tymoxoftp\",\"type\":\"piwyczuhxacpqjl\"}],\"nextLink\":\"hyus\"}")
             .toObject(MaintenanceListResult.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-05T08:12:45Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-13T04:34:19Z"),
             model.value().get(0).maintenanceStartTime());
-        Assertions.assertEquals("pauutpw", model.nextLink());
+        Assertions.assertEquals("hyus", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MaintenanceListResult model = new MaintenanceListResult()
             .withValue(Arrays.asList(
-                new MaintenanceInner().withMaintenanceStartTime(OffsetDateTime.parse("2021-02-05T08:12:45Z")),
-                new MaintenanceInner().withMaintenanceStartTime(OffsetDateTime.parse("2021-07-15T10:24:31Z")),
-                new MaintenanceInner().withMaintenanceStartTime(OffsetDateTime.parse("2021-02-17T11:04:17Z")),
-                new MaintenanceInner().withMaintenanceStartTime(OffsetDateTime.parse("2021-04-02T21:01:47Z"))))
-            .withNextLink("pauutpw");
+                new MaintenanceInner().withMaintenanceStartTime(OffsetDateTime.parse("2021-08-13T04:34:19Z")),
+                new MaintenanceInner().withMaintenanceStartTime(OffsetDateTime.parse("2021-09-28T04:32:09Z")),
+                new MaintenanceInner().withMaintenanceStartTime(OffsetDateTime.parse("2021-06-27T03:16:26Z"))))
+            .withNextLink("hyus");
         model = BinaryData.fromObject(model).toObject(MaintenanceListResult.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-05T08:12:45Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-13T04:34:19Z"),
             model.value().get(0).maintenanceStartTime());
-        Assertions.assertEquals("pauutpw", model.nextLink());
+        Assertions.assertEquals("hyus", model.nextLink());
     }
 }

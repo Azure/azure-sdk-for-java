@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 public final class CheckNameAvailabilitiesExecuteWithResponseMockTests {
     @Test
     public void testExecuteWithResponse() throws Exception {
-        String responseStr = "{\"message\":\"vcwwyyurmochppr\",\"nameAvailable\":true,\"reason\":\"mo\"}";
+        String responseStr = "{\"message\":\"knsmjblmljhlnymz\",\"nameAvailable\":true,\"reason\":\"ryuzcbmqqv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +31,12 @@ public final class CheckNameAvailabilitiesExecuteWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         NameAvailability response = manager.checkNameAvailabilities()
-            .executeWithResponse("mcgsbostzelnd",
-                new NameAvailabilityRequest().withName("atutmzlbiojlvfhr").withType("pn"),
+            .executeWithResponse("s", new NameAvailabilityRequest().withName("sphaivmxyasflvg").withType("zwywako"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("vcwwyyurmochppr", response.message());
+        Assertions.assertEquals("knsmjblmljhlnymz", response.message());
         Assertions.assertEquals(true, response.nameAvailable());
-        Assertions.assertEquals("mo", response.reason());
+        Assertions.assertEquals("ryuzcbmqqv", response.reason());
     }
 }

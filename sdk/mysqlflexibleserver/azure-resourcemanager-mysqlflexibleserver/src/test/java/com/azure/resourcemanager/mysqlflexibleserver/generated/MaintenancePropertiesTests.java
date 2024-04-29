@@ -13,16 +13,16 @@ public final class MaintenancePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MaintenanceProperties model = BinaryData.fromString(
-            "{\"maintenanceType\":\"SecurityPatches\",\"maintenanceState\":\"Canceled\",\"maintenanceStartTime\":\"2021-11-06T08:53:41Z\",\"maintenanceEndTime\":\"2021-05-14T13:20:36Z\",\"maintenanceExecutionStartTime\":\"2021-03-11T05:53:58Z\",\"maintenanceExecutionEndTime\":\"2021-03-12T17:23:33Z\",\"maintenanceAvailableScheduleMinTime\":\"2021-05-21T09:29:43Z\",\"maintenanceAvailableScheduleMaxTime\":\"2021-08-02T17:46:18Z\",\"maintenanceTitle\":\"shrnsvbuswdvz\",\"maintenanceDescription\":\"bycnunvjsrtkf\",\"provisioningState\":\"Failed\"}")
+            "{\"maintenanceType\":\"RoutineMaintenance\",\"maintenanceState\":\"Scheduled\",\"maintenanceStartTime\":\"2021-01-10T00:28:10Z\",\"maintenanceEndTime\":\"2021-06-21T18:07:23Z\",\"maintenanceExecutionStartTime\":\"2021-10-07T20:30:06Z\",\"maintenanceExecutionEndTime\":\"2021-03-30T21:22:17Z\",\"maintenanceAvailableScheduleMinTime\":\"2021-10-28T02:40:53Z\",\"maintenanceAvailableScheduleMaxTime\":\"2021-11-20T05:13:49Z\",\"maintenanceTitle\":\"vcxgfrpdsofbshr\",\"maintenanceDescription\":\"vbuswd\",\"provisioningState\":\"Creating\"}")
             .toObject(MaintenanceProperties.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-06T08:53:41Z"), model.maintenanceStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-10T00:28:10Z"), model.maintenanceStartTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MaintenanceProperties model
-            = new MaintenanceProperties().withMaintenanceStartTime(OffsetDateTime.parse("2021-11-06T08:53:41Z"));
+            = new MaintenanceProperties().withMaintenanceStartTime(OffsetDateTime.parse("2021-01-10T00:28:10Z"));
         model = BinaryData.fromObject(model).toObject(MaintenanceProperties.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-06T08:53:41Z"), model.maintenanceStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-10T00:28:10Z"), model.maintenanceStartTime());
     }
 }
