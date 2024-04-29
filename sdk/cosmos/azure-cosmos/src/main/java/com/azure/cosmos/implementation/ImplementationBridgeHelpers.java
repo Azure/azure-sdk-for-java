@@ -819,7 +819,8 @@ public class ImplementationBridgeHelpers {
                 String trackingId,
                 String connectionMode,
                 String userAgent,
-                Integer sequenceNumber);
+                Integer sequenceNumber,
+                String queryStatement);
 
             CosmosDiagnosticsSystemUsageSnapshot createSystemUsageSnapshot(
                 String cpu,
@@ -872,6 +873,9 @@ public class ImplementationBridgeHelpers {
             Integer getSequenceNumber(CosmosDiagnosticsContext ctx);
 
             boolean isEmptyCompletion(CosmosDiagnosticsContext ctx);
+
+            String getQueryStatement(CosmosDiagnosticsContext ctx);
+
         }
     }
 
@@ -1459,6 +1463,7 @@ public class ImplementationBridgeHelpers {
             void setUseLegacyTracing(CosmosClientTelemetryConfig config, boolean useLegacyTracing);
             void setTracer(CosmosClientTelemetryConfig config, Tracer tracer);
             double getSamplingRate(CosmosClientTelemetryConfig config);
+            boolean isQueryTracingEnabled(CosmosClientTelemetryConfig config);
         }
     }
 

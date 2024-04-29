@@ -759,6 +759,7 @@ public final class DiagnosticsProvider {
             trackingId,
             clientAccessor.getConnectionMode(client),
             clientAccessor.getUserAgent(client),
+            null, 
             null);
 
         if (requestOptions != null) {
@@ -1162,6 +1163,10 @@ public final class DiagnosticsProvider {
         private boolean isTransportLevelTracingEnabled() {
             return clientTelemetryConfigAccessor.isTransportLevelTracingEnabled(this.config);
         }
+        
+        private boolean isQueryTracingEnabled() {
+            return clientTelemetryConfigAccessor.isQueryTracingEnabled(this.config);
+        }
 
         @Override
         public Context startSpan(String spanName, CosmosDiagnosticsContext cosmosCtx, Context context) {
@@ -1201,13 +1206,17 @@ public final class DiagnosticsProvider {
                     !cosmosCtx.getOperationId().equals(ctxAccessor.getSpanName(cosmosCtx))) {
                     spanOptions.setAttribute("db.cosmosdb.operation_id", cosmosCtx.getOperationId());
                 }
+                
+                if(isQueryTracingEnabled() && null != cosmosCtx.getQueryStatement() ) {
+                    spanOptions.setAttribute("db.statement", cosmosCtx.getQueryStatement());
+                }
 
                 String containerName = cosmosCtx.getContainerName();
                 if (containerName != null) {
                     spanOptions.setAttribute("db.cosmosdb.container", containerName);
                 }
             }
-
+            
             return spanOptions;
         }
 

@@ -74,6 +74,8 @@ public final class CosmosClientTelemetryConfig {
     private TracingOptions tracingOptions;
 
     private double samplingRate;
+    
+    private boolean isQueryTracingEnabled = false;
 
     /**
      * Instantiates a new Cosmos client telemetry configuration.
@@ -394,6 +396,11 @@ public final class CosmosClientTelemetryConfig {
         this.isTransportLevelTracingEnabled = true;
         return this;
     }
+    
+    public CosmosClientTelemetryConfig enableQueryTracing() {
+        this.isQueryTracingEnabled = true;
+        return this;
+    }
 
     /**
      * Can be used to enable sampling for capturing all diagnostics to reduce/disable any client resource
@@ -660,6 +667,12 @@ public final class CosmosClientTelemetryConfig {
                 public double getSamplingRate(CosmosClientTelemetryConfig config) {
                     return config.samplingRate;
                 }
+
+                @Override
+                public boolean isQueryTracingEnabled(CosmosClientTelemetryConfig config) {
+                    return config.isQueryTracingEnabled;
+                }
+       
             });
     }
 

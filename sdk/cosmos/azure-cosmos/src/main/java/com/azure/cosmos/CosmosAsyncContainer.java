@@ -953,10 +953,13 @@ public class CosmosAsyncContainer {
         CosmosAsyncClient client = this.getDatabase().getClient();
         CosmosQueryRequestOptions options =
             cosmosQueryRequestOptions != null ? cosmosQueryRequestOptions : new CosmosQueryRequestOptions();
-
+        
         Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction = (pagedFluxOptions -> {
             String spanName = this.queryItemsSpanName;
-
+            
+            if(sqlQuerySpec.getParameters() != null && sqlQuerySpec.getParameters().size() > 0) {
+                pagedFluxOptions.setQueryText(sqlQuerySpec.getQueryText());
+            }
             QueryFeedOperationState state = new QueryFeedOperationState(
                 client,
                 spanName,
@@ -969,7 +972,7 @@ public class CosmosAsyncContainer {
                 pagedFluxOptions
             );
 
-            pagedFluxOptions.setFeedOperationState(state);
+            pagedFluxOptions.setFeedOperationState(state);  // should this go before?
 
             return getDatabase()
                         .getDocClientWrapper()
