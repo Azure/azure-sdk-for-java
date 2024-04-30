@@ -27,6 +27,7 @@ import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.logging.LoggingEventBuilder;
@@ -239,8 +240,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
             final HttpRequest request = loggingOptions.getHttpRequest();
 
-            LoggingEventBuilder logBuilder =
-                getLogBuilder(logLevel, logger).addKeyValue(LoggingKeys.HTTP_METHOD_KEY, request.getHttpMethod())
+            LoggingEventBuilder logBuilder
+                = getLogBuilder(logLevel, logger).addKeyValue(LoggingKeys.HTTP_METHOD_KEY, request.getHttpMethod())
                     .addKeyValue(LoggingKeys.URL_KEY, urlSanitizer.getRedactedUrl(request.getUrl()));
 
             Integer retryCount = loggingOptions.getTryCount();
@@ -278,7 +279,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     }
 
     private void logBody(HttpRequest request, int contentLength, LoggingEventBuilder logBuilder, ClientLogger logger,
-                         String contentType) {
+        String contentType) {
         BinaryData data = request.getBodyAsBinaryData();
         BinaryDataContent content = BinaryDataHelper.getContent(data);
 
@@ -317,7 +318,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         @Override
         public Mono<HttpResponse> logResponse(ClientLogger logger, HttpResponseLoggingContext loggingOptions) {
             final LogLevel logLevel = getLogLevel(loggingOptions);
-            final HttpResponse response = loggingOptions.getHttpResponse();
+            HttpResponse response = loggingOptions.getHttpResponse();
 
             if (!logger.canLogAtLevel(logLevel) || httpLogDetailLevel == HttpLogDetailLevel.NONE) {
                 return Mono.just(response);
@@ -328,6 +329,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             addBasicResponseProperties(logger, loggingOptions, response, logBuilder);
 
             Long contentLength = getAndLogContentLength(response.getHeaders(), logBuilder, logger);
+            Mono<HttpResponse> responseMono = Mono.just(response);
 
             if (httpLogDetailLevel.shouldLogBody()) {
                 String contentTypeHeader = response.getHeaderValue(HttpHeaderName.CONTENT_TYPE);
@@ -335,25 +337,18 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 if (shouldBodyBeLogged(contentTypeHeader, contentLength)) {
                     // shouldBodyBeLogged ensures contentLength is not null and within limits.
                     int contentLengthInt = contentLength.intValue();
+                    final HttpResponse bufferedResponse = response.buffer();
 
-                    AccessibleByteArrayOutputStream stream = new AccessibleByteArrayOutputStream(contentLengthInt);
+                    responseMono = FluxUtil.collectBytesInByteBufferStream(bufferedResponse.getBody()).map(bytes -> {
+                        logBuilder.addKeyValue(LoggingKeys.BODY_KEY, prettyPrintIfNeeded(logger, prettyPrintBody,
+                            contentTypeHeader, new String(bytes, StandardCharsets.UTF_8)));
 
-                    response.getBody().subscribe(byteBuffer -> {
-                        try {
-                            ImplUtils.writeByteBufferToStream(byteBuffer.duplicate(), stream);
-
-                            logBuilder.addKeyValue(LoggingKeys.BODY_KEY, prettyPrintIfNeeded(logger, prettyPrintBody,
-                                contentTypeHeader, stream.toString(StandardCharsets.UTF_8)));
-                        } catch (IOException ex) {
-                            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
-                        }
+                        return bufferedResponse;
                     });
                 }
             }
 
-            logBuilder.log(RESPONSE_LOG_MESSAGE);
-
-            return Mono.just(response);
+            return responseMono.doOnNext(ignored -> logBuilder.log(RESPONSE_LOG_MESSAGE));
         }
 
         private void logHeaders(ClientLogger logger, HttpResponse response, LoggingEventBuilder logBuilder) {
@@ -364,7 +359,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         }
 
         private void addBasicResponseProperties(ClientLogger logger, HttpResponseLoggingContext loggingOptions,
-                                                HttpResponse response, LoggingEventBuilder logBuilder) {
+            HttpResponse response, LoggingEventBuilder logBuilder) {
             logBuilder.addKeyValue(LoggingKeys.STATUS_CODE_KEY, response.getStatusCode())
                 .addKeyValue(LoggingKeys.URL_KEY, urlSanitizer.getRedactedUrl(response.getRequest().getUrl()))
                 .addKeyValue(LoggingKeys.DURATION_MS_KEY, loggingOptions.getResponseDuration().toMillis());
@@ -458,7 +453,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @return The body pretty printed if it is JSON, otherwise the unmodified body.
      */
     private static String prettyPrintIfNeeded(ClientLogger logger, boolean prettyPrintBody, String contentType,
-                                              String body) {
+        String body) {
         String result = body;
 
         if (prettyPrintBody
