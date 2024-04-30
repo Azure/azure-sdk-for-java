@@ -78,7 +78,10 @@ def generate(
         )
     logging.info(command)
     if os.system(command) != 0:
-        error_message = '[GENERATE][Error] Autorest fail'
+        error_message = ('[GENERATE][Error] Code generation failed.\n'
+                         'Please first check if the failure happens only to Java automation, or for all SDK automations.\n'
+                         'If it happens for all SDK automations, please double check your Swagger, and check whether there is errors in ModelValidation and LintDiff.\n'
+                         'If it happens to Java alone, you can open an issue to https://github.com/Azure/autorest.java/issues. Please include the link of this Pull Request in the issue.')
         logging.error(error_message)
         print(error_message, file=sys.stderr)
         return False
@@ -96,7 +99,8 @@ def compile_package(sdk_root, module) -> bool:
     if os.system(
             'mvn --no-transfer-progress clean verify -f {0}/pom.xml -Dmaven.javadoc.skip -Dgpg.skip -DskipTestCompile -Djacoco.skip -Drevapi.skip -pl {1}:{2} -am'.format(
                 sdk_root, GROUP_ID, module)) != 0:
-        error_message = '[COMPILE] Maven build fail'
+        error_message = ('[COMPILE] Maven build fail.\n'
+                         'You can inquire in "Language - Java" Teams channel. Please include the link of this Pull Request in the query.')
         logging.error(error_message)
         print(error_message, file=sys.stderr)
         return False
@@ -351,7 +355,8 @@ def generate_typespec_project(
             if sdk_folder:
                 succeeded = True
     except subprocess.CalledProcessError as error:
-        error_message = f'[GENERATE][Error] tsp-client init fail: {error}'
+        error_message = (f'[GENERATE][Error] Code generation failed. tsp-client init fails: {error}\n'
+                         'If TypeSpec Validation passes, you can open an issue to https://github.com/Azure/autorest.java/issues. Please include the link of this Pull Request in the issue.')
         logging.error(error_message)
         print(error_message, file=sys.stderr)
 

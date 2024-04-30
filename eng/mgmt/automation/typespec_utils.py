@@ -35,7 +35,7 @@ def validate_tspconfig(tsp_dir: str) -> bool:
     if not re.fullmatch(service_dir_pattern, service_dir):
         valid = False
         log_and_print_error(
-            '[VALIDATION][tspconfig.yaml] '
+            '[VALIDATE][tspconfig.yaml] '
             'parameters.service-dir.default SHOULD be "sdk/<service>". '
             'See https://azure.github.io/azure-sdk/policies_repostructure.html. '
             f'Current value: {service_dir}')
@@ -44,7 +44,7 @@ def validate_tspconfig(tsp_dir: str) -> bool:
     if not re.fullmatch(package_dir_pattern, package_dir):
         valid = False
         log_and_print_error(
-            '[VALIDATION][tspconfig.yaml] '
+            '[VALIDATE][tspconfig.yaml] '
             'options.@azure-tools/typespec-java.package-dir SHOULD start with "azure-". '
             'E.g. "azure-ai-openai". '
             f'Current value: {package_dir}')
@@ -53,7 +53,7 @@ def validate_tspconfig(tsp_dir: str) -> bool:
     if not re.fullmatch(namespace_pattern, namespace):
         valid = False
         log_and_print_error(
-            '[VALIDATION][tspconfig.yaml] '
+            '[VALIDATE][tspconfig.yaml] '
             'options.@azure-tools/typespec-java.namespace SHOULD start with "com.azure.". '
             'E.g. "com.azure.ai.openai". '
             f'Current value: {namespace}')
@@ -64,7 +64,7 @@ def validate_tspconfig(tsp_dir: str) -> bool:
         if expected_package_dir != package_dir:
             valid = False
             log_and_print_error(
-                '[VALIDATION][tspconfig.yaml] package_dir does not match namespace. '
+                '[VALIDATE][tspconfig.yaml] package_dir does not match namespace. '
                 f'Expected package_dir from namespace "{namespace}" is: {expected_package_dir}')
 
     return valid
