@@ -6,6 +6,14 @@ import logging
 
 
 def validate_tspconfig(tsp_dir: str) -> bool:
+    """
+    Validate that the "tspconfig.yaml" file is correctly configured for Java Azure lib.
+    Side effect, the function would log/print the error messages, if validation fails.
+
+    :param tsp_dir: the path to the "tspconfig.yaml" file, or the directory contains the file.
+    :return: whether this "tspconfig.yaml" file is valid.
+    """
+
     valid = True
 
     if not tsp_dir.endswith('tspconfig.yaml'):
