@@ -10,7 +10,6 @@ import com.azure.core.util.logging.ClientLogger;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -27,8 +26,7 @@ import java.util.function.Function;
 /**
  * An {@link ExecutorService} that is shared by multiple consumers.
  * <p>
- * A default shared executor service is created if one isn't set using {@link #setExecutorService(ExecutorService)}. The
- * shared executor service is created using the following configuration settings:
+ * The shared executor service is created using the following configuration settings:
  * <ul>
  *     <li>{@code azure.sdk.sharedpool.size} - The size of the shared executor service. If not set, it defaults to 10
  *     times the number of available processors.</li>
@@ -38,18 +36,6 @@ import java.util.function.Function;
  *     virtual threads. If not set, it defaults to true. Ignored if virtual threads are not available in the
  *     runtime.</li>
  * </ul>
- *
- * If a custom executor service is set using {@link #setExecutorService(ExecutorService)}, it updates all references to
- * the shared executor service. Meaning, if another area in code already had a reference to the shared instance, it will
- * now use the passed executor service to execute tasks.
- * <p>
- * Calls to {@link #shutdown()} and {@link #shutdownNow()} are not supported. If the default shared executor service is
- * being used, it is bound to the lifecycle of the application and will be shutdown when the application is shutdown.
- * If a custom executor service is set using {@link #setExecutorService(ExecutorService)}, it is the responsibility of
- * the caller to manage the lifecycle of the executor service.
- * <p>
- * If a custom executor service is set using {@link #setExecutorService(ExecutorService)}, and it is shutdown or
- * terminated, the shared executor service will be reset to the default shared executor service.
  */
 @SuppressWarnings({ "resource", "NullableProblems" })
 public final class SharedExecutorService implements ExecutorService {
@@ -151,43 +137,43 @@ public final class SharedExecutorService implements ExecutorService {
         return INSTANCE;
     }
 
-    /**
-     * Sets the backing executor service for the shared instance.
-     * <p>
-     * This updates the executor service for all users of the {@link #getInstance() shared instance}. Meaning, if
-     * another area in code already had a reference to the shared instance, it will now use the passed executor service
-     * to execute tasks.
-     * <p>
-     * If the executor service is already set, this will replace it with the new executor service. If the replaced
-     * executor service was created by this class, it will be shut down.
-     * <p>
-     * If the passed executor service is null, this will throw a {@link NullPointerException}. If the passed executor
-     *
-     * @param executorService The executor service to set as the shared instance.
-     * @throws NullPointerException If the passed executor service is null.
-     * @throws IllegalStateException If the passed executor service is shutdown or terminated.
-     */
-    public static void setExecutorService(ExecutorService executorService) {
-        // We allow for the global executor service to be set from an external source to allow for consumers of the SDK
-        // to use their own thread management to run Azure SDK tasks. This allows for the SDKs to perform deeper
-        // integration into an environment, such as the consumer environment knowing details about capacity, allowing
-        // the custom executor service to better manage resources than our more general 10x the number of processors.
-        // Another scenario could be an executor service that creates threads with specific permissions, such as
-        // allowing Azure Core or Jackson to perform deep reflection on classes that are not normally allowed.
-        Objects.requireNonNull(executorService, "'executorService' cannot be null.");
-        if (executorService.isShutdown() || executorService.isTerminated()) {
-            throw new IllegalStateException("The passed executor service is shutdown or terminated.");
-        }
-
-        ExecutorWithMetadata existing
-            = INSTANCE.wrappedExecutorService.getAndSet(new ExecutorWithMetadata(executorService, null));
-
-        if (existing != null) {
-            // This is calling ExecutorWithMetadata.shutdown() which will shutdown the executor service if it was
-            // created by this class. Otherwise, it's a no-op.
-            existing.shutdown();
-        }
-    }
+    //    /**
+    //     * Sets the backing executor service for the shared instance.
+    //     * <p>
+    //     * This updates the executor service for all users of the {@link #getInstance() shared instance}. Meaning, if
+    //     * another area in code already had a reference to the shared instance, it will now use the passed executor service
+    //     * to execute tasks.
+    //     * <p>
+    //     * If the executor service is already set, this will replace it with the new executor service. If the replaced
+    //     * executor service was created by this class, it will be shut down.
+    //     * <p>
+    //     * If the passed executor service is null, this will throw a {@link NullPointerException}. If the passed executor
+    //     *
+    //     * @param executorService The executor service to set as the shared instance.
+    //     * @throws NullPointerException If the passed executor service is null.
+    //     * @throws IllegalStateException If the passed executor service is shutdown or terminated.
+    //     */
+    //    public static void setExecutorService(ExecutorService executorService) {
+    //        // We allow for the global executor service to be set from an external source to allow for consumers of the SDK
+    //        // to use their own thread management to run Azure SDK tasks. This allows for the SDKs to perform deeper
+    //        // integration into an environment, such as the consumer environment knowing details about capacity, allowing
+    //        // the custom executor service to better manage resources than our more general 10x the number of processors.
+    //        // Another scenario could be an executor service that creates threads with specific permissions, such as
+    //        // allowing Azure Core or Jackson to perform deep reflection on classes that are not normally allowed.
+    //        Objects.requireNonNull(executorService, "'executorService' cannot be null.");
+    //        if (executorService.isShutdown() || executorService.isTerminated()) {
+    //            throw new IllegalStateException("The passed executor service is shutdown or terminated.");
+    //        }
+    //
+    //        ExecutorWithMetadata existing
+    //            = INSTANCE.wrappedExecutorService.getAndSet(new ExecutorWithMetadata(executorService, null));
+    //
+    //        if (existing != null) {
+    //            // This is calling ExecutorWithMetadata.shutdown() which will shutdown the executor service if it was
+    //            // created by this class. Otherwise, it's a no-op.
+    //            existing.shutdown();
+    //        }
+    //    }
 
     /**
      * Shutdown isn't supported for this executor service as it is shared by multiple consumers.
