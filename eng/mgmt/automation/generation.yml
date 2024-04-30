@@ -64,7 +64,7 @@ steps:
     PRBranchName: fluent-lite-generation-$(Build.BuildId)
     ${{ if variables.fromTypeSpec }}:
       CommitMsg: '[Automation] Generate Fluent Lite from TypeSpec $(README)'
-      PRTitle: '[Automation] Generate Fluent Lite from $(README)'
+      PRTitle: '[Automation] Generate Fluent Lite from TypeSpec $(README)'
     ${{ else }}:
       CommitMsg: '[Automation] Generate Fluent Lite from $(README)#$(TAG)'
       PRTitle: '[Automation] Generate Fluent Lite from $(README)#$(TAG)'
