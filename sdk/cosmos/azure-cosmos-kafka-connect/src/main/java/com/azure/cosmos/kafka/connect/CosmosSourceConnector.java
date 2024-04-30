@@ -6,21 +6,22 @@ package com.azure.cosmos.kafka.connect;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.apachecommons.lang.RandomUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosMetadataStorageType;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
-import com.azure.cosmos.kafka.connect.implementation.source.IMetadataReader;
-import com.azure.cosmos.kafka.connect.implementation.source.MetadataKafkaStorageManager;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceTask;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceTaskConfig;
 import com.azure.cosmos.kafka.connect.implementation.source.FeedRangeContinuationTopicOffset;
 import com.azure.cosmos.kafka.connect.implementation.source.FeedRangeTaskUnit;
 import com.azure.cosmos.kafka.connect.implementation.source.FeedRangesMetadataTopicOffset;
+import com.azure.cosmos.kafka.connect.implementation.source.IMetadataReader;
 import com.azure.cosmos.kafka.connect.implementation.source.KafkaCosmosChangeFeedState;
 import com.azure.cosmos.kafka.connect.implementation.source.MetadataCosmosStorageManager;
+import com.azure.cosmos.kafka.connect.implementation.source.MetadataKafkaStorageManager;
 import com.azure.cosmos.kafka.connect.implementation.source.MetadataMonitorThread;
 import com.azure.cosmos.kafka.connect.implementation.source.MetadataTaskUnit;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -53,24 +54,29 @@ import static com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig.va
 /***
  * The CosmosDb source connector.
  */
-public class CosmosSourceConnector extends SourceConnector implements AutoCloseable {
+public final class CosmosSourceConnector extends SourceConnector implements AutoCloseable {
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosSourceConnector.class);
+    private static final String CONNECTOR_NAME = "name";
+
     private CosmosSourceConfig config;
     private CosmosAsyncClient cosmosClient;
     private MetadataMonitorThread monitorThread;
     private MetadataKafkaStorageManager kafkaOffsetStorageReader;
     private IMetadataReader metadataReader;
+    private String connectorName;
 
     @Override
     public void start(Map<String, String> props) {
         LOGGER.info("Starting the kafka cosmos source connector");
         this.config = new CosmosSourceConfig(props);
-        this.cosmosClient = CosmosClientStore.getCosmosClient(this.config.getAccountConfig());
+        this.connectorName = props.containsKey(CONNECTOR_NAME) ? props.get(CONNECTOR_NAME).toString() : "EMPTY";
+        this.cosmosClient = CosmosClientStore.getCosmosClient(this.config.getAccountConfig(), connectorName);
 
         // IMPORTANT: sequence matters
         this.kafkaOffsetStorageReader = new MetadataKafkaStorageManager(this.context().offsetStorageReader());
         this.metadataReader = this.getMetadataReader();
         this.monitorThread = new MetadataMonitorThread(
+            connectorName,
             this.config.getContainersConfig(),
             this.config.getMetadataConfig(),
             this.context(),
@@ -117,7 +123,6 @@ public class CosmosSourceConnector extends SourceConnector implements AutoClosea
                 throw new IllegalArgumentException("StorageType " + taskUnits.getLeft().getStorageType() + " is not supported");
         }
 
-
         return taskConfigs;
     }
 
@@ -155,7 +160,6 @@ public class CosmosSourceConnector extends SourceConnector implements AutoClosea
                         .getDatabase(this.config.getContainersConfig().getDatabaseName())
                         .getContainer(this.config.getMetadataConfig().getStorageName());
                 // validate the metadata container config
-                // TODO (xinlian-publicPreview): should create the metadata container during runtime? ]
                 metadataContainer.read()
                     .doOnNext(containerResponse -> {
                         PartitionKeyDefinition partitionKeyDefinition = containerResponse.getProperties().getPartitionKeyDefinition();
@@ -201,6 +205,11 @@ public class CosmosSourceConnector extends SourceConnector implements AutoClosea
             Map<String, String> taskConfigs = this.config.originalsStrings();
             taskConfigs.putAll(
                 CosmosSourceTaskConfig.getFeedRangeTaskUnitsConfigMap(feedRangeTaskUnits));
+            taskConfigs.put(CosmosSourceTaskConfig.SOURCE_TASK_ID,
+                String.format("%s-%s-%d",
+                    "source",
+                    this.connectorName,
+                    RandomUtils.nextInt(1, 9999999)));
             feedRangeTaskConfigs.add(taskConfigs);
         });
 
@@ -241,6 +250,7 @@ public class CosmosSourceConnector extends SourceConnector implements AutoClosea
 
         MetadataTaskUnit metadataTaskUnit =
             new MetadataTaskUnit(
+                this.connectorName,
                 this.config.getContainersConfig().getDatabaseName(),
                 allContainers.stream().map(CosmosContainerProperties::getResourceId).collect(Collectors.toList()),
                 updatedContainerToFeedRangesMap,
@@ -266,7 +276,7 @@ public class CosmosSourceConnector extends SourceConnector implements AutoClosea
 
         FeedRangesMetadataTopicOffset feedRangesMetadataTopicOffset =
             this.metadataReader
-                .getFeedRangesMetadataOffset(databaseName, containerProperties.getResourceId())
+                .getFeedRangesMetadataOffset(databaseName, containerProperties.getResourceId(), this.connectorName)
                 .block().v;
 
         Map<FeedRange, KafkaCosmosChangeFeedState> effectiveFeedRangesContinuationMap = new LinkedHashMap<>();
@@ -319,7 +329,7 @@ public class CosmosSourceConnector extends SourceConnector implements AutoClosea
         }
 
         // we can not find the continuation offset based on the exact feed range matching
-        // it means the previous Partition key range could have gone due to container split/merge
+        // it means the previous Partition key range could have gone due to container split/merge or there is no continuation state yet
         // need to find out overlapped feedRanges from offset
         return  Flux.fromIterable(rangesFromMetadataTopicOffset)
                     .flatMap(rangeFromOffset -> {
@@ -338,23 +348,43 @@ public class CosmosSourceConnector extends SourceConnector implements AutoClosea
                     .collectList()
                     .flatMap(overlappedFeedRangesFromOffset -> {
                         if (overlappedFeedRangesFromOffset.size() == 1) {
-                            // split - use the current containerFeedRange, but construct the continuationState based on the feedRange from offset
-                            effectiveContinuationMap.put(
-                                containerFeedRange,
-                                this.getContinuationStateFromOffset(
-                                    this.kafkaOffsetStorageReader.getFeedRangeContinuationOffset(databaseName, containerRid, overlappedFeedRangesFromOffset.get(0)),
-                                    containerFeedRange));
+                            // a. split - use the current containerFeedRange, but construct the continuationState based on the feedRange from offset
+                            // b. there is no existing feed range continuationToken state yet
+                            FeedRangeContinuationTopicOffset continuationTopicOffset = this.kafkaOffsetStorageReader.getFeedRangeContinuationOffset(
+                                databaseName,
+                                containerRid,
+                                overlappedFeedRangesFromOffset.get(0)
+                            );
+
+                            if (continuationTopicOffset == null) {
+                                effectiveContinuationMap.put(overlappedFeedRangesFromOffset.get(0), null);
+                            } else {
+                                effectiveContinuationMap.put(
+                                    containerFeedRange,
+                                    this.getContinuationStateFromOffset(continuationTopicOffset, containerFeedRange));
+                            }
+
                             return Mono.just(effectiveContinuationMap);
                         }
 
                         if (overlappedFeedRangesFromOffset.size() > 1) {
                             // merge - use the feed ranges from the offset
                             for (FeedRange overlappedRangeFromOffset : overlappedFeedRangesFromOffset) {
-                                effectiveContinuationMap.put(
-                                    overlappedRangeFromOffset,
-                                    this.getContinuationStateFromOffset(
-                                        this.kafkaOffsetStorageReader.getFeedRangeContinuationOffset(databaseName, containerRid, overlappedRangeFromOffset),
-                                        overlappedRangeFromOffset));
+                                FeedRangeContinuationTopicOffset continuationTopicOffset =
+                                    this.kafkaOffsetStorageReader
+                                        .getFeedRangeContinuationOffset(
+                                            databaseName,
+                                            containerRid,
+                                            overlappedRangeFromOffset);
+                                if (continuationTopicOffset == null) {
+                                    effectiveContinuationMap.put(overlappedRangeFromOffset, null);
+                                } else {
+                                    effectiveContinuationMap.put(
+                                        overlappedRangeFromOffset,
+                                        this.getContinuationStateFromOffset(
+                                            this.kafkaOffsetStorageReader.getFeedRangeContinuationOffset(databaseName, containerRid, overlappedRangeFromOffset),
+                                            overlappedRangeFromOffset));
+                                }
                             }
 
                             return Mono.just(effectiveContinuationMap);

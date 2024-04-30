@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** BackupRequestBase is the base for all backup request. */
+/**
+ * BackupRequestBase is the base for all backup request.
+ */
 @Fluent
 public class BackupRequestBase {
     /*
@@ -17,13 +19,15 @@ public class BackupRequestBase {
     @JsonProperty(value = "backupSettings", required = true)
     private BackupSettings backupSettings;
 
-    /** Creates an instance of BackupRequestBase class. */
+    /**
+     * Creates an instance of BackupRequestBase class.
+     */
     public BackupRequestBase() {
     }
 
     /**
      * Get the backupSettings property: Backup Settings.
-     *
+     * 
      * @return the backupSettings value.
      */
     public BackupSettings backupSettings() {
@@ -32,7 +36,7 @@ public class BackupRequestBase {
 
     /**
      * Set the backupSettings property: Backup Settings.
-     *
+     * 
      * @param backupSettings the backupSettings value to set.
      * @return the BackupRequestBase object itself.
      */
@@ -43,15 +47,14 @@ public class BackupRequestBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (backupSettings() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property backupSettings in model BackupRequestBase"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property backupSettings in model BackupRequestBase"));
         } else {
             backupSettings().validate();
         }

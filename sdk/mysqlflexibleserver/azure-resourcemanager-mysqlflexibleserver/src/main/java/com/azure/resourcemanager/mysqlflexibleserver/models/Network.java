@@ -7,12 +7,13 @@ package com.azure.resourcemanager.mysqlflexibleserver.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Network related properties of a server. */
+/**
+ * Network related properties of a server.
+ */
 @Fluent
 public final class Network {
     /*
-     * Whether or not public network access is allowed for this server. Value is 'Disabled' when server has VNet
-     * integration.
+     * Whether or not public network access is allowed for this server. Value is 'Disabled' when server has VNet integration.
      */
     @JsonProperty(value = "publicNetworkAccess")
     private EnableStatusEnum publicNetworkAccess;
@@ -29,14 +30,16 @@ public final class Network {
     @JsonProperty(value = "privateDnsZoneResourceId")
     private String privateDnsZoneResourceId;
 
-    /** Creates an instance of Network class. */
+    /**
+     * Creates an instance of Network class.
+     */
     public Network() {
     }
 
     /**
      * Get the publicNetworkAccess property: Whether or not public network access is allowed for this server. Value is
      * 'Disabled' when server has VNet integration.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public EnableStatusEnum publicNetworkAccess() {
@@ -46,7 +49,7 @@ public final class Network {
     /**
      * Set the publicNetworkAccess property: Whether or not public network access is allowed for this server. Value is
      * 'Disabled' when server has VNet integration.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the Network object itself.
      */
@@ -57,7 +60,7 @@ public final class Network {
 
     /**
      * Get the delegatedSubnetResourceId property: Delegated subnet resource id used to setup vnet for a server.
-     *
+     * 
      * @return the delegatedSubnetResourceId value.
      */
     public String delegatedSubnetResourceId() {
@@ -66,7 +69,7 @@ public final class Network {
 
     /**
      * Set the delegatedSubnetResourceId property: Delegated subnet resource id used to setup vnet for a server.
-     *
+     * 
      * @param delegatedSubnetResourceId the delegatedSubnetResourceId value to set.
      * @return the Network object itself.
      */
@@ -77,7 +80,7 @@ public final class Network {
 
     /**
      * Get the privateDnsZoneResourceId property: Private DNS zone resource id.
-     *
+     * 
      * @return the privateDnsZoneResourceId value.
      */
     public String privateDnsZoneResourceId() {
@@ -86,7 +89,7 @@ public final class Network {
 
     /**
      * Set the privateDnsZoneResourceId property: Private DNS zone resource id.
-     *
+     * 
      * @param privateDnsZoneResourceId the privateDnsZoneResourceId value to set.
      * @return the Network object itself.
      */
@@ -97,7 +100,7 @@ public final class Network {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

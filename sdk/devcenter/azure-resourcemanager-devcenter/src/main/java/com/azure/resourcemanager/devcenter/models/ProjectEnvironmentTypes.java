@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ProjectEnvironmentTypes. */
+/**
+ * Resource collection API of ProjectEnvironmentTypes.
+ */
 public interface ProjectEnvironmentTypes {
     /**
      * Lists environment types for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface ProjectEnvironmentTypes {
 
     /**
      * Lists environment types for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -34,12 +36,12 @@ public interface ProjectEnvironmentTypes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the project environment type list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ProjectEnvironmentType> list(
-        String resourceGroupName, String projectName, Integer top, Context context);
+    PagedIterable<ProjectEnvironmentType> list(String resourceGroupName, String projectName, Integer top,
+        Context context);
 
     /**
      * Gets a project environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
@@ -49,12 +51,12 @@ public interface ProjectEnvironmentTypes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a project environment type along with {@link Response}.
      */
-    Response<ProjectEnvironmentType> getWithResponse(
-        String resourceGroupName, String projectName, String environmentTypeName, Context context);
+    Response<ProjectEnvironmentType> getWithResponse(String resourceGroupName, String projectName,
+        String environmentTypeName, Context context);
 
     /**
      * Gets a project environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
@@ -67,7 +69,7 @@ public interface ProjectEnvironmentTypes {
 
     /**
      * Deletes a project environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
@@ -77,12 +79,12 @@ public interface ProjectEnvironmentTypes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String projectName, String environmentTypeName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String projectName, String environmentTypeName,
+        Context context);
 
     /**
      * Deletes a project environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
@@ -94,7 +96,7 @@ public interface ProjectEnvironmentTypes {
 
     /**
      * Gets a project environment type.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -105,7 +107,7 @@ public interface ProjectEnvironmentTypes {
 
     /**
      * Gets a project environment type.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -117,7 +119,7 @@ public interface ProjectEnvironmentTypes {
 
     /**
      * Deletes a project environment type.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -127,7 +129,7 @@ public interface ProjectEnvironmentTypes {
 
     /**
      * Deletes a project environment type.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -139,7 +141,7 @@ public interface ProjectEnvironmentTypes {
 
     /**
      * Begins definition for a new ProjectEnvironmentType resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ProjectEnvironmentType definition.
      */

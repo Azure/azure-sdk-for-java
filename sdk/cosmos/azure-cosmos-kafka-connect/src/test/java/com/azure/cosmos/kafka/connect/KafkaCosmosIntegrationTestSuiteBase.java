@@ -137,7 +137,7 @@ public class KafkaCosmosIntegrationTestSuiteBase extends KafkaCosmosTestSuiteBas
         if (exitCode == 0) {
             logger.info("Build script completed successfully");
             //validate the jar exists
-            File jarFile = findFile("src/test/connectorPlugins/connectors", "jar-with-dependencies.jar");
+            File jarFile = findFile("src/test/connectorPlugins/connectors", "azure-cosmos-kafka-connect");
 
             assertThat(jarFile).isNotNull();
             assertThat(jarFile.exists()).isTrue();
@@ -147,13 +147,13 @@ public class KafkaCosmosIntegrationTestSuiteBase extends KafkaCosmosTestSuiteBas
         }
     }
 
-    private static File findFile(String folder, String filenameFilterEndsWith) {
+    private static File findFile(String folder, String filenameFilterStartsWith) {
         File file = new File(folder);
         if (!file.exists() || !file.isDirectory()) {
             return null;
         }
         return Arrays.stream(file.listFiles())
-            .filter(f -> f.getName().endsWith(filenameFilterEndsWith))
+            .filter(f -> f.getName().startsWith(filenameFilterStartsWith))
             .findFirst().orElse(null);
     }
 

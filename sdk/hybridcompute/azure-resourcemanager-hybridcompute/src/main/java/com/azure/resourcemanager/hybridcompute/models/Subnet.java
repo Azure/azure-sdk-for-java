@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hybridcompute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the subnet. */
+/**
+ * Describes the subnet.
+ */
 @Fluent
 public final class Subnet {
     /*
@@ -16,13 +18,15 @@ public final class Subnet {
     @JsonProperty(value = "addressPrefix")
     private String addressPrefix;
 
-    /** Creates an instance of Subnet class. */
+    /**
+     * Creates an instance of Subnet class.
+     */
     public Subnet() {
     }
 
     /**
      * Get the addressPrefix property: Represents address prefix.
-     *
+     * 
      * @return the addressPrefix value.
      */
     public String addressPrefix() {
@@ -31,7 +35,7 @@ public final class Subnet {
 
     /**
      * Set the addressPrefix property: Represents address prefix.
-     *
+     * 
      * @param addressPrefix the addressPrefix value to set.
      * @return the Subnet object itself.
      */
@@ -42,7 +46,7 @@ public final class Subnet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

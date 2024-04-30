@@ -6,58 +6,42 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.Client;
 import com.azure.resourcemanager.eventgrid.models.ClientCertificateValidationScheme;
 import com.azure.resourcemanager.eventgrid.models.ClientState;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ClientsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"description\":\"mttjxophgerh\",\"authenticationName\":\"vgohtw\",\"clientCertificateAuthentication\":{\"validationScheme\":\"EmailMatchesAuthenticationName\",\"allowedThumbprints\":[\"ixysf\"]},\"state\":\"Disabled\",\"attributes\":{\"wwmhkruwae\":\"datay\",\"in\":\"datarympmlq\"},\"provisioningState\":\"Deleting\"},\"id\":\"ewihapfji\",\"name\":\"knjdiqfliejhp\",\"type\":\"lbiedfsbw\"}";
+            = "{\"properties\":{\"description\":\"zqjmueza\",\"authenticationName\":\"vribqlotokht\",\"clientCertificateAuthentication\":{\"validationScheme\":\"DnsMatchesAuthenticationName\",\"allowedThumbprints\":[\"kcqwwxwjyofgwh\",\"kbtlwljssm\",\"tsnld\",\"pwolgisubxb\"]},\"state\":\"Enabled\",\"attributes\":{\"rykwlefk\":\"datagfii\",\"qvzvlu\":\"dataxqceazfpxgn\"},\"provisioningState\":\"Updating\"},\"id\":\"ios\",\"name\":\"scyvaifppuacvf\",\"type\":\"eowpsfxtjdhsoymh\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        EventGridManager manager = EventGridManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        EventGridManager manager = EventGridManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Client response = manager.clients()
-            .getWithResponse("sqwudohzilfmnli", "psimsf", "ypofqpmbhyqgs", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("jlf", "ecominxojjluxxd", "ilz", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("mttjxophgerh", response.description());
-        Assertions.assertEquals("vgohtw", response.authenticationName());
-        Assertions.assertEquals(ClientCertificateValidationScheme.EMAIL_MATCHES_AUTHENTICATION_NAME,
+        Assertions.assertEquals("zqjmueza", response.description());
+        Assertions.assertEquals("vribqlotokht", response.authenticationName());
+        Assertions.assertEquals(ClientCertificateValidationScheme.DNS_MATCHES_AUTHENTICATION_NAME,
             response.clientCertificateAuthentication().validationScheme());
-        Assertions.assertEquals("ixysf", response.clientCertificateAuthentication().allowedThumbprints().get(0));
-        Assertions.assertEquals(ClientState.DISABLED, response.state());
+        Assertions.assertEquals("kcqwwxwjyofgwh",
+            response.clientCertificateAuthentication().allowedThumbprints().get(0));
+        Assertions.assertEquals(ClientState.ENABLED, response.state());
     }
 }

@@ -6,17 +6,19 @@ package com.azure.cosmos.kafka.connect.implementation.source;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.guava25.base.Stopwatch;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
+import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlHelper;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
-import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlHelper;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.data.SchemaAndValue;
 import org.apache.kafka.connect.source.SourceRecord;
@@ -60,7 +62,7 @@ public class CosmosSourceTask extends SourceTask {
         LOGGER.info("Creating the cosmos client");
 
         // TODO[GA]: optimize the client creation, client metadata cache?
-        this.cosmosClient = CosmosClientStore.getCosmosClient(this.taskConfig.getAccountConfig());
+        this.cosmosClient = CosmosClientStore.getCosmosClient(this.taskConfig.getAccountConfig(), this.taskConfig.getTaskId());
         this.throughputControlCosmosClient = this.getThroughputControlCosmosClient();
     }
 
@@ -68,7 +70,9 @@ public class CosmosSourceTask extends SourceTask {
         if (this.taskConfig.getThroughputControlConfig().isThroughputControlEnabled()
             && this.taskConfig.getThroughputControlConfig().getThroughputControlAccountConfig() != null) {
             // throughput control is using a different database account config
-            return CosmosClientStore.getCosmosClient(this.taskConfig.getThroughputControlConfig().getThroughputControlAccountConfig());
+            return CosmosClientStore.getCosmosClient(
+                this.taskConfig.getThroughputControlConfig().getThroughputControlAccountConfig(),
+                this.taskConfig.getTaskId());
         } else {
             return this.cosmosClient;
         }
@@ -130,27 +134,54 @@ public class CosmosSourceTask extends SourceTask {
 
         // add the containers metadata record - it tracks the databaseName -> List[containerRid] mapping
         Pair<ContainersMetadataTopicPartition, ContainersMetadataTopicOffset> containersMetadata = taskUnit.getContainersMetadata();
+
+        // Convert JSON to Kafka Connect struct and JSON schema
+        SchemaAndValue containersMetadataSchemaAndValue = JsonToStruct.recordToSchemaAndValue(
+            Utils.getSimpleObjectMapper().convertValue(
+                ContainersMetadataTopicOffset.toMap(containersMetadata.getRight()),
+                ObjectNode.class));
+
         sourceRecords.add(
             new SourceRecord(
                 ContainersMetadataTopicPartition.toMap(containersMetadata.getLeft()),
                 ContainersMetadataTopicOffset.toMap(containersMetadata.getRight()),
                 taskUnit.getStorageName(),
-                SchemaAndValue.NULL.schema(),
-                SchemaAndValue.NULL.value()));
+                Schema.STRING_SCHEMA,
+                getContainersMetadataItemId(containersMetadata.getLeft().getDatabaseName(), containersMetadata.getLeft().getConnectorName()),
+                containersMetadataSchemaAndValue.schema(),
+                containersMetadataSchemaAndValue.value()));
 
         // add the container feedRanges metadata record - it tracks the containerRid -> List[FeedRange] mapping
         for (Pair<FeedRangesMetadataTopicPartition, FeedRangesMetadataTopicOffset> feedRangesMetadata : taskUnit.getFeedRangesMetadataList()) {
+            SchemaAndValue feedRangeMetadataSchemaAndValue = JsonToStruct.recordToSchemaAndValue(
+                Utils.getSimpleObjectMapper().convertValue(
+                    FeedRangesMetadataTopicOffset.toMap(feedRangesMetadata.getRight()),
+                    ObjectNode.class));
+
             sourceRecords.add(
                 new SourceRecord(
                     FeedRangesMetadataTopicPartition.toMap(feedRangesMetadata.getLeft()),
                     FeedRangesMetadataTopicOffset.toMap(feedRangesMetadata.getRight()),
                     taskUnit.getStorageName(),
-                    SchemaAndValue.NULL.schema(),
-                    SchemaAndValue.NULL.value()));
+                    Schema.STRING_SCHEMA,
+                    this.getFeedRangesMetadataItemId(
+                        feedRangesMetadata.getLeft().getDatabaseName(),
+                        feedRangesMetadata.getLeft().getContainerRid(),
+                        feedRangesMetadata.getLeft().getConnectorName()
+                    ),
+                    feedRangeMetadataSchemaAndValue.schema(),
+                    feedRangeMetadataSchemaAndValue.value()));
         }
 
         LOGGER.info("There are {} metadata records being created/updated", sourceRecords.size());
         return sourceRecords;
+    }
+
+    private String getContainersMetadataItemId(String databaseName, String connectorName) {
+        return databaseName + "_" + connectorName;
+    }
+    private String getFeedRangesMetadataItemId(String databaseName, String collectionRid, String connectorName) {
+        return databaseName + "_" + collectionRid + "_" + connectorName;
     }
 
     private Pair<List<SourceRecord>, Boolean> executeFeedRangeTask(FeedRangeTaskUnit feedRangeTaskUnit) {

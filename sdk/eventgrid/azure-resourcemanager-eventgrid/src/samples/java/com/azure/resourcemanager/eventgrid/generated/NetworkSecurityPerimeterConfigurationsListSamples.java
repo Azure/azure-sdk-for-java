@@ -11,9 +11,7 @@ import com.azure.resourcemanager.eventgrid.models.NetworkSecurityPerimeterResour
  */
 public final class NetworkSecurityPerimeterConfigurationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
-     * NetworkSecurityPerimeterConfigurations_List.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/NetworkSecurityPerimeterConfigurations_List.json
      */
     /**
      * Sample code: NetworkSecurityPerimeterConfigurations_List.
@@ -22,7 +20,8 @@ public final class NetworkSecurityPerimeterConfigurationsListSamples {
      */
     public static void
         networkSecurityPerimeterConfigurationsList(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.networkSecurityPerimeterConfigurations().list("examplerg", NetworkSecurityPerimeterResourceType.TOPICS,
-            "exampleResourceName", com.azure.core.util.Context.NONE);
+        manager.networkSecurityPerimeterConfigurations()
+            .list("examplerg", NetworkSecurityPerimeterResourceType.TOPICS, "exampleResourceName",
+                com.azure.core.util.Context.NONE);
     }
 }

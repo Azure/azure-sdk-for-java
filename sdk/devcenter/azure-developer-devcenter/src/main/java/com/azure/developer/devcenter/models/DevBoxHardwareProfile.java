@@ -18,7 +18,7 @@ import java.io.IOException;
 public final class DevBoxHardwareProfile implements JsonSerializable<DevBoxHardwareProfile> {
 
     /*
-     * The name of the SKU
+     * The name of the SKU.
      */
     @Generated
     private SkuName skuName;

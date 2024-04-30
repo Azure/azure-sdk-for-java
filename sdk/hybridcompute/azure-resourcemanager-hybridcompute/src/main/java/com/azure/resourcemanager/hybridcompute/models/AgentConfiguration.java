@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Configurable properties that the user can set locally via the azcmagent config command, or remotely via ARM. */
+/**
+ * Configurable properties that the user can set locally via the azcmagent config command, or remotely via ARM.
+ */
 @Immutable
 public final class AgentConfiguration {
     /*
@@ -54,19 +56,20 @@ public final class AgentConfiguration {
     private String guestConfigurationEnabled;
 
     /*
-     * Name of configuration mode to use. Modes are pre-defined configurations of security controls, extension
-     * allowlists and guest configuration, maintained by Microsoft.
+     * Name of configuration mode to use. Modes are pre-defined configurations of security controls, extension allowlists and guest configuration, maintained by Microsoft.
      */
     @JsonProperty(value = "configMode", access = JsonProperty.Access.WRITE_ONLY)
     private AgentConfigurationMode configMode;
 
-    /** Creates an instance of AgentConfiguration class. */
+    /**
+     * Creates an instance of AgentConfiguration class.
+     */
     public AgentConfiguration() {
     }
 
     /**
      * Get the proxyUrl property: Specifies the URL of the proxy to be used.
-     *
+     * 
      * @return the proxyUrl value.
      */
     public String proxyUrl() {
@@ -75,7 +78,7 @@ public final class AgentConfiguration {
 
     /**
      * Get the incomingConnectionsPorts property: Specifies the list of ports that the agent will be able to listen on.
-     *
+     * 
      * @return the incomingConnectionsPorts value.
      */
     public List<String> incomingConnectionsPorts() {
@@ -84,7 +87,7 @@ public final class AgentConfiguration {
 
     /**
      * Get the extensionsAllowList property: Array of extensions that are allowed to be installed or updated.
-     *
+     * 
      * @return the extensionsAllowList value.
      */
     public List<ConfigurationExtension> extensionsAllowList() {
@@ -93,7 +96,7 @@ public final class AgentConfiguration {
 
     /**
      * Get the extensionsBlockList property: Array of extensions that are blocked (cannot be installed or updated).
-     *
+     * 
      * @return the extensionsBlockList value.
      */
     public List<ConfigurationExtension> extensionsBlockList() {
@@ -102,7 +105,7 @@ public final class AgentConfiguration {
 
     /**
      * Get the proxyBypass property: List of service names which should not use the specified proxy server.
-     *
+     * 
      * @return the proxyBypass value.
      */
     public List<String> proxyBypass() {
@@ -111,7 +114,7 @@ public final class AgentConfiguration {
 
     /**
      * Get the extensionsEnabled property: Specifies whether the extension service is enabled or disabled.
-     *
+     * 
      * @return the extensionsEnabled value.
      */
     public String extensionsEnabled() {
@@ -121,7 +124,7 @@ public final class AgentConfiguration {
     /**
      * Get the guestConfigurationEnabled property: Specified whether the guest configuration service is enabled or
      * disabled.
-     *
+     * 
      * @return the guestConfigurationEnabled value.
      */
     public String guestConfigurationEnabled() {
@@ -131,7 +134,7 @@ public final class AgentConfiguration {
     /**
      * Get the configMode property: Name of configuration mode to use. Modes are pre-defined configurations of security
      * controls, extension allowlists and guest configuration, maintained by Microsoft.
-     *
+     * 
      * @return the configMode value.
      */
     public AgentConfigurationMode configMode() {
@@ -140,7 +143,7 @@ public final class AgentConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

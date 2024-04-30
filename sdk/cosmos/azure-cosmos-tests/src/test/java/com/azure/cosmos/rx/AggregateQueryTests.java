@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.InternalObjectNode;
@@ -125,15 +125,15 @@ public class AggregateQueryTests extends TestSuiteBase {
         for (int i = 0; i < values.length; i++) {
             InternalObjectNode d = new InternalObjectNode();
             d.setId(UUID.randomUUID().toString());
-            BridgeInternal.setProperty(d, partitionKey, values[i]);
+            d.set(partitionKey, values[i], CosmosItemSerializer.DEFAULT_SERIALIZER);
             docs.add(d);
         }
 
         for (int i = 0; i < numberOfDocsWithSamePartitionKey; i++) {
             InternalObjectNode d = new InternalObjectNode();
-            BridgeInternal.setProperty(d, partitionKey, uniquePartitionKey);
-            BridgeInternal.setProperty(d, "getResourceId", Integer.toString(i));
-            BridgeInternal.setProperty(d, field, i + 1);
+            d.set(partitionKey, uniquePartitionKey, CosmosItemSerializer.DEFAULT_SERIALIZER);
+            d.set("getResourceId", Integer.toString(i), CosmosItemSerializer.DEFAULT_SERIALIZER);
+            d.set(field, i + 1, CosmosItemSerializer.DEFAULT_SERIALIZER);
             d.setId(UUID.randomUUID().toString());
             docs.add(d);
         }
@@ -141,7 +141,7 @@ public class AggregateQueryTests extends TestSuiteBase {
         numberOfDocumentsWithNumericId = numberOfDocuments - values.length - numberOfDocsWithSamePartitionKey;
         for (int i = 0; i < numberOfDocumentsWithNumericId; i++) {
             InternalObjectNode d = new InternalObjectNode();
-            BridgeInternal.setProperty(d, partitionKey, i + 1);
+            d.set(partitionKey, i + 1, CosmosItemSerializer.DEFAULT_SERIALIZER);
             d.setId(UUID.randomUUID().toString());
             docs.add(d);
         }

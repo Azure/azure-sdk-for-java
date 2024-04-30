@@ -47,7 +47,8 @@ public class TransactionalBatchResponseTests {
         arrayOperations[0] = operation;
         SinglePartitionKeyServerBatchRequest batchRequest = SinglePartitionKeyServerBatchRequest.createBatchRequest(
             PartitionKey.NONE,
-            Arrays.asList(arrayOperations));
+            Arrays.asList(arrayOperations),
+            null);
 
         // Create dummy result
         CosmosBatchOperationResult transactionalBatchOperationResult = ModelBridgeInternal.createCosmosBatchResult(
@@ -118,7 +119,8 @@ public class TransactionalBatchResponseTests {
         arrayOperations[0] = operation;
         SinglePartitionKeyServerBatchRequest batchRequest = SinglePartitionKeyServerBatchRequest.createBatchRequest(
             PartitionKey.NONE,
-            Arrays.asList(arrayOperations));
+            Arrays.asList(arrayOperations),
+            null);
 
         // Create dummy result
         CosmosBatchOperationResult transactionalBatchOperationResult = ModelBridgeInternal.createCosmosBatchResult(

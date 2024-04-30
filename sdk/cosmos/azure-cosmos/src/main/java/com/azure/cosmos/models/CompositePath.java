@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -63,7 +64,7 @@ public final class CompositePath {
      */
     public CompositePath setPath(String path) {
         this.jsonSerializable = new JsonSerializable();
-        this.jsonSerializable.set(Constants.Properties.PATH, path);
+        this.jsonSerializable.set(Constants.Properties.PATH, path, CosmosItemSerializer.DEFAULT_SERIALIZER);
 
         return this;
     }
@@ -101,7 +102,7 @@ public final class CompositePath {
      * @return the CompositePath.
      */
     public CompositePath setOrder(CompositePathSortOrder order) {
-        this.jsonSerializable.set(Constants.Properties.ORDER, order.toString());
+        this.jsonSerializable.set(Constants.Properties.ORDER, order.toString(), CosmosItemSerializer.DEFAULT_SERIALIZER);
         return this;
     }
 

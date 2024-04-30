@@ -30,7 +30,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public class MetadataMonitorThread extends Thread {
     private static final Logger LOGGER = LoggerFactory.getLogger(MetadataMonitorThread.class);
 
-    // TODO[Public Preview]: using a threadPool with less threads or single thread
+    // TODO[GA]: using a threadPool with less threads or single thread
     public static final Scheduler CONTAINERS_MONITORING_SCHEDULER = Schedulers.newBoundedElastic(
         Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
         Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
@@ -39,6 +39,7 @@ public class MetadataMonitorThread extends Thread {
         true
     );
 
+    private final String connectorName;
     private final CosmosSourceContainersConfig sourceContainersConfig;
     private final CosmosMetadataConfig metadataConfig;
     private final SourceConnectorContext connectorContext;
@@ -49,6 +50,7 @@ public class MetadataMonitorThread extends Thread {
     private final AtomicBoolean isRunning = new AtomicBoolean(true);
 
     public MetadataMonitorThread(
+        String connectorName,
         CosmosSourceContainersConfig containersConfig,
         CosmosMetadataConfig metadataConfig,
         SourceConnectorContext connectorContext,
@@ -61,13 +63,14 @@ public class MetadataMonitorThread extends Thread {
         checkNotNull(metadataReader, "Argument 'metadataReader' can not be null");
         checkNotNull(cosmosClient, "Argument 'cosmosClient' can not be null");
 
+        this.connectorName = connectorName;
         this.sourceContainersConfig = containersConfig;
         this.metadataConfig = metadataConfig;
         this.connectorContext = connectorContext;
         this.metadataReader = metadataReader;
         this.cosmosClient = cosmosClient;
         this.containersQuerySpec = this.getContainersQuerySpec();
-        this.containersMetadataTopicPartition = new ContainersMetadataTopicPartition(containersConfig.getDatabaseName());
+        this.containersMetadataTopicPartition = new ContainersMetadataTopicPartition(containersConfig.getDatabaseName(), connectorName);
     }
 
     @Override
@@ -93,15 +96,14 @@ public class MetadataMonitorThread extends Thread {
                 })
                 .onErrorResume(throwable -> {
                     LOGGER.warn("Containers metadata checking failed. Will retry in next polling cycle", throwable);
-                    // TODO: only allow continue for transient errors, for others raiseError
                     return Mono.empty();
                 })
                 .repeat(() -> this.isRunning.get())
                 .subscribeOn(CONTAINERS_MONITORING_SCHEDULER)
                 .subscribe();
+        } else {
+            LOGGER.info("Containers monitoring task not started due to negative containers poll delay");
         }
-
-        LOGGER.info("Containers monitoring task not started due to negative containers poll delay");
     }
 
     private Mono<Boolean> shouldRequestTaskReconfiguration() {
@@ -133,7 +135,7 @@ public class MetadataMonitorThread extends Thread {
 
     public Mono<Boolean> containersMetadataOffsetExists() {
         return this.metadataReader
-            .getContainersMetadataOffset(this.sourceContainersConfig.getDatabaseName())
+            .getContainersMetadataOffset(this.sourceContainersConfig.getDatabaseName(), this.connectorName)
             .map(offsetValueHolder -> offsetValueHolder.v != null);
     }
 
@@ -149,7 +151,7 @@ public class MetadataMonitorThread extends Thread {
 
     public Mono<List<String>> getContainerRidsFromOffset() {
         return this.metadataReader
-            .getContainersMetadataOffset(this.sourceContainersConfig.getDatabaseName())
+            .getContainersMetadataOffset(this.sourceContainersConfig.getDatabaseName(), this.connectorName)
             .map(offsetValueHolder -> {
                 return offsetValueHolder.v == null ? new ArrayList<>() : offsetValueHolder.v.getContainerRids();
             });
@@ -199,7 +201,8 @@ public class MetadataMonitorThread extends Thread {
                             return this.metadataReader
                                 .getFeedRangesMetadataOffset(
                                     this.sourceContainersConfig.getDatabaseName(),
-                                    containerProperties.getResourceId())
+                                    containerProperties.getResourceId(),
+                                    this.connectorName)
                                 .flatMap(offsetValueHolder -> {
                                     if (offsetValueHolder.v == null) {
                                         // the container may have recreated
@@ -237,7 +240,8 @@ public class MetadataMonitorThread extends Thread {
         return this.metadataReader
             .getFeedRangesMetadataOffset(
                 this.sourceContainersConfig.getDatabaseName(),
-                containerProperties.getResourceId())
+                containerProperties.getResourceId(),
+                this.connectorName)
             .map(offsetValueHolder -> offsetValueHolder.v != null);
     }
 
@@ -273,7 +277,8 @@ public class MetadataMonitorThread extends Thread {
         return ImplementationBridgeHelpers
                 .CosmosAsyncContainerHelper
                 .getCosmosAsyncContainerAccessor()
-                .getOverlappingFeedRanges(container, feedRangeChanged, false) // TODO (xinlian-public preview): when should forcerefresh
+                // when comparing the differences, we already use container.feedRanges() to refresh the cache, so there is no need to refresh the cache again here
+                .getOverlappingFeedRanges(container, feedRangeChanged, false)
             .map(matchedPkRanges -> {
                 if (matchedPkRanges.size() == 0) {
                     LOGGER.warn(

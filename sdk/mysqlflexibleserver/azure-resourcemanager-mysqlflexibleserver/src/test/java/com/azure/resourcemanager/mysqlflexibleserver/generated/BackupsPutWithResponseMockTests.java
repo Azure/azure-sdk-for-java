@@ -6,67 +6,36 @@ package com.azure.resourcemanager.mysqlflexibleserver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mysqlflexibleserver.MySqlManager;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ServerBackup;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class BackupsPutWithResponseMockTests {
     @Test
     public void testPutWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"backupType\":\"hwagohbuffkmrqe\",\"completedTime\":\"2021-08-30T07:57:15Z\",\"source\":\"mxtd\"},\"id\":\"futacoebjvewzc\",\"name\":\"znmwcp\",\"type\":\"guaadraufactkahz\"}";
 
-        String responseStr =
-            "{\"properties\":{\"backupType\":\"pvfadmwsrcr\",\"completedTime\":\"2021-06-09T13:42:27Z\",\"source\":\"vgomz\"},\"id\":\"misgwbnb\",\"name\":\"e\",\"type\":\"dawkzbali\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MySqlManager manager = MySqlManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        ServerBackup response = manager.backups()
+            .putWithResponse("ryeu", "yjkqabqgzslesjcb", "ernntiewdjcvbquw", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        MySqlManager manager =
-            MySqlManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ServerBackup response =
-            manager
-                .backups()
-                .putWithResponse("gkvtmelmqkrhah", "ljuahaquhcdh", "duala", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("pvfadmwsrcr", response.backupType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-09T13:42:27Z"), response.completedTime());
-        Assertions.assertEquals("vgomz", response.source());
+        Assertions.assertEquals("hwagohbuffkmrqe", response.backupType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-30T07:57:15Z"), response.completedTime());
+        Assertions.assertEquals("mxtd", response.source());
     }
 }

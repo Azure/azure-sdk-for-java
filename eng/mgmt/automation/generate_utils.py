@@ -10,7 +10,7 @@ import requests
 import tempfile
 import subprocess
 import urllib.parse
-from typing import Tuple, List
+from typing import Tuple, List, Union
 
 pwd = os.getcwd()
 #os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])))
@@ -208,7 +208,7 @@ def compare_with_maven_package(sdk_root: str, service: str, stable_version: str,
 def get_version(
     sdk_root: str,
     module: str,
-) -> str:
+) -> Union[str, None]:
     version_file = os.path.join(sdk_root, 'eng/versioning/version_client.txt')
     project = '{0}:{1}'.format(GROUP_ID, module)
 
@@ -299,7 +299,15 @@ def update_spec(spec: str, subspec: str) -> str:
     return spec
 
 
-def generate_typespec_project(tsp_project: str, sdk_root: str, spec_root: str, head_sha: str, repo_url: str):
+def generate_typespec_project(
+    tsp_project: str,
+    sdk_root: str,
+    spec_root: str = None,
+    head_sha: str = "",
+    repo_url: str = ""):
+
+    if not tsp_project:
+        return False
 
     succeeded = False
     sdk_folder = None
@@ -307,20 +315,33 @@ def generate_typespec_project(tsp_project: str, sdk_root: str, spec_root: str, h
     module = None
     require_sdk_integration = False
 
-    tsp_dir = os.path.join(spec_root, tsp_project)
-
     try:
-        cmd = ['pwsh', './eng/common/scripts/TypeSpec-Project-Process.ps1', tsp_dir, head_sha, repo_url]
-        logging.info('Command line: ' + ' '.join(cmd))
-        output = subprocess.check_output(cmd, cwd=sdk_root)
-        output_str = str(output, 'utf-8')
-        script_return = output_str.splitlines()[-1] # the path to sdk folder
-        sdk_folder = os.path.relpath(script_return, sdk_root)
+        url_match = re.match(
+            r'^https://github.com/(?P<repo>[^/]*/azure-rest-api-specs(-pr)?)/blob/(?P<commit>[0-9a-f]{40})/(?P<path>.*)/tspconfig.yaml$',
+            tsp_project,
+            re.IGNORECASE
+        )
+        if url_match:
+            # generate from remote url
+            cmd = ['npx', 'tsp-client', 'init', '--debug',
+                   '--tsp-config', tsp_project]
+        else:
+            # sdk automation
+            tsp_dir = os.path.join(spec_root, tsp_project) if spec_root else tsp_project
+            repo = remove_prefix(repo_url, 'https://github.com/')
+            cmd = ['npx', 'tsp-client', 'init', '--debug',
+                   '--tsp-config', tsp_dir,
+                   '--commit', head_sha,
+                   '--repo', repo,
+                   '--local-spec-repo', tsp_dir]
+        check_call(cmd, sdk_root)
+
+        sdk_folder = find_sdk_folder(sdk_root)
         logging.info('SDK folder: ' + sdk_folder)
         if sdk_folder:
             succeeded = True
     except subprocess.CalledProcessError as error:
-        logging.error(f'TypeSpec-Project-Process.ps1 fail: {error}')
+        logging.error(f'tsp-client init fail: {error}')
 
     if succeeded:
         # check require_sdk_integration
@@ -343,6 +364,33 @@ def generate_typespec_project(tsp_project: str, sdk_root: str, spec_root: str, h
 
     return succeeded, require_sdk_integration, sdk_folder, service, module
 
+
 def check_call(cmd: List[str], work_dir: str):
     logging.info('Command line: ' + ' '.join(cmd))
     subprocess.check_call(cmd, cwd=work_dir)
+
+
+def remove_prefix(text, prefix):
+    if text.startswith(prefix):
+        return text[len(prefix):]
+    return text
+
+
+def find_sdk_folder(sdk_root: str):
+    cmd = ['git', 'add', '.']
+    check_call(cmd, sdk_root)
+
+    cmd = ['git', 'status', '--porcelain', '**/tsp-location.yaml']
+    logging.info('Command line: ' + ' '.join(cmd))
+    output = subprocess.check_output(cmd, cwd=sdk_root)
+    output_str = str(output, 'utf-8')
+    git_items = output_str.splitlines()
+    sdk_folder = None
+    if len(git_items) > 0:
+        tsp_location_item: str = git_items[0]
+        sdk_folder = tsp_location_item[1:].strip()[0:-len('/tsp-location.yaml')]
+
+    cmd = ['git', 'reset', '.']
+    check_call(cmd, sdk_root)
+
+    return sdk_folder

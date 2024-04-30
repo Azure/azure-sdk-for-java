@@ -6,7 +6,6 @@ package com.azure.resourcemanager.support.models;
 
 import com.azure.resourcemanager.support.fluent.models.ProblemClassificationInner;
 import java.util.List;
-import java.util.Map;
 
 /**
  * An immutable client-side representation of ProblemClassification.
@@ -47,21 +46,6 @@ public interface ProblemClassification {
      * @return the secondaryConsentEnabled value.
      */
     List<SecondaryConsentEnabled> secondaryConsentEnabled();
-
-    /**
-     * Gets the metadata property: String-to-string dictionary for additional metadata.
-     * 
-     * @return the metadata value.
-     */
-    Map<String, String> metadata();
-
-    /**
-     * Gets the parentProblemClassification property: Reference to the parent problem classification which has same
-     * structure as problem classification.
-     * 
-     * @return the parentProblemClassification value.
-     */
-    ProblemClassification parentProblemClassification();
 
     /**
      * Gets the inner com.azure.resourcemanager.support.fluent.models.ProblemClassificationInner object.

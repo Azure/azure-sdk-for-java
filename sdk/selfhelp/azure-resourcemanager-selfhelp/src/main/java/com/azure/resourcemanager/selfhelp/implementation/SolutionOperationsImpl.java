@@ -12,6 +12,7 @@ import com.azure.resourcemanager.selfhelp.fluent.SolutionOperationsClient;
 import com.azure.resourcemanager.selfhelp.fluent.models.SolutionResourceInner;
 import com.azure.resourcemanager.selfhelp.models.SolutionOperations;
 import com.azure.resourcemanager.selfhelp.models.SolutionResource;
+import com.azure.resourcemanager.selfhelp.models.SolutionWarmUpRequestBody;
 
 public final class SolutionOperationsImpl implements SolutionOperations {
     private static final ClientLogger LOGGER = new ClientLogger(SolutionOperationsImpl.class);
@@ -46,14 +47,23 @@ public final class SolutionOperationsImpl implements SolutionOperations {
         }
     }
 
+    public Response<Void> warmUpWithResponse(String scope, String solutionResourceName,
+        SolutionWarmUpRequestBody solutionWarmUpRequestBody, Context context) {
+        return this.serviceClient().warmUpWithResponse(scope, solutionResourceName, solutionWarmUpRequestBody, context);
+    }
+
+    public void warmUp(String scope, String solutionResourceName) {
+        this.serviceClient().warmUp(scope, solutionResourceName);
+    }
+
     public SolutionResource getById(String id) {
-        String scope = Utils.getValueFromIdByParameterName(id,
+        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.Help/solutions/{solutionResourceName}", "scope");
         if (scope == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
         }
-        String solutionResourceName = Utils.getValueFromIdByParameterName(id,
+        String solutionResourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.Help/solutions/{solutionResourceName}", "solutionResourceName");
         if (solutionResourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -63,13 +73,13 @@ public final class SolutionOperationsImpl implements SolutionOperations {
     }
 
     public Response<SolutionResource> getByIdWithResponse(String id, Context context) {
-        String scope = Utils.getValueFromIdByParameterName(id,
+        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.Help/solutions/{solutionResourceName}", "scope");
         if (scope == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
         }
-        String solutionResourceName = Utils.getValueFromIdByParameterName(id,
+        String solutionResourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.Help/solutions/{solutionResourceName}", "solutionResourceName");
         if (solutionResourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(

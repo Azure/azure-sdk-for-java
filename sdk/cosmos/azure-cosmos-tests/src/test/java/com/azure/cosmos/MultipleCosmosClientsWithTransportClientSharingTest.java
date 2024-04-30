@@ -105,7 +105,7 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
         InternalObjectNode properties1 = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<InternalObjectNode> itemResponse1 = container1.createItem(properties1);
         CosmosItemResponse<InternalObjectNode> readResponse1 = container1.readItem(properties1.getId(),
-                                                                                    new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties1, "mypk")),
+                                                                                    new PartitionKey(properties1.get("mypk")),
                                                                                     new CosmosItemRequestOptions(),
                                                                                     InternalObjectNode.class);
         validateItemResponse(properties1, readResponse1);
@@ -113,7 +113,7 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
         InternalObjectNode properties2 = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<InternalObjectNode> itemResponse2 = container2.createItem(properties2);
         CosmosItemResponse<InternalObjectNode> readResponse2 = container2.readItem(properties2.getId(),
-            new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties2, "mypk")),
+            new PartitionKey(properties2.get("mypk")),
             new CosmosItemRequestOptions(),
             InternalObjectNode.class);
         validateItemResponse(properties2, readResponse2);
@@ -126,15 +126,15 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
 
         validateItemResponse(properties, itemResponse);
         String newPropValue = UUID.randomUUID().toString();
-        BridgeInternal.setProperty(properties, "newProp", newPropValue);
+        properties.set("newProp", newPropValue, CosmosItemSerializer.DEFAULT_SERIALIZER);
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        ModelBridgeInternal.setPartitionKey(options, new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")));
+        ModelBridgeInternal.setPartitionKey(options, new PartitionKey(properties.get("mypk")));
         // replace document
         CosmosItemResponse<InternalObjectNode> replace = container1.replaceItem(properties,
                                                               properties.getId(),
-                                                              new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
+                                                              new PartitionKey(properties.get("mypk")),
                                                               options);
-        assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(BridgeInternal.getProperties(replace), "newProp")).isEqualTo(newPropValue);
+        assertThat(BridgeInternal.getProperties(replace).get("newProp")).isEqualTo(newPropValue);
     }
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
@@ -144,7 +144,7 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
 
         CosmosItemResponse<?> deleteResponse = container1.deleteItem(properties.getId(),
-                                                                    new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
+                                                                    new PartitionKey(properties.get("mypk")),
                                                                     options);
         assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
     }
