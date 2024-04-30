@@ -67,26 +67,6 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
      * Creates an instance of {@link AmqpChannelProcessor}.
      *
      * @param fullyQualifiedNamespace The fully qualified namespace for the AMQP connection.
-     * @param endpointStatesFunction The function that returns the endpoint states for the AMQP connection.
-     * @param retryPolicy The retry policy for the AMQP connection.
-     * @param loggingContext Additional context to add to the logging scope.
-     */
-    public AmqpChannelProcessor(String fullyQualifiedNamespace,
-        Function<T, Flux<AmqpEndpointState>> endpointStatesFunction, AmqpRetryPolicy retryPolicy,
-        Map<String, Object> loggingContext) {
-        this.endpointStatesFunction
-            = Objects.requireNonNull(endpointStatesFunction, "'endpointStates' cannot be null.");
-        this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
-
-        this.logger
-            = new ClientLogger(getClass(), Objects.requireNonNull(loggingContext, "'loggingContext' cannot be null."));
-        this.errorContext = new AmqpErrorContext(fullyQualifiedNamespace);
-    }
-
-    /**
-     * Creates an instance of {@link AmqpChannelProcessor}.
-     *
-     * @param fullyQualifiedNamespace The fully qualified namespace for the AMQP connection.
      * @param entityPath The entity path for the AMQP connection.
      * @param endpointStatesFunction The function that returns the endpoint states for the AMQP connection.
      * @param retryPolicy The retry policy for the AMQP connection.
@@ -102,6 +82,26 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         Map<String, Object> loggingContext = new HashMap<>(1);
         loggingContext.put(ENTITY_PATH_KEY, Objects.requireNonNull(entityPath, "'entityPath' cannot be null."));
         this.logger = new ClientLogger(getClass(), loggingContext);
+        this.errorContext = new AmqpErrorContext(fullyQualifiedNamespace);
+    }
+
+    /**
+     * Creates an instance of {@link AmqpChannelProcessor}.
+     *
+     * @param fullyQualifiedNamespace The fully qualified namespace for the AMQP connection.
+     * @param endpointStatesFunction The function that returns the endpoint states for the AMQP connection.
+     * @param retryPolicy The retry policy for the AMQP connection.
+     * @param loggingContext Additional context to add to the logging scope.
+     */
+    public AmqpChannelProcessor(String fullyQualifiedNamespace,
+                                Function<T, Flux<AmqpEndpointState>> endpointStatesFunction, AmqpRetryPolicy retryPolicy,
+                                Map<String, Object> loggingContext) {
+        this.endpointStatesFunction
+            = Objects.requireNonNull(endpointStatesFunction, "'endpointStates' cannot be null.");
+        this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
+
+        this.logger
+            = new ClientLogger(getClass(), Objects.requireNonNull(loggingContext, "'loggingContext' cannot be null."));
         this.errorContext = new AmqpErrorContext(fullyQualifiedNamespace);
     }
 

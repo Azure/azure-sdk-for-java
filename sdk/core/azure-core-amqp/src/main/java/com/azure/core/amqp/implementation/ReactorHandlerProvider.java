@@ -40,20 +40,6 @@ public class ReactorHandlerProvider {
      * generated handlers.
      *
      * @param provider The provider that creates and manages {@link Reactor} instances.
-     * @param meter Instance of {@link Meter} to report metrics to.
-     *
-     * @throws NullPointerException If {@code provider} is {@code null}.
-     */
-    public ReactorHandlerProvider(ReactorProvider provider, Meter meter) {
-        this.provider = Objects.requireNonNull(provider, "'provider' cannot be null.");
-        this.meter = meter;
-    }
-
-    /**
-     * Creates a new instance with the reactor provider to handle {@link ReactorDispatcher ReactorDispatchers} to its
-     * generated handlers.
-     *
-     * @param provider The provider that creates and manages {@link Reactor} instances.
      *
      * @throws NullPointerException If {@code provider} is {@code null}.
      * @deprecated use {@link ReactorHandlerProvider#ReactorHandlerProvider(ReactorProvider, Meter)} instead.
@@ -61,6 +47,20 @@ public class ReactorHandlerProvider {
     @Deprecated
     public ReactorHandlerProvider(ReactorProvider provider) {
         this(provider, null);
+    }
+
+    /**
+     * Creates a new instance with the reactor provider to handle {@link ReactorDispatcher ReactorDispatchers} to its
+     * generated handlers.
+     *
+     * @param provider The provider that creates and manages {@link Reactor} instances.
+     * @param meter Instance of {@link Meter} to report metrics to.
+     *
+     * @throws NullPointerException If {@code provider} is {@code null}.
+     */
+    public ReactorHandlerProvider(ReactorProvider provider, Meter meter) {
+        this.provider = Objects.requireNonNull(provider, "'provider' cannot be null.");
+        this.meter = meter;
     }
 
     /**
