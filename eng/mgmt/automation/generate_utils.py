@@ -11,6 +11,7 @@ import tempfile
 import subprocess
 import urllib.parse
 from typing import Tuple, List, Union
+from typespec_utils import validate_tspconfig
 
 pwd = os.getcwd()
 #os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])))
@@ -77,7 +78,12 @@ def generate(
         )
     logging.info(command)
     if os.system(command) != 0:
-        logging.error('[GENERATE] Autorest fail')
+        error_message = ('[GENERATE][Error] Code generation failed.\n'
+                         'Please first check if the failure happens only to Java automation, or for all SDK automations.\n'
+                         'If it happens for all SDK automations, please double check your Swagger, and check whether there is errors in ModelValidation and LintDiff.\n'
+                         'If it happens to Java alone, you can open an issue to https://github.com/Azure/autorest.java/issues. Please include the link of this Pull Request in the issue.')
+        logging.error(error_message)
+        print(error_message, file=sys.stderr)
         return False
 
     group = GROUP_ID
@@ -93,7 +99,10 @@ def compile_package(sdk_root, module) -> bool:
     if os.system(
             'mvn --no-transfer-progress clean verify -f {0}/pom.xml -Dmaven.javadoc.skip -Dgpg.skip -DskipTestCompile -Djacoco.skip -Drevapi.skip -pl {1}:{2} -am'.format(
                 sdk_root, GROUP_ID, module)) != 0:
-        logging.error('[COMPILE] Maven build fail')
+        error_message = ('[COMPILE] Maven build fail.\n'
+                         'You can inquire in "Language - Java" Teams channel. Please include the link of this Pull Request in the query.')
+        logging.error(error_message)
+        print(error_message, file=sys.stderr)
         return False
     return True
 
@@ -321,6 +330,8 @@ def generate_typespec_project(
             tsp_project,
             re.IGNORECASE
         )
+
+        tspconfig_valid = True
         if url_match:
             # generate from remote url
             cmd = ['npx', 'tsp-client', 'init', '--debug',
@@ -328,20 +339,26 @@ def generate_typespec_project(
         else:
             # sdk automation
             tsp_dir = os.path.join(spec_root, tsp_project) if spec_root else tsp_project
+            tspconfig_valid = validate_tspconfig(tsp_dir)
             repo = remove_prefix(repo_url, 'https://github.com/')
             cmd = ['npx', 'tsp-client', 'init', '--debug',
                    '--tsp-config', tsp_dir,
                    '--commit', head_sha,
                    '--repo', repo,
                    '--local-spec-repo', tsp_dir]
-        check_call(cmd, sdk_root)
 
-        sdk_folder = find_sdk_folder(sdk_root)
-        logging.info('SDK folder: ' + sdk_folder)
-        if sdk_folder:
-            succeeded = True
+        if tspconfig_valid:
+            check_call(cmd, sdk_root)
+
+            sdk_folder = find_sdk_folder(sdk_root)
+            logging.info('SDK folder: ' + sdk_folder)
+            if sdk_folder:
+                succeeded = True
     except subprocess.CalledProcessError as error:
-        logging.error(f'tsp-client init fail: {error}')
+        error_message = (f'[GENERATE][Error] Code generation failed. tsp-client init fails: {error}\n'
+                         'If TypeSpec Validation passes, you can open an issue to https://github.com/Azure/autorest.java/issues. Please include the link of this Pull Request in the issue.')
+        logging.error(error_message)
+        print(error_message, file=sys.stderr)
 
     if succeeded:
         # check require_sdk_integration

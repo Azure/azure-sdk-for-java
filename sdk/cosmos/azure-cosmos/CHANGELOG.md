@@ -1,9 +1,8 @@
 ## Release History
 
-### 4.59.0-beta.1 (Unreleased)
+### 4.60.0-beta.1 (Unreleased)
 
 #### Features Added
-* Added public APIs `getCustomItemSerializer` and `setCustomItemSerializer` to allow customers to specify custom payload transformations or serialization settings. - See [PR 38997](https://github.com/Azure/azure-sdk-for-java/pull/38997) and [PR 39933](https://github.com/Azure/azure-sdk-for-java/pull/39933) 
 * Added the capability to regionally scope session tokens used for operations scoped to a logical partition. - See[PR 38003](https://github.com/Azure/azure-sdk-for-java/pull/38003)
 
 #### Breaking Changes
@@ -12,7 +11,19 @@
 * Wired `excludedRegions` for change feed operations. - See [PR 38003](https://github.com/Azure/azure-sdk-for-java/pull/38003) 
 
 #### Other Changes
+
+### 4.59.0 (2024-04-27)
+
+#### Features Added
+* Added public APIs `getCustomItemSerializer` and `setCustomItemSerializer` to allow customers to specify custom payload transformations or serialization settings. - See [PR 38997](https://github.com/Azure/azure-sdk-for-java/pull/38997) and [PR 39933](https://github.com/Azure/azure-sdk-for-java/pull/39933) 
+ 
+#### Other Changes
 * Load Blackbird or Afterburner into the ObjectMapper depending upon Java version and presence of modules in classpath. Make Afterburner and Blackbird optional maven dependencies. See - [PR 39689](https://github.com/Azure/azure-sdk-for-java/pull/39689)
+
+### 4.53.5-hotfix (2024-04-25)
+
+#### Bugs Fixed
+* Fixed an issue in QuorumReader when quorum could not be selected even though 1 secondary and Primary are reachable and in sync. - See [PR 38832](https://github.com/Azure/azure-sdk-for-java/pull/38832)
 
 ### 4.58.0 (2024-04-16)
 

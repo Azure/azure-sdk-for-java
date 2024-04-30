@@ -12,9 +12,7 @@ import com.azure.resourcemanager.eventgrid.models.WebhookEventSubscriptionDestin
  */
 public final class TopicEventSubscriptionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
-     * TopicEventSubscriptions_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/TopicEventSubscriptions_CreateOrUpdate.json
      */
     /**
      * Sample code: TopicEventSubscriptions_CreateOrUpdate.
@@ -23,11 +21,13 @@ public final class TopicEventSubscriptionsCreateOrUpdateSamples {
      */
     public static void
         topicEventSubscriptionsCreateOrUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.topicEventSubscriptions().define("exampleEventSubscriptionName1")
+        manager.topicEventSubscriptions()
+            .define("exampleEventSubscriptionName1")
             .withExistingTopic("examplerg", "exampleTopic1")
             .withDestination(new WebhookEventSubscriptionDestination().withEndpointUrl("https://requestb.in/15ksip71"))
             .withFilter(new EventSubscriptionFilter().withSubjectBeginsWith("ExamplePrefix")
-                .withSubjectEndsWith("ExampleSuffix").withIsSubjectCaseSensitive(false))
+                .withSubjectEndsWith("ExampleSuffix")
+                .withIsSubjectCaseSensitive(false))
             .create();
     }
 }

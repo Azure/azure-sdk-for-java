@@ -7,25 +7,27 @@ package com.azure.resourcemanager.mysqlflexibleserver.models;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.VirtualNetworkSubnetUsageResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of VirtualNetworkSubnetUsageResult. */
+/**
+ * An immutable client-side representation of VirtualNetworkSubnetUsageResult.
+ */
 public interface VirtualNetworkSubnetUsageResult {
     /**
      * Gets the location property: The location name.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the subscriptionId property: The subscription id.
-     *
+     * 
      * @return the subscriptionId value.
      */
     String subscriptionId();
 
     /**
      * Gets the delegatedSubnetsUsage property: A list of delegated subnet usage.
-     *
+     * 
      * @return the delegatedSubnetsUsage value.
      */
     List<DelegatedSubnetUsage> delegatedSubnetsUsage();
@@ -33,7 +35,7 @@ public interface VirtualNetworkSubnetUsageResult {
     /**
      * Gets the inner com.azure.resourcemanager.mysqlflexibleserver.fluent.models.VirtualNetworkSubnetUsageResultInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     VirtualNetworkSubnetUsageResultInner innerModel();

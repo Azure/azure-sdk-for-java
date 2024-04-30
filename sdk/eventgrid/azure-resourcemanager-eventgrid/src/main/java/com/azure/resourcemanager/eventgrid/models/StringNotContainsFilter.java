@@ -6,6 +6,7 @@ package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -13,10 +14,21 @@ import java.util.List;
 /**
  * StringNotContains Filter.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "operatorType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "operatorType",
+    defaultImpl = StringNotContainsFilter.class,
+    visible = true)
 @JsonTypeName("StringNotContains")
 @Fluent
 public final class StringNotContainsFilter extends Filter {
+    /*
+     * The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "operatorType", required = true)
+    private FilterOperatorType operatorType = FilterOperatorType.STRING_NOT_CONTAINS;
+
     /*
      * The set of filter values.
      */
@@ -27,6 +39,17 @@ public final class StringNotContainsFilter extends Filter {
      * Creates an instance of StringNotContainsFilter class.
      */
     public StringNotContainsFilter() {
+    }
+
+    /**
+     * Get the operatorType property: The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals
+     * and others.
+     * 
+     * @return the operatorType value.
+     */
+    @Override
+    public FilterOperatorType operatorType() {
+        return this.operatorType;
     }
 
     /**

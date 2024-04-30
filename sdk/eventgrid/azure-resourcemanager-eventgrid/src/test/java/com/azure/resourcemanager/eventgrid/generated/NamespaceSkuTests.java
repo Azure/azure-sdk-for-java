@@ -13,16 +13,16 @@ public final class NamespaceSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NamespaceSku model
-            = BinaryData.fromString("{\"name\":\"Standard\",\"capacity\":1487675613}").toObject(NamespaceSku.class);
+            = BinaryData.fromString("{\"name\":\"Standard\",\"capacity\":1190049726}").toObject(NamespaceSku.class);
         Assertions.assertEquals(SkuName.STANDARD, model.name());
-        Assertions.assertEquals(1487675613, model.capacity());
+        Assertions.assertEquals(1190049726, model.capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NamespaceSku model = new NamespaceSku().withName(SkuName.STANDARD).withCapacity(1487675613);
+        NamespaceSku model = new NamespaceSku().withName(SkuName.STANDARD).withCapacity(1190049726);
         model = BinaryData.fromObject(model).toObject(NamespaceSku.class);
         Assertions.assertEquals(SkuName.STANDARD, model.name());
-        Assertions.assertEquals(1487675613, model.capacity());
+        Assertions.assertEquals(1190049726, model.capacity());
     }
 }

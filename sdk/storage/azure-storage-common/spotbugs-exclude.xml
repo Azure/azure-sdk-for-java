@@ -22,4 +22,8 @@
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE" />
     <Class name="com.azure.storage.common.policy.RequestRetryPolicy" />
   </Match>
+  <Match>
+    <Bug pattern="BC_UNCONFIRMED_CAST" />
+    <Class name="com.azure.storage.common.implementation.StorageImplUtils" />
+  </Match>
 </FindBugsFilter>

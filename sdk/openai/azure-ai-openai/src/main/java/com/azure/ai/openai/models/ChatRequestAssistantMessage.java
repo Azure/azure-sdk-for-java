@@ -5,22 +5,15 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A request chat message representing response or action from the assistant.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "role",
-    defaultImpl = ChatRequestAssistantMessage.class,
-    visible = true)
-@JsonTypeName("assistant")
 @Fluent
 public final class ChatRequestAssistantMessage extends ChatRequestMessage {
 
@@ -28,14 +21,12 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
      * The content of the message.
      */
     @Generated
-    @JsonProperty(value = "content")
     private final String content;
 
     /*
      * An optional name for the participant.
      */
     @Generated
-    @JsonProperty(value = "name")
     private String name;
 
     /*
@@ -43,7 +34,6 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
      * completions request to resolve as configured.
      */
     @Generated
-    @JsonProperty(value = "tool_calls")
     private List<ChatCompletionsToolCall> toolCalls;
 
     /*
@@ -51,7 +41,6 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
      * completions request to resolve as configured.
      */
     @Generated
-    @JsonProperty(value = "function_call")
     private FunctionCall functionCall;
 
     /**
@@ -60,8 +49,7 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
      * @param content the content value to set.
      */
     @Generated
-    @JsonCreator
-    public ChatRequestAssistantMessage(@JsonProperty(value = "content") String content) {
+    public ChatRequestAssistantMessage(String content) {
         this.content = content;
     }
 
@@ -153,8 +141,6 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
      * The chat role associated with this message.
      */
     @Generated
-    @JsonTypeId
-    @JsonProperty(value = "role")
     private ChatRole role = ChatRole.ASSISTANT;
 
     /**
@@ -166,5 +152,64 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     @Override
     public ChatRole getRole() {
         return this.role;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("content", this.content);
+        jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("tool_calls", this.toolCalls, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("function_call", this.functionCall);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChatRequestAssistantMessage from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChatRequestAssistantMessage if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ChatRequestAssistantMessage.
+     */
+    @Generated
+    public static ChatRequestAssistantMessage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String content = null;
+            ChatRole role = ChatRole.ASSISTANT;
+            String name = null;
+            List<ChatCompletionsToolCall> toolCalls = null;
+            FunctionCall functionCall = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("content".equals(fieldName)) {
+                    content = reader.getString();
+                } else if ("role".equals(fieldName)) {
+                    role = ChatRole.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("tool_calls".equals(fieldName)) {
+                    toolCalls = reader.readArray(reader1 -> ChatCompletionsToolCall.fromJson(reader1));
+                } else if ("function_call".equals(fieldName)) {
+                    functionCall = FunctionCall.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            ChatRequestAssistantMessage deserializedChatRequestAssistantMessage
+                = new ChatRequestAssistantMessage(content);
+            deserializedChatRequestAssistantMessage.role = role;
+            deserializedChatRequestAssistantMessage.name = name;
+            deserializedChatRequestAssistantMessage.toolCalls = toolCalls;
+            deserializedChatRequestAssistantMessage.functionCall = functionCall;
+            return deserializedChatRequestAssistantMessage;
+        });
     }
 }

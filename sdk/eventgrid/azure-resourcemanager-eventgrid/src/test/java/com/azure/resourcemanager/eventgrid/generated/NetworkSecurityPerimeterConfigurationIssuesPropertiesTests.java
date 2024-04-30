@@ -15,14 +15,14 @@ public final class NetworkSecurityPerimeterConfigurationIssuesPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSecurityPerimeterConfigurationIssuesProperties model = BinaryData.fromString(
-            "{\"issueType\":\"ConfigurationPropagationFailure\",\"severity\":\"Error\",\"description\":\"hamzjrwdkqze\",\"suggestedResourceIds\":[\"leziunjxdfzant\",\"wcegyamlbn\",\"eqacjjvpilguooq\"],\"suggestedAccessRules\":[\"m\",\"itgueiookjbs\",\"hrtdtpdelq\",\"cslmotoebnfxo\"]}")
+            "{\"issueType\":\"ConfigurationPropagationFailure\",\"severity\":\"Warning\",\"description\":\"nchrszizoyu\",\"suggestedResourceIds\":[\"etndnbfqyggagf\",\"nlgmtrwahzjmu\"],\"suggestedAccessRules\":[\"byrplrohkpig\"]}")
             .toObject(NetworkSecurityPerimeterConfigurationIssuesProperties.class);
         Assertions.assertEquals(NetworkSecurityPerimeterConfigurationIssueType.CONFIGURATION_PROPAGATION_FAILURE,
             model.issueType());
-        Assertions.assertEquals(NetworkSecurityPerimeterConfigurationIssueSeverity.ERROR, model.severity());
-        Assertions.assertEquals("hamzjrwdkqze", model.description());
-        Assertions.assertEquals("leziunjxdfzant", model.suggestedResourceIds().get(0));
-        Assertions.assertEquals("m", model.suggestedAccessRules().get(0));
+        Assertions.assertEquals(NetworkSecurityPerimeterConfigurationIssueSeverity.WARNING, model.severity());
+        Assertions.assertEquals("nchrszizoyu", model.description());
+        Assertions.assertEquals("etndnbfqyggagf", model.suggestedResourceIds().get(0));
+        Assertions.assertEquals("byrplrohkpig", model.suggestedAccessRules().get(0));
     }
 
     @org.junit.jupiter.api.Test
@@ -30,15 +30,16 @@ public final class NetworkSecurityPerimeterConfigurationIssuesPropertiesTests {
         NetworkSecurityPerimeterConfigurationIssuesProperties model
             = new NetworkSecurityPerimeterConfigurationIssuesProperties()
                 .withIssueType(NetworkSecurityPerimeterConfigurationIssueType.CONFIGURATION_PROPAGATION_FAILURE)
-                .withSeverity(NetworkSecurityPerimeterConfigurationIssueSeverity.ERROR).withDescription("hamzjrwdkqze")
-                .withSuggestedResourceIds(Arrays.asList("leziunjxdfzant", "wcegyamlbn", "eqacjjvpilguooq"))
-                .withSuggestedAccessRules(Arrays.asList("m", "itgueiookjbs", "hrtdtpdelq", "cslmotoebnfxo"));
+                .withSeverity(NetworkSecurityPerimeterConfigurationIssueSeverity.WARNING)
+                .withDescription("nchrszizoyu")
+                .withSuggestedResourceIds(Arrays.asList("etndnbfqyggagf", "nlgmtrwahzjmu"))
+                .withSuggestedAccessRules(Arrays.asList("byrplrohkpig"));
         model = BinaryData.fromObject(model).toObject(NetworkSecurityPerimeterConfigurationIssuesProperties.class);
         Assertions.assertEquals(NetworkSecurityPerimeterConfigurationIssueType.CONFIGURATION_PROPAGATION_FAILURE,
             model.issueType());
-        Assertions.assertEquals(NetworkSecurityPerimeterConfigurationIssueSeverity.ERROR, model.severity());
-        Assertions.assertEquals("hamzjrwdkqze", model.description());
-        Assertions.assertEquals("leziunjxdfzant", model.suggestedResourceIds().get(0));
-        Assertions.assertEquals("m", model.suggestedAccessRules().get(0));
+        Assertions.assertEquals(NetworkSecurityPerimeterConfigurationIssueSeverity.WARNING, model.severity());
+        Assertions.assertEquals("nchrszizoyu", model.description());
+        Assertions.assertEquals("etndnbfqyggagf", model.suggestedResourceIds().get(0));
+        Assertions.assertEquals("byrplrohkpig", model.suggestedAccessRules().get(0));
     }
 }

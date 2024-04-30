@@ -9,6 +9,7 @@ import com.azure.resourcemanager.eventgrid.models.DeliveryConfiguration;
 import com.azure.resourcemanager.eventgrid.models.DeliverySchema;
 import com.azure.resourcemanager.eventgrid.models.FiltersConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 
 /**
  * Properties of the Event Subscription update parameters.
@@ -32,6 +33,12 @@ public final class SubscriptionUpdateParametersProperties {
      */
     @JsonProperty(value = "filtersConfiguration")
     private FiltersConfiguration filtersConfiguration;
+
+    /*
+     * Expiration time of the event subscription.
+     */
+    @JsonProperty(value = "expirationTimeUtc")
+    private OffsetDateTime expirationTimeUtc;
 
     /**
      * Creates an instance of SubscriptionUpdateParametersProperties class.
@@ -97,6 +104,26 @@ public final class SubscriptionUpdateParametersProperties {
      */
     public SubscriptionUpdateParametersProperties withFiltersConfiguration(FiltersConfiguration filtersConfiguration) {
         this.filtersConfiguration = filtersConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the expirationTimeUtc property: Expiration time of the event subscription.
+     * 
+     * @return the expirationTimeUtc value.
+     */
+    public OffsetDateTime expirationTimeUtc() {
+        return this.expirationTimeUtc;
+    }
+
+    /**
+     * Set the expirationTimeUtc property: Expiration time of the event subscription.
+     * 
+     * @param expirationTimeUtc the expirationTimeUtc value to set.
+     * @return the SubscriptionUpdateParametersProperties object itself.
+     */
+    public SubscriptionUpdateParametersProperties withExpirationTimeUtc(OffsetDateTime expirationTimeUtc) {
+        this.expirationTimeUtc = expirationTimeUtc;
         return this;
     }
 
