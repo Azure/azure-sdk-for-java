@@ -94,8 +94,8 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
      * @param loggingContext Additional context to add to the logging scope.
      */
     public AmqpChannelProcessor(String fullyQualifiedNamespace,
-                                Function<T, Flux<AmqpEndpointState>> endpointStatesFunction, AmqpRetryPolicy retryPolicy,
-                                Map<String, Object> loggingContext) {
+        Function<T, Flux<AmqpEndpointState>> endpointStatesFunction, AmqpRetryPolicy retryPolicy,
+        Map<String, Object> loggingContext) {
         this.endpointStatesFunction
             = Objects.requireNonNull(endpointStatesFunction, "'endpointStates' cannot be null.");
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
