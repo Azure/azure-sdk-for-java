@@ -42,12 +42,14 @@ parameters:
     default: ''
   - name: OSName
     type: string
+  - name: JobId
+    type: string
   - name: TimeoutInMinutes
     type: number
     default: 60
 
 jobs:
-  - job: Test_${{ parameters.OSName }}
+  - job: ${{ parameters.JobId }}
     displayName: 'Test'
     dependsOn:
       - ${{ parameters.DependsOn }}
