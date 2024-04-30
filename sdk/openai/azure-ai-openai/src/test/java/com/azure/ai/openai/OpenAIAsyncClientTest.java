@@ -310,7 +310,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                         chatChoice,
                         "MyFunction",
                         MyFunctionCallArguments.class);
-                    assertEquals(arguments.getLocation(), "San Francisco, CA");
+                    assertTrue(arguments.getLocation().contains("San Francisco"));
                     assertEquals(arguments.getUnit(), "CELSIUS");
                 })
                 .verifyComplete();

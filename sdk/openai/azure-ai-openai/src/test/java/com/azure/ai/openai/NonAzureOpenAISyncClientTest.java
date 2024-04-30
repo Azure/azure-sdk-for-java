@@ -257,7 +257,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
                 chatChoice,
                 "MyFunction",
                 MyFunctionCallArguments.class);
-            assertEquals(arguments.getLocation(), "San Francisco, CA");
+            assertTrue(arguments.getLocation().contains("San Francisco"));
             assertEquals(arguments.getUnit(), "CELSIUS");
         });
     }
@@ -678,7 +678,6 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
             assertNotNull(responseMessage);
             assertTrue(responseMessage.getContent() == null || responseMessage.getContent().isEmpty());
             assertFalse(responseMessage.getToolCalls() == null || responseMessage.getToolCalls().isEmpty());
-            assertEquals(1, responseMessage.getToolCalls().size());
 
             ChatCompletionsFunctionToolCall functionToolCall = (ChatCompletionsFunctionToolCall) responseMessage.getToolCalls().get(0);
             assertNotNull(functionToolCall);

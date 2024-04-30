@@ -13,7 +13,6 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import com.azure.ai.openai.implementation.models.FunctionCallPreset;
 
 /**
  * The configuration information for a chat completions request.
@@ -537,13 +536,7 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
      */
     public ChatCompletionsOptions setFunctionCall(FunctionCallConfig functionCallConfig) {
         this.functionCallConfig = functionCallConfig;
-        if (FunctionCallPreset.values()
-            .stream()
-            .anyMatch(preset -> preset.toString().equals(functionCallConfig.getName()))) {
-            this.functionCall = BinaryData.fromObject(FunctionCallPreset.fromString(this.functionCallConfig.getName()));
-        } else {
-            this.functionCall = BinaryData.fromObject(new FunctionName(this.functionCallConfig.getName()));
-        }
+        this.functionCall = BinaryData.fromObject(new FunctionName(this.functionCallConfig.getName()));
         return this;
     }
 
@@ -803,14 +796,13 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("messages", this.messages, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("functions", this.functions, (writer, element) -> writer.writeJson(element));
         if (this.functionCall != null) {
-            jsonWriter.writeUntypedField("function_call", this.functionCall.toObject(Object.class));
+            jsonWriter.writeRawField("function_call", this.functionCall.toString());
         }
         jsonWriter.writeNumberField("max_tokens", this.maxTokens);
         jsonWriter.writeNumberField("temperature", this.temperature);
@@ -831,7 +823,7 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
         jsonWriter.writeJsonField("response_format", this.responseFormat);
         jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
         if (this.toolChoice != null) {
-            jsonWriter.writeUntypedField("tool_choice", this.toolChoice.toObject(Object.class));
+            jsonWriter.writeRawField("tool_choice", this.toolChoice.toString());
         }
         return jsonWriter.writeEndObject();
     }
