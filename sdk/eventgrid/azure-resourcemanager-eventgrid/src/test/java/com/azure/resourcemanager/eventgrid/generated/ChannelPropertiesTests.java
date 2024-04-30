@@ -61,17 +61,24 @@ public final class ChannelPropertiesTests {
     public void testSerialize() throws Exception {
         ChannelProperties model = new ChannelProperties().withChannelType(ChannelType.PARTNER_TOPIC)
             .withPartnerTopicInfo(new PartnerTopicInfo().withAzureSubscriptionId("rqobmtuk")
-                .withResourceGroupName("ryrtihfxtijbpzv").withName("wzsymglzufcy")
+                .withResourceGroupName("ryrtihfxtijbpzv")
+                .withName("wzsymglzufcy")
                 .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
-                    .withInlineEventTypes(mapOf(
-                        "ivyqniwbybrkxvd", new InlineEventProperties().withDescription("hanufhfcbjysagi")
-                            .withDisplayName("xqhabi").withDocumentationUrl("ikxwc").withDataSchemaUrl("yscnpqxu"),
+                    .withInlineEventTypes(mapOf("ivyqniwbybrkxvd",
+                        new InlineEventProperties().withDescription("hanufhfcbjysagi")
+                            .withDisplayName("xqhabi")
+                            .withDocumentationUrl("ikxwc")
+                            .withDataSchemaUrl("yscnpqxu"),
                         "mkkvnip",
-                        new InlineEventProperties().withDescription("jgrtfwvukxga").withDisplayName("ccsnhsjc")
-                            .withDocumentationUrl("ejhkry").withDataSchemaUrl("napczwlokjy"))))
+                        new InlineEventProperties().withDescription("jgrtfwvukxga")
+                            .withDisplayName("ccsnhsjc")
+                            .withDocumentationUrl("ejhkry")
+                            .withDataSchemaUrl("napczwlokjy"))))
                 .withSource("xzjnchgejs"))
             .withPartnerDestinationInfo(new PartnerDestinationInfo().withAzureSubscriptionId("mailzydehojw")
-                .withResourceGroupName("huxinpmqnj").withName("wixjsprozvcp").withEndpointServiceContext("eg")
+                .withResourceGroupName("huxinpmqnj")
+                .withName("wixjsprozvcp")
+                .withEndpointServiceContext("eg")
                 .withResourceMoveChangeHistory(Arrays.asList(
                     new ResourceMoveChangeHistory().withAzureSubscriptionId("fdatsc")
                         .withResourceGroupName("vpjhulsuuv")
@@ -82,9 +89,11 @@ public final class ChannelPropertiesTests {
                     new ResourceMoveChangeHistory().withAzureSubscriptionId("yoqpsoaccta")
                         .withResourceGroupName("kljla")
                         .withChangedTimeUtc(OffsetDateTime.parse("2021-06-15T07:28:27Z")),
-                    new ResourceMoveChangeHistory().withAzureSubscriptionId("yffdfdos").withResourceGroupName("expa")
+                    new ResourceMoveChangeHistory().withAzureSubscriptionId("yffdfdos")
+                        .withResourceGroupName("expa")
                         .withChangedTimeUtc(OffsetDateTime.parse("2021-04-29T11:27:29Z")))))
-            .withMessageForActivation("hmsbzjhcrzevdp").withProvisioningState(ChannelProvisioningState.DELETING)
+            .withMessageForActivation("hmsbzjhcrzevdp")
+            .withProvisioningState(ChannelProvisioningState.DELETING)
             .withReadinessState(ReadinessState.ACTIVATED)
             .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-08-21T16:25:47Z"));
         model = BinaryData.fromObject(model).toObject(ChannelProperties.class);

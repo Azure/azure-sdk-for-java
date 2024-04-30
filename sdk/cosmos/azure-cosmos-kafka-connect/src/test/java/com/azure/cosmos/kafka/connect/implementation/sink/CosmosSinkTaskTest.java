@@ -22,7 +22,6 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.kafka.connect.data.ConnectSchema;
@@ -81,11 +80,12 @@ public class CosmosSinkTaskTest extends KafkaCosmosTestSuiteBase {
         String topicName = singlePartitionContainerName;
 
         Map<String, String> sinkConfigMap = new HashMap<>();
-        sinkConfigMap.put("kafka.connect.cosmos.accountEndpoint", TestConfigurations.HOST);
-        sinkConfigMap.put("kafka.connect.cosmos.accountKey", TestConfigurations.MASTER_KEY);
-        sinkConfigMap.put("kafka.connect.cosmos.sink.database.name", databaseName);
-        sinkConfigMap.put("kafka.connect.cosmos.sink.containers.topicMap", topicName + "#" + singlePartitionContainerName);
-        sinkConfigMap.put("kafka.connect.cosmos.sink.bulk.enabled", String.valueOf(bulkEnabled));
+        sinkConfigMap.put("azure.cosmos.account.endpoint", TestConfigurations.HOST);
+        sinkConfigMap.put("azure.cosmos.account.key", TestConfigurations.MASTER_KEY);
+        sinkConfigMap.put("azure.cosmos.sink.database.name", databaseName);
+        sinkConfigMap.put("azure.cosmos.sink.containers.topicMap", topicName + "#" + singlePartitionContainerName);
+        sinkConfigMap.put("azure.cosmos.sink.bulk.enabled", String.valueOf(bulkEnabled));
+        sinkConfigMap.put("azure.cosmos.sink.task.id", UUID.randomUUID().toString());
 
         CosmosSinkTask sinkTask = new CosmosSinkTask();
         SinkTaskContext sinkTaskContext = Mockito.mock(SinkTaskContext.class);
@@ -138,11 +138,12 @@ public class CosmosSinkTaskTest extends KafkaCosmosTestSuiteBase {
         String topicName = singlePartitionContainerName;
 
         Map<String, String> sinkConfigMap = new HashMap<>();
-        sinkConfigMap.put("kafka.connect.cosmos.accountEndpoint", TestConfigurations.HOST);
-        sinkConfigMap.put("kafka.connect.cosmos.accountKey", TestConfigurations.MASTER_KEY);
-        sinkConfigMap.put("kafka.connect.cosmos.sink.database.name", databaseName);
-        sinkConfigMap.put("kafka.connect.cosmos.sink.containers.topicMap", topicName + "#" + singlePartitionContainerName);
-        sinkConfigMap.put("kafka.connect.cosmos.sink.bulk.enabled", String.valueOf(bulkEnabled));
+        sinkConfigMap.put("azure.cosmos.account.endpoint", TestConfigurations.HOST);
+        sinkConfigMap.put("azure.cosmos.account.key", TestConfigurations.MASTER_KEY);
+        sinkConfigMap.put("azure.cosmos.sink.database.name", databaseName);
+        sinkConfigMap.put("azure.cosmos.sink.containers.topicMap", topicName + "#" + singlePartitionContainerName);
+        sinkConfigMap.put("azure.cosmos.sink.bulk.enabled", String.valueOf(bulkEnabled));
+        sinkConfigMap.put("azure.cosmos.sink.task.id", UUID.randomUUID().toString());
 
         CosmosSinkTask sinkTask = new CosmosSinkTask();
         SinkTaskContext sinkTaskContext = Mockito.mock(SinkTaskContext.class);
@@ -209,12 +210,13 @@ public class CosmosSinkTaskTest extends KafkaCosmosTestSuiteBase {
         String topicName = singlePartitionContainerName;
 
         Map<String, String> sinkConfigMap = new HashMap<>();
-        sinkConfigMap.put("kafka.connect.cosmos.accountEndpoint", TestConfigurations.HOST);
-        sinkConfigMap.put("kafka.connect.cosmos.accountKey", TestConfigurations.MASTER_KEY);
-        sinkConfigMap.put("kafka.connect.cosmos.sink.database.name", databaseName);
-        sinkConfigMap.put("kafka.connect.cosmos.sink.containers.topicMap", topicName + "#" + singlePartitionContainerName);
-        sinkConfigMap.put("kafka.connect.cosmos.sink.bulk.enabled", String.valueOf(bulkEnabled));
-        sinkConfigMap.put("kafka.connect.cosmos.sink.write.strategy", ItemWriteStrategy.ITEM_APPEND.getName());
+        sinkConfigMap.put("azure.cosmos.account.endpoint", TestConfigurations.HOST);
+        sinkConfigMap.put("azure.cosmos.account.key", TestConfigurations.MASTER_KEY);
+        sinkConfigMap.put("azure.cosmos.sink.database.name", databaseName);
+        sinkConfigMap.put("azure.cosmos.sink.containers.topicMap", topicName + "#" + singlePartitionContainerName);
+        sinkConfigMap.put("azure.cosmos.sink.bulk.enabled", String.valueOf(bulkEnabled));
+        sinkConfigMap.put("azure.cosmos.sink.write.strategy", ItemWriteStrategy.ITEM_APPEND.getName());
+        sinkConfigMap.put("azure.cosmos.sink.task.id", UUID.randomUUID().toString());
 
         CosmosSinkTask sinkTask = new CosmosSinkTask();
         SinkTaskContext sinkTaskContext = Mockito.mock(SinkTaskContext.class);
@@ -260,12 +262,13 @@ public class CosmosSinkTaskTest extends KafkaCosmosTestSuiteBase {
         String topicName = singlePartitionContainerName;
 
         Map<String, String> sinkConfigMap = new HashMap<>();
-        sinkConfigMap.put("kafka.connect.cosmos.accountEndpoint", TestConfigurations.HOST);
-        sinkConfigMap.put("kafka.connect.cosmos.accountKey", TestConfigurations.MASTER_KEY);
-        sinkConfigMap.put("kafka.connect.cosmos.sink.database.name", databaseName);
-        sinkConfigMap.put("kafka.connect.cosmos.sink.containers.topicMap", topicName + "#" + singlePartitionContainerName);
-        sinkConfigMap.put("kafka.connect.cosmos.sink.bulk.enabled", String.valueOf(bulkEnabled));
-        sinkConfigMap.put("kafka.connect.cosmos.sink.write.strategy", ItemWriteStrategy.ITEM_OVERWRITE_IF_NOT_MODIFIED.getName());
+        sinkConfigMap.put("azure.cosmos.account.endpoint", TestConfigurations.HOST);
+        sinkConfigMap.put("azure.cosmos.account.key", TestConfigurations.MASTER_KEY);
+        sinkConfigMap.put("azure.cosmos.sink.database.name", databaseName);
+        sinkConfigMap.put("azure.cosmos.sink.containers.topicMap", topicName + "#" + singlePartitionContainerName);
+        sinkConfigMap.put("azure.cosmos.sink.bulk.enabled", String.valueOf(bulkEnabled));
+        sinkConfigMap.put("azure.cosmos.sink.write.strategy", ItemWriteStrategy.ITEM_OVERWRITE_IF_NOT_MODIFIED.getName());
+        sinkConfigMap.put("azure.cosmos.sink.task.id", UUID.randomUUID().toString());
 
         CosmosSinkTask sinkTask = new CosmosSinkTask();
         SinkTaskContext sinkTaskContext = Mockito.mock(SinkTaskContext.class);
@@ -356,12 +359,13 @@ public class CosmosSinkTaskTest extends KafkaCosmosTestSuiteBase {
         String topicName = singlePartitionContainerName;
 
         Map<String, String> sinkConfigMap = new HashMap<>();
-        sinkConfigMap.put("kafka.connect.cosmos.accountEndpoint", TestConfigurations.HOST);
-        sinkConfigMap.put("kafka.connect.cosmos.accountKey", TestConfigurations.MASTER_KEY);
-        sinkConfigMap.put("kafka.connect.cosmos.sink.database.name", databaseName);
-        sinkConfigMap.put("kafka.connect.cosmos.sink.containers.topicMap", topicName + "#" + singlePartitionContainerName);
-        sinkConfigMap.put("kafka.connect.cosmos.sink.bulk.enabled", String.valueOf(bulkEnabled));
-        sinkConfigMap.put("kafka.connect.cosmos.sink.write.strategy", ItemWriteStrategy.ITEM_DELETE.getName());
+        sinkConfigMap.put("azure.cosmos.account.endpoint", TestConfigurations.HOST);
+        sinkConfigMap.put("azure.cosmos.account.key", TestConfigurations.MASTER_KEY);
+        sinkConfigMap.put("azure.cosmos.sink.database.name", databaseName);
+        sinkConfigMap.put("azure.cosmos.sink.containers.topicMap", topicName + "#" + singlePartitionContainerName);
+        sinkConfigMap.put("azure.cosmos.sink.bulk.enabled", String.valueOf(bulkEnabled));
+        sinkConfigMap.put("azure.cosmos.sink.write.strategy", ItemWriteStrategy.ITEM_DELETE.getName());
+        sinkConfigMap.put("azure.cosmos.sink.task.id", UUID.randomUUID().toString());
 
         CosmosSinkTask sinkTask = new CosmosSinkTask();
         SinkTaskContext sinkTaskContext = Mockito.mock(SinkTaskContext.class);
@@ -419,12 +423,13 @@ public class CosmosSinkTaskTest extends KafkaCosmosTestSuiteBase {
         String topicName = singlePartitionContainerName;
 
         Map<String, String> sinkConfigMap = new HashMap<>();
-        sinkConfigMap.put("kafka.connect.cosmos.accountEndpoint", TestConfigurations.HOST);
-        sinkConfigMap.put("kafka.connect.cosmos.accountKey", TestConfigurations.MASTER_KEY);
-        sinkConfigMap.put("kafka.connect.cosmos.sink.database.name", databaseName);
-        sinkConfigMap.put("kafka.connect.cosmos.sink.containers.topicMap", topicName + "#" + singlePartitionContainerName);
-        sinkConfigMap.put("kafka.connect.cosmos.sink.bulk.enabled", String.valueOf(bulkEnabled));
-        sinkConfigMap.put("kafka.connect.cosmos.sink.write.strategy", ItemWriteStrategy.ITEM_DELETE_IF_NOT_MODIFIED.getName());
+        sinkConfigMap.put("azure.cosmos.account.endpoint", TestConfigurations.HOST);
+        sinkConfigMap.put("azure.cosmos.account.key", TestConfigurations.MASTER_KEY);
+        sinkConfigMap.put("azure.cosmos.sink.database.name", databaseName);
+        sinkConfigMap.put("azure.cosmos.sink.containers.topicMap", topicName + "#" + singlePartitionContainerName);
+        sinkConfigMap.put("azure.cosmos.sink.bulk.enabled", String.valueOf(bulkEnabled));
+        sinkConfigMap.put("azure.cosmos.sink.write.strategy", ItemWriteStrategy.ITEM_DELETE_IF_NOT_MODIFIED.getName());
+        sinkConfigMap.put("azure.cosmos.sink.task.id", UUID.randomUUID().toString());
 
         CosmosSinkTask sinkTask = new CosmosSinkTask();
         SinkTaskContext sinkTaskContext = Mockito.mock(SinkTaskContext.class);
@@ -517,18 +522,19 @@ public class CosmosSinkTaskTest extends KafkaCosmosTestSuiteBase {
         String topicName = singlePartitionContainerName;
 
         Map<String, String> sinkConfigMap = new HashMap<>();
-        sinkConfigMap.put("kafka.connect.cosmos.accountEndpoint", KafkaCosmosTestConfigurations.HOST);
-        sinkConfigMap.put("kafka.connect.cosmos.accountKey", KafkaCosmosTestConfigurations.MASTER_KEY);
-        sinkConfigMap.put("kafka.connect.cosmos.sink.database.name", databaseName);
-        sinkConfigMap.put("kafka.connect.cosmos.sink.containers.topicMap", topicName + "#" + singlePartitionContainerName);
-        sinkConfigMap.put("kafka.connect.cosmos.sink.bulk.enabled", String.valueOf(bulkEnabled));
-        sinkConfigMap.put("kafka.connect.cosmos.sink.write.strategy", ItemWriteStrategy.ITEM_PATCH.getName());
+        sinkConfigMap.put("azure.cosmos.account.endpoint", KafkaCosmosTestConfigurations.HOST);
+        sinkConfigMap.put("azure.cosmos.account.key", KafkaCosmosTestConfigurations.MASTER_KEY);
+        sinkConfigMap.put("azure.cosmos.sink.database.name", databaseName);
+        sinkConfigMap.put("azure.cosmos.sink.containers.topicMap", topicName + "#" + singlePartitionContainerName);
+        sinkConfigMap.put("azure.cosmos.sink.bulk.enabled", String.valueOf(bulkEnabled));
+        sinkConfigMap.put("azure.cosmos.sink.write.strategy", ItemWriteStrategy.ITEM_PATCH.getName());
         sinkConfigMap.put(
-            "kafka.connect.cosmos.sink.write.patch.property.configs",
+            "azure.cosmos.sink.write.patch.property.configs",
             "property(intProperty).op(increment),"
                 + " property(doubleProperty).op(add),"
                 + " property(arrayProperty).path(/listProperty/0).op(replace),"
                 + " property(toBeRemovedProperty).op(remove)");
+        sinkConfigMap.put("azure.cosmos.sink.task.id", UUID.randomUUID().toString());
 
         CosmosSinkTask sinkTask = new CosmosSinkTask();
         SinkTaskContext sinkTaskContext = Mockito.mock(SinkTaskContext.class);
@@ -615,16 +621,17 @@ public class CosmosSinkTaskTest extends KafkaCosmosTestSuiteBase {
         String throughputControlContainerName = "throughputControlContainer-" + UUID.randomUUID();
 
         Map<String, String> sinkConfigMap = new HashMap<>();
-        sinkConfigMap.put("kafka.connect.cosmos.accountEndpoint", TestConfigurations.HOST);
-        sinkConfigMap.put("kafka.connect.cosmos.accountKey", TestConfigurations.MASTER_KEY);
-        sinkConfigMap.put("kafka.connect.cosmos.sink.database.name", databaseName);
-        sinkConfigMap.put("kafka.connect.cosmos.sink.containers.topicMap", topicName + "#" + singlePartitionContainerName);
-        sinkConfigMap.put("kafka.connect.cosmos.sink.bulk.enabled", String.valueOf(bulkEnabled));
-        sinkConfigMap.put("kafka.connect.cosmos.throughputControl.enabled", "true");
-        sinkConfigMap.put("kafka.connect.cosmos.throughputControl.name", "pollWithThroughputControl-" + UUID.randomUUID());
-        sinkConfigMap.put("kafka.connect.cosmos.throughputControl.targetThroughput", "100");
-        sinkConfigMap.put("kafka.connect.cosmos.throughputControl.globalControl.database", databaseName);
-        sinkConfigMap.put("kafka.connect.cosmos.throughputControl.globalControl.container", throughputControlContainerName);
+        sinkConfigMap.put("azure.cosmos.account.endpoint", TestConfigurations.HOST);
+        sinkConfigMap.put("azure.cosmos.account.key", TestConfigurations.MASTER_KEY);
+        sinkConfigMap.put("azure.cosmos.sink.database.name", databaseName);
+        sinkConfigMap.put("azure.cosmos.sink.containers.topicMap", topicName + "#" + singlePartitionContainerName);
+        sinkConfigMap.put("azure.cosmos.sink.bulk.enabled", String.valueOf(bulkEnabled));
+        sinkConfigMap.put("azure.cosmos.throughputControl.enabled", "true");
+        sinkConfigMap.put("azure.cosmos.throughputControl.group.name", "pollWithThroughputControl-" + UUID.randomUUID());
+        sinkConfigMap.put("azure.cosmos.throughputControl.targetThroughput", "100");
+        sinkConfigMap.put("azure.cosmos.throughputControl.globalControl.database.name", databaseName);
+        sinkConfigMap.put("azure.cosmos.throughputControl.globalControl.container.name", throughputControlContainerName);
+        sinkConfigMap.put("azure.cosmos.sink.task.id", UUID.randomUUID().toString());
 
         CosmosSinkTask sinkTask = new CosmosSinkTask();
         SinkTaskContext sinkTaskContext = Mockito.mock(SinkTaskContext.class);
@@ -694,11 +701,12 @@ public class CosmosSinkTaskTest extends KafkaCosmosTestSuiteBase {
         String nestedPartitionKeyPathContainer = "NestedPartitionKeyPathContainer";
 
         Map<String, String> sinkConfigMap = new HashMap<>();
-        sinkConfigMap.put("kafka.connect.cosmos.accountEndpoint", TestConfigurations.HOST);
-        sinkConfigMap.put("kafka.connect.cosmos.accountKey", TestConfigurations.MASTER_KEY);
-        sinkConfigMap.put("kafka.connect.cosmos.sink.database.name", databaseName);
-        sinkConfigMap.put("kafka.connect.cosmos.sink.containers.topicMap", topicName + "#" + nestedPartitionKeyPathContainer);
-        sinkConfigMap.put("kafka.connect.cosmos.sink.bulk.enabled", String.valueOf(bulkEnabled));
+        sinkConfigMap.put("azure.cosmos.account.endpoint", TestConfigurations.HOST);
+        sinkConfigMap.put("azure.cosmos.account.key", TestConfigurations.MASTER_KEY);
+        sinkConfigMap.put("azure.cosmos.sink.database.name", databaseName);
+        sinkConfigMap.put("azure.cosmos.sink.containers.topicMap", topicName + "#" + nestedPartitionKeyPathContainer);
+        sinkConfigMap.put("azure.cosmos.sink.bulk.enabled", String.valueOf(bulkEnabled));
+        sinkConfigMap.put("azure.cosmos.sink.task.id", UUID.randomUUID().toString());
 
         CosmosSinkTask sinkTask = new CosmosSinkTask();
         SinkTaskContext sinkTaskContext = Mockito.mock(SinkTaskContext.class);

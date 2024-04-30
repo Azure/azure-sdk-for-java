@@ -36,22 +36,32 @@ public final class ChannelUpdateParametersPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ChannelUpdateParametersProperties model = new ChannelUpdateParametersProperties()
-            .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-11-08T18:58:31Z"))
-            .withPartnerDestinationInfo(new PartnerUpdateDestinationInfo()).withPartnerTopicInfo(
-                new PartnerUpdateTopicInfo().withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
-                    .withInlineEventTypes(mapOf("zga",
-                        new InlineEventProperties().withDescription("muouqfp").withDisplayName("zw")
-                            .withDocumentationUrl("g").withDataSchemaUrl("tnwu"),
-                        "i",
-                        new InlineEventProperties().withDescription("ufizuckyf").withDisplayName("rfidfvzwdz")
-                            .withDocumentationUrl("tymw").withDataSchemaUrl("dkfthwxmnt"),
-                        "cs",
-                        new InlineEventProperties().withDescription("opvkmijcm").withDisplayName("dcuf")
-                            .withDocumentationUrl("srp").withDataSchemaUrl("zidnsezcxtbzsgfy"),
-                        "dqxhcrmnohjtckwh",
-                        new InlineEventProperties().withDescription("wmdwzjeiachboo").withDisplayName("lnrosfqp")
-                            .withDocumentationUrl("ehzzvypyqrim").withDataSchemaUrl("npvswjdkirso")))));
+        ChannelUpdateParametersProperties model
+            = new ChannelUpdateParametersProperties()
+                .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-11-08T18:58:31Z"))
+                .withPartnerDestinationInfo(new PartnerUpdateDestinationInfo())
+                .withPartnerTopicInfo(new PartnerUpdateTopicInfo()
+                    .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
+                        .withInlineEventTypes(mapOf("zga",
+                            new InlineEventProperties().withDescription("muouqfp")
+                                .withDisplayName("zw")
+                                .withDocumentationUrl("g")
+                                .withDataSchemaUrl("tnwu"),
+                            "i",
+                            new InlineEventProperties().withDescription("ufizuckyf")
+                                .withDisplayName("rfidfvzwdz")
+                                .withDocumentationUrl("tymw")
+                                .withDataSchemaUrl("dkfthwxmnt"),
+                            "cs",
+                            new InlineEventProperties().withDescription("opvkmijcm")
+                                .withDisplayName("dcuf")
+                                .withDocumentationUrl("srp")
+                                .withDataSchemaUrl("zidnsezcxtbzsgfy"),
+                            "dqxhcrmnohjtckwh",
+                            new InlineEventProperties().withDescription("wmdwzjeiachboo")
+                                .withDisplayName("lnrosfqp")
+                                .withDocumentationUrl("ehzzvypyqrim")
+                                .withDataSchemaUrl("npvswjdkirso")))));
         model = BinaryData.fromObject(model).toObject(ChannelUpdateParametersProperties.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-11-08T18:58:31Z"), model.expirationTimeIfNotActivatedUtc());
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.partnerTopicInfo().eventTypeInfo().kind());

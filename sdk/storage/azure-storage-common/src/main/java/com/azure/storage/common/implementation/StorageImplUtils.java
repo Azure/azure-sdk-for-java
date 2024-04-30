@@ -5,6 +5,7 @@ package com.azure.storage.common.implementation;
 
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
@@ -30,10 +31,13 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.TreeMap;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Supplier;
@@ -484,5 +488,58 @@ public class StorageImplUtils {
             }
         }
         return null;
+    }
+
+    public static <T, U> ResponseBase<T, U> sendRequest(Callable<ResponseBase<T, U>> operation, Duration timeout,
+        Class<? extends RuntimeException> exceptionType) {
+        try {
+            if (timeout == null) {
+                return operation.call();
+            }
+            Future<ResponseBase<T, U>> future = THREAD_POOL.submit(operation);
+            return getResultWithTimeout(future, timeout.toMillis(), exceptionType);
+        } catch (Exception e) {
+            Throwable cause = e.getCause();
+            if (exceptionType.isInstance(e)) {
+                // Safe to cast since we checked with isInstance
+                throw exceptionType.cast(e);
+            } else if (cause instanceof RuntimeException) {
+                // Throw as is if it's already a RuntimeException
+                throw (RuntimeException) cause;
+            } else if (cause instanceof Error) {
+                // Propagate if it's an Error
+                throw (Error) cause;
+            } else {
+                // Wrap in RuntimeException if it's neither Error nor RuntimeException
+                throw LOGGER.logExceptionAsError(new RuntimeException(cause));
+            }
+        }
+    }
+
+    public static <T> T getResultWithTimeout(Future<T> future, long timeoutInMillis,
+        Class<? extends RuntimeException> exceptionType) throws InterruptedException, ExecutionException,
+        TimeoutException {
+        Objects.requireNonNull(future, "'future' cannot be null.");
+
+        try {
+            if (timeoutInMillis <= 0) {
+                return future.get();
+            }
+            return future.get(timeoutInMillis, TimeUnit.MILLISECONDS);
+        } catch (TimeoutException e) {
+            future.cancel(true); // Cancel the operation as it's no longer needed
+            throw e;
+        } catch (ExecutionException e) {
+            Throwable cause = e.getCause();
+            if (cause instanceof Error) {
+                throw (Error) cause; // Rethrow if it's an Error
+            } else if (exceptionType.isInstance(cause)) {
+                throw e;
+            } else if (cause instanceof RuntimeException) {
+                throw (RuntimeException) cause; // Rethrow if it's another kind of RuntimeException
+            } else {
+                throw new RuntimeException(cause);
+            }
+        }
     }
 }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.mysqlflexibleserver.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Delegated subnet usage data. */
+/**
+ * Delegated subnet usage data.
+ */
 @Immutable
 public final class DelegatedSubnetUsage {
     /*
@@ -22,13 +24,15 @@ public final class DelegatedSubnetUsage {
     @JsonProperty(value = "usage", access = JsonProperty.Access.WRITE_ONLY)
     private Long usage;
 
-    /** Creates an instance of DelegatedSubnetUsage class. */
+    /**
+     * Creates an instance of DelegatedSubnetUsage class.
+     */
     public DelegatedSubnetUsage() {
     }
 
     /**
      * Get the subnetName property: name of the subnet.
-     *
+     * 
      * @return the subnetName value.
      */
     public String subnetName() {
@@ -37,7 +41,7 @@ public final class DelegatedSubnetUsage {
 
     /**
      * Get the usage property: Number of used delegated subnets.
-     *
+     * 
      * @return the usage value.
      */
     public Long usage() {
@@ -46,7 +50,7 @@ public final class DelegatedSubnetUsage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

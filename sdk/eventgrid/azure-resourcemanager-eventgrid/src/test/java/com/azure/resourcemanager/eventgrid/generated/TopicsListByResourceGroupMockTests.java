@@ -6,12 +6,10 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.DataResidencyBoundary;
 import com.azure.resourcemanager.eventgrid.models.EventDefinitionKind;
@@ -23,73 +21,58 @@ import com.azure.resourcemanager.eventgrid.models.ResourceKind;
 import com.azure.resourcemanager.eventgrid.models.Sku;
 import com.azure.resourcemanager.eventgrid.models.TlsVersion;
 import com.azure.resourcemanager.eventgrid.models.Topic;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class TopicsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"groupIds\":[\"amqx\",\"cssanybzzghv\",\"fe\",\"myjsvcdhly\"],\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Updating\"},\"id\":\"okj\",\"name\":\"nzxezriwgo\",\"type\":\"wapcqksaaapxjhc\"},{\"properties\":{\"privateEndpoint\":{},\"groupIds\":[\"nwsdfpv\"],\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"id\":\"lfrcqklpmvz\",\"name\":\"ireszyaqg\",\"type\":\"mlbmfggeokfe\"},{\"properties\":{\"privateEndpoint\":{},\"groupIds\":[\"wkyeahhhutpu\",\"nrfcqu\",\"m\"],\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Failed\"},\"id\":\"inowrerjpxp\",\"name\":\"chdwyqqidqi\",\"type\":\"lgbbfjmdgjvxlh\"}],\"provisioningState\":\"Succeeded\",\"endpoint\":\"eftyaphqeofytl\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"vmufzgug\":{\"description\":\"mcqixuanccqvjf\",\"displayName\":\"fqpmquxpj\",\"documentationUrl\":\"faar\",\"dataSchemaUrl\":\"ci\"},\"wzmnobfewwpsibxo\":{\"description\":\"lwalaossnqe\",\"displayName\":\"otbptg\",\"documentationUrl\":\"manxx\",\"dataSchemaUrl\":\"qfmdqecvtam\"},\"sjdle\":{\"description\":\"qoqjrkblndy\",\"displayName\":\"wgycvtqnzjc\",\"documentationUrl\":\"qzhembtbw\",\"dataSchemaUrl\":\"lbadp\"},\"rgdqyxaj\":{\"description\":\"vmvvlooubsfxip\",\"displayName\":\"opskgocjomlupfa\",\"documentationUrl\":\"sj\",\"dataSchemaUrl\":\"huslgdw\"}}},\"minimumTlsVersionAllowed\":\"1.1\",\"inputSchema\":\"CloudEventSchemaV1_0\",\"inputSchemaMapping\":{\"inputSchemaMappingType\":\"InputSchemaMapping\"},\"metricResourceId\":\"qcw\",\"publicNetworkAccess\":\"Disabled\",\"inboundIpRules\":[{\"ipMask\":\"mqcwwsjnkiixepbn\",\"action\":\"Allow\"}],\"disableLocalAuth\":false,\"dataResidencyBoundary\":\"WithinGeopair\"},\"sku\":{\"name\":\"Premium\"},\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"fejsewrznequqynt\",\"tenantId\":\"knhajksbsyogjm\",\"userAssignedIdentities\":{\"xtdlxwmvcdkucp\":{\"principalId\":\"cydi\",\"clientId\":\"mcvjbssfcriqxz\"},\"jseml\":{\"principalId\":\"yafrwr\",\"clientId\":\"rogeuvmkrspnr\"},\"pmw\":{\"principalId\":\"frsnqpljp\",\"clientId\":\"exutike\"}}},\"kind\":\"AzureArc\",\"extendedLocation\":{\"name\":\"wu\",\"type\":\"vosgjzscu\"},\"location\":\"alivdfwgqjhewcf\",\"tags\":{\"h\":\"ggez\",\"usyzaivnpsjnpckp\":\"priqissener\"},\"id\":\"ujyduonbdawsao\",\"name\":\"lvvmnbkxja\",\"type\":\"sbbdddwokqxai\"}]}";
+            = "{\"value\":[{\"properties\":{\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"groupIds\":[\"vewwpzrdwcgldo\",\"gcandxfhhhtes\",\"dqtdnnc\"],\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Succeeded\"},\"id\":\"jdshvv\",\"name\":\"k\",\"type\":\"xccyijjimhijzr\"}],\"provisioningState\":\"Succeeded\",\"endpoint\":\"mvvsduy\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"uqtnylquevqmvy\":{\"description\":\"hhqld\",\"displayName\":\"ymn\",\"documentationUrl\":\"xiexqwqnghxnimvy\",\"dataSchemaUrl\":\"rxgunnqgy\"},\"on\":{\"description\":\"gmmue\",\"displayName\":\"nznwgsqufmjx\",\"documentationUrl\":\"oseqcazisvb\",\"dataSchemaUrl\":\"gcyjpgawepk\"},\"mfjew\":{\"description\":\"pghlr\",\"displayName\":\"bgblxbuibrvjzta\",\"documentationUrl\":\"vs\",\"dataSchemaUrl\":\"jihvfjcqrttjfuq\"},\"kwdtlcj\":{\"description\":\"q\",\"displayName\":\"vdostwyg\",\"documentationUrl\":\"mw\",\"dataSchemaUrl\":\"vxgwz\"}}},\"minimumTlsVersionAllowed\":\"1.1\",\"inputSchema\":\"CloudEventSchemaV1_0\",\"inputSchemaMapping\":{\"inputSchemaMappingType\":\"InputSchemaMapping\"},\"metricResourceId\":\"zrbvgw\",\"publicNetworkAccess\":\"Enabled\",\"inboundIpRules\":[{\"ipMask\":\"xvmdr\",\"action\":\"Allow\"}],\"disableLocalAuth\":false,\"dataResidencyBoundary\":\"WithinRegion\"},\"sku\":{\"name\":\"Premium\"},\"identity\":{\"type\":\"SystemAssigned, UserAssigned\",\"principalId\":\"hhplkhww\",\"tenantId\":\"atveqm\",\"userAssignedIdentities\":{\"vsmfas\":{\"principalId\":\"w\",\"clientId\":\"yxryearmhpwbuk\"},\"l\":{\"principalId\":\"lvhqpoilo\",\"clientId\":\"aemcezevftmh\"},\"f\":{\"principalId\":\"kjyghztms\",\"clientId\":\"wtpcflcezswwvw\"}}},\"kind\":\"Azure\",\"extendedLocation\":{\"name\":\"bfpfhruptsyq\",\"type\":\"nqswxdowumxquk\"},\"location\":\"diohclqddn\",\"tags\":{\"mkaqldqabnwvpaq\":\"nebweddpnyzcwyj\"},\"id\":\"qxfbbigcfddofx\",\"name\":\"fbmjyyrqaedwo\",\"type\":\"ocytjgoeayokrw\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        EventGridManager manager = EventGridManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        EventGridManager manager = EventGridManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Topic> response
-            = manager.topics().listByResourceGroup("bvrhh", "galgxnwfm", 207493831, com.azure.core.util.Context.NONE);
+            = manager.topics().listByResourceGroup("mwdukinhl", "hg", 1419499050, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("alivdfwgqjhewcf", response.iterator().next().location());
-        Assertions.assertEquals("ggez", response.iterator().next().tags().get("h"));
+        Assertions.assertEquals("diohclqddn", response.iterator().next().location());
+        Assertions.assertEquals("nebweddpnyzcwyj", response.iterator().next().tags().get("mkaqldqabnwvpaq"));
         Assertions.assertEquals(Sku.PREMIUM, response.iterator().next().sku().name());
-        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, response.iterator().next().identity().type());
-        Assertions.assertEquals("fejsewrznequqynt", response.iterator().next().identity().principalId());
-        Assertions.assertEquals("knhajksbsyogjm", response.iterator().next().identity().tenantId());
-        Assertions.assertEquals("cydi",
-            response.iterator().next().identity().userAssignedIdentities().get("xtdlxwmvcdkucp").principalId());
-        Assertions.assertEquals("mcvjbssfcriqxz",
-            response.iterator().next().identity().userAssignedIdentities().get("xtdlxwmvcdkucp").clientId());
-        Assertions.assertEquals(ResourceKind.AZURE_ARC, response.iterator().next().kind());
-        Assertions.assertEquals("wu", response.iterator().next().extendedLocation().name());
-        Assertions.assertEquals("vosgjzscu", response.iterator().next().extendedLocation().type());
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
+            response.iterator().next().identity().type());
+        Assertions.assertEquals("hhplkhww", response.iterator().next().identity().principalId());
+        Assertions.assertEquals("atveqm", response.iterator().next().identity().tenantId());
+        Assertions.assertEquals("w",
+            response.iterator().next().identity().userAssignedIdentities().get("vsmfas").principalId());
+        Assertions.assertEquals("yxryearmhpwbuk",
+            response.iterator().next().identity().userAssignedIdentities().get("vsmfas").clientId());
+        Assertions.assertEquals(ResourceKind.AZURE, response.iterator().next().kind());
+        Assertions.assertEquals("bfpfhruptsyq", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("nqswxdowumxquk", response.iterator().next().extendedLocation().type());
         Assertions.assertEquals(EventDefinitionKind.INLINE, response.iterator().next().eventTypeInfo().kind());
-        Assertions.assertEquals("mcqixuanccqvjf",
-            response.iterator().next().eventTypeInfo().inlineEventTypes().get("vmufzgug").description());
-        Assertions.assertEquals("fqpmquxpj",
-            response.iterator().next().eventTypeInfo().inlineEventTypes().get("vmufzgug").displayName());
-        Assertions.assertEquals("faar",
-            response.iterator().next().eventTypeInfo().inlineEventTypes().get("vmufzgug").documentationUrl());
-        Assertions.assertEquals("ci",
-            response.iterator().next().eventTypeInfo().inlineEventTypes().get("vmufzgug").dataSchemaUrl());
+        Assertions.assertEquals("hhqld",
+            response.iterator().next().eventTypeInfo().inlineEventTypes().get("uqtnylquevqmvy").description());
+        Assertions.assertEquals("ymn",
+            response.iterator().next().eventTypeInfo().inlineEventTypes().get("uqtnylquevqmvy").displayName());
+        Assertions.assertEquals("xiexqwqnghxnimvy",
+            response.iterator().next().eventTypeInfo().inlineEventTypes().get("uqtnylquevqmvy").documentationUrl());
+        Assertions.assertEquals("rxgunnqgy",
+            response.iterator().next().eventTypeInfo().inlineEventTypes().get("uqtnylquevqmvy").dataSchemaUrl());
         Assertions.assertEquals(TlsVersion.ONE_ONE, response.iterator().next().minimumTlsVersionAllowed());
         Assertions.assertEquals(InputSchema.CLOUD_EVENT_SCHEMA_V1_0, response.iterator().next().inputSchema());
-        Assertions.assertEquals(PublicNetworkAccess.DISABLED, response.iterator().next().publicNetworkAccess());
-        Assertions.assertEquals("mqcwwsjnkiixepbn", response.iterator().next().inboundIpRules().get(0).ipMask());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.iterator().next().publicNetworkAccess());
+        Assertions.assertEquals("xvmdr", response.iterator().next().inboundIpRules().get(0).ipMask());
         Assertions.assertEquals(IpActionType.ALLOW, response.iterator().next().inboundIpRules().get(0).action());
         Assertions.assertEquals(false, response.iterator().next().disableLocalAuth());
-        Assertions.assertEquals(DataResidencyBoundary.WITHIN_GEOPAIR,
+        Assertions.assertEquals(DataResidencyBoundary.WITHIN_REGION,
             response.iterator().next().dataResidencyBoundary());
     }
 }

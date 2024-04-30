@@ -34,18 +34,29 @@ public final class PartnerTopicInfoTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PartnerTopicInfo model = new PartnerTopicInfo().withAzureSubscriptionId("qtrgqjbpfzfsinzg")
-            .withResourceGroupName("cjrwzoxxjtfellu").withName("zitonpeqfpjkjl")
+            .withResourceGroupName("cjrwzoxxjtfellu")
+            .withName("zitonpeqfpjkjl")
             .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
-                .withInlineEventTypes(mapOf("xzxtheo", new InlineEventProperties().withDescription("pfxxy")
-                    .withDisplayName("ninmayhuyb").withDocumentationUrl("podepoo").withDataSchemaUrl("nuvamiheogna"),
+                .withInlineEventTypes(mapOf("xzxtheo",
+                    new InlineEventProperties().withDescription("pfxxy")
+                        .withDisplayName("ninmayhuyb")
+                        .withDocumentationUrl("podepoo")
+                        .withDataSchemaUrl("nuvamiheogna"),
                     "kufubljo",
-                    new InlineEventProperties().withDescription("si").withDisplayName("evcciqihnhun")
-                        .withDocumentationUrl("wjzrnfygxgisp").withDataSchemaUrl("vtz"),
+                    new InlineEventProperties().withDescription("si")
+                        .withDisplayName("evcciqihnhun")
+                        .withDocumentationUrl("wjzrnfygxgisp")
+                        .withDataSchemaUrl("vtz"),
                     "clxxwrljdo",
-                    new InlineEventProperties().withDescription("qeof").withDisplayName("e")
-                        .withDocumentationUrl("hqjbasvmsmj").withDataSchemaUrl("lngsntnbybkzgcwr"),
-                    "qpjwnzlljfm", new InlineEventProperties().withDescription("kcqvkocrc").withDisplayName("kwt")
-                        .withDocumentationUrl("xbnjbiksq").withDataSchemaUrl("lssai"))))
+                    new InlineEventProperties().withDescription("qeof")
+                        .withDisplayName("e")
+                        .withDocumentationUrl("hqjbasvmsmj")
+                        .withDataSchemaUrl("lngsntnbybkzgcwr"),
+                    "qpjwnzlljfm",
+                    new InlineEventProperties().withDescription("kcqvkocrc")
+                        .withDisplayName("kwt")
+                        .withDocumentationUrl("xbnjbiksq")
+                        .withDataSchemaUrl("lssai"))))
             .withSource("eebvmgxsab");
         model = BinaryData.fromObject(model).toObject(PartnerTopicInfo.class);
         Assertions.assertEquals("qtrgqjbpfzfsinzg", model.azureSubscriptionId());

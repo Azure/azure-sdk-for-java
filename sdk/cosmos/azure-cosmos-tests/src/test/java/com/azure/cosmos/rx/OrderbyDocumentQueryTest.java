@@ -29,7 +29,6 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingPolicy;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -205,7 +204,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             // customers if we ever make the custom factory method public
             // For now in Spark don't need to worry about extracting values - we would need a wrapper to
             // allow inferring schema anyway.
-            .setCustomSerializer(
+            .setCustomItemSerializer(
                 new CosmosItemSerializer() {
                     @Override
                     public <T> Map<String, Object> serialize(T item) {
