@@ -79,7 +79,12 @@ public final class OpenAIServerSentEvents {
                 }
 
                 try {
-                    handleCurrentEvent(outStream.toString(StandardCharsets.UTF_8.name()), values);
+                    String remainingBytes = outStream.toString(StandardCharsets.UTF_8.name());
+                    // If this is in fact, the last event, it will be appropriately chunked. Otherwise, we will cache and
+                    // try again in the next byte buffer with a fuller event.
+                    if (remainingBytes.endsWith("\n\n")) {
+                        handleCurrentEvent(remainingBytes, values);
+                    }
 //                    outStream = new ByteArrayOutputStream();
                 } catch (IllegalArgumentException | UncheckedIOException e) {
                     // UncheckedIOException is thrown when we attempt to deserialize incomplete JSON

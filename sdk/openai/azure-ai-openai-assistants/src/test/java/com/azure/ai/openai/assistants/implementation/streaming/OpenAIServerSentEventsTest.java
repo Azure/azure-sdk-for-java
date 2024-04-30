@@ -60,7 +60,7 @@ public class OpenAIServerSentEventsTest {
     }
 
     @Test
-    public void eventChunkDividerInNextByteBuffers() {
+    public void eventChunkDividerInNextByteBuffer() {
         Flux<ByteBuffer> testInput = Flux.just(
             ByteBuffer.wrap("event: thread.created\n".getBytes()),
             ByteBuffer.wrap("data: {\"id\":\"thread_yprSWEXT25cgpL8rCwsUchVC\",\"object\":\"thread\",\"created_at\":1710548044,\"metadata\":{}}".getBytes()),
@@ -82,7 +82,7 @@ public class OpenAIServerSentEventsTest {
     }
 
     @Test
-    public void eventChunkDividerInSplitByteBuffers() {
+    public void eventChunkDividerSplitBetweenByteBuffers() {
         Flux<ByteBuffer> testInput = Flux.just(
             ByteBuffer.wrap("event: thread.created\n".getBytes()),
             ByteBuffer.wrap("data: {\"id\":\"thread_yprSWEXT25cgpL8rCwsUchVC\",\"object\":\"thread\",\"created_at\":1710548044,\"metadata\":{}}\n".getBytes()),
