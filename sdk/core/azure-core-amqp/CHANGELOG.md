@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- `WindowedSubscriber` to translate the asynchronous stream of events or messages to `IterableStream` ([38705](https://github.com/Azure/azure-sdk-for-java/pull/38705)).
+
 ### Breaking Changes
 
 ### Bugs Fixed

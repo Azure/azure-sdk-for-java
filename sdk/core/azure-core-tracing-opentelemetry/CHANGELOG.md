@@ -6,6 +6,8 @@
 
 ### Breaking Changes
 
+- Added default query params sanitization for HTTP spans.
+
 ### Bugs Fixed
 
 ### Other Changes

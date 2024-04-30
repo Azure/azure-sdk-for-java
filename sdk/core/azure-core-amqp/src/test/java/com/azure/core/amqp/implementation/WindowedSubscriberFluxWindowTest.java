@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.servicebus;
+package com.azure.core.amqp.implementation;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -16,8 +16,8 @@ import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 
-import com.azure.messaging.servicebus.WindowedSubscriber.EnqueueResult;
-import com.azure.messaging.servicebus.WindowedSubscriber.WindowedSubscriberOptions;
+import com.azure.core.amqp.implementation.WindowedSubscriber.EnqueueResult;
+import com.azure.core.amqp.implementation.WindowedSubscriber.WindowedSubscriberOptions;
 
 public final class WindowedSubscriberFluxWindowTest {
     private static final HashMap<String, Object> EMPTY_LOGGING_CONTEXT = new HashMap<>(0);
@@ -36,13 +36,12 @@ public final class WindowedSubscriberFluxWindowTest {
         final EnqueueResult<Integer> r = subscriber.enqueueRequestImpl(windowSize, windowTimeout);
         final Flux<Integer> windowFlux = r.getWindowFlux();
 
-        StepVerifier.create(windowFlux)
-            .verifyErrorSatisfies(e -> {
-                final String message = e.getMessage();
-                Assertions.assertNotNull(message);
-                assertUpstreamErrorMessage(message);
-                Assertions.assertEquals(upstreamError, e.getCause());
-            });
+        StepVerifier.create(windowFlux).verifyErrorSatisfies(e -> {
+            final String message = e.getMessage();
+            Assertions.assertNotNull(message);
+            assertUpstreamErrorMessage(message);
+            Assertions.assertEquals(upstreamError, e.getCause());
+        });
         upstream.assertNotCancelled();
 
         final WindowedSubscriber.WindowWork<Integer> work = r.getInnerWork();
@@ -76,14 +75,12 @@ public final class WindowedSubscriberFluxWindowTest {
                 Assertions.assertEquals(upstreamError, e0.getCause());
             });
 
-        StepVerifier.create(window1Flux)
-            .expectNextCount(0)
-            .verifyErrorSatisfies(e1 -> {
-                final String message1 = e1.getMessage();
-                Assertions.assertNotNull(message1);
-                assertUpstreamErrorMessage(message1);
-                Assertions.assertEquals(upstreamError, e1.getCause());
-            });
+        StepVerifier.create(window1Flux).expectNextCount(0).verifyErrorSatisfies(e1 -> {
+            final String message1 = e1.getMessage();
+            Assertions.assertNotNull(message1);
+            assertUpstreamErrorMessage(message1);
+            Assertions.assertEquals(upstreamError, e1.getCause());
+        });
 
         final WindowedSubscriber.WindowWork<Integer> work0 = r0.getInnerWork();
         Assertions.assertFalse(work0.hasTimedOut());
@@ -100,8 +97,8 @@ public final class WindowedSubscriberFluxWindowTest {
         final Duration windowTimeout = Duration.ofSeconds(60);
         final RuntimeException upstreamError = new RuntimeException("connection-error");
         final Upstream<Integer> upstream = new Upstream<>();
-        final WindowedSubscriberOptions<Integer> options = new WindowedSubscriberOptions<Integer>()
-            .cleanCloseStreamingWindowOnTerminate();
+        final WindowedSubscriberOptions<Integer> options
+            = new WindowedSubscriberOptions<Integer>().cleanCloseStreamingWindowOnTerminate();
         final WindowedSubscriber<Integer> subscriber = createSubscriber(options);
         upstream.subscribe(subscriber);
 
@@ -149,12 +146,11 @@ public final class WindowedSubscriberFluxWindowTest {
         final EnqueueResult<Integer> r = subscriber.enqueueRequestImpl(windowSize, windowTimeout);
         final Flux<Integer> windowFlux = r.getWindowFlux();
 
-        StepVerifier.create(windowFlux)
-            .verifyErrorSatisfies(e -> {
-                final String message = e.getMessage();
-                Assertions.assertNotNull(message);
-                assertUpstreamCompletedMessage(message);
-            });
+        StepVerifier.create(windowFlux).verifyErrorSatisfies(e -> {
+            final String message = e.getMessage();
+            Assertions.assertNotNull(message);
+            assertUpstreamCompletedMessage(message);
+        });
         upstream.assertNotCancelled();
 
         final WindowedSubscriber.WindowWork<Integer> work = r.getInnerWork();
@@ -187,13 +183,11 @@ public final class WindowedSubscriberFluxWindowTest {
                 assertUpstreamCompletedMessage(message0);
             });
 
-        StepVerifier.create(window1Flux)
-            .expectNextCount(0)
-            .verifyErrorSatisfies(e1 -> {
-                final String message1 = e1.getMessage();
-                Assertions.assertNotNull(message1);
-                assertUpstreamCompletedMessage(message1);
-            });
+        StepVerifier.create(window1Flux).expectNextCount(0).verifyErrorSatisfies(e1 -> {
+            final String message1 = e1.getMessage();
+            Assertions.assertNotNull(message1);
+            assertUpstreamCompletedMessage(message1);
+        });
 
         final WindowedSubscriber.WindowWork<Integer> work0 = r0.getInnerWork();
         Assertions.assertFalse(work0.hasTimedOut());
@@ -210,8 +204,8 @@ public final class WindowedSubscriberFluxWindowTest {
         final Duration windowTimeout = Duration.ofSeconds(60);
         final Upstream<Integer> upstream = new Upstream<>();
 
-        final WindowedSubscriberOptions<Integer> options = new WindowedSubscriberOptions<Integer>()
-            .cleanCloseStreamingWindowOnTerminate();
+        final WindowedSubscriberOptions<Integer> options
+            = new WindowedSubscriberOptions<Integer>().cleanCloseStreamingWindowOnTerminate();
         final WindowedSubscriber<Integer> subscriber = createSubscriber(options);
         upstream.subscribe(subscriber);
 
@@ -256,12 +250,11 @@ public final class WindowedSubscriberFluxWindowTest {
 
         final EnqueueResult<Integer> r = subscriber.enqueueRequestImpl(windowSize, windowTimeout);
         final Flux<Integer> windowFlux = r.getWindowFlux();
-        StepVerifier.create(windowFlux)
-            .verifyErrorSatisfies(e -> {
-                final String message = e.getMessage();
-                Assertions.assertNotNull(message);
-                assertDownstreamCanceledMessage(message);
-            });
+        StepVerifier.create(windowFlux).verifyErrorSatisfies(e -> {
+            final String message = e.getMessage();
+            Assertions.assertNotNull(message);
+            assertDownstreamCanceledMessage(message);
+        });
 
         final WindowedSubscriber.WindowWork<Integer> work = r.getInnerWork();
         Assertions.assertFalse(work.hasTimedOut());
@@ -293,13 +286,11 @@ public final class WindowedSubscriberFluxWindowTest {
                 assertDownstreamCanceledMessage(message0);
             });
 
-        StepVerifier.create(window1Flux)
-            .expectNextCount(0)
-            .verifyErrorSatisfies(e1 -> {
-                final String message1 = e1.getMessage();
-                Assertions.assertNotNull(message1);
-                assertDownstreamCanceledMessage(message1);
-            });
+        StepVerifier.create(window1Flux).expectNextCount(0).verifyErrorSatisfies(e1 -> {
+            final String message1 = e1.getMessage();
+            Assertions.assertNotNull(message1);
+            assertDownstreamCanceledMessage(message1);
+        });
 
         final WindowedSubscriber.WindowWork<Integer> work0 = r0.getInnerWork();
         Assertions.assertFalse(work0.hasTimedOut());
@@ -316,8 +307,8 @@ public final class WindowedSubscriberFluxWindowTest {
         final Duration windowTimeout = Duration.ofSeconds(60);
         final Upstream<Integer> upstream = new Upstream<>();
 
-        final WindowedSubscriberOptions<Integer> options = new WindowedSubscriberOptions<Integer>()
-            .cleanCloseStreamingWindowOnTerminate();
+        final WindowedSubscriberOptions<Integer> options
+            = new WindowedSubscriberOptions<Integer>().cleanCloseStreamingWindowOnTerminate();
         final WindowedSubscriber<Integer> subscriber = createSubscriber(options);
         final Disposable disposable = upstream.subscribe(subscriber);
 
@@ -408,8 +399,7 @@ public final class WindowedSubscriberFluxWindowTest {
         EnqueueResult<Integer> r = subscriber.enqueueRequestImpl(windowSize, windowTimeout);
         final Flux<Integer> windowFlux = r.getWindowFlux().take(cancelAfter);
 
-        StepVerifier.create(windowFlux)
-            .verifyComplete();
+        StepVerifier.create(windowFlux).verifyComplete();
 
         final WindowedSubscriber.WindowWork<Integer> work = r.getInnerWork();
         Assertions.assertTrue(work.isCanceled());
@@ -494,11 +484,9 @@ public final class WindowedSubscriberFluxWindowTest {
         }
 
         Disposable subscribe(WindowedSubscriber<T> subscriber) {
-            return sink.asFlux()
-                .doOnRequest(r -> {
-                    requested.addAndGet(r);
-                })
-                .subscribeWith(subscriber);
+            return sink.asFlux().doOnRequest(r -> {
+                requested.addAndGet(r);
+            }).subscribeWith(subscriber);
         }
 
         long getRequested() {

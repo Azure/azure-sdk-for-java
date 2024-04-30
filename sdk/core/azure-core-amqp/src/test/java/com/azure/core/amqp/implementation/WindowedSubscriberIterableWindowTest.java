@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.servicebus;
+package com.azure.core.amqp.implementation;
 
 import com.azure.core.util.IterableStream;
 import org.junit.jupiter.api.Assertions;
@@ -18,15 +18,15 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.azure.messaging.servicebus.WindowedSubscriber.EnqueueResult;
-import com.azure.messaging.servicebus.WindowedSubscriber.WindowedSubscriberOptions;
+import com.azure.core.amqp.implementation.WindowedSubscriber.EnqueueResult;
+import com.azure.core.amqp.implementation.WindowedSubscriber.WindowedSubscriberOptions;
 
-import static com.azure.messaging.servicebus.WindowedSubscriberFluxWindowTest.assertDownstreamCanceledMessage;
-import static com.azure.messaging.servicebus.WindowedSubscriberFluxWindowTest.assertUpstreamCompletedMessage;
-import static com.azure.messaging.servicebus.WindowedSubscriberFluxWindowTest.assertUpstreamErrorMessage;
-import static com.azure.messaging.servicebus.WindowedSubscriberFluxWindowTest.createSubscriber;
-import static com.azure.messaging.servicebus.WindowedSubscriberFluxWindowTest.Decorator;
-import static com.azure.messaging.servicebus.WindowedSubscriberFluxWindowTest.Upstream;
+import static com.azure.core.amqp.implementation.WindowedSubscriberFluxWindowTest.assertDownstreamCanceledMessage;
+import static com.azure.core.amqp.implementation.WindowedSubscriberFluxWindowTest.assertUpstreamCompletedMessage;
+import static com.azure.core.amqp.implementation.WindowedSubscriberFluxWindowTest.assertUpstreamErrorMessage;
+import static com.azure.core.amqp.implementation.WindowedSubscriberFluxWindowTest.createSubscriber;
+import static com.azure.core.amqp.implementation.WindowedSubscriberFluxWindowTest.Decorator;
+import static com.azure.core.amqp.implementation.WindowedSubscriberFluxWindowTest.Upstream;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class WindowedSubscriberIterableWindowTest {
@@ -131,8 +131,8 @@ public final class WindowedSubscriberIterableWindowTest {
         final Duration windowTimeout = Duration.ofSeconds(60);
         final RuntimeException upstreamError = new RuntimeException("connection-error");
         final Upstream<Integer> upstream = new Upstream<>();
-        final WindowedSubscriberOptions<Integer> options = new WindowedSubscriberOptions<Integer>()
-            .cleanCloseStreamingWindowOnTerminate();
+        final WindowedSubscriberOptions<Integer> options
+            = new WindowedSubscriberOptions<Integer>().cleanCloseStreamingWindowOnTerminate();
         final WindowedSubscriber<Integer> subscriber = createSubscriber(options);
         upstream.subscribe(subscriber);
 
@@ -263,8 +263,8 @@ public final class WindowedSubscriberIterableWindowTest {
         final int windowSize = 10;
         final Duration windowTimeout = Duration.ofSeconds(60);
         final Upstream<Integer> upstream = new Upstream<>();
-        final WindowedSubscriberOptions<Integer> options = new WindowedSubscriberOptions<Integer>()
-            .cleanCloseStreamingWindowOnTerminate();
+        final WindowedSubscriberOptions<Integer> options
+            = new WindowedSubscriberOptions<Integer>().cleanCloseStreamingWindowOnTerminate();
         final WindowedSubscriber<Integer> subscriber = createSubscriber(options);
         upstream.subscribe(subscriber);
 
@@ -394,8 +394,8 @@ public final class WindowedSubscriberIterableWindowTest {
         final Duration windowTimeout = Duration.ofSeconds(60);
         final Upstream<Integer> upstream = new Upstream<>();
 
-        final WindowedSubscriberOptions<Integer> options = new WindowedSubscriberOptions<Integer>()
-            .cleanCloseStreamingWindowOnTerminate();
+        final WindowedSubscriberOptions<Integer> options
+            = new WindowedSubscriberOptions<Integer>().cleanCloseStreamingWindowOnTerminate();
         final WindowedSubscriber<Integer> subscriber = createSubscriber(options);
         final Disposable disposable = upstream.subscribe(subscriber);
 
@@ -746,7 +746,7 @@ public final class WindowedSubscriberIterableWindowTest {
                 // messages already loaded into the window buffer.
                 stream.forEach(v -> {
                     if (v == 3) {
-                        throw  new RuntimeException("application-error");
+                        throw new RuntimeException("application-error");
                     }
                     list0.add(v);
                 });
