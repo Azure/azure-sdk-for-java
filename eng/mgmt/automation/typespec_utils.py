@@ -28,6 +28,12 @@ def validate_tspconfig(tsp_dir: str) -> bool:
     # SDK automation would make sure these properties exists
     service_dir: str = yaml_json['parameters']['service-dir']['default']
     package_dir: str = yaml_json['options']['@azure-tools/typespec-java']['package-dir']
+    if 'namespace' not in yaml_json['options']['@azure-tools/typespec-java']:
+        log_and_print_error(
+            '[VALIDATE][tspconfig.yaml] '
+            'options.@azure-tools/typespec-java.namespace is REQUIRED for Java SDK. '
+            'E.g. "com.azure.ai.openai".')
+        return False
     namespace: str = yaml_json['options']['@azure-tools/typespec-java']['namespace']
 
     # validate service-dir
