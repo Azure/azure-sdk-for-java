@@ -507,7 +507,7 @@ public class OpenTelemetryHttpPolicyTests {
 
         arguments.add(
             Arguments.of(ORIGINAL_URL_WITH_QUERY, Collections.emptySet(), EXPECTED_URL_REDACTED));
-        arguments.add(Arguments.of(ORIGINAL_URL_NO_QUERY, Collections.emptySet(),ORIGINAL_URL_NO_QUERY));
+        arguments.add(Arguments.of(ORIGINAL_URL_NO_QUERY, Collections.emptySet(), ORIGINAL_URL_NO_QUERY));
         arguments.add(
             Arguments.of(ORIGINAL_URL_WITH_QUERY, Collections.singleton("n"), "https://httpbin.org/hello?n=otel&api-version=1.2.3"));
 
