@@ -8,8 +8,6 @@ import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
-
 /**
  * This class handles managing context about a test, such as custom testing annotations and verifying whether the test
  * is capable of running.
@@ -85,7 +83,6 @@ public class TestContextManager {
         }
         this.testClassPath = testClassPath;
         this.testRan = !(skipInPlayback && testMode == TestMode.PLAYBACK);
-        assumeTrue(testRan, "Test does not allow playback and was ran in 'TestMode.PLAYBACK'");
         this.trackerTestName = trackerTestName;
     }
 

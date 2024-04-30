@@ -33,6 +33,8 @@ import java.util.ServiceLoader;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+
 /**
  * Base class for running live and playback tests using {@link InterceptorManager}.
  */
@@ -135,6 +137,10 @@ public abstract class TestBase {
     @BeforeEach
     public void setupTest(TestContextManager testContextManager) {
         this.testContextManager = testContextManager;
+        // This check used to happen in the constructor for TestContextManager, but due to how JUnit performs parameter
+        // resolution for @BeforeEach methods, we need to check here. If it was left in the constructor, the test would
+        // fail instead of being skipped.
+        assumeTrue(testContextManager.didTestRun(), "Test does not allow playback and was ran in 'TestMode.PLAYBACK'");
 
         ThreadDumper.addRunningTest(testContextManager.getTrackerTestName());
         logger.info("Test Mode: {}, Name: {}", testContextManager.getTestMode(),
