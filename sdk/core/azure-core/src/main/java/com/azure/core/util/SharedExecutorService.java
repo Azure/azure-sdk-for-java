@@ -20,6 +20,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Function;
 
 /**
  * An {@link ExecutorService} that is shared by multiple consumers.
@@ -58,31 +59,49 @@ public final class SharedExecutorService implements ExecutorService {
     private static final SharedExecutorService INSTANCE;
 
     static {
-        THREAD_POOL_SIZE = getConfig(ConfigurationPropertyBuilder.ofInteger("azure.sdk.shared.threadpool.maxpoolsize")
-            .systemPropertyName("azure.sdk.shared.threadpool.maxpoolsize")
-            .environmentVariableName("AZURE_SDK_SHARED_THREADPOOL_MAXPOOLSIZE")
-            .defaultValue(10 * Runtime.getRuntime().availableProcessors())
-            .build());
+        THREAD_POOL_SIZE
+            = getConfig("azure.sdk.shared.threadpool.maxpoolsize", "AZURE_SDK_SHARED_THREADPOOL_MAXPOOLSIZE",
+                Integer::parseInt, 10 * Runtime.getRuntime().availableProcessors());
 
-        THREAD_POOL_KEEP_ALIVE_MILLIS
-            = getConfig(ConfigurationPropertyBuilder.ofInteger("azure.sdk.shared.threadpool.keepalivemillis")
-                .systemPropertyName("azure.sdk.shared.threadpool.keepalivemillis")
-                .environmentVariableName("AZURE_SDK_SHARED_THREADPOOL_KEEPALIVEMILLIS")
-                .defaultValue(60_000)
-                .build());
+        THREAD_POOL_KEEP_ALIVE_MILLIS = getConfig("azure.sdk.shared.threadpool.keepalivemillis",
+            "AZURE_SDK_SHARED_THREADPOOL_KEEPALIVEMILLIS", Integer::parseInt, 60_000);
 
-        THREAD_POOL_VIRTUAL
-            = getConfig(ConfigurationPropertyBuilder.ofBoolean("azure.sdk.shared.threadpool.usevirtualthreads")
-                .systemPropertyName("azure.sdk.shared.threadpool.usevirtualthreads")
-                .environmentVariableName("AZURE_SDK_SHARED_THREADPOOL_USEVIRTUALTHREADS")
-                .defaultValue(true)
-                .build());
+        THREAD_POOL_VIRTUAL = getConfig("azure.sdk.shared.threadpool.usevirtualthreads",
+            "AZURE_SDK_SHARED_THREADPOOL_USEVIRTUALTHREADS", Boolean::parseBoolean, true);
 
         INSTANCE = new SharedExecutorService();
     }
 
-    private static <T> T getConfig(ConfigurationProperty<T> configuration) {
-        return Configuration.getGlobalConfiguration().get(configuration, true);
+    private static <T> T getConfig(String systemProperty, String envVar, Function<String, T> converter,
+        T defaultValue) {
+        String foundValue = Configuration.getGlobalConfiguration()
+            .getFromEnvironment(systemProperty, envVar, ConfigurationProperty.REDACT_VALUE_SANITIZER);
+        if (foundValue == null) {
+            LOGGER.atVerbose()
+                .addKeyValue("systemProperty", systemProperty)
+                .addKeyValue("envVar", envVar)
+                .addKeyValue("defaultValue", defaultValue)
+                .log("Configuration value not found, using default.");
+            return defaultValue;
+        }
+
+        try {
+            T returnValue = converter.apply(foundValue);
+            LOGGER.atVerbose()
+                .addKeyValue("systemProperty", systemProperty)
+                .addKeyValue("envVar", envVar)
+                .addKeyValue("value", foundValue)
+                .log("Found configuration value.");
+            return returnValue;
+        } catch (RuntimeException e) {
+            LOGGER.atVerbose()
+                .addKeyValue("systemProperty", systemProperty)
+                .addKeyValue("envVar", envVar)
+                .addKeyValue("value", foundValue)
+                .addKeyValue("defaultValue", defaultValue)
+                .log("Failed to convert found configuration value, using default.");
+            return defaultValue;
+        }
     }
 
     private static final boolean VIRTUAL_THREAD_SUPPORTED;

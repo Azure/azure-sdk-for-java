@@ -496,38 +496,6 @@ public class Configuration implements Cloneable {
      * @throws RuntimeException when property value conversion (and validation) throws.
      */
     public <T> T get(ConfigurationProperty<T> property) {
-        return get(property, false);
-    }
-
-    /**
-     * Gets property value from all available sources in the following order:
-     *
-     * <ul>
-     *     <li>Explicit configuration from given {@link ConfigurationSource} by property name</li>
-     *     <li>Explicit configuration by property aliases in the order they were provided in {@link ConfigurationProperty}</li>
-     *     <li>Explicit configuration by property name in the shared section (if {@link ConfigurationProperty} is shared)</li>
-     *     <li>Explicit configuration by property aliases in the shared section (if {@link ConfigurationProperty} is shared)</li>
-     *     <li>System property (if set)</li>
-     *     <li>Environment variable (if set)</li>
-     * </ul>
-     *
-     * <p>
-     * Property value is converted to specified type. If property value is missing and not required, default value is
-     * returned.
-     * <p>
-     * If the property value conversion fails, {@code returnDefaultOnConversionFailure} determines whether the default
-     * value is returned or the conversion exception is thrown.
-     *
-     * @param property instance.
-     * @param returnDefaultOnConversionFailure If true, returns the default value when the property value conversion
-     * fails. If false, throws an exception when the property value conversion fails.
-     * @param <T> Type that the configuration is converted to if found.
-     * @return The value of the property if it exists, otherwise the default value of the property.
-     * @throws NullPointerException when property instance is null.
-     * @throws IllegalArgumentException when required property is missing.
-     * @throws RuntimeException when property value conversion (and validation) throws.
-     */
-    public <T> T get(ConfigurationProperty<T> property, boolean returnDefaultOnConversionFailure) {
         Objects.requireNonNull(property, "'property' cannot be null");
         String value = getWithFallback(property);
 
@@ -544,22 +512,11 @@ public class Configuration implements Cloneable {
         try {
             return property.getConverter().apply(value);
         } catch (RuntimeException ex) {
-            if (returnDefaultOnConversionFailure) {
-                LOGGER.atInfo()
-                    .addKeyValue("name", property.getName())
-                    .addKeyValue("path", path)
-                    .addKeyValue("value", property.getValueSanitizer().apply(value))
-                    .addKeyValue("defaultValue", property.getDefaultValue())
-                    .log("Failed to convert property value, returning default value.", ex);
-
-                return property.getDefaultValue();
-            } else {
-                throw LOGGER.atError()
-                    .addKeyValue("name", property.getName())
-                    .addKeyValue("path", path)
-                    .addKeyValue("value", property.getValueSanitizer().apply(value))
-                    .log(ex);
-            }
+            throw LOGGER.atError()
+                .addKeyValue("name", property.getName())
+                .addKeyValue("path", path)
+                .addKeyValue("value", property.getValueSanitizer().apply(value))
+                .log(ex);
         }
     }
 
@@ -595,7 +552,7 @@ public class Configuration implements Cloneable {
         return null;
     }
 
-    private <T> String getWithFallback(ConfigurationProperty<T> property) {
+    private String getWithFallback(ConfigurationProperty<?> property) {
         String name = property.getName();
         if (!CoreUtils.isNullOrEmpty(name)) {
             String value = getLocalProperty(name, property.getAliases(), property.getValueSanitizer());
@@ -610,31 +567,28 @@ public class Configuration implements Cloneable {
                 }
             }
         }
-        return getFromEnvironment(property);
+        return getFromEnvironment(property.getSystemPropertyName(), property.getEnvironmentVariableName(),
+            property.getValueSanitizer());
     }
 
-    private <T> String getFromEnvironment(ConfigurationProperty<T> property) {
-        String systemProperty = property.getSystemPropertyName();
+    String getFromEnvironment(String systemProperty, String envVar, Function<String, String> valueSanitizer) {
         if (systemProperty != null) {
             final String value = environmentConfiguration.getSystemProperty(systemProperty);
             if (value != null) {
                 LOGGER.atVerbose()
-                    .addKeyValue("name", property.getName())
                     .addKeyValue("systemProperty", systemProperty)
-                    .addKeyValue("value", () -> property.getValueSanitizer().apply(value))
+                    .addKeyValue("value", () -> valueSanitizer.apply(value))
                     .log("Got property from system property.");
                 return value;
             }
         }
 
-        String envVar = property.getEnvironmentVariableName();
         if (envVar != null) {
             final String value = environmentConfiguration.getEnvironmentVariable(envVar);
             if (value != null) {
                 LOGGER.atVerbose()
-                    .addKeyValue("name", property.getName())
                     .addKeyValue("envVar", envVar)
-                    .addKeyValue("value", () -> property.getValueSanitizer().apply(value))
+                    .addKeyValue("value", () -> valueSanitizer.apply(value))
                     .log("Got property from environment variable.");
                 return value;
             }
