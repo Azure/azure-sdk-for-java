@@ -216,6 +216,30 @@ directive:
       return $;
 ```
 
+### Rename `maxStoragePerIndex` property to `maxStoragePerIndexInBytes` in ServiceLimits
+
+``` yaml $(tag) == 'searchservice'
+directive:
+  - from: swagger-document
+    where: $.definitions.ServiceLimits.properties
+    transform: >
+      $.maxStoragePerIndexInBytes = $.maxStoragePerIndex;
+      delete $.maxStoragePerIndex;
+```
+
+### Set `hybridSearch` property to be type `HybridSearch` in SearchRequest
+
+``` yaml $(tag) == 'searchindex'
+directive:
+  - from: swagger-document
+    where: $.definitions.SearchRequest.properties
+    transform: >
+        delete $.hybridSearch["type"];
+        delete $.hybridSearch.items;
+        $.hybridSearch["$ref"] = "#/definitions/HybridSearch";
+        
+```
+
 ### Remove required from properties that are optional
 
 ``` yaml $(tag) == 'searchservice'

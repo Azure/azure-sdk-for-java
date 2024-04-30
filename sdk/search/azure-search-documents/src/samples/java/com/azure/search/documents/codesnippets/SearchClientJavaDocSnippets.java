@@ -21,7 +21,7 @@ public class SearchClientJavaDocSnippets {
 
     private static SearchClient searchClient;
 
-    private static SearchClient createSearchClientWithSearcClientBuilder() {
+    private static SearchClient createSearchClientWithSearchClientBuilder() {
         // BEGIN: com.azure.search.documents.SearchClient-classLevelJavaDoc.instantiationWithSearchClientBuilder
         SearchClient searchClient = new SearchClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
@@ -36,7 +36,7 @@ public class SearchClientJavaDocSnippets {
      * Uploading a document to a SearchClient index.
      */
     public static void uploadDocument() {
-        searchClient = createSearchClientWithSearcClientBuilder();
+        searchClient = createSearchClientWithSearchClientBuilder();
         // BEGIN: com.azure.search.documents.SearchClient-classLevelJavaDoc.uploadDocument#Map-boolean
         List<Hotel> hotels = new ArrayList<>();
         hotels.add(new Hotel().setHotelId("100"));
@@ -50,7 +50,7 @@ public class SearchClientJavaDocSnippets {
      * Merge a document in a SearchClient index.
      */
     public static void mergeDocument() {
-        searchClient = createSearchClientWithSearcClientBuilder();
+        searchClient = createSearchClientWithSearchClientBuilder();
         // BEGIN: com.azure.search.documents.SearchClient-classLevelJavaDoc.mergeDocument#Map
         List<Hotel> hotels = new ArrayList<>();
         hotels.add(new Hotel().setHotelId("100"));
@@ -63,7 +63,7 @@ public class SearchClientJavaDocSnippets {
      * Delete a document in a SearchClient index.
      */
     public static void deleteDocument() {
-        searchClient = createSearchClientWithSearcClientBuilder();
+        searchClient = createSearchClientWithSearchClientBuilder();
         // BEGIN: com.azure.search.documents.SearchClient-classLevelJavaDoc.deleteDocument#String
         SearchDocument documentId = new SearchDocument();
         documentId.put("hotelId", "100");
@@ -75,7 +75,7 @@ public class SearchClientJavaDocSnippets {
      * Retrieve a document from a SearchClient index.
      */
     public static void getDocument() {
-        searchClient = createSearchClientWithSearcClientBuilder();
+        searchClient = createSearchClientWithSearchClientBuilder();
         // BEGIN: com.azure.search.documents.SearchClient-classLevelJavaDoc.getDocument#String-Class
         Hotel hotel = searchClient.getDocument("100", Hotel.class);
         System.out.printf("Retrieved Hotel %s%n", hotel.getHotelId());
@@ -86,7 +86,7 @@ public class SearchClientJavaDocSnippets {
      * Search documents in a SearchClient index.
      */
     public static void searchDocuments() {
-        searchClient = createSearchClientWithSearcClientBuilder();
+        searchClient = createSearchClientWithSearchClientBuilder();
         // BEGIN: com.azure.search.documents.SearchClient-classLevelJavaDoc.searchDocuments#String
         SearchDocument searchDocument = new SearchDocument();
         searchDocument.put("hotelId", "8");
@@ -112,7 +112,7 @@ public class SearchClientJavaDocSnippets {
      * Make a suggestion query to a SearchClient index.
      */
     public static void suggestDocuments() {
-        searchClient = createSearchClientWithSearcClientBuilder();
+        searchClient = createSearchClientWithSearchClientBuilder();
         // BEGIN: com.azure.search.documents.SearchClient-classLevelJavaDoc.suggestDocuments#String-String
         SuggestPagedIterable suggestPagedIterable = searchClient.suggest("searchText", "sg");
         for (SuggestResult result: suggestPagedIterable) {
@@ -125,7 +125,7 @@ public class SearchClientJavaDocSnippets {
      * Autocomplete a query in a SearchClient index.
      */
     public static void autocompleteDocuments() {
-        searchClient = createSearchClientWithSearcClientBuilder();
+        searchClient = createSearchClientWithSearchClientBuilder();
         // BEGIN: com.azure.search.documents.SearchClient-classLevelJavaDoc.autocomplete#String-String
         AutocompletePagedIterable autocompletePagedIterable = searchClient.autocomplete("searchText", "sg");
         for (AutocompleteItem result: autocompletePagedIterable) {

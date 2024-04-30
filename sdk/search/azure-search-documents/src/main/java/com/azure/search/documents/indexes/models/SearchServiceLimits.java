@@ -42,7 +42,7 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
     /*
      * The maximum amount of storage in bytes allowed per index.
      */
-    private Long maxStoragePerIndex;
+    private Long maxStoragePerIndexInBytes;
 
     /**
      * Creates an instance of SearchServiceLimits class.
@@ -138,22 +138,22 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
     }
 
     /**
-     * Get the maxStoragePerIndex property: The maximum amount of storage in bytes allowed per index.
+     * Get the maxStoragePerIndexInBytes property: The maximum amount of storage in bytes allowed per index.
      * 
-     * @return the maxStoragePerIndex value.
+     * @return the maxStoragePerIndexInBytes value.
      */
-    public Long getMaxStoragePerIndex() {
-        return this.maxStoragePerIndex;
+    public Long getMaxStoragePerIndexInBytes() {
+        return this.maxStoragePerIndexInBytes;
     }
 
     /**
-     * Set the maxStoragePerIndex property: The maximum amount of storage in bytes allowed per index.
+     * Set the maxStoragePerIndexInBytes property: The maximum amount of storage in bytes allowed per index.
      * 
-     * @param maxStoragePerIndex the maxStoragePerIndex value to set.
+     * @param maxStoragePerIndexInBytes the maxStoragePerIndexInBytes value to set.
      * @return the SearchServiceLimits object itself.
      */
-    public SearchServiceLimits setMaxStoragePerIndex(Long maxStoragePerIndex) {
-        this.maxStoragePerIndex = maxStoragePerIndex;
+    public SearchServiceLimits setMaxStoragePerIndexInBytes(Long maxStoragePerIndexInBytes) {
+        this.maxStoragePerIndexInBytes = maxStoragePerIndexInBytes;
         return this;
     }
 
@@ -165,7 +165,7 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
         jsonWriter.writeNumberField("maxComplexCollectionFieldsPerIndex", this.maxComplexCollectionFieldsPerIndex);
         jsonWriter.writeNumberField("maxComplexObjectsInCollectionsPerDocument",
             this.maxComplexObjectsInCollectionsPerDocument);
-        jsonWriter.writeNumberField("maxStoragePerIndex", this.maxStoragePerIndex);
+        jsonWriter.writeNumberField("maxStoragePerIndexInBytes", this.maxStoragePerIndexInBytes);
         return jsonWriter.writeEndObject();
     }
 
@@ -195,8 +195,8 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
                 } else if ("maxComplexObjectsInCollectionsPerDocument".equals(fieldName)) {
                     deserializedSearchServiceLimits.maxComplexObjectsInCollectionsPerDocument
                         = reader.getNullable(JsonReader::getInt);
-                } else if ("maxStoragePerIndex".equals(fieldName)) {
-                    deserializedSearchServiceLimits.maxStoragePerIndex = reader.getNullable(JsonReader::getLong);
+                } else if ("maxStoragePerIndexInBytes".equals(fieldName)) {
+                    deserializedSearchServiceLimits.maxStoragePerIndexInBytes = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }

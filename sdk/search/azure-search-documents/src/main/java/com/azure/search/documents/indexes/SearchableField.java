@@ -3,7 +3,12 @@
 
 package com.azure.search.documents.indexes;
 
-import com.azure.search.documents.indexes.models.*;
+import com.azure.search.documents.indexes.models.FieldBuilderOptions;
+import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
+import com.azure.search.documents.indexes.models.LexicalNormalizerName;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SynonymMap;
+import com.azure.search.documents.indexes.models.VectorEncodingFormat;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
