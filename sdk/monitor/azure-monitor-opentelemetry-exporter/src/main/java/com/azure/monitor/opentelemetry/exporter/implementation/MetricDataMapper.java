@@ -45,18 +45,20 @@ public class MetricDataMapper {
 
     private static final ClientLogger logger = new ClientLogger(MetricDataMapper.class);
 
+    private static final Set<String> OTEL_STABLE_METRICS_TO_BREEZE = new HashSet<>();
+    private static final String OTEL_INSTRUMENTATION_NAME_PREFIX = "io.opentelemetry";
     private static final Set<String> OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES = new HashSet<>(4);
-    private static final List<String> EXCLUDED_METRIC_NAMES = new ArrayList<>();
     public static final AttributeKey<String> APPLICATIONINSIGHTS_INTERNAL_METRIC_NAME = AttributeKey.stringKey("applicationinsights.internal.metric_name");
 
     private final BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer;
     private final boolean captureHttpServer4xxAsError;
 
     static {
-        EXCLUDED_METRIC_NAMES.add("http.server.active_requests"); // Servlet
-        EXCLUDED_METRIC_NAMES.add("http.server.response.size");
-        EXCLUDED_METRIC_NAMES.add("http.client.response.size");
+        // HTTP stable metrics
+        OTEL_STABLE_METRICS_TO_BREEZE.add("http.server.request.duration");
+        OTEL_STABLE_METRICS_TO_BREEZE.add("http.client.request.duration");
 
+        // Application Insights pre-aggregated standard metrics
         OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("http.server.request.duration");
         OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("http.client.request.duration");
         OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("http.server.duration"); // pre-stable HTTP semconv
@@ -73,8 +75,11 @@ public class MetricDataMapper {
     }
 
     public void map(MetricData metricData, Consumer<TelemetryItem> consumer) {
-        if (EXCLUDED_METRIC_NAMES.contains(metricData.getName())) {
-            return;
+        // only emit stable metrics from the OpenTelemetry instrumentation libraries
+        // custom metrics are always emitted
+        if (!OTEL_STABLE_METRICS_TO_BREEZE.contains(metricData.getName())
+            && metricData.getInstrumentationScopeInfo().getName().startsWith(OTEL_INSTRUMENTATION_NAME_PREFIX)) {
+           return;
         }
 
         MetricDataType type = metricData.getType();
