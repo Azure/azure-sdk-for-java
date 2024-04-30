@@ -14,7 +14,6 @@ import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueueMetrics;
 import com.azure.storage.queue.models.QueueRetentionPolicy;
 import com.azure.storage.queue.models.QueueServiceProperties;
-import com.azure.storage.queue.models.QueueStorageException;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
