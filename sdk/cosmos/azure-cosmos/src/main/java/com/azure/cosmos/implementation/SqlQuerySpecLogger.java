@@ -12,7 +12,7 @@ public class SqlQuerySpecLogger {
     static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
     private static final SqlQuerySpecLogger INSTANCE = new SqlQuerySpecLogger(LoggerFactory.getLogger(SqlQuerySpecLogger.class));
-    
+
     public static SqlQuerySpecLogger getInstance() {
         return INSTANCE;
     }
@@ -31,15 +31,12 @@ public class SqlQuerySpecLogger {
                                             .append(p.getName())
                                             .append(" = ")
                                             .append(p.getValue(Object.class))
-        );  
+        );
 
         return sb.toString();
     }
 
     public void logQuery(SqlQuerySpec querySpec) {
-       // logger.info(toPrettyString(querySpec));
-        
-        //ctxAccessor.getDiagnostics(null).
         if (logger.isTraceEnabled() && !querySpec.getParameters().isEmpty()) {
             logger.debug(toPrettyString(querySpec));
         } else if (logger.isDebugEnabled()) {
