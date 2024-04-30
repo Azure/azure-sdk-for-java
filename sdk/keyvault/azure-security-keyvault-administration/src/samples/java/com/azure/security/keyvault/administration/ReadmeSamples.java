@@ -294,6 +294,34 @@ public class ReadmeSamples {
     }
 
     /**
+     * Code sample for starting a {@link KeyVaultBackupOperation pre-backup check}.
+     */
+    public void beginPreBackup() {
+        // BEGIN: readme-sample-beginPreBackup
+        String blobStorageUrl = "https://myaccount.blob.core.windows.net/myContainer";
+        String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+
+        SyncPoller<KeyVaultBackupOperation, String> preBackupPoller =
+            keyVaultBackupClient.beginPreBackup(blobStorageUrl, sasToken);
+        PollResponse<KeyVaultBackupOperation> pollResponse = preBackupPoller.poll();
+
+        System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus());
+
+        PollResponse<KeyVaultBackupOperation> finalPollResponse = preBackupPoller.waitForCompletion();
+
+        if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            String folderUrl = preBackupPoller.getFinalResult();
+
+            System.out.printf("Pre-backup check completed successfully.%n");
+        } else {
+            KeyVaultBackupOperation operation = preBackupPoller.poll().getValue();
+
+            System.out.printf("Pre-backup check failed with error: %s.%n", operation.getError().getMessage());
+        }
+        // END: readme-sample-beginPreBackup
+    }
+
+    /**
      * Code sample for starting a {@link KeyVaultBackupOperation backup operation}.
      */
     public void beginBackup() {
@@ -303,7 +331,6 @@ public class ReadmeSamples {
 
         SyncPoller<KeyVaultBackupOperation, String> backupPoller =
             keyVaultBackupClient.beginBackup(blobStorageUrl, sasToken);
-
         PollResponse<KeyVaultBackupOperation> pollResponse = backupPoller.poll();
 
         System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus());
@@ -323,6 +350,32 @@ public class ReadmeSamples {
     }
 
     /**
+     * Code sample for starting a {@link KeyVaultRestoreOperation pre-restore check}.
+     */
+    public void beginPreRestore() {
+        // BEGIN: readme-sample-beginPreRestore
+        String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
+        String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+
+        SyncPoller<KeyVaultRestoreOperation, KeyVaultRestoreResult> preRestorePoller =
+            keyVaultBackupClient.beginPreRestore(folderUrl, sasToken);
+        PollResponse<KeyVaultRestoreOperation> pollResponse = preRestorePoller.poll();
+
+        System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus());
+
+        PollResponse<KeyVaultRestoreOperation> finalPollResponse = preRestorePoller.waitForCompletion();
+
+        if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            System.out.printf("Pre-restore check completed successfully.%n");
+        } else {
+            KeyVaultRestoreOperation operation = preRestorePoller.poll().getValue();
+
+            System.out.printf("Pre-restore check failed with error: %s.%n", operation.getError().getMessage());
+        }
+        // END: readme-sample-beginPreRestore
+    }
+
+    /**
      * Code sample for starting a {@link KeyVaultRestoreOperation restore operation}.
      */
     public void beginRestore() {
@@ -330,19 +383,18 @@ public class ReadmeSamples {
         String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
         String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
 
-        SyncPoller<KeyVaultRestoreOperation, KeyVaultRestoreResult> backupPoller =
+        SyncPoller<KeyVaultRestoreOperation, KeyVaultRestoreResult> restorePoller =
             keyVaultBackupClient.beginRestore(folderUrl, sasToken);
-
-        PollResponse<KeyVaultRestoreOperation> pollResponse = backupPoller.poll();
+        PollResponse<KeyVaultRestoreOperation> pollResponse = restorePoller.poll();
 
         System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus());
 
-        PollResponse<KeyVaultRestoreOperation> finalPollResponse = backupPoller.waitForCompletion();
+        PollResponse<KeyVaultRestoreOperation> finalPollResponse = restorePoller.waitForCompletion();
 
         if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
             System.out.printf("Backup restored successfully.%n");
         } else {
-            KeyVaultRestoreOperation operation = backupPoller.poll().getValue();
+            KeyVaultRestoreOperation operation = restorePoller.poll().getValue();
 
             System.out.printf("Restore failed with error: %s.%n", operation.getError().getMessage());
         }
@@ -358,23 +410,42 @@ public class ReadmeSamples {
         String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
         String keyName = "myKey";
 
-        SyncPoller<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> backupPoller =
+        SyncPoller<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> restorePoller =
             keyVaultBackupClient.beginSelectiveKeyRestore(folderUrl, sasToken, keyName);
-
-        PollResponse<KeyVaultSelectiveKeyRestoreOperation> pollResponse = backupPoller.poll();
+        PollResponse<KeyVaultSelectiveKeyRestoreOperation> pollResponse = restorePoller.poll();
 
         System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus());
 
-        PollResponse<KeyVaultSelectiveKeyRestoreOperation> finalPollResponse = backupPoller.waitForCompletion();
+        PollResponse<KeyVaultSelectiveKeyRestoreOperation> finalPollResponse = restorePoller.waitForCompletion();
 
         if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
             System.out.printf("Key restored successfully.%n");
         } else {
-            KeyVaultSelectiveKeyRestoreOperation operation = backupPoller.poll().getValue();
+            KeyVaultSelectiveKeyRestoreOperation operation = restorePoller.poll().getValue();
 
             System.out.printf("Key restore failed with error: %s.%n", operation.getError().getMessage());
         }
         // END: readme-sample-beginSelectiveKeyRestore
+    }
+
+    /**
+     * Code sample for starting a {@link KeyVaultBackupOperation pre-backup check} asynchronously.
+     */
+    public void beginPreBackupAsync() {
+        // BEGIN: readme-sample-beginPreBackupAsync
+        String blobStorageUrl = "https://myaccount.blob.core.windows.net/myContainer";
+        String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+
+        keyVaultBackupAsyncClient.beginPreBackup(blobStorageUrl, sasToken)
+            .setPollInterval(Duration.ofSeconds(1)) // You can set a custom polling interval.
+            .doOnError(e -> System.out.printf("Pre-backup check failed with error: %s.%n", e.getMessage()))
+            .doOnNext(pollResponse ->
+                System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus()))
+            .filter(pollResponse -> pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .subscribe(folderUrl ->
+                System.out.printf("Pre-backup check completed successfully.%n"));
+        // END: readme-sample-beginPreBackupAsync
     }
 
     /**
@@ -395,6 +466,25 @@ public class ReadmeSamples {
             .subscribe(folderUrl ->
                 System.out.printf("Backup completed. The storage location of this backup is: %s.%n", folderUrl));
         // END: readme-sample-beginBackupAsync
+    }
+
+    /**
+     * Code sample for starting a {@link KeyVaultRestoreOperation pre-restore check} asynchronously.
+     */
+    public void beginPreRestoreAsync() {
+        // BEGIN: readme-sample-beginPreRestoreAsync
+        String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
+        String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+
+        keyVaultBackupAsyncClient.beginPreRestore(folderUrl, sasToken)
+            .setPollInterval(Duration.ofSeconds(1)) // You can set a custom polling interval.
+            .doOnError(e -> System.out.printf("Pre-restore check failed with error: %s.%n", e.getMessage()))
+            .doOnNext(pollResponse ->
+                System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus()))
+            .filter(pollResponse -> pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .subscribe(unused -> System.out.printf("Pre-restore check completed successfully.%n"));
+        // END: readme-sample-beginPreRestoreAsync
     }
 
     /**
