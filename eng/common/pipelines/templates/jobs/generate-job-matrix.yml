@@ -122,6 +122,7 @@ jobs:
         parameters:
           UsePlatformContainer: false
           OSName: ${{ pool.os }}
+          JobId: ${{ config.Name }}_${{ pool.os }}
           Matrix: dependencies.${{ parameters.GenerateJobName }}.outputs['vm_job_matrix_${{ config.Name }}_${{ pool.name }}.matrix']
           DependsOn: ${{ parameters.GenerateJobName }}
           CloudConfig: ${{ parameters.CloudConfig }}
@@ -133,6 +134,7 @@ jobs:
         parameters:
           UsePlatformContainer: true
           OSName: ${{ pool.os }}
+          JobId: ${{ config.Name }}_${{ pool.os }}
           Matrix: dependencies.${{ parameters.GenerateJobName }}.outputs['vm_job_matrix_${{ config.Name }}_${{ pool.name }}.matrix']
           DependsOn: ${{ parameters.GenerateJobName }}
           CloudConfig: ${{ parameters.CloudConfig }}
