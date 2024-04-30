@@ -82,7 +82,7 @@ public final class OpenAIServerSentEvents {
                     String remainingBytes = outStream.toString(StandardCharsets.UTF_8.name());
                     // If this is in fact, the last event, it will be appropriately chunked. Otherwise, we will cache and
                     // try again in the next byte buffer with a fuller event.
-                    if (remainingBytes.endsWith("\n\n")) {
+                    if (remainingBytes.endsWith("\n\n") || remainingBytes.endsWith("\r\n\r\n")) {
                         handleCurrentEvent(remainingBytes, values);
                     }
 //                    outStream = new ByteArrayOutputStream();
