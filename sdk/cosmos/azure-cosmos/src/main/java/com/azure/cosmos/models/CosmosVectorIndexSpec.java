@@ -7,6 +7,8 @@ import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 /**
  * Vector Indexes spec for Azure CosmosDB service.
  */
@@ -48,10 +50,6 @@ public final class CosmosVectorIndexSpec {
     public String getType() {
         if (this.type == null) {
             this.type = this.jsonSerializable.getString(Constants.Properties.VECTOR_INDEX_TYPE);
-
-            if (this.type == null) {
-                throw new IllegalArgumentException("INVALID vectorIndexType of " + this.jsonSerializable.getString(Constants.Properties.VECTOR_INDEX_TYPE));
-            }
         }
         return this.type;
     }
@@ -63,6 +61,7 @@ public final class CosmosVectorIndexSpec {
      * @return the VectorIndexSpec
      */
     public CosmosVectorIndexSpec setType(String type) {
+        checkNotNull(type, "cosmosVectorIndexType cannot be null");
         this.type = type;
         this.jsonSerializable.set(Constants.Properties.VECTOR_INDEX_TYPE, this.type, CosmosItemSerializer.DEFAULT_SERIALIZER);
         return this;

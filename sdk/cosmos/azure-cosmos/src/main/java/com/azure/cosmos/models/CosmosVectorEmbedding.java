@@ -74,7 +74,7 @@ public final class CosmosVectorEmbedding {
      * @return CosmosVectorEmbedding
      */
     public CosmosVectorEmbedding setDataType(CosmosVectorDataType dataType) {
-        checkNotNull(dataType, "cosmosVectorDataType cannot be empty");
+        checkNotNull(dataType, "cosmosVectorDataType cannot be null");
         this.dataType = dataType.toString();
         return this;
     }
@@ -95,9 +95,9 @@ public final class CosmosVectorEmbedding {
      * @return CosmosVectorEmbedding
      */
     public CosmosVectorEmbedding setDimensions(Long dimensions) {
-        checkNotNull(dimensions, "dimensions cannot be empty");
+        checkNotNull(dimensions, "dimensions cannot be null");
         if (dimensions < 1) {
-            throw new IllegalArgumentException("Dimensions for the embedding has to be a long value greater than 1 " +
+            throw new IllegalArgumentException("Dimensions for the embedding has to be a long value greater than 0 " +
                 "for the vector embedding policy");
         }
 
