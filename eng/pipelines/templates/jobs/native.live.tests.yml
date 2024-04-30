@@ -64,9 +64,11 @@ parameters:
     default: $(TestVersionSupport)
   - name: OSName
     type: string
+  - name: JobId
+    type: string
 
 jobs:
-  - job: NativeLiveTest_${{ parameters.OSName }}
+  - job: ${{ parameters.JobId }}
     dependsOn: ${{ parameters.DependsOn }}
     condition: and(succeededOrFailed(), ne(${{ parameters.Matrix }}, '{}'))
     strategy:
