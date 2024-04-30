@@ -23,7 +23,8 @@ public class UrlSanitizerTests {
 
     @ParameterizedTest()
     @MethodSource("urlSanitizationArgs")
-    public void testUrlSanitizer(String original, Set<String> allowedParams, String expected) throws URISyntaxException, MalformedURLException {
+    public void testUrlSanitizer(String original, Set<String> allowedParams, String expected)
+        throws URISyntaxException, MalformedURLException {
         UrlSanitizer sanitizer = new UrlSanitizer(allowedParams);
         assertEquals(expected, sanitizer.getRedactedUrl(new URI(original).toURL()));
     }
@@ -32,13 +33,15 @@ public class UrlSanitizerTests {
         List<Arguments> arguments = new ArrayList<>();
         arguments.add(Arguments.of("http://example.com", null, "http://example.com"));
         arguments.add(Arguments.of("https://example.com", Collections.emptySet(), "https://example.com"));
-        arguments.add(Arguments.of("https://example.com/?api-version=123", null, "https://example.com/?api-version=123"));
-        arguments.add(Arguments.of("http://example.com?api-version=123", Collections.emptySet(), "http://example.com?api-version=123"));
+        arguments
+            .add(Arguments.of("https://example.com/?api-version=123", null, "https://example.com/?api-version=123"));
+        arguments.add(Arguments.of("http://example.com?api-version=123", Collections.emptySet(),
+            "http://example.com?api-version=123"));
         arguments.add(Arguments.of("https://example.com/hello?", Collections.emptySet(), "https://example.com/hello?"));
 
         String url = "https://example.com/hello?foo=bar&api-version=1.2.3";
-        arguments.add(
-            Arguments.of(url, Collections.emptySet(), "https://example.com/hello?foo=REDACTED&api-version=1.2.3"));
+        arguments
+            .add(Arguments.of(url, Collections.emptySet(), "https://example.com/hello?foo=REDACTED&api-version=1.2.3"));
         arguments.add(
             Arguments.of(url, Collections.singleton("foo"), "https://example.com/hello?foo=bar&api-version=1.2.3"));
 
@@ -46,7 +49,8 @@ public class UrlSanitizerTests {
         allowed.add("foo");
         allowed.add("baz");
         arguments.add(Arguments.of(url, allowed, "https://example.com/hello?foo=bar&api-version=1.2.3"));
-        arguments.add(Arguments.of(url, Collections.unmodifiableSet(allowed), "https://example.com/hello?foo=bar&api-version=1.2.3"));
+        arguments.add(Arguments.of(url, Collections.unmodifiableSet(allowed),
+            "https://example.com/hello?foo=bar&api-version=1.2.3"));
 
         return arguments.stream();
     }

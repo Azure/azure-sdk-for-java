@@ -17,10 +17,19 @@ import java.util.stream.Collectors;
 
 import static com.azure.core.implementation.logging.LoggingKeys.REDACTED_PLACEHOLDER;
 
+/**
+ * Sanitizes URLs by redacting query parameters based on a configured allowlist.
+ */
 public final class UrlSanitizer {
-    static final Set<String> DEFAULT_QUERY_PARAMS_ALLOWLIST = new HashSet<>(Collections.singletonList("api-version"));
+    static final Set<String> DEFAULT_QUERY_PARAMS_ALLOWLIST
+        = Collections.unmodifiableSet(new HashSet<>(Collections.singletonList("api-version")));
     private final Set<String> allowedQueryParamNames;
 
+    /**
+     * Creates a new instance of UrlSanitizer with the default allowlist.
+     *
+     * @param allowedQueryParamNames A collection of query parameter names that should not be redacted.
+     */
     public UrlSanitizer(Collection<String> allowedQueryParamNames) {
         if (allowedQueryParamNames == null) {
             this.allowedQueryParamNames = DEFAULT_QUERY_PARAMS_ALLOWLIST;
@@ -32,7 +41,7 @@ public final class UrlSanitizer {
         }
     }
 
-    /*
+    /**
      * Generates the redacted URL for logging or tracing.
      *
      * @param url URL where the request is being sent.

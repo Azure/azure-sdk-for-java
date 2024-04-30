@@ -156,8 +156,8 @@ public class OpenTelemetryHttpPolicyTests {
         // Act
         HttpRequest request = new HttpRequest(HttpMethod.POST, originalUrl);
 
-        ClientOptions options
-            = new ClientOptions().setTracingOptions(new TracingOptions().setAllowedTracingQueryParamNames(allowedQueryParams));
+        ClientOptions options = new ClientOptions()
+            .setTracingOptions(new TracingOptions().setAllowedTracingQueryParamNames(allowedQueryParams));
 
         Span parentSpan = tracer.spanBuilder(SPAN_NAME).startSpan();
         try (Scope scope = parentSpan.makeCurrent()) {
@@ -505,17 +505,16 @@ public class OpenTelemetryHttpPolicyTests {
     public static Stream<Arguments> urlSanitizationArgs() {
         List<Arguments> arguments = new ArrayList<>();
 
-        String url = "https://httpbin.org/hello?n=otel&api-version=1.2.3";
         arguments.add(
-            Arguments.of(url, Collections.emptySet(), "https://httpbin.org/hello?n=REDACTED&api-version=REDACTED"));
-        arguments.add(Arguments.of("https://httpbin.org/hello", Collections.emptySet(), "https://httpbin.org/hello"));
+            Arguments.of(ORIGINAL_URL_WITH_QUERY, Collections.emptySet(), EXPECTED_URL_REDACTED));
+        arguments.add(Arguments.of(ORIGINAL_URL_NO_QUERY, Collections.emptySet(),ORIGINAL_URL_NO_QUERY));
         arguments.add(
-            Arguments.of(url, Collections.singleton("n"), "https://httpbin.org/hello?n=otel&api-version=REDACTED"));
+            Arguments.of(ORIGINAL_URL_WITH_QUERY, Collections.singleton("n"), "https://httpbin.org/hello?n=otel&api-version=1.2.3"));
 
         Set<String> allowed = new HashSet<>();
         allowed.add("n");
         allowed.add("m");
-        arguments.add(Arguments.of(url, allowed, "https://httpbin.org/hello?n=otel&api-version=1.2.3"));
+        arguments.add(Arguments.of(ORIGINAL_URL_WITH_QUERY, allowed, "https://httpbin.org/hello?n=otel&api-version=1.2.3"));
 
         return arguments.stream();
     }

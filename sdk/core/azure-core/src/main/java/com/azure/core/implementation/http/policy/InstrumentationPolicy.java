@@ -71,6 +71,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
      * Initializes the policy with the {@link Tracer} instance.
      *
      * @param tracer the tracer instance.
+     * @param urlSanitizer the url sanitizer instance.
      */
     public void initialize(Tracer tracer, UrlSanitizer urlSanitizer) {
         this.tracer = tracer;
