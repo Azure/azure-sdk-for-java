@@ -622,7 +622,8 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
     private Mono<DicomServiceInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
         String dicomServiceName, DicomServiceInner dicomservice, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, dicomServiceName, dicomservice, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -880,7 +881,8 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
     private Mono<DicomServiceInner> updateAsync(String resourceGroupName, String dicomServiceName, String workspaceName,
         DicomServicePatchResource dicomservicePatchResource, Context context) {
         return beginUpdateAsync(resourceGroupName, dicomServiceName, workspaceName, dicomservicePatchResource, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

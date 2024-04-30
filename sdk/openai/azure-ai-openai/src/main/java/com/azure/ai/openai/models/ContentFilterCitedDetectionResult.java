@@ -19,14 +19,14 @@ public final class ContentFilterCitedDetectionResult {
      */
     @Generated
     @JsonProperty(value = "filtered")
-    private boolean filtered;
+    private final boolean filtered;
 
     /*
      * A value indicating whether detection occurred, irrespective of severity or whether the content was filtered.
      */
     @Generated
     @JsonProperty(value = "detected")
-    private boolean detected;
+    private final boolean detected;
 
     /*
      * The internet location associated with the detection.
@@ -40,7 +40,7 @@ public final class ContentFilterCitedDetectionResult {
      */
     @Generated
     @JsonProperty(value = "license")
-    private String license;
+    private final String license;
 
     /**
      * Creates an instance of ContentFilterCitedDetectionResult class.
@@ -69,8 +69,8 @@ public final class ContentFilterCitedDetectionResult {
     }
 
     /**
-     * Get the detected property: A value indicating whether detection occurred, irrespective of severity or whether
-     * the content was filtered.
+     * Get the detected property: A value indicating whether detection occurred, irrespective of severity or whether the
+     * content was filtered.
      *
      * @return the detected value.
      */

@@ -80,8 +80,9 @@ public final class PrivateEndpointConnectionListResponse {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property value in model PrivateEndpointConnectionListResponse"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model PrivateEndpointConnectionListResponse"));
         } else {
             value().forEach(e -> e.validate());
         }

@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.SftpServerLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,21 @@ import java.util.Map;
 /**
  * A linked service for an SSH File Transfer Protocol (SFTP) server.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = SftpServerLinkedService.class,
+    visible = true)
 @JsonTypeName("Sftp")
 @Fluent
 public final class SftpServerLinkedService extends LinkedService {
+    /*
+     * Type of linked service.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "Sftp";
+
     /*
      * Properties specific to this linked service type.
      */
@@ -30,6 +42,16 @@ public final class SftpServerLinkedService extends LinkedService {
      * Creates an instance of SftpServerLinkedService class.
      */
     public SftpServerLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -197,8 +219,8 @@ public final class SftpServerLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -207,8 +229,8 @@ public final class SftpServerLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SftpServerLinkedService object itself.
@@ -224,8 +246,8 @@ public final class SftpServerLinkedService extends LinkedService {
     /**
      * Get the privateKeyPath property: The SSH private key file path for SshPublicKey authentication. Only valid for
      * on-premises copy. For on-premises copy with SshPublicKey authentication, either PrivateKeyPath or
-     * PrivateKeyContent should be specified. SSH private key should be OpenSSH format. Type: string (or Expression
-     * with resultType string).
+     * PrivateKeyContent should be specified. SSH private key should be OpenSSH format. Type: string (or Expression with
+     * resultType string).
      * 
      * @return the privateKeyPath value.
      */
@@ -236,8 +258,8 @@ public final class SftpServerLinkedService extends LinkedService {
     /**
      * Set the privateKeyPath property: The SSH private key file path for SshPublicKey authentication. Only valid for
      * on-premises copy. For on-premises copy with SshPublicKey authentication, either PrivateKeyPath or
-     * PrivateKeyContent should be specified. SSH private key should be OpenSSH format. Type: string (or Expression
-     * with resultType string).
+     * PrivateKeyContent should be specified. SSH private key should be OpenSSH format. Type: string (or Expression with
+     * resultType string).
      * 
      * @param privateKeyPath the privateKeyPath value to set.
      * @return the SftpServerLinkedService object itself.
@@ -359,8 +381,9 @@ public final class SftpServerLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model SftpServerLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model SftpServerLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

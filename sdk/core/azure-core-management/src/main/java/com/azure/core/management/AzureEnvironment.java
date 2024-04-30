@@ -259,6 +259,15 @@ public final class AzureEnvironment {
     }
 
     /**
+     * Gets the managed HSM DNS suffix.
+     *
+     * @return the managed HSM DNS suffix.
+     */
+    public String getManagedHsmDnsSuffix() {
+        return endpoints.get("managedHsmDnsSuffix");
+    }
+
+    /**
      * Gets the data lake store filesystem service dns suffix.
      *
      * @return the data lake store filesystem service dns suffix.
@@ -323,7 +332,9 @@ public final class AzureEnvironment {
         /** Microsoft Graph APIs endpoint. */
         MICROSOFT_GRAPH("microsoftGraphResourceId"),
         /** Managed HSM DNS suffix. */
-        MANAGED_HSM("managedHsmDnsSuffix");
+        MANAGED_HSM("managedHsmDnsSuffix"),
+        /** Storage DNS suffix. */
+        STORAGE("storageEndpointSuffix");
 
         private final String field;
 

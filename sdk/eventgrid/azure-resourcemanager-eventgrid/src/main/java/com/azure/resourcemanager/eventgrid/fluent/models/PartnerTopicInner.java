@@ -257,8 +257,8 @@ public final class PartnerTopicInner extends Resource {
     }
 
     /**
-     * Get the messageForActivation property: Context or helpful message that can be used during the approval process
-     * by the subscriber.
+     * Get the messageForActivation property: Context or helpful message that can be used during the approval process by
+     * the subscriber.
      * 
      * @return the messageForActivation value.
      */
@@ -267,8 +267,8 @@ public final class PartnerTopicInner extends Resource {
     }
 
     /**
-     * Set the messageForActivation property: Context or helpful message that can be used during the approval process
-     * by the subscriber.
+     * Set the messageForActivation property: Context or helpful message that can be used during the approval process by
+     * the subscriber.
      * 
      * @param messageForActivation the messageForActivation value to set.
      * @return the PartnerTopicInner object itself.

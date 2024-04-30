@@ -10,8 +10,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.GetPrivateDnsZoneSuffixesClient;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.GetPrivateDnsZoneSuffixResponseInner;
-import com.azure.resourcemanager.mysqlflexibleserver.models.GetPrivateDnsZoneSuffixResponse;
 import com.azure.resourcemanager.mysqlflexibleserver.models.GetPrivateDnsZoneSuffixes;
+import com.azure.resourcemanager.mysqlflexibleserver.models.GetPrivateDnsZoneSuffixResponse;
 
 public final class GetPrivateDnsZoneSuffixesImpl implements GetPrivateDnsZoneSuffixes {
     private static final ClientLogger LOGGER = new ClientLogger(GetPrivateDnsZoneSuffixesImpl.class);
@@ -20,8 +20,7 @@ public final class GetPrivateDnsZoneSuffixesImpl implements GetPrivateDnsZoneSuf
 
     private final com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager;
 
-    public GetPrivateDnsZoneSuffixesImpl(
-        GetPrivateDnsZoneSuffixesClient innerClient,
+    public GetPrivateDnsZoneSuffixesImpl(GetPrivateDnsZoneSuffixesClient innerClient,
         com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -30,10 +29,7 @@ public final class GetPrivateDnsZoneSuffixesImpl implements GetPrivateDnsZoneSuf
     public Response<GetPrivateDnsZoneSuffixResponse> executeWithResponse(Context context) {
         Response<GetPrivateDnsZoneSuffixResponseInner> inner = this.serviceClient().executeWithResponse(context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new GetPrivateDnsZoneSuffixResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;

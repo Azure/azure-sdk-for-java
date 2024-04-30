@@ -12,6 +12,13 @@ import java.time.Duration;
  */
 public interface AzureQuotaExtensionApi {
     /**
+     * Gets The ID of the target subscription. The value must be an UUID.
+     * 
+     * @return the subscriptionId value.
+     */
+    String getSubscriptionId();
+
+    /**
      * Gets server parameter.
      * 
      * @return the endpoint value.
@@ -38,6 +45,69 @@ public interface AzureQuotaExtensionApi {
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
+
+    /**
+     * Gets the GroupQuotasClient object to access its operations.
+     * 
+     * @return the GroupQuotasClient object.
+     */
+    GroupQuotasClient getGroupQuotas();
+
+    /**
+     * Gets the GroupQuotaSubscriptionsClient object to access its operations.
+     * 
+     * @return the GroupQuotaSubscriptionsClient object.
+     */
+    GroupQuotaSubscriptionsClient getGroupQuotaSubscriptions();
+
+    /**
+     * Gets the GroupQuotaSubscriptionRequestsClient object to access its operations.
+     * 
+     * @return the GroupQuotaSubscriptionRequestsClient object.
+     */
+    GroupQuotaSubscriptionRequestsClient getGroupQuotaSubscriptionRequests();
+
+    /**
+     * Gets the GroupQuotaLimitsClient object to access its operations.
+     * 
+     * @return the GroupQuotaLimitsClient object.
+     */
+    GroupQuotaLimitsClient getGroupQuotaLimits();
+
+    /**
+     * Gets the GroupQuotaLimitsRequestsClient object to access its operations.
+     * 
+     * @return the GroupQuotaLimitsRequestsClient object.
+     */
+    GroupQuotaLimitsRequestsClient getGroupQuotaLimitsRequests();
+
+    /**
+     * Gets the GroupQuotaSubscriptionAllocationsClient object to access its operations.
+     * 
+     * @return the GroupQuotaSubscriptionAllocationsClient object.
+     */
+    GroupQuotaSubscriptionAllocationsClient getGroupQuotaSubscriptionAllocations();
+
+    /**
+     * Gets the GroupQuotaSubscriptionAllocationRequestsClient object to access its operations.
+     * 
+     * @return the GroupQuotaSubscriptionAllocationRequestsClient object.
+     */
+    GroupQuotaSubscriptionAllocationRequestsClient getGroupQuotaSubscriptionAllocationRequests();
+
+    /**
+     * Gets the GroupQuotaUsagesClient object to access its operations.
+     * 
+     * @return the GroupQuotaUsagesClient object.
+     */
+    GroupQuotaUsagesClient getGroupQuotaUsages();
+
+    /**
+     * Gets the GroupQuotaLocationSettingsClient object to access its operations.
+     * 
+     * @return the GroupQuotaLocationSettingsClient object.
+     */
+    GroupQuotaLocationSettingsClient getGroupQuotaLocationSettings();
 
     /**
      * Gets the UsagesClient object to access its operations.

@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.SapEccLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,17 @@ import java.util.Map;
 /**
  * Linked service for SAP ERP Central Component(SAP ECC).
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = SapEccLinkedService.class, visible = true)
 @JsonTypeName("SapEcc")
 @Fluent
 public final class SapEccLinkedService extends LinkedService {
+    /*
+     * Type of linked service.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "SapEcc";
+
     /*
      * SAP ECC linked service properties.
      */
@@ -30,6 +38,16 @@ public final class SapEccLinkedService extends LinkedService {
      * Creates an instance of SapEccLinkedService class.
      */
     public SapEccLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -151,9 +169,9 @@ public final class SapEccLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Either encryptedCredential or username/password must
-     * be provided. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Either encryptedCredential or username/password must be
+     * provided. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -162,9 +180,9 @@ public final class SapEccLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Either encryptedCredential or username/password must
-     * be provided. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Either encryptedCredential or username/password must be
+     * provided. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SapEccLinkedService object itself.
@@ -186,8 +204,9 @@ public final class SapEccLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model SapEccLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model SapEccLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

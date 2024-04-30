@@ -19,7 +19,7 @@ import java.util.List;
 @Fluent
 public final class PartnerNamespaceProperties {
     /*
-     * The privateEndpointConnections property.
+     * List of private endpoint connections.
      */
     @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
@@ -31,10 +31,8 @@ public final class PartnerNamespaceProperties {
     private PartnerNamespaceProvisioningState provisioningState;
 
     /*
-     * The fully qualified ARM Id of the partner registration that should be associated with this partner namespace.
-     * This takes the following format:
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/
-     * partnerRegistrations/{partnerRegistrationName}.
+     * The fully qualified ARM Id of the partner registration that should be associated with this partner namespace. This takes the following format:
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerRegistrations/{partnerRegistrationName}.
      */
     @JsonProperty(value = "partnerRegistrationFullyQualifiedId")
     private String partnerRegistrationFullyQualifiedId;
@@ -53,31 +51,26 @@ public final class PartnerNamespaceProperties {
 
     /*
      * This determines if traffic is allowed over public network. By default it is enabled.
-     * You can further restrict to specific IPs by configuring <seealso
-     * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PartnerNamespaceProperties.InboundIpRules" />
+     * You can further restrict to specific IPs by configuring <seealso cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PartnerNamespaceProperties.InboundIpRules" />
      */
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
-     * This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if
-     * PublicNetworkAccess is enabled.
+     * This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess is enabled.
      */
     @JsonProperty(value = "inboundIpRules")
     private List<InboundIpRule> inboundIpRules;
 
     /*
-     * This boolean is used to enable or disable local auth. Default value is false. When the property is set to true,
-     * only AAD token will be used to authenticate if user is allowed to publish to the partner namespace.
+     * This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to the partner namespace.
      */
     @JsonProperty(value = "disableLocalAuth")
     private Boolean disableLocalAuth;
 
     /*
-     * This determines if events published to this partner namespace should use the source attribute in the event
-     * payload
-     * or use the channel name in the header when matching to the partner topic. If none is specified, source attribute
-     * routing will be used to match the partner topic.
+     * This determines if events published to this partner namespace should use the source attribute in the event payload
+     * or use the channel name in the header when matching to the partner topic. If none is specified, source attribute routing will be used to match the partner topic.
      */
     @JsonProperty(value = "partnerTopicRoutingMode")
     private PartnerTopicRoutingMode partnerTopicRoutingMode;
@@ -89,7 +82,7 @@ public final class PartnerNamespaceProperties {
     }
 
     /**
-     * Get the privateEndpointConnections property: The privateEndpointConnections property.
+     * Get the privateEndpointConnections property: List of private endpoint connections.
      * 
      * @return the privateEndpointConnections value.
      */
@@ -107,8 +100,8 @@ public final class PartnerNamespaceProperties {
     }
 
     /**
-     * Get the partnerRegistrationFullyQualifiedId property: The fully qualified ARM Id of the partner registration
-     * that should be associated with this partner namespace. This takes the following format:
+     * Get the partnerRegistrationFullyQualifiedId property: The fully qualified ARM Id of the partner registration that
+     * should be associated with this partner namespace. This takes the following format:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerRegistrations/{partnerRegistrationName}.
      * 
      * @return the partnerRegistrationFullyQualifiedId value.
@@ -118,8 +111,8 @@ public final class PartnerNamespaceProperties {
     }
 
     /**
-     * Set the partnerRegistrationFullyQualifiedId property: The fully qualified ARM Id of the partner registration
-     * that should be associated with this partner namespace. This takes the following format:
+     * Set the partnerRegistrationFullyQualifiedId property: The fully qualified ARM Id of the partner registration that
+     * should be associated with this partner namespace. This takes the following format:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerRegistrations/{partnerRegistrationName}.
      * 
      * @param partnerRegistrationFullyQualifiedId the partnerRegistrationFullyQualifiedId value to set.
@@ -163,8 +156,8 @@ public final class PartnerNamespaceProperties {
     }
 
     /**
-     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it
-     * is enabled.
+     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
+     * enabled.
      * You can further restrict to specific IPs by configuring &lt;seealso
      * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PartnerNamespaceProperties.InboundIpRules"
      * /&gt;.
@@ -176,8 +169,8 @@ public final class PartnerNamespaceProperties {
     }
 
     /**
-     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it
-     * is enabled.
+     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
+     * enabled.
      * You can further restrict to specific IPs by configuring &lt;seealso
      * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PartnerNamespaceProperties.InboundIpRules"
      * /&gt;.
@@ -191,8 +184,8 @@ public final class PartnerNamespaceProperties {
     }
 
     /**
-     * Get the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs.
-     * Note: These are considered only if PublicNetworkAccess is enabled.
+     * Get the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs. Note:
+     * These are considered only if PublicNetworkAccess is enabled.
      * 
      * @return the inboundIpRules value.
      */
@@ -201,8 +194,8 @@ public final class PartnerNamespaceProperties {
     }
 
     /**
-     * Set the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs.
-     * Note: These are considered only if PublicNetworkAccess is enabled.
+     * Set the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs. Note:
+     * These are considered only if PublicNetworkAccess is enabled.
      * 
      * @param inboundIpRules the inboundIpRules value to set.
      * @return the PartnerNamespaceProperties object itself.

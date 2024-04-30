@@ -59,8 +59,8 @@ public final class AvroDatasetTypeProperties {
     }
 
     /**
-     * Get the avroCompressionCodec property: The data avroCompressionCodec. Type: string (or Expression with
-     * resultType string).
+     * Get the avroCompressionCodec property: The data avroCompressionCodec. Type: string (or Expression with resultType
+     * string).
      * 
      * @return the avroCompressionCodec value.
      */
@@ -69,8 +69,8 @@ public final class AvroDatasetTypeProperties {
     }
 
     /**
-     * Set the avroCompressionCodec property: The data avroCompressionCodec. Type: string (or Expression with
-     * resultType string).
+     * Set the avroCompressionCodec property: The data avroCompressionCodec. Type: string (or Expression with resultType
+     * string).
      * 
      * @param avroCompressionCodec the avroCompressionCodec value to set.
      * @return the AvroDatasetTypeProperties object itself.
@@ -107,8 +107,9 @@ public final class AvroDatasetTypeProperties {
      */
     public void validate() {
         if (location() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property location in model AvroDatasetTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model AvroDatasetTypeProperties"));
         } else {
             location().validate();
         }

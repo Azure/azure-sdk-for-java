@@ -4,15 +4,17 @@
 
 package com.azure.resourcemanager.devcenter.implementation;
 
+import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.fluent.models.ScheduleInner;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.azure.resourcemanager.devcenter.models.Schedule;
-import com.azure.resourcemanager.devcenter.models.ScheduleEnableStatus;
-import com.azure.resourcemanager.devcenter.models.ScheduleUpdate;
 import com.azure.resourcemanager.devcenter.models.ScheduledFrequency;
 import com.azure.resourcemanager.devcenter.models.ScheduledType;
+import com.azure.resourcemanager.devcenter.models.ScheduleEnableStatus;
+import com.azure.resourcemanager.devcenter.models.ScheduleUpdate;
+import java.util.Collections;
 import java.util.Map;
 
 public final class ScheduleImpl implements Schedule, Schedule.Definition, Schedule.Update {
@@ -60,6 +62,27 @@ public final class ScheduleImpl implements Schedule, Schedule.Definition, Schedu
         return this.innerModel().state();
     }
 
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
+    }
+
+    public String location() {
+        return this.innerModel().location();
+    }
+
+    public Region region() {
+        return Region.fromName(this.regionName());
+    }
+
+    public String regionName() {
+        return this.location();
+    }
+
     public String resourceGroupName() {
         return resourceGroupName;
     }
@@ -94,22 +117,18 @@ public final class ScheduleImpl implements Schedule, Schedule.Definition, Schedu
     }
 
     public Schedule create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSchedules()
-                .createOrUpdate(
-                    resourceGroupName, projectName, poolName, scheduleName, this.innerModel(), createTop, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSchedules()
+            .createOrUpdate(resourceGroupName, projectName, poolName, scheduleName, this.innerModel(), createTop,
+                Context.NONE);
         return this;
     }
 
     public Schedule create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSchedules()
-                .createOrUpdate(
-                    resourceGroupName, projectName, poolName, scheduleName, this.innerModel(), createTop, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSchedules()
+            .createOrUpdate(resourceGroupName, projectName, poolName, scheduleName, this.innerModel(), createTop,
+                context);
         return this;
     }
 
@@ -127,52 +146,64 @@ public final class ScheduleImpl implements Schedule, Schedule.Definition, Schedu
     }
 
     public Schedule apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSchedules()
-                .update(resourceGroupName, projectName, poolName, scheduleName, updateBody, updateTop, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSchedules()
+            .update(resourceGroupName, projectName, poolName, scheduleName, updateBody, updateTop, Context.NONE);
         return this;
     }
 
     public Schedule apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSchedules()
-                .update(resourceGroupName, projectName, poolName, scheduleName, updateBody, updateTop, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSchedules()
+            .update(resourceGroupName, projectName, poolName, scheduleName, updateBody, updateTop, context);
         return this;
     }
 
     ScheduleImpl(ScheduleInner innerObject, com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.projectName = Utils.getValueFromIdByName(innerObject.id(), "projects");
-        this.poolName = Utils.getValueFromIdByName(innerObject.id(), "pools");
-        this.scheduleName = Utils.getValueFromIdByName(innerObject.id(), "schedules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.projectName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "projects");
+        this.poolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "pools");
+        this.scheduleName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "schedules");
     }
 
     public Schedule refresh() {
         Integer localTop = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSchedules()
-                .getWithResponse(resourceGroupName, projectName, poolName, scheduleName, localTop, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSchedules()
+            .getWithResponse(resourceGroupName, projectName, poolName, scheduleName, localTop, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Schedule refresh(Context context) {
         Integer localTop = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSchedules()
-                .getWithResponse(resourceGroupName, projectName, poolName, scheduleName, localTop, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSchedules()
+            .getWithResponse(resourceGroupName, projectName, poolName, scheduleName, localTop, context)
+            .getValue();
         return this;
+    }
+
+    public ScheduleImpl withRegion(Region location) {
+        this.innerModel().withLocation(location.toString());
+        return this;
+    }
+
+    public ScheduleImpl withRegion(String location) {
+        this.innerModel().withLocation(location);
+        return this;
+    }
+
+    public ScheduleImpl withTags(Map<String, String> tags) {
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateBody.withTags(tags);
+            return this;
+        }
     }
 
     public ScheduleImpl withTypePropertiesType(ScheduledType typePropertiesType) {
@@ -228,11 +259,6 @@ public final class ScheduleImpl implements Schedule, Schedule.Definition, Schedu
             this.updateTop = top;
             return this;
         }
-    }
-
-    public ScheduleImpl withTags(Map<String, String> tags) {
-        this.updateBody.withTags(tags);
-        return this;
     }
 
     public ScheduleImpl withType(ScheduledType type) {

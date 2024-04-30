@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of a server firewall rule. */
+/**
+ * The properties of a server firewall rule.
+ */
 @Fluent
 public final class FirewallRuleProperties {
     /*
@@ -23,13 +25,15 @@ public final class FirewallRuleProperties {
     @JsonProperty(value = "endIpAddress", required = true)
     private String endIpAddress;
 
-    /** Creates an instance of FirewallRuleProperties class. */
+    /**
+     * Creates an instance of FirewallRuleProperties class.
+     */
     public FirewallRuleProperties() {
     }
 
     /**
      * Get the startIpAddress property: The start IP address of the server firewall rule. Must be IPv4 format.
-     *
+     * 
      * @return the startIpAddress value.
      */
     public String startIpAddress() {
@@ -38,7 +42,7 @@ public final class FirewallRuleProperties {
 
     /**
      * Set the startIpAddress property: The start IP address of the server firewall rule. Must be IPv4 format.
-     *
+     * 
      * @param startIpAddress the startIpAddress value to set.
      * @return the FirewallRuleProperties object itself.
      */
@@ -49,7 +53,7 @@ public final class FirewallRuleProperties {
 
     /**
      * Get the endIpAddress property: The end IP address of the server firewall rule. Must be IPv4 format.
-     *
+     * 
      * @return the endIpAddress value.
      */
     public String endIpAddress() {
@@ -58,7 +62,7 @@ public final class FirewallRuleProperties {
 
     /**
      * Set the endIpAddress property: The end IP address of the server firewall rule. Must be IPv4 format.
-     *
+     * 
      * @param endIpAddress the endIpAddress value to set.
      * @return the FirewallRuleProperties object itself.
      */
@@ -69,21 +73,19 @@ public final class FirewallRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (startIpAddress() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property startIpAddress in model FirewallRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property startIpAddress in model FirewallRuleProperties"));
         }
         if (endIpAddress() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property endIpAddress in model FirewallRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property endIpAddress in model FirewallRuleProperties"));
         }
     }
 

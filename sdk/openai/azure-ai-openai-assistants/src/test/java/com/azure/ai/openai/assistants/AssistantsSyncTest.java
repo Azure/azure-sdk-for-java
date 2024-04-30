@@ -14,7 +14,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.serializer.TypeReference;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -135,8 +134,8 @@ public class AssistantsSyncTest extends AssistantsClientTestBase {
             assertTrue(dataAscending.size() >= 2);
 
             Response<BinaryData> response = client.listAssistantsWithResponse(new RequestOptions());
-            PageableList<Assistant> assistantsAscendingResponse = assertAndGetValueFromResponse(response,
-                new TypeReference<PageableList<Assistant>>() {}, 200);
+            PageableList<Assistant> assistantsAscendingResponse = asserAndGetPageableListFromResponse(response, 200,
+                reader -> reader.readArray(Assistant::fromJson));
             List<Assistant> dataAscendingResponse = assistantsAscendingResponse.getData();
             assertTrue(dataAscendingResponse.size() >= 2);
 
@@ -320,8 +319,8 @@ public class AssistantsSyncTest extends AssistantsClientTestBase {
             Response<BinaryData> response = client.listAssistantFilesWithResponse(assistantId,
                     new RequestOptions());
 
-            PageableList<AssistantFile> assistantFileList = assertAndGetValueFromResponse(response,
-                new TypeReference<PageableList<AssistantFile>>() {}, 200);
+            PageableList<AssistantFile> assistantFileList = asserAndGetPageableListFromResponse(response, 200,
+                reader -> reader.readArray(AssistantFile::fromJson));
             List<AssistantFile> assistantFilesData = assistantFileList.getData();
             assertEquals(1, assistantFilesData.size());
             AssistantFile assistantFileOnly = assistantFilesData.get(0);

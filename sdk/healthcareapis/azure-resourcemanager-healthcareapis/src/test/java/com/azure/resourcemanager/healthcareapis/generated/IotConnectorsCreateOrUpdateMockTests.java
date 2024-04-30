@@ -6,11 +6,9 @@ package com.azure.resourcemanager.healthcareapis.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.healthcareapis.HealthcareApisManager;
 import com.azure.resourcemanager.healthcareapis.models.IotConnector;
 import com.azure.resourcemanager.healthcareapis.models.IotEventHubIngestionEndpointConfiguration;
@@ -18,61 +16,49 @@ import com.azure.resourcemanager.healthcareapis.models.IotMappingProperties;
 import com.azure.resourcemanager.healthcareapis.models.ServiceManagedIdentityIdentity;
 import com.azure.resourcemanager.healthcareapis.models.ServiceManagedIdentityType;
 import com.azure.resourcemanager.healthcareapis.models.UserAssignedIdentity;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class IotConnectorsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"ingestionEndpointConfiguration\":{\"eventHubName\":\"mewip\",\"consumerGroup\":\"ekdxuku\",\"fullyQualifiedEventHubNamespace\":\"sjjxundxgketw\"},\"deviceMapping\":{\"content\":\"datazjhfjmhvv\"}},\"identity\":{\"type\":\"SystemAssigned,UserAssigned\",\"principalId\":\"b1b61bb2-8b2b-4b88-b806-97655f4eaa7f\",\"tenantId\":\"6ca7f7f2-b933-4535-a8d7-0a6c0280b935\",\"userAssignedIdentities\":{\"sx\":{\"principalId\":\"90e7fbd7-1731-4869-b59e-d5f3b89282fa\",\"clientId\":\"0f20c557-1dd6-49b7-b1d2-90a7f71c3d0c\"},\"fbuzjyihs\":{\"principalId\":\"e5d0a9da-1768-4b01-a548-496c90b18ad9\",\"clientId\":\"523aabec-8c5a-4611-aec2-75616dcfbde1\"}}},\"tags\":{\"nsqyrpfoobrltt\":\"hudypohyuemsl\"},\"location\":\"sjnygqdnfwqzdzgt\",\"etag\":\"axhnfh\",\"id\":\"lyvijouwiv\",\"name\":\"xoyzunbix\",\"type\":\"rtikvcpwpg\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"ingestionEndpointConfiguration\":{\"eventHubName\":\"mieknlraria\",\"consumerGroup\":\"iuagydwqfbylyrfg\",\"fullyQualifiedEventHubNamespace\":\"gtcojocqwo\"},\"deviceMapping\":{\"content\":\"datazjvusfzldmo\"}},\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"7827107a-5b42-49eb-a040-347f750ed838\",\"tenantId\":\"5c916b13-22f5-451e-976c-ce1beb9e5436\",\"userAssignedIdentities\":{\"adpysownbt\":{\"principalId\":\"eb624e7f-580e-42fd-85bf-f4e75d3fff0c\",\"clientId\":\"29fd45b9-d18f-4fb1-92f3-c1be25798be0\"},\"u\":{\"principalId\":\"984b335a-659b-47be-9dc6-8e7b59040c18\",\"clientId\":\"aa9ac3cb-b7b8-4280-9f11-f5e0453834c9\"},\"qctojcmisof\":{\"principalId\":\"2b71c719-0229-4537-83d8-eba48180ef78\",\"clientId\":\"41f8aa3b-658e-4293-ad84-775f069e7c3b\"},\"pe\":{\"principalId\":\"d4d3658e-edc0-4775-80f5-afc076b0184b\",\"clientId\":\"3d329dcf-5f0d-4d3e-8450-7dfffe0abb14\"}}},\"tags\":{\"hihihlhzdsqtzbsr\":\"yqdhcuplcplcw\"},\"location\":\"o\",\"etag\":\"jhf\",\"id\":\"mvec\",\"name\":\"ctxmwoteyowcluq\",\"type\":\"vekqvgqo\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        HealthcareApisManager manager = HealthcareApisManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        HealthcareApisManager manager = HealthcareApisManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        IotConnector response = manager.iotConnectors().define("jhlfzswpchwahf").withExistingWorkspace("cse", "hwwn")
-            .withRegion("xgsg").withTags(mapOf("uvyinzqodfvpgs", "fiwrxgkn")).withEtag("fgzdjtxvz")
+        IotConnector response = manager.iotConnectors()
+            .define("frbbc")
+            .withExistingWorkspace("tppn", "dxzxhi")
+            .withRegion("kiscvwmzhwpl")
+            .withTags(mapOf("ud", "unzo", "hmfdnbzydvfvfcj", "cxgkmoyxcdyui", "gorf", "aeoisrvh"))
+            .withEtag("a")
             .withIdentity(new ServiceManagedIdentityIdentity().withType(ServiceManagedIdentityType.NONE)
-                .withUserAssignedIdentities(
-                    mapOf("jzh", new UserAssignedIdentity(), "xfpxtgqscja", new UserAssignedIdentity(),
-                        "juhdqazkmtgguwpi", new UserAssignedIdentity(), "jcivmmg", new UserAssignedIdentity())))
-            .withIngestionEndpointConfiguration(
-                new IotEventHubIngestionEndpointConfiguration().withEventHubName("epgfew")
-                    .withConsumerGroup("wlyxgncxyk").withFullyQualifiedEventHubNamespace("djhlimm"))
-            .withDeviceMapping(new IotMappingProperties().withContent("dataf")).create();
+                .withUserAssignedIdentities(mapOf("ckh", new UserAssignedIdentity(), "vdff", new UserAssignedIdentity(),
+                    "fqroudas", new UserAssignedIdentity(), "ehhr", new UserAssignedIdentity())))
+            .withIngestionEndpointConfiguration(new IotEventHubIngestionEndpointConfiguration().withEventHubName("ltd")
+                .withConsumerGroup("fkqojpy")
+                .withFullyQualifiedEventHubNamespace("gtrd"))
+            .withDeviceMapping(new IotMappingProperties().withContent("datafmzzsdymbrny"))
+            .create();
 
-        Assertions.assertEquals("axhnfh", response.etag());
-        Assertions.assertEquals("sjnygqdnfwqzdzgt", response.location());
-        Assertions.assertEquals("hudypohyuemsl", response.tags().get("nsqyrpfoobrltt"));
-        Assertions.assertEquals(ServiceManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("mewip", response.ingestionEndpointConfiguration().eventHubName());
-        Assertions.assertEquals("ekdxuku", response.ingestionEndpointConfiguration().consumerGroup());
-        Assertions.assertEquals("sjjxundxgketw",
+        Assertions.assertEquals("jhf", response.etag());
+        Assertions.assertEquals("o", response.location());
+        Assertions.assertEquals("yqdhcuplcplcw", response.tags().get("hihihlhzdsqtzbsr"));
+        Assertions.assertEquals(ServiceManagedIdentityType.SYSTEM_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("mieknlraria", response.ingestionEndpointConfiguration().eventHubName());
+        Assertions.assertEquals("iuagydwqfbylyrfg", response.ingestionEndpointConfiguration().consumerGroup());
+        Assertions.assertEquals("gtcojocqwo",
             response.ingestionEndpointConfiguration().fullyQualifiedEventHubNamespace());
     }
 

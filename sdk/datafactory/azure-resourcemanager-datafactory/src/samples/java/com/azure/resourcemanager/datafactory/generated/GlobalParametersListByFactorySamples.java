@@ -9,8 +9,7 @@ package com.azure.resourcemanager.datafactory.generated;
  */
 public final class GlobalParametersListByFactorySamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
-     * GlobalParameters_ListByFactory.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/GlobalParameters_ListByFactory.json
      */
     /**
      * Sample code: GlobalParameters_ListByFactory.
@@ -18,7 +17,7 @@ public final class GlobalParametersListByFactorySamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void globalParametersListByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.globalParameters().listByFactory("exampleResourceGroup", "exampleFactoryName",
-            com.azure.core.util.Context.NONE);
+        manager.globalParameters()
+            .listByFactory("exampleResourceGroup", "exampleFactoryName", com.azure.core.util.Context.NONE);
     }
 }

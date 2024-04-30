@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AzureDatabricksLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,21 @@ import java.util.Map;
 /**
  * Azure Databricks linked service.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = AzureDatabricksLinkedService.class,
+    visible = true)
 @JsonTypeName("AzureDatabricks")
 @Fluent
 public final class AzureDatabricksLinkedService extends LinkedService {
+    /*
+     * Type of linked service.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "AzureDatabricks";
+
     /*
      * Azure Databricks linked service properties.
      */
@@ -31,6 +43,16 @@ public final class AzureDatabricksLinkedService extends LinkedService {
      * Creates an instance of AzureDatabricksLinkedService class.
      */
     public AzureDatabricksLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -131,8 +153,8 @@ public final class AzureDatabricksLinkedService extends LinkedService {
     }
 
     /**
-     * Get the authentication property: Required to specify MSI, if using Workspace resource id for databricks REST
-     * API. Type: string (or Expression with resultType string).
+     * Get the authentication property: Required to specify MSI, if using Workspace resource id for databricks REST API.
+     * Type: string (or Expression with resultType string).
      * 
      * @return the authentication value.
      */
@@ -141,8 +163,8 @@ public final class AzureDatabricksLinkedService extends LinkedService {
     }
 
     /**
-     * Set the authentication property: Required to specify MSI, if using Workspace resource id for databricks REST
-     * API. Type: string (or Expression with resultType string).
+     * Set the authentication property: Required to specify MSI, if using Workspace resource id for databricks REST API.
+     * Type: string (or Expression with resultType string).
      * 
      * @param authentication the authentication value to set.
      * @return the AzureDatabricksLinkedService object itself.
@@ -290,8 +312,8 @@ public final class AzureDatabricksLinkedService extends LinkedService {
 
     /**
      * Get the newClusterNodeType property: The node type of the new job cluster. This property is required if
-     * newClusterVersion is specified and instancePoolId is not specified. If instancePoolId is specified, this
-     * property is ignored. Type: string (or Expression with resultType string).
+     * newClusterVersion is specified and instancePoolId is not specified. If instancePoolId is specified, this property
+     * is ignored. Type: string (or Expression with resultType string).
      * 
      * @return the newClusterNodeType value.
      */
@@ -301,8 +323,8 @@ public final class AzureDatabricksLinkedService extends LinkedService {
 
     /**
      * Set the newClusterNodeType property: The node type of the new job cluster. This property is required if
-     * newClusterVersion is specified and instancePoolId is not specified. If instancePoolId is specified, this
-     * property is ignored. Type: string (or Expression with resultType string).
+     * newClusterVersion is specified and instancePoolId is not specified. If instancePoolId is specified, this property
+     * is ignored. Type: string (or Expression with resultType string).
      * 
      * @param newClusterNodeType the newClusterNodeType value to set.
      * @return the AzureDatabricksLinkedService object itself.
@@ -414,8 +436,8 @@ public final class AzureDatabricksLinkedService extends LinkedService {
     }
 
     /**
-     * Get the newClusterDriverNodeType property: The driver node type for the new job cluster. This property is
-     * ignored in instance pool configurations. Type: string (or Expression with resultType string).
+     * Get the newClusterDriverNodeType property: The driver node type for the new job cluster. This property is ignored
+     * in instance pool configurations. Type: string (or Expression with resultType string).
      * 
      * @return the newClusterDriverNodeType value.
      */
@@ -424,8 +446,8 @@ public final class AzureDatabricksLinkedService extends LinkedService {
     }
 
     /**
-     * Set the newClusterDriverNodeType property: The driver node type for the new job cluster. This property is
-     * ignored in instance pool configurations. Type: string (or Expression with resultType string).
+     * Set the newClusterDriverNodeType property: The driver node type for the new job cluster. This property is ignored
+     * in instance pool configurations. Type: string (or Expression with resultType string).
      * 
      * @param newClusterDriverNodeType the newClusterDriverNodeType value to set.
      * @return the AzureDatabricksLinkedService object itself.
@@ -491,8 +513,8 @@ public final class AzureDatabricksLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -501,8 +523,8 @@ public final class AzureDatabricksLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureDatabricksLinkedService object itself.
@@ -572,8 +594,9 @@ public final class AzureDatabricksLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model AzureDatabricksLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model AzureDatabricksLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

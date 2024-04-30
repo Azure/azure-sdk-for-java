@@ -15,8 +15,8 @@ public final class ImageVersionImpl implements ImageVersion {
 
     private final com.azure.resourcemanager.devcenter.DevCenterManager serviceManager;
 
-    ImageVersionImpl(
-        ImageVersionInner innerObject, com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
+    ImageVersionImpl(ImageVersionInner innerObject,
+        com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

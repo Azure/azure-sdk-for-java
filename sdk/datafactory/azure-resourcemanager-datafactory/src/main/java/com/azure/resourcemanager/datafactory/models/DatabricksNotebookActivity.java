@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.DatabricksNotebookActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,21 @@ import java.util.Map;
 /**
  * DatabricksNotebook activity.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = DatabricksNotebookActivity.class,
+    visible = true)
 @JsonTypeName("DatabricksNotebook")
 @Fluent
 public final class DatabricksNotebookActivity extends ExecutionActivity {
+    /*
+     * Type of activity.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "DatabricksNotebook";
+
     /*
      * Databricks Notebook activity properties.
      */
@@ -31,6 +43,16 @@ public final class DatabricksNotebookActivity extends ExecutionActivity {
      * Creates an instance of DatabricksNotebookActivity class.
      */
     public DatabricksNotebookActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -115,8 +137,8 @@ public final class DatabricksNotebookActivity extends ExecutionActivity {
     }
 
     /**
-     * Get the notebookPath property: The absolute path of the notebook to be run in the Databricks Workspace. This
-     * path must begin with a slash. Type: string (or Expression with resultType string).
+     * Get the notebookPath property: The absolute path of the notebook to be run in the Databricks Workspace. This path
+     * must begin with a slash. Type: string (or Expression with resultType string).
      * 
      * @return the notebookPath value.
      */
@@ -125,8 +147,8 @@ public final class DatabricksNotebookActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the notebookPath property: The absolute path of the notebook to be run in the Databricks Workspace. This
-     * path must begin with a slash. Type: string (or Expression with resultType string).
+     * Set the notebookPath property: The absolute path of the notebook to be run in the Databricks Workspace. This path
+     * must begin with a slash. Type: string (or Expression with resultType string).
      * 
      * @param notebookPath the notebookPath value to set.
      * @return the DatabricksNotebookActivity object itself.
@@ -196,8 +218,9 @@ public final class DatabricksNotebookActivity extends ExecutionActivity {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model DatabricksNotebookActivity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model DatabricksNotebookActivity"));
         } else {
             innerTypeProperties().validate();
         }

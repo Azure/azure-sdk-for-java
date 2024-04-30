@@ -9,9 +9,7 @@ package com.azure.resourcemanager.eventgrid.generated;
  */
 public final class EventSubscriptionsListGlobalByResourceGroupForTopicTypeSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
-     * EventSubscriptions_ListGlobalByResourceGroupForTopicType.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/EventSubscriptions_ListGlobalByResourceGroupForTopicType.json
      */
     /**
      * Sample code: EventSubscriptions_ListGlobalByResourceGroupForTopicType.
@@ -20,7 +18,8 @@ public final class EventSubscriptionsListGlobalByResourceGroupForTopicTypeSample
      */
     public static void eventSubscriptionsListGlobalByResourceGroupForTopicType(
         com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.eventSubscriptions().listGlobalByResourceGroupForTopicType("examplerg",
-            "Microsoft.Resources.ResourceGroups", null, null, com.azure.core.util.Context.NONE);
+        manager.eventSubscriptions()
+            .listGlobalByResourceGroupForTopicType("examplerg", "Microsoft.Resources.ResourceGroups", null, null,
+                com.azure.core.util.Context.NONE);
     }
 }

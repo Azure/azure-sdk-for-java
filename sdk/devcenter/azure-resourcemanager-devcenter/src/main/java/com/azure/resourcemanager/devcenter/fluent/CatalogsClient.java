@@ -15,11 +15,13 @@ import com.azure.resourcemanager.devcenter.fluent.models.CatalogInner;
 import com.azure.resourcemanager.devcenter.fluent.models.SyncErrorDetailsInner;
 import com.azure.resourcemanager.devcenter.models.CatalogUpdate;
 
-/** An instance of this class provides access to all the operations defined in CatalogsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CatalogsClient.
+ */
 public interface CatalogsClient {
     /**
      * Lists catalogs for a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -32,7 +34,7 @@ public interface CatalogsClient {
 
     /**
      * Lists catalogs for a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -43,12 +45,12 @@ public interface CatalogsClient {
      * @return results of the catalog list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CatalogInner> listByDevCenter(
-        String resourceGroupName, String devCenterName, Integer top, Context context);
+    PagedIterable<CatalogInner> listByDevCenter(String resourceGroupName, String devCenterName, Integer top,
+        Context context);
 
     /**
      * Gets a catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -59,12 +61,12 @@ public interface CatalogsClient {
      * @return a catalog along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CatalogInner> getWithResponse(
-        String resourceGroupName, String devCenterName, String catalogName, Context context);
+    Response<CatalogInner> getWithResponse(String resourceGroupName, String devCenterName, String catalogName,
+        Context context);
 
     /**
      * Gets a catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -78,7 +80,7 @@ public interface CatalogsClient {
 
     /**
      * Creates or updates a catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -89,12 +91,12 @@ public interface CatalogsClient {
      * @return the {@link SyncPoller} for polling of represents a catalog.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CatalogInner>, CatalogInner> beginCreateOrUpdate(
-        String resourceGroupName, String devCenterName, String catalogName, CatalogInner body);
+    SyncPoller<PollResult<CatalogInner>, CatalogInner> beginCreateOrUpdate(String resourceGroupName,
+        String devCenterName, String catalogName, CatalogInner body);
 
     /**
      * Creates or updates a catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -106,12 +108,12 @@ public interface CatalogsClient {
      * @return the {@link SyncPoller} for polling of represents a catalog.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CatalogInner>, CatalogInner> beginCreateOrUpdate(
-        String resourceGroupName, String devCenterName, String catalogName, CatalogInner body, Context context);
+    SyncPoller<PollResult<CatalogInner>, CatalogInner> beginCreateOrUpdate(String resourceGroupName,
+        String devCenterName, String catalogName, CatalogInner body, Context context);
 
     /**
      * Creates or updates a catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -126,7 +128,7 @@ public interface CatalogsClient {
 
     /**
      * Creates or updates a catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -138,12 +140,12 @@ public interface CatalogsClient {
      * @return represents a catalog.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CatalogInner createOrUpdate(
-        String resourceGroupName, String devCenterName, String catalogName, CatalogInner body, Context context);
+    CatalogInner createOrUpdate(String resourceGroupName, String devCenterName, String catalogName, CatalogInner body,
+        Context context);
 
     /**
      * Partially updates a catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -154,12 +156,12 @@ public interface CatalogsClient {
      * @return the {@link SyncPoller} for polling of represents a catalog.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CatalogInner>, CatalogInner> beginUpdate(
-        String resourceGroupName, String devCenterName, String catalogName, CatalogUpdate body);
+    SyncPoller<PollResult<CatalogInner>, CatalogInner> beginUpdate(String resourceGroupName, String devCenterName,
+        String catalogName, CatalogUpdate body);
 
     /**
      * Partially updates a catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -171,12 +173,12 @@ public interface CatalogsClient {
      * @return the {@link SyncPoller} for polling of represents a catalog.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CatalogInner>, CatalogInner> beginUpdate(
-        String resourceGroupName, String devCenterName, String catalogName, CatalogUpdate body, Context context);
+    SyncPoller<PollResult<CatalogInner>, CatalogInner> beginUpdate(String resourceGroupName, String devCenterName,
+        String catalogName, CatalogUpdate body, Context context);
 
     /**
      * Partially updates a catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -191,7 +193,7 @@ public interface CatalogsClient {
 
     /**
      * Partially updates a catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -203,12 +205,12 @@ public interface CatalogsClient {
      * @return represents a catalog.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CatalogInner update(
-        String resourceGroupName, String devCenterName, String catalogName, CatalogUpdate body, Context context);
+    CatalogInner update(String resourceGroupName, String devCenterName, String catalogName, CatalogUpdate body,
+        Context context);
 
     /**
      * Deletes a catalog resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -222,7 +224,7 @@ public interface CatalogsClient {
 
     /**
      * Deletes a catalog resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -233,12 +235,12 @@ public interface CatalogsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String devCenterName, String catalogName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String devCenterName, String catalogName,
+        Context context);
 
     /**
      * Deletes a catalog resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -251,7 +253,7 @@ public interface CatalogsClient {
 
     /**
      * Deletes a catalog resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -265,7 +267,7 @@ public interface CatalogsClient {
 
     /**
      * Gets catalog synchronization error details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -276,12 +278,12 @@ public interface CatalogsClient {
      * @return catalog synchronization error details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SyncErrorDetailsInner> getSyncErrorDetailsWithResponse(
-        String resourceGroupName, String devCenterName, String catalogName, Context context);
+    Response<SyncErrorDetailsInner> getSyncErrorDetailsWithResponse(String resourceGroupName, String devCenterName,
+        String catalogName, Context context);
 
     /**
      * Gets catalog synchronization error details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -295,7 +297,7 @@ public interface CatalogsClient {
 
     /**
      * Syncs templates for a template source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -309,7 +311,7 @@ public interface CatalogsClient {
 
     /**
      * Syncs templates for a template source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -320,12 +322,12 @@ public interface CatalogsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginSync(
-        String resourceGroupName, String devCenterName, String catalogName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginSync(String resourceGroupName, String devCenterName, String catalogName,
+        Context context);
 
     /**
      * Syncs templates for a template source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -338,7 +340,7 @@ public interface CatalogsClient {
 
     /**
      * Syncs templates for a template source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -352,7 +354,7 @@ public interface CatalogsClient {
 
     /**
      * Connects a catalog to enable syncing.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -366,7 +368,7 @@ public interface CatalogsClient {
 
     /**
      * Connects a catalog to enable syncing.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -377,12 +379,12 @@ public interface CatalogsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginConnect(
-        String resourceGroupName, String devCenterName, String catalogName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginConnect(String resourceGroupName, String devCenterName, String catalogName,
+        Context context);
 
     /**
      * Connects a catalog to enable syncing.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
@@ -395,7 +397,7 @@ public interface CatalogsClient {
 
     /**
      * Connects a catalog to enable syncing.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.

@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Backups. */
+/**
+ * Resource collection API of Backups.
+ */
 public interface Backups {
     /**
      * Create backup for a given server with specified backup name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param backupName The name of the backup.
@@ -22,12 +24,12 @@ public interface Backups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return server backup properties along with {@link Response}.
      */
-    Response<ServerBackup> putWithResponse(
-        String resourceGroupName, String serverName, String backupName, Context context);
+    Response<ServerBackup> putWithResponse(String resourceGroupName, String serverName, String backupName,
+        Context context);
 
     /**
      * Create backup for a given server with specified backup name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param backupName The name of the backup.
@@ -40,7 +42,7 @@ public interface Backups {
 
     /**
      * List all the backups for a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param backupName The name of the backup.
@@ -50,12 +52,12 @@ public interface Backups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return server backup properties along with {@link Response}.
      */
-    Response<ServerBackup> getWithResponse(
-        String resourceGroupName, String serverName, String backupName, Context context);
+    Response<ServerBackup> getWithResponse(String resourceGroupName, String serverName, String backupName,
+        Context context);
 
     /**
      * List all the backups for a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param backupName The name of the backup.
@@ -68,7 +70,7 @@ public interface Backups {
 
     /**
      * List all the backups for a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -80,7 +82,7 @@ public interface Backups {
 
     /**
      * List all the backups for a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.

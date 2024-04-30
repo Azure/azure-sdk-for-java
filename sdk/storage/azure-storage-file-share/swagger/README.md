@@ -20,11 +20,11 @@ input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/ccefad1
 java: true
 output-folder: ../
 namespace: com.azure.storage.file.share
-enable-xml: true
 generate-client-as-impl: true
 generate-client-interfaces: false
 service-interface-as-public: true
 license-header: MICROSOFT_MIT_SMALL
+enable-sync-stack: true
 context-client-method-parameter: true
 default-http-exception-type: com.azure.storage.file.share.models.ShareStorageException
 models-subpackage: implementation.models
@@ -34,6 +34,8 @@ customization-class: src/main/java/ShareStorageCustomization.java
 generic-response-type: true
 use-input-stream-for-binary: true
 no-custom-headers: true
+disable-client-builder: true
+stream-style-serialization: true
 ```
 
 ### Query Parameters

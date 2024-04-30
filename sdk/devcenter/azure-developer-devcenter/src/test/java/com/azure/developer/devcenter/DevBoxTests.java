@@ -4,28 +4,339 @@
 
 package com.azure.developer.devcenter;
 
-import com.azure.core.util.BinaryData;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
-import org.junit.jupiter.api.Test;
+import com.azure.developer.devcenter.models.DevBox;
+import com.azure.developer.devcenter.models.DevBoxAction;
+import com.azure.developer.devcenter.models.DevBoxActionDelayResult;
+import com.azure.developer.devcenter.models.DevBoxActionDelayStatus;
+import com.azure.developer.devcenter.models.DevBoxActionType;
+import com.azure.developer.devcenter.models.DevBoxHardwareProfile;
+import com.azure.developer.devcenter.models.DevBoxImageReference;
+import com.azure.developer.devcenter.models.DevBoxNextAction;
+import com.azure.developer.devcenter.models.DevBoxOsType;
+import com.azure.developer.devcenter.models.DevBoxPool;
+import com.azure.developer.devcenter.models.DevBoxProvisioningState;
+import com.azure.developer.devcenter.models.DevBoxSchedule;
+import com.azure.developer.devcenter.models.DevBoxStorageProfile;
+import com.azure.developer.devcenter.models.DevCenterOperationDetails;
+import com.azure.developer.devcenter.models.HibernateSupport;
+import com.azure.developer.devcenter.models.LocalAdministratorStatus;
+import com.azure.developer.devcenter.models.OsDisk;
+import com.azure.developer.devcenter.models.PoolHealthStatus;
+import com.azure.developer.devcenter.models.PowerState;
+import com.azure.developer.devcenter.models.RemoteConnection;
+import com.azure.developer.devcenter.models.ScheduleFrequency;
+import com.azure.developer.devcenter.models.ScheduleType;
+import com.azure.developer.devcenter.models.SkuName;
+
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 class DevBoxTests extends DevCenterClientTestBase {
     @Test
     public void testCreateDevBox() {
-
-        // Provision a Dev Box
-        BinaryData devBoxBody = BinaryData.fromString("{\"poolName\":\"" + poolName + "\"}");
-        SyncPoller<BinaryData, BinaryData> devBoxCreateResponse =
-                setPlaybackSyncPollerPollInterval(devBoxesClient.beginCreateDevBox(projectName, "me", "TestDevBox", devBoxBody, null));
+        SyncPoller<DevCenterOperationDetails, DevBox> devBoxCreateResponse =
+            setPlaybackSyncPollerPollInterval(devBoxesClient.beginCreateDevBox(projectName, meUserId, new DevBox(devBoxName, poolName)));
         Assertions.assertEquals(
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, devBoxCreateResponse.waitForCompletion().getStatus());
+        DevBox devBox = devBoxCreateResponse.getFinalResult();
+        validateDevBox(devBox);
+    }
 
-        // Tear down the Dev Box when we're finished:
-        SyncPoller<BinaryData, Void> devBoxDeleteResponse =
-                        setPlaybackSyncPollerPollInterval(devBoxesClient.beginDeleteDevBox(projectName, "me", "TestDevBox", null));
+    @Test
+    public void testGetDevBox() {
+        setupDevBox();
+
+        DevBox devBox = devBoxesClient.getDevBox(projectName, meUserId, devBoxName);
+        validateDevBox(devBox);
+    }
+
+    @Test
+    public void testListDevBoxes() {
+        setupDevBox();
+        
+        PagedIterable<DevBox> devBoxesResponse = devBoxesClient.listDevBoxes(projectName, meUserId);
+        List<DevBox> devBoxes = devBoxesResponse.stream().collect(Collectors.toList());  
+        Assertions.assertEquals(1, devBoxes.size());
+        validateDevBox(devBoxes.get(0));
+    }
+
+    @Test
+    public void testListAllDevBoxesByUser() {
+        setupDevBox();
+        
+        PagedIterable<DevBox> devBoxesResponse = devBoxesClient.listAllDevBoxesByUser(meUserId);
+        List<DevBox> devBoxes = devBoxesResponse.stream().collect(Collectors.toList());  
+        Assertions.assertEquals(1, devBoxes.size());
+        validateDevBox(devBoxes.get(0));
+    }
+
+    @Test
+    public void testListAllDevBoxes() {
+        setupDevBox();
+        
+        PagedIterable<DevBox> devBoxesResponse = devBoxesClient.listAllDevBoxes();  
+        List<DevBox> devBoxes = devBoxesResponse.stream().collect(Collectors.toList());  
+        Assertions.assertEquals(1, devBoxes.size());
+        validateDevBox(devBoxes.get(0));
+    }
+
+    @Test
+    public void testGetRemoteConnection() {
+        setupDevBox();
+        
+        RemoteConnection remoteConnection = devBoxesClient.getRemoteConnection(projectName, meUserId, devBoxName);
+        
+        Assertions.assertNotNull(remoteConnection);
+        Assertions.assertTrue(remoteConnection.getWebUrl().startsWith("https"));
+        Assertions.assertTrue(remoteConnection.getRdpConnectionUrl().startsWith("ms-avd"));
+    }
+
+    @Test
+    public void testStartAndStopDevBox() {
+        setupDevBox();
+        
+        SyncPoller<DevCenterOperationDetails, Void> devBoxStopResponse =
+                setPlaybackSyncPollerPollInterval(devBoxesClient.beginStopDevBox(projectName, meUserId, devBoxName));
+        Assertions.assertEquals(
+                LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, devBoxStopResponse.waitForCompletion().getStatus());
+
+        SyncPoller<DevCenterOperationDetails, Void> devBoxStartResponse =
+                setPlaybackSyncPollerPollInterval(devBoxesClient.beginStartDevBox(projectName, meUserId, devBoxName));
+        Assertions.assertEquals(
+                LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, devBoxStartResponse.waitForCompletion().getStatus());
+    }
+
+    @Test
+    public void testRestartDevBox() {
+        setupDevBox();
+
+        SyncPoller<DevCenterOperationDetails, Void> devBoxRestartResponse =
+                setPlaybackSyncPollerPollInterval(devBoxesClient.beginRestartDevBox(projectName, meUserId, devBoxName));
+        Assertions.assertEquals(
+                LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, devBoxRestartResponse.waitForCompletion().getStatus());
+    }
+
+    @Test
+    public void testGetPool() {
+        DevBoxPool pool = devBoxesClient.getPool(projectName, poolName);
+        validatePool(pool);
+    }
+
+    @Test
+    public void testListPools() {
+        PagedIterable<DevBoxPool> poolsResponse = devBoxesClient.listPools(projectName);
+        List<DevBoxPool> pools = poolsResponse.stream().collect(Collectors.toList());  
+        Assertions.assertEquals(1, pools.size());
+        validatePool(pools.get(0));
+    }
+
+    @Test
+    public void testGetSchedule() {
+        DevBoxSchedule schedule = devBoxesClient.getSchedule(projectName, poolName, "default");
+        validateSchedule(schedule);
+    }
+
+    @Test
+    public void testListSchedules() {
+        PagedIterable<DevBoxSchedule> schedulesResponse = devBoxesClient.listSchedules(projectName, poolName);
+        List<DevBoxSchedule> schedules = schedulesResponse.stream().collect(Collectors.toList());  
+        Assertions.assertEquals(1, schedules.size());
+        validateSchedule(schedules.get(0));
+    }
+
+    @Test
+    public void testGetAndDelayDevBoxAction() {
+        setupDevBox();
+        
+        DevBoxAction action = devBoxesClient.getDevBoxAction(projectName, meUserId, devBoxName, "schedule-default");
+        validateAction(action);
+
+        OffsetDateTime currentScheduledTime = action.getNextAction().getScheduledTime();
+        OffsetDateTime delayUntil = currentScheduledTime.plusMinutes(10);
+
+        DevBoxAction delayedAction = devBoxesClient.delayAction(projectName, meUserId, devBoxName, action.getName(), delayUntil);
+        validateAction(delayedAction);
+
+        OffsetDateTime delayedTime = delayedAction.getNextAction().getScheduledTime();
+        Assertions.assertEquals(delayUntil, delayedTime);
+    }
+
+    @Test
+    public void testGetAndDelayAllDevBoxActions() {
+        setupDevBox();
+        
+        List<DevBoxAction> devBoxActions = devBoxesClient.listDevBoxActions(projectName, meUserId, devBoxName).stream().collect(Collectors.toList()); 
+        DevBoxAction action = devBoxActions.get(0); 
+        
+        Assertions.assertEquals(1, devBoxActions.size());
+        validateAction(action);
+
+        OffsetDateTime currentScheduledTime = action.getNextAction().getScheduledTime();
+        OffsetDateTime delayUntil = currentScheduledTime.plusMinutes(10);
+
+        List<DevBoxActionDelayResult> actionsDelayResult = devBoxesClient.delayAllActions(projectName, meUserId, devBoxName, delayUntil).stream().collect(Collectors.toList()); 
+
+        Assertions.assertEquals(1, actionsDelayResult.size());
+        Assertions.assertEquals("schedule-default", actionsDelayResult.get(0).getActionName());
+        Assertions.assertEquals(DevBoxActionDelayStatus.SUCCEEDED, actionsDelayResult.get(0).getDelayStatus());
+        validateAction(actionsDelayResult.get(0).getAction());
+    }
+
+    @Test
+    public void testSkipActionAndDeleteDevBox() {
+        setupDevBox();
+        
+        devBoxesClient.skipAction(projectName, meUserId, devBoxName, "schedule-default");
+
+        SyncPoller<DevCenterOperationDetails, Void> devBoxDeleteResponse =
+                setPlaybackSyncPollerPollInterval(devBoxesClient.beginDeleteDevBox(projectName, meUserId, devBoxName));
         Assertions.assertEquals(
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, devBoxDeleteResponse.waitForCompletion().getStatus());
+    }
+
+    public DevBox setupDevBox() {
+        //get dev box if exists. If not, NotFound error will be thrown, and then we create dev box
+
+        DevBox devBox; 
+        try {
+            devBox = devBoxesClient.getDevBox(projectName, meUserId, devBoxName);
+        } catch (Exception e) {
+            SyncPoller<DevCenterOperationDetails, DevBox> devBoxCreateResponse =
+                    setPlaybackSyncPollerPollInterval(devBoxesClient.beginCreateDevBox(projectName, meUserId, new DevBox(devBoxName, poolName)));
+            Assertions.assertEquals(
+                    LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, devBoxCreateResponse.waitForCompletion().getStatus());
+    
+            devBox = devBoxCreateResponse.getFinalResult();
+        } 
+        Assertions.assertNotNull(devBox);
+        Assertions.assertEquals(devBoxName, devBox.getName());
+
+        return devBox;
+    }
+
+    public void validateDevBox(DevBox devBox) {
+        // response assertion
+        Assertions.assertNotNull(devBox);
+        // verify property "name"
+        Assertions.assertEquals(devBoxName, devBox.getName());
+        // verify property "projectName"
+        Assertions.assertEquals(projectName, devBox.getProjectName());
+        // verify property "poolName"
+        Assertions.assertEquals(poolName, devBox.getPoolName());
+        // verify property "hibernateSupport"
+        Assertions.assertEquals(HibernateSupport.DISABLED, devBox.getHibernateSupport());
+        // verify property "provisioningState"
+        Assertions.assertEquals(DevBoxProvisioningState.SUCCEEDED, devBox.getProvisioningState());
+        // verify property "actionState"
+        Assertions.assertEquals("Started", devBox.getActionState());
+        // verify property "powerState"
+        Assertions.assertEquals(PowerState.RUNNING, devBox.getPowerState());
+        // verify property "location"
+        Assertions.assertEquals("eastus", devBox.getLocation());
+        // verify property "osType"
+        Assertions.assertEquals(DevBoxOsType.WINDOWS, devBox.getOsType());
+        // verify property "userId"
+        Assertions.assertNotNull(devBox.getUserId());
+        // verify property "hardwareProfile"
+        DevBoxHardwareProfile responseHardwareProfile = devBox.getHardwareProfile();
+        Assertions.assertNotNull(responseHardwareProfile);
+        Assertions.assertEquals(8, responseHardwareProfile.getVCpus());
+        Assertions.assertEquals(SkuName.GENERAL_I_8C32GB1024SSD_V2, responseHardwareProfile.getSkuName());
+        Assertions.assertEquals(32, responseHardwareProfile.getMemoryInGb());
+        // verify property "storageProfile"
+        DevBoxStorageProfile responseStorageProfile = devBox.getStorageProfile();
+        Assertions.assertNotNull(responseStorageProfile);
+        OsDisk responseStorageProfileOsDisk = responseStorageProfile.getOsDisk();
+        Assertions.assertNotNull(responseStorageProfileOsDisk);
+        Assertions.assertEquals(1024, responseStorageProfileOsDisk.getDiskSizeInGb());
+        // verify property "imageReference"
+        DevBoxImageReference responseImageReference = devBox.getImageReference();
+        Assertions.assertNotNull(responseImageReference);
+        Assertions.assertEquals("MicrosoftWindowsDesktop_windows-ent-cpc_win11-21h2-ent-cpc-m365", responseImageReference.getName());
+        Assertions.assertEquals("1.0.0", responseImageReference.getVersion());
+        Assertions.assertEquals("Windows11", responseImageReference.getOperatingSystem());
+        Assertions.assertEquals("win11-21h2-ent-cpc-m365", responseImageReference.getOsBuildNumber());
+        Assertions.assertNotNull(responseImageReference.getPublishedDate());
+        // verify property createdTime
+        Assertions.assertNotNull(devBox.getCreatedTime());
+        // verify property localAdministrator
+        Assertions.assertEquals(LocalAdministratorStatus.ENABLED, devBox.getLocalAdministratorStatus());
+    }
+
+    public void validatePool(DevBoxPool pool) {
+
+        // response assertion
+        Assertions.assertNotNull(pool);
+        // verify property "name"
+        Assertions.assertEquals(poolName, pool.getName());
+        // verify property "location"
+        Assertions.assertEquals("eastus", pool.getLocation());
+        // verify property "osType"
+        Assertions.assertEquals(DevBoxOsType.WINDOWS, pool.getOsType());
+        // verify property "hardwareProfile"
+        DevBoxHardwareProfile responseHardwareProfile = pool.getHardwareProfile();
+        Assertions.assertNotNull(responseHardwareProfile);
+        Assertions.assertEquals(8, responseHardwareProfile.getVCpus());
+        Assertions.assertEquals(SkuName.GENERAL_I_8C32GB1024SSD_V2, responseHardwareProfile.getSkuName());
+        Assertions.assertEquals(32, responseHardwareProfile.getMemoryInGb());
+        // verify property "hibernateSupport"
+        Assertions.assertEquals(HibernateSupport.DISABLED, pool.getHibernateSupport());
+        // verify property "storageProfile"
+        DevBoxStorageProfile responseStorageProfile = pool.getStorageProfile();
+        Assertions.assertNotNull(responseStorageProfile);
+        OsDisk responseStorageProfileOsDisk = responseStorageProfile.getOsDisk();
+        Assertions.assertNotNull(responseStorageProfileOsDisk);
+        Assertions.assertEquals(1024, responseStorageProfileOsDisk.getDiskSizeInGb());
+        // verify property "imageReference"
+        DevBoxImageReference responseImageReference = pool.getImageReference();
+        Assertions.assertNotNull(responseImageReference);
+        Assertions.assertEquals("MicrosoftWindowsDesktop_windows-ent-cpc_win11-21h2-ent-cpc-m365", responseImageReference.getName());
+        Assertions.assertEquals("1.0.0", responseImageReference.getVersion());
+        Assertions.assertEquals("Windows11", responseImageReference.getOperatingSystem());
+        Assertions.assertEquals("win11-21h2-ent-cpc-m365", responseImageReference.getOsBuildNumber());
+        Assertions.assertNotNull(responseImageReference.getPublishedDate());
+        // verify property localAdministrator
+        Assertions.assertEquals(LocalAdministratorStatus.ENABLED, pool.getLocalAdministratorStatus());
+        // verify property "healthStatus"
+        Assertions.assertEquals(PoolHealthStatus.HEALTHY, pool.getHealthStatus());
+    }
+
+    public void validateSchedule(DevBoxSchedule schedule) {
+        // response assertion
+        Assertions.assertNotNull(schedule);
+        // verify property "name"
+        Assertions.assertEquals("default", schedule.getName());
+        // verify property "scheduleType"
+        Assertions.assertEquals(ScheduleType.STOP_DEV_BOX, schedule.getScheduleType());
+        // verify property "scheduleFrequency"
+        Assertions.assertEquals(ScheduleFrequency.DAILY, schedule.getScheduleFrequency());
+        // verify property "time"
+        Assertions.assertEquals(LocalTime.of(19, 00), schedule.getTime());
+        // verify property "timeZone"
+        Assertions.assertEquals("America/Los_Angeles", schedule.getTimeZone());
+    }
+
+    public void validateAction(DevBoxAction action) {
+        // response assertion
+        Assertions.assertNotNull(action);
+        // verify property "name"
+        Assertions.assertEquals("schedule-default", action.getName());
+        // verify property "actionType"
+        Assertions.assertEquals(DevBoxActionType.STOP, action.getActionType());
+        // verify property "sourceId"
+        Assertions.assertEquals("/projects/" + projectName + "/pools/" + poolName + "/schedules/default", action.getSourceId());
+        // verify property "nextAction"
+        DevBoxNextAction responseNextAction = action.getNextAction();
+        Assertions.assertNotNull(responseNextAction);
+        Assertions.assertNotNull(responseNextAction.getScheduledTime());
     }
 }
 

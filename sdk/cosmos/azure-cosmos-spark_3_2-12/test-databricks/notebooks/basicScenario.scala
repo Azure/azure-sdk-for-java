@@ -13,14 +13,16 @@ val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
   "spark.cosmos.container" -> cosmosContainerName,
   "spark.cosmos.preferredRegionsList" -> "West US 2",
   "spark.cosmos.proactiveConnectionInitialization" -> s"$cosmosDatabaseName/$cosmosContainerName",
-  "spark.cosmos.proactiveConnectionInitializationDurationInSeconds" -> "10"
+  "spark.cosmos.proactiveConnectionInitializationDurationInSeconds" -> "10",
+  "spark.cosmos.enforceNativeTransport" -> "true"
 )
 
 val cfgWithAutoSchemaInference = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
   "spark.cosmos.accountKey" -> cosmosMasterKey,
   "spark.cosmos.database" -> cosmosDatabaseName,
   "spark.cosmos.container" -> cosmosContainerName,
-  "spark.cosmos.read.inferSchema.enabled" -> "true"
+  "spark.cosmos.read.inferSchema.enabled" -> "true",
+  "spark.cosmos.enforceNativeTransport" -> "true"
 )
 
 // COMMAND ----------

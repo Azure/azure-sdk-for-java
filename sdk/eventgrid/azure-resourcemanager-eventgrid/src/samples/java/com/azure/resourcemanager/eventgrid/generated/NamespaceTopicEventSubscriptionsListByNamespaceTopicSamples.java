@@ -9,9 +9,7 @@ package com.azure.resourcemanager.eventgrid.generated;
  */
 public final class NamespaceTopicEventSubscriptionsListByNamespaceTopicSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
-     * NamespaceTopicEventSubscriptions_ListByNamespaceTopic.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/NamespaceTopicEventSubscriptions_ListByNamespaceTopic.json
      */
     /**
      * Sample code: NamespaceTopicEventSubscriptions_ListByNamespaceTopic.
@@ -20,7 +18,8 @@ public final class NamespaceTopicEventSubscriptionsListByNamespaceTopicSamples {
      */
     public static void namespaceTopicEventSubscriptionsListByNamespaceTopic(
         com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.namespaceTopicEventSubscriptions().listByNamespaceTopic("examplerg", "examplenamespace2",
-            "examplenamespacetopic2", null, null, com.azure.core.util.Context.NONE);
+        manager.namespaceTopicEventSubscriptions()
+            .listByNamespaceTopic("examplerg", "examplenamespace2", "examplenamespacetopic2", null, null,
+                com.azure.core.util.Context.NONE);
     }
 }

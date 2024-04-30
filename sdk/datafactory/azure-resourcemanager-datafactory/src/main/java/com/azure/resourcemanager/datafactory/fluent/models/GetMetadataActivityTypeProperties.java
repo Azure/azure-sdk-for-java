@@ -134,8 +134,9 @@ public final class GetMetadataActivityTypeProperties {
      */
     public void validate() {
         if (dataset() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property dataset in model GetMetadataActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataset in model GetMetadataActivityTypeProperties"));
         } else {
             dataset().validate();
         }

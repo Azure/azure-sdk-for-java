@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of FleetMembers. */
+/**
+ * Resource collection API of FleetMembers.
+ */
 public interface FleetMembers {
     /**
      * List FleetMember resources by Fleet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface FleetMembers {
 
     /**
      * List FleetMember resources by Fleet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param context The context to associate with this operation.
@@ -37,7 +39,7 @@ public interface FleetMembers {
 
     /**
      * Get a FleetMember.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param fleetMemberName The name of the Fleet member resource.
@@ -47,12 +49,12 @@ public interface FleetMembers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a FleetMember along with {@link Response}.
      */
-    Response<FleetMember> getWithResponse(
-        String resourceGroupName, String fleetName, String fleetMemberName, Context context);
+    Response<FleetMember> getWithResponse(String resourceGroupName, String fleetName, String fleetMemberName,
+        Context context);
 
     /**
      * Get a FleetMember.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param fleetMemberName The name of the Fleet member resource.
@@ -65,7 +67,7 @@ public interface FleetMembers {
 
     /**
      * Delete a FleetMember.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param fleetMemberName The name of the Fleet member resource.
@@ -77,7 +79,7 @@ public interface FleetMembers {
 
     /**
      * Delete a FleetMember.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param fleetMemberName The name of the Fleet member resource.
@@ -91,7 +93,7 @@ public interface FleetMembers {
 
     /**
      * Get a FleetMember.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -102,7 +104,7 @@ public interface FleetMembers {
 
     /**
      * Get a FleetMember.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -114,7 +116,7 @@ public interface FleetMembers {
 
     /**
      * Delete a FleetMember.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -124,7 +126,7 @@ public interface FleetMembers {
 
     /**
      * Delete a FleetMember.
-     *
+     * 
      * @param id the resource ID.
      * @param ifMatch The request should only proceed if an entity matches this string.
      * @param context The context to associate with this operation.
@@ -136,7 +138,7 @@ public interface FleetMembers {
 
     /**
      * Begins definition for a new FleetMember resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new FleetMember definition.
      */

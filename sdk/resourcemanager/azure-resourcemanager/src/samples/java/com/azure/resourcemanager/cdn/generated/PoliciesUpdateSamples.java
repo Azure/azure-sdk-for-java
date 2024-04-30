@@ -8,29 +8,26 @@ import com.azure.resourcemanager.cdn.models.CdnWebApplicationFirewallPolicyPatch
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Policies Update. */
+/**
+ * Samples for Policies Update.
+ */
 public final class PoliciesUpdateSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/WafPatchPolicy.json
+     * x-ms-original-file:
+     * specification/cdn/resource-manager/Microsoft.Cdn/stable/2024-02-01/examples/WafPatchPolicy.json
      */
     /**
      * Sample code: Creates specific policy.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createsSpecificPolicy(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cdnProfiles()
-            .manager()
-            .serviceClient()
-            .getPolicies()
-            .update(
-                "rg1",
-                "MicrosoftCdnWafPolicy",
-                new CdnWebApplicationFirewallPolicyPatchParameters().withTags(mapOf("foo", "bar")),
-                com.azure.core.util.Context.NONE);
+        azure.cdnProfiles().manager().serviceClient().getPolicies().update("rg1", "MicrosoftCdnWafPolicy",
+            new CdnWebApplicationFirewallPolicyPatchParameters().withTags(mapOf("foo", "bar")),
+            com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

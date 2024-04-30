@@ -4,9 +4,10 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -18,7 +19,6 @@ public final class RouterWorkerSelector {
     /*
      * The label key to query against
      */
-    @Generated
     @JsonProperty(value = "key")
     private String key;
 
@@ -26,7 +26,6 @@ public final class RouterWorkerSelector {
      * Describes how the value of the label is compared to the value defined on the
      * label selector
      */
-    @Generated
     @JsonProperty(value = "labelOperator")
     private LabelOperator labelOperator;
 
@@ -34,33 +33,34 @@ public final class RouterWorkerSelector {
      * The value to compare against the actual label value with the given operator
      */
     @JsonProperty(value = "value")
+    @JsonDeserialize(using = RouterValueDeserializer.class)
+    @JsonSerialize(using = RouterValueSerializer.class)
     private RouterValue value;
 
     /*
      * Describes how long this label selector is valid in seconds.
      */
     @JsonProperty(value = "expiresAfterSeconds")
+    @JsonDeserialize(using = DurationDeserializer.class)
+    @JsonSerialize(using = DurationSerializer.class)
     private Duration expiresAfter;
 
     /*
      * Pushes the job to the front of the queue as long as this selector is active.
      */
-    @Generated
     @JsonProperty(value = "expedite")
     private Boolean expedite;
 
     /*
      * The status of the worker selector.
      */
-    @Generated
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "status")
     private RouterWorkerSelectorStatus status;
 
     /*
      * The time at which this worker selector expires in UTC
      */
-    @Generated
-    @JsonProperty(value = "expiresAt", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "expiresAt")
     private OffsetDateTime expiresAt;
 
     /**
@@ -68,14 +68,16 @@ public final class RouterWorkerSelector {
      *
      * @param key the key value to set.
      * @param labelOperator the labelOperator value to set.
+     * @param value the RouterValue value to set.
      */
-    @Generated
     @JsonCreator
     public RouterWorkerSelector(
             @JsonProperty(value = "key") String key,
-            @JsonProperty(value = "labelOperator") LabelOperator labelOperator) {
+            @JsonProperty(value = "labelOperator") LabelOperator labelOperator,
+            @JsonProperty(value = "value") RouterValue value) {
         this.key = key;
         this.labelOperator = labelOperator;
+        this.value = value;
     }
 
     /**
@@ -83,7 +85,6 @@ public final class RouterWorkerSelector {
      *
      * @return the key value.
      */
-    @Generated
     public String getKey() {
         return this.key;
     }
@@ -94,7 +95,6 @@ public final class RouterWorkerSelector {
      *
      * @return the labelOperator value.
      */
-    @Generated
     public LabelOperator getLabelOperator() {
         return this.labelOperator;
     }
@@ -106,17 +106,6 @@ public final class RouterWorkerSelector {
      */
     public RouterValue getValue() {
         return this.value;
-    }
-
-    /**
-     * Set the value property: The value to compare against the actual label value with the given operator.
-     *
-     * @param value the value value to set.
-     * @return the RouterWorkerSelector object itself.
-     */
-    public RouterWorkerSelector setValue(RouterValue value) {
-        this.value = value;
-        return this;
     }
 
     /**
@@ -144,7 +133,6 @@ public final class RouterWorkerSelector {
      *
      * @return the expedite value.
      */
-    @Generated
     public Boolean isExpedite() {
         return this.expedite;
     }
@@ -155,7 +143,6 @@ public final class RouterWorkerSelector {
      * @param expedite the expedite value to set.
      * @return the RouterWorkerSelector object itself.
      */
-    @Generated
     public RouterWorkerSelector setExpedite(Boolean expedite) {
         this.expedite = expedite;
         return this;
@@ -166,7 +153,6 @@ public final class RouterWorkerSelector {
      *
      * @return the status value.
      */
-    @Generated
     public RouterWorkerSelectorStatus getStatus() {
         return this.status;
     }
@@ -176,7 +162,6 @@ public final class RouterWorkerSelector {
      *
      * @return the expiresAt value.
      */
-    @Generated
     public OffsetDateTime getExpiresAt() {
         return this.expiresAt;
     }
