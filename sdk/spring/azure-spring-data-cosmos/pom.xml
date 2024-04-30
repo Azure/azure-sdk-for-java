@@ -198,7 +198,7 @@
     <dependency>
       <groupId>org.junit.vintage</groupId>
       <artifactId>junit-vintage-engine</artifactId>
-      <version>5.10.2</version> <!-- {x-version-update;org.junit.vintage:junit-vintage-engine;external_dependency} -->
+      <version>5.9.3</version> <!-- {x-version-update;org.junit.vintage:junit-vintage-engine;external_dependency} -->
       <scope>test</scope>
       <exclusions>
         <exclusion>

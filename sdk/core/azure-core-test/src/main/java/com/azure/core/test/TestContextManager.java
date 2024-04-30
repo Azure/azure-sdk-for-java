@@ -62,7 +62,8 @@ public class TestContextManager {
      * @param testClassPath the test class path
      * @param trackerTestName The formatted test name used in logging and tracking its progress.
      */
-    TestContextManager(Method testMethod, TestMode testMode, boolean enableTestProxy,
+    @SuppressWarnings("deprecation")
+    public TestContextManager(Method testMethod, TestMode testMode, boolean enableTestProxy,
         boolean recordWithoutRequestBodyClassAnnotation, Path testClassPath, String trackerTestName) {
         this.testName = testMethod.getName();
         this.className = testMethod.getDeclaringClass().getSimpleName();
@@ -170,7 +171,7 @@ public class TestContextManager {
      *
      * @param testIteration Test iteration.
      */
-    void setTestIteration(Integer testIteration) {
+    public void setTestIteration(Integer testIteration) {
         this.testIteration = testIteration;
     }
 

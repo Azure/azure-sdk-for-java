@@ -6,6 +6,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
 import com.azure.core.test.http.PlaybackClient;
 import com.azure.core.test.implementation.TestingHelpers;
+import com.azure.core.test.junitextensions.TestContextManagerParameterResolver;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.util.Configuration;
@@ -21,14 +22,11 @@ import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.UncheckedIOException;
-import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.ServiceLoader;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
@@ -311,7 +309,7 @@ public abstract class TestBase {
      * Indicates whether the out of process test recording proxy is in use.
      * @return true if test proxy is to be used.
      */
-    protected static boolean isTestProxyEnabled() {
+    public static boolean isTestProxyEnabled() {
         return enableTestProxy;
     }
 
@@ -397,21 +395,6 @@ public abstract class TestBase {
         return TEST_PROXY_HTTP_CLIENT.updateAndGet(httpClient -> httpClient == null
             ? getHttpClients().findFirst().orElse(new HttpURLConnectionHttpClient())
             : httpClient);
-    }
-
-    static String getTestName(Optional<Method> testMethod, String displayName, Optional<Class<?>> testClass) {
-        String testName = "";
-        String fullyQualifiedTestName = "";
-        if (testMethod.isPresent()) {
-            Method method = testMethod.get();
-            String className = testClass.map(Class::getName).orElse(method.getDeclaringClass().getName());
-            testName = method.getName();
-            fullyQualifiedTestName = className + "." + testName;
-        }
-
-        return Objects.equals(displayName, testName)
-            ? fullyQualifiedTestName
-            : fullyQualifiedTestName + "(" + displayName + ")";
     }
 
     static boolean shouldLogExecutionStatus() {

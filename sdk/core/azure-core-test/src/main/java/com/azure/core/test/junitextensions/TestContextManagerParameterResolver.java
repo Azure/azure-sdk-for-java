@@ -1,8 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.core.test;
+package com.azure.core.test.junitextensions;
 
+import com.azure.core.test.TestBase;
+import com.azure.core.test.TestContextManager;
+import com.azure.core.test.TestMode;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
+import com.azure.core.test.implementation.TestingHelpers;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
@@ -13,9 +17,8 @@ import java.nio.file.Paths;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.azure.core.test.TestBase.getTestName;
 import static com.azure.core.test.TestBase.isTestProxyEnabled;
-import static com.azure.core.test.TestBase.testMode;
+import static com.azure.core.test.implementation.TestingHelpers.getTestName;
 import static com.azure.core.test.utils.TestUtils.toURI;
 
 /**
@@ -41,7 +44,7 @@ public final class TestContextManagerParameterResolver implements ParameterResol
     @Override
     public Object resolveParameter(ParameterContext parameterContext, ExtensionContext context)
         throws ParameterResolutionException {
-        TestMode localTestMode = testMode;
+        TestMode localTestMode = TestingHelpers.getTestMode();
         // for unit tests of playback/recording in azure-core-test, allow for changing the mode per-test.
         if (context.getTags().contains("Record")) {
             localTestMode = TestMode.RECORD;
