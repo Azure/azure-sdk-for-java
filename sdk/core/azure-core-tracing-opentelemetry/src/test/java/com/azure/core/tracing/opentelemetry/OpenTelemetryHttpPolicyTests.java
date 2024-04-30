@@ -505,16 +505,16 @@ public class OpenTelemetryHttpPolicyTests {
     public static Stream<Arguments> urlSanitizationArgs() {
         List<Arguments> arguments = new ArrayList<>();
 
-        arguments.add(
-            Arguments.of(ORIGINAL_URL_WITH_QUERY, Collections.emptySet(), EXPECTED_URL_REDACTED));
+        arguments.add(Arguments.of(ORIGINAL_URL_WITH_QUERY, Collections.emptySet(), EXPECTED_URL_REDACTED));
         arguments.add(Arguments.of(ORIGINAL_URL_NO_QUERY, Collections.emptySet(), ORIGINAL_URL_NO_QUERY));
-        arguments.add(
-            Arguments.of(ORIGINAL_URL_WITH_QUERY, Collections.singleton("n"), "https://httpbin.org/hello?n=otel&api-version=1.2.3"));
+        arguments.add(Arguments.of(ORIGINAL_URL_WITH_QUERY, Collections.singleton("n"),
+            "https://httpbin.org/hello?n=otel&api-version=1.2.3"));
 
         Set<String> allowed = new HashSet<>();
         allowed.add("n");
         allowed.add("m");
-        arguments.add(Arguments.of(ORIGINAL_URL_WITH_QUERY, allowed, "https://httpbin.org/hello?n=otel&api-version=1.2.3"));
+        arguments
+            .add(Arguments.of(ORIGINAL_URL_WITH_QUERY, allowed, "https://httpbin.org/hello?n=otel&api-version=1.2.3"));
 
         return arguments.stream();
     }
