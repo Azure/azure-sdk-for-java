@@ -105,13 +105,12 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeUntypedField("parameters", this.parameters);
+        jsonWriter.writeRawField("parameters", this.parameters.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -128,7 +127,7 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
         return jsonReader.readObject(reader -> {
             String name = null;
             String description = null;
-            Object parameters = null;
+            BinaryData parameters = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -137,14 +136,14 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
                 } else if ("parameters".equals(fieldName)) {
-                    parameters = reader.readUntyped();
+                    parameters = BinaryData.fromObject(reader.readUntyped());
                 } else {
                     reader.skipChildren();
                 }
             }
             FunctionDefinition deserializedFunctionDefinition = new FunctionDefinition(name);
             deserializedFunctionDefinition.description = description;
-            deserializedFunctionDefinition.parameters = BinaryData.fromObject(parameters);
+            deserializedFunctionDefinition.parameters = parameters;
             return deserializedFunctionDefinition;
         });
     }
