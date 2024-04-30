@@ -25,7 +25,8 @@ parameters:
   JobId:
 
 jobs:
-  - job: ${{ parameters.JobId }}
+  - job: $(OSVmImage)_$(Pool)_${{ parameters.OSName }}
+
     dependsOn: ${{ parameters.DependsOn }}
     condition: and(succeededOrFailed(), ne(${{ parameters.Matrix }}, '{}'))
     strategy:
