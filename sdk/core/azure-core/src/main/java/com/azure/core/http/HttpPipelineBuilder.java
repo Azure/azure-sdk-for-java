@@ -5,7 +5,7 @@ package com.azure.core.http;
 
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.http.policy.InstrumentationPolicy;
-import com.azure.core.implementation.http.policy.UrlSanitizer;
+import com.azure.core.implementation.http.UrlSanitizer;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.TracingOptions;
@@ -111,7 +111,7 @@ public class HttpPipelineBuilder {
             return null;
         }
 
-        return options.getTracingOptions().getAllowedQueryParamNames();
+        return options.getTracingOptions().getAllowedTracingQueryParamNames();
     }
 
     /**

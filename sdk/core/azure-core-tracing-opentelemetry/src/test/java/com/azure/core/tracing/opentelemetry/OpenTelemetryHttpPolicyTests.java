@@ -157,7 +157,7 @@ public class OpenTelemetryHttpPolicyTests {
         HttpRequest request = new HttpRequest(HttpMethod.POST, originalUrl);
 
         ClientOptions options
-            = new ClientOptions().setTracingOptions(new TracingOptions().setAllowedQueryParamNames(allowedQueryParams));
+            = new ClientOptions().setTracingOptions(new TracingOptions().setAllowedTracingQueryParamNames(allowedQueryParams));
 
         Span parentSpan = tracer.spanBuilder(SPAN_NAME).startSpan();
         try (Scope scope = parentSpan.makeCurrent()) {
@@ -515,7 +515,7 @@ public class OpenTelemetryHttpPolicyTests {
         Set<String> allowed = new HashSet<>();
         allowed.add("n");
         allowed.add("m");
-        arguments.add(Arguments.of(url, allowed, "https://httpbin.org/hello?n=otel&api-version=REDACTED"));
+        arguments.add(Arguments.of(url, allowed, "https://httpbin.org/hello?n=otel&api-version=1.2.3"));
 
         return arguments.stream();
     }

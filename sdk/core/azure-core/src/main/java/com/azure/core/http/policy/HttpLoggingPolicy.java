@@ -13,7 +13,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.ImplUtils;
-import com.azure.core.implementation.http.policy.UrlSanitizer;
+import com.azure.core.implementation.http.UrlSanitizer;
 import com.azure.core.implementation.jackson.ObjectMapperShim;
 import com.azure.core.implementation.logging.LoggingKeys;
 import com.azure.core.implementation.util.BinaryDataContent;

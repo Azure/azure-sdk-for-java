@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.implementation.http.UrlSanitizer;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
