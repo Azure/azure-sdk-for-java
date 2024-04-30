@@ -20,83 +20,69 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Function;
 
 /**
  * An {@link ExecutorService} that is shared by multiple consumers.
  * <p>
  * The shared executor service is created using the following configuration settings:
  * <ul>
- *     <li>{@code azure.sdk.sharedpool.size} - The size of the shared executor service. If not set, it defaults to 10
- *     times the number of available processors.</li>
- *     <li>{@code azure.sdk.sharedpool.keepalivemillis} - The keep alive time for threads in the shared executor
- *     service. If not set, it defaults to 60 seconds.</li>
- *     <li>{@code azure.sdk.sharedpool.virtual} - A boolean flag to indicate if the shared executor service should use
- *     virtual threads. If not set, it defaults to true. Ignored if virtual threads are not available in the
- *     runtime.</li>
+ *     <li>{@code azure.sdk.shared.threadpool.maxpoolsize} system property or
+ *     {@code AZURE_SDK_SHARED_THREADPOOL_MAXPOOLSIZE} environment variable - The maximum pool size of the shared
+ *     executor service. If not set, it defaults to 10 times the number of available processors.</li>
+ *     <li>{@code azure.sdk.shared.threadpool.keepalivemillis} system property or
+ *     {code AZURE_SDK_SHARED_THREADPOOL_KEEPALIVEMILLIS} environment variable - The keep alive time in millis for
+ *     threads in the shared executor service. If not set, it defaults to 60 seconds. Limited to integer size.</li>
+ *     <li>{@code azure.sdk.shared.threadpool.usevirtualthreads} system property or
+ *     {@code AZURE_SDK_SHARED_THREADPOOL_USEVIRTUALTHREADS} environment variable - A boolean flag to indicate if the
+ *     shared executor service should use virtual threads. If not set, it defaults to true. Ignored if virtual threads
+ *     are not available in the runtime.</li>
  * </ul>
  */
 @SuppressWarnings({ "resource", "NullableProblems" })
 public final class SharedExecutorService implements ExecutorService {
     private static final ClientLogger LOGGER = new ClientLogger(SharedExecutorService.class);
 
-    private static final SharedExecutorService INSTANCE = new SharedExecutorService();
-
     // Shared thread counter for all instances of SharedExecutorService created using the empty factory method.
     private static final AtomicLong AZURE_SDK_THREAD_COUNTER = new AtomicLong();
     private static final String AZURE_SDK_THREAD_NAME = "azure-sdk-global-thread-";
 
     // The thread pool size for the shared executor service.
-    //
-    // This uses the configuration setting 'azure.sdk.sharedpool.size' if set, otherwise it defaults to 10 times the
-    // number of available processors.
-    // If 'azure.sdk.sharedpool.size' is set to a non-integer, negative value, or zero, the default value is used.
-    private static final int THREAD_POOL_SIZE
-        = getConfig("azure.sdk.sharedpool.size", Integer::parseInt, 10 * Runtime.getRuntime().availableProcessors());
+    private static final int THREAD_POOL_SIZE;
 
     // The thread pool keep alive time for the shared executor service.
-    //
-    // This uses the configuration setting 'azure.sdk.sharedpool.keepalivemillis' if set, otherwise it defaults to 60
-    // seconds.
-    // If 'azure.sdk.sharedpool.keepalivemillis' is set to a non-integer, negative value, or zero, the default value is
-    // used.
-    private static final long THREAD_POOL_KEEP_ALIVE_MILLIS
-        = getConfig("azure.sdk.sharedpool.keepalivemillis", Long::parseLong, 60_000L);
+    private static final int THREAD_POOL_KEEP_ALIVE_MILLIS;
 
     // Virtual thread support for the shared executor service.
-    //
-    // This uses the configuration setting 'azure.sdk.sharedpool.virtual' if set, otherwise it defaults to true.
-    private static final boolean THREAD_POOL_VIRTUAL
-        = getConfig("azure.sdk.sharedpool.virtual", Boolean::parseBoolean, true);
+    private static final boolean THREAD_POOL_VIRTUAL;
 
-    private static <T> T getConfig(String configurationName, Function<String, T> parser, T defaultValue) {
-        String value = Configuration.getGlobalConfiguration().get(configurationName);
-        if (value == null) {
-            LOGGER.atVerbose()
-                .addKeyValue("configurationName", configurationName)
-                .addKeyValue("defaultValue", defaultValue)
-                .log("Configuration property wasn't set, using default value.");
-            return defaultValue;
-        }
+    private static final SharedExecutorService INSTANCE;
 
-        try {
-            T returnValue = parser.apply(value);
-            LOGGER.atVerbose()
-                .addKeyValue("configurationName", configurationName)
-                .addKeyValue("value", returnValue)
-                .log("Configuration property was set and being used.");
+    static {
+        THREAD_POOL_SIZE = getConfig(ConfigurationPropertyBuilder.ofInteger("azure.sdk.shared.threadpool.maxpoolsize")
+            .systemPropertyName("azure.sdk.shared.threadpool.maxpoolsize")
+            .environmentVariableName("AZURE_SDK_SHARED_THREADPOOL_MAXPOOLSIZE")
+            .defaultValue(10 * Runtime.getRuntime().availableProcessors())
+            .build());
 
-            return parser.apply(value);
-        } catch (NumberFormatException e) {
-            LOGGER.atInfo()
-                .addKeyValue("configurationName", configurationName)
-                .addKeyValue("value", value)
-                .addKeyValue("defaultValue", defaultValue)
-                .log("Configuration property was set but wasn't a valid value, using default value.");
+        THREAD_POOL_KEEP_ALIVE_MILLIS
+            = getConfig(ConfigurationPropertyBuilder.ofInteger("azure.sdk.shared.threadpool.keepalivemillis")
+                .systemPropertyName("azure.sdk.shared.threadpool.keepalivemillis")
+                .environmentVariableName("AZURE_SDK_SHARED_THREADPOOL_KEEPALIVEMILLIS")
+                .defaultValue(60_000)
+                .build());
 
-            return defaultValue;
-        }
+        THREAD_POOL_VIRTUAL
+            = getConfig(ConfigurationPropertyBuilder.ofBoolean("azure.sdk.shared.threadpool.usevirtualthreads")
+                .systemPropertyName("azure.sdk.shared.threadpool.usevirtualthreads")
+                .environmentVariableName("AZURE_SDK_SHARED_THREADPOOL_USEVIRTUALTHREADS")
+                .defaultValue(true)
+                .build());
+
+        INSTANCE = new SharedExecutorService();
+    }
+
+    private static <T> T getConfig(ConfigurationProperty<T> configuration) {
+        return Configuration.getGlobalConfiguration().get(configuration, true);
     }
 
     private static final boolean VIRTUAL_THREAD_SUPPORTED;
@@ -120,7 +106,9 @@ public final class SharedExecutorService implements ExecutorService {
             virtualThreadSupported = true;
             LOGGER.verbose("Virtual threads are supported in the current runtime.");
         } catch (Exception | LinkageError e) {
-            LOGGER.verbose("Virtual threads are not supported in the current runtime.", e);
+            LOGGER.atVerbose()
+                .addKeyValue("runtime", System.getProperty("java.version"))
+                .log("Virtual threads are not supported in the current runtime.", e);
             virtualThreadSupported = false;
             getVirtualThreadBuilder = null;
             setVirtualThreadBuilderThreadName = null;
@@ -133,10 +121,10 @@ public final class SharedExecutorService implements ExecutorService {
         CREATE_VIRTUAL_THREAD_FACTORY = createVirtualThreadFactory;
     }
 
-    private final AtomicReference<ExecutorWithMetadata> wrappedExecutorService;
+    private final ExecutorService executorService;
 
     private SharedExecutorService() {
-        this.wrappedExecutorService = new AtomicReference<>();
+        this.executorService = createSharedExecutor();
     }
 
     /**
@@ -190,6 +178,8 @@ public final class SharedExecutorService implements ExecutorService {
      * Shutdown isn't supported for this executor service as it is shared by multiple consumers.
      * <p>
      * Calling this method will result in an {@link UnsupportedOperationException} being thrown.
+     *
+     * @throws UnsupportedOperationException This method will always throw an exception.
      */
     @Override
     public void shutdown() {
@@ -204,6 +194,7 @@ public final class SharedExecutorService implements ExecutorService {
      * Calling this method will result in an {@link UnsupportedOperationException} being thrown.
      *
      * @return Nothing will be returned as an exception will always be thrown.
+     * @throws UnsupportedOperationException This method will always throw an exception.
      */
     @Override
     public List<Runnable> shutdownNow() {
@@ -235,6 +226,16 @@ public final class SharedExecutorService implements ExecutorService {
         return false;
     }
 
+    /**
+     * Shutdown isn't supported for this executor service as it is shared by multiple consumers.
+     * <p>
+     * Calling this method will result in an {@link UnsupportedOperationException} being thrown.
+     *
+     * @param timeout The amount of time to wait for the executor service to shutdown.
+     * @param unit The unit of time for the timeout.
+     * @return Nothing will be returned as an exception will always be thrown.
+     * @throws UnsupportedOperationException This method will always throw an exception.
+     */
     @Override
     public boolean awaitTermination(long timeout, TimeUnit unit) {
         throw LOGGER.logThrowableAsError(
@@ -284,16 +285,17 @@ public final class SharedExecutorService implements ExecutorService {
     }
 
     private ExecutorService ensureNotShutdown() {
-        return wrappedExecutorService.updateAndGet(wrapper -> {
-            if (wrapper == null || wrapper.executorService.isShutdown() || wrapper.executorService.isTerminated()) {
-                return createSharedExecutor();
-            } else {
-                return wrapper;
-            }
-        }).executorService;
+        return executorService;
+        //        return wrappedExecutorService.updateAndGet(wrapper -> {
+        //            if (wrapper == null || wrapper.executorService.isShutdown() || wrapper.executorService.isTerminated()) {
+        //                return createSharedExecutor();
+        //            } else {
+        //                return wrapper;
+        //            }
+        //        }).executorService;
     }
 
-    private static ExecutorWithMetadata createSharedExecutor() {
+    private static ExecutorService createSharedExecutor() {
         ThreadFactory threadFactory;
         if (VIRTUAL_THREAD_SUPPORTED && THREAD_POOL_VIRTUAL) {
             try {
@@ -313,7 +315,7 @@ public final class SharedExecutorService implements ExecutorService {
         Thread shutdownThread = CoreUtils.createExecutorServiceShutdownThread(executorService, Duration.ofSeconds(5));
         CoreUtils.addShutdownHookSafely(shutdownThread);
 
-        return new ExecutorWithMetadata(executorService, shutdownThread);
+        return executorService;
     }
 
     private static ThreadFactory createVirtualThreadFactory() throws Exception {
@@ -331,22 +333,22 @@ public final class SharedExecutorService implements ExecutorService {
         };
     }
 
-    private static final class ExecutorWithMetadata {
-        private final Thread shutdownThread;
-        private final ExecutorService executorService;
-
-        ExecutorWithMetadata(ExecutorService executorService, Thread shutdownThread) {
-            this.executorService = executorService;
-            this.shutdownThread = shutdownThread;
-        }
-
-        void shutdown() {
-            // The executor service is only shutdown if there is a shutdown thread as that indicates the executor
-            // service was created by this class.
-            if (shutdownThread != null) {
-                executorService.shutdown();
-                CoreUtils.removeShutdownHookSafely(shutdownThread);
-            }
-        }
-    }
+    //    private static final class ExecutorWithMetadata {
+    //        private final Thread shutdownThread;
+    //        private final ExecutorService executorService;
+    //
+    //        ExecutorWithMetadata(ExecutorService executorService, Thread shutdownThread) {
+    //            this.executorService = executorService;
+    //            this.shutdownThread = shutdownThread;
+    //        }
+    //
+    //        void shutdown() {
+    //            // The executor service is only shutdown if there is a shutdown thread as that indicates the executor
+    //            // service was created by this class.
+    //            if (shutdownThread != null) {
+    //                executorService.shutdown();
+    //                ImplUtils.removeShutdownHookSafely(shutdownThread);
+    //            }
+    //        }
+    //    }
 }

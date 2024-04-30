@@ -610,7 +610,6 @@ public final class CoreUtils {
      * @throws NullPointerException If {@code shutdownTimeout} is null.
      * @throws IllegalArgumentException If {@code shutdownTimeout} is zero or negative.
      */
-    @SuppressWarnings({ "deprecation", "removal" })
     public static ExecutorService addShutdownHookSafely(ExecutorService executorService, Duration shutdownTimeout) {
         if (executorService == null) {
             return null;
@@ -656,38 +655,8 @@ public final class CoreUtils {
      * {@link Runtime#addShutdownHook(Thread) shutdown hook}.
      * @return The {@link Thread} that was passed in.
      */
-    @SuppressWarnings({ "deprecation", "removal" })
     public static Thread addShutdownHookSafely(Thread shutdownThread) {
-        if (shutdownThread == null) {
-            return null;
-        }
-
-        if (ShutdownHookAccessHelperHolder.shutdownHookAccessHelper) {
-            java.security.AccessController.doPrivileged((java.security.PrivilegedAction<Void>) () -> {
-                Runtime.getRuntime().addShutdownHook(shutdownThread);
-                return null;
-            });
-        } else {
-            Runtime.getRuntime().addShutdownHook(shutdownThread);
-        }
-
-        return shutdownThread;
-    }
-
-    @SuppressWarnings("removal")
-    static void removeShutdownHookSafely(Thread shutdownThread) {
-        if (shutdownThread == null) {
-            return;
-        }
-
-        if (ShutdownHookAccessHelperHolder.shutdownHookAccessHelper) {
-            java.security.AccessController.doPrivileged((java.security.PrivilegedAction<Void>) () -> {
-                Runtime.getRuntime().removeShutdownHook(shutdownThread);
-                return null;
-            });
-        } else {
-            Runtime.getRuntime().removeShutdownHook(shutdownThread);
-        }
+        return ImplUtils.addShutdownHookSafely(shutdownThread);
     }
 
     /**
@@ -817,28 +786,5 @@ public final class CoreUtils {
         } else {
             return OffsetDateTime.from(temporal);
         }
-    }
-
-    /*
-     * This looks a bit strange but is needed as CoreUtils is used within Configuration code and if this was done in
-     * the static constructor for CoreUtils it would cause a circular dependency, potentially causing a deadlock.
-     * Since this is in a static holder class, it will only be loaded when CoreUtils accesses it, which won't happen
-     * until CoreUtils is loaded.
-     */
-    private static final class ShutdownHookAccessHelperHolder {
-        private static boolean shutdownHookAccessHelper;
-
-        static {
-            shutdownHookAccessHelper = Boolean
-                .parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_ENABLE_SHUTDOWN_HOOK_WITH_PRIVILEGE"));
-        }
-    }
-
-    static boolean isShutdownHookAccessHelper() {
-        return ShutdownHookAccessHelperHolder.shutdownHookAccessHelper;
-    }
-
-    static void setShutdownHookAccessHelper(boolean shutdownHookAccessHelper) {
-        ShutdownHookAccessHelperHolder.shutdownHookAccessHelper = shutdownHookAccessHelper;
     }
 }
