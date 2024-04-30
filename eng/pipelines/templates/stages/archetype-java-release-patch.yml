@@ -239,8 +239,6 @@ stages:
 
           variables:
             - template: /eng/pipelines/templates/variables/globals.yml
-            - name: DocValidationImageId
-              value: azuresdkimages.azurecr.io/javarefautocr:latest
 
           strategy:
             runOnce:
@@ -261,6 +259,8 @@ stages:
 
                   - template: /eng/pipelines/templates/steps/mvn-linux-repository-settings.yml
 
+                  - template: /eng/pipelines/templates/steps/install-rex-validation-tool.yml
+
                   - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
                     parameters:
                       PackageInfoLocations:
@@ -274,7 +274,6 @@ stages:
                       SparseCheckoutPaths:
                         - docs-ref-services/
                         - metadata/
-                      DocValidationImageId: "$(DocValidationImageId)"
 
         - deployment: PublishDocs
           displayName: Publish Docs to GitHubIO Blob Storage
