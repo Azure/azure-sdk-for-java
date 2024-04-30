@@ -91,8 +91,7 @@ import static com.azure.security.keyvault.administration.implementation.KeyVault
  * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient.beginBackup#String-String -->
  * <pre>
  * String blobStorageUrl = &quot;https:&#47;&#47;myaccount.blob.core.windows.net&#47;myContainer&quot;;
- * String sasToken = &quot;sv=2020-02-10&amp;ss=b&amp;srt=o&amp;sp=rwdlactfx&amp;se=2021-06-17T07:13:07Z&amp;st=2021-06-16T23:13:07Z&quot;
- *     + &quot;&amp;spr=https&amp;sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D&quot;;
+ * String sasToken = &quot;&lt;sas-token&gt;&quot;;
  *
  * client.beginBackup&#40;blobStorageUrl, sasToken&#41;
  *     .setPollInterval&#40;Duration.ofSeconds&#40;1&#41;&#41; &#47;&#47; You can set a custom polling interval.
@@ -122,8 +121,7 @@ import static com.azure.security.keyvault.administration.implementation.KeyVault
  * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient.beginRestore#String-String -->
  * <pre>
  * String folderUrl = &quot;https:&#47;&#47;myaccount.blob.core.windows.net&#47;myContainer&#47;mhsm-myaccount-2020090117323313&quot;;
- * String sasToken = &quot;sv=2020-02-10&amp;ss=b&amp;srt=o&amp;sp=rwdlactfx&amp;se=2021-06-17T07:13:07Z&amp;st=2021-06-16T23:13:07Z&quot;
- *     + &quot;&amp;spr=https&amp;sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D&quot;;
+ * String sasToken = &quot;&lt;sas-token&gt;&quot;;
  *
  * client.beginRestore&#40;folderUrl, sasToken&#41;
  *     .setPollInterval&#40;Duration.ofSeconds&#40;1&#41;&#41; &#47;&#47; You can set a custom polling interval.
@@ -152,8 +150,7 @@ import static com.azure.security.keyvault.administration.implementation.KeyVault
  * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient.beginSelectiveKeyRestore#String-String-String -->
  * <pre>
  * String folderUrl = &quot;https:&#47;&#47;myaccount.blob.core.windows.net&#47;myContainer&#47;mhsm-myaccount-2020090117323313&quot;;
- * String sasToken = &quot;sv=2020-02-10&amp;ss=b&amp;srt=o&amp;sp=rwdlactfx&amp;se=2021-06-17T07:13:07Z&amp;st=2021-06-16T23:13:07Z&quot;
- *     + &quot;&amp;spr=https&amp;sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D&quot;;
+ * String sasToken = &quot;&lt;sas-token&gt;&quot;;
  * String keyName = &quot;myKey&quot;;
  *
  * client.beginSelectiveKeyRestore&#40;folderUrl, sasToken, keyName&#41;
@@ -251,8 +248,7 @@ public final class KeyVaultBackupAsyncClient {
      * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient.beginBackup#String-String -->
      * <pre>
      * String blobStorageUrl = &quot;https:&#47;&#47;myaccount.blob.core.windows.net&#47;myContainer&quot;;
-     * String sasToken = &quot;sv=2020-02-10&amp;ss=b&amp;srt=o&amp;sp=rwdlactfx&amp;se=2021-06-17T07:13:07Z&amp;st=2021-06-16T23:13:07Z&quot;
-     *     + &quot;&amp;spr=https&amp;sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D&quot;;
+     * String sasToken = &quot;&lt;sas-token&gt;&quot;;
      *
      * client.beginBackup&#40;blobStorageUrl, sasToken&#41;
      *     .setPollInterval&#40;Duration.ofSeconds&#40;1&#41;&#41; &#47;&#47; You can set a custom polling interval.
@@ -403,8 +399,8 @@ public final class KeyVaultBackupAsyncClient {
     }
 
     /**
-     * Initiates a pre-backup of the Key Vault. This operation checks if it is possible to back up the entire collection
-     * of keys from a key vault.
+     * Initiates a pre-backup check on the Key Vault. This operation checks if it is possible to back up the entire
+     * collection of keys from a key vault.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Starts a {@link KeyVaultBackupOperation pre-backup operation}, polls for its status and waits for it to
@@ -413,8 +409,7 @@ public final class KeyVaultBackupAsyncClient {
      * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient.beginPreBackup#String-String -->
      * <pre>
      * String blobStorageUrl = &quot;https:&#47;&#47;myaccount.blob.core.windows.net&#47;myContainer&quot;;
-     * String sasToken = &quot;sv=2020-02-10&amp;ss=b&amp;srt=o&amp;sp=rwdlactfx&amp;se=2021-06-17T07:13:07Z&amp;st=2021-06-16T23:13:07Z&quot;
-     *     + &quot;&amp;spr=https&amp;sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D&quot;;
+     * String sasToken = &quot;&lt;sas-token&gt;&quot;;
      *
      * client.beginPreBackup&#40;blobStorageUrl, sasToken&#41;
      *     .setPollInterval&#40;Duration.ofSeconds&#40;1&#41;&#41; &#47;&#47; You can set a custom polling interval.
@@ -453,8 +448,8 @@ public final class KeyVaultBackupAsyncClient {
     }
 
     /**
-     * Initiates a full backup of the Key Vault. This operation checks whether a full backup operation can be performed
-     * at a later point.
+     * Initiates a pre-backup check on the Key Vault. This operation checks if it is possible to back up the entire
+     * collection of keys from a key vault.
      *
      * @param blobStorageUrl The URL for the Blob Storage resource where the backup will be located.
      * @param sasToken Optional Shared Access Signature (SAS) token to authorize access to the blob. If {@code null},
@@ -507,8 +502,7 @@ public final class KeyVaultBackupAsyncClient {
      * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient.beginRestore#String-String -->
      * <pre>
      * String folderUrl = &quot;https:&#47;&#47;myaccount.blob.core.windows.net&#47;myContainer&#47;mhsm-myaccount-2020090117323313&quot;;
-     * String sasToken = &quot;sv=2020-02-10&amp;ss=b&amp;srt=o&amp;sp=rwdlactfx&amp;se=2021-06-17T07:13:07Z&amp;st=2021-06-16T23:13:07Z&quot;
-     *     + &quot;&amp;spr=https&amp;sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D&quot;;
+     * String sasToken = &quot;&lt;sas-token&gt;&quot;;
      *
      * client.beginRestore&#40;folderUrl, sasToken&#41;
      *     .setPollInterval&#40;Duration.ofSeconds&#40;1&#41;&#41; &#47;&#47; You can set a custom polling interval.
@@ -653,7 +647,7 @@ public final class KeyVaultBackupAsyncClient {
     }
 
     /**
-     * Initiates a pre-full restore of the Key Vault. This operation checks if it is possible to restore an entire
+     * Initiates a pre-restore check on the Key Vault. This operation checks if it is possible to restore an entire
      * collection of keys from a backup.
      *
      * <p><strong>Code Samples</strong></p>
@@ -662,8 +656,7 @@ public final class KeyVaultBackupAsyncClient {
      * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient.beginPreRestore#String-String -->
      * <pre>
      * String folderUrl = &quot;https:&#47;&#47;myaccount.blob.core.windows.net&#47;myContainer&#47;mhsm-myaccount-2020090117323313&quot;;
-     * String sasToken = &quot;sv=2020-02-10&amp;ss=b&amp;srt=o&amp;sp=rwdlactfx&amp;se=2021-06-17T07:13:07Z&amp;st=2021-06-16T23:13:07Z&quot;
-     *     + &quot;&amp;spr=https&amp;sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D&quot;;
+     * String sasToken = &quot;&lt;sas-token&gt;&quot;;
      *
      * client.beginPreRestore&#40;folderUrl, sasToken&#41;
      *     .setPollInterval&#40;Duration.ofSeconds&#40;1&#41;&#41; &#47;&#47; You can set a custom polling interval.
@@ -705,8 +698,8 @@ public final class KeyVaultBackupAsyncClient {
     }
 
     /**
-     * Initiates a pre-full restore of the Key Vault. This operation checks whether a full restore operation can be
-     * performed at a later point.
+     * Initiates a pre-restore check on the Key Vault. This operation checks if it is possible to restore an entire
+     * collection of keys from a backup.
      *
      * @param folderUrl The URL for the Blob Storage resource where the backup is located, including the path to
      * the blob container where the backup resides. This would be the exact value that is returned as the result of a
@@ -773,8 +766,7 @@ public final class KeyVaultBackupAsyncClient {
      * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient.beginSelectiveKeyRestore#String-String-String -->
      * <pre>
      * String folderUrl = &quot;https:&#47;&#47;myaccount.blob.core.windows.net&#47;myContainer&#47;mhsm-myaccount-2020090117323313&quot;;
-     * String sasToken = &quot;sv=2020-02-10&amp;ss=b&amp;srt=o&amp;sp=rwdlactfx&amp;se=2021-06-17T07:13:07Z&amp;st=2021-06-16T23:13:07Z&quot;
-     *     + &quot;&amp;spr=https&amp;sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D&quot;;
+     * String sasToken = &quot;&lt;sas-token&gt;&quot;;
      * String keyName = &quot;myKey&quot;;
      *
      * client.beginSelectiveKeyRestore&#40;folderUrl, sasToken, keyName&#41;

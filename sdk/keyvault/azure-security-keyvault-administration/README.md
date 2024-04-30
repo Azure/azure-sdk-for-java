@@ -357,7 +357,7 @@ Check if an entire collection of keys can be backed up by using `beginPreBackup(
 
 ```java readme-sample-beginPreBackup
 String blobStorageUrl = "https://myaccount.blob.core.windows.net/myContainer";
-String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+String sasToken = "<sas-token>";
 
 SyncPoller<KeyVaultBackupOperation, String> preBackupPoller =
     keyVaultBackupClient.beginPreBackup(blobStorageUrl, sasToken);
@@ -383,7 +383,7 @@ Back up an entire collection of keys using `beginBackup()`.
 
 ```java readme-sample-beginBackup
 String blobStorageUrl = "https://myaccount.blob.core.windows.net/myContainer";
-String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+String sasToken = "<sas-token>";
 
 SyncPoller<KeyVaultBackupOperation, String> backupPoller =
     keyVaultBackupClient.beginBackup(blobStorageUrl, sasToken);
@@ -409,7 +409,7 @@ Check if an entire collection of keys can be restored from a backup by using `be
 
 ```java readme-sample-beginPreRestore
 String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
-String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+String sasToken = "<sas-token>";
 
 SyncPoller<KeyVaultRestoreOperation, KeyVaultRestoreResult> preRestorePoller =
     keyVaultBackupClient.beginPreRestore(folderUrl, sasToken);
@@ -433,7 +433,7 @@ Restore an entire collection of keys from a backup using `beginRestore()`.
 
 ```java readme-sample-beginRestore
 String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
-String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+String sasToken = "<sas-token>";
 
 SyncPoller<KeyVaultRestoreOperation, KeyVaultRestoreResult> restorePoller =
     keyVaultBackupClient.beginRestore(folderUrl, sasToken);
@@ -457,7 +457,7 @@ Restore a specific key from a backup using `beginSelectiveRestore()`.
 
 ```java readme-sample-beginSelectiveKeyRestore
 String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
-String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+String sasToken = "<sas-token>";
 String keyName = "myKey";
 
 SyncPoller<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> restorePoller =
@@ -492,7 +492,7 @@ Check if an entire collection of keys can be backed up by using `beginPreBackup(
 
 ```java readme-sample-beginPreBackupAsync
 String blobStorageUrl = "https://myaccount.blob.core.windows.net/myContainer";
-String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+String sasToken = "<sas-token>";
 
 keyVaultBackupAsyncClient.beginPreBackup(blobStorageUrl, sasToken)
     .setPollInterval(Duration.ofSeconds(1)) // You can set a custom polling interval.
@@ -510,7 +510,7 @@ Back up an entire collection of keys using `beginBackup()`.
 
 ```java readme-sample-beginBackupAsync
 String blobStorageUrl = "https://myaccount.blob.core.windows.net/myContainer";
-String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+String sasToken = "<sas-token>";
 
 keyVaultBackupAsyncClient.beginBackup(blobStorageUrl, sasToken)
     .setPollInterval(Duration.ofSeconds(1)) // You can set a custom polling interval.
@@ -528,7 +528,7 @@ Check if an entire collection of keys can be restored from a backup by using `be
 
 ```java readme-sample-beginPreRestoreAsync
 String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
-String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+String sasToken = "<sas-token>";
 
 keyVaultBackupAsyncClient.beginPreRestore(folderUrl, sasToken)
     .setPollInterval(Duration.ofSeconds(1)) // You can set a custom polling interval.
@@ -545,7 +545,7 @@ Restore an entire collection of keys from a backup using `beginRestore()`.
 
 ```java readme-sample-beginRestoreAsync
 String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
-String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+String sasToken = "<sas-token>";
 
 keyVaultBackupAsyncClient.beginRestore(folderUrl, sasToken)
     .setPollInterval(Duration.ofSeconds(1)) // You can set a custom polling interval.
@@ -562,7 +562,7 @@ Restore an entire collection of keys from a backup using `beginSelectiveRestore(
 
 ```java readme-sample-beginSelectiveKeyRestoreAsync
 String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
-String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+String sasToken = "<sas-token>";
 String keyName = "myKey";
 
 keyVaultBackupAsyncClient.beginSelectiveKeyRestore(folderUrl, sasToken, keyName)

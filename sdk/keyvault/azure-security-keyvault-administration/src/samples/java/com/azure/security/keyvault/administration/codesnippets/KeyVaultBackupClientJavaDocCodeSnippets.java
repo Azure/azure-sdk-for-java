@@ -42,8 +42,7 @@ public class KeyVaultBackupClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.administration.KeyVaultBackupClient.beginPreBackup#String-String
         String blobStorageUrl = "https://myaccount.blob.core.windows.net/myContainer";
-        String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z"
-            + "&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+        String sasToken = "<sas-token>";
 
         SyncPoller<KeyVaultBackupOperation, String> preBackupPoller = client.beginPreBackup(blobStorageUrl, sasToken);
         PollResponse<KeyVaultBackupOperation> pollResponse = preBackupPoller.poll();
@@ -70,8 +69,7 @@ public class KeyVaultBackupClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.administration.KeyVaultBackupClient.beginBackup#String-String
         String blobStorageUrl = "https://myaccount.blob.core.windows.net/myContainer";
-        String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z"
-            + "&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+        String sasToken = "<sas-token>";
 
         SyncPoller<KeyVaultBackupOperation, String> backupPoller = client.beginBackup(blobStorageUrl, sasToken);
         PollResponse<KeyVaultBackupOperation> pollResponse = backupPoller.poll();
@@ -100,8 +98,7 @@ public class KeyVaultBackupClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.administration.KeyVaultBackupClient.beginPreRestore#String-String
         String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
-        String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z"
-            + "&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+        String sasToken = "<sas-token>";
 
         SyncPoller<KeyVaultRestoreOperation, KeyVaultRestoreResult> preRestorePoller =
             client.beginPreRestore(folderUrl, sasToken);
@@ -129,8 +126,7 @@ public class KeyVaultBackupClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.administration.KeyVaultBackupClient.beginRestore#String-String
         String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
-        String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z"
-            + "&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+        String sasToken = "<sas-token>";
 
         SyncPoller<KeyVaultRestoreOperation, KeyVaultRestoreResult> restorePoller =
             client.beginRestore(folderUrl, sasToken);
@@ -158,8 +154,7 @@ public class KeyVaultBackupClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.administration.KeyVaultBackupClient.beginSelectiveKeyRestore#String-String-String
         String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
-        String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z"
-            + "&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+        String sasToken = "<sas-token>";
         String keyName = "myKey";
 
         SyncPoller<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> restorePoller =
