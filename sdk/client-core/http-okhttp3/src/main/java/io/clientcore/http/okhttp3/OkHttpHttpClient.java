@@ -38,7 +38,7 @@ import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
 import static io.clientcore.core.http.models.ResponseBodyMode.IGNORE;
 import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
 import static io.clientcore.core.util.ServerSentEventUtils.processTextEventStream;
-import static io.clientcore.core.util.ServerSentEventUtils.attemptReconnect;
+import static io.clientcore.core.util.ServerSentEventUtils.attemptRetry;
 
 /**
  * HttpClient implementation for OkHttp.
@@ -149,12 +149,13 @@ class OkHttpHttpClient implements HttpClient {
             if (listener != null) {
                 serverSentResult = processTextEventStream(response.body().byteStream(), listener);
 
-                if (Thread.currentThread().isInterrupted() || serverSentResult.getException() != null) {
-                    // If the thread was interrupted and an exception occurred, emit listener onError.
+                if (serverSentResult.getException() != null) {
+                    // If an exception occurred while processing the text event stream, emit listener onError.
                     listener.onError(serverSentResult.getException());
-                } else if (attemptReconnect(serverSentResult, request)) {
-                    // If the server sent a retry after header, attempt to reconnect.
-                    // TODO: This should be handled by the retry policy.
+                }
+
+                // If an error occurred or we want to reconnect
+                if (!Thread.currentThread().isInterrupted() && attemptRetry(serverSentResult, request)) {
                     return this.send(request);
                 }
             } else {
@@ -188,37 +189,42 @@ class OkHttpHttpClient implements HttpClient {
 
                 break;
             case STREAM:
-                if (response.body() != null && response.body().contentLength() != 0) {
+                if (isTextEventStream(responseHeaders)) {
+                    body = createBodyFromServerSentResult(serverSentResult);
+                } else if (response.body() != null && response.body().contentLength() != 0) {
                     body = BinaryData.fromStream(response.body().byteStream());
                 }
-
                 break;
+
             case BUFFER:
             case DESERIALIZE:
                 // Deserialization will occur at a later point in HttpResponseBodyDecoder.
                 if (isTextEventStream(responseHeaders)) {
-                    String bodyContent = (serverSentResult != null && serverSentResult.getData() != null)
-                        ? String.join("\n", serverSentResult.getData())
-                        : "";
-                    body = BinaryData.fromString(bodyContent);
+                    body = createBodyFromServerSentResult(serverSentResult);
                 } else {
-                    try (ResponseBody responseBody = response.body()) {
-                        if (responseBody != null && responseBody.contentLength() != 0) {
-                            body = BinaryData.fromBytes(responseBody.bytes());
-                        }
-                    }
+                    body = createBodyFromResponseBody(response.body());
                 }
                 break;
             default:
-                try (ResponseBody responseBody = response.body()) {
-                    if (responseBody != null && responseBody.contentLength() != 0) {
-                        body = BinaryData.fromBytes(responseBody.bytes());
-                    }
-                }
+                body = createBodyFromResponseBody(response.body());
                 break;
         }
 
         return new OkHttpResponse(response, request, body == null ? BinaryData.EMPTY : body);
+    }
+
+    private BinaryData createBodyFromServerSentResult(ServerSentResult serverSentResult) {
+        String bodyContent = (serverSentResult != null && serverSentResult.getData() != null)
+            ? String.join("\n", serverSentResult.getData())
+            : "";
+        return BinaryData.fromString(bodyContent);
+    }
+
+    private BinaryData createBodyFromResponseBody(ResponseBody responseBody) throws IOException {
+        if (responseBody != null && responseBody.contentLength() != 0) {
+            return BinaryData.fromBytes(responseBody.bytes());
+        }
+        return null;
     }
 
     private ResponseBodyMode determineResponseBodyMode(HttpRequest request, Headers responseHeaders) {

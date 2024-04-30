@@ -77,14 +77,19 @@ public final class ServerSentEventUtils {
      * @param httpRequest The {@link HttpRequest} to send.
      * @return {@code true} if the request was retried; {@code false} otherwise.
      */
-    public static boolean attemptReconnect(ServerSentResult serverSentResult, HttpRequest httpRequest) {
+    public static boolean attemptRetry(ServerSentResult serverSentResult, HttpRequest httpRequest) {
         if (shouldDefaultRetry(serverSentResult.getRetryAfter())) {
-            // Retry the request with the last event id set
-            httpRequest.getHeaders()
-                .set(LAST_EVENT_ID, serverSentResult.getLastEventId());
+            if (serverSentResult.getException() != null) {
+                return false;
+            }
+
+            if (serverSentResult.getLastEventId() != null) {
+                // Retry the request with the last event id set
+                httpRequest.getHeaders()
+                    .set(LAST_EVENT_ID, serverSentResult.getLastEventId());
+            }
 
             // Retry the request after the retry time
-            // TODO: Move this logic to retry policy
             try {
                 Thread.sleep(serverSentResult.getRetryAfter().toMillis());
             } catch (InterruptedException ignored) {

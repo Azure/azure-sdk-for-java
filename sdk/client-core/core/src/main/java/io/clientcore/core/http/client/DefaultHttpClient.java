@@ -51,7 +51,7 @@ import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
 import static io.clientcore.core.http.models.ResponseBodyMode.IGNORE;
 import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
 import static io.clientcore.core.util.ServerSentEventUtils.NO_LISTENER_ERROR_MESSAGE;
-import static io.clientcore.core.util.ServerSentEventUtils.attemptReconnect;
+import static io.clientcore.core.util.ServerSentEventUtils.attemptRetry;
 import static io.clientcore.core.util.ServerSentEventUtils.processTextEventStream;
 
 /**
@@ -222,15 +222,17 @@ class DefaultHttpClient implements HttpClient {
 
             serverSentResult = processTextEventStream(connection.getInputStream(), listener);
 
-            if (Thread.currentThread().isInterrupted() || serverSentResult.getException() != null) {
-                // If the thread was interrupted and an exception occurred, emit listener onError.
-                listener.onError(serverSentResult.getException());
-            } else if (attemptReconnect(serverSentResult, httpRequest)) {
-                // If the server sent a retry after header, attempt to reconnect.
+            if (serverSentResult.getException() != null) {
+                // If an exception occurred while processing the text event stream, emit listener onError.
                 connection.getInputStream().close();
-                // TODO: This should be handled by the retry policy.
+                listener.onError(serverSentResult.getException());
+            }
+
+            // If an error occurred or we want to reconnect
+            if (!Thread.currentThread().isInterrupted() && attemptRetry(serverSentResult, httpRequest)) {
                 return this.send(httpRequest);
             }
+            // If no error occurred and we don't want to reconnect, continue response body handling.
         }
 
         ResponseBodyMode responseBodyMode = null;
@@ -254,16 +256,17 @@ class DefaultHttpClient implements HttpClient {
 
                 break;
             case STREAM:
-                streamResponseBody(httpResponse, connection);
+                if (isTextEventStream(responseHeaders)) {
+                    HttpResponseAccessHelper.setBody(httpResponse, createBodyFromServerSentResult(serverSentResult));
+                } else {
+                    streamResponseBody(httpResponse, connection);
+                }
                 break;
             case BUFFER:
             case DESERIALIZE:
                 // Deserialization will occur at a later point in HttpResponseBodyDecoder.
                 if (isTextEventStream(responseHeaders)) {
-                    String bodyContent = (serverSentResult != null && serverSentResult.getData() != null)
-                        ? String.join("\n", serverSentResult.getData())
-                        : "";
-                    HttpResponseAccessHelper.setBody(httpResponse, BinaryData.fromString(bodyContent));
+                    HttpResponseAccessHelper.setBody(httpResponse, createBodyFromServerSentResult(serverSentResult));
                 } else {
                     eagerlyBufferResponseBody(httpResponse, connection.getInputStream());
                 }
@@ -286,6 +289,13 @@ class DefaultHttpClient implements HttpClient {
         }
 
         return false;
+    }
+
+    private BinaryData createBodyFromServerSentResult(ServerSentResult serverSentResult) {
+        String bodyContent = (serverSentResult != null && serverSentResult.getData() != null)
+            ? String.join("\n", serverSentResult.getData())
+            : "";
+        return BinaryData.fromString(bodyContent);
     }
 
     private static void streamResponseBody(HttpResponse<?> httpResponse, HttpURLConnection connection)

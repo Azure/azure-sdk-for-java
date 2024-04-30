@@ -23,6 +23,7 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.models.ServerSentEvent;
 import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.http.pipeline.HttpLoggingPolicy;
@@ -46,6 +47,7 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -1736,7 +1738,7 @@ public abstract class HttpClientTests {
         List<String> expected = Arrays.asList("YHOO", "+2", "10");
 
         try (Response<BinaryData> response =
-                 service.post(getServerUri(isSecure()), requestBody, sse -> assertEquals(expected, sse.getData()))) {
+                 service.post(getServerUri(isSecure()), requestBody, sse -> assertEquals(expected, sse.getData()), null)) {
             assertNotNull(response.getBody());
             assertNotEquals(0, response.getBody().getLength());
             assertNotNull(response.getValue());
@@ -1804,14 +1806,16 @@ public abstract class HttpClientTests {
             () -> service.put(getServerUri(isSecure()), requestBody, null).close());
     }
 
-    @Test
-    public void bodyIsDeserializedForServerSentEventType() throws IOException {
+    @ParameterizedTest
+    @ValueSource(strings = { "STREAM", "BUFFER", "DESERIALIZE" })
+    public void bodyIsDeserializedForServerSentEventType(String responseMode) throws IOException {
         ServerSentEventService service = createService(ServerSentEventService.class);
-        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(DESERIALIZE);
+        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(ResponseBodyMode.valueOf(responseMode));
         List<String> expected = Arrays.asList("YHOO", "+2", "10");
 
         try (Response<BinaryData> response =
-                 service.post(getServerUri(isSecure()), BinaryData.EMPTY, sse -> assertEquals(expected, sse.getData()))) {
+                 service.post(getServerUri(isSecure()), BinaryData.EMPTY, sse -> assertEquals(expected, sse.getData()),
+                     requestOptions)) {
             assertNotNull(response.getBody());
             assertNotEquals(0, response.getBody().getLength());
             assertNotNull(response.getValue());
@@ -1856,7 +1860,7 @@ public abstract class HttpClientTests {
         @HttpRequestInformation(method = HttpMethod.POST, path = "serversentevent", expectedStatusCodes = { 200 })
         Response<BinaryData> post(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) BinaryData postBody,
-            ServerSentEventListener serverSentEventListener);
+            ServerSentEventListener serverSentEventListener, RequestOptions requestOptions);
     }
 
     @Test

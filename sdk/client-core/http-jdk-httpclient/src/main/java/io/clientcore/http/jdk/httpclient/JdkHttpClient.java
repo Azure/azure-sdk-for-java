@@ -32,9 +32,9 @@ import static io.clientcore.core.http.models.HttpMethod.HEAD;
 import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
 import static io.clientcore.core.http.models.ResponseBodyMode.IGNORE;
 import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
+import static io.clientcore.core.util.ServerSentEventUtils.attemptRetry;
 import static io.clientcore.core.util.ServerSentEventUtils.isTextEventStreamContentType;
 import static io.clientcore.core.util.ServerSentEventUtils.processTextEventStream;
-import static io.clientcore.core.util.ServerSentEventUtils.attemptReconnect;
 import static io.clientcore.http.jdk.httpclient.implementation.JdkHttpUtils.fromJdkHttpHeaders;
 
 /**
@@ -148,12 +148,13 @@ class JdkHttpClient implements HttpClient {
             if (listener != null) {
                 serverSentResult = processTextEventStream(response.body(), listener);
 
-                if (Thread.currentThread().isInterrupted() || serverSentResult.getException() != null) {
-                    // If the thread was interrupted and an exception occurred, emit listener onError.
+                if (serverSentResult.getException() != null) {
+                    // If an exception occurred while processing the text event stream, emit listener onError.
                     listener.onError(serverSentResult.getException());
-                } else if (attemptReconnect(serverSentResult, request)) {
-                    // If the server sent a retry after header, attempt to reconnect.
-                    // TODO: This should be handled by the retry policy.
+                }
+
+                // If an error occurred or we want to reconnect
+                if (!Thread.currentThread().isInterrupted() && attemptRetry(serverSentResult, request)) {
                     return this.send(request);
                 }
             } else {
@@ -184,7 +185,11 @@ class JdkHttpClient implements HttpClient {
                 break;
 
             case STREAM:
-                body = BinaryData.fromStream(response.body());
+                if (isTextEventStreamContentType(contentType)) {
+                    body = createBodyFromServerSentResult(serverSentResult);
+                } else {
+                    body = BinaryData.fromStream(response.body());
+                }
 
                 break;
 
@@ -192,21 +197,16 @@ class JdkHttpClient implements HttpClient {
             case DESERIALIZE:
                 // Deserialization will occur at a later point in HttpResponseBodyDecoder.
                 if (isTextEventStreamContentType(contentType)) {
-                    String bodyContent = (serverSentResult != null && serverSentResult.getData() != null)
-                        ? String.join("\n", serverSentResult.getData())
-                        : "";
-                    body = BinaryData.fromString(bodyContent);
+                    body = createBodyFromServerSentResult(serverSentResult);
                 } else {
-                    try (InputStream responseBody = response.body()) { // Use try-with-resources to close the stream.
-                        body = BinaryData.fromBytes(responseBody.readAllBytes());
-                    }
+                    body = createBodyFromResponse(response);
                 }
                 break;
 
             default:
-                try (InputStream responseBody = response.body()) { // Use try-with-resources to close the stream.
-                    body = BinaryData.fromBytes(responseBody.readAllBytes());
-                }
+                body = createBodyFromResponse(response);
+                break;
+
         }
 
         return new JdkHttpResponse(request, response.statusCode(), coreHeaders, body == null ? BinaryData.EMPTY : body);
@@ -226,5 +226,18 @@ class JdkHttpClient implements HttpClient {
             }
         }
         return responseBodyMode;
+    }
+
+    private BinaryData createBodyFromServerSentResult(ServerSentResult serverSentResult) {
+        String bodyContent = (serverSentResult != null && serverSentResult.getData() != null)
+            ? String.join("\n", serverSentResult.getData())
+            : "";
+        return BinaryData.fromString(bodyContent);
+    }
+
+    private BinaryData createBodyFromResponse(HttpResponse<InputStream> response) throws IOException {
+        try (InputStream responseBody = response.body()) { // Use try-with-resources to close the stream.
+            return BinaryData.fromBytes(responseBody.readAllBytes());
+        }
     }
 }
