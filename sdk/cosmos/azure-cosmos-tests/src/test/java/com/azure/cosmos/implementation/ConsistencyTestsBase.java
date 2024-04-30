@@ -195,8 +195,8 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             {
                 // self link
                 ResourceResponse<DocumentCollection> collection = writeClient.createCollection(createdDatabase.getSelfLink(), getCollectionDefinition(), null).block();
-                String globalSessionToken1 = ((SessionContainer) writeClient.getSession()).getSessionToken(collection.getResource().getSelfLink());
-                String globalSessionToken2 = ((SessionContainer) writeClient.getSession()).getSessionToken(BridgeInternal.getAltLink(collection.getResource()));
+                String globalSessionToken1 = writeClient.getSession().getSessionToken(collection.getResource().getSelfLink());
+                String globalSessionToken2 = writeClient.getSession().getSessionToken(BridgeInternal.getAltLink(collection.getResource()));
                 System.out.println("BridgeInternal.getAltLink(collection.getResource()) " + BridgeInternal.getAltLink(collection.getResource()));
                 assertThat(collection.getSessionToken()).isEqualTo(globalSessionToken1);
                 assertThat(collection.getSessionToken()).isEqualTo(globalSessionToken2);
@@ -210,8 +210,8 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                 // name link
                 ResourceResponse<DocumentCollection> collection = writeClient.createCollection(BridgeInternal.getAltLink(createdDatabase), getCollectionDefinition(), null).block();
 
-                String globalSessionToken1 = ((SessionContainer) writeClient.getSession()).getSessionToken(collection.getResource().getSelfLink());
-                String globalSessionToken2 = ((SessionContainer) writeClient.getSession()).getSessionToken(BridgeInternal.getAltLink(collection.getResource()));
+                String globalSessionToken1 = writeClient.getSession().getSessionToken(collection.getResource().getSelfLink());
+                String globalSessionToken2 = writeClient.getSession().getSessionToken(BridgeInternal.getAltLink(collection.getResource()));
                 assertThat(collection.getSessionToken()).isEqualTo(globalSessionToken1);
                 //assertThat(collection.getSessionToken()).isEqualTo(globalSessionToken2);
 
@@ -228,8 +228,8 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                 ResourceResponse<Document> document = writeClient.createDocument(BridgeInternal.getAltLink(coll),
                                                                                  document2, null, false)
                         .block();
-                String globalSessionToken1 = ((SessionContainer) writeClient.getSession()).getSessionToken(coll.getSelfLink());
-                String globalSessionToken2 = ((SessionContainer) writeClient.getSession()).getSessionToken(BridgeInternal.getAltLink(coll));
+                String globalSessionToken1 = writeClient.getSession().getSessionToken(coll.getSelfLink());
+                String globalSessionToken2 = writeClient.getSession().getSessionToken(BridgeInternal.getAltLink(coll));
 
                 Assertions.assertThat(globalSessionToken1.indexOf(document.getSessionToken())).isNotNegative();
                 Assertions.assertThat(globalSessionToken2.indexOf(document.getSessionToken())).isNotNegative();
@@ -242,8 +242,8 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                 ResourceResponse<Document> document = writeClient.createDocument(BridgeInternal.getAltLink(coll),
                                                                                  document2, null, false)
                         .block();
-                String globalSessionToken1 = ((SessionContainer) writeClient.getSession()).getSessionToken(coll.getSelfLink());
-                String globalSessionToken2 = ((SessionContainer) writeClient.getSession()).getSessionToken(BridgeInternal.getAltLink(coll));
+                String globalSessionToken1 = writeClient.getSession().getSessionToken(coll.getSelfLink());
+                String globalSessionToken2 = writeClient.getSession().getSessionToken(BridgeInternal.getAltLink(coll));
 
                 Assertions.assertThat(globalSessionToken1.indexOf(document.getSessionToken())).isNotNegative();
                 Assertions.assertThat(globalSessionToken2.indexOf(document.getSessionToken())).isNotNegative();
@@ -859,15 +859,15 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         if (isRegionScopedSessionTokenCapturingEnabled) {
 
             if (useAltLink) {
-                return ((RegionScopedSessionContainer) client.getSession()).getSessionToken(collection.getAltLink());
+                return client.getSession().getSessionToken(collection.getAltLink());
             } else {
-                return ((RegionScopedSessionContainer) client.getSession()).getSessionToken(collection.getSelfLink());
+                return client.getSession().getSessionToken(collection.getSelfLink());
             }
         } else {
             if (useAltLink) {
-                return ((SessionContainer) client.getSession()).getSessionToken(collection.getAltLink());
+                return client.getSession().getSessionToken(collection.getAltLink());
             } else {
-                return ((SessionContainer) client.getSession()).getSessionToken(collection.getSelfLink());
+                return client.getSession().getSessionToken(collection.getSelfLink());
             }
         }
 
