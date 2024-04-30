@@ -53,21 +53,6 @@ public class SendLinkHandler extends LinkHandler {
      * @param hostname The hostname for the connection.
      * @param linkName The name of the link.
      * @param entityPath The entity path this link is connected to.
-     * @deprecated use {@link SendLinkHandler#SendLinkHandler(String, String, String, String, AmqpMetricsProvider)}
-     * instead.
-     */
-    @Deprecated
-    public SendLinkHandler(String connectionId, String hostname, String linkName, String entityPath) {
-        this(connectionId, hostname, linkName, entityPath, new AmqpMetricsProvider(null, hostname, null));
-    }
-
-    /**
-     * Creates a new instance of SendLinkHandler.
-     *
-     * @param connectionId The identifier of the connection this link belongs to.
-     * @param hostname The hostname for the connection.
-     * @param linkName The name of the link.
-     * @param entityPath The entity path this link is connected to.
      * @param metricsProvider The AMQP metrics provider.
      */
     public SendLinkHandler(String connectionId, String hostname, String linkName, String entityPath,

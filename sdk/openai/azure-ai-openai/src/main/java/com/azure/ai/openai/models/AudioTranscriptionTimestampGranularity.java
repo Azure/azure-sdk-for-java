@@ -5,7 +5,6 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -45,7 +44,6 @@ public final class AudioTranscriptionTimestampGranularity
      * @return the corresponding AudioTranscriptionTimestampGranularity.
      */
     @Generated
-    @JsonCreator
     public static AudioTranscriptionTimestampGranularity fromString(String name) {
         return fromString(name, AudioTranscriptionTimestampGranularity.class);
     }

@@ -351,8 +351,7 @@ public final class CallAutomationAsyncClient {
                 .setIncomingCallContext(answerCallOptions.getIncomingCallContext())
                 .setCallbackUri(answerCallOptions.getCallbackUrl())
                 .setAnsweredBy(sourceIdentity)
-                .setOperationContext(answerCallOptions.getOperationContext())
-                .setSourceCallerIdNumber(PhoneNumberIdentifierConverter.convert(answerCallOptions.getSourceCallerIdNumber()));
+                .setOperationContext(answerCallOptions.getOperationContext());
 
             if (answerCallOptions.getCallIntelligenceOptions() != null && answerCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint() != null) {
                 CallIntelligenceOptionsInternal callIntelligenceOptionsInternal = new CallIntelligenceOptionsInternal();
