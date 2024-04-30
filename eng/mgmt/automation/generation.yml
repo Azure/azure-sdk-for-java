@@ -43,11 +43,17 @@ steps:
     export PATH=$JAVA_HOME_11_X64/bin:$PATH
     java -version
     set -x
-  ${{ if variables.TSP_CONFIG }}:
     ./eng/mgmt/automation/generate.py --tsp-config "$(TSP_CONFIG)" --version "$(VERSION)" --auto-commit-external-change --user-name "azure-sdk" --user-email "azuresdk@microsoft.com"
-  ${{ else }}:
+  displayName: Generation from TypeSpec
+  condition: ne(variables['variables.TSP_CONFIG'], '')
+
+- bash: |
+    export PATH=$JAVA_HOME_11_X64/bin:$PATH
+    java -version
+    set -x
     ./eng/mgmt/automation/generate.py --readme "$(README)" --tag "$(TAG)" --autorest-options="$(AUTOREST_OPTIONS)" --service "$(SERVICE)" --version "$(VERSION)" --suffix "$(SUFFIX)" --auto-commit-external-change --user-name "azure-sdk" --user-email "azuresdk@microsoft.com"
   displayName: Generation from Swagger
+  condition: eq(variables['variables.TSP_CONFIG'], '')
 
 - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
   parameters:
