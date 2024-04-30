@@ -23,10 +23,12 @@ import org.apache.kafka.connect.json.JsonDeserializer;
 import org.rnorth.ducttape.unreliables.Unreliables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorStatus;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -71,7 +73,17 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
         };
     }
 
-    // TODO[public preview]: add more integration tests
+    @DataProvider(name = "metadataCosmosStorageParameterProvider")
+    public static Object[][] metadataCosmosStorageParameterProvider() {
+        return new Object[][]{
+            // use masterKey auth, pre-create the metadata container, should connector start successfully
+            { true, true, true },
+            { true, false, true },
+            { false, true, true },
+            { false, false, false}
+        };
+    }
+
     @Test(groups = { "kafka-integration" }, dataProvider = "sourceAuthParameterProvider", timeOut = 2 * TIMEOUT)
     public void readFromSingleContainer(boolean useMasterKey, CosmosMetadataStorageType metadataStorageType) {
         logger.info("read from single container " + useMasterKey);
@@ -202,6 +214,90 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
                 // delete the metadata container if created
                 if (metadataStorageType == CosmosMetadataStorageType.COSMOS) {
                     client.getDatabase(databaseName).getContainer(metadataStorageName).delete().block();
+                }
+            }
+
+            // IMPORTANT: remove the connector after use
+            if (kafkaCosmosConnectContainer != null) {
+                kafkaCosmosConnectContainer.deleteConnector(connectorName);
+            }
+        }
+    }
+
+    @Test(groups = { "kafka-integration" }, dataProvider = "metadataCosmosStorageParameterProvider", timeOut = 2 * TIMEOUT)
+    public void connectorStart_metadata_cosmosStorageType(
+        boolean useMasterKey,
+        boolean preCreateMetadataContainer,
+        boolean canConnectorStart) {
+
+        String topicName = singlePartitionContainerName + "-" + UUID.randomUUID();
+        String metadataStorageName = "Metadata-" + UUID.randomUUID();
+
+        Map<String, String> sourceConnectorConfig = new HashMap<>();
+        sourceConnectorConfig.put("connector.class", "com.azure.cosmos.kafka.connect.CosmosSourceConnector");
+        sourceConnectorConfig.put("azure.cosmos.account.endpoint", KafkaCosmosTestConfigurations.HOST);
+        sourceConnectorConfig.put("azure.cosmos.application.name", "Test");
+        sourceConnectorConfig.put("azure.cosmos.source.database.name", databaseName);
+        sourceConnectorConfig.put("azure.cosmos.source.containers.includeAll", "false");
+        sourceConnectorConfig.put("azure.cosmos.source.containers.includedList", singlePartitionContainerName);
+        sourceConnectorConfig.put("azure.cosmos.source.containers.topicMap", topicName + "#" + singlePartitionContainerName);
+        sourceConnectorConfig.put("azure.cosmos.source.metadata.storage.name", metadataStorageName);
+        sourceConnectorConfig.put("azure.cosmos.source.metadata.storage.type", CosmosMetadataStorageType.COSMOS.getName());
+
+        if (useMasterKey) {
+            sourceConnectorConfig.put("azure.cosmos.account.key", KafkaCosmosTestConfigurations.MASTER_KEY);
+        } else {
+            sourceConnectorConfig.put("azure.cosmos.auth.type", CosmosAuthType.SERVICE_PRINCIPAL.getName());
+            sourceConnectorConfig.put("azure.cosmos.account.tenantId", KafkaCosmosTestConfigurations.ACCOUNT_TENANT_ID);
+            sourceConnectorConfig.put("azure.cosmos.auth.aad.clientId", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_ID);
+            sourceConnectorConfig.put("azure.cosmos.auth.aad.clientSecret", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_SECRET);
+        }
+
+        // Create topic ahead of time
+        kafkaCosmosConnectContainer.createTopic(topicName, 1);
+
+        String connectorName = "simpleTest-" + UUID.randomUUID();
+
+        try {
+            // if using cosmos container to persiste the metadata, pre-create it
+            if (preCreateMetadataContainer) {
+                logger.info("Creating metadata container");
+                client.getDatabase(databaseName)
+                    .createContainerIfNotExists(metadataStorageName, "/id")
+                    .block();
+            } else {
+                logger.info("Skip creating metadata container");
+            }
+
+            kafkaCosmosConnectContainer.registerConnector(connectorName, sourceConnectorConfig);
+
+            Thread.sleep(10000); // give some time for the connector to start up
+            // verify connector tasks
+            ConnectorStatus connectorStatus = kafkaCosmosConnectContainer.getConnectorStatus(connectorName);
+            if (canConnectorStart) {
+                assertThat(connectorStatus.getConnector().get("state").equals("RUNNING")).isTrue();
+            } else {
+                assertThat(connectorStatus.getConnector().get("state").equals("FAILED")).isTrue();
+            }
+
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (client != null) {
+                logger.info("cleaning container {}", singlePartitionContainerName);
+                cleanUpContainer(client, databaseName, singlePartitionContainerName);
+
+                // delete the metadata container if created
+                if (preCreateMetadataContainer || canConnectorStart) {
+                    client
+                        .getDatabase(databaseName)
+                        .getContainer(metadataStorageName)
+                        .delete()
+                        .onErrorResume(throwable -> {
+                            logger.error("Deleting metadata container failed ", throwable);
+                            return Mono.empty();
+                        })
+                        .block();
                 }
             }
 
