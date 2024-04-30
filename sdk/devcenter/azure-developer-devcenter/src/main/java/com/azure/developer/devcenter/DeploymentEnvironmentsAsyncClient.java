@@ -85,7 +85,7 @@ public final class DeploymentEnvironmentsAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment list operation as paginated response with {@link PagedFlux}.
+     * @return paged collection of Environment items as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -132,7 +132,7 @@ public final class DeploymentEnvironmentsAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment list operation as paginated response with {@link PagedFlux}.
+     * @return paged collection of Environment items as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -276,8 +276,8 @@ public final class DeploymentEnvironmentsAsyncClient {
      * <pre>{@code
      * {
      *     id: String (Required)
-     *     name: String (Optional)
-     *     status: String(Running/Completed/Canceled/Failed) (Required)
+     *     name: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
@@ -402,7 +402,7 @@ public final class DeploymentEnvironmentsAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment definition list operation as paginated response with {@link PagedFlux}.
+     * @return paged collection of EnvironmentDefinition items as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -446,7 +446,7 @@ public final class DeploymentEnvironmentsAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment definition list operation as paginated response with {@link PagedFlux}.
+     * @return paged collection of EnvironmentDefinition items as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -521,7 +521,7 @@ public final class DeploymentEnvironmentsAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return result of the environment type list operation as paginated response with {@link PagedFlux}.
+     * @return paged collection of EnvironmentType items as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -539,7 +539,7 @@ public final class DeploymentEnvironmentsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of the environment list operation as paginated response with {@link PagedFlux}.
+     * @return paged collection of Environment items as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -574,7 +574,7 @@ public final class DeploymentEnvironmentsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of the environment list operation as paginated response with {@link PagedFlux}.
+     * @return paged collection of Environment items as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -734,7 +734,7 @@ public final class DeploymentEnvironmentsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of the environment definition list operation as paginated response with {@link PagedFlux}.
+     * @return paged collection of EnvironmentDefinition items as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -768,7 +768,7 @@ public final class DeploymentEnvironmentsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of the environment definition list operation as paginated response with {@link PagedFlux}.
+     * @return paged collection of EnvironmentDefinition items as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -828,7 +828,7 @@ public final class DeploymentEnvironmentsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the environment type list operation as paginated response with {@link PagedFlux}.
+     * @return paged collection of EnvironmentType items as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)

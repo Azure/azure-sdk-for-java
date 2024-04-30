@@ -22,10 +22,10 @@ public final class TopicSpaceProperties {
 
     /*
      * The topic filters in the topic space.
-     * Example: "topicTemplates": [
-     * "devices/foo/bar",
-     * "devices/topic1/+",
-     * "devices/${principal.name}/${principal.attributes.keyName}" ].
+     * Example: "topicTemplates": [ 
+     *               "devices/foo/bar",
+     *               "devices/topic1/+",
+     *               "devices/${principal.name}/${principal.attributes.keyName}" ].
      */
     @JsonProperty(value = "topicTemplates")
     private List<String> topicTemplates;

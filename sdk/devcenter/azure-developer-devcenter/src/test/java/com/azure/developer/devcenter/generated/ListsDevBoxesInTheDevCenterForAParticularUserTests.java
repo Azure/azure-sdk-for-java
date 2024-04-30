@@ -49,13 +49,13 @@ public final class ListsDevBoxesInTheDevCenterForAParticularUserTests extends De
         DevBoxHardwareProfile firstItemHardwareProfile = firstItem.getHardwareProfile();
         Assertions.assertNotNull(firstItemHardwareProfile);
         Assertions.assertEquals(8, firstItemHardwareProfile.getVCpus());
-        Assertions.assertEquals(32, firstItemHardwareProfile.getMemoryGb());
+        Assertions.assertEquals(32, firstItemHardwareProfile.getMemoryInGb());
         // verify property "storageProfile"
         DevBoxStorageProfile firstItemStorageProfile = firstItem.getStorageProfile();
         Assertions.assertNotNull(firstItemStorageProfile);
         OsDisk firstItemStorageProfileOsDisk = firstItemStorageProfile.getOsDisk();
         Assertions.assertNotNull(firstItemStorageProfileOsDisk);
-        Assertions.assertEquals(1024, firstItemStorageProfileOsDisk.getDiskSizeGb());
+        Assertions.assertEquals(1024, firstItemStorageProfileOsDisk.getDiskSizeInGb());
         // verify property "imageReference"
         DevBoxImageReference firstItemImageReference = firstItem.getImageReference();
         Assertions.assertNotNull(firstItemImageReference);

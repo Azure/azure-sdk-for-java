@@ -19,32 +19,32 @@ import java.util.List;
 public final class EnvironmentDefinitionParameter implements JsonSerializable<EnvironmentDefinitionParameter> {
 
     /*
-     * Unique ID of the parameter
+     * Unique ID of the parameter.
      */
     @Generated
     private final String id;
 
     /*
-     * Display name of the parameter
+     * Display name of the parameter.
      */
     @Generated
     private String name;
 
     /*
-     * Description of the parameter
+     * Description of the parameter.
      */
     @Generated
     private String description;
 
     /*
-     * Default value of the parameter
+     * Default value of the parameter.
      */
     @Generated
     private String defaultValue;
 
     /*
      * A string of one of the basic JSON types (number, integer, array, object,
-     * boolean, string)
+     * boolean, string).
      */
     @Generated
     private final EnvironmentDefinitionParameterType parameterType;
@@ -57,13 +57,13 @@ public final class EnvironmentDefinitionParameter implements JsonSerializable<En
     private Boolean readOnly;
 
     /*
-     * Whether or not this parameter is required
+     * Whether or not this parameter is required.
      */
     @Generated
     private final boolean required;
 
     /*
-     * An array of allowed values
+     * An array of allowed values.
      */
     @Generated
     private List<String> allowed;

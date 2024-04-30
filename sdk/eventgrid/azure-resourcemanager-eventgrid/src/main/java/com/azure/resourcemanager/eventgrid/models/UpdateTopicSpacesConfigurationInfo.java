@@ -6,6 +6,7 @@ package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Properties of the topic spaces configuration info of a namespace.
@@ -19,8 +20,7 @@ public final class UpdateTopicSpacesConfigurationInfo {
     private TopicSpacesConfigurationState state;
 
     /*
-     * This property is used to specify custom topic to which events will be routed to from topic spaces configuration
-     * under namespace.
+     * This property is used to specify custom topic to which events will be routed to from topic spaces configuration under namespace.
      */
     @JsonProperty(value = "routeTopicResourceId")
     private String routeTopicResourceId;
@@ -57,6 +57,12 @@ public final class UpdateTopicSpacesConfigurationInfo {
     @JsonProperty(value = "routingIdentityInfo")
     private RoutingIdentityInfo routingIdentityInfo;
 
+    /*
+     * Custom domain info for topic spaces configuration.
+     */
+    @JsonProperty(value = "customDomains")
+    private List<CustomDomainConfiguration> customDomains;
+
     /**
      * Creates an instance of UpdateTopicSpacesConfigurationInfo class.
      */
@@ -64,8 +70,7 @@ public final class UpdateTopicSpacesConfigurationInfo {
     }
 
     /**
-     * Get the state property: Indicate if Topic Spaces Configuration is enabled for the namespace. Default is
-     * Disabled.
+     * Get the state property: Indicate if Topic Spaces Configuration is enabled for the namespace. Default is Disabled.
      * 
      * @return the state value.
      */
@@ -74,8 +79,7 @@ public final class UpdateTopicSpacesConfigurationInfo {
     }
 
     /**
-     * Set the state property: Indicate if Topic Spaces Configuration is enabled for the namespace. Default is
-     * Disabled.
+     * Set the state property: Indicate if Topic Spaces Configuration is enabled for the namespace. Default is Disabled.
      * 
      * @param state the state value to set.
      * @return the UpdateTopicSpacesConfigurationInfo object itself.
@@ -218,6 +222,26 @@ public final class UpdateTopicSpacesConfigurationInfo {
     }
 
     /**
+     * Get the customDomains property: Custom domain info for topic spaces configuration.
+     * 
+     * @return the customDomains value.
+     */
+    public List<CustomDomainConfiguration> customDomains() {
+        return this.customDomains;
+    }
+
+    /**
+     * Set the customDomains property: Custom domain info for topic spaces configuration.
+     * 
+     * @param customDomains the customDomains value to set.
+     * @return the UpdateTopicSpacesConfigurationInfo object itself.
+     */
+    public UpdateTopicSpacesConfigurationInfo withCustomDomains(List<CustomDomainConfiguration> customDomains) {
+        this.customDomains = customDomains;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -231,6 +255,9 @@ public final class UpdateTopicSpacesConfigurationInfo {
         }
         if (routingIdentityInfo() != null) {
             routingIdentityInfo().validate();
+        }
+        if (customDomains() != null) {
+            customDomains().forEach(e -> e.validate());
         }
     }
 }
