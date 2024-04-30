@@ -22,9 +22,10 @@ parameters:
   TestVersionSupport: $(TestVersionSupport)
   UseHttpFaultInjector: false
   OSName:
+  JobId:
 
 jobs:
-  - job: LiveTest_${{ parameters.OSName }}
+  - job: ${{ parameters.JobId }}
     dependsOn: ${{ parameters.DependsOn }}
     condition: and(succeededOrFailed(), ne(${{ parameters.Matrix }}, '{}'))
     strategy:
