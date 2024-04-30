@@ -73,17 +73,28 @@ public final class SharedExecutorService implements ExecutorService {
     private static <T> T getConfig(String configurationName, Function<String, T> parser, T defaultValue) {
         String value = Configuration.getGlobalConfiguration().get(configurationName);
         if (value == null) {
-            LOGGER.verbose("Configuration '{}' is not set, using default value '{}'.", configurationName, defaultValue);
+            LOGGER.atVerbose()
+                .addKeyValue("configurationName", configurationName)
+                .addKeyValue("defaultValue", defaultValue)
+                .log("Configuration property wasn't set, using default value.");
             return defaultValue;
         }
 
         try {
             T returnValue = parser.apply(value);
-            LOGGER.verbose("Configuration '{}' is set to '{}'.", configurationName, returnValue);
+            LOGGER.atVerbose()
+                .addKeyValue("configurationName", configurationName)
+                .addKeyValue("value", returnValue)
+                .log("Configuration property was set and being used.");
+
             return parser.apply(value);
         } catch (NumberFormatException e) {
-            LOGGER.info("Configuration '{}' is set to an invalid value '{}', using default value '{}'.",
-                configurationName, value, defaultValue);
+            LOGGER.atInfo()
+                .addKeyValue("configurationName", configurationName)
+                .addKeyValue("value", value)
+                .addKeyValue("defaultValue", defaultValue)
+                .log("Configuration property was set but wasn't a valid value, using default value.");
+
             return defaultValue;
         }
     }
