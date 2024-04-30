@@ -335,8 +335,6 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 String contentTypeHeader = response.getHeaderValue(HttpHeaderName.CONTENT_TYPE);
 
                 if (shouldBodyBeLogged(contentTypeHeader, contentLength)) {
-                    // shouldBodyBeLogged ensures contentLength is not null and within limits.
-                    int contentLengthInt = contentLength.intValue();
                     final HttpResponse bufferedResponse = response.buffer();
 
                     responseMono = FluxUtil.collectBytesInByteBufferStream(bufferedResponse.getBody()).map(bytes -> {
