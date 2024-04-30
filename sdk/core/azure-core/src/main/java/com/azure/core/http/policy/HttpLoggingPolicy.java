@@ -26,7 +26,6 @@ import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
@@ -37,8 +36,6 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URL;
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Locale;
@@ -329,21 +326,31 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             LoggingEventBuilder logBuilder = getLogBuilder(logLevel, logger);
 
             logContentLength(response, logBuilder);
-
             logUrl(loggingOptions, response, logBuilder);
-
             logHeaders(logger, response, logBuilder);
 
             if (httpLogDetailLevel.shouldLogBody()) {
                 String contentTypeHeader = response.getHeaderValue(HttpHeaderName.CONTENT_TYPE);
                 long contentLength = getContentLength(logger, response.getHeaders());
+
                 if (shouldBodyBeLogged(contentTypeHeader, contentLength)) {
-                    return Mono.just(new LoggingHttpResponse(response, logBuilder, logger, (int) contentLength,
-                        contentTypeHeader, prettyPrintBody));
+                    AccessibleByteArrayOutputStream stream = new AccessibleByteArrayOutputStream((int) contentLength);
+
+                    response.getBody().subscribe(byteBuffer -> {
+                        try {
+                            ImplUtils.writeByteBufferToStream(byteBuffer.duplicate(), stream);
+
+                            logBuilder.addKeyValue(LoggingKeys.BODY_KEY, prettyPrintIfNeeded(logger, prettyPrintBody,
+                                contentTypeHeader, stream.toString(StandardCharsets.UTF_8)));
+                        } catch (IOException ex) {
+                            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+                        }
+                    });
                 }
             }
 
             logBuilder.log(RESPONSE_LOG_MESSAGE);
+
             return Mono.just(response);
         }
 
@@ -366,6 +373,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
         private void logContentLength(HttpResponse response, LoggingEventBuilder logBuilder) {
             String contentLengthString = response.getHeaderValue(HttpHeaderName.CONTENT_LENGTH);
+
             if (!CoreUtils.isNullOrEmpty(contentLengthString)) {
                 logBuilder.addKeyValue(LoggingKeys.CONTENT_LENGTH_KEY, contentLengthString);
             }
@@ -379,24 +387,25 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             if (!logger.canLogAtLevel(logLevel)) {
                 return response;
             }
+
             LoggingEventBuilder logBuilder = getLogBuilder(logLevel, logger);
 
             logContentLength(response, logBuilder);
-
             logUrl(loggingOptions, response, logBuilder);
-
             logHeaders(logger, response, logBuilder);
 
             if (httpLogDetailLevel.shouldLogBody()) {
                 String contentTypeHeader = response.getHeaderValue(HttpHeaderName.CONTENT_TYPE);
                 long contentLength = getContentLength(logger, response.getHeaders());
+
                 if (shouldBodyBeLogged(contentTypeHeader, contentLength)) {
-                    return new LoggingHttpResponse(response, logBuilder, logger, (int) contentLength, contentTypeHeader,
-                        prettyPrintBody);
+                    logBuilder.addKeyValue(LoggingKeys.BODY_KEY, prettyPrintIfNeeded(logger, prettyPrintBody,
+                        contentTypeHeader, response.getBodyAsBinaryData().toString()));
                 }
             }
 
             logBuilder.log(RESPONSE_LOG_MESSAGE);
+
             return response;
         }
     }
@@ -592,94 +601,6 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             case VERBOSE:
             default:
                 return logger.atVerbose();
-        }
-    }
-
-    private static final class LoggingHttpResponse extends HttpResponse {
-        private final HttpResponse actualResponse;
-        private final LoggingEventBuilder logBuilder;
-        private final int contentLength;
-        private final ClientLogger logger;
-        private final boolean prettyPrintBody;
-        private final String contentTypeHeader;
-
-        private LoggingHttpResponse(HttpResponse actualResponse, LoggingEventBuilder logBuilder, ClientLogger logger,
-            int contentLength, String contentTypeHeader, boolean prettyPrintBody) {
-            super(actualResponse.getRequest());
-            this.actualResponse = actualResponse;
-            this.logBuilder = logBuilder;
-            this.logger = logger;
-            this.contentLength = contentLength;
-            this.contentTypeHeader = contentTypeHeader;
-            this.prettyPrintBody = prettyPrintBody;
-        }
-
-        @Override
-        public int getStatusCode() {
-            return actualResponse.getStatusCode();
-        }
-
-        @Override
-        @Deprecated
-        public String getHeaderValue(String name) {
-            return actualResponse.getHeaderValue(name);
-        }
-
-        @Override
-        public String getHeaderValue(HttpHeaderName headerName) {
-            return actualResponse.getHeaderValue(headerName);
-        }
-
-        @Override
-        public HttpHeaders getHeaders() {
-            return actualResponse.getHeaders();
-        }
-
-        @Override
-        public Flux<ByteBuffer> getBody() {
-            AccessibleByteArrayOutputStream stream = new AccessibleByteArrayOutputStream(contentLength);
-
-            return Flux.using(() -> stream, s -> actualResponse.getBody().doOnNext(byteBuffer -> {
-                try {
-                    ImplUtils.writeByteBufferToStream(byteBuffer.duplicate(), s);
-                } catch (IOException ex) {
-                    throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
-                }
-            }), s -> doLog(s.toString(StandardCharsets.UTF_8)));
-        }
-
-        @Override
-        public Mono<byte[]> getBodyAsByteArray() {
-            return FluxUtil.collectBytesFromNetworkResponse(getBody(), actualResponse.getHeaders());
-        }
-
-        @Override
-        public Mono<String> getBodyAsString() {
-            return getBodyAsByteArray().map(String::new);
-        }
-
-        @Override
-        public Mono<String> getBodyAsString(Charset charset) {
-            return getBodyAsByteArray().map(bytes -> new String(bytes, charset));
-        }
-
-        @Override
-        public BinaryData getBodyAsBinaryData() {
-            BinaryData content = actualResponse.getBodyAsBinaryData();
-            doLog(content.toString());
-            return content;
-        }
-
-        @Override
-        public void close() {
-            actualResponse.close();
-        }
-
-        private void doLog(String body) {
-            logBuilder
-                .addKeyValue(LoggingKeys.BODY_KEY,
-                    prettyPrintIfNeeded(logger, prettyPrintBody, contentTypeHeader, body))
-                .log(RESPONSE_LOG_MESSAGE);
         }
     }
 }
