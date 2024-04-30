@@ -10,10 +10,8 @@ import com.azure.resourcemanager.devcenter.models.EnvironmentRole;
 public final class EnvironmentRoleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EnvironmentRole model =
-            BinaryData
-                .fromString("{\"roleName\":\"n\",\"description\":\"wncwzzhxgktrmg\"}")
-                .toObject(EnvironmentRole.class);
+        EnvironmentRole model = BinaryData.fromString("{\"roleName\":\"rmnjijpx\",\"description\":\"q\"}")
+            .toObject(EnvironmentRole.class);
     }
 
     @org.junit.jupiter.api.Test

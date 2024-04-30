@@ -19,14 +19,14 @@ public final class EmbeddingsUsage {
      */
     @Generated
     @JsonProperty(value = "prompt_tokens")
-    private int promptTokens;
+    private final int promptTokens;
 
     /*
      * Total number of tokens transacted in this request/response.
      */
     @Generated
     @JsonProperty(value = "total_tokens")
-    private int totalTokens;
+    private final int totalTokens;
 
     /**
      * Creates an instance of EmbeddingsUsage class.

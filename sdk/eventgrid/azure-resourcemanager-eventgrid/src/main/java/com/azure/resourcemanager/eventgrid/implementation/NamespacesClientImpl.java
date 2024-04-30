@@ -34,11 +34,12 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.eventgrid.fluent.NamespacesClient;
+import com.azure.resourcemanager.eventgrid.fluent.models.CustomDomainOwnershipValidationResultInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.NamespaceInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.NamespaceSharedAccessKeysInner;
 import com.azure.resourcemanager.eventgrid.models.NamespaceRegenerateKeyRequest;
-import com.azure.resourcemanager.eventgrid.models.NamespaceUpdateParameters;
 import com.azure.resourcemanager.eventgrid.models.NamespacesListResult;
+import com.azure.resourcemanager.eventgrid.models.NamespaceUpdateParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -152,6 +153,15 @@ public final class NamespacesClientImpl implements NamespacesClient {
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") NamespaceRegenerateKeyRequest regenerateKeyRequest,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/validateCustomDomainOwnership")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> validateCustomDomainOwnership(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -1788,6 +1798,248 @@ public final class NamespacesClientImpl implements NamespacesClient {
     public NamespaceSharedAccessKeysInner regenerateKey(String resourceGroupName, String namespaceName,
         NamespaceRegenerateKeyRequest regenerateKeyRequest, Context context) {
         return regenerateKeyAsync(resourceGroupName, namespaceName, regenerateKeyRequest, context).block();
+    }
+
+    /**
+     * Validate ownership for all custom domains in a namespace.
+     * 
+     * Performs ownership validation via checking TXT records for all custom domains in a namespace.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param namespaceName Name of the Namespace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return namespace custom domain ownership validation result along with {@link Response} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> validateCustomDomainOwnershipWithResponseAsync(String resourceGroupName,
+        String namespaceName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (namespaceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.validateCustomDomainOwnership(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, namespaceName, this.client.getApiVersion(), accept,
+                context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Validate ownership for all custom domains in a namespace.
+     * 
+     * Performs ownership validation via checking TXT records for all custom domains in a namespace.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param namespaceName Name of the Namespace.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return namespace custom domain ownership validation result along with {@link Response} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> validateCustomDomainOwnershipWithResponseAsync(String resourceGroupName,
+        String namespaceName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (namespaceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.validateCustomDomainOwnership(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, namespaceName, this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Validate ownership for all custom domains in a namespace.
+     * 
+     * Performs ownership validation via checking TXT records for all custom domains in a namespace.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param namespaceName Name of the Namespace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of namespace custom domain ownership validation result.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private
+        PollerFlux<PollResult<CustomDomainOwnershipValidationResultInner>, CustomDomainOwnershipValidationResultInner>
+        beginValidateCustomDomainOwnershipAsync(String resourceGroupName, String namespaceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = validateCustomDomainOwnershipWithResponseAsync(resourceGroupName, namespaceName);
+        return this.client
+            .<CustomDomainOwnershipValidationResultInner, CustomDomainOwnershipValidationResultInner>getLroResult(mono,
+                this.client.getHttpPipeline(), CustomDomainOwnershipValidationResultInner.class,
+                CustomDomainOwnershipValidationResultInner.class, this.client.getContext());
+    }
+
+    /**
+     * Validate ownership for all custom domains in a namespace.
+     * 
+     * Performs ownership validation via checking TXT records for all custom domains in a namespace.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param namespaceName Name of the Namespace.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of namespace custom domain ownership validation result.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private
+        PollerFlux<PollResult<CustomDomainOwnershipValidationResultInner>, CustomDomainOwnershipValidationResultInner>
+        beginValidateCustomDomainOwnershipAsync(String resourceGroupName, String namespaceName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = validateCustomDomainOwnershipWithResponseAsync(resourceGroupName, namespaceName, context);
+        return this.client
+            .<CustomDomainOwnershipValidationResultInner, CustomDomainOwnershipValidationResultInner>getLroResult(mono,
+                this.client.getHttpPipeline(), CustomDomainOwnershipValidationResultInner.class,
+                CustomDomainOwnershipValidationResultInner.class, context);
+    }
+
+    /**
+     * Validate ownership for all custom domains in a namespace.
+     * 
+     * Performs ownership validation via checking TXT records for all custom domains in a namespace.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param namespaceName Name of the Namespace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of namespace custom domain ownership validation result.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<CustomDomainOwnershipValidationResultInner>, CustomDomainOwnershipValidationResultInner>
+        beginValidateCustomDomainOwnership(String resourceGroupName, String namespaceName) {
+        return this.beginValidateCustomDomainOwnershipAsync(resourceGroupName, namespaceName).getSyncPoller();
+    }
+
+    /**
+     * Validate ownership for all custom domains in a namespace.
+     * 
+     * Performs ownership validation via checking TXT records for all custom domains in a namespace.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param namespaceName Name of the Namespace.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of namespace custom domain ownership validation result.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<CustomDomainOwnershipValidationResultInner>, CustomDomainOwnershipValidationResultInner>
+        beginValidateCustomDomainOwnership(String resourceGroupName, String namespaceName, Context context) {
+        return this.beginValidateCustomDomainOwnershipAsync(resourceGroupName, namespaceName, context).getSyncPoller();
+    }
+
+    /**
+     * Validate ownership for all custom domains in a namespace.
+     * 
+     * Performs ownership validation via checking TXT records for all custom domains in a namespace.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param namespaceName Name of the Namespace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return namespace custom domain ownership validation result on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CustomDomainOwnershipValidationResultInner>
+        validateCustomDomainOwnershipAsync(String resourceGroupName, String namespaceName) {
+        return beginValidateCustomDomainOwnershipAsync(resourceGroupName, namespaceName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Validate ownership for all custom domains in a namespace.
+     * 
+     * Performs ownership validation via checking TXT records for all custom domains in a namespace.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param namespaceName Name of the Namespace.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return namespace custom domain ownership validation result on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CustomDomainOwnershipValidationResultInner>
+        validateCustomDomainOwnershipAsync(String resourceGroupName, String namespaceName, Context context) {
+        return beginValidateCustomDomainOwnershipAsync(resourceGroupName, namespaceName, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Validate ownership for all custom domains in a namespace.
+     * 
+     * Performs ownership validation via checking TXT records for all custom domains in a namespace.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param namespaceName Name of the Namespace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return namespace custom domain ownership validation result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CustomDomainOwnershipValidationResultInner validateCustomDomainOwnership(String resourceGroupName,
+        String namespaceName) {
+        return validateCustomDomainOwnershipAsync(resourceGroupName, namespaceName).block();
+    }
+
+    /**
+     * Validate ownership for all custom domains in a namespace.
+     * 
+     * Performs ownership validation via checking TXT records for all custom domains in a namespace.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param namespaceName Name of the Namespace.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return namespace custom domain ownership validation result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CustomDomainOwnershipValidationResultInner validateCustomDomainOwnership(String resourceGroupName,
+        String namespaceName, Context context) {
+        return validateCustomDomainOwnershipAsync(resourceGroupName, namespaceName, context).block();
     }
 
     /**

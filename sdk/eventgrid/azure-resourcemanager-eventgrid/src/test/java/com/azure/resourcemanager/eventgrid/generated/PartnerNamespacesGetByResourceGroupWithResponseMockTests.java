@@ -6,61 +6,44 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.IpActionType;
 import com.azure.resourcemanager.eventgrid.models.PartnerNamespace;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopicRoutingMode;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
 import com.azure.resourcemanager.eventgrid.models.TlsVersion;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PartnerNamespacesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"groupIds\":[\"zmudsqcm\",\"nxlzbuwodmach\",\"kvnrpbjrmvgoqpl\"],\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"mkzdllczdprwnhk\",\"name\":\"qggoxsst\",\"type\":\"ivrakfrryn\"},{\"properties\":{\"privateEndpoint\":{},\"groupIds\":[\"lymg\"],\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"rkemjpequlrlza\",\"name\":\"dgjtfbcla\",\"type\":\"kucddwnhczbutouc\"}],\"provisioningState\":\"Succeeded\",\"partnerRegistrationFullyQualifiedId\":\"rjwayhicqq\",\"minimumTlsVersionAllowed\":\"1.0\",\"endpoint\":\"wkslvlized\",\"publicNetworkAccess\":\"Enabled\",\"inboundIpRules\":[{\"ipMask\":\"n\",\"action\":\"Allow\"}],\"disableLocalAuth\":true,\"partnerTopicRoutingMode\":\"ChannelNameHeader\"},\"location\":\"xadyfhb\",\"tags\":{\"aqjsgyzstujr\":\"hojqttbspvkhg\",\"sf\":\"xrk\",\"qwrldaxur\":\"rlduyehiiittugy\"},\"id\":\"qa\",\"name\":\"csozjv\",\"type\":\"dzciggb\"}";
+            = "{\"properties\":{\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"groupIds\":[\"xxjfwtgdfkkauig\",\"muafmczfedyuepsv\",\"lti\"],\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Succeeded\"},\"id\":\"vy\",\"name\":\"eocfkumcfjxok\",\"type\":\"elsy\"},{\"properties\":{\"privateEndpoint\":{},\"groupIds\":[\"k\",\"myg\"],\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"id\":\"rknfdrugjqyc\",\"name\":\"gtxk\",\"type\":\"dtu\"},{\"properties\":{\"privateEndpoint\":{},\"groupIds\":[\"dklotcsubmzo\"],\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"id\":\"obc\",\"name\":\"kxfpwh\",\"type\":\"yslb\"}],\"provisioningState\":\"Succeeded\",\"partnerRegistrationFullyQualifiedId\":\"mnnkkwayqshw\",\"minimumTlsVersionAllowed\":\"1.0\",\"endpoint\":\"idttbsaqjmkgx\",\"publicNetworkAccess\":\"Disabled\",\"inboundIpRules\":[{\"ipMask\":\"uylztpziizevjyk\",\"action\":\"Allow\"}],\"disableLocalAuth\":true,\"partnerTopicRoutingMode\":\"ChannelNameHeader\"},\"location\":\"hkqtwqlepjj\",\"tags\":{\"wz\":\"as\"},\"id\":\"ntogffjwajnrt\",\"name\":\"zvaqkifmxawost\",\"type\":\"zkn\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        EventGridManager manager = EventGridManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        EventGridManager manager = EventGridManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PartnerNamespace response = manager.partnerNamespaces()
-            .getByResourceGroupWithResponse("fibfiplhx", "nsmy", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("qrizfwihvaan", "qtnhjrfd", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("xadyfhb", response.location());
-        Assertions.assertEquals("hojqttbspvkhg", response.tags().get("aqjsgyzstujr"));
-        Assertions.assertEquals("rjwayhicqq", response.partnerRegistrationFullyQualifiedId());
+        Assertions.assertEquals("hkqtwqlepjj", response.location());
+        Assertions.assertEquals("as", response.tags().get("wz"));
+        Assertions.assertEquals("mnnkkwayqshw", response.partnerRegistrationFullyQualifiedId());
         Assertions.assertEquals(TlsVersion.ONE_ZERO, response.minimumTlsVersionAllowed());
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.publicNetworkAccess());
-        Assertions.assertEquals("n", response.inboundIpRules().get(0).ipMask());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, response.publicNetworkAccess());
+        Assertions.assertEquals("uylztpziizevjyk", response.inboundIpRules().get(0).ipMask());
         Assertions.assertEquals(IpActionType.ALLOW, response.inboundIpRules().get(0).action());
         Assertions.assertEquals(true, response.disableLocalAuth());
         Assertions.assertEquals(PartnerTopicRoutingMode.CHANNEL_NAME_HEADER, response.partnerTopicRoutingMode());

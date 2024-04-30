@@ -28,19 +28,19 @@ public final class ShareFileCopyInfo {
      * Creates an instance of copy information about a specific File.
      *
      * @param eTag If the copy is completed, contains the ETag of the destination file. If the copy is not complete,
-     *     contains the ETag of the empty file created at the start of the copy.
+     * contains the ETag of the empty file created at the start of the copy.
      * @param lastModified The date/time that the copy operation to the destination file completed.
      * @param copyId String identifier for this copy operation.
      * @param copyStatus State of the copy operation with these values:
-     *                       <ul>
-     *                           <li>success: the copy completed successfully.</li>
-     *                           <li>pending: the copy is still in progress.</li>
-     *                       </ul>
+     * <ul>
+     *     <li>success: the copy completed successfully.</li>
+     *     <li>pending: the copy is still in progress.</li>
+     * </ul>
      * @param copySource The url of the source file.
      * @param error An error message for the copy operation. {@code null} if there are no errors.
      */
     public ShareFileCopyInfo(String copySource, String copyId, CopyStatusType copyStatus, String eTag,
-                             OffsetDateTime lastModified, String error) {
+        OffsetDateTime lastModified, String error) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.copyId = copyId;
@@ -91,7 +91,7 @@ public final class ShareFileCopyInfo {
     }
 
     /**
-     * Gets the the source file used in the last attempted copy file operation.
+     * Gets the source file used in the last attempted copy file operation.
      *
      * @return The url of the source file.
      */
@@ -103,7 +103,7 @@ public final class ShareFileCopyInfo {
      * Gets an error description associated with the copy operation.
      *
      * @return An error description associated with the copy, or {@code null} if there is no error associated with this
-     *     copy operation.
+     * copy operation.
      */
     public String getError() {
         return error;

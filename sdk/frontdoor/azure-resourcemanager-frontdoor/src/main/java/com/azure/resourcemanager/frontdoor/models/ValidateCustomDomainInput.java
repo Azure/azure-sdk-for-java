@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Input of the custom domain to be validated for DNS mapping. */
+/**
+ * Input of the custom domain to be validated for DNS mapping.
+ */
 @Fluent
 public final class ValidateCustomDomainInput {
     /*
@@ -17,13 +19,15 @@ public final class ValidateCustomDomainInput {
     @JsonProperty(value = "hostName", required = true)
     private String hostname;
 
-    /** Creates an instance of ValidateCustomDomainInput class. */
+    /**
+     * Creates an instance of ValidateCustomDomainInput class.
+     */
     public ValidateCustomDomainInput() {
     }
 
     /**
      * Get the hostname property: The host name of the custom domain. Must be a domain name.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -32,7 +36,7 @@ public final class ValidateCustomDomainInput {
 
     /**
      * Set the hostname property: The host name of the custom domain. Must be a domain name.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the ValidateCustomDomainInput object itself.
      */
@@ -43,15 +47,14 @@ public final class ValidateCustomDomainInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (hostname() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property hostname in model ValidateCustomDomainInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property hostname in model ValidateCustomDomainInput"));
         }
     }
 

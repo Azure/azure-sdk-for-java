@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class UserPropertyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserProperty model = BinaryData.fromString("{\"name\":\"fmluiqtqzfavyvn\",\"value\":\"dataqybaryeua\"}")
-            .toObject(UserProperty.class);
-        Assertions.assertEquals("fmluiqtqzfavyvn", model.name());
+        UserProperty model
+            = BinaryData.fromString("{\"name\":\"otcubi\",\"value\":\"datap\"}").toObject(UserProperty.class);
+        Assertions.assertEquals("otcubi", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserProperty model = new UserProperty().withName("fmluiqtqzfavyvn").withValue("dataqybaryeua");
+        UserProperty model = new UserProperty().withName("otcubi").withValue("datap");
         model = BinaryData.fromObject(model).toObject(UserProperty.class);
-        Assertions.assertEquals("fmluiqtqzfavyvn", model.name());
+        Assertions.assertEquals("otcubi", model.name());
     }
 }

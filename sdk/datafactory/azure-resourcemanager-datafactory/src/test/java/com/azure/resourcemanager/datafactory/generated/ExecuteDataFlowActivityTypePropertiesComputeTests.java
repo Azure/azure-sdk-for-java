@@ -11,14 +11,15 @@ public final class ExecuteDataFlowActivityTypePropertiesComputeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecuteDataFlowActivityTypePropertiesCompute model
-            = BinaryData.fromString("{\"computeType\":\"datafxuys\",\"coreCount\":\"datavdqzf\"}")
+            = BinaryData.fromString("{\"computeType\":\"datantnjnkvsnsiphl\",\"coreCount\":\"datacedz\"}")
                 .toObject(ExecuteDataFlowActivityTypePropertiesCompute.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExecuteDataFlowActivityTypePropertiesCompute model = new ExecuteDataFlowActivityTypePropertiesCompute()
-            .withComputeType("datafxuys").withCoreCount("datavdqzf");
+        ExecuteDataFlowActivityTypePropertiesCompute model
+            = new ExecuteDataFlowActivityTypePropertiesCompute().withComputeType("datantnjnkvsnsiphl")
+                .withCoreCount("datacedz");
         model = BinaryData.fromObject(model).toObject(ExecuteDataFlowActivityTypePropertiesCompute.class);
     }
 }

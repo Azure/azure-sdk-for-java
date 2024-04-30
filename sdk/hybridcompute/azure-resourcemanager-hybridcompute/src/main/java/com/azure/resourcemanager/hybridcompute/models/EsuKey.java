@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hybridcompute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ESU key. */
+/**
+ * ESU key.
+ */
 @Fluent
 public final class EsuKey {
     /*
@@ -22,13 +24,15 @@ public final class EsuKey {
     @JsonProperty(value = "licenseStatus")
     private String licenseStatus;
 
-    /** Creates an instance of EsuKey class. */
+    /**
+     * Creates an instance of EsuKey class.
+     */
     public EsuKey() {
     }
 
     /**
      * Get the sku property: SKU number.
-     *
+     * 
      * @return the sku value.
      */
     public String sku() {
@@ -37,7 +41,7 @@ public final class EsuKey {
 
     /**
      * Set the sku property: SKU number.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the EsuKey object itself.
      */
@@ -48,7 +52,7 @@ public final class EsuKey {
 
     /**
      * Get the licenseStatus property: The current status of the license profile key.
-     *
+     * 
      * @return the licenseStatus value.
      */
     public String licenseStatus() {
@@ -57,7 +61,7 @@ public final class EsuKey {
 
     /**
      * Set the licenseStatus property: The current status of the license profile key.
-     *
+     * 
      * @param licenseStatus the licenseStatus value to set.
      * @return the EsuKey object itself.
      */
@@ -68,7 +72,7 @@ public final class EsuKey {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

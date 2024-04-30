@@ -6,82 +6,65 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.EventDefinitionKind;
 import com.azure.resourcemanager.eventgrid.models.IdentityType;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopic;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopicActivationState;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PartnerTopicsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"6d1d1723-c65d-4b66-b198-012584d255e2\",\"source\":\"jvamyyznmrgcdo\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"gvo\":{\"description\":\"to\",\"displayName\":\"whttnzqs\",\"documentationUrl\":\"mebgszplu\",\"dataSchemaUrl\":\"ekpdzzmssg\"},\"cauxuvavcpfpdofu\":{\"description\":\"ejidbdqzsq\",\"displayName\":\"y\",\"documentationUrl\":\"ztlvv\",\"dataSchemaUrl\":\"nmrkkyjtrepwpwf\"},\"wpdkktpmbmxbmb\":{\"description\":\"clbtxl\",\"displayName\":\"vsolzwil\",\"documentationUrl\":\"gojfsqe\",\"dataSchemaUrl\":\"uxjxhfxf\"}}},\"expirationTimeIfNotActivatedUtc\":\"2021-06-14T02:57:26Z\",\"provisioningState\":\"IdleDueToMirroredChannelResourceDeletion\",\"activationState\":\"NeverActivated\",\"partnerTopicFriendlyDescription\":\"bkhxsdplaum\",\"messageForActivation\":\"mhweqjfyxyd\"},\"identity\":{\"type\":\"None\",\"principalId\":\"bvwglgwzp\",\"tenantId\":\"akglhpsesrfga\",\"userAssignedIdentities\":{\"spglq\":{\"principalId\":\"dvxcgdhyhgoqgsoy\",\"clientId\":\"xyjrcbqpb\"},\"jztivfwjlofzek\":{\"principalId\":\"xtdahneao\",\"clientId\":\"t\"}}},\"location\":\"srmau\",\"tags\":{\"pejovt\":\"jvcfoczh\",\"whhnoyrzaa\":\"wxn\",\"pmjen\":\"ee\",\"xc\":\"jeatea\"},\"id\":\"xoxdjxldnaryyi\",\"name\":\"zkdolrndwdbvxvza\",\"type\":\"edoyqxlunkft\"}]}";
+            = "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"4263cd53-7dca-4ea5-ad53-1c07e860de81\",\"source\":\"l\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"fmvsmcwoxfaxdt\":{\"description\":\"yaqandmymnqoqju\",\"displayName\":\"vsfbp\",\"documentationUrl\":\"zo\",\"dataSchemaUrl\":\"x\"},\"ini\":{\"description\":\"i\",\"displayName\":\"satroia\",\"documentationUrl\":\"sugmocpcjyc\",\"dataSchemaUrl\":\"elrgttwfldsiuo\"},\"upoyryefqm\":{\"description\":\"edpksriwmmtmqrxr\",\"displayName\":\"vvyczy\",\"documentationUrl\":\"ubt\",\"dataSchemaUrl\":\"bxiqahragpxmibpl\"},\"kkreh\":{\"description\":\"vyztxlno\",\"displayName\":\"pbjceegvy\",\"documentationUrl\":\"ztkutnj\",\"dataSchemaUrl\":\"l\"}}},\"expirationTimeIfNotActivatedUtc\":\"2021-04-28T17:50:29Z\",\"provisioningState\":\"IdleDueToMirroredChannelResourceDeletion\",\"activationState\":\"NeverActivated\",\"partnerTopicFriendlyDescription\":\"ifvulxf\",\"messageForActivation\":\"yrvjlgdezvjq\"},\"identity\":{\"type\":\"SystemAssigned, UserAssigned\",\"principalId\":\"yaxqvjweiwtczkd\",\"tenantId\":\"vovbooqbmdqrx\",\"userAssignedIdentities\":{\"riefoo\":{\"principalId\":\"et\",\"clientId\":\"flwtjdt\"},\"ipsdudgcozzomehx\":{\"principalId\":\"cuxd\",\"clientId\":\"c\"},\"ckzdqiqdlra\":{\"principalId\":\"ntolamlb\",\"clientId\":\"uxkqllczipvwdt\"},\"lhpryjfzihuio\":{\"principalId\":\"kwx\",\"clientId\":\"uwxsuykznhrfgsl\"}}},\"location\":\"eo\",\"tags\":{\"dccxbeuuqu\":\"jtfeyvkbdgddkr\",\"xfn\":\"kzwtjwwguzytij\"},\"id\":\"ndegjdydhqkkkbj\",\"name\":\"ckcatuqbhpo\",\"type\":\"cnxtpzdlysei\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        EventGridManager manager = EventGridManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        EventGridManager manager = EventGridManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<PartnerTopic> response
-            = manager.partnerTopics().list("d", 887060590, com.azure.core.util.Context.NONE);
+            = manager.partnerTopics().list("ovanyrva", 1587424466, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("srmau", response.iterator().next().location());
-        Assertions.assertEquals("jvcfoczh", response.iterator().next().tags().get("pejovt"));
-        Assertions.assertEquals(IdentityType.NONE, response.iterator().next().identity().type());
-        Assertions.assertEquals("bvwglgwzp", response.iterator().next().identity().principalId());
-        Assertions.assertEquals("akglhpsesrfga", response.iterator().next().identity().tenantId());
-        Assertions.assertEquals("dvxcgdhyhgoqgsoy",
-            response.iterator().next().identity().userAssignedIdentities().get("spglq").principalId());
-        Assertions.assertEquals("xyjrcbqpb",
-            response.iterator().next().identity().userAssignedIdentities().get("spglq").clientId());
-        Assertions.assertEquals(UUID.fromString("6d1d1723-c65d-4b66-b198-012584d255e2"),
+        Assertions.assertEquals("eo", response.iterator().next().location());
+        Assertions.assertEquals("jtfeyvkbdgddkr", response.iterator().next().tags().get("dccxbeuuqu"));
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
+            response.iterator().next().identity().type());
+        Assertions.assertEquals("yaxqvjweiwtczkd", response.iterator().next().identity().principalId());
+        Assertions.assertEquals("vovbooqbmdqrx", response.iterator().next().identity().tenantId());
+        Assertions.assertEquals("et",
+            response.iterator().next().identity().userAssignedIdentities().get("riefoo").principalId());
+        Assertions.assertEquals("flwtjdt",
+            response.iterator().next().identity().userAssignedIdentities().get("riefoo").clientId());
+        Assertions.assertEquals(UUID.fromString("4263cd53-7dca-4ea5-ad53-1c07e860de81"),
             response.iterator().next().partnerRegistrationImmutableId());
-        Assertions.assertEquals("jvamyyznmrgcdo", response.iterator().next().source());
+        Assertions.assertEquals("l", response.iterator().next().source());
         Assertions.assertEquals(EventDefinitionKind.INLINE, response.iterator().next().eventTypeInfo().kind());
-        Assertions.assertEquals("to",
-            response.iterator().next().eventTypeInfo().inlineEventTypes().get("gvo").description());
-        Assertions.assertEquals("whttnzqs",
-            response.iterator().next().eventTypeInfo().inlineEventTypes().get("gvo").displayName());
-        Assertions.assertEquals("mebgszplu",
-            response.iterator().next().eventTypeInfo().inlineEventTypes().get("gvo").documentationUrl());
-        Assertions.assertEquals("ekpdzzmssg",
-            response.iterator().next().eventTypeInfo().inlineEventTypes().get("gvo").dataSchemaUrl());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-14T02:57:26Z"),
+        Assertions.assertEquals("yaqandmymnqoqju",
+            response.iterator().next().eventTypeInfo().inlineEventTypes().get("fmvsmcwoxfaxdt").description());
+        Assertions.assertEquals("vsfbp",
+            response.iterator().next().eventTypeInfo().inlineEventTypes().get("fmvsmcwoxfaxdt").displayName());
+        Assertions.assertEquals("zo",
+            response.iterator().next().eventTypeInfo().inlineEventTypes().get("fmvsmcwoxfaxdt").documentationUrl());
+        Assertions.assertEquals("x",
+            response.iterator().next().eventTypeInfo().inlineEventTypes().get("fmvsmcwoxfaxdt").dataSchemaUrl());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-28T17:50:29Z"),
             response.iterator().next().expirationTimeIfNotActivatedUtc());
         Assertions.assertEquals(PartnerTopicActivationState.NEVER_ACTIVATED,
             response.iterator().next().activationState());
-        Assertions.assertEquals("bkhxsdplaum", response.iterator().next().partnerTopicFriendlyDescription());
-        Assertions.assertEquals("mhweqjfyxyd", response.iterator().next().messageForActivation());
+        Assertions.assertEquals("ifvulxf", response.iterator().next().partnerTopicFriendlyDescription());
+        Assertions.assertEquals("yrvjlgdezvjq", response.iterator().next().messageForActivation());
     }
 }

@@ -4,6 +4,7 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -16,18 +17,21 @@ public final class RouterChannel {
     /*
      * Id of a channel.
      */
+    @Generated
     @JsonProperty(value = "channelId")
     private final String channelId;
 
     /*
      * The amount of capacity that an instance of a job of this channel will consume of the total worker capacity.
      */
+    @Generated
     @JsonProperty(value = "capacityCostPerJob")
     private final int capacityCostPerJob;
 
     /*
      * The maximum number of jobs that can be supported concurrently for this channel. Value must be greater than zero.
      */
+    @Generated
     @JsonProperty(value = "maxNumberOfJobs")
     private Integer maxNumberOfJobs;
 
@@ -37,6 +41,7 @@ public final class RouterChannel {
      * @param channelId the channelId value to set.
      * @param capacityCostPerJob the capacityCostPerJob value to set.
      */
+    @Generated
     @JsonCreator
     public RouterChannel(@JsonProperty(value = "channelId") String channelId,
         @JsonProperty(value = "capacityCostPerJob") int capacityCostPerJob) {
@@ -49,6 +54,7 @@ public final class RouterChannel {
      *
      * @return the channelId value.
      */
+    @Generated
     public String getChannelId() {
         return this.channelId;
     }
@@ -59,6 +65,7 @@ public final class RouterChannel {
      *
      * @return the capacityCostPerJob value.
      */
+    @Generated
     public int getCapacityCostPerJob() {
         return this.capacityCostPerJob;
     }
@@ -69,6 +76,7 @@ public final class RouterChannel {
      *
      * @return the maxNumberOfJobs value.
      */
+    @Generated
     public Integer getMaxNumberOfJobs() {
         return this.maxNumberOfJobs;
     }
@@ -80,6 +88,7 @@ public final class RouterChannel {
      * @param maxNumberOfJobs the maxNumberOfJobs value to set.
      * @return the RouterChannel object itself.
      */
+    @Generated
     public RouterChannel setMaxNumberOfJobs(Integer maxNumberOfJobs) {
         this.maxNumberOfJobs = maxNumberOfJobs;
         return this;

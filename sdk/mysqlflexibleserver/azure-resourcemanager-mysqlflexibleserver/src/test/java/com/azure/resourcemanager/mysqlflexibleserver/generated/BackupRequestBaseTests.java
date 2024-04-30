@@ -13,23 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupRequestBaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupRequestBase model =
-            BinaryData
-                .fromString(
-                    "{\"backupSettings\":{\"backupName\":\"mfdatscmdvpj\",\"backupFormat\":\"CollatedFormat\"}}")
+        BackupRequestBase model
+            = BinaryData.fromString("{\"backupSettings\":{\"backupName\":\"mfdatscmdvpj\",\"backupFormat\":\"Raw\"}}")
                 .toObject(BackupRequestBase.class);
         Assertions.assertEquals("mfdatscmdvpj", model.backupSettings().backupName());
-        Assertions.assertEquals(BackupFormat.COLLATED_FORMAT, model.backupSettings().backupFormat());
+        Assertions.assertEquals(BackupFormat.RAW, model.backupSettings().backupFormat());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupRequestBase model =
-            new BackupRequestBase()
-                .withBackupSettings(
-                    new BackupSettings().withBackupName("mfdatscmdvpj").withBackupFormat(BackupFormat.COLLATED_FORMAT));
+        BackupRequestBase model = new BackupRequestBase()
+            .withBackupSettings(new BackupSettings().withBackupName("mfdatscmdvpj").withBackupFormat(BackupFormat.RAW));
         model = BinaryData.fromObject(model).toObject(BackupRequestBase.class);
         Assertions.assertEquals("mfdatscmdvpj", model.backupSettings().backupName());
-        Assertions.assertEquals(BackupFormat.COLLATED_FORMAT, model.backupSettings().backupFormat());
+        Assertions.assertEquals(BackupFormat.RAW, model.backupSettings().backupFormat());
     }
 }

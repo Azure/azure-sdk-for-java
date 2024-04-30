@@ -6,47 +6,50 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Http read settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = HttpReadSettings.class, visible = true)
 @JsonTypeName("HttpReadSettings")
 @Fluent
 public final class HttpReadSettings extends StoreReadSettings {
     /*
-     * The HTTP method used to call the RESTful API. The default is GET. Type: string (or Expression with resultType
-     * string).
+     * The read setting type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "HttpReadSettings";
+
+    /*
+     * The HTTP method used to call the RESTful API. The default is GET. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "requestMethod")
     private Object requestMethod;
 
     /*
-     * The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or Expression with resultType
-     * string).
+     * The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "requestBody")
     private Object requestBody;
 
     /*
-     * The additional HTTP headers in the request to the RESTful API. Type: string (or Expression with resultType
-     * string).
+     * The additional HTTP headers in the request to the RESTful API. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "additionalHeaders")
     private Object additionalHeaders;
 
     /*
-     * Specifies the timeout for a HTTP client to get HTTP response from HTTP server. Type: string (or Expression with
-     * resultType string).
+     * Specifies the timeout for a HTTP client to get HTTP response from HTTP server. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "requestTimeout")
     private Object requestTimeout;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
-     * Expression with resultType array of objects).
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with resultType array of objects).
      */
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
@@ -55,6 +58,16 @@ public final class HttpReadSettings extends StoreReadSettings {
      * Creates an instance of HttpReadSettings class.
      */
     public HttpReadSettings() {
+    }
+
+    /**
+     * Get the type property: The read setting type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -80,8 +93,8 @@ public final class HttpReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Get the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string
-     * (or Expression with resultType string).
+     * Get the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or
+     * Expression with resultType string).
      * 
      * @return the requestBody value.
      */
@@ -90,8 +103,8 @@ public final class HttpReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Set the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string
-     * (or Expression with resultType string).
+     * Set the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or
+     * Expression with resultType string).
      * 
      * @param requestBody the requestBody value to set.
      * @return the HttpReadSettings object itself.

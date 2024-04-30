@@ -22,24 +22,21 @@ import java.util.stream.Collectors;
  * Common Configuration for Cosmos DB Kafka sink connector.
  */
 public class CosmosSinkConfig extends KafkaCosmosConfig {
-    private static final String SINK_CONFIG_PREFIX = "kafka.connect.cosmos.sink.";
 
     // error tolerance
-    public static final String TOLERANCE_ON_ERROR = SINK_CONFIG_PREFIX + "errors.tolerance";
+    public static final String TOLERANCE_ON_ERROR = "azure.cosmos.sink.errors.tolerance.level";
     public static final String TOLERANCE_ON_ERROR_DOC =
         "Error tolerance level after exhausting all retries. 'None' for fail on error. 'All' for log and continue";
     public static final String TOLERANCE_ON_ERROR_DISPLAY = "Error tolerance level.";
     public static final String DEFAULT_TOLERANCE_ON_ERROR = ToleranceOnErrorLevel.NONE.getName();
 
     // sink bulk config
-    public static final String BULK_ENABLED = SINK_CONFIG_PREFIX + "bulk.enabled";
+    public static final String BULK_ENABLED = "azure.cosmos.sink.bulk.enabled";
     private static final String BULK_ENABLED_DOC =
         "Flag to indicate whether Cosmos DB bulk mode is enabled for Sink connector. By default it is true.";
     private static final String BULK_ENABLED_DISPLAY = "enable bulk mode.";
     private static final boolean DEFAULT_BULK_ENABLED = true;
-
-    // TODO[Public Preview]: Add other write config, for example patch, bulkUpdate
-    public static final String BULK_MAX_CONCURRENT_PARTITIONS = SINK_CONFIG_PREFIX + "bulk.maxConcurrentCosmosPartitions";
+    public static final String BULK_MAX_CONCURRENT_PARTITIONS = "azure.cosmos.sink.bulk.maxConcurrentCosmosPartitions";
     private static final String BULK_MAX_CONCURRENT_PARTITIONS_DOC =
         "Cosmos DB Item Write Max Concurrent Cosmos Partitions."
             + " If not specified it will be determined based on the number of the container's physical partitions -"
@@ -51,7 +48,7 @@ public class CosmosSinkConfig extends KafkaCosmosConfig {
     private static final String BULK_MAX_CONCURRENT_PARTITIONS_DISPLAY = "Cosmos DB Item Write Max Concurrent Cosmos Partitions.";
     private static final int DEFAULT_BULK_MAX_CONCURRENT_PARTITIONS = -1;
 
-    public static final String BULK_INITIAL_BATCH_SIZE = SINK_CONFIG_PREFIX + "bulk.initialBatchSize";
+    public static final String BULK_INITIAL_BATCH_SIZE = "azure.cosmos.sink.bulk.initialBatchSize";
     private static final String BULK_INITIAL_BATCH_SIZE_DOC =
         "Cosmos DB initial bulk micro batch size - a micro batch will be flushed to the backend "
             + "when the number of documents enqueued exceeds this size - or the target payload size is met. The micro batch "
@@ -62,7 +59,7 @@ public class CosmosSinkConfig extends KafkaCosmosConfig {
     private static final int DEFAULT_BULK_INITIAL_BATCH_SIZE = 1; // start with small value to avoid initial RU spike
 
     // write strategy
-    public static final String WRITE_STRATEGY = SINK_CONFIG_PREFIX + "write.strategy";
+    public static final String WRITE_STRATEGY = "azure.cosmos.sink.write.strategy";
     private static final String WRITE_STRATEGY_DOC = "Cosmos DB Item write Strategy: `ItemOverwrite` (using upsert), `ItemAppend` (using create, "
         + "ignore pre-existing items i.e., Conflicts), `ItemDelete` (deletes based on id/pk of data frame), "
         + "`ItemDeleteIfNotModified` (deletes based on id/pk of data frame if etag hasn't changed since collecting "
@@ -72,46 +69,45 @@ public class CosmosSinkConfig extends KafkaCosmosConfig {
     private static final String DEFAULT_WRITE_STRATEGY = ItemWriteStrategy.ITEM_OVERWRITE.getName();
 
     // patch related config
-    public static final String PATCH_DEFAULT_OPERATION_TYPE = SINK_CONFIG_PREFIX + "write.patch.defaultOperationType";
+    public static final String PATCH_DEFAULT_OPERATION_TYPE = "azure.cosmos.sink.write.patch.operationType.default";
     private static final String PATCH_DEFAULT_OPERATION_TYPE_DOC = "Default Cosmos DB patch operation type."
         + " Supported ones include none, add, set, replace, remove, increment."
         + " Choose none for no-op, for others please reference [here](https://docs.microsoft.com/azure/cosmos-db/partial-document-update#supported-operations) for full context.";
     private static final String PATCH_DEFAULT_OPERATION_TYPE_DISPLAY = "Default Cosmos DB patch operation type.";
     private static final String DEFAULT_PATCH_DEFAULT_OPERATION_TYPE = KafkaCosmosPatchOperationType.SET.getName();
 
-    public static final String PATCH_PROPERTY_CONFIGS = SINK_CONFIG_PREFIX + "write.patch.property.configs";
+    public static final String PATCH_PROPERTY_CONFIGS = "azure.cosmos.sink.write.patch.property.configs";
     private static final String PATCH_PROPERTY_CONFIGS_DOC = "Cosmos DB patch json property configs."
         + " It can contain multiple definitions matching the following patterns separated by comma. property(jsonProperty).op(operationType) or property(jsonProperty).path(patchInCosmosdb).op(operationType) - The difference of the second pattern is that it also allows you to define a different cosmosdb path. "
         + "Note: It does not support nested json property config.";
     private static final String PATCH_PROPERTY_CONFIGS_DISPLAY = "Cosmos DB patch json property configs.";
     private static final String DEFAULT_PATCH_PROPERTY_CONFIGS = StringUtils.EMPTY;
 
-    public static final String PATCH_FILTER = SINK_CONFIG_PREFIX + "write.patch.filter";
+    public static final String PATCH_FILTER = "azure.cosmos.sink.write.patch.filter";
     private static final String PATCH_FILTER_DOC = "Used for [Conditional patch](https://docs.microsoft.com/azure/cosmos-db/partial-document-update-getting-started#java)";
     private static final String PATCH_FILTER_DISPLAY = "Used for [Conditional patch].";
     private static final String DEFAULT_PATCH_FILTER = StringUtils.EMPTY;
 
     // max retry
-    public static final String MAX_RETRY_COUNT_CONF = SINK_CONFIG_PREFIX + "maxRetryCount";
+    public static final String MAX_RETRY_COUNT_CONF = "azure.cosmos.sink.maxRetryCount";
     private static final String MAX_RETRY_COUNT_DOC =
         "Cosmos DB max retry attempts on write failures for Sink connector. By default, the connector will retry on transient write errors for up to 10 times.";
     private static final String MAX_RETRY_COUNT_DISPLAY = "Cosmos DB max retry attempts on write failures for Sink connector.";
     private static final int DEFAULT_MAX_RETRY_COUNT = 10;
 
     // database name
-    private static final String DATABASE_NAME_CONF = SINK_CONFIG_PREFIX + "database.name";
+    private static final String DATABASE_NAME_CONF = "azure.cosmos.sink.database.name";
     private static final String DATABASE_NAME_CONF_DOC = "Cosmos DB database name.";
     private static final String DATABASE_NAME_CONF_DISPLAY = "Cosmos DB database name.";
 
     // container topic map
-    public static final String CONTAINERS_TOPIC_MAP_CONF = SINK_CONFIG_PREFIX + "containers.topicMap";
+    public static final String CONTAINERS_TOPIC_MAP_CONF = "azure.cosmos.sink.containers.topicMap";
     private static final String CONTAINERS_TOPIC_MAP_DOC =
         "A comma delimited list of Kafka topics mapped to Cosmos containers. For example: topic1#con1,topic2#con2.";
     private static final String CONTAINERS_TOPIC_MAP_DISPLAY = "Topic-Container map";
 
-    // TODO[Public preview]: re-examine idStrategy implementation
     // id.strategy
-    public static final String ID_STRATEGY_CONF = SINK_CONFIG_PREFIX + "id.strategy";
+    public static final String ID_STRATEGY_CONF = "azure.cosmos.sink.id.strategy";
     public static final String ID_STRATEGY_DOC =
         "A strategy used to populate the document with an ``id``. Valid strategies are: "
             + "``TemplateStrategy``, ``FullKeyStrategy``, ``KafkaMetadataStrategy``, "
@@ -128,8 +124,6 @@ public class CosmosSinkConfig extends KafkaCosmosConfig {
     // ([.]path[(](.*)[)])*: mapping path match, it is optional
     // [.]op[(](.*)[)]: patch operation mapping
     public static final Pattern PATCH_PROPERTY_CONFIG_PATTERN = Pattern.compile("(?i)property[(](.*?)[)]([.]path[(](.*)[)])*[.]op[(](.*)[)]$");
-
-    // TODO[Public Preview] Verify whether compression need to happen in connector
 
     private final CosmosSinkWriteConfig writeConfig;
     private final CosmosSinkContainersConfig containersConfig;

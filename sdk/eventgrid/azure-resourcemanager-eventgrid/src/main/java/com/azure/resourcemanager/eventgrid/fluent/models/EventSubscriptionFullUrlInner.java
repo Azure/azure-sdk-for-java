@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Full endpoint url of an event subscription.
+ * Full endpoint URL of an event subscription.
  */
 @Fluent
 public final class EventSubscriptionFullUrlInner {

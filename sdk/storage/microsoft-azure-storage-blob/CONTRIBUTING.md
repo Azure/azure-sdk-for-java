@@ -10,7 +10,7 @@ The Azure Storage development team uses Intellij. However, any preferred IDE or 
 
 #### IntelliJ Installation
 * [IntelliJ](https://www.jetbrains.com/idea/download)
-* [Importing project from Maven for IntelliJ](https://www.jetbrains.com/help/idea//2017.1/importing-project-from-maven-model.html)
+* [Importing project from Maven for IntelliJ](https://www.jetbrains.com/help/idea/2017.1/importing-project-from-maven-model.html)
 
 #### Eclipse Installation
 * [Eclipse](https://eclipse.org/downloads/)

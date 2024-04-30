@@ -11,13 +11,13 @@ public final class HdfsLocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HdfsLocation model = BinaryData.fromString(
-            "{\"type\":\"HdfsLocation\",\"folderPath\":\"dataoxdjxldnaryy\",\"fileName\":\"datazkdolrndwdbvxvza\",\"\":{\"hmcxqqxmyzkl\":\"dataoyqxlunkf\",\"rqra\":\"dataoanpohrvm\"}}")
+            "{\"type\":\"fm\",\"folderPath\":\"datask\",\"fileName\":\"dataxvlzjxplhpevasyn\",\"\":{\"elbqrvvbqvkn\":\"datajy\",\"nstlpwqpjn\":\"datapecqxgiqasifubn\",\"psvyouweuiyxfw\":\"datajkht\"}}")
             .toObject(HdfsLocation.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HdfsLocation model = new HdfsLocation().withFolderPath("dataoxdjxldnaryy").withFileName("datazkdolrndwdbvxvza");
+        HdfsLocation model = new HdfsLocation().withFolderPath("datask").withFileName("dataxvlzjxplhpevasyn");
         model = BinaryData.fromObject(model).toObject(HdfsLocation.class);
     }
 }

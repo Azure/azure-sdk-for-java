@@ -25,8 +25,7 @@ public final class DynamicsCrmEntityDatasetTypeProperties {
     }
 
     /**
-     * Get the entityName property: The logical name of the entity. Type: string (or Expression with resultType
-     * string).
+     * Get the entityName property: The logical name of the entity. Type: string (or Expression with resultType string).
      * 
      * @return the entityName value.
      */
@@ -35,8 +34,7 @@ public final class DynamicsCrmEntityDatasetTypeProperties {
     }
 
     /**
-     * Set the entityName property: The logical name of the entity. Type: string (or Expression with resultType
-     * string).
+     * Set the entityName property: The logical name of the entity. Type: string (or Expression with resultType string).
      * 
      * @param entityName the entityName value to set.
      * @return the DynamicsCrmEntityDatasetTypeProperties object itself.

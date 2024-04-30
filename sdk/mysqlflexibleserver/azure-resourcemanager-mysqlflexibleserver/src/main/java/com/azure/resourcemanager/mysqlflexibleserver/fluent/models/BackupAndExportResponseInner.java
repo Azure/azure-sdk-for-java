@@ -6,12 +6,15 @@ package com.azure.resourcemanager.mysqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.mysqlflexibleserver.models.OperationStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Represents BackupAndExport API Response. */
+/**
+ * Represents BackupAndExport API Response.
+ */
 @Fluent
 public final class BackupAndExportResponseInner extends ProxyResource {
     /*
@@ -45,20 +48,26 @@ public final class BackupAndExportResponseInner extends ProxyResource {
     private BackupAndExportResponseProperties innerProperties;
 
     /*
-     * Error Response
-     *
-     * The BackupAndExport operation error response.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /*
+     * The error object.
      */
     @JsonProperty(value = "error")
     private ManagementError error;
 
-    /** Creates an instance of BackupAndExportResponseInner class. */
+    /**
+     * Creates an instance of BackupAndExportResponseInner class.
+     */
     public BackupAndExportResponseInner() {
     }
 
     /**
      * Get the status property: The operation status.
-     *
+     * 
      * @return the status value.
      */
     public OperationStatus status() {
@@ -67,7 +76,7 @@ public final class BackupAndExportResponseInner extends ProxyResource {
 
     /**
      * Set the status property: The operation status.
-     *
+     * 
      * @param status the status value to set.
      * @return the BackupAndExportResponseInner object itself.
      */
@@ -78,7 +87,7 @@ public final class BackupAndExportResponseInner extends ProxyResource {
 
     /**
      * Get the startTime property: Start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -87,7 +96,7 @@ public final class BackupAndExportResponseInner extends ProxyResource {
 
     /**
      * Set the startTime property: Start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the BackupAndExportResponseInner object itself.
      */
@@ -98,7 +107,7 @@ public final class BackupAndExportResponseInner extends ProxyResource {
 
     /**
      * Get the endTime property: End time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -107,7 +116,7 @@ public final class BackupAndExportResponseInner extends ProxyResource {
 
     /**
      * Set the endTime property: End time.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the BackupAndExportResponseInner object itself.
      */
@@ -118,7 +127,7 @@ public final class BackupAndExportResponseInner extends ProxyResource {
 
     /**
      * Get the percentComplete property: Operation progress (0-100).
-     *
+     * 
      * @return the percentComplete value.
      */
     public Double percentComplete() {
@@ -127,7 +136,7 @@ public final class BackupAndExportResponseInner extends ProxyResource {
 
     /**
      * Set the percentComplete property: Operation progress (0-100).
-     *
+     * 
      * @param percentComplete the percentComplete value to set.
      * @return the BackupAndExportResponseInner object itself.
      */
@@ -138,7 +147,7 @@ public final class BackupAndExportResponseInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: The response properties of a backup and export operation.
-     *
+     * 
      * @return the innerProperties value.
      */
     private BackupAndExportResponseProperties innerProperties() {
@@ -146,10 +155,17 @@ public final class BackupAndExportResponseInner extends ProxyResource {
     }
 
     /**
-     * Get the error property: Error Response
-     *
-     * <p>The BackupAndExport operation error response.
-     *
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the error property: The error object.
+     * 
      * @return the error value.
      */
     public ManagementError error() {
@@ -157,10 +173,8 @@ public final class BackupAndExportResponseInner extends ProxyResource {
     }
 
     /**
-     * Set the error property: Error Response
-     *
-     * <p>The BackupAndExport operation error response.
-     *
+     * Set the error property: The error object.
+     * 
      * @param error the error value to set.
      * @return the BackupAndExportResponseInner object itself.
      */
@@ -171,7 +185,7 @@ public final class BackupAndExportResponseInner extends ProxyResource {
 
     /**
      * Get the datasourceSizeInBytes property: Size of datasource in bytes.
-     *
+     * 
      * @return the datasourceSizeInBytes value.
      */
     public Long datasourceSizeInBytes() {
@@ -180,7 +194,7 @@ public final class BackupAndExportResponseInner extends ProxyResource {
 
     /**
      * Set the datasourceSizeInBytes property: Size of datasource in bytes.
-     *
+     * 
      * @param datasourceSizeInBytes the datasourceSizeInBytes value to set.
      * @return the BackupAndExportResponseInner object itself.
      */
@@ -194,7 +208,7 @@ public final class BackupAndExportResponseInner extends ProxyResource {
 
     /**
      * Get the dataTransferredInBytes property: Data transferred in bytes.
-     *
+     * 
      * @return the dataTransferredInBytes value.
      */
     public Long dataTransferredInBytes() {
@@ -203,7 +217,7 @@ public final class BackupAndExportResponseInner extends ProxyResource {
 
     /**
      * Set the dataTransferredInBytes property: Data transferred in bytes.
-     *
+     * 
      * @param dataTransferredInBytes the dataTransferredInBytes value to set.
      * @return the BackupAndExportResponseInner object itself.
      */
@@ -218,7 +232,7 @@ public final class BackupAndExportResponseInner extends ProxyResource {
     /**
      * Get the backupMetadata property: Metadata related to backup to be stored for restoring resource in key-value
      * pairs.
-     *
+     * 
      * @return the backupMetadata value.
      */
     public String backupMetadata() {
@@ -228,7 +242,7 @@ public final class BackupAndExportResponseInner extends ProxyResource {
     /**
      * Set the backupMetadata property: Metadata related to backup to be stored for restoring resource in key-value
      * pairs.
-     *
+     * 
      * @param backupMetadata the backupMetadata value to set.
      * @return the BackupAndExportResponseInner object itself.
      */
@@ -242,7 +256,7 @@ public final class BackupAndExportResponseInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

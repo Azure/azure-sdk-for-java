@@ -15,35 +15,32 @@ import org.junit.jupiter.api.Assertions;
 public final class RulesEngineMatchConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RulesEngineMatchCondition model =
-            BinaryData
-                .fromString(
-                    "{\"rulesEngineMatchVariable\":\"IsMobile\",\"selector\":\"wndnhj\",\"rulesEngineOperator\":\"Any\",\"negateCondition\":false,\"rulesEngineMatchValue\":[\"vylwzbtdhxuj\",\"nbmpowuwprzq\"],\"transforms\":[\"Lowercase\",\"Trim\",\"Trim\"]}")
-                .toObject(RulesEngineMatchCondition.class);
-        Assertions.assertEquals(RulesEngineMatchVariable.IS_MOBILE, model.rulesEngineMatchVariable());
-        Assertions.assertEquals("wndnhj", model.selector());
-        Assertions.assertEquals(RulesEngineOperator.ANY, model.rulesEngineOperator());
-        Assertions.assertEquals(false, model.negateCondition());
-        Assertions.assertEquals("vylwzbtdhxuj", model.rulesEngineMatchValue().get(0));
-        Assertions.assertEquals(Transform.LOWERCASE, model.transforms().get(0));
+        RulesEngineMatchCondition model = BinaryData.fromString(
+            "{\"rulesEngineMatchVariable\":\"RequestScheme\",\"selector\":\"vfxzsjab\",\"rulesEngineOperator\":\"Contains\",\"negateCondition\":true,\"rulesEngineMatchValue\":[\"tawfsdjpvkvp\",\"jxbkzbzkdvn\",\"jabudurgkakmo\"],\"transforms\":[\"RemoveNulls\",\"UrlDecode\"]}")
+            .toObject(RulesEngineMatchCondition.class);
+        Assertions.assertEquals(RulesEngineMatchVariable.REQUEST_SCHEME, model.rulesEngineMatchVariable());
+        Assertions.assertEquals("vfxzsjab", model.selector());
+        Assertions.assertEquals(RulesEngineOperator.CONTAINS, model.rulesEngineOperator());
+        Assertions.assertEquals(true, model.negateCondition());
+        Assertions.assertEquals("tawfsdjpvkvp", model.rulesEngineMatchValue().get(0));
+        Assertions.assertEquals(Transform.REMOVE_NULLS, model.transforms().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RulesEngineMatchCondition model =
-            new RulesEngineMatchCondition()
-                .withRulesEngineMatchVariable(RulesEngineMatchVariable.IS_MOBILE)
-                .withSelector("wndnhj")
-                .withRulesEngineOperator(RulesEngineOperator.ANY)
-                .withNegateCondition(false)
-                .withRulesEngineMatchValue(Arrays.asList("vylwzbtdhxuj", "nbmpowuwprzq"))
-                .withTransforms(Arrays.asList(Transform.LOWERCASE, Transform.TRIM, Transform.TRIM));
+        RulesEngineMatchCondition model
+            = new RulesEngineMatchCondition().withRulesEngineMatchVariable(RulesEngineMatchVariable.REQUEST_SCHEME)
+                .withSelector("vfxzsjab")
+                .withRulesEngineOperator(RulesEngineOperator.CONTAINS)
+                .withNegateCondition(true)
+                .withRulesEngineMatchValue(Arrays.asList("tawfsdjpvkvp", "jxbkzbzkdvn", "jabudurgkakmo"))
+                .withTransforms(Arrays.asList(Transform.REMOVE_NULLS, Transform.URL_DECODE));
         model = BinaryData.fromObject(model).toObject(RulesEngineMatchCondition.class);
-        Assertions.assertEquals(RulesEngineMatchVariable.IS_MOBILE, model.rulesEngineMatchVariable());
-        Assertions.assertEquals("wndnhj", model.selector());
-        Assertions.assertEquals(RulesEngineOperator.ANY, model.rulesEngineOperator());
-        Assertions.assertEquals(false, model.negateCondition());
-        Assertions.assertEquals("vylwzbtdhxuj", model.rulesEngineMatchValue().get(0));
-        Assertions.assertEquals(Transform.LOWERCASE, model.transforms().get(0));
+        Assertions.assertEquals(RulesEngineMatchVariable.REQUEST_SCHEME, model.rulesEngineMatchVariable());
+        Assertions.assertEquals("vfxzsjab", model.selector());
+        Assertions.assertEquals(RulesEngineOperator.CONTAINS, model.rulesEngineOperator());
+        Assertions.assertEquals(true, model.negateCondition());
+        Assertions.assertEquals("tawfsdjpvkvp", model.rulesEngineMatchValue().get(0));
+        Assertions.assertEquals(Transform.REMOVE_NULLS, model.transforms().get(0));
     }
 }

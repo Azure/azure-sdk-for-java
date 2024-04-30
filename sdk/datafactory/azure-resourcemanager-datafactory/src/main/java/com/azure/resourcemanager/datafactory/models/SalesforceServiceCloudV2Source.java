@@ -6,16 +6,28 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity Salesforce Service Cloud V2 source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = SalesforceServiceCloudV2Source.class,
+    visible = true)
 @JsonTypeName("SalesforceServiceCloudV2Source")
 @Fluent
 public final class SalesforceServiceCloudV2Source extends CopySource {
+    /*
+     * Copy source type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "SalesforceServiceCloudV2Source";
+
     /*
      * Database query. Type: string (or Expression with resultType string).
      */
@@ -23,15 +35,13 @@ public final class SalesforceServiceCloudV2Source extends CopySource {
     private Object soqlQuery;
 
     /*
-     * This property control whether query result contains Deleted objects. Default is false. Type: boolean (or
-     * Expression with resultType boolean).
+     * This property control whether query result contains Deleted objects. Default is false. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "includeDeletedObjects")
     private Object includeDeletedObjects;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
-     * Expression with resultType array of objects).
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with resultType array of objects).
      */
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
@@ -40,6 +50,16 @@ public final class SalesforceServiceCloudV2Source extends CopySource {
      * Creates an instance of SalesforceServiceCloudV2Source class.
      */
     public SalesforceServiceCloudV2Source() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

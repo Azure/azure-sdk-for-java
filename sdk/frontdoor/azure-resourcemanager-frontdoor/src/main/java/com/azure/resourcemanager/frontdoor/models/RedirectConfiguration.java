@@ -6,14 +6,28 @@ package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Describes Redirect Route. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/**
+ * Describes Redirect Route.
+ */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "@odata.type",
+    defaultImpl = RedirectConfiguration.class,
+    visible = true)
 @JsonTypeName("#Microsoft.Azure.FrontDoor.Models.FrontdoorRedirectConfiguration")
 @Fluent
 public final class RedirectConfiguration extends RouteConfiguration {
+    /*
+     * The @odata.type property.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "@odata.type", required = true)
+    private String odataType = "#Microsoft.Azure.FrontDoor.Models.FrontdoorRedirectConfiguration";
+
     /*
      * The redirect type the rule will use when redirecting traffic.
      */
@@ -33,8 +47,7 @@ public final class RedirectConfiguration extends RouteConfiguration {
     private String customHost;
 
     /*
-     * The full path to redirect. Path cannot be empty and must start with /. Leave empty to use the incoming path as
-     * destination path.
+     * The full path to redirect. Path cannot be empty and must start with /. Leave empty to use the incoming path as destination path.
      */
     @JsonProperty(value = "customPath")
     private String customPath;
@@ -46,21 +59,30 @@ public final class RedirectConfiguration extends RouteConfiguration {
     private String customFragment;
 
     /*
-     * The set of query strings to be placed in the redirect URL. Setting this value would replace any existing query
-     * string; leave empty to preserve the incoming query string. Query string must be in <key>=<value> format. The
-     * first ? and & will be added automatically so do not include them in the front, but do separate multiple query
-     * strings with &.
+     * The set of query strings to be placed in the redirect URL. Setting this value would replace any existing query string; leave empty to preserve the incoming query string. Query string must be in <key>=<value> format. The first ? and & will be added automatically so do not include them in the front, but do separate multiple query strings with &.
      */
     @JsonProperty(value = "customQueryString")
     private String customQueryString;
 
-    /** Creates an instance of RedirectConfiguration class. */
+    /**
+     * Creates an instance of RedirectConfiguration class.
+     */
     public RedirectConfiguration() {
     }
 
     /**
+     * Get the odataType property: The &#064;odata.type property.
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public String odataType() {
+        return this.odataType;
+    }
+
+    /**
      * Get the redirectType property: The redirect type the rule will use when redirecting traffic.
-     *
+     * 
      * @return the redirectType value.
      */
     public FrontDoorRedirectType redirectType() {
@@ -69,7 +91,7 @@ public final class RedirectConfiguration extends RouteConfiguration {
 
     /**
      * Set the redirectType property: The redirect type the rule will use when redirecting traffic.
-     *
+     * 
      * @param redirectType the redirectType value to set.
      * @return the RedirectConfiguration object itself.
      */
@@ -80,7 +102,7 @@ public final class RedirectConfiguration extends RouteConfiguration {
 
     /**
      * Get the redirectProtocol property: The protocol of the destination to where the traffic is redirected.
-     *
+     * 
      * @return the redirectProtocol value.
      */
     public FrontDoorRedirectProtocol redirectProtocol() {
@@ -89,7 +111,7 @@ public final class RedirectConfiguration extends RouteConfiguration {
 
     /**
      * Set the redirectProtocol property: The protocol of the destination to where the traffic is redirected.
-     *
+     * 
      * @param redirectProtocol the redirectProtocol value to set.
      * @return the RedirectConfiguration object itself.
      */
@@ -100,7 +122,7 @@ public final class RedirectConfiguration extends RouteConfiguration {
 
     /**
      * Get the customHost property: Host to redirect. Leave empty to use the incoming host as the destination host.
-     *
+     * 
      * @return the customHost value.
      */
     public String customHost() {
@@ -109,7 +131,7 @@ public final class RedirectConfiguration extends RouteConfiguration {
 
     /**
      * Set the customHost property: Host to redirect. Leave empty to use the incoming host as the destination host.
-     *
+     * 
      * @param customHost the customHost value to set.
      * @return the RedirectConfiguration object itself.
      */
@@ -121,7 +143,7 @@ public final class RedirectConfiguration extends RouteConfiguration {
     /**
      * Get the customPath property: The full path to redirect. Path cannot be empty and must start with /. Leave empty
      * to use the incoming path as destination path.
-     *
+     * 
      * @return the customPath value.
      */
     public String customPath() {
@@ -131,7 +153,7 @@ public final class RedirectConfiguration extends RouteConfiguration {
     /**
      * Set the customPath property: The full path to redirect. Path cannot be empty and must start with /. Leave empty
      * to use the incoming path as destination path.
-     *
+     * 
      * @param customPath the customPath value to set.
      * @return the RedirectConfiguration object itself.
      */
@@ -143,7 +165,7 @@ public final class RedirectConfiguration extends RouteConfiguration {
     /**
      * Get the customFragment property: Fragment to add to the redirect URL. Fragment is the part of the URL that comes
      * after #. Do not include the #.
-     *
+     * 
      * @return the customFragment value.
      */
     public String customFragment() {
@@ -153,7 +175,7 @@ public final class RedirectConfiguration extends RouteConfiguration {
     /**
      * Set the customFragment property: Fragment to add to the redirect URL. Fragment is the part of the URL that comes
      * after #. Do not include the #.
-     *
+     * 
      * @param customFragment the customFragment value to set.
      * @return the RedirectConfiguration object itself.
      */
@@ -167,7 +189,7 @@ public final class RedirectConfiguration extends RouteConfiguration {
      * would replace any existing query string; leave empty to preserve the incoming query string. Query string must be
      * in &lt;key&gt;=&lt;value&gt; format. The first ? and &amp; will be added automatically so do not include them in
      * the front, but do separate multiple query strings with &amp;.
-     *
+     * 
      * @return the customQueryString value.
      */
     public String customQueryString() {
@@ -179,7 +201,7 @@ public final class RedirectConfiguration extends RouteConfiguration {
      * would replace any existing query string; leave empty to preserve the incoming query string. Query string must be
      * in &lt;key&gt;=&lt;value&gt; format. The first ? and &amp; will be added automatically so do not include them in
      * the front, but do separate multiple query strings with &amp;.
-     *
+     * 
      * @param customQueryString the customQueryString value to set.
      * @return the RedirectConfiguration object itself.
      */
@@ -190,7 +212,7 @@ public final class RedirectConfiguration extends RouteConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

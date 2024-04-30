@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class TechnicalTicketDetails {
     /*
-     * This is the resource Id of the Azure service resource (For example: A virtual machine resource or an HDInsight
-     * resource) for which the support ticket is created.
+     * This is the resource Id of the Azure service resource (For example: A virtual machine resource or an HDInsight resource) for which the support ticket is created.
      */
     @JsonProperty(value = "resourceId")
     private String resourceId;

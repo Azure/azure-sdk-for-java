@@ -52,29 +52,25 @@ public final class MongoDbLinkedServiceTypeProperties {
     private Object authSource;
 
     /*
-     * The TCP port number that the MongoDB server uses to listen for client connections. The default value is 27017.
-     * Type: integer (or Expression with resultType integer), minimum: 0.
+     * The TCP port number that the MongoDB server uses to listen for client connections. The default value is 27017. Type: integer (or Expression with resultType integer), minimum: 0.
      */
     @JsonProperty(value = "port")
     private Object port;
 
     /*
-     * Specifies whether the connections to the server are encrypted using SSL. The default value is false. Type:
-     * boolean (or Expression with resultType boolean).
+     * Specifies whether the connections to the server are encrypted using SSL. The default value is false. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "enableSsl")
     private Object enableSsl;
 
     /*
-     * Specifies whether to allow self-signed certificates from the server. The default value is false. Type: boolean
-     * (or Expression with resultType boolean).
+     * Specifies whether to allow self-signed certificates from the server. The default value is false. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "allowSelfSignedServerCert")
     private Object allowSelfSignedServerCert;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
@@ -278,8 +274,8 @@ public final class MongoDbLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -288,8 +284,8 @@ public final class MongoDbLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the MongoDbLinkedServiceTypeProperties object itself.
@@ -306,12 +302,14 @@ public final class MongoDbLinkedServiceTypeProperties {
      */
     public void validate() {
         if (server() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property server in model MongoDbLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property server in model MongoDbLinkedServiceTypeProperties"));
         }
         if (databaseName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property databaseName in model MongoDbLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property databaseName in model MongoDbLinkedServiceTypeProperties"));
         }
         if (password() != null) {
             password().validate();

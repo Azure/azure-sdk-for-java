@@ -33,8 +33,7 @@ public final class PartnerTopicInfo {
     private String name;
 
     /*
-     * Event Type Information for the partner topic. This information is provided by the publisher and can be used by
-     * the
+     * Event Type Information for the partner topic. This information is provided by the publisher and can be used by the 
      * subscriber to view different types of events that are published.
      */
     @JsonProperty(value = "eventTypeInfo")
@@ -79,8 +78,8 @@ public final class PartnerTopicInfo {
     }
 
     /**
-     * Get the resourceGroupName property: Azure Resource Group of the subscriber. The partner topic associated with
-     * the channel will be
+     * Get the resourceGroupName property: Azure Resource Group of the subscriber. The partner topic associated with the
+     * channel will be
      * created under this resource group.
      * 
      * @return the resourceGroupName value.
@@ -90,8 +89,8 @@ public final class PartnerTopicInfo {
     }
 
     /**
-     * Set the resourceGroupName property: Azure Resource Group of the subscriber. The partner topic associated with
-     * the channel will be
+     * Set the resourceGroupName property: Azure Resource Group of the subscriber. The partner topic associated with the
+     * channel will be
      * created under this resource group.
      * 
      * @param resourceGroupName the resourceGroupName value to set.
@@ -123,8 +122,8 @@ public final class PartnerTopicInfo {
     }
 
     /**
-     * Get the eventTypeInfo property: Event Type Information for the partner topic. This information is provided by
-     * the publisher and can be used by the
+     * Get the eventTypeInfo property: Event Type Information for the partner topic. This information is provided by the
+     * publisher and can be used by the
      * subscriber to view different types of events that are published.
      * 
      * @return the eventTypeInfo value.
@@ -134,8 +133,8 @@ public final class PartnerTopicInfo {
     }
 
     /**
-     * Set the eventTypeInfo property: Event Type Information for the partner topic. This information is provided by
-     * the publisher and can be used by the
+     * Set the eventTypeInfo property: Event Type Information for the partner topic. This information is provided by the
+     * publisher and can be used by the
      * subscriber to view different types of events that are published.
      * 
      * @param eventTypeInfo the eventTypeInfo value to set.

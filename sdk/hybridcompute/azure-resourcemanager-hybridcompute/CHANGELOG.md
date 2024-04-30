@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.5 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,244 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.4 (2024-04-23)
+
+- Azure Resource Manager HybridCompute client library for Java. This package contains Microsoft Azure SDK for HybridCompute Management SDK. The Hybrid Compute Management Client. Package tag package-preview-2023-10. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.AgentVersion` was removed
+
+* `models.LicenseProfile$DefinitionStages` was removed
+
+* `models.LicenseProfiles` was removed
+
+* `models.Licenses` was removed
+
+* `models.License$Definition` was removed
+
+* `models.HybridIdentityMetadatas` was removed
+
+* `models.HybridIdentityMetadata` was removed
+
+* `models.LicenseProfilesListResult` was removed
+
+* `models.License$UpdateStages` was removed
+
+* `models.LicenseProfile` was removed
+
+* `models.LicenseProfile$Definition` was removed
+
+* `models.LicenseProfile$UpdateStages` was removed
+
+* `models.LicenseProfile$Update` was removed
+
+* `models.AgentVersionsList` was removed
+
+* `models.HybridIdentityMetadataList` was removed
+
+* `models.License$Update` was removed
+
+* `models.LicensesListResult` was removed
+
+* `models.License$DefinitionStages` was removed
+
+* `models.AgentVersions` was removed
+
+* `models.InstanceViewTypes` was removed
+
+#### `models.AgentUpgrade` was modified
+
+* `java.lang.String lastAttemptTimestamp()` -> `java.time.OffsetDateTime lastAttemptTimestamp()`
+* `java.lang.String correlationId()` -> `java.util.UUID correlationId()`
+* `withCorrelationId(java.lang.String)` was removed
+
+#### `models.LicenseProfileMachineInstanceViewEsuProperties` was modified
+
+* `esuEligibility()` was removed
+* `models.License assignedLicense()` -> `models.License assignedLicense()`
+* `models.LicenseAssignmentState licenseAssignmentState()` -> `models.LicenseAssignmentState licenseAssignmentState()`
+* `assignedLicenseImmutableId()` was removed
+* `serverType()` was removed
+* `innerModel()` was removed
+* `esuKeys()` was removed
+* `esuKeyState()` was removed
+
+#### `models.MachineProperties` was modified
+
+* `java.lang.String vmUuid()` -> `java.util.UUID vmUuid()`
+* `java.lang.String vmId()` -> `java.util.UUID vmId()`
+
+#### `models.LicenseProfileMachineInstanceView` was modified
+
+* `models.LicenseProfileMachineInstanceViewEsuProperties esuProfile()` -> `models.LicenseProfileMachineInstanceViewEsuProperties esuProfile()`
+* `innerModel()` was removed
+
+#### `models.License` was modified
+
+* `update()` was removed
+* `location()` was removed
+* `java.lang.String tenantId()` -> `java.lang.String tenantId()`
+* `refresh(com.azure.core.util.Context)` was removed
+* `refresh()` was removed
+* `models.LicenseDetails licenseDetails()` -> `models.LicenseDetails licenseDetails()`
+* `type()` was removed
+* `region()` was removed
+* `name()` was removed
+* `id()` was removed
+* `models.LicenseType licenseType()` -> `models.LicenseType licenseType()`
+* `regionName()` was removed
+* `innerModel()` was removed
+* `resourceGroupName()` was removed
+* `tags()` was removed
+* `models.ProvisioningState provisioningState()` -> `models.ProvisioningState provisioningState()`
+* `com.azure.core.management.SystemData systemData()` -> `com.azure.core.management.SystemData systemData()`
+
+#### `models.Machines` was modified
+
+* `getByResourceGroupWithResponse(java.lang.String,java.lang.String,models.InstanceViewTypes,com.azure.core.util.Context)` was removed
+
+#### `models.MachineInstallPatchesParameters` was modified
+
+* `withMaximumDuration(java.lang.String)` was removed
+* `java.lang.String maximumDuration()` -> `java.time.Duration maximumDuration()`
+
+#### `models.Machine` was modified
+
+* `java.lang.String vmId()` -> `java.util.UUID vmId()`
+* `java.lang.String vmUuid()` -> `java.util.UUID vmUuid()`
+
+#### `HybridComputeManager` was modified
+
+* `hybridIdentityMetadatas()` was removed
+* `licenseProfiles()` was removed
+* `agentVersions()` was removed
+* `licenses()` was removed
+
+#### `models.MachineAssessPatchesResult` was modified
+
+* `java.lang.String assessmentActivityId()` -> `java.util.UUID assessmentActivityId()`
+
+### Features Added
+
+* `models.MachineRunCommandsListResult` was added
+
+* `models.LicenseProfileSubscriptionStatusUpdate` was added
+
+* `models.MachineRunCommand$UpdateStages` was added
+
+* `models.AccessRuleDirection` was added
+
+* `models.MachineRunCommand` was added
+
+* `models.MachineRunCommandUpdate` was added
+
+* `models.AccessRule` was added
+
+* `models.ProductFeature` was added
+
+* `models.MachineRunCommand$Update` was added
+
+* `models.ProvisioningIssueType` was added
+
+* `models.LicenseProfileSubscriptionStatus` was added
+
+* `models.MachineRunCommand$Definition` was added
+
+* `models.ExtensionsStatusLevelTypes` was added
+
+* `models.LicenseProfileProductType` was added
+
+* `models.ExtensionsResourceStatus` was added
+
+* `models.MachineRunCommandInstanceView` was added
+
+* `models.LicenseStatus` was added
+
+* `models.RunCommandManagedIdentity` was added
+
+* `models.MachineRunCommands` was added
+
+* `models.ProductFeatureUpdate` was added
+
+* `models.MachineRunCommandScriptSource` was added
+
+* `models.RunCommandInputParameter` was added
+
+* `models.ProvisioningIssueSeverity` was added
+
+* `models.MachineRunCommand$DefinitionStages` was added
+
+* `models.ExecutionState` was added
+
+#### `models.AgentUpgrade` was modified
+
+* `withCorrelationId(java.util.UUID)` was added
+
+#### `models.LicenseProfileMachineInstanceViewEsuProperties` was modified
+
+* `withLicenseAssignmentState(models.LicenseAssignmentState)` was added
+* `validate()` was added
+* `withAssignedLicense(models.License)` was added
+
+#### `models.LicenseProfileUpdate` was modified
+
+* `withProductFeatures(java.util.List)` was added
+* `subscriptionStatus()` was added
+* `withSubscriptionStatus(models.LicenseProfileSubscriptionStatusUpdate)` was added
+* `productType()` was added
+* `withSoftwareAssuranceCustomer(java.lang.Boolean)` was added
+* `productFeatures()` was added
+* `withProductType(models.LicenseProfileProductType)` was added
+* `softwareAssuranceCustomer()` was added
+
+#### `models.MachineProperties` was modified
+
+* `osEdition()` was added
+
+#### `models.LicenseProfileMachineInstanceView` was modified
+
+* `billingStartDate()` was added
+* `productFeatures()` was added
+* `disenrollmentDate()` was added
+* `withEsuProfile(models.LicenseProfileMachineInstanceViewEsuProperties)` was added
+* `validate()` was added
+* `productType()` was added
+* `withProductFeatures(java.util.List)` was added
+* `withSoftwareAssuranceCustomer(java.lang.Boolean)` was added
+* `enrollmentDate()` was added
+* `subscriptionStatus()` was added
+* `licenseChannel()` was added
+* `withProductType(models.LicenseProfileProductType)` was added
+* `withSubscriptionStatus(models.LicenseProfileSubscriptionStatus)` was added
+* `softwareAssuranceCustomer()` was added
+* `licenseStatus()` was added
+
+#### `models.License` was modified
+
+* `validate()` was added
+* `withTags(java.util.Map)` was added
+* `withLicenseDetails(models.LicenseDetails)` was added
+* `withLicenseType(models.LicenseType)` was added
+* `withTenantId(java.lang.String)` was added
+* `withLocation(java.lang.String)` was added
+
+#### `models.Machines` was modified
+
+* `getByResourceGroupWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.MachineInstallPatchesParameters` was modified
+
+* `withMaximumDuration(java.time.Duration)` was added
+
+#### `models.Machine` was modified
+
+* `osEdition()` was added
+
+#### `HybridComputeManager` was modified
+
+* `machineRunCommands()` was added
 
 ## 1.0.0-beta.3 (2023-11-16)
 

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hybridcompute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the status and behavior of a service. */
+/**
+ * Describes the status and behavior of a service.
+ */
 @Fluent
 public final class ServiceStatus {
     /*
@@ -22,13 +24,15 @@ public final class ServiceStatus {
     @JsonProperty(value = "startupType")
     private String startupType;
 
-    /** Creates an instance of ServiceStatus class. */
+    /**
+     * Creates an instance of ServiceStatus class.
+     */
     public ServiceStatus() {
     }
 
     /**
      * Get the status property: The current status of the service.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -37,7 +41,7 @@ public final class ServiceStatus {
 
     /**
      * Set the status property: The current status of the service.
-     *
+     * 
      * @param status the status value to set.
      * @return the ServiceStatus object itself.
      */
@@ -48,7 +52,7 @@ public final class ServiceStatus {
 
     /**
      * Get the startupType property: The behavior of the service when the Arc-enabled machine starts up.
-     *
+     * 
      * @return the startupType value.
      */
     public String startupType() {
@@ -57,7 +61,7 @@ public final class ServiceStatus {
 
     /**
      * Set the startupType property: The behavior of the service when the Arc-enabled machine starts up.
-     *
+     * 
      * @param startupType the startupType value to set.
      * @return the ServiceStatus object itself.
      */
@@ -68,7 +72,7 @@ public final class ServiceStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

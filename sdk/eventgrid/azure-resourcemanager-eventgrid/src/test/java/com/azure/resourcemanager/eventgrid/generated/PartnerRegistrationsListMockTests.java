@@ -6,56 +6,38 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.PartnerRegistration;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PartnerRegistrationsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"partnerRegistrationImmutableId\":\"0e600892-0463-45b3-9567-1a951b87e70a\"},\"location\":\"vnpvvd\",\"tags\":{\"mwbitekdtfo\":\"naqyqipslzmvcds\",\"zdqekivycpzcvd\":\"vfiybxqichgyb\"},\"id\":\"zulrqt\",\"name\":\"htre\",\"type\":\"pzl\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"partnerRegistrationImmutableId\":\"c93fd16e-8054-4011-b133-3f05b727f25c\"},\"location\":\"ahuq\",\"tags\":{\"wvmqxi\":\"zucwwmejjqhd\",\"bn\":\"ookyfoz\"},\"id\":\"x\",\"name\":\"ypfqpgaixw\",\"type\":\"grkkderfrswq\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        EventGridManager manager = EventGridManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        EventGridManager manager = EventGridManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<PartnerRegistration> response
-            = manager.partnerRegistrations().list("rqstjcme", 349818575, com.azure.core.util.Context.NONE);
+            = manager.partnerRegistrations().list("yqpdwadeghztld", 1838673940, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vnpvvd", response.iterator().next().location());
-        Assertions.assertEquals("naqyqipslzmvcds", response.iterator().next().tags().get("mwbitekdtfo"));
-        Assertions.assertEquals(UUID.fromString("0e600892-0463-45b3-9567-1a951b87e70a"),
+        Assertions.assertEquals("ahuq", response.iterator().next().location());
+        Assertions.assertEquals("zucwwmejjqhd", response.iterator().next().tags().get("wvmqxi"));
+        Assertions.assertEquals(UUID.fromString("c93fd16e-8054-4011-b133-3f05b727f25c"),
             response.iterator().next().partnerRegistrationImmutableId());
     }
 }

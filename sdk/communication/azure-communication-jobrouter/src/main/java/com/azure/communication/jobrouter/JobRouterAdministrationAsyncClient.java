@@ -233,18 +233,67 @@ public final class JobRouterAdministrationAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     distributionPolicyId: String (Required)
+     *     name: String (Optional)
+     *     offerExpiresAfterSeconds: Double (Optional)
+     *     mode (Optional): {
+     *         minConcurrentOffers: Integer (Optional)
+     *         maxConcurrentOffers: Integer (Optional)
+     *         bypassSelectors: Boolean (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     distributionPolicyId: String (Required)
+     *     name: String (Optional)
+     *     offerExpiresAfterSeconds: Double (Optional)
+     *     mode (Optional): {
+     *         minConcurrentOffers: Integer (Optional)
+     *         maxConcurrentOffers: Integer (Optional)
+     *         bypassSelectors: Boolean (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param distributionPolicyId The unique identifier of the policy.
+     * @param resource The resource instance.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return policy governing how jobs are distributed to workers on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> updateDistributionPolicy(String distributionPolicyId, BinaryData resource,
+        RequestOptions requestOptions) {
+        return this.serviceClient
+            .upsertDistributionPolicyWithResponseAsync(distributionPolicyId, resource, requestOptions)
+            .map(policy -> policy.getValue());
+    }
+
+    /**
+     * Updates a distribution policy.
+     *
      * @param distributionPolicyId The unique identifier of the policy.
      * @param distributionPolicy The distribution policy to update.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return policy governing how jobs are distributed to workers along with {@link Response} on successful completion
-     * of {@link Mono}.
+     * @return policy governing how jobs are distributed to workers on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DistributionPolicy> updateDistributionPolicy(String distributionPolicyId,
-        DistributionPolicy distributionPolicy, RequestOptions requestOptions) {
+        DistributionPolicy distributionPolicy) {
         return this
-            .updateDistributionPolicyWithResponse(distributionPolicyId, BinaryData.fromObject(distributionPolicy),
-                requestOptions)
+            .updateDistributionPolicyWithResponse(distributionPolicyId, BinaryData.fromObject(distributionPolicy), null)
             .map(response -> response.getValue().toObject(DistributionPolicy.class));
     }
 
@@ -572,18 +621,79 @@ public final class JobRouterAdministrationAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     classificationPolicyId: String (Required)
+     *     name: String (Optional)
+     *     fallbackQueueId: String (Optional)
+     *     queueSelectors (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
+     *     prioritizationRule (Optional): {
+     *     }
+     *     workerSelectors (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     classificationPolicyId: String (Required)
+     *     name: String (Optional)
+     *     fallbackQueueId: String (Optional)
+     *     queueSelectors (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
+     *     prioritizationRule (Optional): {
+     *     }
+     *     workerSelectors (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param classificationPolicyId Unique identifier of this policy.
+     * @param resource The resource instance.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a container for the rules that govern how jobs are classified on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> updateClassificationPolicy(String classificationPolicyId, BinaryData resource,
+        RequestOptions requestOptions) {
+        return this.serviceClient
+            .upsertClassificationPolicyWithResponseAsync(classificationPolicyId, resource, requestOptions)
+            .map(policy -> policy.getValue());
+    }
+
+    /**
+     * Updates a classification policy.
+     *
      * @param classificationPolicyId Unique identifier of this policy.
      * @param classificationPolicy The classification policy to update.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return result object.
+     * @return the updated classification policy.
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ClassificationPolicy> updateClassificationPolicy(String classificationPolicyId,
-        ClassificationPolicy classificationPolicy, RequestOptions requestOptions) {
+        ClassificationPolicy classificationPolicy) {
         return this
             .updateClassificationPolicyWithResponse(classificationPolicyId, BinaryData.fromObject(classificationPolicy),
-                requestOptions)
+                null)
             .map(response -> response.getValue().toObject(ClassificationPolicy.class));
     }
 
@@ -924,18 +1034,74 @@ public final class JobRouterAdministrationAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     exceptionPolicyId: String (Required)
+     *     name: String (Optional)
+     *     exceptionRules (Optional): {
+     *         String (Optional): {
+     *             trigger (Required): {
+     *             }
+     *             actions (Required): {
+     *                 String (Required): {
+     *                 }
+     *             }
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     exceptionPolicyId: String (Required)
+     *     name: String (Optional)
+     *     exceptionRules (Optional): {
+     *         String (Optional): {
+     *             trigger (Required): {
+     *             }
+     *             actions (Required): {
+     *                 String (Required): {
+     *                 }
+     *             }
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
      * @param exceptionPolicyId The Id of the exception policy.
-     * @param exceptionPolicy The exception policy to update.
+     * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return a policy that defines actions to execute when exception are triggered along with {@link Response} on
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a policy that defines actions to execute when exception are triggered on
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExceptionPolicy> updateExceptionPolicy(String exceptionPolicyId, ExceptionPolicy exceptionPolicy,
+    public Mono<BinaryData> updateExceptionPolicy(String exceptionPolicyId, BinaryData resource,
         RequestOptions requestOptions) {
-        return this
-            .updateExceptionPolicyWithResponse(exceptionPolicyId, BinaryData.fromObject(exceptionPolicy),
-                requestOptions)
+        return this.serviceClient.upsertExceptionPolicyWithResponseAsync(exceptionPolicyId, resource, requestOptions)
+            .map(policy -> policy.getValue());
+    }
+
+    /**
+     * Updates a exception policy.
+     *
+     * @param exceptionPolicyId The Id of the exception policy.
+     * @param exceptionPolicy The exception policy to update.
+     * @return a policy that defines actions to execute when exception are triggered on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ExceptionPolicy> updateExceptionPolicy(String exceptionPolicyId, ExceptionPolicy exceptionPolicy) {
+        return this.updateExceptionPolicyWithResponse(exceptionPolicyId, BinaryData.fromObject(exceptionPolicy), null)
             .map(response -> response.getValue().toObject(ExceptionPolicy.class));
     }
 
@@ -1254,15 +1420,62 @@ public final class JobRouterAdministrationAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     queueId: String (Required)
+     *     name: String (Optional)
+     *     distributionPolicyId: String (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     exceptionPolicyId: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     queueId: String (Required)
+     *     name: String (Optional)
+     *     distributionPolicyId: String (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     exceptionPolicyId: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param queueId The Id of this queue.
+     * @param resource The resource instance.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a queue that can contain jobs to be routed on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> updateQueue(String queueId, BinaryData resource, RequestOptions requestOptions) {
+        return this.serviceClient.upsertQueueWithResponseAsync(queueId, resource, requestOptions)
+            .map(queue -> queue.getValue());
+    }
+
+    /**
+     * Updates a queue.
+     *
      * @param queueId The Id of this queue.
      * @param queue The queue to update.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return result object.
+     * @return The updated queue.
      * Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterQueue> updateQueue(String queueId, RouterQueue queue, RequestOptions requestOptions) {
-        return this.upsertQueueWithResponse(queueId, BinaryData.fromObject(queue), requestOptions)
+    public Mono<RouterQueue> updateQueue(String queueId, RouterQueue queue) {
+        return this.upsertQueueWithResponse(queueId, BinaryData.fromObject(queue), null)
             .map(response -> response.getValue().toObject(RouterQueue.class));
     }
 
