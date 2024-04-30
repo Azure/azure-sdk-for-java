@@ -60,6 +60,8 @@ public class CosmosQueryRequestOptions {
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
     private List<String> excludeRegions;
     private List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker = new ArrayList<>();
+    private PartitionKeyDefinition partitionKeyDefinition;
+    private String collectionRid;
 
     /**
      * Instantiates a new query request options.
@@ -105,6 +107,8 @@ public class CosmosQueryRequestOptions {
         this.cosmosEndToEndOperationLatencyPolicyConfig = options.cosmosEndToEndOperationLatencyPolicyConfig;
         this.excludeRegions = options.excludeRegions;
         this.cancelledRequestDiagnosticsTracker = options.cancelledRequestDiagnosticsTracker;
+        this.partitionKeyDefinition = options.partitionKeyDefinition;
+        this.collectionRid = options.collectionRid;
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -703,6 +707,22 @@ public class CosmosQueryRequestOptions {
         this.cancelledRequestDiagnosticsTracker = cancelledRequestDiagnosticsTracker;
     }
 
+    PartitionKeyDefinition getPartitionKeyDefinition() {
+        return partitionKeyDefinition;
+    }
+
+    void setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
+        this.partitionKeyDefinition = partitionKeyDefinition;
+    }
+
+    public String getCollectionRid() {
+        return collectionRid;
+    }
+
+    public void setCollectionRid(String collectionRid) {
+        this.collectionRid = collectionRid;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -861,6 +881,26 @@ public class CosmosQueryRequestOptions {
                 @Override
                 public String getRequestContinuation(CosmosQueryRequestOptions options) {
                     return options.getRequestContinuation();
+                }
+
+                @Override
+                public void setPartitionKeyDefinition(CosmosQueryRequestOptions options, PartitionKeyDefinition partitionKeyDefinition) {
+                    options.setPartitionKeyDefinition(partitionKeyDefinition);
+                }
+
+                @Override
+                public PartitionKeyDefinition getPartitionKeyDefinition(CosmosQueryRequestOptions options) {
+                    return options.getPartitionKeyDefinition();
+                }
+
+                @Override
+                public void setCollectionRid(CosmosQueryRequestOptions options, String collectionRid) {
+                    options.setCollectionRid(collectionRid);
+                }
+
+                @Override
+                public String getCollectionRid(CosmosQueryRequestOptions options) {
+                    return options.getCollectionRid();
                 }
 
                 @Override

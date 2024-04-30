@@ -3610,6 +3610,40 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 // TODO Auto-generated method stub
                 return null;
             }
+
+            @Override
+            public Mono<RxDocumentServiceRequest> populateFeedRangeHeader(RxDocumentServiceRequest request) {
+
+                if (RxDocumentClientImpl.this.requiresFeedRangeFiltering(request)) {
+                    return request
+                        .getFeedRange()
+                        .populateFeedRangeFilteringHeaders(RxDocumentClientImpl.this.partitionKeyRangeCache, request, RxDocumentClientImpl.this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request))
+                        .flatMap(ignore -> Mono.just(request));
+                } else {
+                    return Mono.just(request);
+                }
+            }
+
+            @Override
+            public Mono<RxDocumentServiceRequest> addPartitionLevelUnavailableRegionsOnRequest(RxDocumentServiceRequest request, CosmosQueryRequestOptions queryRequestOptions) {
+
+                String collectionRid = ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor().getCollectionRid(queryRequestOptions);
+
+                if (RxDocumentClientImpl.this.requiresFeedRangeFiltering(request)) {
+                    return RxDocumentClientImpl.this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), collectionRid, null, null)
+                        .flatMap(collectionRoutingMapValueHolder -> {
+
+                            if (collectionRoutingMapValueHolder.v == null) {
+                                return Mono.error(new NotFoundException("collectionRoutingMap could not be found!"));
+                            }
+
+                            RxDocumentClientImpl.this.addPartitionLevelUnavailableRegionsForFeedRequest(request, queryRequestOptions, collectionRoutingMapValueHolder.v);
+                            return Mono.just(request);
+                        });
+                } else {
+                    return Mono.just(request);
+                }
+            }
         };
     }
 
@@ -5503,6 +5537,33 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
+    private void addPartitionLevelUnavailableRegionsForFeedRequest(
+        RxDocumentServiceRequest request,
+        CosmosQueryRequestOptions options,
+        CollectionRoutingMap collectionRoutingMap) {
+
+        checkNotNull(collectionRoutingMap, "collectionRoutingMap cannot be null!");
+
+        PartitionKeyRange resolvedPartitionKeyRange = null;
+
+        if (request.getPartitionKeyRangeIdentity() != null) {
+            resolvedPartitionKeyRange = collectionRoutingMap.getRangeByPartitionKeyRangeId(request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId());
+        } else if (request.getPartitionKeyInternal() != null) {
+            String effectivePartitionKeyString = PartitionKeyInternalHelper.getEffectivePartitionKeyString(request.getPartitionKeyInternal(), ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor().getPartitionKeyDefinition(options));
+            resolvedPartitionKeyRange = collectionRoutingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
+        }
+
+        checkNotNull(resolvedPartitionKeyRange, "resolvedPartitionKeyRange cannot be null!");
+
+        if (Configs.isPartitionLevelCircuitBreakerEnabled()) {
+            checkNotNull(globalPartitionEndpointManagerForCircuitBreaker, "globalPartitionEndpointManagerForCircuitBreaker cannot be null!");
+            List<URI> unavailableLocationsForPartition = globalPartitionEndpointManagerForCircuitBreaker.getUnavailableLocationsForPartition(resolvedPartitionKeyRange);
+            List<String> unavailableRegionsForPartition = unavailableLocationsForPartition.stream().map(unavailableLocationForPartition -> this.globalEndpointManager.getRegionName(unavailableLocationForPartition, request.getOperationType())).collect(Collectors.toList());
+
+            request.requestContext.setUnavailableRegionsForPartition(unavailableRegionsForPartition);
+        }
+    }
+
     private Mono<ResourceResponse<Document>> wrapPointOperationWithAvailabilityStrategy(
         ResourceType resourceType,
         OperationType operationType,
@@ -5549,11 +5610,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         getEndToEndOperationLatencyPolicyConfig(nonNullRequestOptions, resourceType, operationType);
 
                     PartitionKeyDefinition partitionKeyDefinition = collection.getPartitionKey();
-                    PartitionKey partitionKey = nonNullRequestOptions.getPartitionKey();
 
                     // todo: validate if the below is possible
                     if (collectionRoutingMapValueHolder.v == null) {
-                        return Mono.error(new NullPointerException("collectionRoutingMapValueHolder.v cannot be null!"));
+                        return Mono.error(new NotFoundException("collectionRoutingMapValueHolder.v cannot be null!"));
                     }
 
                     nonNullRequestOptions.setPartitionKeyDefinition(collection.getPartitionKey());

@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -84,6 +85,8 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
                     }
                 }
 
+                ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor().setPartitionKeyDefinition(cosmosQueryRequestOptions, collection.getPartitionKey());
+                ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor().setCollectionRid(cosmosQueryRequestOptions, collection.getResourceId());
                 return this.createDocumentServiceRequestWithFeedRange(headers, querySpecForInit, partitionKeyInternal, feedRange,
                                                          collection.getResourceId(), cosmosQueryRequestOptions.getThroughputControlGroupName());
             };

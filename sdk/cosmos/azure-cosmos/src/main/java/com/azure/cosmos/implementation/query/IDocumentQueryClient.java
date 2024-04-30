@@ -11,6 +11,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.IRetryPolicyFactory;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import reactor.core.publisher.Mono;
 
 import java.util.function.BiFunction;
@@ -41,13 +42,13 @@ public interface IDocumentQueryClient {
 
     /**
      * TODO: this should be async returning observable
-     * @return 
+     * @return
      */
     ConsistencyLevel getDefaultConsistencyLevelAsync();
 
     /**
      * TODO: this should be async returning observable
-     * @return 
+     * @return
      */
     ConsistencyLevel getDesiredConsistencyLevelAsync();
 
@@ -85,4 +86,8 @@ public interface IDocumentQueryClient {
     }
 
     Mono<RxDocumentServiceResponse> readFeedAsync(RxDocumentServiceRequest request);
+
+    Mono<RxDocumentServiceRequest> populateFeedRangeHeader(RxDocumentServiceRequest request);
+
+    Mono<RxDocumentServiceRequest> addPartitionLevelUnavailableRegionsOnRequest(RxDocumentServiceRequest request, CosmosQueryRequestOptions queryRequestOptions);
 }
