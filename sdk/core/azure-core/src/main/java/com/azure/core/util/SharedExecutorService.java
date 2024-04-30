@@ -51,7 +51,7 @@ import java.util.function.Function;
  * If a custom executor service is set using {@link #setExecutorService(ExecutorService)}, and it is shutdown or
  * terminated, the shared executor service will be reset to the default shared executor service.
  */
-@SuppressWarnings({ "resource" })
+@SuppressWarnings({ "resource", "NullableProblems" })
 public final class SharedExecutorService implements ExecutorService {
     private static final ClientLogger LOGGER = new ClientLogger(SharedExecutorService.class);
 
@@ -67,8 +67,7 @@ public final class SharedExecutorService implements ExecutorService {
     // number of available processors.
     // If 'azure.sdk.sharedpool.size' is set to a non-integer, negative value, or zero, the default value is used.
     private static final int THREAD_POOL_SIZE
-        = Configuration.getGlobalConfiguration().get("azure.sdk.sharedpool.size",
-        config -> safeNumericParse(config, Integer::parseInt, 10 * Runtime.getRuntime().availableProcessors()));
+        = getConfig("azure.sdk.sharedpool.size", Integer::parseInt, 10 * Runtime.getRuntime().availableProcessors());
 
     // The thread pool keep alive time for the shared executor service.
     //
@@ -77,26 +76,31 @@ public final class SharedExecutorService implements ExecutorService {
     // If 'azure.sdk.sharedpool.keepalivemillis' is set to a non-integer, negative value, or zero, the default value is
     // used.
     private static final long THREAD_POOL_KEEP_ALIVE_MILLIS
-        = Configuration.getGlobalConfiguration().get("azure.sdk.sharedpool.keepalivemillis",
-        config -> safeNumericParse(config, Long::parseLong, 60000L));
-
-    private static <T extends Number> T safeNumericParse(String value, Function<String, T> parser, T defaultValue) {
-        if (value == null) {
-            return defaultValue;
-        }
-
-        try {
-            return parser.apply(value);
-        } catch (NumberFormatException e) {
-            return defaultValue;
-        }
-    }
+        = getConfig("azure.sdk.sharedpool.keepalivemillis", Long::parseLong, 60_000L);
 
     // Virtual thread support for the shared executor service.
     //
     // This uses the configuration setting 'azure.sdk.sharedpool.virtual' if set, otherwise it defaults to true.
-    private static final boolean THREAD_POOL_VIRTUAL = Configuration.getGlobalConfiguration()
-        .get("azure.sdk.sharedpool.virtual", config -> config == null || Boolean.parseBoolean(config));
+    private static final boolean THREAD_POOL_VIRTUAL
+        = getConfig("azure.sdk.sharedpool.virtual", Boolean::parseBoolean, true);
+
+    private static <T> T getConfig(String configurationName, Function<String, T> parser, T defaultValue) {
+        String value = Configuration.getGlobalConfiguration().get(configurationName);
+        if (value == null) {
+            LOGGER.verbose("Configuration '{}' is not set, using default value '{}'.", configurationName, defaultValue);
+            return defaultValue;
+        }
+
+        try {
+            T returnValue = parser.apply(value);
+            LOGGER.verbose("Configuration '{}' is set to '{}'.", configurationName, returnValue);
+            return parser.apply(value);
+        } catch (NumberFormatException e) {
+            LOGGER.info("Configuration '{}' is set to an invalid value '{}', using default value '{}'.",
+                configurationName, value, defaultValue);
+            return defaultValue;
+        }
+    }
 
     private static final boolean VIRTUAL_THREAD_SUPPORTED;
     private static final ReflectiveInvoker GET_VIRTUAL_THREAD_BUILDER;
@@ -117,7 +121,9 @@ public final class SharedExecutorService implements ExecutorService {
             createVirtualThreadFactory = ReflectionUtils.getMethodInvoker(null,
                 Class.forName("java.lang.Thread$Builder").getDeclaredMethod("factory"));
             virtualThreadSupported = true;
+            LOGGER.verbose("Virtual threads are supported in the current runtime.");
         } catch (Exception | LinkageError e) {
+            LOGGER.verbose("Virtual threads are not supported in the current runtime.", e);
             virtualThreadSupported = false;
             getVirtualThreadBuilder = null;
             setVirtualThreadBuilderThreadName = null;
@@ -162,6 +168,12 @@ public final class SharedExecutorService implements ExecutorService {
      * @throws IllegalStateException If the passed executor service is shutdown or terminated.
      */
     public static void setExecutorService(ExecutorService executorService) {
+        // We allow for the global executor service to be set from an external source to allow for consumers of the SDK
+        // to use their own thread management to run Azure SDK tasks. This allows for the SDKs to perform deeper
+        // integration into an environment, such as the consumer environment knowing details about capacity, allowing
+        // the custom executor service to better manage resources than our more general 10x the number of processors.
+        // Another scenario could be an executor service that creates threads with specific permissions, such as
+        // allowing Azure Core or Jackson to perform deep reflection on classes that are not normally allowed.
         Objects.requireNonNull(executorService, "'executorService' cannot be null.");
         if (executorService.isShutdown() || executorService.isTerminated()) {
             throw new IllegalStateException("The passed executor service is shutdown or terminated.");
