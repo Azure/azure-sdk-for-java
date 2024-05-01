@@ -1165,8 +1165,8 @@ public final class DiagnosticsProvider {
             return clientTelemetryConfigAccessor.isTransportLevelTracingEnabled(this.config);
         }
         
-        private boolean isQueryTracingEnabled() {
-            return clientTelemetryConfigAccessor.isQueryTracingEnabled(this.config);
+        private boolean showQueryStatement() {
+            return clientTelemetryConfigAccessor.showQueryStatement(this.config);
         }
 
         @Override
@@ -1208,7 +1208,7 @@ public final class DiagnosticsProvider {
                     spanOptions.setAttribute("db.cosmosdb.operation_id", cosmosCtx.getOperationId());
                 }
                 
-                if(isQueryTracingEnabled() && null != cosmosCtx.getQueryStatement() ) {
+                if(showQueryStatement() && null != cosmosCtx.getQueryStatement() ) {
                     spanOptions.setAttribute("db.statement", cosmosCtx.getQueryStatement());
                 }
 
@@ -1217,7 +1217,7 @@ public final class DiagnosticsProvider {
                     spanOptions.setAttribute("db.cosmosdb.container", containerName);
                 }
             }
-            
+
             return spanOptions;
         }
 

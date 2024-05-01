@@ -549,7 +549,7 @@ public class CosmosTracerTest extends TestSuiteBase {
     public void cosmosAsyncContainer(
         boolean useLegacyTracing,
         boolean enableRequestLevelTracing,
-        boolean enableQueryTracing,
+        boolean showQueryStatement,
         boolean forceThresholdViolations,
         double samplingRate) throws Exception {
 
@@ -557,7 +557,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         TracerUnderTest mockTracer = Mockito.spy(new TracerUnderTest());
 
         DiagnosticsProvider provider = createAndInitializeDiagnosticsProvider(
-            mockTracer, useLegacyTracing, enableRequestLevelTracing, enableQueryTracing, forceThresholdViolations, samplingRate);
+            mockTracer, useLegacyTracing, enableRequestLevelTracing, showQueryStatement, forceThresholdViolations, samplingRate);
         
         CosmosClientTelemetryConfig telemetryConfigSnapshot = provider.getClientTelemetryConfig();
 
@@ -747,7 +747,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             null,
             useLegacyTracing,
             enableRequestLevelTracing,
-            enableQueryTracing,
+            showQueryStatement,
             query,
             forceThresholdViolations,
             null,
@@ -771,7 +771,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             null,
             useLegacyTracing,
             enableRequestLevelTracing,
-            enableQueryTracing,
+            showQueryStatement,
             query,
             forceThresholdViolations,
             "CustomQueryName",
@@ -805,7 +805,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             null,
             useLegacyTracing,
             enableRequestLevelTracing,
-            enableQueryTracing,
+            showQueryStatement,
             query,
             forceThresholdViolations,
             null,
@@ -831,7 +831,7 @@ public class CosmosTracerTest extends TestSuiteBase {
                 null,
                 useLegacyTracing,
                 enableRequestLevelTracing,
-                enableQueryTracing,
+                showQueryStatement,
                 query,
                 forceThresholdViolations,
                 null,
@@ -1296,7 +1296,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             CosmosException error,
             boolean useLegacyTracing,
             boolean enableRequestLevelTracing,
-            boolean enableQueryTracing,
+            boolean showQueryStatement,
             String queryStatement,
             boolean forceThresholdViolation,
             String customOperationId,
@@ -1322,7 +1322,7 @@ public class CosmosTracerTest extends TestSuiteBase {
                 cosmosDiagnostics,
                 error,
                 enableRequestLevelTracing,
-                enableQueryTracing,
+                showQueryStatement,
                 queryStatement,
                 customOperationId,
                 samplingRate);
@@ -1336,7 +1336,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         CosmosDiagnostics cosmosDiagnostics,
         CosmosException error,
         boolean enableRequestLevelTracing,
-        boolean enableQueryTracing,
+        boolean showQueryStatement,
         String queryStatement,
         String customOperationId,
         double samplingRate) {
@@ -1397,7 +1397,8 @@ public class CosmosTracerTest extends TestSuiteBase {
             verifyOTelTracerTransport(
                 cosmosDiagnostics, error, mockTracer, enableRequestLevelTracing);
             
-            if(enableQueryTracing && queryStatement.contains("@")) {
+            if(showQueryStatement) {
+                assertThat(attributes.get("db.statement")).isNotNull();
                 assertThat(attributes.get("db.statement")).isEqualTo(queryStatement);
             } else {
                 assertThat(attributes.get("db.statement")).isNull();
@@ -1916,7 +1917,7 @@ public class CosmosTracerTest extends TestSuiteBase {
     private DiagnosticsProvider createAndInitializeDiagnosticsProvider(TracerUnderTest mockTracer,
                                                                        boolean useLegacyTracing,
                                                                        boolean enableRequestLevelTracing,
-                                                                       boolean enableQueryTracing,
+                                                                       boolean showQueryStatement,
                                                                        boolean forceThresholdViolations,
                                                                        double samplingRate) {
         CosmosDiagnosticsThresholds thresholds = forceThresholdViolations ?
@@ -1970,8 +1971,8 @@ public class CosmosTracerTest extends TestSuiteBase {
             clientTelemetryConfig.enableTransportLevelTracing();
         }
         
-        if (enableQueryTracing) {
-            clientTelemetryConfig.enableQueryTracing();
+        if (showQueryStatement) {
+            clientTelemetryConfig.showQueryStatement();
         }
 
         ImplementationBridgeHelpers

@@ -75,7 +75,7 @@ public final class CosmosClientTelemetryConfig {
 
     private double samplingRate;
     
-    private boolean isQueryTracingEnabled = false;
+    private boolean showQueryStatement = false;
 
     /**
      * Instantiates a new Cosmos client telemetry configuration.
@@ -397,8 +397,8 @@ public final class CosmosClientTelemetryConfig {
         return this;
     }
     
-    public CosmosClientTelemetryConfig enableQueryTracing() {
-        this.isQueryTracingEnabled = true;
+    public CosmosClientTelemetryConfig showQueryStatement() {
+        this.showQueryStatement = true;
         return this;
     }
 
@@ -669,8 +669,8 @@ public final class CosmosClientTelemetryConfig {
                 }
 
                 @Override
-                public boolean isQueryTracingEnabled(CosmosClientTelemetryConfig config) {
-                    return config.isQueryTracingEnabled;
+                public boolean showQueryStatement(CosmosClientTelemetryConfig config) {
+                    return config.showQueryStatement;
                 }
        
                 @Override
