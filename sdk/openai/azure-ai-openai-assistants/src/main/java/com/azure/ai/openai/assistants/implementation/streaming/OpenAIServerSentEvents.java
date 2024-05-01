@@ -19,8 +19,8 @@ import static com.azure.ai.openai.assistants.implementation.models.AssistantStre
 
 public final class OpenAIServerSentEvents {
 
-    // Server sent events are divided by 2 line breaks, therefore we need to account for 4 bytes containing 2 CRLF characters.
-    private static final int LINE_BREAK_CHAR_COUNT_THRESHOLD = 2;
+    // Server sent events are divided by 2 CRLF or single LF character
+    private static final int SSE_CHUNK_LINE_BREAK_COUNT_MARKER = 2;
 
     private final StreamTypeFactory eventDeserializer = new StreamTypeFactory();
     private final Flux<ByteBuffer> source;
@@ -47,7 +47,7 @@ public final class OpenAIServerSentEvents {
                 List<StreamUpdate> values = new ArrayList<>();
                 byte[] byteArray = byteBuffer.array();
                 // We check whether we ended the last byteBuffer with a line feed or not, in case we need to close this
-                // chunk immediately
+                // chunk soon after
                 byte[] outByteArray = outStream.toByteArray();
                 int lineBreakCharsEncountered = outByteArray.length > 0 && isByteLineFeed(outByteArray[outByteArray.length  - 1]) ? 1 : 0;
 
@@ -57,7 +57,7 @@ public final class OpenAIServerSentEvents {
                         lineBreakCharsEncountered++;
 
                         // We are looking for 2 line breaks to signify the end of a server sent event.
-                        if (lineBreakCharsEncountered == LINE_BREAK_CHAR_COUNT_THRESHOLD) {
+                        if (lineBreakCharsEncountered == SSE_CHUNK_LINE_BREAK_COUNT_MARKER) {
                             String currentLine;
                             try {
                                 currentLine = outStream.toString(StandardCharsets.UTF_8.name());
@@ -85,7 +85,6 @@ public final class OpenAIServerSentEvents {
                     if (remainingBytes.endsWith("\n\n") || remainingBytes.endsWith("\r\n\r\n")) {
                         handleCurrentEvent(remainingBytes, values);
                     }
-//                    outStream = new ByteArrayOutputStream();
                 } catch (IllegalArgumentException | UncheckedIOException e) {
                     // UncheckedIOException is thrown when we attempt to deserialize incomplete JSON
                     // Even split across different ByteBuffers, the next one will contain the rest of the event.
@@ -93,7 +92,6 @@ public final class OpenAIServerSentEvents {
                 } catch (IOException e) {
                     return Flux.error(e);
                 }
-//                outStream = new ByteArrayOutputStream();
                 return Flux.fromIterable(values);
             }).cache();
     }
