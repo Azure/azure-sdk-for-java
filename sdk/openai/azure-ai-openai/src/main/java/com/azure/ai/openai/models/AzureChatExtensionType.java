@@ -5,7 +5,6 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -62,7 +61,6 @@ public final class AzureChatExtensionType extends ExpandableStringEnum<AzureChat
      * @return the corresponding AzureChatExtensionType.
      */
     @Generated
-    @JsonCreator
     public static AzureChatExtensionType fromString(String name) {
         return fromString(name, AzureChatExtensionType.class);
     }

@@ -5,7 +5,6 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -48,7 +47,6 @@ public final class ChatRole extends ExpandableStringEnum<ChatRole> {
      * @return the corresponding ChatRole.
      */
     @Generated
-    @JsonCreator
     public static ChatRole fromString(String name) {
         return fromString(name, ChatRole.class);
     }

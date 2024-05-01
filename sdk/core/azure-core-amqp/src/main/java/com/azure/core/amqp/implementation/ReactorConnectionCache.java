@@ -227,7 +227,7 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
                     || (error instanceof RejectedExecutionException));
 
             if (!shouldRetry) {
-                logger.atWarning()
+                logger.atError()
                     .addKeyValue(TRY_COUNT_KEY, iteration)
                     .log("Exception is non-retriable, not retrying for a new connection.", error);
                 return Mono.error(error);
@@ -246,7 +246,7 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
             final Duration backoff = retryPolicy.calculateRetryDelay(errorToUse, (int) attempts);
 
             if (backoff == null) {
-                logger.atWarning()
+                logger.atError()
                     .addKeyValue(TRY_COUNT_KEY, iteration)
                     .log("Retry is disabled, not retrying for a new connection.", error);
                 return Mono.error(error);

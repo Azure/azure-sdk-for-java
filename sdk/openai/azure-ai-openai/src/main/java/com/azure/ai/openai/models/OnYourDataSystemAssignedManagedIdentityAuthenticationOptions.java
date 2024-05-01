@@ -5,20 +5,14 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The authentication options for Azure OpenAI On Your Data when using a system-assigned managed identity.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = OnYourDataSystemAssignedManagedIdentityAuthenticationOptions.class,
-    visible = true)
-@JsonTypeName("system_assigned_managed_identity")
 @Immutable
 public final class OnYourDataSystemAssignedManagedIdentityAuthenticationOptions
     extends OnYourDataAuthenticationOptions {
@@ -34,8 +28,6 @@ public final class OnYourDataSystemAssignedManagedIdentityAuthenticationOptions
      * The authentication type.
      */
     @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
     private OnYourDataAuthenticationType type = OnYourDataAuthenticationType.SYSTEM_ASSIGNED_MANAGED_IDENTITY;
 
     /**
@@ -47,5 +39,45 @@ public final class OnYourDataSystemAssignedManagedIdentityAuthenticationOptions
     @Override
     public OnYourDataAuthenticationType getType() {
         return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OnYourDataSystemAssignedManagedIdentityAuthenticationOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OnYourDataSystemAssignedManagedIdentityAuthenticationOptions if the JsonReader was
+     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * OnYourDataSystemAssignedManagedIdentityAuthenticationOptions.
+     */
+    @Generated
+    public static OnYourDataSystemAssignedManagedIdentityAuthenticationOptions fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            OnYourDataSystemAssignedManagedIdentityAuthenticationOptions deserializedOnYourDataSystemAssignedManagedIdentityAuthenticationOptions
+                = new OnYourDataSystemAssignedManagedIdentityAuthenticationOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("type".equals(fieldName)) {
+                    deserializedOnYourDataSystemAssignedManagedIdentityAuthenticationOptions.type
+                        = OnYourDataAuthenticationType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedOnYourDataSystemAssignedManagedIdentityAuthenticationOptions;
+        });
     }
 }

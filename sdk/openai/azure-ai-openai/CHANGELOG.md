@@ -21,6 +21,7 @@
 
 ### Breaking Changes
 
+- Replaced Jackson Databind annotations with `azure-json` functionality for OpenAI service models.
 - [AOAI] Added a new class `ContentFilterDetailedResults` to represent detailed content filter results, which replaces the
   `customBlocklists` response property type, `List<ContentFilterBlocklistIdResult>` in 
   `ContentFilterResultDetailsForPrompt` and `ContentFilterResultsForChoice` class.

@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.amqp.implementation.WindowedSubscriber;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import reactor.core.publisher.Flux;
 
@@ -14,7 +15,7 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
-import com.azure.messaging.servicebus.WindowedSubscriber.WindowedSubscriberOptions;
+import com.azure.core.amqp.implementation.WindowedSubscriber.WindowedSubscriberOptions;
 
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.LOCK_TOKEN_KEY;
 import static com.azure.messaging.servicebus.models.ServiceBusReceiveMode.PEEK_LOCK;
