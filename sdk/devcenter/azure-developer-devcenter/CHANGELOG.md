@@ -1,6 +1,16 @@
 # Release History
 
-## 1.0.0 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0 (2024-04-30)
 
 This release targets Azure Dev Center 2023-04-01 General Available API, which is the same version as the previous 1.0.0-beta.3 release. The main improvement was the addition of models as Convenience API was enabled for the SDK. 
 
@@ -34,7 +44,6 @@ This release targets Azure Dev Center 2023-04-01 General Available API, which is
     - HibernateSupport
     - LocalAdministratorStatus
     - OsDisk
-    - package-info
     - PoolHealthStatus
     - PowerState
     - RemoteConnection
@@ -50,7 +59,7 @@ This release targets Azure Dev Center 2023-04-01 General Available API, which is
 
 ### Breaking Changes
 
-- Removed `filter` and `top` as optional request parameters.
+- Removed `filter` and `top` as optional request parameters to match equivalent update in the API side.
 
 ## 1.0.0-beta.3 (2023-11-09)
 

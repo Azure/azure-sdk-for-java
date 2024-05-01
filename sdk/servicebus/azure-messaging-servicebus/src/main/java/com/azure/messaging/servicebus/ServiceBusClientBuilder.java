@@ -954,7 +954,7 @@ public final class ServiceBusClientBuilder implements
     }
 
     // Connection-caching for the V1-Stack.
-    private ServiceBusConnectionProcessor getOrCreateConnectionProcessor(MessageSerializer serializer) {
+    private ServiceBusConnectionProcessor getOrCreateConnectionProcessor(MessageSerializer serializer, Meter meter) {
         synchronized (connectionLock) {
             if (sharedConnection == null) {
                 final ConnectionOptions connectionOptions = getConnectionOptions();
@@ -962,7 +962,7 @@ public final class ServiceBusClientBuilder implements
                 final Flux<ServiceBusAmqpConnection> connectionFlux = Mono.fromCallable(() -> {
                     final String connectionId = StringUtil.getRandomString("MF");
                     final ReactorProvider provider = new ReactorProvider();
-                    final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
+                    final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider, meter);
                     final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
                         connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
                         connectionOptions.getAuthorizationScope());
@@ -1037,8 +1037,8 @@ public final class ServiceBusClientBuilder implements
     }
 
     // Connection-caching for the V2-Stack.
-    private ReactorConnectionCache<ServiceBusReactorAmqpConnection> getOrCreateConnectionCache(MessageSerializer serializer) {
-        return v2StackSupport.getOrCreateConnectionCache(getConnectionOptions(), serializer, crossEntityTransactions);
+    private ReactorConnectionCache<ServiceBusReactorAmqpConnection> getOrCreateConnectionCache(MessageSerializer serializer, Meter meter) {
+        return v2StackSupport.getOrCreateConnectionCache(getConnectionOptions(), serializer, crossEntityTransactions, meter);
     }
 
     private static boolean isNullOrEmpty(String item) {
@@ -1244,10 +1244,10 @@ public final class ServiceBusClientBuilder implements
 
         // Obtain the shared connection-cache based on the V2-Stack.
         ReactorConnectionCache<ServiceBusReactorAmqpConnection> getOrCreateConnectionCache(ConnectionOptions connectionOptions,
-            MessageSerializer serializer, boolean crossEntityTransactions) {
+            MessageSerializer serializer, boolean crossEntityTransactions, Meter meter) {
             synchronized (connectionLock) {
                 if (sharedConnectionCache == null) {
-                    sharedConnectionCache = createConnectionCache(connectionOptions, serializer, crossEntityTransactions);
+                    sharedConnectionCache = createConnectionCache(connectionOptions, serializer, crossEntityTransactions, meter);
                 }
             }
 
@@ -1345,11 +1345,11 @@ public final class ServiceBusClientBuilder implements
         }
 
         private static ReactorConnectionCache<ServiceBusReactorAmqpConnection> createConnectionCache(ConnectionOptions connectionOptions,
-            MessageSerializer serializer, boolean crossEntityTransactions) {
+            MessageSerializer serializer, boolean crossEntityTransactions, Meter meter) {
             final Supplier<ServiceBusReactorAmqpConnection> connectionSupplier = () -> {
                 final String connectionId = StringUtil.getRandomString("MF");
                 final ReactorProvider provider = new ReactorProvider();
-                final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
+                final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider, meter);
                 final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
                     connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
                     connectionOptions.getAuthorizationScope());
@@ -1425,12 +1425,13 @@ public final class ServiceBusClientBuilder implements
             final ConnectionCacheWrapper connectionCacheWrapper;
             final Runnable onClientClose;
             final boolean isSenderOnV2 = v2StackSupport.isSenderAndManageRulesEnabled(configuration);
+            final Meter meter = createMeter(clientOptions);
             if (isSenderOnV2) {
                 // Sender Client (async|sync) on the V2-Stack.
-                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer));
+                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer, meter));
                 onClientClose = ServiceBusClientBuilder.this.v2StackSupport::onClientClose;
             } else {
-                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer));
+                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer, meter));
                 onClientClose = ServiceBusClientBuilder.this::onClientClose;
             }
             final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, topicName,
@@ -1461,7 +1462,7 @@ public final class ServiceBusClientBuilder implements
             }
 
             final ServiceBusSenderInstrumentation instrumentation = new ServiceBusSenderInstrumentation(
-                createTracer(), createMeter(), connectionCacheWrapper.getFullyQualifiedNamespace(), entityName);
+                createTracer(clientOptions), meter, connectionCacheWrapper.getFullyQualifiedNamespace(), entityName);
 
             return new ServiceBusSenderAsyncClient(entityName, entityType, connectionCacheWrapper, retryOptions,
                 instrumentation, messageSerializer, onClientClose, null, clientIdentifier);
@@ -1994,7 +1995,8 @@ public final class ServiceBusClientBuilder implements
                 maxAutoLockRenewDuration = Duration.ZERO;
             }
 
-            final ConnectionCacheWrapper connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer));
+            final Meter meter = createMeter(clientOptions);
+            final ConnectionCacheWrapper connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer, meter));
 
             final ReceiverOptions receiverOptions = createUnnamedSessionOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration, enableAutoComplete, maxConcurrentSessions, sessionIdleTimeout);
@@ -2008,7 +2010,7 @@ public final class ServiceBusClientBuilder implements
             }
 
             final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(
-                createTracer(), createMeter(), connectionCacheWrapper.getFullyQualifiedNamespace(),
+                createTracer(clientOptions), meter, connectionCacheWrapper.getFullyQualifiedNamespace(),
                 entityPath, subscriptionName, ReceiverKind.PROCESSOR);
 
             final ServiceBusSessionManager sessionManager = new ServiceBusSessionManager(entityPath, entityType,
@@ -2041,13 +2043,14 @@ public final class ServiceBusClientBuilder implements
             } else {
                 clientIdentifier = UUID.randomUUID().toString();
             }
-            final ConnectionCacheWrapper connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer));
+            final Meter meter = createMeter(clientOptions);
+            final ConnectionCacheWrapper connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer, meter));
 
             final ServiceBusSessionAcquirer sessionAcquirer = new ServiceBusSessionAcquirer(logger, clientIdentifier,
                 entityPath, entityType, receiveMode, retryOptions.getTryTimeout(), connectionCacheWrapper);
 
             final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(
-                createTracer(), createMeter(), connectionCacheWrapper.getFullyQualifiedNamespace(),
+                createTracer(clientOptions), meter, connectionCacheWrapper.getFullyQualifiedNamespace(),
                 entityPath, subscriptionName, ReceiverKind.PROCESSOR);
 
             final Runnable onTerminate = v2StackSupport::onClientClose;
@@ -2118,13 +2121,14 @@ public final class ServiceBusClientBuilder implements
                 maxAutoLockRenewDuration = Duration.ZERO;
             }
 
+            final Meter meter = createMeter(clientOptions);
             final ConnectionCacheWrapper connectionCacheWrapper;
             final Runnable onClientClose;
             if (isV2) {
-                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer));
+                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer, meter));
                 onClientClose = ServiceBusClientBuilder.this.v2StackSupport::onClientClose;
             } else {
-                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer));
+                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer, meter));
                 onClientClose = ServiceBusClientBuilder.this::onClientClose;
             }
             final ReceiverOptions receiverOptions = createUnnamedSessionOptions(receiveMode, prefetchCount,
@@ -2139,7 +2143,7 @@ public final class ServiceBusClientBuilder implements
             }
 
             final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(
-                createTracer(), createMeter(), connectionCacheWrapper.getFullyQualifiedNamespace(), entityPath, subscriptionName,
+                createTracer(clientOptions), meter, connectionCacheWrapper.getFullyQualifiedNamespace(), entityPath, subscriptionName,
                 ReceiverKind.ASYNC_RECEIVER);
             return new ServiceBusSessionReceiverAsyncClient(connectionCacheWrapper.getFullyQualifiedNamespace(),
                 entityPath, entityType, receiverOptions, connectionCacheWrapper, instrumentation, messageSerializer,
@@ -2667,24 +2671,25 @@ public final class ServiceBusClientBuilder implements
 
             final ConnectionCacheWrapper connectionCacheWrapper;
             final Runnable onClientClose;
+            final Meter meter = createMeter(clientOptions);
             if (receiverKind == ReceiverKind.SYNC_RECEIVER) {
                 final boolean syncReceiveOnV2 = v2StackSupport.isNonSessionSyncReceiveEnabled(configuration);
                 if (syncReceiveOnV2) {
                     // "Non-Session" Sync Receiver-Client on the V2-Stack.
-                    connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer));
+                    connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer, meter));
                     onClientClose = ServiceBusClientBuilder.this.v2StackSupport::onClientClose;
                 } else {
-                    connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer));
+                    connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer, meter));
                     onClientClose = ServiceBusClientBuilder.this::onClientClose;
                 }
             } else {
                 final boolean asyncReceiveOnV2 = v2StackSupport.isNonSessionAsyncReceiveEnabled(configuration);
                 if (asyncReceiveOnV2) {
                     // "Non-Session" Async[Reactor|Processor] Receiver-Client on the V2-Stack.
-                    connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer));
+                    connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer, meter));
                     onClientClose = ServiceBusClientBuilder.this.v2StackSupport::onClientClose;
                 } else {
-                    connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer));
+                    connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer, meter));
                     onClientClose = ServiceBusClientBuilder.this::onClientClose;
                 }
             }
@@ -2700,7 +2705,7 @@ public final class ServiceBusClientBuilder implements
             }
 
             final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(
-                createTracer(), createMeter(), connectionCacheWrapper.getFullyQualifiedNamespace(), entityPath, subscriptionName, receiverKind);
+                createTracer(clientOptions), meter, connectionCacheWrapper.getFullyQualifiedNamespace(), entityPath, subscriptionName, receiverKind);
             return new ServiceBusReceiverAsyncClient(connectionCacheWrapper.getFullyQualifiedNamespace(), entityPath,
                 entityType, receiverOptions, connectionCacheWrapper, ServiceBusConstants.OPERATION_TIMEOUT,
                 instrumentation, messageSerializer, onClientClose, clientIdentifier);
@@ -2762,13 +2767,14 @@ public final class ServiceBusClientBuilder implements
                 null);
             final ConnectionCacheWrapper connectionCacheWrapper;
             final Runnable onClientClose;
+            final Meter meter = createMeter(clientOptions);
             final boolean isManageRulesOnV2 = v2StackSupport.isSenderAndManageRulesEnabled(configuration);
             if (isManageRulesOnV2) {
                 // RuleManager Client (async|sync) on the V2-Stack.
-                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer));
+                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer, meter));
                 onClientClose = ServiceBusClientBuilder.this.v2StackSupport::onClientClose;
             } else {
-                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer));
+                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer, meter));
                 onClientClose = ServiceBusClientBuilder.this::onClientClose;
             }
 
@@ -2803,12 +2809,12 @@ public final class ServiceBusClientBuilder implements
         }
     }
 
-    private Meter createMeter() {
+    private static Meter createMeter(ClientOptions clientOptions) {
         return MeterProvider.getDefaultProvider().createMeter(LIBRARY_NAME, LIBRARY_VERSION,
                 clientOptions == null ? null : clientOptions.getMetricsOptions());
     }
 
-    private Tracer createTracer() {
+    private static Tracer createTracer(ClientOptions clientOptions) {
         return TracerProvider.getDefaultProvider().createTracer(LIBRARY_NAME, LIBRARY_VERSION,
             AZ_TRACING_NAMESPACE_VALUE, clientOptions == null ? null : clientOptions.getTracingOptions());
     }
