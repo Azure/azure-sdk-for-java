@@ -8,13 +8,13 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import static com.azure.ai.openai.assistants.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 
-public class RunThreadStreamingSyncTest extends AssistantsClientTestBase {
+public class StreamingSyncTest extends AssistantsClientTestBase {
 
     private AssistantsClient client;
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void simpleTest(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
+    public void runThreadSimpleTest(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
 
         client = getAssistantsClient(httpClient);
@@ -27,6 +27,23 @@ public class RunThreadStreamingSyncTest extends AssistantsClientTestBase {
                 System.out.println("StreamUpdate: " + streamUpdate);
             });
         }, mathTutorAssistantId);
+    }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    public void runThreadWithTools(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
+        // TODO
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    public void runSimpleTest(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
+        // TODO
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    public void runWithTools(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
+        // TODO
     }
 }

@@ -2334,6 +2334,28 @@ public final class AssistantsClient {
 
     }
 
+    // TODO add documentation
+    public IterableStream<StreamUpdate> createRunStream(String threadId, CreateRunOptions createRunOptions) {
+        RequestOptions requestOptions = new RequestOptions();
+        createRunOptions.setStream(true);
+
+        Flux<ByteBuffer> responseStream = createRunWithResponse(threadId, BinaryData.fromObject(createRunOptions), requestOptions)
+            .getValue().toFluxByteBuffer();
+
+        OpenAIServerSentEvents eventStream = new OpenAIServerSentEvents(responseStream);
+        return new IterableStream<>(eventStream.getEvents());
+    }
+
+    // TODO add documentation
+    public IterableStream<StreamUpdate> createRunStream(AssistantThread thread, Assistant assistant) {
+        RequestOptions requestOptions = new RequestOptions();
+        Flux<ByteBuffer> responseStream = createRunWithResponse(thread.getId(), BinaryData.fromObject(new CreateRunOptions(assistant.getId()).setStream(true)),
+            requestOptions).getValue().toFluxByteBuffer();
+
+        OpenAIServerSentEvents eventStream = new OpenAIServerSentEvents(responseStream);
+        return new IterableStream<>(eventStream.getEvents());
+    }
+
     /**
      * Gets a single run step from a thread run.
      *
