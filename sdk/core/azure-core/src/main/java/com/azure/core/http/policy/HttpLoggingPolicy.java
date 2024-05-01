@@ -335,6 +335,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 String contentTypeHeader = response.getHeaderValue(HttpHeaderName.CONTENT_TYPE);
 
                 if (shouldBodyBeLogged(contentTypeHeader, contentLength)) {
+                    // Make sure we buffer the response body to avoid keeping the connection open.
                     final HttpResponse bufferedResponse = response.buffer();
 
                     responseMono = FluxUtil.collectBytesInByteBufferStream(bufferedResponse.getBody()).map(bytes -> {
@@ -374,7 +375,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         @Override
         public HttpResponse logResponseSync(ClientLogger logger, HttpResponseLoggingContext loggingOptions) {
             final LogLevel logLevel = getLogLevel(loggingOptions);
-            final HttpResponse response = loggingOptions.getHttpResponse();
+            HttpResponse response = loggingOptions.getHttpResponse();
 
             if (!logger.canLogAtLevel(logLevel)) {
                 return response;
@@ -390,6 +391,9 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 String contentTypeHeader = response.getHeaderValue(HttpHeaderName.CONTENT_TYPE);
 
                 if (shouldBodyBeLogged(contentTypeHeader, contentLength)) {
+                    // Make sure we buffer the response body to avoid keeping the connection open.
+                    response = response.buffer();
+
                     logBuilder.addKeyValue(LoggingKeys.BODY_KEY, prettyPrintIfNeeded(logger, prettyPrintBody,
                         contentTypeHeader, response.getBodyAsBinaryData().toString()));
                 }
