@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.models;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.util.Arrays;
 
 /**
@@ -35,6 +37,7 @@ public enum CosmosVectorDataType {
         this.overWireValue = overWireValue;
     }
 
+    @JsonValue
     @Override
     public String toString() {
         return this.overWireValue;

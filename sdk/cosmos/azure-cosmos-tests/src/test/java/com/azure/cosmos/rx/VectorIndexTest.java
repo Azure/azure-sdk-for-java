@@ -317,13 +317,13 @@ public class VectorIndexTest extends TestSuiteBase {
     private List<CosmosVectorEmbedding> populateEmbeddings() {
         CosmosVectorEmbedding embedding1 = new CosmosVectorEmbedding();
         embedding1.setPath("/vector1");
-        embedding1.setDataType(CosmosVectorDataType.FLOAT32);
+        embedding1.setDataType(CosmosVectorDataType.INT8);
         embedding1.setDimensions(3L);
         embedding1.setDistanceFunction(CosmosVectorDistanceFunction.COSINE);
 
         CosmosVectorEmbedding embedding2 = new CosmosVectorEmbedding();
         embedding2.setPath("/vector2");
-        embedding2.setDataType(CosmosVectorDataType.INT8);
+        embedding2.setDataType(CosmosVectorDataType.FLOAT32);
         embedding2.setDimensions(3L);
         embedding2.setDistanceFunction(CosmosVectorDistanceFunction.DOT_PRODUCT);
 
@@ -337,9 +337,9 @@ public class VectorIndexTest extends TestSuiteBase {
 
     private String getVectorEmbeddingPolicyAsString() {
         return "{\"vectorEmbeddings\":[" +
-            "{\"path\":\"/vector1\",\"dataType\":\"FLOAT32\",\"dimensions\":3,\"distanceFunction\":\"COSINE\"}," +
-            "{\"path\":\"/vector2\",\"dataType\":\"INT8\",\"dimensions\":3,\"distanceFunction\":\"DOT_PRODUCT\"}," +
-            "{\"path\":\"/vector3\",\"dataType\":\"UINT8\",\"dimensions\":3,\"distanceFunction\":\"EUCLIDEAN\"}" +
+            "{\"path\":\"/vector1\",\"dataType\":\"int8\",\"dimensions\":3,\"distanceFunction\":\"cosine\"}," +
+            "{\"path\":\"/vector2\",\"dataType\":\"float32\",\"dimensions\":3,\"distanceFunction\":\"dotproduct\"}," +
+            "{\"path\":\"/vector3\",\"dataType\":\"uint8\",\"dimensions\":3,\"distanceFunction\":\"euclidean\"}" +
             "]}";
     }
 }
