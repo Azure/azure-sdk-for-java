@@ -397,6 +397,12 @@ public final class CosmosClientTelemetryConfig {
         return this;
     }
     
+    /**
+     * Enables printing query in db.statement attribute. By default, query is not printed.
+     * Users have to option to enable it, but has to beware customer data may be shown.
+     * It's the user's responsiblity to sanitize the query if necessary.
+     * @return current CosmosClientTelemetryConfig
+     */
     public CosmosClientTelemetryConfig showQueryStatement() {
         this.showQueryStatement = true;
         return this;
