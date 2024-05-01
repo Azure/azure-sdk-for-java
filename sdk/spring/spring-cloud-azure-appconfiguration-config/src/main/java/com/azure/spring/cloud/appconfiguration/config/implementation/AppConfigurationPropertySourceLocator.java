@@ -29,6 +29,7 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.properties.
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreTrigger;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.FeatureFlagKeyValueSelector;
+import com.azure.spring.cloud.appconfiguration.config.implementation.properties.FeatureFlagStore;
 
 /**
  * Locates Azure App Configuration Property Sources.
@@ -48,6 +49,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
     private final AppConfigurationReplicaClientFactory clientFactory;
 
     private final AppConfigurationKeyVaultClientFactory keyVaultClientFactory;
+    
+    private final FeatureFlagLoader featureFlagLoader = new FeatureFlagLoader();
     
     private final ReplicaLookUp replicaLookUp;
 
@@ -128,7 +131,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
                     // Reverse in order to add Profile specific properties earlier, and last profile comes first
                     try {
-                        List<AppConfigurationPropertySource> sources = create(client, configStore, profiles);
+                        List<AppConfigurationPropertySource> sources = createSettings(client, configStore, profiles);
+                        createFeatureFlags(client, configStore.getFeatureFlags(), profiles);
                         sourceList.addAll(sources);
 
                         LOGGER.debug("PropertySource context.");
@@ -256,21 +260,10 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
      * @return a list of AppConfigurationPropertySources
      * @throws Exception creating a property source failed
      */
-    private List<AppConfigurationPropertySource> create(AppConfigurationReplicaClient client, ConfigStore store,
+    private List<AppConfigurationPropertySource> createSettings(AppConfigurationReplicaClient client, ConfigStore store,
         List<String> profiles) throws Exception {
         List<AppConfigurationPropertySource> sourceList = new ArrayList<>();
         List<AppConfigurationKeyValueSelector> selects = store.getSelects();
-
-        if (store.getFeatureFlags().getEnabled()) {
-            for (FeatureFlagKeyValueSelector selectedKeys : store.getFeatureFlags().getSelects()) {
-                AppConfigurationFeatureManagementPropertySource propertySource = new AppConfigurationFeatureManagementPropertySource(
-                    store.getEndpoint(), client,
-                    selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles));
-
-                propertySource.initProperties(null);
-                sourceList.add(propertySource);
-            }
-        }
 
         for (AppConfigurationKeyValueSelector selectedKeys : selects) {
             AppConfigurationPropertySource propertySource = null;
@@ -292,6 +285,24 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         return sourceList;
     }
 
+    /**
+     * Creates a new set of AppConfigurationPropertySources, 1 per Label.
+     *
+     * @param client client for connecting to App Configuration
+     * @param store Config Store the PropertySource is being generated from
+     * @param profiles active profiles to be used as labels. it needs to be in the last one.
+     * @return a list of AppConfigurationPropertySources
+     * @throws Exception creating a property source failed
+     */
+    private void createFeatureFlags(AppConfigurationReplicaClient client, FeatureFlagStore store,
+        List<String> profiles) throws Exception {
+        if (store.getEnabled()) {
+            for (FeatureFlagKeyValueSelector selectedKeys : store.getSelects()) {
+                featureFlagLoader.load_feature_flags(client,  selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles));
+            }
+        }
+    }
+    
     private void delayException() {
         Instant currentDate = Instant.now();
         Instant preKillTIme = appProperties.getStartDate().plusSeconds(appProperties.getPrekillTime());
