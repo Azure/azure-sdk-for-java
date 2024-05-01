@@ -97,6 +97,63 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
         return false;
     }
 
+    public boolean tryMarkRegionAsUnavailableForPartitionKeyRange(RxDocumentServiceRequest request, URI failedLocation) {
+
+        if (request == null) {
+            throw new IllegalArgumentException("request cannot be null!");
+        }
+
+        if (request.requestContext == null) {
+
+            if (logger.isDebugEnabled()) {
+                logger.warn("requestContext is null!");
+            }
+
+            return false;
+        }
+
+        PartitionKeyRange partitionKeyRange = request.requestContext.resolvedPartitionKeyRange;
+
+        if (partitionKeyRange == null) {
+            return false;
+        }
+
+        AtomicBoolean isFailoverPossible = new AtomicBoolean(true);
+        AtomicBoolean isFailureThresholdBreached = new AtomicBoolean(false);
+
+        this.partitionKeyRangeToFailoverInfo.compute(partitionKeyRange, (partitionKeyRangeAsKey, partitionKeyRangeFailoverInfoAsVal) -> {
+
+            if (partitionKeyRangeFailoverInfoAsVal == null) {
+                partitionKeyRangeFailoverInfoAsVal = new PartitionLevelLocationUnavailabilityInfo();
+            }
+
+            isFailureThresholdBreached.set(partitionKeyRangeFailoverInfoAsVal.isFailureThresholdBreachedForLocation(request));
+
+            if (isFailureThresholdBreached.get()) {
+
+                UnmodifiableList<URI> applicableEndpoints = request.isReadOnly() ?
+                    this.globalEndpointManager.getApplicableReadEndpoints(request.requestContext.getExcludeRegions()) :
+                    this.globalEndpointManager.getApplicableWriteEndpoints(request.requestContext.getExcludeRegions());
+
+                isFailoverPossible.set(
+                    partitionKeyRangeFailoverInfoAsVal.areLocationsAvailableForPartitionKeyRange(applicableEndpoints));
+            }
+
+            return partitionKeyRangeFailoverInfoAsVal;
+        });
+
+        // set to true if and only if failure threshold exceeded for the region
+        // and if failover is possible
+        // a failover is only possible when there are available regions left to fail over to
+        if (isFailoverPossible.get()) {
+            return true;
+        }
+
+        // no regions to fail over to
+        this.partitionKeyRangeToFailoverInfo.remove(partitionKeyRange);
+        return false;
+    }
+
     @Override
     public boolean tryBookmarkRegionSuccessForPartitionKeyRange(RxDocumentServiceRequest request) {
 

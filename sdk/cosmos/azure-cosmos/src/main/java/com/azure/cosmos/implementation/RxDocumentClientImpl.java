@@ -17,6 +17,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.ThresholdBasedAvailabilityStrategy;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.batch.BatchResponseParser;
@@ -105,6 +106,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -2227,9 +2229,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             if (!isRequestHedged) {
                 if (throwable instanceof OperationCancelledException) {
-                    this.globalPartitionEndpointManagerForCircuitBreaker.tryMarkRegionAsUnavailableForPartitionKeyRange(requestReference.get());
-                } else if (throwable instanceof ServiceUnavailableException) {
-                    this.globalPartitionEndpointManagerForCircuitBreaker.tryMarkRegionAsUnavailableForPartitionKeyRange(requestReference.get());
+
+                    OperationCancelledException exception = Utils.as(throwable, OperationCancelledException.class);
+                    Optional<String> firstContactedRegion = exception.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().stream().findFirst();
+
+                    UnmodifiableList<URI> endpoints = requestReference.get().isReadOnly() ? this.globalEndpointManager.getReadEndpoints() : this.globalEndpointManager.getWriteEndpoints();
+                    List<URI> filteredEndpoint = endpoints.stream().filter(uri -> this.globalEndpointManager.getRegionName(uri, requestReference.get().getOperationType()).equals(firstContactedRegion.get())).collect(Collectors.toList());
+
+                    this.globalPartitionEndpointManagerForCircuitBreaker.tryMarkRegionAsUnavailableForPartitionKeyRange(requestReference.get(), filteredEndpoint.get(0));
                 }
             }
         });
