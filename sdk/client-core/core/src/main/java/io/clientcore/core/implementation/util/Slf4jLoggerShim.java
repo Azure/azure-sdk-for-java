@@ -56,26 +56,20 @@ public class Slf4jLoggerShim {
 
             MethodHandles.Lookup lookup = MethodHandles.publicLookup();
 
-            getLoggerMethodHandle = lookup.findStatic(loggerFactoryClass, "getLogger",
-                MethodType.methodType(loggerClass, String.class));
+            MethodType getLoggerMethodType = MethodType.methodType(loggerClass, String.class);
+            getLoggerMethodHandle = lookup.findStatic(loggerFactoryClass, "getLogger", getLoggerMethodType);
 
-            logVerboseMethodHandle = lookup.findVirtual(loggerClass, "debug",
-                MethodType.methodType(void.class, String.class, Throwable.class));
-            logInfoMethodHandle = lookup.findVirtual(loggerClass, "info",
-                MethodType.methodType(void.class, String.class, Throwable.class));
-            logWarnMethodHandle = lookup.findVirtual(loggerClass, "warn",
-                MethodType.methodType(void.class, String.class, Throwable.class));
-            logErrorMethodHandle = lookup.findVirtual(loggerClass, "error",
-                MethodType.methodType(void.class, String.class, Throwable.class));
+            MethodType logMethodType = MethodType.methodType(void.class, String.class, Throwable.class);
+            logVerboseMethodHandle = lookup.findVirtual(loggerClass, "debug", logMethodType);
+            logInfoMethodHandle = lookup.findVirtual(loggerClass, "info", logMethodType);
+            logWarnMethodHandle = lookup.findVirtual(loggerClass, "warn", logMethodType);
+            logErrorMethodHandle = lookup.findVirtual(loggerClass, "error", logMethodType);
 
-            isVerboseEnabledMethodHandle = lookup.findVirtual(loggerClass, "isDebugEnabled",
-                MethodType.methodType(boolean.class));
-            isInfoEnabledMethodHandle = lookup.findVirtual(loggerClass, "isInfoEnabled",
-                MethodType.methodType(boolean.class));
-            isWarnEnabledMethodHandle = lookup.findVirtual(loggerClass, "isWarnEnabled",
-                MethodType.methodType(boolean.class));
-            isErrorEnabledMethodHandle = lookup.findVirtual(loggerClass, "isErrorEnabled",
-                MethodType.methodType(boolean.class));
+            MethodType isEnabledMethodType = MethodType.methodType(boolean.class);
+            isVerboseEnabledMethodHandle = lookup.findVirtual(loggerClass, "isDebugEnabled", isEnabledMethodType);
+            isInfoEnabledMethodHandle = lookup.findVirtual(loggerClass, "isInfoEnabled", isEnabledMethodType);
+            isWarnEnabledMethodHandle = lookup.findVirtual(loggerClass, "isWarnEnabled", isEnabledMethodType);
+            isErrorEnabledMethodHandle = lookup.findVirtual(loggerClass, "isErrorEnabled", isEnabledMethodType);
         } catch (ClassNotFoundException | IllegalAccessException | NoSuchMethodException e) {
             DEFAULT_LOGGER.log(VERBOSE, "Failed to initialize Slf4jLoggerShim.", e);
 
