@@ -27,16 +27,15 @@ public class ListSettingsByTagFilter {
 
         Map<String, String> tags = new HashMap<>();
         tags.put("release", "{link/id}");
-        ConfigurationSetting setting1 = client.setConfigurationSetting(new ConfigurationSetting().setKey("keyForTag1")
-                .setValue("value1").setTags(tags));
+        client.setConfigurationSetting(new ConfigurationSetting().setKey("keyForTag1").setValue("value1").setTags(tags));
 
         // List settings by tag filter
         PagedIterable<ConfigurationSetting> configurationSettings = client.listConfigurationSettings(new SettingSelector().setTagsFilter("release"));
 
-
-
         configurationSettings.forEach(setting -> {
-            System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
+            System.out.printf("Key: %s, Labels: %s, Value: %s%n", setting.getKey(), setting.getLabel(), setting.getValue());
+            Map<String, String> tags1 = setting.getTags();
+            tags1.forEach((key, value) -> System.out.printf("\tTag: %s, Value: %s%n", key, value));
         });
     }
 }

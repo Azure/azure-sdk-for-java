@@ -3,6 +3,7 @@
 
 package com.azure.data.appconfiguration;
 
+import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.models.LabelSelector;
 
 import java.util.concurrent.TimeUnit;
@@ -18,29 +19,47 @@ public class ListLabelsAsync {
      * @throws InterruptedException when a thread is waiting, sleeping, or otherwise occupied,
      * and the thread is interrupted, either before or during the activity.
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         // The connection string value can be obtained by going to your App Configuration instance in the Azure portal
         // and navigating to "Access Keys" page under the "Settings" section.
-        String connectionString = "endpoint={endpoint_value};id={id_value};secret={secret_value}";
+        String connectionString = Configuration.getGlobalConfiguration().get("AZURE_APPCONFIG_CONNECTION_STRING");;
 
         // Asynchronous sample
         // Instantiate a client that will be used to call the service.
         final ConfigurationAsyncClient client = new ConfigurationClientBuilder()
+                .serviceVersion(ConfigurationServiceVersion.V2023_10_01)
                 .connectionString(connectionString)
                 .buildAsyncClient();
+        // Prepare three settings with different labels
+        client.setConfigurationSetting("prod:prod1", "prod1", "prod1").subscribe(
+                setting -> System.out.printf("Key: %s, Label: %s, Value: %s%n", setting.getKey(), setting.getLabel(), setting.getValue()));
+        TimeUnit.MILLISECONDS.sleep(1000);
 
-        client.listLabels(new LabelSelector().setLabelFilter("prod*"))
-                .subscribe(label -> {
-                    System.out.println("label name = " + label);
-                });
+        client.setConfigurationSetting("prod:prod2", "prod2", "prod2").subscribe(
+                setting -> System.out.printf("Key: %s, Label: %s, Value: %s%n", setting.getKey(), setting.getLabel(), setting.getValue()));
+        TimeUnit.MILLISECONDS.sleep(1000);
 
-        // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
-        // the thread so the program does not end before the send operation is complete. Using .block() instead of
-        // .subscribe() will turn this into a synchronous call.
-        try {
-            TimeUnit.MINUTES.sleep(5);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        client.setConfigurationSetting("prod:prod3", "prod3", "prod3").subscribe(
+                setting -> System.out.printf("Key: %s, Label: %s, Value: %s%n", setting.getKey(), setting.getLabel(), setting.getValue()));
+        TimeUnit.MILLISECONDS.sleep(1000);
+
+
+        // If you want to list all labels in the sources, simply pass selector=null in the request;
+        // If you want to list all labels by wildcard, pass wildcard where AppConfig supports, such as "prod*",
+        // If you want to list labels by exact match, use the exact label name as the filter.
+        System.out.println("List all labels:");
+        client.listLabels(null).subscribe(
+                label -> System.out.println("\tLabel name = " + label.getName()));
+        TimeUnit.MILLISECONDS.sleep(1000);
+
+        System.out.println("List label by exact match:");
+        client.listLabels(new LabelSelector().setLabelFilter("prod2")).subscribe(
+                label -> System.out.println("\tLabel name = " + label.getName()));
+        TimeUnit.MILLISECONDS.sleep(1000);
+
+        System.out.println("List labels by wildcard:");
+        client.listLabels(new LabelSelector().setLabelFilter("prod*")).subscribe(
+                label -> System.out.println("\tLabel name = " + label.getName()));
+        TimeUnit.MILLISECONDS.sleep(1000);
     }
 }
