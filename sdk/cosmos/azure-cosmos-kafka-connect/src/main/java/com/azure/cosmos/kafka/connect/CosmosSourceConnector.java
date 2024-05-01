@@ -61,6 +61,7 @@ import static com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig.va
 public final class CosmosSourceConnector extends SourceConnector implements AutoCloseable {
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosSourceConnector.class);
     private static final String CONNECTOR_NAME = "name";
+    private static final int METADATA_CONTAINER_DEFAULT_RU_CONFIG = 4000;
 
     private CosmosSourceConfig config;
     private CosmosAsyncClient cosmosClient;
@@ -199,7 +200,7 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
             .createContainer(
                 this.config.getMetadataConfig().getStorageName(),
                 "/id",
-                ThroughputProperties.createAutoscaledThroughput(4000));
+                ThroughputProperties.createAutoscaledThroughput(METADATA_CONTAINER_DEFAULT_RU_CONFIG));
     }
 
     private void updateMetadataRecordsInCosmos(MetadataTaskUnit metadataTaskUnit) {
