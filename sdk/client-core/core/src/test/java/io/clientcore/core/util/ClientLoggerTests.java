@@ -378,16 +378,14 @@ public class ClientLoggerTests {
     @MethodSource("provideLogLevels")
     public void logWithGlobalAndLocalContext(LogLevel logLevelToConfigure) {
         ClientLogger logger = setupLogLevelAndGetLogger(logLevelToConfigure, globalContext);
-        logger.atInfo().addKeyValue("local", true).addKeyValue("connectionId", "conflict").log("hello world");
 
-        Map<String, Object> expectedMessage = new HashMap<>();
-        expectedMessage.put("message", "hello world");
-        expectedMessage.put("connectionId", "foo");
-        expectedMessage.put("linkName", 1);
-        expectedMessage.put("anotherKey", "hello world");
-        expectedMessage.put("local", true);
+        logger.atInfo()
+            .addKeyValue("local", true)
+            .addKeyValue("connectionId", "conflict")
+            .log("hello world");
 
         String fullLog = byteArraySteamToString(logCaptureStream);
+
         if (LogLevel.INFORMATIONAL.compareTo(logLevelToConfigure) >= 0) {
             assertTrue(fullLog.contains("\"connectionId\":\"conflict\""));
             assertTrue(fullLog.contains("\"connectionId\":\"foo\""));
@@ -1106,9 +1104,8 @@ public class ClientLoggerTests {
     }
 
     private Map<String, Object> fromJson(String str) {
-        try {
-            JsonReader reader = JsonProviders.createReader(str, new JsonOptions());
-            return reader.readMap(r -> r.readUntyped());
+        try (JsonReader reader = JsonProviders.createReader(str, new JsonOptions())) {
+            return reader.readMap(JsonReader::readUntyped);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
