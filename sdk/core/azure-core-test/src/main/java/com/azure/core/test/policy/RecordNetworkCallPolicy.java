@@ -78,10 +78,15 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
 
     }
 
+    // Package-private method overridden by tests to set a specific TestMode to validate functionality.
+    TestMode getTestMode() {
+        return TestingHelpers.getTestMode();
+    }
+
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         // If TEST_MODE isn't RECORD do not record.
-        if (TestingHelpers.getTestMode() != TestMode.RECORD) {
+        if (getTestMode() != TestMode.RECORD) {
             return next.process();
         }
 
