@@ -153,12 +153,12 @@ public class Slf4jLoggerShim {
             return;
         }
 
-        // We've already included the exception stacktrace in the message, so there's no need to pass it again to the
-        // default logger. We'll still pass it to the SLF4J logger in case the provider wants to do something else
-        // with it.
-        defaultLogger.log(logLevel, message, null);
-
         if (slf4jLogger == null) {
+            // We've already included the exception stacktrace in the message, so there's no need to pass it again to
+            // the default logger. We'll still pass it to the SLF4J logger in case the provider wants to do something
+            // else with it.
+            defaultLogger.log(logLevel, message, null);
+
             return;
         }
 
