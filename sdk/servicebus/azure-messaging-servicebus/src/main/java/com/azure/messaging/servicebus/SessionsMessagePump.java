@@ -167,7 +167,7 @@ final class SessionsMessagePump {
         this.instrumentation = Objects.requireNonNull(instrumentation, "'instrumentation' cannot be null");
         this.sessionAcquirer = Objects.requireNonNull(sessionAcquirer, "'sessionAcquirer' cannot be null");
         this.maxSessionLockRenew = Objects.requireNonNull(maxSessionLockRenew, "'maxSessionLockRenew' cannot be null.");
-        this.sessionIdleTimeout = sessionIdleTimeout;
+        this.sessionIdleTimeout = sessionIdleTimeout != null ? sessionIdleTimeout : retryPolicy.getRetryOptions().getTryTimeout();
         this.maxConcurrentSessions = maxConcurrentSessions;
         this.concurrencyPerSession = concurrencyPerSession;
         this.prefetch = prefetch;

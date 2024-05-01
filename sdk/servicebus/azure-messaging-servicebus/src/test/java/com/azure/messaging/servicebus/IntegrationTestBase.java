@@ -473,10 +473,16 @@ public abstract class IntegrationTestBase extends TestBase {
         if (isV2) {
             configSource.put("com.azure.messaging.servicebus.nonSession.asyncReceive.v2", "true");
             configSource.put("com.azure.messaging.servicebus.nonSession.syncReceive.v2", "true");
+            configSource.put("com.azure.messaging.servicebus.session.processor.asyncReceive.v2", "true");
+            configSource.put("com.azure.messaging.servicebus.session.reactor.asyncReceive.v2", "true");
+            configSource.put("com.azure.messaging.servicebus.session.syncReceive.v2", "true");
             configSource.put("com.azure.messaging.servicebus.sendAndManageRules.v2", "true");
         } else {
             configSource.put("com.azure.messaging.servicebus.nonSession.asyncReceive.v2", "false");
             configSource.put("com.azure.messaging.servicebus.nonSession.syncReceive.v2", "false");
+            configSource.put("com.azure.messaging.servicebus.session.processor.asyncReceive.v2", "false");
+            configSource.put("com.azure.messaging.servicebus.session.reactor.asyncReceive.v2", "false");
+            configSource.put("com.azure.messaging.servicebus.session.syncReceive.v2", "false");
             configSource.put("com.azure.messaging.servicebus.sendAndManageRules.v2", "false");
         }
         return new ConfigurationBuilder(configSource)
