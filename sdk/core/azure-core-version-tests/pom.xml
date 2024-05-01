@@ -113,7 +113,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.24.3</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <version>1.25.0</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
