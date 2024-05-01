@@ -13,6 +13,7 @@ import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.ServerSentEventUtils;
+import io.clientcore.core.util.ServerSentResult;
 import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.http.jdk.httpclient.implementation.InputStreamTimeoutResponseSubscriber;
 import io.clientcore.http.jdk.httpclient.implementation.JdkHttpRequest;
@@ -31,6 +32,8 @@ import static io.clientcore.core.http.models.HttpMethod.HEAD;
 import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
 import static io.clientcore.core.http.models.ResponseBodyMode.IGNORE;
 import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
+import static io.clientcore.core.util.ServerSentEventUtils.attemptRetry;
+import static io.clientcore.core.util.ServerSentEventUtils.isTextEventStreamContentType;
 import static io.clientcore.core.util.ServerSentEventUtils.processTextEventStream;
 import static io.clientcore.http.jdk.httpclient.implementation.JdkHttpUtils.fromJdkHttpHeaders;
 
@@ -137,25 +140,33 @@ class JdkHttpClient implements HttpClient {
 
     private Response<?> toResponse(HttpRequest request, HttpResponse<InputStream> response) throws IOException {
         HttpHeaders coreHeaders = fromJdkHttpHeaders(response.headers());
+        ServerSentResult serverSentResult = null;
 
         String contentType = coreHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
         if (ServerSentEventUtils.isTextEventStreamContentType(contentType)) {
             ServerSentEventListener listener = request.getServerSentEventListener();
-
             if (listener != null) {
-                processTextEventStream(this, request, response.body(), listener);
+                serverSentResult = processTextEventStream(response.body(), listener);
+
+                if (serverSentResult.getException() != null) {
+                    // If an exception occurred while processing the text event stream, emit listener onError.
+                    listener.onError(serverSentResult.getException());
+                }
+
+                // If an error occurred or we want to reconnect
+                if (!Thread.currentThread().isInterrupted() && attemptRetry(serverSentResult, request)) {
+                    return this.send(request);
+                }
             } else {
                 throw LOGGER.logThrowableAsError(new RuntimeException(ServerSentEventUtils.NO_LISTENER_ERROR_MESSAGE));
             }
-
-            return new JdkHttpResponse(request, response.statusCode(), coreHeaders, BinaryData.EMPTY);
         }
 
-        return processResponse(request, response, coreHeaders, contentType);
+        return processResponse(request, response, serverSentResult, coreHeaders, contentType);
     }
 
     private Response<?> processResponse(HttpRequest request, HttpResponse<InputStream> response,
-        HttpHeaders coreHeaders, String contentType) throws IOException {
+        ServerSentResult serverSentResult, HttpHeaders coreHeaders, String contentType) throws IOException {
         RequestOptions options = request.getRequestOptions();
         ResponseBodyMode responseBodyMode = null;
 
@@ -163,6 +174,46 @@ class JdkHttpClient implements HttpClient {
             responseBodyMode = options.getResponseBodyMode();
         }
 
+        responseBodyMode = getResponseBodyMode(request, contentType, responseBodyMode);
+
+        BinaryData body = null;
+
+        switch (responseBodyMode) {
+            case IGNORE:
+                response.body().close();
+
+                break;
+
+            case STREAM:
+                if (isTextEventStreamContentType(contentType)) {
+                    body = createBodyFromServerSentResult(serverSentResult);
+                } else {
+                    body = BinaryData.fromStream(response.body());
+                }
+
+                break;
+
+            case BUFFER:
+            case DESERIALIZE:
+                // Deserialization will occur at a later point in HttpResponseBodyDecoder.
+                if (isTextEventStreamContentType(contentType)) {
+                    body = createBodyFromServerSentResult(serverSentResult);
+                } else {
+                    body = createBodyFromResponse(response);
+                }
+                break;
+
+            default:
+                body = createBodyFromResponse(response);
+                break;
+
+        }
+
+        return new JdkHttpResponse(request, response.statusCode(), coreHeaders, body == null ? BinaryData.EMPTY : body);
+    }
+
+    private static ResponseBodyMode getResponseBodyMode(HttpRequest request, String contentType,
+        ResponseBodyMode responseBodyMode) {
         if (responseBodyMode == null) {
             if (request.getHttpMethod() == HEAD) {
                 responseBodyMode = IGNORE;
@@ -174,28 +225,19 @@ class JdkHttpClient implements HttpClient {
                 responseBodyMode = BUFFER;
             }
         }
+        return responseBodyMode;
+    }
 
-        BinaryData body = null;
+    private BinaryData createBodyFromServerSentResult(ServerSentResult serverSentResult) {
+        String bodyContent = (serverSentResult != null && serverSentResult.getData() != null)
+            ? String.join("\n", serverSentResult.getData())
+            : "";
+        return BinaryData.fromString(bodyContent);
+    }
 
-        switch (responseBodyMode) {
-            case IGNORE:
-                response.body().close();
-
-                break;
-
-            case STREAM:
-                body = BinaryData.fromStream(response.body());
-
-                break;
-
-            case BUFFER:
-            case DESERIALIZE: // Deserialization will occur at a later point in HttpResponseBodyDecoder.
-            default:
-                try (InputStream responseBody = response.body()) { // Use try-with-resources to close the stream.
-                    body = BinaryData.fromBytes(responseBody.readAllBytes());
-                }
+    private BinaryData createBodyFromResponse(HttpResponse<InputStream> response) throws IOException {
+        try (InputStream responseBody = response.body()) { // Use try-with-resources to close the stream.
+            return BinaryData.fromBytes(responseBody.readAllBytes());
         }
-
-        return new JdkHttpResponse(request, response.statusCode(), coreHeaders, body == null ? BinaryData.EMPTY : body);
     }
 }

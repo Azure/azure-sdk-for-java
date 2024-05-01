@@ -30,7 +30,7 @@ public final class ServerSentEventHelper {
      * Type defining the methods to set the non-public properties of an {@link ServerSentEvent} instance.
      */
     public interface ServerSentEventAccessor {
-        void setId(ServerSentEvent serverSentEvent, Long id);
+        void setId(ServerSentEvent serverSentEvent, String id);
         void setEvent(ServerSentEvent serverSentEvent, String event);
         void setData(ServerSentEvent serverSentEvent, List<String> data);
         void setComment(ServerSentEvent serverSentEvent, String comment);
@@ -38,7 +38,7 @@ public final class ServerSentEventHelper {
         Duration getRetryAfter(ServerSentEvent serverSentEvent);
     }
 
-    public static void setId(ServerSentEvent serverSentEvent, Long id) {
+    public static void setId(ServerSentEvent serverSentEvent, String id) {
         accessor.setId(serverSentEvent, id);
     }
 
