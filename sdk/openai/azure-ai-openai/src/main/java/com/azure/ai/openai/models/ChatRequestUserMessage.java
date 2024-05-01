@@ -8,16 +8,17 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.stream.Collectors;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A request chat message representing user input to the assistant.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "role")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "role", defaultImpl = ChatRequestUserMessage.class, visible = true)
 @JsonTypeName("user")
 @Fluent
 public final class ChatRequestUserMessage extends ChatRequestMessage {
@@ -27,7 +28,7 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
      */
     @Generated
     @JsonProperty(value = "content")
-    private BinaryData content;
+    private final BinaryData content;
 
     /*
      * An optional name for the participant.
@@ -74,8 +75,7 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
     }
 
     /**
-     * Get the content property: The contents of the user message, with available input types varying by selected
-     * model.
+     * Get the content property: The contents of the user message, with available input types varying by selected model.
      *
      * @return the content value.
      */
@@ -104,5 +104,24 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
     public ChatRequestUserMessage setName(String name) {
         this.name = name;
         return this;
+    }
+
+    /*
+     * The chat role associated with this message.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "role")
+    private ChatRole role = ChatRole.USER;
+
+    /**
+     * Get the role property: The chat role associated with this message.
+     *
+     * @return the role value.
+     */
+    @Generated
+    @Override
+    public ChatRole getRole() {
+        return this.role;
     }
 }

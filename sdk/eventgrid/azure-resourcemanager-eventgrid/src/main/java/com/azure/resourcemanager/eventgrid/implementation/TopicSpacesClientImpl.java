@@ -485,7 +485,8 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
     private Mono<TopicSpaceInner> createOrUpdateAsync(String resourceGroupName, String namespaceName,
         String topicSpaceName, TopicSpaceInner topicSpaceInfo, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, namespaceName, topicSpaceName, topicSpaceInfo, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

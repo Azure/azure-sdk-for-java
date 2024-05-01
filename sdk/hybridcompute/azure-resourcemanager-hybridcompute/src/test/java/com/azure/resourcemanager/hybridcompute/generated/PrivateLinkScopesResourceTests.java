@@ -13,33 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateLinkScopesResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkScopesResource model =
-            BinaryData
-                .fromString(
-                    "{\"location\":\"lfltka\",\"tags\":{\"akggkfpag\":\"efkdlf\",\"lyls\":\"owpulpq\",\"agxsdszuemps\":\"xkqjnsjervt\",\"nqicvinvkjjxdxrb\":\"zkfzbeyv\"},\"id\":\"ukzclewyhmlwpaz\",\"name\":\"zpof\",\"type\":\"cckwyfzqwhxxbu\"}")
-                .toObject(PrivateLinkScopesResource.class);
-        Assertions.assertEquals("lfltka", model.location());
-        Assertions.assertEquals("efkdlf", model.tags().get("akggkfpag"));
+        PrivateLinkScopesResource model = BinaryData.fromString(
+            "{\"location\":\"jzraehtwdwrf\",\"tags\":{\"cdl\":\"iby\"},\"id\":\"h\",\"name\":\"hfwpracstwit\",\"type\":\"khevxccedc\"}")
+            .toObject(PrivateLinkScopesResource.class);
+        Assertions.assertEquals("jzraehtwdwrf", model.location());
+        Assertions.assertEquals("iby", model.tags().get("cdl"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkScopesResource model =
-            new PrivateLinkScopesResource()
-                .withLocation("lfltka")
-                .withTags(
-                    mapOf(
-                        "akggkfpag",
-                        "efkdlf",
-                        "lyls",
-                        "owpulpq",
-                        "agxsdszuemps",
-                        "xkqjnsjervt",
-                        "nqicvinvkjjxdxrb",
-                        "zkfzbeyv"));
+        PrivateLinkScopesResource model
+            = new PrivateLinkScopesResource().withLocation("jzraehtwdwrf").withTags(mapOf("cdl", "iby"));
         model = BinaryData.fromObject(model).toObject(PrivateLinkScopesResource.class);
-        Assertions.assertEquals("lfltka", model.location());
-        Assertions.assertEquals("efkdlf", model.tags().get("akggkfpag"));
+        Assertions.assertEquals("jzraehtwdwrf", model.location());
+        Assertions.assertEquals("iby", model.tags().get("cdl"));
     }
 
     // Use "Map.of" if available

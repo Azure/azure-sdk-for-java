@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -10,6 +10,20 @@
 
 ### Other Changes
 
+
+## 1.1.1 (2024-04-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-communication-common` from `1.3.1` to version `1.3.2`.
+
+
+## 1.1.0 (2024-04-15)
+
+- General Availability version of PSTN dial-out capability feature. 
 
 ## 1.0.9 (2024-03-20)
 

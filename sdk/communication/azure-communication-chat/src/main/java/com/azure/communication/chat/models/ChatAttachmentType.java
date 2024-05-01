@@ -14,6 +14,9 @@ public final class ChatAttachmentType extends ExpandableStringEnum<ChatAttachmen
     /** Static value image for ChatAttachmentType. */
     public static final ChatAttachmentType IMAGE = fromString("image");
 
+    /** Static value file for ChatAttachmentType. */
+    public static final ChatAttachmentType FILE = fromString("file");
+
     /**
      * Creates or finds a ChatAttachmentType from its string representation.
      *

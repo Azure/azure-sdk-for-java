@@ -14,19 +14,20 @@ public final class DataFlowSourceSettingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataFlowSourceSetting model = BinaryData.fromString(
-            "{\"sourceName\":\"oxgjiuqhibt\",\"rowLimit\":645359051,\"\":{\"ktvqylkmqpzoy\":\"datawjedmurrxxgew\"}}")
+            "{\"sourceName\":\"yyukphaimmo\",\"rowLimit\":1751961807,\"\":{\"mfsvbpav\":\"dataoshbragapyy\",\"kuma\":\"dataopfppdbwnupgah\",\"hqepvufhbzehewh\":\"datajcaacfdmmcpugm\",\"eaclgschorimk\":\"dataqhnlbqnbld\"}}")
             .toObject(DataFlowSourceSetting.class);
-        Assertions.assertEquals("oxgjiuqhibt", model.sourceName());
-        Assertions.assertEquals(645359051, model.rowLimit());
+        Assertions.assertEquals("yyukphaimmo", model.sourceName());
+        Assertions.assertEquals(1751961807, model.rowLimit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataFlowSourceSetting model = new DataFlowSourceSetting().withSourceName("oxgjiuqhibt").withRowLimit(645359051)
+        DataFlowSourceSetting model = new DataFlowSourceSetting().withSourceName("yyukphaimmo")
+            .withRowLimit(1751961807)
             .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(DataFlowSourceSetting.class);
-        Assertions.assertEquals("oxgjiuqhibt", model.sourceName());
-        Assertions.assertEquals(645359051, model.rowLimit());
+        Assertions.assertEquals("yyukphaimmo", model.sourceName());
+        Assertions.assertEquals(1751961807, model.rowLimit());
     }
 
     // Use "Map.of" if available

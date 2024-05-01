@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.frontdoor.generated;
 
-/** Samples for FrontendEndpoints ListByFrontDoor. */
+/**
+ * Samples for FrontendEndpoints ListByFrontDoor.
+ */
 public final class FrontendEndpointsListByFrontDoorSamples {
     /*
      * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorFrontendEndpointList.json
      */
     /**
      * Sample code: List Frontend endpoints in a Front Door.
-     *
+     * 
      * @param manager Entry point to FrontDoorManager.
      */
     public static void listFrontendEndpointsInAFrontDoor(com.azure.resourcemanager.frontdoor.FrontDoorManager manager) {

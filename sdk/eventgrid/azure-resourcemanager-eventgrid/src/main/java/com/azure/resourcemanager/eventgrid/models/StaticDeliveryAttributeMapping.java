@@ -7,16 +7,28 @@ package com.azure.resourcemanager.eventgrid.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.eventgrid.fluent.models.StaticDeliveryAttributeMappingProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Static delivery attribute mapping details.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = StaticDeliveryAttributeMapping.class,
+    visible = true)
 @JsonTypeName("Static")
 @Fluent
 public final class StaticDeliveryAttributeMapping extends DeliveryAttributeMapping {
+    /*
+     * Type of the delivery attribute or header name.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private DeliveryAttributeMappingType type = DeliveryAttributeMappingType.STATIC;
+
     /*
      * Properties of static delivery attribute mapping.
      */
@@ -27,6 +39,16 @@ public final class StaticDeliveryAttributeMapping extends DeliveryAttributeMappi
      * Creates an instance of StaticDeliveryAttributeMapping class.
      */
     public StaticDeliveryAttributeMapping() {
+    }
+
+    /**
+     * Get the type property: Type of the delivery attribute or header name.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public DeliveryAttributeMappingType type() {
+        return this.type;
     }
 
     /**

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.frontdoor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines the Resource ID for a Frontend Endpoint. */
+/**
+ * Defines the Resource ID for a Frontend Endpoint.
+ */
 @Fluent
 public final class FrontendEndpointLink {
     /*
@@ -16,13 +18,15 @@ public final class FrontendEndpointLink {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of FrontendEndpointLink class. */
+    /**
+     * Creates an instance of FrontendEndpointLink class.
+     */
     public FrontendEndpointLink() {
     }
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -31,7 +35,7 @@ public final class FrontendEndpointLink {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the FrontendEndpointLink object itself.
      */
@@ -42,7 +46,7 @@ public final class FrontendEndpointLink {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

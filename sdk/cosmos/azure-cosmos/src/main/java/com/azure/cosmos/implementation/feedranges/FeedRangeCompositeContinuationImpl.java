@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.feedranges;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -30,7 +31,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
 
-import static com.azure.cosmos.BridgeInternal.setProperty;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -99,25 +99,25 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
     public void populatePropertyBag() {
         super.populatePropertyBag();
 
-        setProperty(
-            this,
+        this.set(
             Constants.Properties.FEED_RANGE_COMPOSITE_CONTINUATION_VERSION,
-            FeedRangeContinuationVersions.V1);
+            FeedRangeContinuationVersions.V1,
+            CosmosItemSerializer.DEFAULT_SERIALIZER);
 
-        setProperty(
-            this,
+        this.set(
             Constants.Properties.FEED_RANGE_COMPOSITE_CONTINUATION_RESOURCE_ID,
-            this.getContainerRid());
+            this.getContainerRid(),
+            CosmosItemSerializer.DEFAULT_SERIALIZER);
 
         if (this.compositeContinuationTokens.size() > 0) {
             for (CompositeContinuationToken token : this.compositeContinuationTokens) {
                 ModelBridgeInternal.populatePropertyBag(token);
             }
 
-            setProperty(
-                this,
+            this.set(
                 Constants.Properties.FEED_RANGE_COMPOSITE_CONTINUATION_CONTINUATION,
-                this.compositeContinuationTokens);
+                this.compositeContinuationTokens,
+                CosmosItemSerializer.DEFAULT_SERIALIZER);
         }
 
         if (this.feedRange != null) {

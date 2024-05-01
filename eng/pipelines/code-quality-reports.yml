@@ -118,29 +118,17 @@ jobs:
         displayName: 'Generate Linting Reports'
         condition: and(always(), ne(variables['LintingGoals'], ''))
 
-      - pwsh: |
-          $artifactZip = "$(Build.ArtifactStagingDirectory)/linting-reports.zip"
-          $destinationDir = "$(Build.ArtifactStagingDirectory)/zipped-linting-reports"
-          if (Test-Path $artifactZip) {
-            New-Item -ItemType Directory -Path "$destinationDir"
-            Move-Item -Path $artifactZip -Destination "$destinationDir"
-          }
-        displayName: Move linting report zip to individual directory for artifact upload
-        condition: succeededOrFailed()
-
-      - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+      - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
         parameters:
-          DisplayName: 'Publish Linting Reports'
-          ArtifactPath: '$(Build.ArtifactStagingDirectory)/zipped-linting-reports'
-          ArtifactName: 'linting-reports'
+          ArtifactName: linting-report
+          ArtifactPath: '$(Build.ArtifactStagingDirectory)/troubleshooting/linting-report.zip'
+          CustomCondition: eq(variables['HAS_TROUBLESHOOTING'], 'true')
 
       - pwsh: |
-          if ((Get-ChildItem -Path $(Build.ArtifactStagingDirectory)/linting-reports -Directory | Measure-Object).Count -gt 0) {
-            Write-Host "Linting errors have been found, download the 'linting-reports.zip' artifact to see what was found."
-            exit 1
-          }
+          Write-Host "Linting errors have been found, download the 'linting-report.zip' artifact to see what was found."
+          exit 1
         displayName: 'Fail Pipeline if Linting Reports Exist'
-        condition: and(succeeded(), ne(variables['LintingGoals'], ''))
+        condition: eq(variables['HAS_TROUBLESHOOTING'], 'true')
 
       - task: PowerShell@2
         displayName: Clean up maven local cache

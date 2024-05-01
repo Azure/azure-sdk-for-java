@@ -42,29 +42,25 @@ public class ExecuteDataFlowActivityTypeProperties {
     private ExecuteDataFlowActivityTypePropertiesCompute compute;
 
     /*
-     * Trace level setting used for data flow monitoring output. Supported values are: 'coarse', 'fine', and 'none'.
-     * Type: string (or Expression with resultType string)
+     * Trace level setting used for data flow monitoring output. Supported values are: 'coarse', 'fine', and 'none'. Type: string (or Expression with resultType string)
      */
     @JsonProperty(value = "traceLevel")
     private Object traceLevel;
 
     /*
-     * Continue on error setting used for data flow execution. Enables processing to continue if a sink fails. Type:
-     * boolean (or Expression with resultType boolean)
+     * Continue on error setting used for data flow execution. Enables processing to continue if a sink fails. Type: boolean (or Expression with resultType boolean)
      */
     @JsonProperty(value = "continueOnError")
     private Object continueOnError;
 
     /*
-     * Concurrent run setting used for data flow execution. Allows sinks with the same save order to be processed
-     * concurrently. Type: boolean (or Expression with resultType boolean)
+     * Concurrent run setting used for data flow execution. Allows sinks with the same save order to be processed concurrently. Type: boolean (or Expression with resultType boolean)
      */
     @JsonProperty(value = "runConcurrently")
     private Object runConcurrently;
 
     /*
-     * Specify number of parallel staging for sources applicable to the sink. Type: integer (or Expression with
-     * resultType integer)
+     * Specify number of parallel staging for sources applicable to the sink. Type: integer (or Expression with resultType integer)
      */
     @JsonProperty(value = "sourceStagingConcurrency")
     private Object sourceStagingConcurrency;
@@ -201,8 +197,8 @@ public class ExecuteDataFlowActivityTypeProperties {
     }
 
     /**
-     * Get the runConcurrently property: Concurrent run setting used for data flow execution. Allows sinks with the
-     * same save order to be processed concurrently. Type: boolean (or Expression with resultType boolean).
+     * Get the runConcurrently property: Concurrent run setting used for data flow execution. Allows sinks with the same
+     * save order to be processed concurrently. Type: boolean (or Expression with resultType boolean).
      * 
      * @return the runConcurrently value.
      */
@@ -211,8 +207,8 @@ public class ExecuteDataFlowActivityTypeProperties {
     }
 
     /**
-     * Set the runConcurrently property: Concurrent run setting used for data flow execution. Allows sinks with the
-     * same save order to be processed concurrently. Type: boolean (or Expression with resultType boolean).
+     * Set the runConcurrently property: Concurrent run setting used for data flow execution. Allows sinks with the same
+     * save order to be processed concurrently. Type: boolean (or Expression with resultType boolean).
      * 
      * @param runConcurrently the runConcurrently value to set.
      * @return the ExecuteDataFlowActivityTypeProperties object itself.
@@ -223,8 +219,8 @@ public class ExecuteDataFlowActivityTypeProperties {
     }
 
     /**
-     * Get the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the
-     * sink. Type: integer (or Expression with resultType integer).
+     * Get the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the sink.
+     * Type: integer (or Expression with resultType integer).
      * 
      * @return the sourceStagingConcurrency value.
      */
@@ -233,8 +229,8 @@ public class ExecuteDataFlowActivityTypeProperties {
     }
 
     /**
-     * Set the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the
-     * sink. Type: integer (or Expression with resultType integer).
+     * Set the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the sink.
+     * Type: integer (or Expression with resultType integer).
      * 
      * @param sourceStagingConcurrency the sourceStagingConcurrency value to set.
      * @return the ExecuteDataFlowActivityTypeProperties object itself.
@@ -251,8 +247,9 @@ public class ExecuteDataFlowActivityTypeProperties {
      */
     public void validate() {
         if (dataFlow() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property dataFlow in model ExecuteDataFlowActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataFlow in model ExecuteDataFlowActivityTypeProperties"));
         } else {
             dataFlow().validate();
         }

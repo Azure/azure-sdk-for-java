@@ -5,97 +5,84 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.file.share.models.ShareFileHandleAccessRights;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
-/** A listed Azure Storage handle item. */
-@JacksonXmlRootElement(localName = "Handle")
+/**
+ * A listed Azure Storage handle item.
+ */
 @Fluent
-public final class HandleItem {
+public final class HandleItem implements XmlSerializable<HandleItem> {
     /*
      * XSMB service handle ID
      */
-    @JsonProperty(value = "HandleId", required = true)
     private String handleId;
 
     /*
      * The Path property.
      */
-    @JsonProperty(value = "Path", required = true)
     private StringEncoded path;
 
     /*
      * FileId uniquely identifies the file or directory.
      */
-    @JsonProperty(value = "FileId", required = true)
     private String fileId;
 
     /*
      * ParentId uniquely identifies the parent directory of the object.
      */
-    @JsonProperty(value = "ParentId")
     private String parentId;
 
     /*
      * SMB session ID in context of which the file handle was opened
      */
-    @JsonProperty(value = "SessionId", required = true)
     private String sessionId;
 
     /*
      * Client IP that opened the handle
      */
-    @JsonProperty(value = "ClientIp", required = true)
     private String clientIp;
 
     /*
      * Name of the client machine where the share is being mounted
      */
-    @JsonProperty(value = "ClientName", required = true)
     private String clientName;
 
     /*
      * Time when the session that previously opened the handle has last been reconnected. (UTC)
      */
-    @JsonProperty(value = "OpenTime", required = true)
     private DateTimeRfc1123 openTime;
 
     /*
      * Time handle was last connected to (UTC)
      */
-    @JsonProperty(value = "LastReconnectTime")
     private DateTimeRfc1123 lastReconnectTime;
-
-    private static final class AccessRightListWrapper {
-        @JacksonXmlProperty(localName = "AccessRight")
-        private final List<ShareFileHandleAccessRights> items;
-
-        @JsonCreator
-        private AccessRightListWrapper(
-                @JacksonXmlProperty(localName = "AccessRight") List<ShareFileHandleAccessRights> items) {
-            this.items = items;
-        }
-    }
 
     /*
      * The AccessRightList property.
      */
-    @JsonProperty(value = "AccessRightList")
-    private AccessRightListWrapper accessRightList;
+    private List<ShareFileHandleAccessRights> accessRightList;
 
-    /** Creates an instance of HandleItem class. */
-    public HandleItem() {}
+    /**
+     * Creates an instance of HandleItem class.
+     */
+    public HandleItem() {
+    }
 
     /**
      * Get the handleId property: XSMB service handle ID.
-     *
+     * 
      * @return the handleId value.
      */
     public String getHandleId() {
@@ -104,7 +91,7 @@ public final class HandleItem {
 
     /**
      * Set the handleId property: XSMB service handle ID.
-     *
+     * 
      * @param handleId the handleId value to set.
      * @return the HandleItem object itself.
      */
@@ -115,7 +102,7 @@ public final class HandleItem {
 
     /**
      * Get the path property: The Path property.
-     *
+     * 
      * @return the path value.
      */
     public StringEncoded getPath() {
@@ -124,7 +111,7 @@ public final class HandleItem {
 
     /**
      * Set the path property: The Path property.
-     *
+     * 
      * @param path the path value to set.
      * @return the HandleItem object itself.
      */
@@ -135,7 +122,7 @@ public final class HandleItem {
 
     /**
      * Get the fileId property: FileId uniquely identifies the file or directory.
-     *
+     * 
      * @return the fileId value.
      */
     public String getFileId() {
@@ -144,7 +131,7 @@ public final class HandleItem {
 
     /**
      * Set the fileId property: FileId uniquely identifies the file or directory.
-     *
+     * 
      * @param fileId the fileId value to set.
      * @return the HandleItem object itself.
      */
@@ -155,7 +142,7 @@ public final class HandleItem {
 
     /**
      * Get the parentId property: ParentId uniquely identifies the parent directory of the object.
-     *
+     * 
      * @return the parentId value.
      */
     public String getParentId() {
@@ -164,7 +151,7 @@ public final class HandleItem {
 
     /**
      * Set the parentId property: ParentId uniquely identifies the parent directory of the object.
-     *
+     * 
      * @param parentId the parentId value to set.
      * @return the HandleItem object itself.
      */
@@ -175,7 +162,7 @@ public final class HandleItem {
 
     /**
      * Get the sessionId property: SMB session ID in context of which the file handle was opened.
-     *
+     * 
      * @return the sessionId value.
      */
     public String getSessionId() {
@@ -184,7 +171,7 @@ public final class HandleItem {
 
     /**
      * Set the sessionId property: SMB session ID in context of which the file handle was opened.
-     *
+     * 
      * @param sessionId the sessionId value to set.
      * @return the HandleItem object itself.
      */
@@ -195,7 +182,7 @@ public final class HandleItem {
 
     /**
      * Get the clientIp property: Client IP that opened the handle.
-     *
+     * 
      * @return the clientIp value.
      */
     public String getClientIp() {
@@ -204,7 +191,7 @@ public final class HandleItem {
 
     /**
      * Set the clientIp property: Client IP that opened the handle.
-     *
+     * 
      * @param clientIp the clientIp value to set.
      * @return the HandleItem object itself.
      */
@@ -215,20 +202,20 @@ public final class HandleItem {
 
     /**
      * Get the clientName property: Name of the client machine where the share is being mounted.
-     *
+     * 
      * @return the clientName value.
      */
-    private String getClientName() {
+    public String getClientName() {
         return this.clientName;
     }
 
     /**
      * Set the clientName property: Name of the client machine where the share is being mounted.
-     *
+     * 
      * @param clientName the clientName value to set.
      * @return the HandleItem object itself.
      */
-    private HandleItem setClientName(String clientName) {
+    public HandleItem setClientName(String clientName) {
         this.clientName = clientName;
         return this;
     }
@@ -236,7 +223,7 @@ public final class HandleItem {
     /**
      * Get the openTime property: Time when the session that previously opened the handle has last been reconnected.
      * (UTC).
-     *
+     * 
      * @return the openTime value.
      */
     public OffsetDateTime getOpenTime() {
@@ -249,7 +236,7 @@ public final class HandleItem {
     /**
      * Set the openTime property: Time when the session that previously opened the handle has last been reconnected.
      * (UTC).
-     *
+     * 
      * @param openTime the openTime value to set.
      * @return the HandleItem object itself.
      */
@@ -264,7 +251,7 @@ public final class HandleItem {
 
     /**
      * Get the lastReconnectTime property: Time handle was last connected to (UTC).
-     *
+     * 
      * @return the lastReconnectTime value.
      */
     public OffsetDateTime getLastReconnectTime() {
@@ -276,7 +263,7 @@ public final class HandleItem {
 
     /**
      * Set the lastReconnectTime property: Time handle was last connected to (UTC).
-     *
+     * 
      * @param lastReconnectTime the lastReconnectTime value to set.
      * @return the HandleItem object itself.
      */
@@ -291,24 +278,123 @@ public final class HandleItem {
 
     /**
      * Get the accessRightList property: The AccessRightList property.
-     *
+     * 
      * @return the accessRightList value.
      */
     public List<ShareFileHandleAccessRights> getAccessRightList() {
         if (this.accessRightList == null) {
-            this.accessRightList = new AccessRightListWrapper(new ArrayList<ShareFileHandleAccessRights>());
+            this.accessRightList = new ArrayList<>();
         }
-        return this.accessRightList.items;
+        return this.accessRightList;
     }
 
     /**
      * Set the accessRightList property: The AccessRightList property.
-     *
+     * 
      * @param accessRightList the accessRightList value to set.
      * @return the HandleItem object itself.
      */
     public HandleItem setAccessRightList(List<ShareFileHandleAccessRights> accessRightList) {
-        this.accessRightList = new AccessRightListWrapper(accessRightList);
+        this.accessRightList = accessRightList;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Handle" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        xmlWriter.writeStringElement("HandleId", this.handleId);
+        xmlWriter.writeXml(this.path, "Path");
+        xmlWriter.writeStringElement("FileId", this.fileId);
+        xmlWriter.writeStringElement("ParentId", this.parentId);
+        xmlWriter.writeStringElement("SessionId", this.sessionId);
+        xmlWriter.writeStringElement("ClientIp", this.clientIp);
+        xmlWriter.writeStringElement("ClientName", this.clientName);
+        xmlWriter.writeStringElement("OpenTime", Objects.toString(this.openTime, null));
+        xmlWriter.writeStringElement("LastReconnectTime", Objects.toString(this.lastReconnectTime, null));
+        if (this.accessRightList != null) {
+            xmlWriter.writeStartElement("AccessRightList");
+            for (ShareFileHandleAccessRights element : this.accessRightList) {
+                xmlWriter.writeStringElement("AccessRight", element == null ? null : element.toString());
+            }
+            xmlWriter.writeEndElement();
+        }
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of HandleItem from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of HandleItem if the XmlReader was pointing to an instance of it, or null if it was pointing
+     * to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the HandleItem.
+     */
+    public static HandleItem fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of HandleItem from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     * cases where the model can deserialize from different root element names.
+     * @return An instance of HandleItem if the XmlReader was pointing to an instance of it, or null if it was pointing
+     * to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the HandleItem.
+     */
+    public static HandleItem fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Handle" : rootElementName;
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            HandleItem deserializedHandleItem = new HandleItem();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
+
+                if ("HandleId".equals(elementName.getLocalPart())) {
+                    deserializedHandleItem.handleId = reader.getStringElement();
+                } else if ("Path".equals(elementName.getLocalPart())) {
+                    deserializedHandleItem.path = StringEncoded.fromXml(reader, "Path");
+                } else if ("FileId".equals(elementName.getLocalPart())) {
+                    deserializedHandleItem.fileId = reader.getStringElement();
+                } else if ("ParentId".equals(elementName.getLocalPart())) {
+                    deserializedHandleItem.parentId = reader.getStringElement();
+                } else if ("SessionId".equals(elementName.getLocalPart())) {
+                    deserializedHandleItem.sessionId = reader.getStringElement();
+                } else if ("ClientIp".equals(elementName.getLocalPart())) {
+                    deserializedHandleItem.clientIp = reader.getStringElement();
+                } else if ("ClientName".equals(elementName.getLocalPart())) {
+                    deserializedHandleItem.clientName = reader.getStringElement();
+                } else if ("OpenTime".equals(elementName.getLocalPart())) {
+                    deserializedHandleItem.openTime = reader.getNullableElement(DateTimeRfc1123::new);
+                } else if ("LastReconnectTime".equals(elementName.getLocalPart())) {
+                    deserializedHandleItem.lastReconnectTime = reader.getNullableElement(DateTimeRfc1123::new);
+                } else if ("AccessRightList".equals(elementName.getLocalPart())) {
+                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                        elementName = reader.getElementName();
+                        if ("AccessRight".equals(elementName.getLocalPart())) {
+                            if (deserializedHandleItem.accessRightList == null) {
+                                deserializedHandleItem.accessRightList = new ArrayList<>();
+                            }
+                            deserializedHandleItem.accessRightList
+                                .add(ShareFileHandleAccessRights.fromString(reader.getStringElement()));
+                        } else {
+                            reader.skipElement();
+                        }
+                    }
+                } else {
+                    reader.skipElement();
+                }
+            }
+
+            return deserializedHandleItem;
+        });
     }
 }

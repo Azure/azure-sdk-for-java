@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Chat thread. */
+/**
+ * Chat thread.
+ */
 @Fluent
 public final class ChatThreadProperties {
     /*
@@ -24,31 +26,34 @@ public final class ChatThreadProperties {
     private String topic;
 
     /*
-     * The timestamp when the chat thread was created. The timestamp is in
-     * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * The timestamp when the chat thread was created. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
     @JsonProperty(value = "createdOn", required = true)
     private OffsetDateTime createdOn;
 
     /*
-     * Identifies a participant in Azure Communication services. A participant
-     * is, for example, a phone number or an Azure communication user. This
-     * model is polymorphic: Apart from kind and rawId, at most one further
-     * property may be set which must match the kind enum value.
+     * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an
+     * Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may
+     * be set which must match the kind enum value.
      */
     @JsonProperty(value = "createdByCommunicationIdentifier", required = true)
     private CommunicationIdentifierModel createdByCommunicationIdentifier;
 
     /*
-     * The timestamp when the chat thread was deleted. The timestamp is in
-     * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * The timestamp when the chat thread was deleted. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
     @JsonProperty(value = "deletedOn")
     private OffsetDateTime deletedOn;
 
     /**
+     * Creates an instance of ChatThreadProperties class.
+     */
+    public ChatThreadProperties() {
+    }
+
+    /**
      * Get the id property: Chat thread id.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -57,7 +62,7 @@ public final class ChatThreadProperties {
 
     /**
      * Set the id property: Chat thread id.
-     *
+     * 
      * @param id the id value to set.
      * @return the ChatThreadProperties object itself.
      */
@@ -68,7 +73,7 @@ public final class ChatThreadProperties {
 
     /**
      * Get the topic property: Chat thread topic.
-     *
+     * 
      * @return the topic value.
      */
     public String getTopic() {
@@ -77,7 +82,7 @@ public final class ChatThreadProperties {
 
     /**
      * Set the topic property: Chat thread topic.
-     *
+     * 
      * @param topic the topic value to set.
      * @return the ChatThreadProperties object itself.
      */
@@ -89,7 +94,7 @@ public final class ChatThreadProperties {
     /**
      * Get the createdOn property: The timestamp when the chat thread was created. The timestamp is in RFC3339 format:
      * `yyyy-MM-ddTHH:mm:ssZ`.
-     *
+     * 
      * @return the createdOn value.
      */
     public OffsetDateTime getCreatedOn() {
@@ -99,7 +104,7 @@ public final class ChatThreadProperties {
     /**
      * Set the createdOn property: The timestamp when the chat thread was created. The timestamp is in RFC3339 format:
      * `yyyy-MM-ddTHH:mm:ssZ`.
-     *
+     * 
      * @param createdOn the createdOn value to set.
      * @return the ChatThreadProperties object itself.
      */
@@ -110,9 +115,9 @@ public final class ChatThreadProperties {
 
     /**
      * Get the createdByCommunicationIdentifier property: Identifies a participant in Azure Communication services. A
-     * participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart from
-     * kind and rawId, at most one further property may be set which must match the kind enum value.
-     *
+     * participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart
+     * from kind and rawId, at most one further property may be set which must match the kind enum value.
+     * 
      * @return the createdByCommunicationIdentifier value.
      */
     public CommunicationIdentifierModel getCreatedByCommunicationIdentifier() {
@@ -121,14 +126,14 @@ public final class ChatThreadProperties {
 
     /**
      * Set the createdByCommunicationIdentifier property: Identifies a participant in Azure Communication services. A
-     * participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart from
-     * kind and rawId, at most one further property may be set which must match the kind enum value.
-     *
+     * participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart
+     * from kind and rawId, at most one further property may be set which must match the kind enum value.
+     * 
      * @param createdByCommunicationIdentifier the createdByCommunicationIdentifier value to set.
      * @return the ChatThreadProperties object itself.
      */
-    public ChatThreadProperties setCreatedByCommunicationIdentifier(
-            CommunicationIdentifierModel createdByCommunicationIdentifier) {
+    public ChatThreadProperties
+        setCreatedByCommunicationIdentifier(CommunicationIdentifierModel createdByCommunicationIdentifier) {
         this.createdByCommunicationIdentifier = createdByCommunicationIdentifier;
         return this;
     }
@@ -136,7 +141,7 @@ public final class ChatThreadProperties {
     /**
      * Get the deletedOn property: The timestamp when the chat thread was deleted. The timestamp is in RFC3339 format:
      * `yyyy-MM-ddTHH:mm:ssZ`.
-     *
+     * 
      * @return the deletedOn value.
      */
     public OffsetDateTime getDeletedOn() {
@@ -146,7 +151,7 @@ public final class ChatThreadProperties {
     /**
      * Set the deletedOn property: The timestamp when the chat thread was deleted. The timestamp is in RFC3339 format:
      * `yyyy-MM-ddTHH:mm:ssZ`.
-     *
+     * 
      * @param deletedOn the deletedOn value to set.
      * @return the ChatThreadProperties object itself.
      */

@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.devcenter.fluent.models.GalleryInner;
 
-/** An instance of this class provides access to all the operations defined in GalleriesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GalleriesClient.
+ */
 public interface GalleriesClient {
     /**
      * Lists galleries for a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +32,7 @@ public interface GalleriesClient {
 
     /**
      * Lists galleries for a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -41,12 +43,12 @@ public interface GalleriesClient {
      * @return results of the gallery list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<GalleryInner> listByDevCenter(
-        String resourceGroupName, String devCenterName, Integer top, Context context);
+    PagedIterable<GalleryInner> listByDevCenter(String resourceGroupName, String devCenterName, Integer top,
+        Context context);
 
     /**
      * Gets a gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
@@ -57,12 +59,12 @@ public interface GalleriesClient {
      * @return a gallery along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GalleryInner> getWithResponse(
-        String resourceGroupName, String devCenterName, String galleryName, Context context);
+    Response<GalleryInner> getWithResponse(String resourceGroupName, String devCenterName, String galleryName,
+        Context context);
 
     /**
      * Gets a gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
@@ -76,7 +78,7 @@ public interface GalleriesClient {
 
     /**
      * Creates or updates a gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
@@ -87,12 +89,12 @@ public interface GalleriesClient {
      * @return the {@link SyncPoller} for polling of represents a gallery.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<GalleryInner>, GalleryInner> beginCreateOrUpdate(
-        String resourceGroupName, String devCenterName, String galleryName, GalleryInner body);
+    SyncPoller<PollResult<GalleryInner>, GalleryInner> beginCreateOrUpdate(String resourceGroupName,
+        String devCenterName, String galleryName, GalleryInner body);
 
     /**
      * Creates or updates a gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
@@ -104,12 +106,12 @@ public interface GalleriesClient {
      * @return the {@link SyncPoller} for polling of represents a gallery.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<GalleryInner>, GalleryInner> beginCreateOrUpdate(
-        String resourceGroupName, String devCenterName, String galleryName, GalleryInner body, Context context);
+    SyncPoller<PollResult<GalleryInner>, GalleryInner> beginCreateOrUpdate(String resourceGroupName,
+        String devCenterName, String galleryName, GalleryInner body, Context context);
 
     /**
      * Creates or updates a gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
@@ -124,7 +126,7 @@ public interface GalleriesClient {
 
     /**
      * Creates or updates a gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
@@ -136,12 +138,12 @@ public interface GalleriesClient {
      * @return represents a gallery.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GalleryInner createOrUpdate(
-        String resourceGroupName, String devCenterName, String galleryName, GalleryInner body, Context context);
+    GalleryInner createOrUpdate(String resourceGroupName, String devCenterName, String galleryName, GalleryInner body,
+        Context context);
 
     /**
      * Deletes a gallery resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
@@ -155,7 +157,7 @@ public interface GalleriesClient {
 
     /**
      * Deletes a gallery resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
@@ -166,12 +168,12 @@ public interface GalleriesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String devCenterName, String galleryName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String devCenterName, String galleryName,
+        Context context);
 
     /**
      * Deletes a gallery resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
@@ -184,7 +186,7 @@ public interface GalleriesClient {
 
     /**
      * Deletes a gallery resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.

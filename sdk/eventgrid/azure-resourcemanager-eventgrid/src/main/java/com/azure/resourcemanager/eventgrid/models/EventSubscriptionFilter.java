@@ -29,8 +29,7 @@ public final class EventSubscriptionFilter {
     private String subjectEndsWith;
 
     /*
-     * A list of applicable event types that need to be part of the event subscription. If it is desired to subscribe
-     * to all default event types, set the IncludedEventTypes to null.
+     * A list of applicable event types that need to be part of the event subscription. If it is desired to subscribe to all default event types, set the IncludedEventTypes to null.
      */
     @JsonProperty(value = "includedEventTypes")
     private List<String> includedEventTypes;
@@ -133,8 +132,8 @@ public final class EventSubscriptionFilter {
     }
 
     /**
-     * Get the isSubjectCaseSensitive property: Specifies if the SubjectBeginsWith and SubjectEndsWith properties of
-     * the filter
+     * Get the isSubjectCaseSensitive property: Specifies if the SubjectBeginsWith and SubjectEndsWith properties of the
+     * filter
      * should be compared in a case sensitive manner.
      * 
      * @return the isSubjectCaseSensitive value.
@@ -144,8 +143,8 @@ public final class EventSubscriptionFilter {
     }
 
     /**
-     * Set the isSubjectCaseSensitive property: Specifies if the SubjectBeginsWith and SubjectEndsWith properties of
-     * the filter
+     * Set the isSubjectCaseSensitive property: Specifies if the SubjectBeginsWith and SubjectEndsWith properties of the
+     * filter
      * should be compared in a case sensitive manner.
      * 
      * @param isSubjectCaseSensitive the isSubjectCaseSensitive value to set.

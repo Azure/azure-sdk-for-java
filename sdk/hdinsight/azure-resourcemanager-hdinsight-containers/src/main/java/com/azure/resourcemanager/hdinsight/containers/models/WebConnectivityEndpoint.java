@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Web connectivity endpoint details. */
+/**
+ * Web connectivity endpoint details.
+ */
 @Fluent
 public class WebConnectivityEndpoint {
     /*
@@ -17,13 +19,21 @@ public class WebConnectivityEndpoint {
     @JsonProperty(value = "fqdn", required = true)
     private String fqdn;
 
-    /** Creates an instance of WebConnectivityEndpoint class. */
+    /*
+     * Private web connectivity endpoint. This property will only be returned when enableInternalIngress is true.
+     */
+    @JsonProperty(value = "privateFqdn")
+    private String privateFqdn;
+
+    /**
+     * Creates an instance of WebConnectivityEndpoint class.
+     */
     public WebConnectivityEndpoint() {
     }
 
     /**
      * Get the fqdn property: Web connectivity endpoint.
-     *
+     * 
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -32,7 +42,7 @@ public class WebConnectivityEndpoint {
 
     /**
      * Set the fqdn property: Web connectivity endpoint.
-     *
+     * 
      * @param fqdn the fqdn value to set.
      * @return the WebConnectivityEndpoint object itself.
      */
@@ -42,15 +52,36 @@ public class WebConnectivityEndpoint {
     }
 
     /**
+     * Get the privateFqdn property: Private web connectivity endpoint. This property will only be returned when
+     * enableInternalIngress is true.
+     * 
+     * @return the privateFqdn value.
+     */
+    public String privateFqdn() {
+        return this.privateFqdn;
+    }
+
+    /**
+     * Set the privateFqdn property: Private web connectivity endpoint. This property will only be returned when
+     * enableInternalIngress is true.
+     * 
+     * @param privateFqdn the privateFqdn value to set.
+     * @return the WebConnectivityEndpoint object itself.
+     */
+    public WebConnectivityEndpoint withPrivateFqdn(String privateFqdn) {
+        this.privateFqdn = privateFqdn;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (fqdn() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property fqdn in model WebConnectivityEndpoint"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property fqdn in model WebConnectivityEndpoint"));
         }
     }
 

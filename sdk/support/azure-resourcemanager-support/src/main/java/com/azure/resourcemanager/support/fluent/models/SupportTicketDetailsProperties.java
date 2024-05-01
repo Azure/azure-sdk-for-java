@@ -37,8 +37,7 @@ public final class SupportTicketDetailsProperties {
     private String description;
 
     /*
-     * Each Azure service has its own set of issue categories, also known as problem classification. This parameter is
-     * the unique Id for the type of problem you are experiencing.
+     * Each Azure service has its own set of issue categories, also known as problem classification. This parameter is the unique Id for the type of problem you are experiencing.
      */
     @JsonProperty(value = "problemClassificationId", required = true)
     private String problemClassificationId;
@@ -50,9 +49,7 @@ public final class SupportTicketDetailsProperties {
     private String problemClassificationDisplayName;
 
     /*
-     * A value that indicates the urgency of the case, which in turn determines the response time according to the
-     * service level agreement of the technical support plan you have with Azure. Note: 'Highest critical impact', also
-     * known as the 'Emergency - Severe impact' level in the Azure portal is reserved only for our Premium customers.
+     * A value that indicates the urgency of the case, which in turn determines the response time according to the service level agreement of the technical support plan you have with Azure. Note: 'Highest critical impact', also known as the 'Emergency - Severe impact' level in the Azure portal is reserved only for our Premium customers.
      */
     @JsonProperty(value = "severity", required = true)
     private SeverityLevel severity;
@@ -72,7 +69,7 @@ public final class SupportTicketDetailsProperties {
     /*
      * Advanced diagnostic consent to be updated on the support ticket.
      */
-    @JsonProperty(value = "advancedDiagnosticConsent")
+    @JsonProperty(value = "advancedDiagnosticConsent", required = true)
     private Consent advancedDiagnosticConsent;
 
     /*
@@ -666,20 +663,29 @@ public final class SupportTicketDetailsProperties {
      */
     public void validate() {
         if (description() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property description in model SupportTicketDetailsProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property description in model SupportTicketDetailsProperties"));
         }
         if (problemClassificationId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property problemClassificationId in model SupportTicketDetailsProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property problemClassificationId in model SupportTicketDetailsProperties"));
         }
         if (severity() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property severity in model SupportTicketDetailsProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property severity in model SupportTicketDetailsProperties"));
+        }
+        if (advancedDiagnosticConsent() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property advancedDiagnosticConsent in model SupportTicketDetailsProperties"));
         }
         if (contactDetails() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property contactDetails in model SupportTicketDetailsProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property contactDetails in model SupportTicketDetailsProperties"));
         } else {
             contactDetails().validate();
         }
@@ -690,12 +696,14 @@ public final class SupportTicketDetailsProperties {
             supportEngineer().validate();
         }
         if (title() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property title in model SupportTicketDetailsProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property title in model SupportTicketDetailsProperties"));
         }
         if (serviceId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property serviceId in model SupportTicketDetailsProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property serviceId in model SupportTicketDetailsProperties"));
         }
         if (technicalTicketDetails() != null) {
             technicalTicketDetails().validate();

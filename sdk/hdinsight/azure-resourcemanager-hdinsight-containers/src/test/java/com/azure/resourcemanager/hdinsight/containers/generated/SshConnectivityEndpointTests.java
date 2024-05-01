@@ -11,15 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class SshConnectivityEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SshConnectivityEndpoint model =
-            BinaryData.fromString("{\"endpoint\":\"bglaocqxtccm\"}").toObject(SshConnectivityEndpoint.class);
-        Assertions.assertEquals("bglaocqxtccm", model.endpoint());
+        SshConnectivityEndpoint model
+            = BinaryData.fromString("{\"endpoint\":\"frzpwvlqdqgb\",\"privateSshEndpoint\":\"ylihkaetckt\"}")
+                .toObject(SshConnectivityEndpoint.class);
+        Assertions.assertEquals("frzpwvlqdqgb", model.endpoint());
+        Assertions.assertEquals("ylihkaetckt", model.privateSshEndpoint());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SshConnectivityEndpoint model = new SshConnectivityEndpoint().withEndpoint("bglaocqxtccm");
+        SshConnectivityEndpoint model
+            = new SshConnectivityEndpoint().withEndpoint("frzpwvlqdqgb").withPrivateSshEndpoint("ylihkaetckt");
         model = BinaryData.fromObject(model).toObject(SshConnectivityEndpoint.class);
-        Assertions.assertEquals("bglaocqxtccm", model.endpoint());
+        Assertions.assertEquals("frzpwvlqdqgb", model.endpoint());
+        Assertions.assertEquals("ylihkaetckt", model.privateSshEndpoint());
     }
 }

@@ -7,11 +7,13 @@ package com.azure.resourcemanager.mysqlflexibleserver.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of GetPrivateDnsZoneSuffixes. */
+/**
+ * Resource collection API of GetPrivateDnsZoneSuffixes.
+ */
 public interface GetPrivateDnsZoneSuffixes {
     /**
      * Get private DNS zone suffix in the cloud.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -22,7 +24,7 @@ public interface GetPrivateDnsZoneSuffixes {
 
     /**
      * Get private DNS zone suffix in the cloud.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private DNS zone suffix in the cloud.

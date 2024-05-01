@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.mysqlflexibleserver.generated;
 
-/** Samples for Servers List. */
+/**
+ * Samples for Servers List.
+ */
 public final class ServersListSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServersList.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/ServersList.json
      */
     /**
      * Sample code: List servers in a subscription.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void listServersInASubscription(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
