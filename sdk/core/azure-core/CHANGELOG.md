@@ -1,14 +1,19 @@
 # Release History
 
-## 1.49.0-beta.1 (Unreleased)
+## 1.49.0 (2024-05-01)
 
 ### Features Added
 
-### Breaking Changes
+- Added `SharedExecutorService` which acts as a global thread pool for the SDKs to use. ([#38860](https://github.com/Azure/azure-sdk-for-java/pull/38860))
 
 ### Bugs Fixed
 
+- Fixed an issue where HTTP responses would not be logged if the response body was never consumed. ([#39964](https://github.com/Azure/azure-sdk-for-java/pull/39964))
+
 ### Other Changes
+
+- Added default time to `CloudEvent` to be the current time if not set. ([#39751](https://github.com/Azure/azure-sdk-for-java/pull/39751))
+- Deprecated APIs exposing Jackson types. ([#39563](https://github.com/Azure/azure-sdk-for-java/pull/39563))
 
 ## 1.48.0 (2024-04-05)
 

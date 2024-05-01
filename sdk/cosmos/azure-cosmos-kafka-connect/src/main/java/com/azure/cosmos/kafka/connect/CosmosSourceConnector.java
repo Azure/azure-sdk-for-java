@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.lang.RandomUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
+import com.azure.cosmos.kafka.connect.implementation.CosmosMasterKeyAuthConfig;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosMetadataStorageType;
@@ -25,12 +26,15 @@ import com.azure.cosmos.kafka.connect.implementation.source.MetadataKafkaStorage
 import com.azure.cosmos.kafka.connect.implementation.source.MetadataMonitorThread;
 import com.azure.cosmos.kafka.connect.implementation.source.MetadataTaskUnit;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.ThroughputProperties;
 import org.apache.kafka.common.config.Config;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.common.config.ConfigValue;
 import org.apache.kafka.connect.connector.Task;
+import org.apache.kafka.connect.errors.ConnectException;
 import org.apache.kafka.connect.source.SourceConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -167,11 +171,35 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
                             throw new IllegalStateException("Cosmos Metadata container need to be partitioned by /id");
                         }
                     })
+                    .onErrorResume(throwable -> {
+                        if (KafkaCosmosExceptionsHelper.isNotFoundException(throwable)
+                            && shouldCreateMetadataContainerIfNotExists()) {
+                            return createMetadataContainer();
+                        }
+
+                        return Mono.error(new ConnectException(throwable));
+                    })
                     .block();
                 return new MetadataCosmosStorageManager(metadataContainer);
             default:
                 throw new IllegalArgumentException("Metadata storage type " + this.config.getMetadataConfig().getStorageType() + " is not supported");
         }
+    }
+
+    private boolean shouldCreateMetadataContainerIfNotExists() {
+        // If customer does not create the metadata container ahead of time,
+        // then SDK will create one with default autoScale config only if using masterKey auth.
+        return this.config.getMetadataConfig().getStorageType() == CosmosMetadataStorageType.COSMOS
+            && (this.config.getAccountConfig().getCosmosAuthConfig() instanceof CosmosMasterKeyAuthConfig);
+    }
+
+    private Mono<CosmosContainerResponse> createMetadataContainer() {
+        return this.cosmosClient
+            .getDatabase(this.config.getContainersConfig().getDatabaseName())
+            .createContainer(
+                this.config.getMetadataConfig().getStorageName(),
+                "/id",
+                ThroughputProperties.createAutoscaledThroughput(4000));
     }
 
     private void updateMetadataRecordsInCosmos(MetadataTaskUnit metadataTaskUnit) {

@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Added support to create metadata container if not exists for MasterKey auth - See [PR 39973](https://github.com/Azure/azure-sdk-for-java/pull/39973)
 
 ### 1.0.0-beta.1 (2024-04-26)
 

@@ -11,6 +11,7 @@ import com.azure.core.amqp.models.AmqpMessageBody;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.experimental.util.tracing.LoggingTracerProvider;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.TestContextManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.AsyncCloseable;
@@ -29,7 +30,6 @@ import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.provider.Arguments;
 import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
@@ -37,7 +37,6 @@ import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.Closeable;
-import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.nio.charset.StandardCharsets;
@@ -84,11 +83,10 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     @BeforeEach
-    public void setupTest(TestInfo testInfo) {
-        Method testMethod = testInfo.getTestMethod().orElseGet(null);
-        testName = String.format("%s-%s",
-            testMethod == null ? "unknown" : testMethod.getName(),
-            testInfo.getDisplayName());
+    @Override
+    public void setupTest(TestContextManager testContextManager) {
+        this.testContextManager = testContextManager;
+        testName = testContextManager.getTrackerTestName();
 
         logger.info("========= SET-UP [{}] =========", testName);
 
@@ -100,9 +98,9 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     // These are overridden because we don't use the Interceptor Manager.
-    @Override
     @AfterEach
-    public void teardownTest(TestInfo testInfo) {
+    @Override
+    public void teardownTest() {
         logger.info("========= TEARDOWN [{}] =========", testName);
         afterTest();
 

@@ -5,7 +5,6 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ class EmbeddingEncodingFormat extends ExpandableStringEnum<EmbeddingEncodingForm
      * @return the corresponding EmbeddingEncodingFormat.
      */
     @Generated
-    @JsonCreator
     public static EmbeddingEncodingFormat fromString(String name) {
         return fromString(name, EmbeddingEncodingFormat.class);
     }

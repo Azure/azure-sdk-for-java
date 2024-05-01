@@ -59,22 +59,6 @@ public class ConnectionHandler extends Handler {
      * @param connectionId Identifier for this connection.
      * @param connectionOptions Options used when creating the AMQP connection.
      * @param peerDetails The peer details for this connection.
-     * @deprecated use {@link ConnectionHandler#ConnectionHandler(String, ConnectionOptions, SslPeerDetails, AmqpMetricsProvider)} instead.
-     * @throws NullPointerException if {@code connectionOptions} or {@code peerDetails} is null.
-     */
-    @Deprecated
-    public ConnectionHandler(final String connectionId, final ConnectionOptions connectionOptions,
-        SslPeerDetails peerDetails) {
-        this(connectionId, connectionOptions, peerDetails,
-            new AmqpMetricsProvider(null, connectionOptions.getFullyQualifiedNamespace(), null));
-    }
-
-    /**
-     * Creates a handler that handles proton-j's connection events.
-     *
-     * @param connectionId Identifier for this connection.
-     * @param connectionOptions Options used when creating the AMQP connection.
-     * @param peerDetails The peer details for this connection.
      * @param metricProvider The AMQP metrics provider.
      * @throws NullPointerException if {@code connectionOptions}, {@code peerDetails}, or {@code metricProvider} is
      * null.

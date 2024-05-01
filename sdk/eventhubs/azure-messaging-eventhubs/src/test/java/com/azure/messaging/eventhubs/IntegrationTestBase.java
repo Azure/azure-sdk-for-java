@@ -10,6 +10,7 @@ import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.experimental.util.tracing.LoggingTracerProvider;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.TestContextManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
@@ -19,12 +20,10 @@ import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mockito;
 import reactor.core.Disposable;
 import reactor.core.scheduler.Scheduler;
@@ -103,10 +102,12 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     @BeforeEach
-    public void setupTest(TestInfo testInfo) {
-        System.out.printf("----- [%s]: Performing integration test set-up. -----%n", testInfo.getDisplayName());
+    @Override
+    public void setupTest(TestContextManager testContextManager) {
+        logger.info("----- {}: Performing integration test set-up. -----",
+            testContextManager.getTestPlaybackRecordingName());
 
-        testName = testInfo.getDisplayName();
+        testName = testContextManager.getTrackerTestName();
         skipIfNotRecordMode();
         toClose = new ArrayList<>();
         beforeTest();
@@ -124,9 +125,8 @@ public abstract class IntegrationTestBase extends TestBase {
 
     // These are overridden because we don't use the Interceptor Manager.
     @Override
-    @AfterEach
-    public void teardownTest(TestInfo testInfo) {
-        System.out.printf("----- [%s]: Performing test clean-up. -----%n", testInfo.getDisplayName());
+    public void teardownTest() {
+        logger.info("----- {}: Performing test clean-up. -----", testName);
         afterTest();
 
         logger.info("Disposing of subscriptions, consumers and clients.");
@@ -302,7 +302,7 @@ public abstract class IntegrationTestBase extends TestBase {
             return testEventData;
         }
 
-        System.out.println("--> Adding events to Event Hubs.");
+        logger.info("--> Adding events to Event Hubs.");
         final Map<String, IntegrationTestEventData> integrationData = new HashMap<>();
 
         try (EventHubProducerClient producer = new EventHubClientBuilder()
@@ -312,7 +312,7 @@ public abstract class IntegrationTestBase extends TestBase {
             .buildProducerClient()) {
 
             producer.getPartitionIds().forEach(partitionId -> {
-                System.out.printf("--> Adding events to partition: %s%n", partitionId);
+                logger.info("--> Adding events to partition: " + partitionId);
                 final PartitionProperties partitionProperties = producer.getPartitionProperties(partitionId);
                 final String messageId = UUID.randomUUID().toString();
                 final int numberOfEvents = 15;
@@ -326,7 +326,7 @@ public abstract class IntegrationTestBase extends TestBase {
             });
 
             if (integrationData.size() != NUMBER_OF_PARTITIONS) {
-                System.out.printf("--> WARNING: Number of partitions is different. Expected: %s. Actual %s%n",
+                logger.warning("--> WARNING: Number of partitions is different. Expected: {}. Actual {}",
                     NUMBER_OF_PARTITIONS, integrationData.size());
             }
 

@@ -24,6 +24,16 @@ public final class VectorQueryKind extends ExpandableStringEnum<VectorQueryKind>
     public static final VectorQueryKind TEXT = fromString("text");
 
     /**
+     * Vector query where an url that represents an image value that needs to be vectorized is provided.
+     */
+    public static final VectorQueryKind IMAGE_URL = fromString("imageUrl");
+
+    /**
+     * Vector query where a base 64 encoded binary of an image that needs to be vectorized is provided.
+     */
+    public static final VectorQueryKind IMAGE_BINARY = fromString("imageBinary");
+
+    /**
      * Creates a new instance of VectorQueryKind value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
