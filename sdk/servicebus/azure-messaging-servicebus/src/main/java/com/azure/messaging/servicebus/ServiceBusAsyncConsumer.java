@@ -54,7 +54,7 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
             // This ServiceBusAsyncConsumer is backing ServiceBusReceiverAsyncClient instance (client has instrumentation is enabled).
             final Flux<ServiceBusReceivedMessage> deserialize = messageFlux
                 .map(message -> this.messageSerializer.deserialize(message, ServiceBusReceivedMessage.class));
-            this.processor = new FluxTraceV2(deserialize, instrumentation);
+            this.processor = FluxTraceV2.createForReceivedMessage(deserialize, instrumentation);
         } else {
             // This ServiceBusAsyncConsumer is backing either
             // 1. a ServiceBusReceiverAsyncClient instance (client has no instrumentation enabled)

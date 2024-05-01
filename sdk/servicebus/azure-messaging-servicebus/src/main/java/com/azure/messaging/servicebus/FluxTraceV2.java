@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
+import org.apache.qpid.proton.message.Message;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.BaseSubscriber;
@@ -12,30 +13,38 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxOperator;
 
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * Flux operator that traces receive and process calls
  */
-final class FluxTraceV2 extends FluxOperator<ServiceBusReceivedMessage, ServiceBusReceivedMessage> {
-    private final ServiceBusReceiverInstrumentation instrumentation;
-
-    FluxTraceV2(Flux<? extends ServiceBusReceivedMessage> upstream, ServiceBusReceiverInstrumentation instrumentation) {
-        super(upstream);
-        this.instrumentation = instrumentation;
+final class FluxTraceV2 {
+    public static FluxOperator<ServiceBusReceivedMessage, ServiceBusReceivedMessage> createForReceivedMessage(Flux<? extends ServiceBusReceivedMessage> upstream, ServiceBusReceiverInstrumentation instrumentation) {
+        return new FluxOperator<ServiceBusReceivedMessage, ServiceBusReceivedMessage>(upstream) {
+            @Override
+            public void subscribe(CoreSubscriber<? super ServiceBusReceivedMessage> actual) {
+                Objects.requireNonNull(actual, "'actual' cannot be null.");
+                source.subscribe(new TracingSubscriber<ServiceBusReceivedMessage>(actual, (msg, handler) -> instrumentation.instrumentProcess(msg, ReceiverKind.ASYNC_RECEIVER, handler)));
+            }
+        };
     }
 
-    @Override
-    public void subscribe(CoreSubscriber<? super ServiceBusReceivedMessage> coreSubscriber) {
-        Objects.requireNonNull(coreSubscriber, "'coreSubscriber' cannot be null.");
-
-        source.subscribe(new TracingSubscriber(coreSubscriber, instrumentation));
+    public static FluxOperator<Message, Message> createForMessage(Flux<? extends Message> upstream, ServiceBusReceiverInstrumentation instrumentation) {
+        return new FluxOperator<Message, Message>(upstream) {
+            @Override
+            public void subscribe(CoreSubscriber<? super Message> actual) {
+                Objects.requireNonNull(actual, "'actual' cannot be null.");
+                source.subscribe(new TracingSubscriber<Message>(actual, (msg, handler) -> instrumentation.instrumentProcess(msg, ReceiverKind.ASYNC_RECEIVER, handler)));
+            }
+        };
     }
 
-    private static class TracingSubscriber extends BaseSubscriber<ServiceBusReceivedMessage> {
+    private static class TracingSubscriber<T> extends BaseSubscriber<T> {
 
-        private final CoreSubscriber<? super ServiceBusReceivedMessage> downstream;
-        private final ServiceBusReceiverInstrumentation instrumentation;
-        TracingSubscriber(CoreSubscriber<? super ServiceBusReceivedMessage> downstream, ServiceBusReceiverInstrumentation instrumentation) {
+        private final CoreSubscriber<? super T> downstream;
+        private final BiConsumer<T, Function<T, Throwable>> instrumentation;
+        TracingSubscriber(CoreSubscriber<? super T> downstream, BiConsumer<T, Function<T, Throwable>> instrumentation) {
             this.downstream = downstream;
             this.instrumentation = instrumentation;
         }
@@ -51,8 +60,8 @@ final class FluxTraceV2 extends FluxOperator<ServiceBusReceivedMessage, ServiceB
         }
 
         @Override
-        protected void hookOnNext(ServiceBusReceivedMessage message) {
-            instrumentation.instrumentProcess(message, ReceiverKind.ASYNC_RECEIVER, msg -> {
+        protected void hookOnNext(T message) {
+            instrumentation.accept(message, msg -> {
                 downstream.onNext(msg);
                 return null;
             });
