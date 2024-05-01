@@ -528,7 +528,7 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      *
      * @return the enableSnapshotVirtualDirectoryAccess value.
      */
-    public Boolean isEnableSnapshotVirtualDirectoryAccess() {
+    public Boolean isSnapshotVirtualDirectoryAccessEnabled() {
         return this.enableSnapshotVirtualDirectoryAccess;
     }
 
@@ -538,7 +538,7 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * @param enableSnapshotVirtualDirectoryAccess the enableSnapshotVirtualDirectoryAccess value to set.
      * @return the SharePropertiesInternal object itself.
      */
-    public SharePropertiesInternal setEnableSnapshotVirtualDirectoryAccess(
+    public SharePropertiesInternal setSnapshotVirtualDirectoryAccessEnabled(
             Boolean enableSnapshotVirtualDirectoryAccess) {
         this.enableSnapshotVirtualDirectoryAccess = enableSnapshotVirtualDirectoryAccess;
         return this;

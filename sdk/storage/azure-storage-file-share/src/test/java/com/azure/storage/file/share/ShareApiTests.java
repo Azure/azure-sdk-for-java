@@ -1268,9 +1268,9 @@ public class ShareApiTests extends FileShareTestBase {
         ShareProperties response = primaryShareClient.getProperties();
         assertEquals(protocols.toString(), response.getProtocols().toString());
         if (enableSnapshotVirtualDirectoryAccess == null || enableSnapshotVirtualDirectoryAccess) {
-            assertTrue(response.isEnableSnapshotVirtualDirectoryAccess());
+            assertTrue(response.isSnapshotVirtualDirectoryAccessEnabled());
         } else {
-            assertFalse(response.isEnableSnapshotVirtualDirectoryAccess());
+            assertFalse(response.isSnapshotVirtualDirectoryAccessEnabled());
         }
     }
 
@@ -1300,9 +1300,9 @@ public class ShareApiTests extends FileShareTestBase {
         ShareProperties response = primaryShareClient.getProperties();
         assertEquals(protocols.toString(), response.getProtocols().toString());
         if (enableSnapshotVirtualDirectoryAccess == null || enableSnapshotVirtualDirectoryAccess) {
-            assertTrue(response.isEnableSnapshotVirtualDirectoryAccess());
+            assertTrue(response.isSnapshotVirtualDirectoryAccessEnabled());
         } else {
-            assertFalse(response.isEnableSnapshotVirtualDirectoryAccess());
+            assertFalse(response.isSnapshotVirtualDirectoryAccessEnabled());
         }
     }
 }

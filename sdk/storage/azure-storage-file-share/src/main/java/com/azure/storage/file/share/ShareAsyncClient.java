@@ -2294,7 +2294,7 @@ public class ShareAsyncClient {
             .setAccessTierTransitionState(headers.getXMsAccessTierTransitionState())
             .setProtocols(ModelHelper.parseShareProtocols(headers.getXMsEnabledProtocols()))
             .setRootSquash(headers.getXMsRootSquash())
-            .setEnableSnapshotVirtualDirectoryAccess(headers.isXMsEnableSnapshotVirtualDirectoryAccess());
+            .setSnapshotVirtualDirectoryAccessEnabled(headers.isXMsEnableSnapshotVirtualDirectoryAccess());
 
         return new SimpleResponse<>(response, shareProperties);
     }
