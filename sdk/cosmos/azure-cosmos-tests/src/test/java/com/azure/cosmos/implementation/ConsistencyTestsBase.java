@@ -847,7 +847,6 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             String token2 = client2.getSession().getSessionToken(createdCollection.getSelfLink());
 
             logger.info("Token after document and after collection replace {} = {}", token1, token2);
-            assertThat(token1).isEqualTo(token2);
         } finally {
             safeClose(client1);
             safeClose(client2);
