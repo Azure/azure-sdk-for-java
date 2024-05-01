@@ -55,6 +55,10 @@ import static com.azure.core.http.HttpHeaderName.X_MS_CLIENT_REQUEST_ID;
  * <p>This class is useful when you need to log HTTP traffic for debugging or auditing purposes. It allows you to
  * control the amount of information that is logged, including the URL, headers, and body of requests and responses.</p>
  *
+ * <p><b>NOTE:</b> Enabling body logging (using the {@link HttpLogDetailLevel#BODY BODY} or
+ * {@link HttpLogDetailLevel#BODY_AND_HEADERS BODY_AND_HEADERS} levels) will buffer the response body into memory even
+ * if it is never consumed by your application, possibly impacting performance.</p>
+ *
  * <p><strong>Code sample:</strong></p>
  *
  * <p>In this example, an {@code HttpLogOptions} is created and the log level is set to
