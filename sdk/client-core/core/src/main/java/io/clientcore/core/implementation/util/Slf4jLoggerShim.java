@@ -223,13 +223,13 @@ public class Slf4jLoggerShim {
         try {
             switch (logLevel) {
                 case VERBOSE:
-                    return (boolean) LOGGER_IS_VERBOSE_ENABLED_METHOD_HANDLE.invoke();
+                    return (boolean) LOGGER_IS_VERBOSE_ENABLED_METHOD_HANDLE.invoke(logger);
                 case INFORMATIONAL:
-                    return (boolean) LOGGER_IS_INFO_ENABLED_METHOD_HANDLE.invoke();
+                    return (boolean) LOGGER_IS_INFO_ENABLED_METHOD_HANDLE.invoke(logger);
                 case WARNING:
-                    return (boolean) LOGGER_IS_WARN_ENABLED_METHOD_HANDLE.invoke();
+                    return (boolean) LOGGER_IS_WARN_ENABLED_METHOD_HANDLE.invoke(logger);
                 case ERROR:
-                    return (boolean) LOGGER_IS_ERROR_ENABLED_METHOD_HANDLE.invoke();
+                    return (boolean) LOGGER_IS_ERROR_ENABLED_METHOD_HANDLE.invoke(logger);
                 default:
                     return false;
             }
