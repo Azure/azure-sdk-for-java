@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AzureDatabricksDetltaLakeLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,21 @@ import java.util.Map;
 /**
  * Azure Databricks Delta Lake linked service.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = AzureDatabricksDeltaLakeLinkedService.class,
+    visible = true)
 @JsonTypeName("AzureDatabricksDeltaLake")
 @Fluent
 public final class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
+    /*
+     * Type of linked service.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "AzureDatabricksDeltaLake";
+
     /*
      * Azure Databricks Delta Lake linked service properties.
      */
@@ -31,6 +43,16 @@ public final class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
      * Creates an instance of AzureDatabricksDeltaLakeLinkedService class.
      */
     public AzureDatabricksDeltaLakeLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -131,8 +153,8 @@ public final class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
     }
 
     /**
-     * Get the clusterId property: The id of an existing interactive cluster that will be used for all runs of this
-     * job. Type: string (or Expression with resultType string).
+     * Get the clusterId property: The id of an existing interactive cluster that will be used for all runs of this job.
+     * Type: string (or Expression with resultType string).
      * 
      * @return the clusterId value.
      */
@@ -141,8 +163,8 @@ public final class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
     }
 
     /**
-     * Set the clusterId property: The id of an existing interactive cluster that will be used for all runs of this
-     * job. Type: string (or Expression with resultType string).
+     * Set the clusterId property: The id of an existing interactive cluster that will be used for all runs of this job.
+     * Type: string (or Expression with resultType string).
      * 
      * @param clusterId the clusterId value to set.
      * @return the AzureDatabricksDeltaLakeLinkedService object itself.
@@ -156,8 +178,8 @@ public final class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -166,8 +188,8 @@ public final class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureDatabricksDeltaLakeLinkedService object itself.
@@ -237,8 +259,9 @@ public final class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model AzureDatabricksDeltaLakeLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model AzureDatabricksDeltaLakeLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

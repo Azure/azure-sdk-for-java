@@ -3,6 +3,8 @@
 package com.azure.cosmos.models;
 
 import com.azure.core.util.MetricsOptions;
+import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.CosmosMicrometerMetricsConfig;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
@@ -19,18 +21,25 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
     private MeterRegistry clientMetricRegistry = Metrics.globalRegistry;
-    private EnumSet<MetricCategory> metricCategories = MetricCategory.DEFAULT_CATEGORIES.clone();
-    private EnumSet<TagName> defaultTagNames = TagName.DEFAULT_TAGS.clone();
-    private double[] defaultPercentiles = { 0.95, 0.99 };
-    private boolean defaultShouldPublishHistograms = true;
+    private EnumSet<MetricCategory> metricCategories;
+    private EnumSet<TagName> defaultTagNames;
+    private double[] defaultPercentiles;
+    private boolean defaultShouldPublishHistograms;
 
-    private boolean defaultApplyDiagnosticThresholdsForTransportLevelMeters = false;
+    private boolean defaultApplyDiagnosticThresholdsForTransportLevelMeters;
     private final ConcurrentHashMap<CosmosMetricName, CosmosMeterOptions> effectiveOptions = new ConcurrentHashMap<>();
 
     /**
      * Instantiates new Micrometer-specific Azure Cosmos DB SDK metrics options
      */
     public CosmosMicrometerMetricsOptions() {
+        CosmosMicrometerMetricsConfig metricsConfig = Configs.getMetricsConfig();
+
+        this.setMetricCategoriesFromConfig(metricsConfig.getMetricCategories());
+        this.setTagNamesFromConfig(metricsConfig.getTagNames());
+        this.configureDefaultPercentiles(metricsConfig.getPercentiles());
+        this.defaultShouldPublishHistograms = metricsConfig.getEnableHistograms();
+        this.defaultApplyDiagnosticThresholdsForTransportLevelMeters = metricsConfig.getApplyDiagnosticThresholdsForTransportLevelMeters();
     }
 
     MeterRegistry getClientMetricRegistry() {
@@ -74,6 +83,19 @@ public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
                     newTagNames.add(tagName);
                 }
             }
+
+            this.defaultTagNames = newTagNames;
+        }
+
+        return this;
+    }
+
+    CosmosMicrometerMetricsOptions setTagNamesFromConfig(EnumSet<TagName> tags) {
+        if (tags == null || tags.size() == 0) {
+            this.defaultTagNames = TagName.DEFAULT_TAGS.clone();
+        } else {
+            EnumSet<TagName> newTagNames = TagName.MINIMUM_TAGS.clone();
+            newTagNames.addAll(tags);
 
             this.defaultTagNames = newTagNames;
         }
@@ -179,6 +201,19 @@ public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
                     newMetricCategories.add(metricCategory);
                 }
             }
+
+            this.metricCategories = newMetricCategories;
+        }
+
+        return this;
+    }
+
+    CosmosMicrometerMetricsOptions setMetricCategoriesFromConfig(EnumSet<MetricCategory> categories) {
+        if (categories == null || categories.size() == 0) {
+            this.metricCategories = MetricCategory.DEFAULT_CATEGORIES.clone();
+        } else {
+            EnumSet<MetricCategory> newMetricCategories = MetricCategory.MINIMAL_CATEGORIES.clone();
+            newMetricCategories.addAll(categories);
 
             this.metricCategories = newMetricCategories;
         }
@@ -336,5 +371,17 @@ public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
 
     void configureDefaultTagNames(EnumSet<TagName> newTagNames) {
         this.defaultTagNames = newTagNames;
+    }
+
+    double[] getDefaultPercentiles() {
+        return defaultPercentiles;
+    }
+
+    boolean shouldPublishHistograms() {
+        return defaultShouldPublishHistograms;
+    }
+
+    boolean shouldApplyDiagnosticThresholdsForTransportLevelMeters() {
+        return defaultApplyDiagnosticThresholdsForTransportLevelMeters;
     }
 }

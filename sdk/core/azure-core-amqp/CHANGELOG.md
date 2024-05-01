@@ -4,11 +4,17 @@
 
 ### Features Added
 
+- `WindowedSubscriber` to translate the asynchronous stream of events or messages to `IterableStream` ([38705](https://github.com/Azure/azure-sdk-for-java/pull/38705)).
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `qpid-proton-j-extensions` from `1.2.4` to `1.2.5`.
 
 ## 2.9.3 (2024-04-05)
 

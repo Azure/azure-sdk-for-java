@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ServerBackupInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerBackupInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"backupType\":\"ouajpsqucmpoyf\",\"completedTime\":\"2021-02-06T21:08:58Z\",\"source\":\"gknygjofjddeqs\"},\"id\":\"eupewnwreitjz\",\"name\":\"flusarhmof\",\"type\":\"qhsmyurkdtml\"}")
-                .toObject(ServerBackupInner.class);
+        ServerBackupInner model = BinaryData.fromString(
+            "{\"properties\":{\"backupType\":\"ouajpsqucmpoyf\",\"completedTime\":\"2021-02-06T21:08:58Z\",\"source\":\"gknygjofjddeqs\"},\"id\":\"eupewnwreitjz\",\"name\":\"flusarhmof\",\"type\":\"qhsmyurkdtml\"}")
+            .toObject(ServerBackupInner.class);
         Assertions.assertEquals("ouajpsqucmpoyf", model.backupType());
         Assertions.assertEquals(OffsetDateTime.parse("2021-02-06T21:08:58Z"), model.completedTime());
         Assertions.assertEquals("gknygjofjddeqs", model.source());
@@ -24,11 +22,9 @@ public final class ServerBackupInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerBackupInner model =
-            new ServerBackupInner()
-                .withBackupType("ouajpsqucmpoyf")
-                .withCompletedTime(OffsetDateTime.parse("2021-02-06T21:08:58Z"))
-                .withSource("gknygjofjddeqs");
+        ServerBackupInner model = new ServerBackupInner().withBackupType("ouajpsqucmpoyf")
+            .withCompletedTime(OffsetDateTime.parse("2021-02-06T21:08:58Z"))
+            .withSource("gknygjofjddeqs");
         model = BinaryData.fromObject(model).toObject(ServerBackupInner.class);
         Assertions.assertEquals("ouajpsqucmpoyf", model.backupType());
         Assertions.assertEquals(OffsetDateTime.parse("2021-02-06T21:08:58Z"), model.completedTime());

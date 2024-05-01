@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.CustomEventsTriggerTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,10 +16,17 @@ import java.util.List;
 /**
  * Trigger that runs every time a custom event is received.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = CustomEventsTrigger.class, visible = true)
 @JsonTypeName("CustomEventsTrigger")
 @Fluent
 public final class CustomEventsTrigger extends MultiplePipelineTrigger {
+    /*
+     * Trigger type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "CustomEventsTrigger";
+
     /*
      * Custom Events Trigger properties.
      */
@@ -29,6 +37,16 @@ public final class CustomEventsTrigger extends MultiplePipelineTrigger {
      * Creates an instance of CustomEventsTrigger class.
      */
     public CustomEventsTrigger() {
+    }
+
+    /**
+     * Get the type property: Trigger type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -172,8 +190,9 @@ public final class CustomEventsTrigger extends MultiplePipelineTrigger {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model CustomEventsTrigger"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model CustomEventsTrigger"));
         } else {
             innerTypeProperties().validate();
         }

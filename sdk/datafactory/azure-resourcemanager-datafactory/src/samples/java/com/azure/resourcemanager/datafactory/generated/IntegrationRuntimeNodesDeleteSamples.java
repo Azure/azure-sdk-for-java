@@ -9,8 +9,7 @@ package com.azure.resourcemanager.datafactory.generated;
  */
 public final class IntegrationRuntimeNodesDeleteSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
-     * IntegrationRuntimeNodes_Delete.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimeNodes_Delete.json
      */
     /**
      * Sample code: IntegrationRuntimesNodes_Delete.
@@ -19,7 +18,8 @@ public final class IntegrationRuntimeNodesDeleteSamples {
      */
     public static void
         integrationRuntimesNodesDelete(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimeNodes().deleteWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleIntegrationRuntime", "Node_1", com.azure.core.util.Context.NONE);
+        manager.integrationRuntimeNodes()
+            .deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime", "Node_1",
+                com.azure.core.util.Context.NONE);
     }
 }

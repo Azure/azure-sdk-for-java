@@ -15,42 +15,45 @@ public final class VerifiedPartnerInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VerifiedPartnerInner model = BinaryData.fromString(
-            "{\"properties\":{\"partnerRegistrationImmutableId\":\"7d5d465e-7183-48b8-8a7b-d025d94abf04\",\"organizationName\":\"lgmokzkl\",\"partnerDisplayName\":\"fowtdvrfmvlihcvj\",\"partnerTopicDetails\":{\"description\":\"crjidhftukv\",\"longDescription\":\"xlwyoj\",\"setupUri\":\"qzdkfn\"},\"partnerDestinationDetails\":{\"description\":\"xhafratqx\",\"longDescription\":\"jroumzzn\",\"setupUri\":\"l\"},\"provisioningState\":\"Failed\"},\"id\":\"uzgfxonjtpusl\",\"name\":\"ywpvt\",\"type\":\"otz\"}")
+            "{\"properties\":{\"partnerRegistrationImmutableId\":\"ad4aa056-41d2-4f38-be39-8bc5098c0303\",\"organizationName\":\"lss\",\"partnerDisplayName\":\"jomevtfycnlb\",\"partnerTopicDetails\":{\"description\":\"codkkgj\",\"longDescription\":\"ytssikiz\",\"setupUri\":\"ufqbvntnr\"},\"partnerDestinationDetails\":{\"description\":\"sorhcekx\",\"longDescription\":\"lykmxcpwzvmdo\",\"setupUri\":\"qdtiwlwxlb\"},\"provisioningState\":\"Failed\"},\"id\":\"bazqicqchygtvxby\",\"name\":\"anepubd\",\"type\":\"kxyqvgxiaodetv\"}")
             .toObject(VerifiedPartnerInner.class);
-        Assertions.assertEquals(UUID.fromString("7d5d465e-7183-48b8-8a7b-d025d94abf04"),
+        Assertions.assertEquals(UUID.fromString("ad4aa056-41d2-4f38-be39-8bc5098c0303"),
             model.partnerRegistrationImmutableId());
-        Assertions.assertEquals("lgmokzkl", model.organizationName());
-        Assertions.assertEquals("fowtdvrfmvlihcvj", model.partnerDisplayName());
-        Assertions.assertEquals("crjidhftukv", model.partnerTopicDetails().description());
-        Assertions.assertEquals("xlwyoj", model.partnerTopicDetails().longDescription());
-        Assertions.assertEquals("qzdkfn", model.partnerTopicDetails().setupUri());
-        Assertions.assertEquals("xhafratqx", model.partnerDestinationDetails().description());
-        Assertions.assertEquals("jroumzzn", model.partnerDestinationDetails().longDescription());
-        Assertions.assertEquals("l", model.partnerDestinationDetails().setupUri());
+        Assertions.assertEquals("lss", model.organizationName());
+        Assertions.assertEquals("jomevtfycnlb", model.partnerDisplayName());
+        Assertions.assertEquals("codkkgj", model.partnerTopicDetails().description());
+        Assertions.assertEquals("ytssikiz", model.partnerTopicDetails().longDescription());
+        Assertions.assertEquals("ufqbvntnr", model.partnerTopicDetails().setupUri());
+        Assertions.assertEquals("sorhcekx", model.partnerDestinationDetails().description());
+        Assertions.assertEquals("lykmxcpwzvmdo", model.partnerDestinationDetails().longDescription());
+        Assertions.assertEquals("qdtiwlwxlb", model.partnerDestinationDetails().setupUri());
         Assertions.assertEquals(VerifiedPartnerProvisioningState.FAILED, model.provisioningState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VerifiedPartnerInner model = new VerifiedPartnerInner()
-            .withPartnerRegistrationImmutableId(UUID.fromString("7d5d465e-7183-48b8-8a7b-d025d94abf04"))
-            .withOrganizationName("lgmokzkl").withPartnerDisplayName("fowtdvrfmvlihcvj")
-            .withPartnerTopicDetails(new PartnerDetails().withDescription("crjidhftukv").withLongDescription("xlwyoj")
-                .withSetupUri("qzdkfn"))
-            .withPartnerDestinationDetails(
-                new PartnerDetails().withDescription("xhafratqx").withLongDescription("jroumzzn").withSetupUri("l"))
+            .withPartnerRegistrationImmutableId(UUID.fromString("ad4aa056-41d2-4f38-be39-8bc5098c0303"))
+            .withOrganizationName("lss")
+            .withPartnerDisplayName("jomevtfycnlb")
+            .withPartnerTopicDetails(new PartnerDetails().withDescription("codkkgj")
+                .withLongDescription("ytssikiz")
+                .withSetupUri("ufqbvntnr"))
+            .withPartnerDestinationDetails(new PartnerDetails().withDescription("sorhcekx")
+                .withLongDescription("lykmxcpwzvmdo")
+                .withSetupUri("qdtiwlwxlb"))
             .withProvisioningState(VerifiedPartnerProvisioningState.FAILED);
         model = BinaryData.fromObject(model).toObject(VerifiedPartnerInner.class);
-        Assertions.assertEquals(UUID.fromString("7d5d465e-7183-48b8-8a7b-d025d94abf04"),
+        Assertions.assertEquals(UUID.fromString("ad4aa056-41d2-4f38-be39-8bc5098c0303"),
             model.partnerRegistrationImmutableId());
-        Assertions.assertEquals("lgmokzkl", model.organizationName());
-        Assertions.assertEquals("fowtdvrfmvlihcvj", model.partnerDisplayName());
-        Assertions.assertEquals("crjidhftukv", model.partnerTopicDetails().description());
-        Assertions.assertEquals("xlwyoj", model.partnerTopicDetails().longDescription());
-        Assertions.assertEquals("qzdkfn", model.partnerTopicDetails().setupUri());
-        Assertions.assertEquals("xhafratqx", model.partnerDestinationDetails().description());
-        Assertions.assertEquals("jroumzzn", model.partnerDestinationDetails().longDescription());
-        Assertions.assertEquals("l", model.partnerDestinationDetails().setupUri());
+        Assertions.assertEquals("lss", model.organizationName());
+        Assertions.assertEquals("jomevtfycnlb", model.partnerDisplayName());
+        Assertions.assertEquals("codkkgj", model.partnerTopicDetails().description());
+        Assertions.assertEquals("ytssikiz", model.partnerTopicDetails().longDescription());
+        Assertions.assertEquals("ufqbvntnr", model.partnerTopicDetails().setupUri());
+        Assertions.assertEquals("sorhcekx", model.partnerDestinationDetails().description());
+        Assertions.assertEquals("lykmxcpwzvmdo", model.partnerDestinationDetails().longDescription());
+        Assertions.assertEquals("qdtiwlwxlb", model.partnerDestinationDetails().setupUri());
         Assertions.assertEquals(VerifiedPartnerProvisioningState.FAILED, model.provisioningState());
     }
 }

@@ -17,37 +17,28 @@ public final class PartnerRegistrationsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerRegistrationsListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"partnerRegistrationImmutableId\":\"067eef5c-7fd5-4bbc-a925-400988e9c849\"},\"location\":\"mkdasv\",\"tags\":{\"chxgs\":\"hbxcu\",\"vizbfhfo\":\"boldforobwj\",\"bbelawumuaslzk\":\"vacqpbtuodxesz\"},\"id\":\"rrwoycqucwyhahn\",\"name\":\"mdr\",\"type\":\"ywuhpsvfuur\"},{\"properties\":{\"provisioningState\":\"Updating\",\"partnerRegistrationImmutableId\":\"f96599e3-e937-4924-bf95-96db1fb01e9b\"},\"location\":\"xwlalniexzsrzpg\",\"tags\":{\"chzyvlixqnrk\":\"tybbwwpgda\"},\"id\":\"xkjibnxmy\",\"name\":\"uxswqrntvl\",\"type\":\"ijpstte\"}],\"nextLink\":\"qqpwcyyuf\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"partnerRegistrationImmutableId\":\"c20d298e-645a-4e2c-a4ad-9fd3f8ca88b8\"},\"location\":\"slkvntjl\",\"tags\":{\"oov\":\"jkskyr\",\"znmmaxrizkzobgo\":\"idsxwaabzmifry\",\"ieixynllxe\":\"xlhslnel\"},\"id\":\"wcrojphslhcaw\",\"name\":\"u\",\"type\":\"i\"}],\"nextLink\":\"wfmvigorqjbt\"}")
             .toObject(PartnerRegistrationsListResult.class);
-        Assertions.assertEquals("mkdasv", model.value().get(0).location());
-        Assertions.assertEquals("hbxcu", model.value().get(0).tags().get("chxgs"));
-        Assertions.assertEquals(UUID.fromString("067eef5c-7fd5-4bbc-a925-400988e9c849"),
+        Assertions.assertEquals("slkvntjl", model.value().get(0).location());
+        Assertions.assertEquals("jkskyr", model.value().get(0).tags().get("oov"));
+        Assertions.assertEquals(UUID.fromString("c20d298e-645a-4e2c-a4ad-9fd3f8ca88b8"),
             model.value().get(0).partnerRegistrationImmutableId());
-        Assertions.assertEquals("qqpwcyyuf", model.nextLink());
+        Assertions.assertEquals("wfmvigorqjbt", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PartnerRegistrationsListResult model
-            = new PartnerRegistrationsListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new PartnerRegistrationInner().withLocation("mkdasv")
-                                .withTags(mapOf("chxgs", "hbxcu", "vizbfhfo", "boldforobwj", "bbelawumuaslzk",
-                                    "vacqpbtuodxesz"))
-                                .withPartnerRegistrationImmutableId(
-                                    UUID.fromString("067eef5c-7fd5-4bbc-a925-400988e9c849")),
-                            new PartnerRegistrationInner().withLocation("xwlalniexzsrzpg")
-                                .withTags(mapOf("chzyvlixqnrk", "tybbwwpgda")).withPartnerRegistrationImmutableId(
-                                    UUID.fromString("f96599e3-e937-4924-bf95-96db1fb01e9b"))))
-                .withNextLink("qqpwcyyuf");
+        PartnerRegistrationsListResult model = new PartnerRegistrationsListResult()
+            .withValue(Arrays.asList(new PartnerRegistrationInner().withLocation("slkvntjl")
+                .withTags(mapOf("oov", "jkskyr", "znmmaxrizkzobgo", "idsxwaabzmifry", "ieixynllxe", "xlhslnel"))
+                .withPartnerRegistrationImmutableId(UUID.fromString("c20d298e-645a-4e2c-a4ad-9fd3f8ca88b8"))))
+            .withNextLink("wfmvigorqjbt");
         model = BinaryData.fromObject(model).toObject(PartnerRegistrationsListResult.class);
-        Assertions.assertEquals("mkdasv", model.value().get(0).location());
-        Assertions.assertEquals("hbxcu", model.value().get(0).tags().get("chxgs"));
-        Assertions.assertEquals(UUID.fromString("067eef5c-7fd5-4bbc-a925-400988e9c849"),
+        Assertions.assertEquals("slkvntjl", model.value().get(0).location());
+        Assertions.assertEquals("jkskyr", model.value().get(0).tags().get("oov"));
+        Assertions.assertEquals(UUID.fromString("c20d298e-645a-4e2c-a4ad-9fd3f8ca88b8"),
             model.value().get(0).partnerRegistrationImmutableId());
-        Assertions.assertEquals("qqpwcyyuf", model.nextLink());
+        Assertions.assertEquals("wfmvigorqjbt", model.nextLink());
     }
 
     // Use "Map.of" if available

@@ -5,35 +5,35 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import com.azure.core.util.BinaryData;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The definition of a caller-specified function that chat completions may invoke in response to matching user input.
  */
 @Fluent
-public final class FunctionDefinition {
+public final class FunctionDefinition implements JsonSerializable<FunctionDefinition> {
 
     /*
      * The name of the function to be called.
      */
     @Generated
-    @JsonProperty(value = "name")
-    private String name;
+    private final String name;
 
     /*
      * A description of what the function does. The model will use this description when selecting the function and
      * interpreting its parameters.
      */
     @Generated
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The parameters the function accepts, described as a JSON Schema object.
      */
-    @JsonProperty(value = "parameters")
     private BinaryData parameters;
 
     /**
@@ -42,8 +42,7 @@ public final class FunctionDefinition {
      * @param name the name value to set.
      */
     @Generated
-    @JsonCreator
-    public FunctionDefinition(@JsonProperty(value = "name") String name) {
+    public FunctionDefinition(String name) {
         this.name = name;
     }
 
@@ -101,5 +100,51 @@ public final class FunctionDefinition {
     public FunctionDefinition setParameters(BinaryData parameters) {
         this.parameters = parameters;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeRawField("parameters", this.parameters.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FunctionDefinition from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FunctionDefinition if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FunctionDefinition.
+     */
+    public static FunctionDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String name = null;
+            String description = null;
+            BinaryData parameters = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    description = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    parameters = BinaryData.fromObject(reader.readUntyped());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            FunctionDefinition deserializedFunctionDefinition = new FunctionDefinition(name);
+            deserializedFunctionDefinition.description = description;
+            deserializedFunctionDefinition.parameters = parameters;
+            return deserializedFunctionDefinition;
+        });
     }
 }

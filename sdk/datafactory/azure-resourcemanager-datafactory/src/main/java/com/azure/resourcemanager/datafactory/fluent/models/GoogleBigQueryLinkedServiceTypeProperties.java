@@ -22,23 +22,19 @@ public final class GoogleBigQueryLinkedServiceTypeProperties {
     private Object project;
 
     /*
-     * A comma-separated list of public BigQuery projects to access. Type: string (or Expression with resultType
-     * string).
+     * A comma-separated list of public BigQuery projects to access. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "additionalProjects")
     private Object additionalProjects;
 
     /*
-     * Whether to request access to Google Drive. Allowing Google Drive access enables support for federated tables
-     * that combine BigQuery data with data from Google Drive. The default value is false. Type: string (or Expression
-     * with resultType string).
+     * Whether to request access to Google Drive. Allowing Google Drive access enables support for federated tables that combine BigQuery data with data from Google Drive. The default value is false. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "requestGoogleDriveScope")
     private Object requestGoogleDriveScope;
 
     /*
-     * The OAuth 2.0 authentication mechanism used for authentication. ServiceAuthentication can only be used on
-     * self-hosted IR.
+     * The OAuth 2.0 authentication mechanism used for authentication. ServiceAuthentication can only be used on self-hosted IR.
      */
     @JsonProperty(value = "authenticationType", required = true)
     private GoogleBigQueryAuthenticationType authenticationType;
@@ -50,8 +46,7 @@ public final class GoogleBigQueryLinkedServiceTypeProperties {
     private SecretBase refreshToken;
 
     /*
-     * The client id of the google application used to acquire the refresh token. Type: string (or Expression with
-     * resultType string).
+     * The client id of the google application used to acquire the refresh token. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "clientId")
     private Object clientId;
@@ -63,37 +58,31 @@ public final class GoogleBigQueryLinkedServiceTypeProperties {
     private SecretBase clientSecret;
 
     /*
-     * The service account email ID that is used for ServiceAuthentication and can only be used on self-hosted IR.
-     * Type: string (or Expression with resultType string).
+     * The service account email ID that is used for ServiceAuthentication and can only be used on self-hosted IR. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "email")
     private Object email;
 
     /*
-     * The full path to the .p12 key file that is used to authenticate the service account email address and can only
-     * be used on self-hosted IR. Type: string (or Expression with resultType string).
+     * The full path to the .p12 key file that is used to authenticate the service account email address and can only be used on self-hosted IR. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "keyFilePath")
     private Object keyFilePath;
 
     /*
-     * The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over
-     * SSL. This property can only be set when using SSL on self-hosted IR. The default value is the cacerts.pem file
-     * installed with the IR. Type: string (or Expression with resultType string).
+     * The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default value is the cacerts.pem file installed with the IR. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "trustedCertPath")
     private Object trustedCertPath;
 
     /*
-     * Specifies whether to use a CA certificate from the system trust store or from a specified PEM file. The default
-     * value is false.Type: boolean (or Expression with resultType boolean).
+     * Specifies whether to use a CA certificate from the system trust store or from a specified PEM file. The default value is false.Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "useSystemTrustStore")
     private Object useSystemTrustStore;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
@@ -149,9 +138,9 @@ public final class GoogleBigQueryLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the requestGoogleDriveScope property: Whether to request access to Google Drive. Allowing Google Drive
-     * access enables support for federated tables that combine BigQuery data with data from Google Drive. The default
-     * value is false. Type: string (or Expression with resultType string).
+     * Get the requestGoogleDriveScope property: Whether to request access to Google Drive. Allowing Google Drive access
+     * enables support for federated tables that combine BigQuery data with data from Google Drive. The default value is
+     * false. Type: string (or Expression with resultType string).
      * 
      * @return the requestGoogleDriveScope value.
      */
@@ -160,9 +149,9 @@ public final class GoogleBigQueryLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the requestGoogleDriveScope property: Whether to request access to Google Drive. Allowing Google Drive
-     * access enables support for federated tables that combine BigQuery data with data from Google Drive. The default
-     * value is false. Type: string (or Expression with resultType string).
+     * Set the requestGoogleDriveScope property: Whether to request access to Google Drive. Allowing Google Drive access
+     * enables support for federated tables that combine BigQuery data with data from Google Drive. The default value is
+     * false. Type: string (or Expression with resultType string).
      * 
      * @param requestGoogleDriveScope the requestGoogleDriveScope value to set.
      * @return the GoogleBigQueryLinkedServiceTypeProperties object itself.
@@ -282,9 +271,8 @@ public final class GoogleBigQueryLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the keyFilePath property: The full path to the .p12 key file that is used to authenticate the service
-     * account email address and can only be used on self-hosted IR. Type: string (or Expression with resultType
-     * string).
+     * Get the keyFilePath property: The full path to the .p12 key file that is used to authenticate the service account
+     * email address and can only be used on self-hosted IR. Type: string (or Expression with resultType string).
      * 
      * @return the keyFilePath value.
      */
@@ -293,9 +281,8 @@ public final class GoogleBigQueryLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the keyFilePath property: The full path to the .p12 key file that is used to authenticate the service
-     * account email address and can only be used on self-hosted IR. Type: string (or Expression with resultType
-     * string).
+     * Set the keyFilePath property: The full path to the .p12 key file that is used to authenticate the service account
+     * email address and can only be used on self-hosted IR. Type: string (or Expression with resultType string).
      * 
      * @param keyFilePath the keyFilePath value to set.
      * @return the GoogleBigQueryLinkedServiceTypeProperties object itself.
@@ -306,10 +293,9 @@ public final class GoogleBigQueryLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for
-     * verifying the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR.
-     * The default value is the cacerts.pem file installed with the IR. Type: string (or Expression with resultType
-     * string).
+     * Get the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
+     * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
+     * value is the cacerts.pem file installed with the IR. Type: string (or Expression with resultType string).
      * 
      * @return the trustedCertPath value.
      */
@@ -318,10 +304,9 @@ public final class GoogleBigQueryLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for
-     * verifying the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR.
-     * The default value is the cacerts.pem file installed with the IR. Type: string (or Expression with resultType
-     * string).
+     * Set the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
+     * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
+     * value is the cacerts.pem file installed with the IR. Type: string (or Expression with resultType string).
      * 
      * @param trustedCertPath the trustedCertPath value to set.
      * @return the GoogleBigQueryLinkedServiceTypeProperties object itself.
@@ -354,8 +339,8 @@ public final class GoogleBigQueryLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -364,8 +349,8 @@ public final class GoogleBigQueryLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the GoogleBigQueryLinkedServiceTypeProperties object itself.
@@ -382,12 +367,14 @@ public final class GoogleBigQueryLinkedServiceTypeProperties {
      */
     public void validate() {
         if (project() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property project in model GoogleBigQueryLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property project in model GoogleBigQueryLinkedServiceTypeProperties"));
         }
         if (authenticationType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property authenticationType in model GoogleBigQueryLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property authenticationType in model GoogleBigQueryLinkedServiceTypeProperties"));
         }
         if (refreshToken() != null) {
             refreshToken().validate();

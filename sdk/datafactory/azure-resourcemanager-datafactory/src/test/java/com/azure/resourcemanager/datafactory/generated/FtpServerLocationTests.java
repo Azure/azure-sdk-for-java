@@ -11,13 +11,13 @@ public final class FtpServerLocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FtpServerLocation model = BinaryData.fromString(
-            "{\"type\":\"FtpServerLocation\",\"folderPath\":\"dataxfjwp\",\"fileName\":\"dataktpmbmxb\",\"\":{\"hxsdplaumydmhwe\":\"datawgzzxljb\",\"xydgtokvqbvwg\":\"datajf\"}}")
+            "{\"type\":\"ymgqbgcx\",\"folderPath\":\"dataqxgzxler\",\"fileName\":\"datamerghski\",\"\":{\"jqnvtsdyd\":\"datapupkcbkfukd\",\"yuf\":\"datahkpafyaloowwzizz\",\"ti\":\"dataqz\"}}")
             .toObject(FtpServerLocation.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FtpServerLocation model = new FtpServerLocation().withFolderPath("dataxfjwp").withFileName("dataktpmbmxb");
+        FtpServerLocation model = new FtpServerLocation().withFolderPath("dataqxgzxler").withFileName("datamerghski");
         model = BinaryData.fromObject(model).toObject(FtpServerLocation.class);
     }
 }

@@ -11,11 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.VirtualNetworkSubnetUsageResultInner;
 import com.azure.resourcemanager.mysqlflexibleserver.models.VirtualNetworkSubnetUsageParameter;
 
-/** An instance of this class provides access to all the operations defined in CheckVirtualNetworkSubnetUsagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CheckVirtualNetworkSubnetUsagesClient.
+ */
 public interface CheckVirtualNetworkSubnetUsagesClient {
     /**
      * Get virtual network subnet usage for a given vNet resource id.
-     *
+     * 
      * @param locationName The name of the location.
      * @param parameters The required parameters for creating or updating a server.
      * @param context The context to associate with this operation.
@@ -25,12 +27,12 @@ public interface CheckVirtualNetworkSubnetUsagesClient {
      * @return virtual network subnet usage for a given vNet resource id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualNetworkSubnetUsageResultInner> executeWithResponse(
-        String locationName, VirtualNetworkSubnetUsageParameter parameters, Context context);
+    Response<VirtualNetworkSubnetUsageResultInner> executeWithResponse(String locationName,
+        VirtualNetworkSubnetUsageParameter parameters, Context context);
 
     /**
      * Get virtual network subnet usage for a given vNet resource id.
-     *
+     * 
      * @param locationName The name of the location.
      * @param parameters The required parameters for creating or updating a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

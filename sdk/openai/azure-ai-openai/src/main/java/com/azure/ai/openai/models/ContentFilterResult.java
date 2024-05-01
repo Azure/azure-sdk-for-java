@@ -5,42 +5,29 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Information about filtered content severity level and if it has been filtered or not.
  */
 @Immutable
-public final class ContentFilterResult {
+public final class ContentFilterResult implements JsonSerializable<ContentFilterResult> {
 
     /*
      * Ratings for the intensity and risk level of filtered content.
      */
     @Generated
-    @JsonProperty(value = "severity")
-    private ContentFilterSeverity severity;
+    private final ContentFilterSeverity severity;
 
     /*
      * A value indicating whether or not the content has been filtered.
      */
     @Generated
-    @JsonProperty(value = "filtered")
-    private boolean filtered;
-
-    /**
-     * Creates an instance of ContentFilterResult class.
-     *
-     * @param severity the severity value to set.
-     * @param filtered the filtered value to set.
-     */
-    @Generated
-    @JsonCreator
-    private ContentFilterResult(@JsonProperty(value = "severity") ContentFilterSeverity severity,
-        @JsonProperty(value = "filtered") boolean filtered) {
-        this.severity = severity;
-        this.filtered = filtered;
-    }
+    private final boolean filtered;
 
     /**
      * Get the severity property: Ratings for the intensity and risk level of filtered content.
@@ -60,5 +47,58 @@ public final class ContentFilterResult {
     @Generated
     public boolean isFiltered() {
         return this.filtered;
+    }
+
+    /**
+     * Creates an instance of ContentFilterResult class.
+     *
+     * @param filtered the filtered value to set.
+     * @param severity the severity value to set.
+     */
+    @Generated
+    private ContentFilterResult(boolean filtered, ContentFilterSeverity severity) {
+        this.filtered = filtered;
+        this.severity = severity;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("filtered", this.filtered);
+        jsonWriter.writeStringField("severity", this.severity == null ? null : this.severity.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContentFilterResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContentFilterResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ContentFilterResult.
+     */
+    @Generated
+    public static ContentFilterResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean filtered = false;
+            ContentFilterSeverity severity = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("filtered".equals(fieldName)) {
+                    filtered = reader.getBoolean();
+                } else if ("severity".equals(fieldName)) {
+                    severity = ContentFilterSeverity.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new ContentFilterResult(filtered, severity);
+        });
     }
 }

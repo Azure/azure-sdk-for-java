@@ -187,7 +187,7 @@ public final class TopicInner extends Resource {
     }
 
     /**
-     * Get the privateEndpointConnections property: The privateEndpointConnections property.
+     * Get the privateEndpointConnections property: List of private endpoint connections.
      * 
      * @return the privateEndpointConnections value.
      */
@@ -241,8 +241,7 @@ public final class TopicInner extends Resource {
     }
 
     /**
-     * Get the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish to this
-     * topic.
+     * Get the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish to this topic.
      * 
      * @return the minimumTlsVersionAllowed value.
      */
@@ -251,8 +250,7 @@ public final class TopicInner extends Resource {
     }
 
     /**
-     * Set the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish to this
-     * topic.
+     * Set the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish to this topic.
      * 
      * @param minimumTlsVersionAllowed the minimumTlsVersionAllowed value to set.
      * @return the TopicInner object itself.
@@ -327,8 +325,8 @@ public final class TopicInner extends Resource {
     }
 
     /**
-     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it
-     * is enabled.
+     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
+     * enabled.
      * You can further restrict to specific IPs by configuring &lt;seealso
      * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.TopicProperties.InboundIpRules" /&gt;.
      * 
@@ -339,8 +337,8 @@ public final class TopicInner extends Resource {
     }
 
     /**
-     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it
-     * is enabled.
+     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
+     * enabled.
      * You can further restrict to specific IPs by configuring &lt;seealso
      * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.TopicProperties.InboundIpRules" /&gt;.
      * 
@@ -356,8 +354,8 @@ public final class TopicInner extends Resource {
     }
 
     /**
-     * Get the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs.
-     * Note: These are considered only if PublicNetworkAccess is enabled.
+     * Get the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs. Note:
+     * These are considered only if PublicNetworkAccess is enabled.
      * 
      * @return the inboundIpRules value.
      */
@@ -366,8 +364,8 @@ public final class TopicInner extends Resource {
     }
 
     /**
-     * Set the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs.
-     * Note: These are considered only if PublicNetworkAccess is enabled.
+     * Set the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs. Note:
+     * These are considered only if PublicNetworkAccess is enabled.
      * 
      * @param inboundIpRules the inboundIpRules value to set.
      * @return the TopicInner object itself.

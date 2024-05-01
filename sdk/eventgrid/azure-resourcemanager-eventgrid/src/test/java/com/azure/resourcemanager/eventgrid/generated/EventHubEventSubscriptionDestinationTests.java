@@ -14,19 +14,22 @@ public final class EventHubEventSubscriptionDestinationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EventHubEventSubscriptionDestination model = BinaryData.fromString(
-            "{\"endpointType\":\"EventHub\",\"properties\":{\"resourceId\":\"pypefcpczshnuq\",\"deliveryAttributeMappings\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"zupfkhuytuszxhm\"}]}}")
+            "{\"endpointType\":\"EventHub\",\"properties\":{\"resourceId\":\"avlyttaaknwf\",\"deliveryAttributeMappings\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"sm\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"dujdigatoleksc\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"tnanqimwb\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"pdcldpka\"}]}}")
             .toObject(EventHubEventSubscriptionDestination.class);
-        Assertions.assertEquals("pypefcpczshnuq", model.resourceId());
-        Assertions.assertEquals("zupfkhuytuszxhm", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("avlyttaaknwf", model.resourceId());
+        Assertions.assertEquals("sm", model.deliveryAttributeMappings().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EventHubEventSubscriptionDestination model
-            = new EventHubEventSubscriptionDestination().withResourceId("pypefcpczshnuq").withDeliveryAttributeMappings(
-                Arrays.asList(new DeliveryAttributeMapping().withName("zupfkhuytuszxhm")));
+            = new EventHubEventSubscriptionDestination().withResourceId("avlyttaaknwf")
+                .withDeliveryAttributeMappings(Arrays.asList(new DeliveryAttributeMapping().withName("sm"),
+                    new DeliveryAttributeMapping().withName("dujdigatoleksc"),
+                    new DeliveryAttributeMapping().withName("tnanqimwb"),
+                    new DeliveryAttributeMapping().withName("pdcldpka")));
         model = BinaryData.fromObject(model).toObject(EventHubEventSubscriptionDestination.class);
-        Assertions.assertEquals("pypefcpczshnuq", model.resourceId());
-        Assertions.assertEquals("zupfkhuytuszxhm", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("avlyttaaknwf", model.resourceId());
+        Assertions.assertEquals("sm", model.deliveryAttributeMappings().get(0).name());
     }
 }

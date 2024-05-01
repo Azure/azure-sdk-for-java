@@ -7,16 +7,28 @@ package com.azure.resourcemanager.eventgrid.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.eventgrid.fluent.models.StorageBlobDeadLetterDestinationProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Information about the storage blob based dead letter destination.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "endpointType",
+    defaultImpl = StorageBlobDeadLetterDestination.class,
+    visible = true)
 @JsonTypeName("StorageBlob")
 @Fluent
 public final class StorageBlobDeadLetterDestination extends DeadLetterDestination {
+    /*
+     * Type of the endpoint for the dead letter destination
+     */
+    @JsonTypeId
+    @JsonProperty(value = "endpointType", required = true)
+    private DeadLetterEndPointType endpointType = DeadLetterEndPointType.STORAGE_BLOB;
+
     /*
      * The properties of the Storage Blob based deadletter destination
      */
@@ -27,6 +39,16 @@ public final class StorageBlobDeadLetterDestination extends DeadLetterDestinatio
      * Creates an instance of StorageBlobDeadLetterDestination class.
      */
     public StorageBlobDeadLetterDestination() {
+    }
+
+    /**
+     * Get the endpointType property: Type of the endpoint for the dead letter destination.
+     * 
+     * @return the endpointType value.
+     */
+    @Override
+    public DeadLetterEndPointType endpointType() {
+        return this.endpointType;
     }
 
     /**

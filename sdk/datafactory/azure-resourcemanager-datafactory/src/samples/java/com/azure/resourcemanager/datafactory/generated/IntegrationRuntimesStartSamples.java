@@ -9,8 +9,7 @@ package com.azure.resourcemanager.datafactory.generated;
  */
 public final class IntegrationRuntimesStartSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
-     * IntegrationRuntimes_Start.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_Start.json
      */
     /**
      * Sample code: IntegrationRuntimes_Start.
@@ -18,7 +17,8 @@ public final class IntegrationRuntimesStartSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void integrationRuntimesStart(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimes().start("exampleResourceGroup", "exampleFactoryName",
-            "exampleManagedIntegrationRuntime", com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes()
+            .start("exampleResourceGroup", "exampleFactoryName", "exampleManagedIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }

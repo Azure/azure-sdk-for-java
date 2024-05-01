@@ -8,7 +8,9 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.fluent.models.ProjectInner;
+import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.devcenter.models.Project;
+import com.azure.resourcemanager.devcenter.models.ProjectCatalogSettings;
 import com.azure.resourcemanager.devcenter.models.ProjectUpdate;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import java.util.Collections;
@@ -44,6 +46,10 @@ public final class ProjectImpl implements Project, Project.Definition, Project.U
         }
     }
 
+    public ManagedServiceIdentity identity() {
+        return this.innerModel().identity();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
     }
@@ -70,6 +76,10 @@ public final class ProjectImpl implements Project, Project.Definition, Project.U
 
     public String displayName() {
         return this.innerModel().displayName();
+    }
+
+    public ProjectCatalogSettings catalogSettings() {
+        return this.innerModel().catalogSettings();
     }
 
     public Region region() {
@@ -104,20 +114,16 @@ public final class ProjectImpl implements Project, Project.Definition, Project.U
     }
 
     public Project create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProjects()
-                .createOrUpdate(resourceGroupName, projectName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getProjects()
+            .createOrUpdate(resourceGroupName, projectName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Project create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProjects()
-                .createOrUpdate(resourceGroupName, projectName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getProjects()
+            .createOrUpdate(resourceGroupName, projectName, this.innerModel(), context);
         return this;
     }
 
@@ -133,44 +139,38 @@ public final class ProjectImpl implements Project, Project.Definition, Project.U
     }
 
     public Project apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProjects()
-                .update(resourceGroupName, projectName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getProjects()
+            .update(resourceGroupName, projectName, updateBody, Context.NONE);
         return this;
     }
 
     public Project apply(Context context) {
-        this.innerObject =
-            serviceManager.serviceClient().getProjects().update(resourceGroupName, projectName, updateBody, context);
+        this.innerObject
+            = serviceManager.serviceClient().getProjects().update(resourceGroupName, projectName, updateBody, context);
         return this;
     }
 
     ProjectImpl(ProjectInner innerObject, com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.projectName = Utils.getValueFromIdByName(innerObject.id(), "projects");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.projectName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "projects");
     }
 
     public Project refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProjects()
-                .getByResourceGroupWithResponse(resourceGroupName, projectName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProjects()
+            .getByResourceGroupWithResponse(resourceGroupName, projectName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Project refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProjects()
-                .getByResourceGroupWithResponse(resourceGroupName, projectName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProjects()
+            .getByResourceGroupWithResponse(resourceGroupName, projectName, context)
+            .getValue();
         return this;
     }
 
@@ -190,6 +190,16 @@ public final class ProjectImpl implements Project, Project.Definition, Project.U
             return this;
         } else {
             this.updateBody.withTags(tags);
+            return this;
+        }
+    }
+
+    public ProjectImpl withIdentity(ManagedServiceIdentity identity) {
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateBody.withIdentity(identity);
             return this;
         }
     }
@@ -230,6 +240,16 @@ public final class ProjectImpl implements Project, Project.Definition, Project.U
             return this;
         } else {
             this.updateBody.withDisplayName(displayName);
+            return this;
+        }
+    }
+
+    public ProjectImpl withCatalogSettings(ProjectCatalogSettings catalogSettings) {
+        if (isInCreateMode()) {
+            this.innerModel().withCatalogSettings(catalogSettings);
+            return this;
+        } else {
+            this.updateBody.withCatalogSettings(catalogSettings);
             return this;
         }
     }

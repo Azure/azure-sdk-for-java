@@ -78,8 +78,8 @@ public final class DomainEventSubscriptionsImpl implements DomainEventSubscripti
 
     public EventSubscription createOrUpdate(String resourceGroupName, String domainName, String eventSubscriptionName,
         EventSubscriptionInner eventSubscriptionInfo) {
-        EventSubscriptionInner inner = this.serviceClient().createOrUpdate(resourceGroupName, domainName,
-            eventSubscriptionName, eventSubscriptionInfo);
+        EventSubscriptionInner inner = this.serviceClient()
+            .createOrUpdate(resourceGroupName, domainName, eventSubscriptionName, eventSubscriptionInfo);
         if (inner != null) {
             return new EventSubscriptionImpl(inner, this.manager());
         } else {
@@ -89,8 +89,8 @@ public final class DomainEventSubscriptionsImpl implements DomainEventSubscripti
 
     public EventSubscription createOrUpdate(String resourceGroupName, String domainName, String eventSubscriptionName,
         EventSubscriptionInner eventSubscriptionInfo, Context context) {
-        EventSubscriptionInner inner = this.serviceClient().createOrUpdate(resourceGroupName, domainName,
-            eventSubscriptionName, eventSubscriptionInfo, context);
+        EventSubscriptionInner inner = this.serviceClient()
+            .createOrUpdate(resourceGroupName, domainName, eventSubscriptionName, eventSubscriptionInfo, context);
         if (inner != null) {
             return new EventSubscriptionImpl(inner, this.manager());
         } else {
@@ -108,8 +108,8 @@ public final class DomainEventSubscriptionsImpl implements DomainEventSubscripti
 
     public EventSubscription update(String resourceGroupName, String domainName, String eventSubscriptionName,
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
-        EventSubscriptionInner inner = this.serviceClient().update(resourceGroupName, domainName, eventSubscriptionName,
-            eventSubscriptionUpdateParameters);
+        EventSubscriptionInner inner = this.serviceClient()
+            .update(resourceGroupName, domainName, eventSubscriptionName, eventSubscriptionUpdateParameters);
         if (inner != null) {
             return new EventSubscriptionImpl(inner, this.manager());
         } else {
@@ -119,8 +119,8 @@ public final class DomainEventSubscriptionsImpl implements DomainEventSubscripti
 
     public EventSubscription update(String resourceGroupName, String domainName, String eventSubscriptionName,
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters, Context context) {
-        EventSubscriptionInner inner = this.serviceClient().update(resourceGroupName, domainName, eventSubscriptionName,
-            eventSubscriptionUpdateParameters, context);
+        EventSubscriptionInner inner = this.serviceClient()
+            .update(resourceGroupName, domainName, eventSubscriptionName, eventSubscriptionUpdateParameters, context);
         if (inner != null) {
             return new EventSubscriptionImpl(inner, this.manager());
         } else {
@@ -130,8 +130,8 @@ public final class DomainEventSubscriptionsImpl implements DomainEventSubscripti
 
     public Response<EventSubscriptionFullUrl> getFullUrlWithResponse(String resourceGroupName, String domainName,
         String eventSubscriptionName, Context context) {
-        Response<EventSubscriptionFullUrlInner> inner = this.serviceClient().getFullUrlWithResponse(resourceGroupName,
-            domainName, eventSubscriptionName, context);
+        Response<EventSubscriptionFullUrlInner> inner = this.serviceClient()
+            .getFullUrlWithResponse(resourceGroupName, domainName, eventSubscriptionName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new EventSubscriptionFullUrlImpl(inner.getValue(), this.manager()));
@@ -153,14 +153,14 @@ public final class DomainEventSubscriptionsImpl implements DomainEventSubscripti
 
     public PagedIterable<EventSubscription> list(String resourceGroupName, String domainName) {
         PagedIterable<EventSubscriptionInner> inner = this.serviceClient().list(resourceGroupName, domainName);
-        return Utils.mapPage(inner, inner1 -> new EventSubscriptionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventSubscriptionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<EventSubscription> list(String resourceGroupName, String domainName, String filter,
         Integer top, Context context) {
         PagedIterable<EventSubscriptionInner> inner
             = this.serviceClient().list(resourceGroupName, domainName, filter, top, context);
-        return Utils.mapPage(inner, inner1 -> new EventSubscriptionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventSubscriptionImpl(inner1, this.manager()));
     }
 
     private DomainEventSubscriptionsClient serviceClient() {

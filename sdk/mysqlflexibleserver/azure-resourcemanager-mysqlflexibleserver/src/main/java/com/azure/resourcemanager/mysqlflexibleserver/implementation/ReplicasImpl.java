@@ -19,20 +19,20 @@ public final class ReplicasImpl implements Replicas {
 
     private final com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager;
 
-    public ReplicasImpl(
-        ReplicasClient innerClient, com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager) {
+    public ReplicasImpl(ReplicasClient innerClient,
+        com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Server> listByServer(String resourceGroupName, String serverName) {
         PagedIterable<ServerInner> inner = this.serviceClient().listByServer(resourceGroupName, serverName);
-        return Utils.mapPage(inner, inner1 -> new ServerImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ServerImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Server> listByServer(String resourceGroupName, String serverName, Context context) {
         PagedIterable<ServerInner> inner = this.serviceClient().listByServer(resourceGroupName, serverName, context);
-        return Utils.mapPage(inner, inner1 -> new ServerImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ServerImpl(inner1, this.manager()));
     }
 
     private ReplicasClient serviceClient() {

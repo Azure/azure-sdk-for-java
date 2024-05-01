@@ -113,6 +113,20 @@
         "DESIRED_CONSISTENCIES": "[\"Session\"]",
         "JavaTestVersion": "1.11",
         "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop\""
+      },
+      "Kafka Integration Tests targeting Cosmos Emulator - Java 11": {
+        "ProfileFlag": "-Pkafka-emulator",
+        "PROTOCOLS": "[\"Tcp\"]",
+        "DESIRED_CONSISTENCIES": "[\"Session\"]",
+        "JavaTestVersion": "1.11",
+        "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/\""
+      },
+      "Kafka Integration Tests targeting Cosmos Emulator - Java 17": {
+        "ProfileFlag": "-Pkafka-emulator",
+        "PROTOCOLS": "[\"Tcp\"]",
+        "DESIRED_CONSISTENCIES": "[\"Session\"]",
+        "JavaTestVersion": "1.17",
+        "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/\""
       }
     }
   }

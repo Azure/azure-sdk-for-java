@@ -20,8 +20,6 @@ public final class FlexibleServersTriggerLtrPreBackupHeaders {
     @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
 
-    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
-
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of FlexibleServersTriggerLtrPreBackupHeaders class.
@@ -29,7 +27,7 @@ public final class FlexibleServersTriggerLtrPreBackupHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public FlexibleServersTriggerLtrPreBackupHeaders(HttpHeaders rawHeaders) {
-        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
     }
 
     /**

@@ -49,8 +49,6 @@
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
       --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
       --add-opens com.azure.ai.openai/com.azure.ai.openai=ALL-UNNAMED
-      --add-opens com.azure.ai.openai/com.azure.ai.openai.implementation=com.fasterxml.jackson.databind
-      --add-opens com.azure.ai.openai/com.azure.ai.openai.functions=com.fasterxml.jackson.databind
     </javaModulesSurefireArgLine>
   </properties>
 
@@ -80,7 +78,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.24.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.24.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

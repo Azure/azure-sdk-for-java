@@ -14,22 +14,25 @@ public final class ActivityPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ActivityPolicy model = BinaryData.fromString(
-            "{\"timeout\":\"datab\",\"retry\":\"dataqwwtevfeugc\",\"retryIntervalInSeconds\":67435770,\"secureInput\":true,\"secureOutput\":true,\"\":{\"dleohysdgkb\":\"datavfrymqqfksqfc\",\"jqztrpjme\":\"dataxygwvtkrqiyuqds\"}}")
+            "{\"timeout\":\"dataqrfywwzsip\",\"retry\":\"dataqhvktcztmqdkh\",\"retryIntervalInSeconds\":1446450607,\"secureInput\":true,\"secureOutput\":false,\"\":{\"xqfrntz\":\"datavlyaprjzbx\"}}")
             .toObject(ActivityPolicy.class);
-        Assertions.assertEquals(67435770, model.retryIntervalInSeconds());
+        Assertions.assertEquals(1446450607, model.retryIntervalInSeconds());
         Assertions.assertEquals(true, model.secureInput());
-        Assertions.assertEquals(true, model.secureOutput());
+        Assertions.assertEquals(false, model.secureOutput());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ActivityPolicy model = new ActivityPolicy().withTimeout("datab").withRetry("dataqwwtevfeugc")
-            .withRetryIntervalInSeconds(67435770).withSecureInput(true).withSecureOutput(true)
+        ActivityPolicy model = new ActivityPolicy().withTimeout("dataqrfywwzsip")
+            .withRetry("dataqhvktcztmqdkh")
+            .withRetryIntervalInSeconds(1446450607)
+            .withSecureInput(true)
+            .withSecureOutput(false)
             .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(ActivityPolicy.class);
-        Assertions.assertEquals(67435770, model.retryIntervalInSeconds());
+        Assertions.assertEquals(1446450607, model.retryIntervalInSeconds());
         Assertions.assertEquals(true, model.secureInput());
-        Assertions.assertEquals(true, model.secureOutput());
+        Assertions.assertEquals(false, model.secureOutput());
     }
 
     // Use "Map.of" if available

@@ -75,7 +75,7 @@ public interface ResourceResponseValidator<T extends Resource> {
                 @Override
                 public void validate(ResourceResponse<T> resourceResponse) {
                     assertThat(resourceResponse.getResource()).isNotNull();
-                    assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(resourceResponse.getResource(), propertyName)).is(validatingCondition);
+                    assertThat(resourceResponse.getResource().get(propertyName)).is(validatingCondition);
                 }
             });
             return this;
@@ -87,7 +87,7 @@ public interface ResourceResponseValidator<T extends Resource> {
                 @Override
                 public void validate(ResourceResponse<T> resourceResponse) {
                     assertThat(resourceResponse.getResource()).isNotNull();
-                    assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(resourceResponse.getResource(), propertyName)).isEqualTo(value);
+                    assertThat(resourceResponse.getResource().get(propertyName)).isEqualTo(value);
                 }
             });
             return this;
@@ -245,7 +245,7 @@ public interface ResourceResponseValidator<T extends Resource> {
                 @Override
                 public void validate(ResourceResponse<T> resourceResponse) {
                     assertThat(resourceResponse.getResource()).isNotNull();
-                    assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(resourceResponse.getResource(), key)).is(condition);
+                    assertThat(resourceResponse.getResource().get(key)).is(condition);
 
                 }
             });

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -13,10 +14,21 @@ import java.util.List;
 /**
  * StringBeginsWith Advanced Filter.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "operatorType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "operatorType",
+    defaultImpl = StringBeginsWithAdvancedFilter.class,
+    visible = true)
 @JsonTypeName("StringBeginsWith")
 @Fluent
 public final class StringBeginsWithAdvancedFilter extends AdvancedFilter {
+    /*
+     * The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "operatorType", required = true)
+    private AdvancedFilterOperatorType operatorType = AdvancedFilterOperatorType.STRING_BEGINS_WITH;
+
     /*
      * The set of filter values.
      */
@@ -27,6 +39,17 @@ public final class StringBeginsWithAdvancedFilter extends AdvancedFilter {
      * Creates an instance of StringBeginsWithAdvancedFilter class.
      */
     public StringBeginsWithAdvancedFilter() {
+    }
+
+    /**
+     * Get the operatorType property: The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals
+     * and others.
+     * 
+     * @return the operatorType value.
+     */
+    @Override
+    public AdvancedFilterOperatorType operatorType() {
+        return this.operatorType;
     }
 
     /**

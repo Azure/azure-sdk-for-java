@@ -86,11 +86,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
-     * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
-     * &lt;br/&gt;Diagnostics are powerful solutions that access product resources or other relevant data and provide
-     * the root cause of the issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;
-     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to
-     * Diagnostics API.
+     * Creates a diagnostic for the specific resource using solutionId from discovery solutions. &lt;br/&gt;Diagnostics
+     * are powerful solutions that access product resources or other relevant data and provide the root cause of the
+     * issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt;.
      * 
      * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
      * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
@@ -126,11 +124,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
-     * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
-     * &lt;br/&gt;Diagnostics are powerful solutions that access product resources or other relevant data and provide
-     * the root cause of the issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;
-     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to
-     * Diagnostics API.
+     * Creates a diagnostic for the specific resource using solutionId from discovery solutions. &lt;br/&gt;Diagnostics
+     * are powerful solutions that access product resources or other relevant data and provide the root cause of the
+     * issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt;.
      * 
      * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
      * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
@@ -166,11 +162,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
-     * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
-     * &lt;br/&gt;Diagnostics are powerful solutions that access product resources or other relevant data and provide
-     * the root cause of the issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;
-     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to
-     * Diagnostics API.
+     * Creates a diagnostic for the specific resource using solutionId from discovery solutions. &lt;br/&gt;Diagnostics
+     * are powerful solutions that access product resources or other relevant data and provide the root cause of the
+     * issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt;.
      * 
      * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
      * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
@@ -192,11 +186,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
-     * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
-     * &lt;br/&gt;Diagnostics are powerful solutions that access product resources or other relevant data and provide
-     * the root cause of the issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;
-     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to
-     * Diagnostics API.
+     * Creates a diagnostic for the specific resource using solutionId from discovery solutions. &lt;br/&gt;Diagnostics
+     * are powerful solutions that access product resources or other relevant data and provide the root cause of the
+     * issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt;.
      * 
      * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
      * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
@@ -218,11 +210,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
-     * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
-     * &lt;br/&gt;Diagnostics are powerful solutions that access product resources or other relevant data and provide
-     * the root cause of the issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;
-     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to
-     * Diagnostics API.
+     * Creates a diagnostic for the specific resource using solutionId from discovery solutions. &lt;br/&gt;Diagnostics
+     * are powerful solutions that access product resources or other relevant data and provide the root cause of the
+     * issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt;.
      * 
      * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
      * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
@@ -245,11 +235,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
-     * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
-     * &lt;br/&gt;Diagnostics are powerful solutions that access product resources or other relevant data and provide
-     * the root cause of the issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;
-     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to
-     * Diagnostics API.
+     * Creates a diagnostic for the specific resource using solutionId from discovery solutions. &lt;br/&gt;Diagnostics
+     * are powerful solutions that access product resources or other relevant data and provide the root cause of the
+     * issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt;.
      * 
      * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
      * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
@@ -267,11 +255,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
-     * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
-     * &lt;br/&gt;Diagnostics are powerful solutions that access product resources or other relevant data and provide
-     * the root cause of the issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;
-     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to
-     * Diagnostics API.
+     * Creates a diagnostic for the specific resource using solutionId from discovery solutions. &lt;br/&gt;Diagnostics
+     * are powerful solutions that access product resources or other relevant data and provide the root cause of the
+     * issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt;.
      * 
      * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
      * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
@@ -291,11 +277,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
-     * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
-     * &lt;br/&gt;Diagnostics are powerful solutions that access product resources or other relevant data and provide
-     * the root cause of the issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;
-     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to
-     * Diagnostics API.
+     * Creates a diagnostic for the specific resource using solutionId from discovery solutions. &lt;br/&gt;Diagnostics
+     * are powerful solutions that access product resources or other relevant data and provide the root cause of the
+     * issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt;.
      * 
      * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
      * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
@@ -314,11 +298,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
-     * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
-     * &lt;br/&gt;Diagnostics are powerful solutions that access product resources or other relevant data and provide
-     * the root cause of the issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;
-     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to
-     * Diagnostics API.
+     * Creates a diagnostic for the specific resource using solutionId from discovery solutions. &lt;br/&gt;Diagnostics
+     * are powerful solutions that access product resources or other relevant data and provide the root cause of the
+     * issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt;.
      * 
      * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
      * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
@@ -336,11 +318,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
-     * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
-     * &lt;br/&gt;Diagnostics are powerful solutions that access product resources or other relevant data and provide
-     * the root cause of the issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;
-     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to
-     * Diagnostics API.
+     * Creates a diagnostic for the specific resource using solutionId from discovery solutions. &lt;br/&gt;Diagnostics
+     * are powerful solutions that access product resources or other relevant data and provide the root cause of the
+     * issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt;.
      * 
      * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
      * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
@@ -360,11 +340,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
-     * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
-     * &lt;br/&gt;Diagnostics are powerful solutions that access product resources or other relevant data and provide
-     * the root cause of the issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;
-     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to
-     * Diagnostics API.
+     * Creates a diagnostic for the specific resource using solutionId from discovery solutions. &lt;br/&gt;Diagnostics
+     * are powerful solutions that access product resources or other relevant data and provide the root cause of the
+     * issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt;.
      * 
      * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
      * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
@@ -381,11 +359,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
-     * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
-     * &lt;br/&gt;Diagnostics are powerful solutions that access product resources or other relevant data and provide
-     * the root cause of the issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;
-     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to
-     * Diagnostics API.
+     * Creates a diagnostic for the specific resource using solutionId from discovery solutions. &lt;br/&gt;Diagnostics
+     * are powerful solutions that access product resources or other relevant data and provide the root cause of the
+     * issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt;.
      * 
      * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
      * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.

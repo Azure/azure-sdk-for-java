@@ -7,6 +7,7 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.datafactory.fluent.models.AzurePostgreSqlTableDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,10 +16,21 @@ import java.util.Map;
 /**
  * Azure PostgreSQL dataset.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = AzurePostgreSqlTableDataset.class,
+    visible = true)
 @JsonTypeName("AzurePostgreSqlTable")
 @Fluent
 public final class AzurePostgreSqlTableDataset extends Dataset {
+    /*
+     * Type of dataset.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "AzurePostgreSqlTable";
+
     /*
      * Properties specific to this dataset type.
      */
@@ -29,6 +41,16 @@ public final class AzurePostgreSqlTableDataset extends Dataset {
      * Creates an instance of AzurePostgreSqlTableDataset class.
      */
     public AzurePostgreSqlTableDataset() {
+    }
+
+    /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -104,8 +126,8 @@ public final class AzurePostgreSqlTableDataset extends Dataset {
     }
 
     /**
-     * Get the tableName property: The table name of the Azure PostgreSQL database which includes both schema and
-     * table. Type: string (or Expression with resultType string).
+     * Get the tableName property: The table name of the Azure PostgreSQL database which includes both schema and table.
+     * Type: string (or Expression with resultType string).
      * 
      * @return the tableName value.
      */
@@ -114,8 +136,8 @@ public final class AzurePostgreSqlTableDataset extends Dataset {
     }
 
     /**
-     * Set the tableName property: The table name of the Azure PostgreSQL database which includes both schema and
-     * table. Type: string (or Expression with resultType string).
+     * Set the tableName property: The table name of the Azure PostgreSQL database which includes both schema and table.
+     * Type: string (or Expression with resultType string).
      * 
      * @param tableName the tableName value to set.
      * @return the AzurePostgreSqlTableDataset object itself.

@@ -48,12 +48,12 @@ public final class VerifiedPartnersImpl implements VerifiedPartners {
 
     public PagedIterable<VerifiedPartner> list() {
         PagedIterable<VerifiedPartnerInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new VerifiedPartnerImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VerifiedPartnerImpl(inner1, this.manager()));
     }
 
     public PagedIterable<VerifiedPartner> list(String filter, Integer top, Context context) {
         PagedIterable<VerifiedPartnerInner> inner = this.serviceClient().list(filter, top, context);
-        return Utils.mapPage(inner, inner1 -> new VerifiedPartnerImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VerifiedPartnerImpl(inner1, this.manager()));
     }
 
     private VerifiedPartnersClient serviceClient() {

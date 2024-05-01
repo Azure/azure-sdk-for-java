@@ -9,8 +9,7 @@ package com.azure.resourcemanager.support.generated;
  */
 public final class FilesNoSubscriptionGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/GetFileDetails.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/GetFileDetails.json
      */
     /**
      * Sample code: Get details of a subscription file.

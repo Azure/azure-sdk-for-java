@@ -11,18 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class SecondaryConsentEnabledTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecondaryConsentEnabled model = BinaryData.fromString("{\"description\":\"zpwv\",\"type\":\"dqgbiqylihkaetc\"}")
-            .toObject(SecondaryConsentEnabled.class);
-        Assertions.assertEquals("zpwv", model.description());
-        Assertions.assertEquals("dqgbiqylihkaetc", model.type());
+        SecondaryConsentEnabled model
+            = BinaryData.fromString("{\"description\":\"bbjfddgmbmbexp\",\"type\":\"htqqrolfp\"}")
+                .toObject(SecondaryConsentEnabled.class);
+        Assertions.assertEquals("bbjfddgmbmbexp", model.description());
+        Assertions.assertEquals("htqqrolfp", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SecondaryConsentEnabled model
-            = new SecondaryConsentEnabled().withDescription("zpwv").withType("dqgbiqylihkaetc");
+            = new SecondaryConsentEnabled().withDescription("bbjfddgmbmbexp").withType("htqqrolfp");
         model = BinaryData.fromObject(model).toObject(SecondaryConsentEnabled.class);
-        Assertions.assertEquals("zpwv", model.description());
-        Assertions.assertEquals("dqgbiqylihkaetc", model.type());
+        Assertions.assertEquals("bbjfddgmbmbexp", model.description());
+        Assertions.assertEquals("htqqrolfp", model.type());
     }
 }
