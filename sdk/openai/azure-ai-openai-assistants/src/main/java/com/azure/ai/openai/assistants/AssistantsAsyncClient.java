@@ -3070,8 +3070,8 @@ public final class AssistantsAsyncClient {
      * @return represents an assistant that can call the model and use tools on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<OpenAIFile> uploadFile(FileDetails file, FilePurpose purpose, String filename) {
-        // Generated convenience method for uploadFileWithResponse
+    public Mono<OpenAIFile> uploadFile(FileDetails file, FilePurpose purpose, String filename) {
+        file.setFilename(filename);
         RequestOptions requestOptions = new RequestOptions();
         UploadFileRequest requestObj = new UploadFileRequest(file, purpose).setFilename(filename);
         BinaryData request = new MultipartFormDataHelper(requestOptions)
@@ -3098,9 +3098,8 @@ public final class AssistantsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an assistant that can call the model and use tools on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OpenAIFile> uploadFile(FileDetails file, FilePurpose purpose) {
+    Mono<OpenAIFile> uploadFile(FileDetails file, FilePurpose purpose) {
         // Generated convenience method for uploadFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         UploadFileRequest requestObj = new UploadFileRequest(file, purpose);
@@ -3118,7 +3117,7 @@ public final class AssistantsAsyncClient {
     /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * byte[]
      * }</pre>
