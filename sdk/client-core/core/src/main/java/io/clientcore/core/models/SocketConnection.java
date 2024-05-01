@@ -58,13 +58,6 @@ public final class SocketConnection {
     }
 
     /**
-     * Returns true if this connection has been used.
-     */
-    public boolean isAvailableForReuse() {
-        return canBeReused;
-    }
-
-    /**
      * Close the socket and its streams
      * @throws IOException if an I/O error occurs
      */
@@ -111,6 +104,7 @@ public final class SocketConnection {
          * @param requestUrl the HTTP request url
          * @param host the host name
          * @param port the port number
+         * @param sslSocketFactory the SSL socket factory
          */
         public SocketConnectionProperties(URL requestUrl, String host, String port, SSLSocketFactory sslSocketFactory) {
             this.requestUrl = requestUrl;

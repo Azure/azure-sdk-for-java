@@ -5,6 +5,7 @@ package io.clientcore.core.models;
 
 import io.clientcore.core.implementation.util.CoreUtils;
 import io.clientcore.core.models.SocketConnection.SocketConnectionProperties;
+import io.clientcore.core.util.ClientLogger;
 
 import javax.net.ssl.SSLSocketFactory;
 import java.io.BufferedInputStream;
@@ -21,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Class to maintain a cache of socket connections
  */
 public final class SocketConnectionCache {
-
+    private static ClientLogger logger = new ClientLogger(SocketConnectionCache.class);
     private static SocketConnectionCache instance;
     private static final Map<SocketConnectionProperties, List<SocketConnection>> CONNECTION_POOL
         = new ConcurrentHashMap<>();
@@ -173,7 +174,7 @@ public final class SocketConnectionCache {
             long toSkip = Math.min(chunkSize, count - pos);
             long skipped = is.skip(toSkip);
             if (skipped == -1) {
-                throw new IOException("No data, can't skip " + count + " bytes");
+                logger.logThrowableAsError(new IOException("No data, can't skip " + count + " bytes"));
             }
             pos += skipped;
         }

@@ -34,6 +34,8 @@ spec:
           -Dotel.service.name={{ .Release.Name }}-{{ .Stress.BaseName }} \
           -Dotel.traces.sampler=traceidratio \
           -Dotel.traces.sampler.arg=0.00001 \
+          -Dhttp.maxConnections=100 \
+          -Dhttp.keepAlive=true \
           -XX:InitialRAMPercentage=75.0 \
           -XX:MaxRAMPercentage=75.0 \
           -jar /app/http-stress-1.0.0-beta.1-jar-with-dependencies.jar \

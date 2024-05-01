@@ -493,7 +493,7 @@ class DefaultHttpClient implements HttpClient {
             return new HttpResponse<>(httpRequest, statusCode, headers, null);
         }
 
-        private static synchronized byte[] getBody(BufferedInputStream inputStream, HttpHeader contentLengthHeader)
+        private static byte[] getBody(BufferedInputStream inputStream, HttpHeader contentLengthHeader)
             throws IOException {
             int contentLength;
             if (contentLengthHeader == null || contentLengthHeader.getValue() == null) {
@@ -516,7 +516,7 @@ class DefaultHttpClient implements HttpClient {
             return null;
         }
 
-        private static synchronized int readStatusCode(InputStream inputStream) throws IOException {
+        private static int readStatusCode(InputStream inputStream) throws IOException {
             ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
             int b;
             while ((b = inputStream.read()) != -1 && b != '\n') {
@@ -533,23 +533,24 @@ class DefaultHttpClient implements HttpClient {
             return Integer.parseInt(parts[1]);
         }
 
-        private synchronized static HttpHeaders readResponseHeaders(InputStream inputStream) throws IOException {
+        private static HttpHeaders readResponseHeaders(InputStream inputStream) throws IOException {
             HttpHeaders headers = new HttpHeaders();
             ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
             int b;
-            while ((b = inputStream.read()) != -1 && b != '\n') {
-                if (b == '\r') {
+            while ((b = inputStream.read()) != -1) {
+                if (b == '\n') {
                     String headerLine = byteOutputStream.toString("UTF-8").trim();
-                    if (!headerLine.isEmpty()) {
-                        int split = headerLine.indexOf(':');
-                        String key = headerLine.substring(0, split);
-                        String value = headerLine.substring(split + 1).trim();
-                        headers.add(HttpHeaderName.fromString(key), value);
+                    if (headerLine.isEmpty()) {
+                        return headers;
                     }
+                    int split = headerLine.indexOf(':');
+                    String key = headerLine.substring(0, split);
+                    String value = headerLine.substring(split + 1).trim();
+                    headers.add(HttpHeaderName.fromString(key), value);
                     byteOutputStream.reset();
-                } else {
-                    byteOutputStream.write(b);
                 }
+                byteOutputStream.write(b);
+
             }
             return headers;
         }
