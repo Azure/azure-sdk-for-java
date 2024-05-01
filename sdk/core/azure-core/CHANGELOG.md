@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed an issue where HTTP responses would not be logged if the response body was never consumed. ([#39964](https://github.com/Azure/azure-sdk-for-java/pull/39964)) 
 
 ### Other Changes
 
