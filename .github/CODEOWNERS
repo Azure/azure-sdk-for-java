@@ -853,3 +853,4 @@
 
 # Add owners for notifications for specific pipelines
 /eng/pipelines/aggregate-reports.yml                 @joshfree @jonathangiles
+/eng/common/pipelines/codeowners-linter.yml          @joshfree
