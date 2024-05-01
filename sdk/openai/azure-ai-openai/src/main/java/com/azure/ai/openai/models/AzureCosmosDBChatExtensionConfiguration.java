@@ -5,22 +5,15 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A specific representation of configurable options for Azure Cosmos DB when using it as an Azure OpenAI chat
  * extension.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = AzureCosmosDBChatExtensionConfiguration.class,
-    visible = true)
-@JsonTypeName("azure_cosmos_db")
 @Immutable
 public final class AzureCosmosDBChatExtensionConfiguration extends AzureChatExtensionConfiguration {
 
@@ -28,7 +21,6 @@ public final class AzureCosmosDBChatExtensionConfiguration extends AzureChatExte
      * The parameters to use when configuring Azure OpenAI CosmosDB chat extensions.
      */
     @Generated
-    @JsonProperty(value = "parameters")
     private final AzureCosmosDBChatExtensionParameters parameters;
 
     /**
@@ -47,9 +39,7 @@ public final class AzureCosmosDBChatExtensionConfiguration extends AzureChatExte
      * @param parameters the parameters value to set.
      */
     @Generated
-    @JsonCreator
-    public AzureCosmosDBChatExtensionConfiguration(
-        @JsonProperty(value = "parameters") AzureCosmosDBChatExtensionParameters parameters) {
+    public AzureCosmosDBChatExtensionConfiguration(AzureCosmosDBChatExtensionParameters parameters) {
         this.parameters = parameters;
     }
 
@@ -58,8 +48,6 @@ public final class AzureCosmosDBChatExtensionConfiguration extends AzureChatExte
      *   Azure chat extensions are only compatible with Azure OpenAI.
      */
     @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
     private AzureChatExtensionType type = AzureChatExtensionType.AZURE_COSMOS_DB;
 
     /**
@@ -73,5 +61,49 @@ public final class AzureCosmosDBChatExtensionConfiguration extends AzureChatExte
     @Override
     public AzureChatExtensionType getType() {
         return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("parameters", this.parameters);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureCosmosDBChatExtensionConfiguration from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureCosmosDBChatExtensionConfiguration if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureCosmosDBChatExtensionConfiguration.
+     */
+    @Generated
+    public static AzureCosmosDBChatExtensionConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureCosmosDBChatExtensionParameters parameters = null;
+            AzureChatExtensionType type = AzureChatExtensionType.AZURE_COSMOS_DB;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("parameters".equals(fieldName)) {
+                    parameters = AzureCosmosDBChatExtensionParameters.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    type = AzureChatExtensionType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            AzureCosmosDBChatExtensionConfiguration deserializedAzureCosmosDBChatExtensionConfiguration
+                = new AzureCosmosDBChatExtensionConfiguration(parameters);
+            deserializedAzureCosmosDBChatExtensionConfiguration.type = type;
+            return deserializedAzureCosmosDBChatExtensionConfiguration;
+        });
     }
 }
