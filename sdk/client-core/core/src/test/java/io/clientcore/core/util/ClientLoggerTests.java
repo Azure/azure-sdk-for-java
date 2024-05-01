@@ -203,7 +203,7 @@ public class ClientLoggerTests {
      * it doesn't support.
      */
     @ParameterizedTest
-    @ValueSource(strings = {"errs", "not_set", "12", "onlyErrorsPlease"})
+    @ValueSource(strings = { "errs", "not_set", "12", "onlyErrorsPlease" })
     public void invalidLogLevelFromString(String environmentLogLevel) {
         assertThrows(IllegalArgumentException.class, () -> LogLevel.fromString(environmentLogLevel));
     }
@@ -238,10 +238,7 @@ public class ClientLoggerTests {
         Map<String, Object> expectedMessage = new HashMap<>();
         expectedMessage.put("message", message);
 
-        assertMessage(
-            expectedMessage,
-            byteArraySteamToString(logCaptureStream),
-            LogLevel.INFORMATIONAL,
+        assertMessage(expectedMessage, byteArraySteamToString(logCaptureStream), LogLevel.INFORMATIONAL,
             LogLevel.INFORMATIONAL);
     }
 
@@ -319,20 +316,13 @@ public class ClientLoggerTests {
 
         String message = "hello world";
 
-        logger.atWarning()
-            .addKeyValue("connectionId", "foo")
-            .addKeyValue("linkName", 1)
-            .log(message);
+        logger.atWarning().addKeyValue("connectionId", "foo").addKeyValue("linkName", 1).log(message);
 
         Map<String, Object> expectedMessage = new HashMap<>();
         expectedMessage.put("message", message);
         expectedMessage.put("connectionId", "foo");
         expectedMessage.put("linkName", 1);
-        assertMessage(
-            expectedMessage,
-            byteArraySteamToString(logCaptureStream),
-            logLevelToConfigure,
-            LogLevel.WARNING);
+        assertMessage(expectedMessage, byteArraySteamToString(logCaptureStream), logLevelToConfigure, LogLevel.WARNING);
     }
 
     /**
@@ -351,10 +341,7 @@ public class ClientLoggerTests {
         expectedMessage.put("linkName", 1);
         expectedMessage.put("anotherKey", "hello world");
 
-        assertMessage(
-            expectedMessage,
-            byteArraySteamToString(logCaptureStream),
-            logLevelToConfigure,
+        assertMessage(expectedMessage, byteArraySteamToString(logCaptureStream), logLevelToConfigure,
             LogLevel.INFORMATIONAL);
     }
 
@@ -367,11 +354,8 @@ public class ClientLoggerTests {
         ClientLogger logger = setupLogLevelAndGetLogger(logLevelToConfigure, Collections.emptyMap());
         logger.atWarning().log("hello world");
 
-        assertMessage(
-            Collections.singletonMap("message", "hello world"),
-            byteArraySteamToString(logCaptureStream),
-            logLevelToConfigure,
-            LogLevel.WARNING);
+        assertMessage(Collections.singletonMap("message", "hello world"), byteArraySteamToString(logCaptureStream),
+            logLevelToConfigure, LogLevel.WARNING);
     }
 
     /**
@@ -382,11 +366,8 @@ public class ClientLoggerTests {
         ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL, null);
         logger.atInfo().log("hello world");
 
-        assertMessage(
-            Collections.singletonMap("message", "hello world"),
-            byteArraySteamToString(logCaptureStream),
-            LogLevel.INFORMATIONAL,
-            LogLevel.INFORMATIONAL);
+        assertMessage(Collections.singletonMap("message", "hello world"), byteArraySteamToString(logCaptureStream),
+            LogLevel.INFORMATIONAL, LogLevel.INFORMATIONAL);
     }
 
     /**
@@ -397,10 +378,7 @@ public class ClientLoggerTests {
     @MethodSource("provideLogLevels")
     public void logWithGlobalAndLocalContext(LogLevel logLevelToConfigure) {
         ClientLogger logger = setupLogLevelAndGetLogger(logLevelToConfigure, globalContext);
-        logger.atInfo()
-            .addKeyValue("local", true)
-            .addKeyValue("connectionId", "conflict")
-            .log("hello world");
+        logger.atInfo().addKeyValue("local", true).addKeyValue("connectionId", "conflict").log("hello world");
 
         Map<String, Object> expectedMessage = new HashMap<>();
         expectedMessage.put("message", "hello world");
@@ -433,13 +411,9 @@ public class ClientLoggerTests {
 
         logger.atWarning().log("hello world");
 
-        assertMessage(
-            Collections.singletonMap("message", "hello world"),
-            byteArraySteamToString(logCaptureStream),
-            logLevelToConfigure,
-            LogLevel.WARNING);
+        assertMessage(Collections.singletonMap("message", "hello world"), byteArraySteamToString(logCaptureStream),
+            logLevelToConfigure, LogLevel.WARNING);
     }
-
 
     /**
      * Tests message supplier with local and global context.
@@ -457,10 +431,7 @@ public class ClientLoggerTests {
         expectedMessage.put("linkName", 1);
         expectedMessage.put("anotherKey", "hello world");
 
-        assertMessage(
-            expectedMessage,
-            byteArraySteamToString(logCaptureStream),
-            logLevelToConfigure,
+        assertMessage(expectedMessage, byteArraySteamToString(logCaptureStream), logLevelToConfigure,
             LogLevel.INFORMATIONAL);
     }
 
@@ -471,20 +442,14 @@ public class ClientLoggerTests {
     public void logWithContextNullMessage() {
         ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE);
 
-        logger.atVerbose()
-            .addKeyValue("connectionId", "foo")
-            .addKeyValue("linkName", true)
-            .log(null);
+        logger.atVerbose().addKeyValue("connectionId", "foo").addKeyValue("linkName", true).log(null);
 
         Map<String, Object> expectedMessage = new HashMap<>();
         expectedMessage.put("message", "");
         expectedMessage.put("connectionId", "foo");
         expectedMessage.put("linkName", true);
 
-        assertMessage(
-            expectedMessage,
-            byteArraySteamToString(logCaptureStream),
-            LogLevel.VERBOSE,
+        assertMessage(expectedMessage, byteArraySteamToString(logCaptureStream), LogLevel.VERBOSE,
             LogLevel.INFORMATIONAL);
     }
 
@@ -506,10 +471,7 @@ public class ClientLoggerTests {
         expectedMessage.put("connection\nId" + System.lineSeparator(), "foo");
         expectedMessage.put("link\r\nName", "test" + System.lineSeparator() + "me");
 
-        assertMessage(
-            expectedMessage,
-            byteArraySteamToString(logCaptureStream),
-            LogLevel.VERBOSE,
+        assertMessage(expectedMessage, byteArraySteamToString(logCaptureStream), LogLevel.VERBOSE,
             LogLevel.INFORMATIONAL);
     }
 
@@ -532,12 +494,9 @@ public class ClientLoggerTests {
         expectedMessage.put("another\rKey\n", "hello \"world\"\r\n");
         expectedMessage.put("link\tName", 1);
 
-        assertMessage(
-            expectedMessage,
+        assertMessage(expectedMessage,
             //"{\"message\":\"\\\"message\\\"\",\"link\\tName\":1,\"another\\rKey\\n\":\"hello \\\"world\\\"\\r\\n\"}",
-            byteArraySteamToString(logCaptureStream),
-            LogLevel.VERBOSE,
-            LogLevel.INFORMATIONAL);
+            byteArraySteamToString(logCaptureStream), LogLevel.VERBOSE, LogLevel.INFORMATIONAL);
     }
 
     /**
@@ -547,20 +506,14 @@ public class ClientLoggerTests {
     public void logWithContextNullSupplier() {
         ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL);
 
-        logger.atError()
-            .addKeyValue("connectionId", "foo")
-            .addKeyValue("linkName", (String) null)
-            .log(null);
+        logger.atError().addKeyValue("connectionId", "foo").addKeyValue("linkName", (String) null).log(null);
 
         Map<String, Object> expectedMessage = new HashMap<>();
         expectedMessage.put("message", "");
         expectedMessage.put("connectionId", "foo");
         expectedMessage.put("linkName", null);
 
-        assertMessage(
-            expectedMessage,
-            byteArraySteamToString(logCaptureStream),
-            LogLevel.INFORMATIONAL,
+        assertMessage(expectedMessage, byteArraySteamToString(logCaptureStream), LogLevel.INFORMATIONAL,
             LogLevel.ERROR);
     }
 
@@ -581,10 +534,7 @@ public class ClientLoggerTests {
         expectedMessage.put("message", "test");
         expectedMessage.put("linkName", "complex value 123");
 
-        assertMessage(
-            expectedMessage,
-            byteArraySteamToString(logCaptureStream),
-            LogLevel.INFORMATIONAL,
+        assertMessage(expectedMessage, byteArraySteamToString(logCaptureStream), LogLevel.INFORMATIONAL,
             LogLevel.WARNING);
     }
 
@@ -595,18 +545,13 @@ public class ClientLoggerTests {
     public void logWithContextObject() {
         ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL);
 
-        logger.atWarning()
-            .addKeyValue("linkName", new LoggableObject("some complex object"))
-            .log("test");
+        logger.atWarning().addKeyValue("linkName", new LoggableObject("some complex object")).log("test");
 
         Map<String, Object> expectedMessage = new HashMap<>();
         expectedMessage.put("message", "test");
         expectedMessage.put("linkName", "some complex object");
 
-        assertMessage(
-            expectedMessage,
-            byteArraySteamToString(logCaptureStream),
-            LogLevel.INFORMATIONAL,
+        assertMessage(expectedMessage, byteArraySteamToString(logCaptureStream), LogLevel.INFORMATIONAL,
             LogLevel.WARNING);
     }
 
@@ -618,21 +563,14 @@ public class ClientLoggerTests {
     public void logMessageAndArgsWithContext(LogLevel logLevelToConfigure) {
         ClientLogger logger = setupLogLevelAndGetLogger(logLevelToConfigure);
 
-        logger.atWarning()
-            .addKeyValue("connectionId", () -> null)
-            .addKeyValue("linkName", "bar")
-            .log("hello world");
+        logger.atWarning().addKeyValue("connectionId", () -> null).addKeyValue("linkName", "bar").log("hello world");
 
         Map<String, Object> expectedMessage = new HashMap<>();
         expectedMessage.put("message", "hello world");
         expectedMessage.put("linkName", "bar");
         expectedMessage.put("connectionId", null);
 
-        assertMessage(
-            expectedMessage,
-            byteArraySteamToString(logCaptureStream),
-            logLevelToConfigure,
-            LogLevel.WARNING);
+        assertMessage(expectedMessage, byteArraySteamToString(logCaptureStream), logLevelToConfigure, LogLevel.WARNING);
     }
 
     /**
@@ -661,11 +599,7 @@ public class ClientLoggerTests {
             expectedMessage.put("exception.stacktrace", stackTraceToString(runtimeException));
         }
 
-        assertMessage(
-            expectedMessage,
-            byteArraySteamToString(logCaptureStream),
-            logLevelToConfigure,
-            LogLevel.WARNING);
+        assertMessage(expectedMessage, byteArraySteamToString(logCaptureStream), logLevelToConfigure, LogLevel.WARNING);
     }
 
     /**
@@ -694,11 +628,7 @@ public class ClientLoggerTests {
             expectedMessage.put("exception.stacktrace", stackTraceToString(ioException));
         }
 
-        assertMessage(
-            expectedMessage,
-            byteArraySteamToString(logCaptureStream),
-            logLevelToConfigure,
-            LogLevel.WARNING);
+        assertMessage(expectedMessage, byteArraySteamToString(logCaptureStream), logLevelToConfigure, LogLevel.WARNING);
     }
 
     /**
@@ -727,11 +657,7 @@ public class ClientLoggerTests {
             expectedMessage.put("exception.stacktrace", stackTraceToString(runtimeException));
         }
 
-        assertMessage(
-            expectedMessage,
-            byteArraySteamToString(logCaptureStream),
-            logLevelToConfigure,
-            LogLevel.WARNING);
+        assertMessage(expectedMessage, byteArraySteamToString(logCaptureStream), logLevelToConfigure, LogLevel.WARNING);
     }
 
     /**
@@ -760,11 +686,7 @@ public class ClientLoggerTests {
             expectedMessage.put("exception.stacktrace", stackTraceToString(runtimeException));
         }
 
-        assertMessage(
-            expectedMessage,
-            byteArraySteamToString(logCaptureStream),
-            logLevelToConfigure,
-            LogLevel.WARNING);
+        assertMessage(expectedMessage, byteArraySteamToString(logCaptureStream), logLevelToConfigure, LogLevel.WARNING);
     }
 
     /**
@@ -793,11 +715,7 @@ public class ClientLoggerTests {
             expectedMessage.put("exception.stacktrace", stackTraceToString(ioException));
         }
 
-        assertMessage(
-            expectedMessage,
-            byteArraySteamToString(logCaptureStream),
-            logLevelToConfigure,
-            LogLevel.WARNING);
+        assertMessage(expectedMessage, byteArraySteamToString(logCaptureStream), logLevelToConfigure, LogLevel.WARNING);
     }
 
     @Test
@@ -813,11 +731,7 @@ public class ClientLoggerTests {
         expectedMessage.put("exception.message", null);
         expectedMessage.put("exception.stacktrace", expectedStackTrace);
 
-        assertMessage(
-            expectedMessage,
-            byteArraySteamToString(logCaptureStream),
-            LogLevel.VERBOSE,
-            LogLevel.WARNING);
+        assertMessage(expectedMessage, byteArraySteamToString(logCaptureStream), LogLevel.VERBOSE, LogLevel.WARNING);
     }
 
     @ParameterizedTest
@@ -825,22 +739,14 @@ public class ClientLoggerTests {
     public void logAtLevel(LogLevel level) {
         ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL);
 
-        logger.atLevel(level)
-            .addKeyValue("connectionId", "foo")
-            .addKeyValue("linkName", "bar")
-            .log("message");
+        logger.atLevel(level).addKeyValue("connectionId", "foo").addKeyValue("linkName", "bar").log("message");
 
         Map<String, Object> expectedMessage = new HashMap<>();
         expectedMessage.put("message", "message");
         expectedMessage.put("connectionId", "foo");
         expectedMessage.put("linkName", "bar");
 
-
-        assertMessage(
-            expectedMessage,
-            byteArraySteamToString(logCaptureStream),
-            LogLevel.INFORMATIONAL,
-            level);
+        assertMessage(expectedMessage, byteArraySteamToString(logCaptureStream), LogLevel.INFORMATIONAL, level);
     }
 
     private String stackTraceToString(Throwable exception) {
@@ -860,7 +766,8 @@ public class ClientLoggerTests {
         return new ClientLogger(logger, globalContext);
     }
 
-    private void logMessage(ClientLogger logger, LogLevel logLevel, String logMessage, RuntimeException runtimeException) {
+    private void logMessage(ClientLogger logger, LogLevel logLevel, String logMessage,
+        RuntimeException runtimeException) {
         if (logLevel == null) {
             return;
         }
@@ -915,8 +822,8 @@ public class ClientLoggerTests {
     }
 
     private static <T extends Throwable> T fillInStackTrace(T throwable) {
-        StackTraceElement[] stackTraceElements
-            = { new StackTraceElement("ClientLoggerTests", "onlyLogExceptionMessage", "ClientLoggerTests", 117) };
+        StackTraceElement[] stackTraceElements = {
+            new StackTraceElement("ClientLoggerTests", "onlyLogExceptionMessage", "ClientLoggerTests", 117) };
         throwable.setStackTrace(stackTraceElements);
 
         return throwable;
@@ -926,7 +833,8 @@ public class ClientLoggerTests {
         return stream.toString(StandardCharsets.UTF_8);
     }
 
-    private void assertMessage(Map<String, Object> expectedMessage, String fullLog, LogLevel configuredLevel, LogLevel loggedLevel) {
+    private void assertMessage(Map<String, Object> expectedMessage, String fullLog, LogLevel configuredLevel,
+        LogLevel loggedLevel) {
         if (loggedLevel.compareTo(configuredLevel) >= 0) {
             // remove date/time/level/etc from fullMessage
             String messageJson = fullLog.substring(fullLog.indexOf(" - ") + 3);
@@ -1150,56 +1058,38 @@ public class ClientLoggerTests {
     }
 
     private static Stream<Arguments> logExceptionAsWarningSupplier() {
-        return Stream.of(
-            Arguments.of(LogLevel.VERBOSE, true, true),
-            Arguments.of(LogLevel.INFORMATIONAL, true, false),
-            Arguments.of(LogLevel.WARNING, true, false),
-            Arguments.of(LogLevel.ERROR, false, false),
-            Arguments.of(LogLevel.NOTSET, false, false)
-        );
+        return Stream.of(Arguments.of(LogLevel.VERBOSE, true, true), Arguments.of(LogLevel.INFORMATIONAL, true, false),
+            Arguments.of(LogLevel.WARNING, true, false), Arguments.of(LogLevel.ERROR, false, false),
+            Arguments.of(LogLevel.NOTSET, false, false));
     }
 
     private static Stream<Arguments> logExceptionAsErrorSupplier() {
-        return Stream.of(
-            Arguments.of(LogLevel.VERBOSE, true, true),
-            Arguments.of(LogLevel.INFORMATIONAL, true, false),
-            Arguments.of(LogLevel.WARNING, true, false),
-            Arguments.of(LogLevel.ERROR, true, false),
-            Arguments.of(LogLevel.NOTSET, false, false)
-        );
+        return Stream.of(Arguments.of(LogLevel.VERBOSE, true, true), Arguments.of(LogLevel.INFORMATIONAL, true, false),
+            Arguments.of(LogLevel.WARNING, true, false), Arguments.of(LogLevel.ERROR, true, false),
+            Arguments.of(LogLevel.NOTSET, false, false));
     }
 
     private static Stream<Arguments> validLogLevelSupplier() {
         return Stream.of(
             // Valid VERBOSE environment variables.
-            Arguments.of("1", LogLevel.VERBOSE),
-            Arguments.of("verbose", LogLevel.VERBOSE),
-            Arguments.of("debug", LogLevel.VERBOSE),
-            Arguments.of("deBUG", LogLevel.VERBOSE),
+            Arguments.of("1", LogLevel.VERBOSE), Arguments.of("verbose", LogLevel.VERBOSE),
+            Arguments.of("debug", LogLevel.VERBOSE), Arguments.of("deBUG", LogLevel.VERBOSE),
 
             // Valid INFORMATIONAL environment variables.
-            Arguments.of("2", LogLevel.INFORMATIONAL),
-            Arguments.of("info", LogLevel.INFORMATIONAL),
-            Arguments.of("information", LogLevel.INFORMATIONAL),
-            Arguments.of("informational", LogLevel.INFORMATIONAL),
+            Arguments.of("2", LogLevel.INFORMATIONAL), Arguments.of("info", LogLevel.INFORMATIONAL),
+            Arguments.of("information", LogLevel.INFORMATIONAL), Arguments.of("informational", LogLevel.INFORMATIONAL),
             Arguments.of("InForMATiONaL", LogLevel.INFORMATIONAL),
 
             // Valid WARNING environment variables.
-            Arguments.of("3", LogLevel.WARNING),
-            Arguments.of("warn", LogLevel.WARNING),
-            Arguments.of("warning", LogLevel.WARNING),
-            Arguments.of("WARniNg", LogLevel.WARNING),
+            Arguments.of("3", LogLevel.WARNING), Arguments.of("warn", LogLevel.WARNING),
+            Arguments.of("warning", LogLevel.WARNING), Arguments.of("WARniNg", LogLevel.WARNING),
 
             // Valid ERROR environment variables.
-            Arguments.of("4", LogLevel.ERROR),
-            Arguments.of("err", LogLevel.ERROR),
-            Arguments.of("error", LogLevel.ERROR),
-            Arguments.of("ErRoR", LogLevel.ERROR),
+            Arguments.of("4", LogLevel.ERROR), Arguments.of("err", LogLevel.ERROR),
+            Arguments.of("error", LogLevel.ERROR), Arguments.of("ErRoR", LogLevel.ERROR),
 
             // Valid NOT_SET environment variables.
-            Arguments.of("0", LogLevel.NOTSET),
-            Arguments.of(null, LogLevel.NOTSET)
-        );
+            Arguments.of("0", LogLevel.NOTSET), Arguments.of(null, LogLevel.NOTSET));
     }
 
     static class LoggableObject {

@@ -207,7 +207,6 @@ public final class DefaultLogger {
         }
     }
 
-
     private static String getClassPathFromClassName(String className) {
         try {
             return Class.forName(className).getCanonicalName();

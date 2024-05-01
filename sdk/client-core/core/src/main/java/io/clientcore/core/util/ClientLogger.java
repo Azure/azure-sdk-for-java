@@ -24,7 +24,8 @@ import java.util.function.Supplier;
 import static io.clientcore.core.annotation.TypeConditions.FLUENT;
 
 /**
- * This is a fluent logger helper class that wraps a SLF4J Logger (if available) or default implementation of the logger.
+ * This is a fluent logger helper class that wraps an SLF4J Logger (if available) or a default implementation of the
+ * logger.
  *
  * <p>This logger logs format-able messages that use {@code {}} as the placeholder. When a {@link Throwable throwable}
  * is the last argument of the format varargs and the logger is enabled for the stack trace for the throwable is
@@ -41,7 +42,6 @@ import static io.clientcore.core.annotation.TypeConditions.FLUENT;
 public class ClientLogger {
     private final Slf4jLoggerShim logger;
     private final Map<String, Object> globalContext;
-
 
     /**
      * Retrieves a logger for the passed class.
@@ -117,8 +117,7 @@ public class ClientLogger {
      */
     public <T extends Throwable> T logThrowableAsWarning(T throwable) {
         Objects.requireNonNull(throwable, "'throwable' cannot be null.");
-        LoggingEventBuilder.create(logger, LogLevel.WARNING, globalContext)
-            .log(throwable.getMessage(), throwable);
+        LoggingEventBuilder.create(logger, LogLevel.WARNING, globalContext).log(throwable.getMessage(), throwable);
 
         return throwable;
     }
@@ -135,8 +134,7 @@ public class ClientLogger {
      */
     public <T extends Throwable> T logThrowableAsError(T throwable) {
         Objects.requireNonNull(throwable, "'throwable' cannot be null.");
-        LoggingEventBuilder.create(logger, LogLevel.ERROR, globalContext)
-            .log(throwable.getMessage(), throwable);
+        LoggingEventBuilder.create(logger, LogLevel.ERROR, globalContext).log(throwable.getMessage(), throwable);
         return throwable;
     }
 
@@ -174,7 +172,6 @@ public class ClientLogger {
     /**
      * Creates {@link LoggingEventBuilder} for {@code warning} log level that can be
      * used to enrich log with additional context.
-
      * <p><strong>Code samples</strong></p>
      *
      * <p>Logging with context at warning level.</p>
@@ -302,7 +299,8 @@ public class ClientLogger {
             return NOOP;
         }
 
-        private LoggingEventBuilder(Slf4jLoggerShim logger, LogLevel level, Map<String, Object> globalContext, boolean isEnabled) {
+        private LoggingEventBuilder(Slf4jLoggerShim logger, LogLevel level, Map<String, Object> globalContext,
+            boolean isEnabled) {
             this.logger = logger;
             this.level = level;
             this.isEnabled = isEnabled;
@@ -462,13 +460,13 @@ public class ClientLogger {
                 message = "";
             }
 
-            int pairsCount = (keyValuePairs == null ? 0 : keyValuePairs.size())
-                + (globalPairs == null ? 0 : globalPairs.size());
+            int pairsCount = (keyValuePairs == null ? 0 : keyValuePairs.size()) + (globalPairs == null
+                                                                                       ? 0
+                                                                                       : globalPairs.size());
             int speculatedSize = 20 + pairsCount * 20 + message.length();
             try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream(speculatedSize);
-                 JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
-                jsonWriter.writeStartObject()
-                    .writeStringField("message", message);
+                JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+                jsonWriter.writeStartObject().writeStringField("message", message);
 
                 if (globalPairs != null) {
                     for (Map.Entry<String, Object> kvp : globalPairs.entrySet()) {
@@ -533,8 +531,8 @@ public class ClientLogger {
         private final String caseSensitive;
 
         static {
-            for (LogLevel logLevel: LogLevel.values()) {
-                for (String val: logLevel.allowedLogLevelVariables) {
+            for (LogLevel logLevel : LogLevel.values()) {
+                for (String val : logLevel.allowedLogLevelVariables) {
                     LOG_LEVEL_STRING_MAPPER.put(val, logLevel);
                 }
             }
@@ -586,8 +584,8 @@ public class ClientLogger {
             }
             String caseInsensitiveLogLevel = logLevelVal.toLowerCase(Locale.ROOT);
             if (!LOG_LEVEL_STRING_MAPPER.containsKey(caseInsensitiveLogLevel)) {
-                throw new IllegalArgumentException("We currently do not support the log level you set. LogLevel: "
-                    + logLevelVal);
+                throw new IllegalArgumentException(
+                    "We currently do not support the log level you set. LogLevel: " + logLevelVal);
             }
             return LOG_LEVEL_STRING_MAPPER.get(caseInsensitiveLogLevel);
         }
