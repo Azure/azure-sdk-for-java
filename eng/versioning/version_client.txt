@@ -81,22 +81,22 @@ com.azure:azure-communication-rooms;1.1.1;1.2.0-beta.1
 com.azure:azure-communication-sms;1.1.23;1.2.0-beta.1
 com.azure:azure-containers-containerregistry;1.2.7;1.3.0-beta.1
 com.azure:azure-containers-containerregistry-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-core;1.48.0;1.49.0-beta.1
-com.azure:azure-core-amqp;2.9.3;2.10.0-beta.1
+com.azure:azure-core;1.48.0;1.49.0
+com.azure:azure-core-amqp;2.9.3;2.9.4
 com.azure:azure-core-amqp-experimental;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core-experimental;1.0.0-beta.49;1.0.0-beta.50
 com.azure:azure-core-http-jdk-httpclient;1.0.0-beta.12;1.0.0-beta.13
-com.azure:azure-core-http-netty;1.14.2;1.15.0-beta.1
-com.azure:azure-core-http-okhttp;1.11.20;1.12.0-beta.1
+com.azure:azure-core-http-netty;1.14.2;1.14.3
+com.azure:azure-core-http-okhttp;1.11.20;1.11.21
 com.azure:azure-core-http-vertx;1.0.0-beta.17;1.0.0-beta.18
-com.azure:azure-core-management;1.13.0;1.14.0-beta.1
+com.azure:azure-core-management;1.13.0;1.14.0
 com.azure:azure-core-metrics-opentelemetry;1.0.0-beta.18;1.0.0-beta.19
 com.azure:azure-core-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core-serializer-avro-apache;1.0.0-beta.45;1.0.0-beta.46
 com.azure:azure-core-serializer-avro-jackson;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-core-serializer-json-gson;1.2.11;1.3.0-beta.1
-com.azure:azure-core-serializer-json-jackson;1.4.11;1.5.0-beta.1
-com.azure:azure-core-test;1.24.2;1.25.0-beta.1
+com.azure:azure-core-serializer-json-gson;1.2.11;1.2.12
+com.azure:azure-core-serializer-json-jackson;1.4.11;1.4.12
+com.azure:azure-core-test;1.24.2;1.24.3
 com.azure:azure-core-tracing-opentelemetry;1.0.0-beta.45;1.0.0-beta.46
 com.azure:azure-core-tracing-opentelemetry-samples;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core-version-tests;1.0.0-beta.1;1.0.0-beta.1
@@ -469,7 +469,7 @@ com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
 # In the pom, the version update tag after the version should name the unreleased package and the dependency version:
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
 
-unreleased_com.azure:azure-core-amqp;2.10.0-beta.1
+unreleased_com.azure:azure-core-amqp;2.9.4
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid

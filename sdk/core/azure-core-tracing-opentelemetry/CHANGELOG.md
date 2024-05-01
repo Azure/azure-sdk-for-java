@@ -1,8 +1,6 @@
 # Release History
 
-## 1.0.0-beta.46 (Unreleased)
-
-### Features Added
+## 1.0.0-beta.46 (2024-05-01)
 
 ### Breaking Changes
 
@@ -10,7 +8,14 @@
 
 ### Bugs Fixed
 
+- Fixed explicit context propagation when running in javaagent. ([#39602](https://github.com/Azure/azure-sdk-for-java/pull/39602))
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to `1.49.0`.
+- Upgraded OpenTelemetry from `1.36.0` to `1.37.0`.
 
 ## 1.0.0-beta.45 (2024-04-05)
 

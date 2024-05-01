@@ -1,14 +1,16 @@
 # Release History
 
-## 1.14.0-beta.1 (Unreleased)
+## 1.14.0 (2024-05-01)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Added `managedHsmDnsSuffix` getter and `storageEndpointSuffix` to `AzureEnvironment`. ([#39647](https://github.com/Azure/azure-sdk-for-java/pull/39647))
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to `1.49.0`.
 
 ## 1.13.0 (2024-04-05)
 
