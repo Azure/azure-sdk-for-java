@@ -31,6 +31,7 @@ import static com.azure.ai.openai.assistants.implementation.models.AssistantStre
 import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.THREAD_RUN_STEP_COMPLETED;
 import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.THREAD_RUN_STEP_CREATED;
 import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.THREAD_RUN_STEP_DELTA;
+import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.THREAD_RUN_STEP_FAILED;
 import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.THREAD_RUN_STEP_IN_PROGRESS;
 
 public final class StreamTypeFactory {
@@ -44,7 +45,7 @@ public final class StreamTypeFactory {
                 THREAD_RUN_IN_PROGRESS.equals(event) || THREAD_RUN_COMPLETED.equals(event)) {
             return new StreamThreadRunCreation(eventJson.toObject(ThreadRun.class));
         } else if (THREAD_RUN_STEP_CREATED.equals(event) || THREAD_RUN_STEP_IN_PROGRESS.equals(event) ||
-                THREAD_RUN_STEP_COMPLETED.equals(event)) {
+                THREAD_RUN_STEP_COMPLETED.equals(event) || THREAD_RUN_STEP_FAILED.equals(event)) {
             return new StreamRunCreation(eventJson.toObject(RunStep.class));
         } else if (THREAD_MESSAGE_CREATED.equals(event) || THREAD_MESSAGE_IN_PROGRESS.equals(event)) {
             return new StreamMessageCreation(eventJson.toObject(ThreadMessage.class));
