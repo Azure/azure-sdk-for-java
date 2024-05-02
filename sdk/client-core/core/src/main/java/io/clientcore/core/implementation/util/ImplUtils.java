@@ -5,6 +5,8 @@ package io.clientcore.core.implementation.util;
 
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.util.configuration.Configuration;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,6 +25,8 @@ import java.util.AbstractMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
@@ -43,6 +47,11 @@ public final class ImplUtils {
     private static final byte FE = (byte) 0xFE;
     private static final byte FF = (byte) 0xFF;
     private static final Pattern CHARSET_PATTERN = Pattern.compile("charset=(\\S+)\\b", Pattern.CASE_INSENSITIVE);
+
+    /**
+     * Default sanitizer for a value, where it is simply replaced with "REDACTED".
+     */
+    public static final Function<String, String> DEFAULT_SANITIZER = value -> "REDACTED";
 
     /**
      * Attempts to extract a retry after duration from a given set of {@link HttpHeaders}.
@@ -335,6 +344,159 @@ public final class ImplUtils {
             }
         }
     }
+
+    /**
+     * Gets either the system property or environment variable configuration for the passed environment.
+     * <p>
+     * The system property is checked first, then the environment variable. If neither are found, null is returned.
+     *
+     * @param environmentConfiguration The environment to search.
+     * @param systemProperty The system property name.
+     * @param envVar The environment variable name.
+     * @param valueSanitizer The function to sanitize the value.
+     * @param logger The logger to log the property retrieval.
+     * @return The value of the property if found, otherwise null.
+     */
+    public static String getFromEnvironment(EnvironmentConfiguration environmentConfiguration, String systemProperty,
+        String envVar, Function<String, String> valueSanitizer, ClientLogger logger) {
+        if (systemProperty != null) {
+            final String value = environmentConfiguration.getSystemProperty(systemProperty);
+            if (value != null) {
+                logger.atVerbose()
+                    .addKeyValue("systemProperty", systemProperty)
+                    .addKeyValue("value", () -> valueSanitizer.apply(value))
+                    .log("Got property from system property.");
+                return value;
+            }
+        }
+
+        if (envVar != null) {
+            final String value = environmentConfiguration.getEnvironmentVariable(envVar);
+            if (value != null) {
+                logger.atVerbose()
+                    .addKeyValue("envVar", envVar)
+                    .addKeyValue("value", () -> valueSanitizer.apply(value))
+                    .log("Got property from environment variable.");
+                return value;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Creates a {@link Thread} that will shut down the passed {@link ExecutorService} when ran.
+     * <p>
+     * There are two phases to shut down, each will use half of the shutdown timeout. The first phase uses
+     * {@link ExecutorService#shutdown()} and awaits termination. If the executor does not terminate within half the
+     * timeout, the second phase will use {@link ExecutorService#shutdownNow()} and await termination.
+     *
+     * @param executorService The {@link ExecutorService} to shut down.
+     * @param shutdownTimeout The maximum time to wait for the executor to shut down.
+     * @return The {@link Thread} that will shut down the executor when ran.
+     */
+    public static Thread createExecutorServiceShutdownThread(ExecutorService executorService,
+        Duration shutdownTimeout) {
+        long timeoutNanos = shutdownTimeout.toNanos();
+        return new Thread(() -> {
+            try {
+                executorService.shutdown();
+                if (!executorService.awaitTermination(timeoutNanos / 2, TimeUnit.NANOSECONDS)) {
+                    executorService.shutdownNow();
+                    executorService.awaitTermination(timeoutNanos / 2, TimeUnit.NANOSECONDS);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                executorService.shutdown();
+            }
+        });
+    }
+
+    /**
+     * Helper method that safely adds a {@link Runtime#addShutdownHook(Thread)} to the JVM that will run when the JVM is
+     * shutting down.
+     * <p>
+     * {@link Runtime#addShutdownHook(Thread)} checks for security privileges and will throw an exception if the proper
+     * security isn't available. So, if running with a security manager, setting
+     * {@code CORE_ENABLE_SHUTDOWN_HOOK_WITH_PRIVILEGE} to true will have this method use access controller to add
+     * the shutdown hook with privileged permissions.
+     * <p>
+     * If {@code shutdownThread} is null, no shutdown hook will be added and this method will return null.
+     *
+     * @param shutdownThread The {@link Thread} that will be added as a
+     * {@link Runtime#addShutdownHook(Thread) shutdown hook}.
+     * @return The {@link Thread} that was passed in.
+     */
+    @SuppressWarnings({ "deprecation", "removal" })
+    public static Thread addShutdownHookSafely(Thread shutdownThread) {
+        if (shutdownThread == null) {
+            return null;
+        }
+
+        if (ShutdownHookAccessHelperHolder.shutdownHookAccessHelper) {
+            java.security.AccessController.doPrivileged((java.security.PrivilegedAction<Void>) () -> {
+                Runtime.getRuntime().addShutdownHook(shutdownThread);
+                return null;
+            });
+        } else {
+            Runtime.getRuntime().addShutdownHook(shutdownThread);
+        }
+
+        return shutdownThread;
+    }
+
+    /**
+     * Helper method that safely removes a {@link Runtime#removeShutdownHook(Thread)} from the JVM.
+     * <p>
+     * {@link Runtime#removeShutdownHook(Thread)} checks for security privileges and will throw an exception if the
+     * proper security isn't available. So, if running with a security manager, setting
+     * {@code CORE_ENABLE_SHUTDOWN_HOOK_WITH_PRIVILEGE} to true will have this method use access controller to remove
+     * the shutdown hook with privileged permissions.
+     * <p>
+     * If {@code shutdownThread} is null, no shutdown hook will be removed.
+     *
+     * @param shutdownThread The {@link Thread} that will be added as a
+     * {@link Runtime#addShutdownHook(Thread) shutdown hook}.
+     */
+    @SuppressWarnings({ "deprecation", "removal" })
+    public static void removeShutdownHookSafely(Thread shutdownThread) {
+        if (shutdownThread == null) {
+            return;
+        }
+
+        if (ShutdownHookAccessHelperHolder.shutdownHookAccessHelper) {
+            java.security.AccessController.doPrivileged((java.security.PrivilegedAction<Void>) () -> {
+                Runtime.getRuntime().removeShutdownHook(shutdownThread);
+                return null;
+            });
+        } else {
+            Runtime.getRuntime().removeShutdownHook(shutdownThread);
+        }
+    }
+
+    /*
+     * This looks a bit strange but is needed as CoreUtils is used within Configuration code and if this was done in
+     * the static constructor for CoreUtils it would cause a circular dependency, potentially causing a deadlock.
+     * Since this is in a static holder class, it will only be loaded when CoreUtils accesses it, which won't happen
+     * until CoreUtils is loaded.
+     */
+    private static final class ShutdownHookAccessHelperHolder {
+        private static boolean shutdownHookAccessHelper;
+
+        static {
+            shutdownHookAccessHelper = Boolean
+                .parseBoolean(Configuration.getGlobalConfiguration().get("CORE_ENABLE_SHUTDOWN_HOOK_WITH_PRIVILEGE"));
+        }
+    }
+
+    static boolean isShutdownHookAccessHelper() {
+        return ShutdownHookAccessHelperHolder.shutdownHookAccessHelper;
+    }
+
+    static void setShutdownHookAccessHelper(boolean shutdownHookAccessHelper) {
+        ShutdownHookAccessHelperHolder.shutdownHookAccessHelper = shutdownHookAccessHelper;
+    }
+
     private ImplUtils() {
     }
 }

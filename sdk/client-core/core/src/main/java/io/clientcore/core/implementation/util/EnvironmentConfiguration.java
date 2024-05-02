@@ -89,6 +89,11 @@ public class EnvironmentConfiguration {
         }
     }
 
+    /**
+     * Gets the global environment configuration.
+     *
+     * @return The global environment configuration.
+     */
     public static EnvironmentConfiguration getGlobalConfiguration() {
         return GLOBAL_CONFIGURATION;
     }

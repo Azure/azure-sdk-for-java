@@ -6,6 +6,7 @@ package io.clientcore.http.okhttp3;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.util.SharedExecutorService;
 import io.clientcore.core.util.configuration.Configuration;
 import io.clientcore.http.okhttp3.implementation.OkHttpProxySelector;
 import io.clientcore.http.okhttp3.implementation.ProxyAuthenticator;
@@ -53,6 +54,7 @@ public class OkHttpHttpClientBuilder {
      */
     public OkHttpHttpClientBuilder() {
         this.okHttpClient = null;
+        this.dispatcher = new Dispatcher(SharedExecutorService.getInstance());
     }
 
     /**
@@ -71,7 +73,6 @@ public class OkHttpHttpClientBuilder {
      * if your HTTP pipeline is configured with a redirect policy it will not be called.</p>
      *
      * @param followRedirects The followRedirects value to use.
-     *
      * @return The updated {@link OkHttpHttpClientBuilder} object.
      */
     public OkHttpHttpClientBuilder followRedirects(boolean followRedirects) {
@@ -87,7 +88,6 @@ public class OkHttpHttpClientBuilder {
      * configuration store}.
      *
      * @param configuration The configuration store.
-     *
      * @return The updated {@link OkHttpHttpClientBuilder} object.
      */
     public OkHttpHttpClientBuilder configuration(Configuration configuration) {
@@ -100,9 +100,7 @@ public class OkHttpHttpClientBuilder {
      * Sets the Http connection pool.
      *
      * @param connectionPool The OkHttp connection pool to use.
-     *
      * @return The updated {@link OkHttpHttpClientBuilder} object.
-     *
      * @see OkHttpClient.Builder#connectionPool(ConnectionPool)
      */
     public OkHttpHttpClientBuilder connectionPool(ConnectionPool connectionPool) {
@@ -114,11 +112,15 @@ public class OkHttpHttpClientBuilder {
 
     /**
      * Sets the dispatcher that also composes the thread pool for executing HTTP requests.
+     * <p>
+     * If this method is not invoked prior to {@link #build() building}, handling for a default will be based on whether
+     * the builder was created with the default constructor or the constructor that accepts an existing
+     * {@link OkHttpClient}. If the default constructor was used, a new {@link Dispatcher} will be created with based on
+     * {@link SharedExecutorService#getInstance()}}. If the constructor that accepts an existing {@link OkHttpClient}
+     * was used, the dispatcher from the existing {@link OkHttpClient} will be used.
      *
      * @param dispatcher The dispatcher to use.
-     *
      * @return The updated {@link OkHttpHttpClientBuilder} object.
-     *
      * @see OkHttpClient.Builder#dispatcher(Dispatcher)
      */
     public OkHttpHttpClientBuilder dispatcher(Dispatcher dispatcher) {
@@ -142,9 +144,7 @@ public class OkHttpHttpClientBuilder {
      * By default, the connection timeout is 10 seconds.
      *
      * @param connectionTimeout Connect timeout duration.
-     *
      * @return The updated {@link OkHttpHttpClientBuilder} object.
-     *
      * @see OkHttpClient.Builder#connectTimeout(Duration)
      */
     public OkHttpHttpClientBuilder connectionTimeout(Duration connectionTimeout) {
@@ -166,9 +166,7 @@ public class OkHttpHttpClientBuilder {
      * By default, call timeout is not enabled.
      *
      * @param callTimeout Call timeout duration.
-     *
      * @return The updated {@link OkHttpHttpClientBuilder} object.
-     *
      * @see OkHttpClient.Builder#callTimeout(Duration)
      */
     public OkHttpHttpClientBuilder callTimeout(Duration callTimeout) {
@@ -195,9 +193,7 @@ public class OkHttpHttpClientBuilder {
      * readTimeout} will be used.
      *
      * @param readTimeout Read timeout duration.
-     *
      * @return The updated {@link OkHttpHttpClientBuilder} object.
-     *
      * @see OkHttpClient.Builder#readTimeout(Duration)
      */
     public OkHttpHttpClientBuilder readTimeout(Duration readTimeout) {
@@ -221,9 +217,7 @@ public class OkHttpHttpClientBuilder {
      * used.
      *
      * @param writeTimeout Write operation timeout duration.
-     *
      * @return The updated {@link OkHttpHttpClientBuilder} object.
-     *
      * @see OkHttpClient.Builder#writeTimeout(Duration)
      */
     public OkHttpHttpClientBuilder writeTimeout(Duration writeTimeout) {
@@ -236,7 +230,6 @@ public class OkHttpHttpClientBuilder {
      * Add a network layer interceptor to Http request pipeline.
      *
      * @param networkInterceptor the interceptor to add
-     *
      * @return The updated {@link OkHttpHttpClientBuilder} object
      */
     public OkHttpHttpClientBuilder addNetworkInterceptor(Interceptor networkInterceptor) {
@@ -252,7 +245,6 @@ public class OkHttpHttpClientBuilder {
      * This replaces all previously-set interceptors.
      *
      * @param networkInterceptors The interceptors to add.
-     *
      * @return The updated {@link OkHttpHttpClientBuilder} object.
      */
     public OkHttpHttpClientBuilder networkInterceptors(List<Interceptor> networkInterceptors) {
@@ -265,7 +257,6 @@ public class OkHttpHttpClientBuilder {
      * Sets the proxy.
      *
      * @param proxyOptions The proxy configuration to use.
-     *
      * @return The updated {@link OkHttpHttpClientBuilder} object.
      */
     public OkHttpHttpClientBuilder proxy(ProxyOptions proxyOptions) {
@@ -323,8 +314,7 @@ public class OkHttpHttpClientBuilder {
         }
 
         // Configure operation timeouts.
-        httpClientBuilder = httpClientBuilder
-            .connectTimeout(getTimeout(connectionTimeout, DEFAULT_CONNECT_TIMEOUT))
+        httpClientBuilder = httpClientBuilder.connectTimeout(getTimeout(connectionTimeout, DEFAULT_CONNECT_TIMEOUT))
             .writeTimeout(getTimeout(writeTimeout, DEFAULT_WRITE_TIMEOUT))
             .readTimeout(getTimeout(readTimeout, DEFAULT_READ_TIMEOUT));
 
@@ -355,15 +345,13 @@ public class OkHttpHttpClientBuilder {
             ? Configuration.getGlobalConfiguration()
             : configuration;
 
-        ProxyOptions buildProxyOptions = (proxyOptions == null)
-            ? ProxyOptions.fromConfiguration(buildConfiguration, true)
-            : proxyOptions;
+        ProxyOptions buildProxyOptions = (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration,
+            true) : proxyOptions;
 
         if (buildProxyOptions != null) {
-            httpClientBuilder = httpClientBuilder.proxySelector(new OkHttpProxySelector(
-                buildProxyOptions.getType().toProxyType(),
-                buildProxyOptions::getAddress,
-                buildProxyOptions.getNonProxyHosts()));
+            httpClientBuilder = httpClientBuilder.proxySelector(
+                new OkHttpProxySelector(buildProxyOptions.getType().toProxyType(), buildProxyOptions::getAddress,
+                    buildProxyOptions.getNonProxyHosts()));
 
             if (buildProxyOptions.getUsername() != null) {
                 ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator(buildProxyOptions.getUsername(),
