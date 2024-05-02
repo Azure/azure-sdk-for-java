@@ -32,7 +32,8 @@ public class JobRouterSdkCustomization extends Customization {
         updateHttpPipelineMethod(classCustomizationForJobRouterClientBuilder);
 
         logger.info("Customizing the ScoringRuleOptions class");
-        ClassCustomization classCustomizationForScoringRuleOptions = packageCustomization.getClass("ScoringRuleOptions");
+        PackageCustomization modelsPackageCustomization = customization.getPackage("com.azure.communication.jobrouter.models");
+        ClassCustomization classCustomizationForScoringRuleOptions = modelsPackageCustomization.getClass("ScoringRuleOptions");
         classCustomizationForScoringRuleOptions
             .getMethod("setIsBatchScoringEnabled")
             .setModifier(Modifier.PRIVATE);
