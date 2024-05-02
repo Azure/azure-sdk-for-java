@@ -64,7 +64,6 @@ public class MetricDataMapper {
         OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.memory.used");
         OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.memory.committed");
         OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.memory.limit");
-        OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.memory.limit");
         OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.memory.used_after_last_gc");
         OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.gc.duration");
         OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.thread.count");
