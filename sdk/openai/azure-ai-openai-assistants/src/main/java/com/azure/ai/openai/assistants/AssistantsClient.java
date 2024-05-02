@@ -2347,9 +2347,9 @@ public final class AssistantsClient {
     }
 
     // TODO add documentation
-    public IterableStream<StreamUpdate> createRunStream(AssistantThread thread, Assistant assistant) {
+    public IterableStream<StreamUpdate> createRunStream(String threadId, String assistantId) {
         RequestOptions requestOptions = new RequestOptions();
-        Flux<ByteBuffer> responseStream = createRunWithResponse(thread.getId(), BinaryData.fromObject(new CreateRunOptions(assistant.getId()).setStream(true)),
+        Flux<ByteBuffer> responseStream = createRunWithResponse(threadId, BinaryData.fromObject(new CreateRunOptions(assistantId).setStream(true)),
             requestOptions).getValue().toFluxByteBuffer();
 
         OpenAIServerSentEvents eventStream = new OpenAIServerSentEvents(responseStream);

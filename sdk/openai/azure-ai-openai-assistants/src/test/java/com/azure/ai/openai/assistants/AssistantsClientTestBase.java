@@ -12,6 +12,7 @@ import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
 import com.azure.ai.openai.assistants.models.CodeInterpreterToolDefinition;
 import com.azure.ai.openai.assistants.models.CreateAndRunThreadOptions;
+import com.azure.ai.openai.assistants.models.CreateRunOptions;
 import com.azure.ai.openai.assistants.models.FileDeletionStatus;
 import com.azure.ai.openai.assistants.models.FileDetails;
 import com.azure.ai.openai.assistants.models.FilePurpose;
@@ -172,7 +173,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
                         .setTools(Arrays.asList(new CodeInterpreterToolDefinition())));
     }
 
-    void createThreadRunner(Consumer<AssistantThreadCreationOptions> testRunner) {
+    void createRunRunner(Consumer<AssistantThreadCreationOptions> testRunner) {
         testRunner.accept(new AssistantThreadCreationOptions()
                 .setMessages(Arrays.asList(new ThreadInitializationMessage(MessageRole.USER,
                         "I need to solve the equation `3x + 11 = 14`. Can you help me?"))));
@@ -202,6 +203,10 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
                     .setMessages(Arrays.asList(new ThreadInitializationMessage(MessageRole.USER,
                         "Please make a graph for my boilerplate equation")))));
 
+    }
+
+    void createRunRunner(Consumer<CreateRunOptions> testRunner, String assistantId) {
+        testRunner.accept(new CreateRunOptions(assistantId));
     }
 
     void createRetrievalRunner(BiConsumer<FileDetails, AssistantCreationOptions> testRunner) {
