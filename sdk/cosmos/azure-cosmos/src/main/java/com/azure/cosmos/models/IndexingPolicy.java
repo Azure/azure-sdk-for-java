@@ -20,13 +20,12 @@ import java.util.List;
  */
 public final class IndexingPolicy {
     private static final String DEFAULT_PATH = "/*";
-
+    private final JsonSerializable jsonSerializable;
     private List<IncludedPath> includedPaths;
     private List<ExcludedPath> excludedPaths;
     private List<List<CompositePath>> compositeIndexes;
     private List<SpatialSpec> spatialIndexes;
-
-    private JsonSerializable jsonSerializable;
+    private List<CosmosVectorIndexSpec> vectorIndexes;
 
     /**
      * Constructor.
@@ -54,7 +53,7 @@ public final class IndexingPolicy {
      * </pre>
      *
      * @param defaultIndexOverrides comma separated set of indexes that serve as default index specifications for the
-     * root path.
+     *                              root path.
      * @throws IllegalArgumentException throws when defaultIndexOverrides is null
      */
     IndexingPolicy(Index[] defaultIndexOverrides) {
@@ -235,7 +234,7 @@ public final class IndexingPolicy {
     }
 
     /**
-     * Sets the spatial indexes for additional indexes.
+     * Gets the spatial indexes for additional indexes.
      *
      * @return the spatial indexes.
      */
@@ -266,11 +265,55 @@ public final class IndexingPolicy {
         return this;
     }
 
+    /**
+     * Gets the vector indexes.
+     *
+     * @return the vector indexes
+     */
+    public List<CosmosVectorIndexSpec> getVectorIndexes() {
+        if (this.vectorIndexes == null) {
+            this.vectorIndexes = this.jsonSerializable.getList(Constants.Properties.VECTOR_INDEXES, CosmosVectorIndexSpec.class);
+
+            if (this.vectorIndexes == null) {
+                this.vectorIndexes = new ArrayList<CosmosVectorIndexSpec>();
+            }
+        }
+
+        return this.vectorIndexes;
+    }
+
+    /**
+     * Sets the vector indexes.
+     *
+     * Example of the vectorIndexes:
+     * "vectorIndexes": [
+     *      {
+     *          "path": "/vector1",
+     *          "type": "diskANN"
+     *      },
+     *      {
+     *          "path": "/vector1",
+     *          "type": "flat"
+     *      },
+     *      {
+     *          "path": "/vector2",
+     *          "type": "quantizedFlat"
+     *      }]
+     *
+     * @param vectorIndexes the vector indexes
+     * @return the Indexing Policy.
+     */
+    public IndexingPolicy setVectorIndexes(List<CosmosVectorIndexSpec> vectorIndexes) {
+        this.vectorIndexes = vectorIndexes;
+        this.jsonSerializable.set(Constants.Properties.VECTOR_INDEXES,this.vectorIndexes, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        return this;
+    }
+
     void populatePropertyBag() {
         this.jsonSerializable.populatePropertyBag();
         // If indexing mode is not 'none' and not paths are set, set them to the defaults
         if (this.getIndexingMode() != IndexingMode.NONE && this.getIncludedPaths().size() == 0
-                && this.getExcludedPaths().size() == 0) {
+            && this.getExcludedPaths().size() == 0) {
             IncludedPath includedPath = new IncludedPath(IndexingPolicy.DEFAULT_PATH);
             this.getIncludedPaths().add(includedPath);
         }
@@ -296,5 +339,7 @@ public final class IndexingPolicy {
         }
     }
 
-    JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
+    JsonSerializable getJsonSerializable() {
+        return this.jsonSerializable;
+    }
 }
