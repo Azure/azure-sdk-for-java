@@ -16,6 +16,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.messaging.eventhubs.models.SendOptions;
@@ -59,6 +60,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Test base for running integration tests.
  */
 public abstract class IntegrationTestBase extends TestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationTestBase.class);
+
     // The number of partitions we create in test-resources.json.
     // Partitions 0 and 1 are used for consume-only operations. 2, 3, and 4 are used to publish or consume events.
     protected static final int NUMBER_OF_PARTITIONS = 5;
@@ -193,7 +196,7 @@ public abstract class IntegrationTestBase extends TestBase {
                 }
                 return String.format(connectionStringWithSasAndEntityFormat, endpoint, signatureValue, entityPath);
             } catch (Exception e) {
-                e.printStackTrace();
+                LOGGER.log(LogLevel.VERBOSE, () -> "Error while getting connection string", e);
             }
         }
         return connectionString;

@@ -42,7 +42,7 @@ import java.util.Map;
 /** Test of application gateway management. */
 public class TestApplicationGateway {
     private static final ClientLogger LOGGER = new ClientLogger(TestApplicationGateway.class);
-    
+
     String testId = "";
     static final Region REGION = Region.US_WEST;
     String groupName = "";

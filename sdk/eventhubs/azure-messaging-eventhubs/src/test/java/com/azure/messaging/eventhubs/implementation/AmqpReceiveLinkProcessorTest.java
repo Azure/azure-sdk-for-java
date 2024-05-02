@@ -10,6 +10,8 @@ import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsConsumerInstrumentation;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterEach;
@@ -49,6 +51,8 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 class AmqpReceiveLinkProcessorTest {
+    private static final ClientLogger LOGGER = new ClientLogger(AmqpReceiveLinkProcessorTest.class);
+
     private static final int PREFETCH = 5;
     private static final EventHubsConsumerInstrumentation DEFAULT_INSTRUMENTATION =
         new EventHubsConsumerInstrumentation(null, null, "hostname", "hubname", "$Default", false);
@@ -190,9 +194,9 @@ class AmqpReceiveLinkProcessorTest {
 
         // Act
         processor.subscribe(
-            e -> System.out.println("message: " + e),
+            e -> LOGGER.log(LogLevel.VERBOSE, () -> "message: " + e),
             Assertions::fail,
-            () -> System.out.println("Complete."),
+            () -> LOGGER.log(LogLevel.VERBOSE, () -> "Complete."),
             s -> s.request(backpressure));
 
         // Assert
@@ -554,7 +558,7 @@ class AmqpReceiveLinkProcessorTest {
                 assertNotNull(integerSupplier);
                 // Invoking this once. Should return a value and notify that there are no credits left on the link.
                 final int messages = integerSupplier.get();
-                System.out.println("Messages: " + messages);
+                LOGGER.log(LogLevel.VERBOSE, () -> "Messages: " + messages);
             })
             .expectNoEvent(Duration.ofSeconds(1))
             .thenRequest(nextRequest)

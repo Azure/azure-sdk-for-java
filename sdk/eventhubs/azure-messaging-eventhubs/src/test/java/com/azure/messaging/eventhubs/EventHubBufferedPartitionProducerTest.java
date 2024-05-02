@@ -5,6 +5,8 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.messaging.eventhubs.EventHubBufferedProducerAsyncClient.BufferedProducerClientOptions;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendBatchFailedContext;
@@ -49,6 +51,8 @@ import static org.mockito.Mockito.when;
  */
 @Isolated
 public class EventHubBufferedPartitionProducerTest {
+    private static final ClientLogger LOGGER = new ClientLogger(EventHubBufferedPartitionProducerTest.class);
+
     private static final String PARTITION_ID = "10";
     private static final String NAMESPACE = "test-eventhubs-namespace";
     private static final String EVENT_HUB_NAME = "test-hub";
@@ -312,7 +316,7 @@ public class EventHubBufferedPartitionProducerTest {
         final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
         options.setMaxWaitTime(Duration.ofSeconds(5));
         options.setSendSucceededContext(context -> {
-            System.out.println("Batch received.");
+            LOGGER.log(LogLevel.VERBOSE, () -> "Batch received.");
             holder.onSucceed(context);
             success.countDown();
         });

@@ -15,9 +15,13 @@ import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class QuantumClientTestBase extends TestProxyTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(QuantumClientTestBase.class);
+
     private final String SANITIZED = "Sanitized";
     private final String SUBSCRIPTION_ID = "00000000-0000-0000-0000-000000000000";
     private final String RESOURCE_GROUP = "myresourcegroup";
@@ -27,12 +31,12 @@ public class QuantumClientTestBase extends TestProxyTestBase {
 
     QuantumClientBuilder getClientBuilder(HttpClient httpClient) {
 
-        System.out.println(String.format("Subscription id: %s", getSubscriptionId()));
-        System.out.println(String.format("Resource group: %s", getResourceGroup()));
-        System.out.println(String.format("Workspace: %s", getWorkspaceName()));
-        System.out.println(String.format("Location: %s", getLocation()));
-        System.out.println(String.format("Endpoint: %s", getEndpoint()));
-        System.out.println(String.format("Test mode: %s", getTestMode()));
+        LOGGER.log(LogLevel.VERBOSE, () -> "Subscription id: " + getSubscriptionId());
+        LOGGER.log(LogLevel.VERBOSE, () -> "Resource group: " + getResourceGroup());
+        LOGGER.log(LogLevel.VERBOSE, () -> "Workspace: " + getWorkspaceName());
+        LOGGER.log(LogLevel.VERBOSE, () -> "Location: " + getLocation());
+        LOGGER.log(LogLevel.VERBOSE, () -> "Endpoint: " + getEndpoint());
+        LOGGER.log(LogLevel.VERBOSE, () -> "Test mode: " + getTestMode());
 
         QuantumClientBuilder builder = new QuantumClientBuilder();
 

@@ -7,6 +7,8 @@ import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterEach;
@@ -36,6 +38,7 @@ import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -55,6 +58,8 @@ import static org.mockito.Mockito.when;
  * Tests for {@link ServiceBusReceiveLinkProcessor}.
  */
 class ServiceBusReceiveLinkProcessorTest {
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiveLinkProcessorTest.class);
+
     private static final int PREFETCH = 5;
     @Mock
     private ServiceBusReceiveLink link1;
@@ -172,9 +177,9 @@ class ServiceBusReceiveLinkProcessorTest {
         // Act
         semaphore.acquire();
         processor.subscribe(
-            e -> System.out.println("message: " + e),
+            e -> LOGGER.log(LogLevel.VERBOSE, () -> "message: " + e),
             Assertions::fail,
-            () -> System.out.println("Complete."),
+            () -> LOGGER.log(LogLevel.VERBOSE, () -> "Complete."),
             s -> {
                 s.request(backpressure);
                 semaphore.release();
@@ -262,9 +267,7 @@ class ServiceBusReceiveLinkProcessorTest {
             })
             .expectNext(message3)
             .expectNext(message4)
-            .then(() -> {
-                processor.cancel();
-            })
+            .then(processor::cancel)
             .verifyComplete();
 
         assertTrue(processor.isTerminated());
@@ -336,12 +339,12 @@ class ServiceBusReceiveLinkProcessorTest {
         // Verify that we get the first connection.
         StepVerifier.create(processor)
             .then(() -> {
-                System.out.println("Outputting exception.");
+                LOGGER.log(LogLevel.VERBOSE, () -> "Outputting exception.");
                 endpointProcessor.error(amqpException);
             })
             .expectErrorSatisfies(error -> {
-                System.out.println("Asserting exception.");
-                assertTrue(error instanceof AmqpException);
+                LOGGER.log(LogLevel.VERBOSE, () -> "Asserting exception.");
+                assertInstanceOf(AmqpException.class, error);
                 AmqpException exception = (AmqpException) error;
 
                 assertFalse(exception.isTransient());

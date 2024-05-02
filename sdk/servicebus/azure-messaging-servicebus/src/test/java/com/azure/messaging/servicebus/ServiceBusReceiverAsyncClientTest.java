@@ -24,6 +24,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
@@ -1317,13 +1318,14 @@ class ServiceBusReceiverAsyncClientTest {
 
         try {
             // Act & Assert
-            StepVerifier.create(receiver2.receiveMessages().take(numberOfEvents).doOnComplete(() -> System.out.println("take complete..")))
+            StepVerifier.create(receiver2.receiveMessages().take(numberOfEvents)
+                    .doOnComplete(() -> LOGGER.log(LogLevel.VERBOSE, () -> "take complete..")))
                 .then(() -> messages.forEach(m -> messageSink.next(m)))
                 .expectNextCount(numberOfEvents)
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT);
         } finally {
-            System.out.println("CLOSING....");
+            LOGGER.log(LogLevel.VERBOSE, () -> "CLOSING....");
             receiver2.close();
         }
 

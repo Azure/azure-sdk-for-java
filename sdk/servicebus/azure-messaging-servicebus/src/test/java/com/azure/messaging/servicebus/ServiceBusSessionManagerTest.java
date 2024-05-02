@@ -13,6 +13,7 @@ import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
@@ -382,23 +383,23 @@ class ServiceBusSessionManagerTest {
                 }
             })
             .assertNext(context -> {
-                System.out.println("1");
+                LOGGER.log(LogLevel.VERBOSE, () -> "1");
                 assertMessageEquals(sessionId, receivedMessage, context);
             })
             .assertNext(context -> {
-                System.out.println("2");
+                LOGGER.log(LogLevel.VERBOSE, () -> "2");
                 assertMessageEquals(sessionId, receivedMessage, context);
             })
             .assertNext(context -> {
-                System.out.println("3");
+                LOGGER.log(LogLevel.VERBOSE, () -> "3");
                 assertMessageEquals(sessionId, receivedMessage, context);
             })
             .assertNext(context -> {
-                System.out.println("4");
+                LOGGER.log(LogLevel.VERBOSE, () -> "4");
                 assertMessageEquals(sessionId, receivedMessage, context);
             })
             .assertNext(context -> {
-                System.out.println("5");
+                LOGGER.log(LogLevel.VERBOSE, () -> "5");
                 assertMessageEquals(sessionId, receivedMessage, context);
             })
             .thenAwait(Duration.ofSeconds(13))
@@ -408,15 +409,15 @@ class ServiceBusSessionManagerTest {
                 }
             })
             .assertNext(context -> {
-                System.out.println("6");
+                LOGGER.log(LogLevel.VERBOSE, () -> "6");
                 assertMessageEquals(sessionId2, receivedMessage2, context);
             })
             .assertNext(context -> {
-                System.out.println("7");
+                LOGGER.log(LogLevel.VERBOSE, () -> "7");
                 assertMessageEquals(sessionId2, receivedMessage2, context);
             })
             .assertNext(context -> {
-                System.out.println("8");
+                LOGGER.log(LogLevel.VERBOSE, () -> "8");
                 assertMessageEquals(sessionId2, receivedMessage2, context);
             })
             .thenAwait(Duration.ofSeconds(15))

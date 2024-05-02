@@ -13,6 +13,8 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusException;
@@ -44,6 +46,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(CallAutomationAutomatedLiveTestBase.class);
+
     protected ConcurrentHashMap<String, ServiceBusProcessorClient> processorStore;
     // Key: callerId + receiverId, Value: incomingCallContext
     protected ConcurrentHashMap<String, String> incomingCallContextStore;
@@ -60,7 +64,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
     protected static final String BOT_APP_ID = Configuration.getGlobalConfiguration()
         .get("BOT_APP_ID", "REDACTED-bedb-REDACTED-b8c6-REDACTED");
 
-    private static final StringJoiner JSON_PROPERTIES_TO_REDACT 
+    private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
         .add("value")
         .add("rawId")
@@ -70,11 +74,11 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         .add("ivrContext")
         .add("incomingCallContext")
         .add("serverCallId");
-        
+
     protected static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
         = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT),
         Pattern.CASE_INSENSITIVE);
-    
+
     protected static final String URL_REGEX = "(?<=http:\\/\\/|https:\\/\\/)([^\\/?]+)";
 
     @Override
@@ -206,11 +210,12 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
     }
 
     protected void errorHandler(ServiceBusErrorContext context, CountDownLatch countdownLatch) {
-        System.out.printf("Error when receiving messages from namespace: '%s'. Entity: '%s'%n",
-            context.getFullyQualifiedNamespace(), context.getEntityPath());
+        LOGGER.log(LogLevel.VERBOSE, () -> String.format(
+            "Error when receiving messages from namespace: '%s'. Entity: '%s'%n",
+            context.getFullyQualifiedNamespace(), context.getEntityPath()));
 
         if (!(context.getException() instanceof ServiceBusException)) {
-            System.out.printf("Non-ServiceBusException occurred: %s%n", context.getException());
+            LOGGER.log(LogLevel.VERBOSE, () -> "Non-ServiceBusException occurred: " + context.getException());
             return;
         }
 
@@ -220,22 +225,24 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         if (reason == ServiceBusFailureReason.MESSAGING_ENTITY_DISABLED
             || reason == ServiceBusFailureReason.MESSAGING_ENTITY_NOT_FOUND
             || reason == ServiceBusFailureReason.UNAUTHORIZED) {
-            System.out.printf("An unrecoverable error occurred. Stopping processing with reason %s: %s%n",
-                reason, exception.getMessage());
+            LOGGER.log(LogLevel.VERBOSE, () -> String.format(
+                "An unrecoverable error occurred. Stopping processing with reason %s: %s%n",
+                reason, exception.getMessage()));
 
             countdownLatch.countDown();
         } else if (reason == ServiceBusFailureReason.MESSAGE_LOCK_LOST) {
-            System.out.printf("Message lock lost for message: %s%n", context.getException());
+            LOGGER.log(LogLevel.VERBOSE,
+                () -> String.format("Message lock lost for message: %s%n", context.getException()));
         } else if (reason == ServiceBusFailureReason.SERVICE_BUSY) {
             try {
                 // Choosing an arbitrary amount of time to wait until trying again.
                 TimeUnit.SECONDS.sleep(1);
             } catch (InterruptedException e) {
-                System.err.println("Unable to sleep for period of time");
+                LOGGER.log(LogLevel.VERBOSE, () -> "Unable to sleep for period of time");
             }
         } else {
-            System.out.printf("Error source %s, reason %s, message: %s%n", context.getErrorSource(),
-                reason, context.getException());
+            LOGGER.log(LogLevel.VERBOSE, () -> String.format("Error source %s, reason %s, message: %s%n",
+                context.getErrorSource(), reason, context.getException()));
         }
     }
 
@@ -279,7 +286,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         }
         return null;
     }
-    
+
     protected String redact(String content, Matcher matcher) {
         while (matcher.find()) {
             String captureGroup = matcher.group(1);

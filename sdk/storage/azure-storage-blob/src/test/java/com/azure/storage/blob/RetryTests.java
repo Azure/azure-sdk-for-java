@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RetryPolicyType;
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,7 @@ public class RetryTests extends BlobTestBase {
         try {
             retryTestURL = new URL("https://" + RequestRetryTestFactory.RETRY_TEST_PRIMARY_HOST);
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            LOGGER.log(LogLevel.VERBOSE, () -> "Failed to create URL for retry tests.", e);
         }
     }
 

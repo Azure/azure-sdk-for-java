@@ -13,6 +13,8 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
@@ -25,6 +27,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CallAutomationLiveTestBase extends TestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(CallAutomationLiveTestBase.class);
+
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING",
             "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
@@ -109,7 +113,7 @@ public class CallAutomationLiveTestBase extends TestBase {
                 final HttpResponse bufferedResponse = httpResponse.buffer();
 
                 /* Should sanitize printed response url */
-                System.out.println("Chain-ID header for " + testName + " request "
+                LOGGER.log(LogLevel.VERBOSE, () -> "Chain-ID header for " + testName + " request "
                     + bufferedResponse.getRequest().getUrl()
                     + ": " + bufferedResponse.getHeaderValue("X-Microsoft-Skype-Chain-ID"));
                 return Mono.just(bufferedResponse);

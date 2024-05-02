@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
 import com.azure.messaging.eventhubs.models.ErrorContext;
@@ -17,7 +18,6 @@ import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -109,8 +109,7 @@ public class PartitionBasedLoadBalancerTest {
     private final EventProcessorClientOptions processorOptions = new EventProcessorClientOptions();
 
     @BeforeEach
-    public void setup(TestInfo testInfo) {
-        System.out.println("Running " + testInfo.getDisplayName());
+    public void setup() {
         toClose = new ArrayList<>();
         mockCloseable = MockitoAnnotations.openMocks(this);
 
@@ -142,7 +141,7 @@ public class PartitionBasedLoadBalancerTest {
             try {
                 closeable.close();
             } catch (IOException error) {
-                error.printStackTrace();
+                LOGGER.log(LogLevel.VERBOSE, () -> "Error closing resource.", error);
             }
         }
 

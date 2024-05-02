@@ -3,6 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.util.Base64URL;
 
@@ -14,6 +16,7 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 
 public final class TestJwks {
+    private static final ClientLogger LOGGER = new ClientLogger(TestJwks.class);
 
     // @formatter:off
     public static final RSAKey DEFAULT_RSA_JWK =
@@ -38,7 +41,7 @@ public final class TestJwks {
                 .x509CertThumbprint(Base64URL.encode(bytes))
                 .keyID("rsa-jwk-kid");
         } catch (CertificateEncodingException | NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            LOGGER.log(LogLevel.VERBOSE, () -> "Failed to generate thumbprint for certificate.", e);
         }
         return null;
         // @formatter:on

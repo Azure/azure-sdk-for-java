@@ -8,6 +8,8 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.TracingOptions;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.ErrorContext;
@@ -35,6 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Unit tests for {@link EventProcessorClientBuilder}.
  */
 public class EventProcessorClientBuilderTest {
+    private static final ClientLogger LOGGER = new ClientLogger(EventProcessorClientBuilderTest.class);
 
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
     private static final String DEFAULT_DOMAIN_NAME = Configuration.getGlobalConfiguration()
@@ -68,13 +71,14 @@ public class EventProcessorClientBuilderTest {
             EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
                 .checkpointStore(new SampleCheckpointStore())
                 .processEvent(eventContext -> {
-                    System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
-                        + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
+                    LOGGER.log(LogLevel.VERBOSE, () -> "Partition id = "
+                        + eventContext.getPartitionContext().getPartitionId() + " and sequence number of event = "
+                        + eventContext.getEventData().getSequenceNumber());
                 })
                 .processError(errorContext -> {
-                    System.out.printf("Error occurred in partition processor for partition %s, %s%n",
-                        errorContext.getPartitionContext().getPartitionId(),
-                        errorContext.getThrowable());
+                    LOGGER.log(LogLevel.VERBOSE, () -> String.format(
+                        "Error occurred in partition processor for partition %s, %s%n",
+                        errorContext.getPartitionContext().getPartitionId(), errorContext.getThrowable()));
                 })
                 .buildEventProcessorClient();
         });
@@ -86,13 +90,14 @@ public class EventProcessorClientBuilderTest {
             .connectionString(CORRECT_CONNECTION_STRING)
             .consumerGroup("consumer-group")
             .processEvent(eventContext -> {
-                System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
-                    + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
+                LOGGER.log(LogLevel.VERBOSE, () -> "Partition id = "
+                    + eventContext.getPartitionContext().getPartitionId() + " and sequence number of event = "
+                    + eventContext.getEventData().getSequenceNumber());
             })
             .processError(errorContext -> {
-                System.out.printf("Error occurred in partition processor for partition %s, %s%n",
-                    errorContext.getPartitionContext().getPartitionId(),
-                    errorContext.getThrowable());
+                LOGGER.log(LogLevel.VERBOSE, () -> String.format(
+                    "Error occurred in partition processor for partition %s, %s%n",
+                    errorContext.getPartitionContext().getPartitionId(), errorContext.getThrowable()));
             })
             .checkpointStore(new SampleCheckpointStore())
             .buildEventProcessorClient();
@@ -107,21 +112,21 @@ public class EventProcessorClientBuilderTest {
                 .checkpointStore(new SampleCheckpointStore())
                 .consumerGroup("consumer-group")
                 .processEvent(eventContext -> {
-                    System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
-                        + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
+                    LOGGER.log(LogLevel.VERBOSE, () -> ("Partition id = "
+                        + eventContext.getPartitionContext().getPartitionId() + " and sequence number of event = "
+                        + eventContext.getEventData().getSequenceNumber()));
                 })
                 .processEventBatch(eventBatchContext -> {
                     eventBatchContext.getEvents().forEach(event -> {
-                        System.out
-                            .println(
-                                "Partition id = " + eventBatchContext.getPartitionContext().getPartitionId() + " and "
-                                    + "sequence number of event = " + event.getSequenceNumber());
+                        LOGGER.log(LogLevel.VERBOSE, () -> "Partition id = "
+                            + eventBatchContext.getPartitionContext().getPartitionId()
+                            + " and sequence number of event = " + event.getSequenceNumber());
                     });
                 }, 5, Duration.ofSeconds(1))
                 .processError(errorContext -> {
-                    System.out.printf("Error occurred in partition processor for partition %s, %s%n",
-                        errorContext.getPartitionContext().getPartitionId(),
-                        errorContext.getThrowable());
+                    LOGGER.log(LogLevel.VERBOSE, () -> String.format(
+                        "Error occurred in partition processor for partition %s, %s%n",
+                        errorContext.getPartitionContext().getPartitionId(), errorContext.getThrowable()));
                 })
                 .buildEventProcessorClient();
         });
@@ -134,9 +139,9 @@ public class EventProcessorClientBuilderTest {
                 .checkpointStore(new SampleCheckpointStore())
                 .consumerGroup("consumer-group")
                 .processError(errorContext -> {
-                    System.out.printf("Error occurred in partition processor for partition %s, %s%n",
-                        errorContext.getPartitionContext().getPartitionId(),
-                        errorContext.getThrowable());
+                    LOGGER.log(LogLevel.VERBOSE, () -> String.format(
+                        "Error occurred in partition processor for partition %s, %s%n",
+                        errorContext.getPartitionContext().getPartitionId(), errorContext.getThrowable()));
                 })
                 .buildEventProcessorClient();
         });
@@ -149,15 +154,15 @@ public class EventProcessorClientBuilderTest {
             .consumerGroup("consumer-group")
             .processEventBatch(eventBatchContext -> {
                 eventBatchContext.getEvents().forEach(event -> {
-                    System.out
-                        .println("Partition id = " + eventBatchContext.getPartitionContext().getPartitionId() + " and "
-                            + "sequence number of event = " + event.getSequenceNumber());
+                    LOGGER.log(LogLevel.VERBOSE, () -> ("Partition id = "
+                        + eventBatchContext.getPartitionContext().getPartitionId() + " and sequence number of event = "
+                        + event.getSequenceNumber()));
                 });
             }, 5, Duration.ofSeconds(1))
             .processError(errorContext -> {
-                System.out.printf("Error occurred in partition processor for partition %s, %s%n",
-                    errorContext.getPartitionContext().getPartitionId(),
-                    errorContext.getThrowable());
+                LOGGER.log(LogLevel.VERBOSE, () -> String.format(
+                    "Error occurred in partition processor for partition %s, %s%n",
+                    errorContext.getPartitionContext().getPartitionId(), errorContext.getThrowable()));
             })
             .checkpointStore(new SampleCheckpointStore())
             .buildEventProcessorClient();
@@ -174,15 +179,15 @@ public class EventProcessorClientBuilderTest {
             .consumerGroup("consumer-group")
             .processEventBatch(eventBatchContext -> {
                 eventBatchContext.getEvents().forEach(event -> {
-                    System.out
-                        .println("Partition id = " + eventBatchContext.getPartitionContext().getPartitionId() + " and "
-                            + "sequence number of event = " + event.getSequenceNumber());
+                    LOGGER.log(LogLevel.VERBOSE, () -> "Partition id = "
+                        + eventBatchContext.getPartitionContext().getPartitionId() + " and sequence number of event = "
+                        + event.getSequenceNumber());
                 });
             }, 5, Duration.ofSeconds(1))
             .processError(errorContext -> {
-                System.out.printf("Error occurred in partition processor for partition %s, %s%n",
-                    errorContext.getPartitionContext().getPartitionId(),
-                    errorContext.getThrowable());
+                LOGGER.log(LogLevel.VERBOSE, () -> String.format(
+                    "Error occurred in partition processor for partition %s, %s%n",
+                    errorContext.getPartitionContext().getPartitionId(), errorContext.getThrowable());
             })
             .checkpointStore(new SampleCheckpointStore());
 
@@ -215,15 +220,15 @@ public class EventProcessorClientBuilderTest {
             .consumerGroup("consumer-group")
             .processEventBatch(eventBatchContext -> {
                 eventBatchContext.getEvents().forEach(event -> {
-                    System.out
-                        .println("Partition id = " + eventBatchContext.getPartitionContext().getPartitionId() + " and "
-                            + "sequence number of event = " + event.getSequenceNumber());
+                    LOGGER.log(LogLevel.VERBOSE, () -> "Partition id = "
+                        + eventBatchContext.getPartitionContext().getPartitionId() + " and sequence number of event = "
+                        + event.getSequenceNumber());
                 });
             }, 5, Duration.ofSeconds(1))
             .processError(errorContext -> {
-                System.out.printf("Error occurred in partition processor for partition %s, %s%n",
-                    errorContext.getPartitionContext().getPartitionId(),
-                    errorContext.getThrowable());
+                LOGGER.log(LogLevel.VERBOSE, () -> String.format(
+                    "Error occurred in partition processor for partition %s, %s%n",
+                    errorContext.getPartitionContext().getPartitionId(), errorContext.getThrowable()));
             })
             .checkpointStore(new SampleCheckpointStore())
             .initialPartitionEventPosition(eventPositionFunction)
@@ -257,15 +262,15 @@ public class EventProcessorClientBuilderTest {
             .consumerGroup("consumer-group")
             .processEventBatch(eventBatchContext -> {
                 eventBatchContext.getEvents().forEach(event -> {
-                    System.out
-                        .println("Partition id = " + eventBatchContext.getPartitionContext().getPartitionId() + " and "
-                            + "sequence number of event = " + event.getSequenceNumber());
+                    LOGGER.log(LogLevel.VERBOSE, () -> "Partition id = "
+                        + eventBatchContext.getPartitionContext().getPartitionId() + " and sequence number of event = "
+                        + event.getSequenceNumber());
                 });
             }, 5, Duration.ofSeconds(1))
             .processError(errorContext -> {
-                System.out.printf("Error occurred in partition processor for partition %s, %s%n",
-                    errorContext.getPartitionContext().getPartitionId(),
-                    errorContext.getThrowable());
+                LOGGER.log(LogLevel.VERBOSE, () -> String.format(
+                    "Error occurred in partition processor for partition %s, %s%n",
+                    errorContext.getPartitionContext().getPartitionId(), errorContext.getThrowable()));
             })
             .checkpointStore(new SampleCheckpointStore())
             .initialPartitionEventPosition(eventPositionMap)
