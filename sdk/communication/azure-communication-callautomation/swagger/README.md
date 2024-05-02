@@ -254,6 +254,9 @@ directive:
 - remove-model: TranscriptionStopped
 - remove-model: TranscriptionUpdated
 - remove-model: TranscriptionFailed
+- remove-model: MediaStreamingStarted
+- remove-model: MediaStreamingStopped
+- remove-model: MediaStreamingFailed
 
 
 ```
