@@ -3,6 +3,7 @@ import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import org.slf4j.Logger;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,13 @@ public class JobRouterSdkCustomization extends Customization {
         addConnectionStringClientMethod(classCustomizationForJobRouterClientBuilder, "JobRouterClientBuilder");
         addHttpPipelineAuthPolicyMethod(classCustomizationForJobRouterClientBuilder);
         updateHttpPipelineMethod(classCustomizationForJobRouterClientBuilder);
+
+        logger.info("Customizing the ScoringRuleOptions class");
+        PackageCustomization modelsPackageCustomization = customization.getPackage("com.azure.communication.jobrouter.models");
+        ClassCustomization classCustomizationForScoringRuleOptions = modelsPackageCustomization.getClass("ScoringRuleOptions");
+        classCustomizationForScoringRuleOptions
+            .getMethod("setIsBatchScoringEnabled")
+            .setModifier(Modifier.PRIVATE);
     }
 
     private void addAuthTraits(ClassCustomization classCustomization) {
