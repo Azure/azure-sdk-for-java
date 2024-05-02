@@ -19,6 +19,7 @@ import com.azure.ai.openai.assistants.implementation.models.UpdateMessageRequest
 import com.azure.ai.openai.assistants.implementation.models.UpdateRunRequest;
 import com.azure.ai.openai.assistants.implementation.models.UpdateThreadRequest;
 import com.azure.ai.openai.assistants.implementation.models.UploadFileRequest;
+import com.azure.ai.openai.assistants.implementation.streaming.OpenAIServerSentEvents;
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantDeletionStatus;
@@ -36,6 +37,7 @@ import com.azure.ai.openai.assistants.models.MessageFile;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
 import com.azure.ai.openai.assistants.models.RunStep;
+import com.azure.ai.openai.assistants.models.StreamUpdate;
 import com.azure.ai.openai.assistants.models.ThreadDeletionStatus;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
@@ -53,9 +55,13 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
+
+import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import static com.azure.ai.openai.assistants.implementation.OpenAIUtils.addAzureVersionToRequestOptions;
 import com.azure.ai.openai.assistants.implementation.accesshelpers.PageableListAccessHelper;
@@ -2353,6 +2359,20 @@ public final class AssistantsAsyncClient {
         return createThreadAndRunWithResponse(BinaryData.fromObject(createAndRunThreadOptions), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ThreadRun.class));
+    }
+
+    // TODO add documentation
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<StreamUpdate> createThreadAndRunStream(CreateAndRunThreadOptions createAndRunThreadOptions) {
+        RequestOptions requestOptions = new RequestOptions();
+        createAndRunThreadOptions.setStream(true);
+
+        Flux<ByteBuffer> responseStream = createThreadAndRunWithResponse(BinaryData.fromObject(createAndRunThreadOptions), requestOptions)
+            .flatMapMany(it -> it.getValue().toFluxByteBuffer());
+
+        OpenAIServerSentEvents eventStream = new OpenAIServerSentEvents(responseStream);
+        return eventStream.getEvents();
+
     }
 
     /**

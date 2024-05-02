@@ -2322,6 +2322,7 @@ public final class AssistantsClient {
     }
 
     // TODO add documentation
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public IterableStream<StreamUpdate> createThreadAndRunStream(CreateAndRunThreadOptions createAndRunThreadOptions) {
         RequestOptions requestOptions = new RequestOptions();
         createAndRunThreadOptions.setStream(true);
@@ -2335,6 +2336,7 @@ public final class AssistantsClient {
     }
 
     // TODO add documentation
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public IterableStream<StreamUpdate> createRunStream(String threadId, CreateRunOptions createRunOptions) {
         RequestOptions requestOptions = new RequestOptions();
         createRunOptions.setStream(true);
@@ -2347,6 +2349,7 @@ public final class AssistantsClient {
     }
 
     // TODO add documentation
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public IterableStream<StreamUpdate> createRunStream(String threadId, String assistantId) {
         RequestOptions requestOptions = new RequestOptions();
         Flux<ByteBuffer> responseStream = createRunWithResponse(threadId, BinaryData.fromObject(new CreateRunOptions(assistantId).setStream(true)),
