@@ -16,6 +16,7 @@ import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.ByteArrayContent;
 import com.azure.core.implementation.util.ByteBufferContent;
 import com.azure.core.implementation.util.FileContent;
+import com.azure.core.implementation.util.HttpUtils;
 import com.azure.core.implementation.util.SerializableContent;
 import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.BinaryData;
@@ -34,6 +35,7 @@ import io.vertx.core.http.RequestOptions;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
 
+import java.time.Duration;
 import java.util.Objects;
 
 import static com.azure.core.http.vertx.implementation.VertxUtils.wrapVertxException;
@@ -42,9 +44,6 @@ import static com.azure.core.http.vertx.implementation.VertxUtils.wrapVertxExcep
  * {@link HttpClient} implementation for the Vert.x {@link io.vertx.core.http.HttpClient}.
  */
 class VertxAsyncHttpClient implements HttpClient {
-    private static final String AZURE_EAGERLY_READ_RESPONSE = "azure-eagerly-read-response";
-    private static final String AZURE_IGNORE_RESPONSE_BODY = "azure-ignore-response-body";
-
     private final Vertx vertx;
     final io.vertx.core.http.HttpClient client;
 
@@ -65,13 +64,21 @@ class VertxAsyncHttpClient implements HttpClient {
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
-        boolean eagerlyReadResponse = (boolean) context.getData(AZURE_EAGERLY_READ_RESPONSE).orElse(false);
-        boolean ignoreResponseBody = (boolean) context.getData(AZURE_IGNORE_RESPONSE_BODY).orElse(false);
+        boolean eagerlyReadResponse = (boolean) context.getData(HttpUtils.AZURE_EAGERLY_READ_RESPONSE).orElse(false);
+        boolean ignoreResponseBody = (boolean) context.getData(HttpUtils.AZURE_IGNORE_RESPONSE_BODY).orElse(false);
+        Long responseTimeout = context.getData(HttpUtils.AZURE_RESPONSE_TIMEOUT)
+            .filter(timeoutDuration -> timeoutDuration instanceof Duration)
+            .map(timeoutDuration -> ((Duration) timeoutDuration).toMillis())
+            .orElse(null);
 
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
 
         RequestOptions options = new RequestOptions().setMethod(HttpMethod.valueOf(request.getHttpMethod().name()))
             .setAbsoluteURI(request.getUrl());
+
+        if (responseTimeout != null) {
+            options.setIdleTimeout(responseTimeout);
+        }
 
         return Mono.create(sink -> client.request(options, requestResult -> {
             if (requestResult.failed()) {

@@ -63,8 +63,7 @@ public class VertxAsyncHttpClientBuilderTests {
 
     @Test
     public void buildWithDefaultConnectionOptions() {
-        VertxAsyncHttpClientBuilder builder = new VertxAsyncHttpClientBuilder();
-        HttpClient httpClient = builder.build();
+        HttpClient httpClient = new VertxAsyncHttpClientBuilder().build();
 
         io.vertx.core.http.HttpClient client = ((VertxAsyncHttpClient) httpClient).client;
         io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) client).options();
@@ -76,9 +75,9 @@ public class VertxAsyncHttpClientBuilderTests {
             .verifyComplete();
 
         assertEquals(10000, options.getConnectTimeout());
-        assertEquals(60, options.getIdleTimeout());
-        assertEquals(60, options.getReadIdleTimeout());
-        assertEquals(60, options.getWriteIdleTimeout());
+        assertEquals(60000, options.getIdleTimeout());
+        assertEquals(60000, options.getReadIdleTimeout());
+        assertEquals(60000, options.getWriteIdleTimeout());
     }
 
     @Test
@@ -99,9 +98,9 @@ public class VertxAsyncHttpClientBuilderTests {
             .verifyComplete();
 
         assertEquals(10000, options.getConnectTimeout());
-        assertEquals(20, options.getIdleTimeout());
-        assertEquals(30, options.getReadIdleTimeout());
-        assertEquals(40, options.getWriteIdleTimeout());
+        assertEquals(20000, options.getIdleTimeout());
+        assertEquals(30000, options.getReadIdleTimeout());
+        assertEquals(40000, options.getWriteIdleTimeout());
     }
 
     @ParameterizedTest

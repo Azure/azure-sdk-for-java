@@ -4,10 +4,12 @@
 package com.azure.core.http.okhttp;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.okhttp.implementation.OkHttpProxySelector;
 import com.azure.core.http.okhttp.implementation.ProxyAuthenticator;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import okhttp3.ConnectionPool;
 import okhttp3.Dispatcher;
@@ -21,14 +23,15 @@ import java.util.Objects;
 
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT;
 import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
 
 /**
  * Builder class responsible for creating instances of {@link com.azure.core.http.HttpClient} backed by OkHttp.
- * The client built from this builder can support sending requests synchronously and asynchronously.
- * Use {@link com.azure.core.http.HttpClient#sendSync(HttpRequest, Context)} to send the provided request
- * synchronously with contextual information.
+ * The client built from this builder can support sending requests synchronously and asynchronously. Use
+ * {@link HttpClient#sendSync(HttpRequest, Context)} to send the provided request synchronously with contextual
+ * information.
  *
  * <p>
  * <strong>Building a new HttpClient instance</strong>
@@ -117,6 +120,7 @@ public class OkHttpAsyncHttpClientBuilder {
     private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
     private static final Duration DEFAULT_CONNECT_TIMEOUT;
     private static final Duration DEFAULT_WRITE_TIMEOUT;
+    private static final Duration DEFAULT_RESPONSE_TIMEOUT;
     private static final Duration DEFAULT_READ_TIMEOUT;
 
     static {
@@ -126,12 +130,15 @@ public class OkHttpAsyncHttpClientBuilder {
             PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, Duration.ofSeconds(10), logger);
         DEFAULT_WRITE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
             Duration.ofSeconds(60), logger);
+        DEFAULT_RESPONSE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
+            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, Duration.ofSeconds(60), logger);
         DEFAULT_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT,
             Duration.ofSeconds(60), logger);
     }
 
     private List<Interceptor> networkInterceptors = new ArrayList<>();
     private Duration readTimeout;
+    private Duration responseTimeout;
     private Duration writeTimeout;
     private Duration connectionTimeout;
     private Duration callTimeout;
@@ -201,6 +208,28 @@ public class OkHttpAsyncHttpClientBuilder {
     public OkHttpAsyncHttpClientBuilder readTimeout(Duration readTimeout) {
         // setReadTimeout can be null
         this.readTimeout = readTimeout;
+        return this;
+    }
+
+    /**
+     * Sets the response timeout duration used when waiting for a server to reply.
+     * <p>
+     * The response timeout begins once the request write completes and finishes once the first response read is
+     * triggered when the server response is received.
+     * <p>
+     * If {@code responseTimeout} is null either {@link Configuration#PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT} or a
+     * 60-second timeout will be used, if it is a {@link Duration} less than or equal to zero then no timeout will be
+     * applied to the response. When applying the timeout the greatest of one millisecond and the value of {@code
+     * responseTimeout} will be used.
+     * <p>
+     * Given OkHttp doesn't have an equivalent timeout for just responses, this is handled manually.
+     *
+     * @param responseTimeout Response timeout duration.
+     * @return The updated OkHttpAsyncHttpClientBuilder object.
+     */
+    public OkHttpAsyncHttpClientBuilder responseTimeout(Duration responseTimeout) {
+        // setReadTimeout can be null
+        this.responseTimeout = responseTimeout;
         return this;
     }
 
@@ -397,7 +426,7 @@ public class OkHttpAsyncHttpClientBuilder {
         // Set the followRedirects property.
         httpClientBuilder.followRedirects(this.followRedirects);
 
-        return new OkHttpAsyncHttpClient(httpClientBuilder.build());
+        return new OkHttpAsyncHttpClient(httpClientBuilder.build(), responseTimeout);
     }
 
     /*

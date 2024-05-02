@@ -27,6 +27,7 @@ import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.implementation.serializer.MalformedValueException;
+import com.azure.core.implementation.util.HttpUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.UrlBuilder;
@@ -111,15 +112,15 @@ public abstract class RestProxyBase {
             // For the following Context options only set a value if it's true. This is to avoid adding a key to the
             // context with a value of false, which will increase all subsequent lookups of the context.
             if (methodParser.isResponseEagerlyRead()) {
-                context = context.addData("azure-eagerly-read-response", true);
+                context = context.addData(HttpUtils.AZURE_EAGERLY_READ_RESPONSE, true);
             }
 
             if (methodParser.isResponseBodyIgnored()) {
-                context = context.addData("azure-ignore-response-body", true);
+                context = context.addData(HttpUtils.AZURE_IGNORE_RESPONSE_BODY, true);
             }
 
             if (methodParser.isHeadersEagerlyConverted()) {
-                context = context.addData("azure-eagerly-convert-headers", true);
+                context = context.addData(HttpUtils.AZURE_EAGERLY_CONVERT_HEADERS, true);
             }
 
             return invoke(proxy, method, options, errorOptions, requestCallback, methodParser, request, context);

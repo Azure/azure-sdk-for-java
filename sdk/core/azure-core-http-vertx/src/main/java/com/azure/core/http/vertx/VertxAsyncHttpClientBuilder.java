@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
 
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT;
 import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
 
@@ -36,6 +37,7 @@ public class VertxAsyncHttpClientBuilder {
     private static final Pattern NON_PROXY_HOST_DOT_STAR = Pattern.compile("(\\.\\*)");
     private static final long DEFAULT_CONNECT_TIMEOUT;
     private static final long DEFAULT_WRITE_TIMEOUT;
+    private static final long DEFAULT_RESPONSE_TIMEOUT;
     private static final long DEFAULT_READ_TIMEOUT;
 
     static {
@@ -43,15 +45,17 @@ public class VertxAsyncHttpClientBuilder {
         DEFAULT_CONNECT_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
             PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, Duration.ofSeconds(10), LOGGER).toMillis();
         DEFAULT_WRITE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
-            Duration.ofSeconds(60), LOGGER).getSeconds();
+            Duration.ofSeconds(60), LOGGER).toMillis();
+        DEFAULT_RESPONSE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
+            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, Duration.ofSeconds(60), LOGGER).toMillis();
         DEFAULT_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT,
-            Duration.ofSeconds(60), LOGGER).getSeconds();
+            Duration.ofSeconds(60), LOGGER).toMillis();
     }
 
     private Duration readIdleTimeout;
     private Duration writeIdleTimeout;
     private Duration connectTimeout;
-    private Duration idleTimeout = Duration.ofSeconds(60);
+    private Duration idleTimeout;
     private ProxyOptions proxyOptions;
     private Configuration configuration;
     private HttpClientOptions httpClientOptions;
@@ -179,7 +183,7 @@ public class VertxAsyncHttpClientBuilder {
         }
 
         if (this.httpClientOptions == null) {
-            this.httpClientOptions = new HttpClientOptions();
+            this.httpClientOptions = new HttpClientOptions().setIdleTimeoutUnit(TimeUnit.MILLISECONDS);
 
             if (this.connectTimeout != null) {
                 this.httpClientOptions.setConnectTimeout((int) this.connectTimeout.toMillis());
@@ -188,18 +192,22 @@ public class VertxAsyncHttpClientBuilder {
             }
 
             if (this.readIdleTimeout != null) {
-                this.httpClientOptions.setReadIdleTimeout((int) this.readIdleTimeout.getSeconds());
+                this.httpClientOptions.setReadIdleTimeout((int) this.readIdleTimeout.toMillis());
             } else {
                 this.httpClientOptions.setReadIdleTimeout((int) DEFAULT_READ_TIMEOUT);
             }
 
             if (this.writeIdleTimeout != null) {
-                this.httpClientOptions.setWriteIdleTimeout((int) this.writeIdleTimeout.getSeconds());
+                this.httpClientOptions.setWriteIdleTimeout((int) this.writeIdleTimeout.toMillis());
             } else {
                 this.httpClientOptions.setWriteIdleTimeout((int) DEFAULT_WRITE_TIMEOUT);
             }
 
-            this.httpClientOptions.setIdleTimeout((int) this.idleTimeout.getSeconds());
+            if (this.idleTimeout != null) {
+                this.httpClientOptions.setIdleTimeout((int) this.idleTimeout.toMillis());
+            } else {
+                this.httpClientOptions.setIdleTimeout((int) DEFAULT_RESPONSE_TIMEOUT);
+            }
 
             Configuration buildConfiguration
                 = (this.configuration == null) ? Configuration.getGlobalConfiguration() : configuration;

@@ -10,20 +10,25 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.okhttp.implementation.BinaryDataRequestBody;
 import com.azure.core.http.okhttp.implementation.OkHttpAsyncBufferedResponse;
 import com.azure.core.http.okhttp.implementation.OkHttpAsyncResponse;
 import com.azure.core.http.okhttp.implementation.OkHttpFluxRequestBody;
 import com.azure.core.http.okhttp.implementation.OkHttpProgressReportingRequestBody;
+import com.azure.core.http.okhttp.implementation.PerCallTimeoutCall;
+import com.azure.core.http.okhttp.implementation.ResponseTimeoutListenerFactory;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.FluxByteBufferContent;
+import com.azure.core.implementation.util.HttpUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import okhttp3.Call;
+import okhttp3.EventListener;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -34,7 +39,9 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
 
 import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.io.UncheckedIOException;
+import java.time.Duration;
 
 /**
  * This class provides a OkHttp-based implementation for the {@link HttpClient} interface. Creating an instance of this
@@ -70,14 +77,15 @@ class OkHttpAsyncHttpClient implements HttpClient {
     private static final byte[] EMPTY_BODY = new byte[0];
     private static final RequestBody EMPTY_REQUEST_BODY = RequestBody.create(EMPTY_BODY);
 
-    private static final String AZURE_EAGERLY_READ_RESPONSE = "azure-eagerly-read-response";
-    private static final String AZURE_IGNORE_RESPONSE_BODY = "azure-ignore-response-body";
-    private static final String AZURE_EAGERLY_CONVERT_HEADERS = "azure-eagerly-convert-headers";
-
     final OkHttpClient httpClient;
 
-    OkHttpAsyncHttpClient(OkHttpClient httpClient) {
-        this.httpClient = httpClient;
+    private final Duration responseTimeout;
+
+    OkHttpAsyncHttpClient(OkHttpClient httpClient, Duration responseTimeout) {
+        EventListener.Factory factory = httpClient.eventListenerFactory();
+        this.httpClient
+            = httpClient.newBuilder().eventListenerFactory(new ResponseTimeoutListenerFactory(factory)).build();
+        this.responseTimeout = responseTimeout;
     }
 
     @Override
@@ -87,9 +95,13 @@ class OkHttpAsyncHttpClient implements HttpClient {
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
-        boolean eagerlyReadResponse = (boolean) context.getData(AZURE_EAGERLY_READ_RESPONSE).orElse(false);
-        boolean ignoreResponseBody = (boolean) context.getData(AZURE_IGNORE_RESPONSE_BODY).orElse(false);
-        boolean eagerlyConvertHeaders = (boolean) context.getData(AZURE_EAGERLY_CONVERT_HEADERS).orElse(false);
+        boolean eagerlyReadResponse = (boolean) context.getData(HttpUtils.AZURE_EAGERLY_READ_RESPONSE).orElse(false);
+        boolean ignoreResponseBody = (boolean) context.getData(HttpUtils.AZURE_IGNORE_RESPONSE_BODY).orElse(false);
+        boolean eagerlyConvertHeaders
+            = (boolean) context.getData(HttpUtils.AZURE_EAGERLY_CONVERT_HEADERS).orElse(false);
+        Duration perCallTimeout = (Duration) context.getData(HttpUtils.AZURE_RESPONSE_TIMEOUT)
+            .filter(timeoutDuration -> timeoutDuration instanceof Duration)
+            .orElse(responseTimeout);
 
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
 
@@ -106,35 +118,66 @@ class OkHttpAsyncHttpClient implements HttpClient {
             // 3. If Flux<ByteBuffer> asynchronous then subscribe does not block caller thread
             // but block on the thread backing flux. This ignore any subscribeOn applied to send(r)
             //
-            Mono.fromCallable(() -> toOkHttpRequest(request, progressReporter)).subscribe(okHttpRequest -> {
-                try {
-                    Call call = httpClient.newCall(okHttpRequest);
-                    call.enqueue(new OkHttpCallback(sink, request, eagerlyReadResponse, ignoreResponseBody,
-                        eagerlyConvertHeaders));
-                    sink.onCancel(call::cancel);
-                } catch (Exception ex) {
-                    sink.error(ex);
-                }
-            }, sink::error);
+            Mono.fromCallable(() -> toOkHttpRequest(request, progressReporter, perCallTimeout))
+                .subscribe(okHttpRequest -> {
+                    try {
+                        Call call = httpClient.newCall(okHttpRequest);
+                        call.enqueue(new OkHttpCallback(sink, request, eagerlyReadResponse, ignoreResponseBody,
+                            eagerlyConvertHeaders));
+                        sink.onCancel(call::cancel);
+                    } catch (Exception ex) {
+                        sink.error(ex);
+                    }
+                }, sink::error);
         }));
     }
 
     @Override
     public HttpResponse sendSync(HttpRequest request, Context context) {
-        boolean eagerlyReadResponse = (boolean) context.getData(AZURE_EAGERLY_READ_RESPONSE).orElse(false);
-        boolean ignoreResponseBody = (boolean) context.getData(AZURE_IGNORE_RESPONSE_BODY).orElse(false);
-        boolean eagerlyConvertHeaders = (boolean) context.getData(AZURE_EAGERLY_CONVERT_HEADERS).orElse(false);
+        boolean eagerlyReadResponse = (boolean) context.getData(HttpUtils.AZURE_EAGERLY_READ_RESPONSE).orElse(false);
+        boolean ignoreResponseBody = (boolean) context.getData(HttpUtils.AZURE_IGNORE_RESPONSE_BODY).orElse(false);
+        boolean eagerlyConvertHeaders
+            = (boolean) context.getData(HttpUtils.AZURE_EAGERLY_CONVERT_HEADERS).orElse(false);
+        Duration perCallTimeout = (Duration) context.getData(HttpUtils.AZURE_RESPONSE_TIMEOUT)
+            .filter(timeoutDuration -> timeoutDuration instanceof Duration)
+            .orElse(responseTimeout);
 
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
 
-        Request okHttpRequest = toOkHttpRequest(request, progressReporter);
+        Request okHttpRequest = toOkHttpRequest(request, progressReporter, perCallTimeout);
+        Call call = null;
         try {
-            Response okHttpResponse = httpClient.newCall(okHttpRequest).execute();
+            call = httpClient.newCall(okHttpRequest);
+            Response okHttpResponse = call.execute();
             return toHttpResponse(request, okHttpResponse, eagerlyReadResponse, ignoreResponseBody,
                 eagerlyConvertHeaders);
         } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(mapIOException(e, call)));
         }
+    }
+
+    /**
+     * Current design for response timeout uses call cancellation which throws an IOException with message "canceled".
+     * This isn't what we want, we want an InterruptedIOException with message "timeout". Use information stored on the
+     * call to determine if the IOException should be mapped to an InterruptedIOException.
+     *
+     * @param e the IOException to map
+     * @param call the Call to associate with the new IOException
+     * @return the new IOException
+     */
+    private static IOException mapIOException(IOException e, Call call) {
+        if (call == null) {
+            return e;
+        }
+
+        PerCallTimeoutCall perCallTimeoutCall = call.request().tag(PerCallTimeoutCall.class);
+        if (perCallTimeoutCall != null && perCallTimeoutCall.isTimedOut()) {
+            InterruptedIOException i = new InterruptedIOException("timedout");
+            i.addSuppressed(e);
+            return i;
+        }
+
+        return e;
     }
 
     /**
@@ -142,10 +185,16 @@ class OkHttpAsyncHttpClient implements HttpClient {
      *
      * @param request the azure-core request
      * @param progressReporter the {@link ProgressReporter}. Can be null.
+     * @param perCallTimeout the per call timeout
      * @return the okhttp request
      */
-    private okhttp3.Request toOkHttpRequest(HttpRequest request, ProgressReporter progressReporter) {
+    private okhttp3.Request toOkHttpRequest(HttpRequest request, ProgressReporter progressReporter,
+        Duration perCallTimeout) {
         Request.Builder requestBuilder = new Request.Builder().url(request.getUrl());
+
+        if (perCallTimeout != null) {
+            requestBuilder.tag(PerCallTimeoutCall.class, new PerCallTimeoutCall(perCallTimeout.toMillis()));
+        }
 
         if (request.getHeaders() != null) {
             for (HttpHeader hdr : request.getHeaders()) {
@@ -263,9 +312,14 @@ class OkHttpAsyncHttpClient implements HttpClient {
             if (e.getSuppressed().length == 1) {
                 // Propagate suppressed exception when there is one.
                 // This happens when body emission fails in the middle.
-                sink.error(e.getSuppressed()[0]);
+                Throwable suppressed = e.getSuppressed()[0];
+                if (suppressed instanceof IOException) {
+                    sink.error(mapIOException((IOException) suppressed, call));
+                } else {
+                    sink.error(suppressed);
+                }
             } else {
-                sink.error(e);
+                sink.error(mapIOException(e, call));
             }
         }
 

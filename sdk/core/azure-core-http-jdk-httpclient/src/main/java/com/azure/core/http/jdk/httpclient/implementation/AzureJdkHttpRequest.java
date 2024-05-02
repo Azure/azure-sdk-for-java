@@ -4,6 +4,7 @@ package com.azure.core.http.jdk.httpclient.implementation;
 
 import com.azure.core.http.HttpMethod;
 import com.azure.core.implementation.util.HttpHeadersAccessHelper;
+import com.azure.core.implementation.util.HttpUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.ProgressReporter;
@@ -51,6 +52,9 @@ public final class AzureJdkHttpRequest extends HttpRequest {
         Set<String> restrictedHeaders, ClientLogger logger, Duration writeTimeout, Duration responseTimeout) {
         HttpMethod method = azureCoreRequest.getHttpMethod();
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
+        responseTimeout = (Duration) context.getData(HttpUtils.AZURE_RESPONSE_TIMEOUT)
+            .filter(timeoutDuration -> timeoutDuration instanceof Duration)
+            .orElse(responseTimeout);
 
         this.method = method.toString();
         this.bodyPublisher = (method == HttpMethod.GET || method == HttpMethod.HEAD)
