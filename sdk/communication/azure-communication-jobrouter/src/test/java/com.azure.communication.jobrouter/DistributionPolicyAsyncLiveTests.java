@@ -44,7 +44,7 @@ public class DistributionPolicyAsyncLiveTests extends JobRouterTestBase {
                 .setScoringRule(new StaticRouterRule().setValue(new RouterValue(5)))
                 .setBypassSelectors(true)
                 .setScoringRuleOptions(new ScoringRuleOptions()
-                    .setBatchScoringEnabled(true)
+                    .setIsBatchScoringEnabled(true)
                     .setScoringParameters(new ArrayList<ScoringRuleParameterSelector>() {
                         {
                             add(ScoringRuleParameterSelector.JOB_LABELS);

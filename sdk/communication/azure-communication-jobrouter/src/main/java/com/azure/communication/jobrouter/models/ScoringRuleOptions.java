@@ -130,7 +130,7 @@ public final class ScoringRuleOptions {
      * @param isBatchScoringEnabled the isBatchScoringEnabled value to set.
      * @return the ScoringRuleOptions object itself.
      */
-    public ScoringRuleOptions setBatchScoringEnabled(Boolean isBatchScoringEnabled) {
+    public ScoringRuleOptions setIsBatchScoringEnabled(Boolean isBatchScoringEnabled) {
         this.isBatchScoringEnabled = isBatchScoringEnabled;
         return this;
     }
