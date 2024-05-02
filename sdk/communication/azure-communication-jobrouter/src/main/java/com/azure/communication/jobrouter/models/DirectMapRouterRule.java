@@ -14,7 +14,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public final class DirectMapRouterRule extends RouterRule {
 
     /** Creates an instance of DirectMapRouterRule class. */
-    public DirectMapRouterRule() {
-        this.kind = RouterRuleKind.DIRECT_MAP;
-    }
+    public DirectMapRouterRule() {}
+
+    /**
+     * Returns kind discriminator.
+     * @return kind.
+     */
+    public RouterRuleKind getKind() { return RouterRuleKind.DIRECT_MAP; }
 }

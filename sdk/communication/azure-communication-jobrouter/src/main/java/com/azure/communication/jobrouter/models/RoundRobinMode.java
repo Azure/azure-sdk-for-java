@@ -16,9 +16,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public final class RoundRobinMode extends DistributionMode {
 
     /** Creates an instance of RoundRobinMode class. */
-    public RoundRobinMode() {
-        this.kind = DistributionModeKind.ROUND_ROBIN;
-    }
+    public RoundRobinMode() {}
+
+    /**
+     * Returns kind discriminator.
+     * @return kind.
+     */
+    public DistributionModeKind getKind() { return DistributionModeKind.ROUND_ROBIN; }
 
     /** {@inheritDoc} */
     @Override

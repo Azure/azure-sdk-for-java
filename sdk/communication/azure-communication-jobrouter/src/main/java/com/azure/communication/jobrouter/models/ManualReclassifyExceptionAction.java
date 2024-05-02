@@ -35,9 +35,13 @@ public final class ManualReclassifyExceptionAction extends ExceptionAction {
     private List<RouterWorkerSelector> workerSelectors;
 
     /** Creates an instance of ManualReclassifyExceptionAction class. */
-    public ManualReclassifyExceptionAction() {
-        this.kind = ExceptionActionKind.MANUAL_RECLASSIFY;
-    }
+    public ManualReclassifyExceptionAction() {}
+
+    /**
+     * Returns kind discriminator.
+     * @return kind.
+     */
+    public ExceptionActionKind getKind() { return ExceptionActionKind.MANUAL_RECLASSIFY; }
 
     /**
      * Get the queueId property: Updated QueueId.

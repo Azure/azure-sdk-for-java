@@ -41,8 +41,13 @@ public final class RuleEngineWorkerSelectorAttachment extends WorkerSelectorAtta
     @JsonCreator
     public RuleEngineWorkerSelectorAttachment(@JsonProperty(value = "rule") RouterRule rule) {
         this.rule = rule;
-        this.kind = WorkerSelectorAttachmentKind.RULE_ENGINE;
     }
+
+    /**
+     * Returns kind discriminator.
+     * @return kind.
+     */
+    public WorkerSelectorAttachmentKind getKind() { return WorkerSelectorAttachmentKind.RULE_ENGINE; }
 
     /**
      * Get the rule property: A rule of one of the following types:

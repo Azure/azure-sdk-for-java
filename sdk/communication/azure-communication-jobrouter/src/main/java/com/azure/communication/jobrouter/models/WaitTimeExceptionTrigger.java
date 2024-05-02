@@ -35,8 +35,13 @@ public final class WaitTimeExceptionTrigger extends ExceptionTrigger {
     @JsonCreator
     public WaitTimeExceptionTrigger(@JsonProperty(value = "thresholdSeconds") Duration threshold) {
         this.threshold = threshold;
-        this.kind = ExceptionTriggerKind.WAIT_TIME;
     }
+
+    /**
+     * Returns kind discriminator.
+     * @return kind.
+     */
+    public ExceptionTriggerKind getKind() { return ExceptionTriggerKind.WAIT_TIME; }
 
     /**
      * Get the thresholdSeconds property: Threshold for wait time for this trigger.

@@ -29,9 +29,13 @@ public final class CancelExceptionAction extends ExceptionAction {
     private String dispositionCode;
 
     /** Creates an instance of CancelExceptionAction class. */
-    public CancelExceptionAction() {
-        this.kind = ExceptionActionKind.CANCEL;
-    }
+    public CancelExceptionAction() {}
+
+    /**
+     * Returns kind discriminator.
+     * @return kind.
+     */
+    public ExceptionActionKind getKind() { return ExceptionActionKind.CANCEL; }
 
     /**
      * Get the note property: (Optional) A note that will be appended to the jobs' Notes collection with the current

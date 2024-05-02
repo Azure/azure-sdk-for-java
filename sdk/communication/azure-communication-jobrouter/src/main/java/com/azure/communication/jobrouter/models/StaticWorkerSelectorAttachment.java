@@ -30,8 +30,13 @@ public final class StaticWorkerSelectorAttachment extends WorkerSelectorAttachme
     @JsonCreator
     public StaticWorkerSelectorAttachment(@JsonProperty(value = "workerSelector") RouterWorkerSelector workerSelector) {
         this.workerSelector = workerSelector;
-        this.kind = WorkerSelectorAttachmentKind.STATIC;
     }
+
+    /**
+     * Returns kind discriminator.
+     * @return kind.
+     */
+    public WorkerSelectorAttachmentKind getKind() { return WorkerSelectorAttachmentKind.STATIC; }
 
     /**
      * Get the workerSelector property: Describes a condition that must be met against a set of labels for worker

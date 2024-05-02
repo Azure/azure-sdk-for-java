@@ -41,8 +41,13 @@ public final class RuleEngineQueueSelectorAttachment extends QueueSelectorAttach
     @JsonCreator
     public RuleEngineQueueSelectorAttachment(@JsonProperty(value = "rule") RouterRule rule) {
         this.rule = rule;
-        this.kind = QueueSelectorAttachmentKind.RULE_ENGINE;
     }
+
+    /**
+     * Returns kind discriminator.
+     * @return kind.
+     */
+    public QueueSelectorAttachmentKind getKind() { return QueueSelectorAttachmentKind.RULE_ENGINE; }
 
     /**
      * Get the rule property: A rule of one of the following types:

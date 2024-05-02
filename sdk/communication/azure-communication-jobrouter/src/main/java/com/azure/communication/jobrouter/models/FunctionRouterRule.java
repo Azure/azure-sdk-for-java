@@ -35,8 +35,13 @@ public final class FunctionRouterRule extends RouterRule {
     @JsonCreator
     public FunctionRouterRule(@JsonProperty(value = "functionUri") String functionUri) {
         this.functionUri = functionUri;
-        this.kind = RouterRuleKind.FUNCTION;
     }
+
+    /**
+     * Returns kind discriminator.
+     * @return kind.
+     */
+    public RouterRuleKind getKind() { return RouterRuleKind.FUNCTION; }
 
     /**
      * Get the functionUri property: URL for Azure Function.

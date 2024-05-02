@@ -35,8 +35,13 @@ public final class ExpressionRouterRule extends RouterRule {
     @JsonCreator
     public ExpressionRouterRule(@JsonProperty(value = "expression") String expression) {
         this.expression = expression;
-        this.kind = RouterRuleKind.EXPRESSION;
     }
+
+    /**
+     * Returns kind discriminator.
+     * @return kind.
+     */
+    public RouterRuleKind getKind() { return RouterRuleKind.EXPRESSION; }
 
     /**
      * Get the language property: The expression language to compile to and execute.
