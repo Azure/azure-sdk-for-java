@@ -37,8 +37,6 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -171,7 +169,8 @@ public class ConsistencyWriter {
             Mono<List<AddressInformation>> replicaAddressesObs = this.addressSelector.resolveAddressesAsync(request, forceRefresh);
             AtomicReference<Uri> primaryURI = new AtomicReference<>();
             Map<String, List<String>> replicaStatusList = new ConcurrentHashMap<>();
-            Map<Uri, String> replicaStatuses = new ConcurrentHashMap<>();
+            AtomicReference<List<String>> replicaStatuses = new AtomicReference<>();
+            replicaStatuses.set(new ArrayList<>());
 
             return replicaAddressesObs.flatMap(replicaAddresses -> {
                 try {
@@ -179,7 +178,9 @@ public class ConsistencyWriter {
                     replicaAddresses.forEach(replicaAddress -> {
                         Uri uri = replicaAddress.getPhysicalUri();
                         contactedReplicas.add(uri.getURI());
-                        replicaStatuses.put(uri, uri.getHealthStatusDiagnosticString());
+                        if (!uri.isPrimary()) {
+                            replicaStatuses.get().add(uri.getHealthStatusDiagnosticString());
+                        }
                     });
                     BridgeInternal.setContactedReplicas(request.requestContext.cosmosDiagnostics, contactedReplicas);
                     return Mono.just(AddressSelector.getPrimaryUri(request, replicaAddresses));
@@ -205,8 +206,7 @@ public class ConsistencyWriter {
                 } catch (Exception e) {
                     return Mono.error(e);
                 }
-                replicaStatuses.remove(primaryUri);
-                replicaStatusList.put(Uri.NOT_ATTEMPTING, new ArrayList<>(replicaStatuses.values()));
+                replicaStatusList.put(Uri.IGNORING, replicaStatuses.get());
                 replicaStatusList.put(Uri.ATTEMPTING,Arrays.asList(primaryUri.getHealthStatusDiagnosticString()));
 
                 return this.transportClient.invokeResourceOperationAsync(primaryUri, request)

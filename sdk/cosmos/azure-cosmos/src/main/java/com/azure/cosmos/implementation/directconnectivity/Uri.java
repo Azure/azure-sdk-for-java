@@ -25,9 +25,9 @@ public class Uri {
     private volatile Instant lastTransitionToUnhealthyTimestamp;
     private volatile boolean isPrimary;
     public static final String ATTEMPTING = "Attempting";
-    public static final String NOT_ATTEMPTING = "NotAttempting";
-    private static final String PRIMARY = "Primary";
-    private static final String SECONDARY = "Secondary";
+    public static final String IGNORING = "Ignoring";
+    private static final String PRIMARY = "P";
+    private static final String SECONDARY = "S";
 
     public static Uri create(String uriAsString) {
         return new Uri(uriAsString);

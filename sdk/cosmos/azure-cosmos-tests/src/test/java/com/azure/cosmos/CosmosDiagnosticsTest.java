@@ -1231,7 +1231,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(replicaSetSize).isGreaterThan(0);
         JsonNode replicaStatusList = storeResult.get("replicaStatusList");
         assertThat(replicaStatusList.isObject()).isTrue();
-        int replicasNum = replicaStatusList.get(Uri.ATTEMPTING).size() + replicaStatusList.get(Uri.NOT_ATTEMPTING).size();
+        int replicasNum = replicaStatusList.get(Uri.ATTEMPTING).size() + replicaStatusList.get(Uri.IGNORING).size();
         assertThat(replicasNum).isEqualTo(replicaSetSize);
         String replicaStatusTxt = replicaStatusList.get(Uri.ATTEMPTING).get(0).asText();
         assertThat(replicaStatusTxt.contains("Primary")).isTrue();

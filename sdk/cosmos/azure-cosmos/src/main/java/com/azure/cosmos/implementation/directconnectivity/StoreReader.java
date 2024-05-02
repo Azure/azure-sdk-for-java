@@ -34,7 +34,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
 import reactor.core.scheduler.Schedulers;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -220,23 +219,22 @@ public class StoreReader {
             return Flux.error(new GoneException());
         }
         List<Pair<Flux<StoreResponse>, Uri>> readStoreTasks = new ArrayList<>();
-        Map<Uri, String> replicaStatusesAttempting = new HashMap<>();
-        Map<Uri, String> replicaStatusesNotAttempting = new HashMap<>();
+        List<String> replicaStatusesAttempting = new ArrayList<>();
+        List<String> replicaStatusesNotAttempting = new ArrayList<>();
 
-        resolveApiResults.forEach(uri -> {
-            replicaStatusesNotAttempting.put(uri, uri.getHealthStatusDiagnosticString());
-        });
         List<Uri> addressRandomPermutation = AddressEnumerator.getTransportAddresses(entity, resolveApiResults);
 
         // The health status of the Uri will change as the time goes by
         // what we really want to track is the health status snapshot at this moment
         addressRandomPermutation.forEach(uri -> {
-            replicaStatusesNotAttempting.remove(uri);
-            replicaStatusesAttempting.put(uri, uri.getHealthStatusDiagnosticString());
+            replicaStatusesAttempting.add(uri.getHealthStatusDiagnosticString());
         });
         Map<String, List<String>> replicaStatusList = new HashMap<>();
-        replicaStatusList.put(Uri.ATTEMPTING ,new ArrayList<>(replicaStatusesAttempting.values()));
-        replicaStatusList.put(Uri.NOT_ATTEMPTING, new ArrayList<>(replicaStatusesNotAttempting.values()));
+        resolveApiResults.stream().filter(uri -> !replicaStatusesAttempting.contains(uri.getHealthStatusDiagnosticString())).forEach(uri ->
+            replicaStatusesNotAttempting.add(uri.getHealthStatusDiagnosticString())
+        );
+        replicaStatusList.put(Uri.ATTEMPTING , replicaStatusesAttempting);
+        replicaStatusList.put(Uri.IGNORING, replicaStatusesNotAttempting);
 
         int startIndex = 0;
 
@@ -574,7 +572,7 @@ public class StoreReader {
             return Mono.error(new GoneException());
         }
 
-        Map<Uri, String> replicaStatuses = new ConcurrentHashMap<>();
+        AtomicReference<List<String>> replicaStatuses = new AtomicReference<>();
         Mono<Uri> primaryUriObs = this.addressSelector.resolvePrimaryUriAsync(
                 entity,
                 entity.requestContext.forceRefreshAddressCache, replicaStatuses);
@@ -600,8 +598,7 @@ public class StoreReader {
                             this.readFromStoreAsync(
                                 primaryUri,
                                 entity);
-                        replicaStatuses.remove(primaryUri);
-                        replicaStatusList.put(Uri.NOT_ATTEMPTING, new ArrayList<>(replicaStatuses.values()));
+                        replicaStatusList.put(Uri.IGNORING, replicaStatuses.get());
                         replicaStatusList.put(Uri.ATTEMPTING, Arrays.asList(primaryUri.getHealthStatusDiagnosticString()));
 
                         return storeResponseObsAndUri.getLeft().flatMap(
