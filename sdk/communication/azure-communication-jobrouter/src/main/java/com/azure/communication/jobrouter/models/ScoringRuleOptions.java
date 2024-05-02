@@ -4,6 +4,7 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -130,7 +131,20 @@ public final class ScoringRuleOptions {
      * @param isBatchScoringEnabled the isBatchScoringEnabled value to set.
      * @return the ScoringRuleOptions object itself.
      */
-    public ScoringRuleOptions setIsBatchScoringEnabled(Boolean isBatchScoringEnabled) {
+    private ScoringRuleOptions setIsBatchScoringEnabled(Boolean isBatchScoringEnabled) {
+        this.isBatchScoringEnabled = isBatchScoringEnabled;
+        return this;
+    }
+
+    /**
+     * Set the isBatchSco ringEnabled property: If set to true, will score workers in batches, and the parameter name of
+     * the worker labels will be sent as `workers`. By default, set to false and the parameter name for the worker
+     * labels will be sent as `worker`. Note: If enabled, use 'batchSize' to set batch size.
+     *
+     * @param isBatchScoringEnabled the isBatchScoringEnabled value to set.
+     * @return theScoringRuleOptions object itself.
+     */
+    public ScoringRuleOptions setBatchScoringEnabled(Boolean isBatchScoringEnabled) {
         this.isBatchScoringEnabled = isBatchScoringEnabled;
         return this;
     }

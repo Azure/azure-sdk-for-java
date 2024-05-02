@@ -48,7 +48,7 @@ public class DistributionPolicyLiveTests extends JobRouterTestBase {
                 .setScoringRule(new StaticRouterRule().setValue(new RouterValue(5)))
                 .setBypassSelectors(true)
                 .setScoringRuleOptions(new ScoringRuleOptions()
-                    .setIsBatchScoringEnabled(true)
+                    .setBatchScoringEnabled(true)
                     .setScoringParameters(new ArrayList<ScoringRuleParameterSelector>() {
                         {
                             add(ScoringRuleParameterSelector.JOB_LABELS);

@@ -29,6 +29,12 @@ public class JobRouterSdkCustomization extends Customization {
         addConnectionStringClientMethod(classCustomizationForJobRouterClientBuilder, "JobRouterClientBuilder");
         addHttpPipelineAuthPolicyMethod(classCustomizationForJobRouterClientBuilder);
         updateHttpPipelineMethod(classCustomizationForJobRouterClientBuilder);
+
+        logger.info("Customizing the ScoringRuleOptions class");
+        ClassCustomization classCustomizationForScoringRuleOptions = packageCustomization.getClass("ScoringRuleOptions");
+        classCustomizationForScoringRuleOptions
+            .getMethod("setIsBatchScoringEnabled")
+            .setModifier(Modifier.PRIVATE);
     }
 
     private void addAuthTraits(ClassCustomization classCustomization) {
