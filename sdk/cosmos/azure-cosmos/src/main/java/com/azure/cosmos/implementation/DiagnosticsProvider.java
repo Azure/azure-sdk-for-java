@@ -1208,7 +1208,7 @@ public final class DiagnosticsProvider {
                     spanOptions.setAttribute("db.cosmosdb.operation_id", cosmosCtx.getOperationId());
                 }
                 
-                if(showQueryStatement() && null != cosmosCtx.getQueryStatement() ) {
+                if (showQueryStatement() && null != cosmosCtx.getQueryStatement() ) {
                     spanOptions.setAttribute("db.statement", cosmosCtx.getQueryStatement());
                 }
 

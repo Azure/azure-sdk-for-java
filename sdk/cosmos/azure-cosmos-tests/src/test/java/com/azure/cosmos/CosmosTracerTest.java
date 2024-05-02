@@ -1397,7 +1397,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             verifyOTelTracerTransport(
                 cosmosDiagnostics, error, mockTracer, enableRequestLevelTracing);
             
-            if(showQueryStatement) {
+            if (showQueryStatement) {
                 assertThat(attributes.get("db.statement")).isNotNull();
                 assertThat(attributes.get("db.statement")).isEqualTo(queryStatement);
             } else {

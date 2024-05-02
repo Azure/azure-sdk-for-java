@@ -450,6 +450,7 @@ public final class CosmosClientTelemetryConfig {
             ", clientTelemetryEnabled=" + this.effectiveIsClientTelemetryEnabled +
             ", clientMetricsEnabled=" + this.isClientMetricsEnabled +
             ", transportLevelTracingEnabled=" + this.isTransportLevelTracingEnabled +
+            ", showQueryStatement=" + this.showQueryStatement +
             ", customTracerProvided=" + (this.tracer != null) +
             ", customDiagnosticHandlers=" + handlers +
             "}";

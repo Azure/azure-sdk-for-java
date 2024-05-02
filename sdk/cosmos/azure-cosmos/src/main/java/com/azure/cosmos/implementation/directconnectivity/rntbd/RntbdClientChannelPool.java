@@ -1121,7 +1121,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     final long elapsedTimeInNanos = System.nanoTime() - endpoint.lastRequestNanoTime();
 
                     if (idleEndpointTimeoutInNanos - elapsedTimeInNanos <= 0) {
-                        if(logger.isDebugEnabled()) {
+                        if (logger.isDebugEnabled()) {
                             logger.debug(
                                     "{} closing endpoint due to inactivity (elapsedTime: {} > idleEndpointTimeout: {})",
                                     endpoint,
