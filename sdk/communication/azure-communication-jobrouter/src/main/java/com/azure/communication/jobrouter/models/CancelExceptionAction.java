@@ -35,7 +35,9 @@ public final class CancelExceptionAction extends ExceptionAction {
      * Returns kind discriminator.
      * @return kind.
      */
-    public ExceptionActionKind getKind() { return ExceptionActionKind.CANCEL; }
+    public ExceptionActionKind getKind() {
+        return ExceptionActionKind.CANCEL;
+    }
 
     /**
      * Get the note property: (Optional) A note that will be appended to the jobs' Notes collection with the current

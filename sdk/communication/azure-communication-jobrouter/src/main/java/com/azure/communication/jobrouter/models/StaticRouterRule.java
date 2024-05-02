@@ -31,7 +31,9 @@ public final class StaticRouterRule extends RouterRule {
      * Returns kind discriminator.
      * @return kind.
      */
-    public RouterRuleKind getKind() { return RouterRuleKind.STATIC; }
+    public RouterRuleKind getKind() {
+        return RouterRuleKind.STATIC;
+    }
 
     /**
      * Get the value property: The static value this rule always returns.

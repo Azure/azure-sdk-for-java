@@ -38,7 +38,9 @@ public final class WeightedAllocationWorkerSelectorAttachment extends WorkerSele
      * Returns kind discriminator.
      * @return kind.
      */
-    public WorkerSelectorAttachmentKind getKind() { return WorkerSelectorAttachmentKind.WEIGHTED_ALLOCATION; }
+    public WorkerSelectorAttachmentKind getKind() {
+        return WorkerSelectorAttachmentKind.WEIGHTED_ALLOCATION;
+    }
 
     /**
      * Get the allocations property: A collection of percentage based weighted allocations.

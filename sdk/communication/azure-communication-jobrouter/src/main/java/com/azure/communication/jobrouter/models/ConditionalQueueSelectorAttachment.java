@@ -59,7 +59,9 @@ public final class ConditionalQueueSelectorAttachment extends QueueSelectorAttac
      * Returns kind discriminator.
      * @return kind.
      */
-    public QueueSelectorAttachmentKind getKind() { return QueueSelectorAttachmentKind.CONDITIONAL; }
+    public QueueSelectorAttachmentKind getKind() {
+        return QueueSelectorAttachmentKind.CONDITIONAL;
+    }
 
     /**
      * Get the condition property: A rule of one of the following types:

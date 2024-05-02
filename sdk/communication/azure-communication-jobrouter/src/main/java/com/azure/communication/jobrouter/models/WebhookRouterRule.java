@@ -40,7 +40,9 @@ public final class WebhookRouterRule extends RouterRule {
      * Returns kind discriminator.
      * @return kind.
      */
-    public RouterRuleKind getKind() { return RouterRuleKind.WEBHOOK; }
+    public RouterRuleKind getKind() {
+        return RouterRuleKind.WEBHOOK;
+    }
 
     /**
      * Get the authorizationServerUrl property: Url for Authorization Server.

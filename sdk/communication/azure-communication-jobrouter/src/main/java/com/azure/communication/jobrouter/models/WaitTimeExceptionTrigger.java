@@ -41,7 +41,9 @@ public final class WaitTimeExceptionTrigger extends ExceptionTrigger {
      * Returns kind discriminator.
      * @return kind.
      */
-    public ExceptionTriggerKind getKind() { return ExceptionTriggerKind.WAIT_TIME; }
+    public ExceptionTriggerKind getKind() {
+        return ExceptionTriggerKind.WAIT_TIME;
+    }
 
     /**
      * Get the thresholdSeconds property: Threshold for wait time for this trigger.

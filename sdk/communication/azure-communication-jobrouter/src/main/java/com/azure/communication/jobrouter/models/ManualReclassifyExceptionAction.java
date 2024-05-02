@@ -41,7 +41,9 @@ public final class ManualReclassifyExceptionAction extends ExceptionAction {
      * Returns kind discriminator.
      * @return kind.
      */
-    public ExceptionActionKind getKind() { return ExceptionActionKind.MANUAL_RECLASSIFY; }
+    public ExceptionActionKind getKind() {
+        return ExceptionActionKind.MANUAL_RECLASSIFY;
+    }
 
     /**
      * Get the queueId property: Updated QueueId.

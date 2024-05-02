@@ -19,7 +19,9 @@ public final class LongestIdleMode extends DistributionMode {
      * Returns kind discriminator.
      * @return kind.
      */
-    public DistributionModeKind getKind() { return DistributionModeKind.LONGEST_IDLE; }
+    public DistributionModeKind getKind() {
+        return DistributionModeKind.LONGEST_IDLE;
+    }
 
     /** {@inheritDoc} */
     @Override

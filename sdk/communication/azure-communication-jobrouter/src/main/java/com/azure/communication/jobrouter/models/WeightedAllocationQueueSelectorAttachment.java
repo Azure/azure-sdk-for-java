@@ -38,7 +38,9 @@ public final class WeightedAllocationQueueSelectorAttachment extends QueueSelect
      * Returns kind discriminator.
      * @return kind.
      */
-    public QueueSelectorAttachmentKind getKind() { return QueueSelectorAttachmentKind.WEIGHTED_ALLOCATION; }
+    public QueueSelectorAttachmentKind getKind() {
+        return QueueSelectorAttachmentKind.WEIGHTED_ALLOCATION;
+    }
 
     /**
      * Get the allocations property: A collection of percentage based weighted allocations.

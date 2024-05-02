@@ -47,7 +47,9 @@ public final class RuleEngineWorkerSelectorAttachment extends WorkerSelectorAtta
      * Returns kind discriminator.
      * @return kind.
      */
-    public WorkerSelectorAttachmentKind getKind() { return WorkerSelectorAttachmentKind.RULE_ENGINE; }
+    public WorkerSelectorAttachmentKind getKind() {
+        return WorkerSelectorAttachmentKind.RULE_ENGINE;
+    }
 
     /**
      * Get the rule property: A rule of one of the following types:

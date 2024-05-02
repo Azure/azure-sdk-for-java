@@ -59,7 +59,9 @@ public final class ConditionalWorkerSelectorAttachment extends WorkerSelectorAtt
      * Returns kind discriminator.
      * @return kind.
      */
-    public WorkerSelectorAttachmentKind getKind() { return WorkerSelectorAttachmentKind.CONDITIONAL; }
+    public WorkerSelectorAttachmentKind getKind() {
+        return WorkerSelectorAttachmentKind.CONDITIONAL;
+    }
 
     /**
      * Get the condition property: A rule of one of the following types:

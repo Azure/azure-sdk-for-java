@@ -47,7 +47,9 @@ public final class RuleEngineQueueSelectorAttachment extends QueueSelectorAttach
      * Returns kind discriminator.
      * @return kind.
      */
-    public QueueSelectorAttachmentKind getKind() { return QueueSelectorAttachmentKind.RULE_ENGINE; }
+    public QueueSelectorAttachmentKind getKind() {
+        return QueueSelectorAttachmentKind.RULE_ENGINE;
+    }
 
     /**
      * Get the rule property: A rule of one of the following types:

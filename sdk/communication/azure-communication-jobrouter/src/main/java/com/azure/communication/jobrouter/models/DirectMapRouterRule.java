@@ -20,5 +20,7 @@ public final class DirectMapRouterRule extends RouterRule {
      * Returns kind discriminator.
      * @return kind.
      */
-    public RouterRuleKind getKind() { return RouterRuleKind.DIRECT_MAP; }
+    public RouterRuleKind getKind() {
+        return RouterRuleKind.DIRECT_MAP;
+    }
 }

@@ -35,7 +35,9 @@ public final class QueueLengthExceptionTrigger extends ExceptionTrigger {
      * Returns kind discriminator.
      * @return kind.
      */
-    public ExceptionTriggerKind getKind() { return ExceptionTriggerKind.QUEUE_LENGTH; }
+    public ExceptionTriggerKind getKind() {
+        return ExceptionTriggerKind.QUEUE_LENGTH;
+    }
 
     /**
      * Get the threshold property: Threshold of number of jobs ahead in the queue to for this trigger to fire.

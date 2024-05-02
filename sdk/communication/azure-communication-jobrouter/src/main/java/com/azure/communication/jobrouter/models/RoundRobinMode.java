@@ -22,7 +22,9 @@ public final class RoundRobinMode extends DistributionMode {
      * Returns kind discriminator.
      * @return kind.
      */
-    public DistributionModeKind getKind() { return DistributionModeKind.ROUND_ROBIN; }
+    public DistributionModeKind getKind() {
+        return DistributionModeKind.ROUND_ROBIN;
+    }
 
     /** {@inheritDoc} */
     @Override

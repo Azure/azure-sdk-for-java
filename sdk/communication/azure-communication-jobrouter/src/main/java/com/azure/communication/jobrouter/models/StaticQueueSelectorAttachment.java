@@ -36,7 +36,9 @@ public final class StaticQueueSelectorAttachment extends QueueSelectorAttachment
      * Returns kind discriminator.
      * @return kind.
      */
-    public QueueSelectorAttachmentKind getKind() { return QueueSelectorAttachmentKind.STATIC; }
+    public QueueSelectorAttachmentKind getKind() {
+        return QueueSelectorAttachmentKind.STATIC;
+    }
 
     /**
      * Get the queueSelector property: Describes a condition that must be met against a set of labels for queue

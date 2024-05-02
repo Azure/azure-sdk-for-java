@@ -36,7 +36,9 @@ public final class BestWorkerMode extends DistributionMode {
      * Returns kind discriminator.
      * @return kind.
      */
-    public DistributionModeKind getKind() { return DistributionModeKind.BEST_WORKER; }
+    public DistributionModeKind getKind() {
+        return DistributionModeKind.BEST_WORKER;
+    }
 
     /**
      * Get the scoringRule property: Define a scoring rule to use, when calculating a score to determine the best

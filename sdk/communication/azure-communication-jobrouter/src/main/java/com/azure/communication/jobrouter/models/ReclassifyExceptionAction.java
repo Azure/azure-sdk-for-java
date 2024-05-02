@@ -41,7 +41,9 @@ public final class ReclassifyExceptionAction extends ExceptionAction {
      * Returns kind discriminator.
      * @return kind.
      */
-    public ExceptionActionKind getKind() { return ExceptionActionKind.RECLASSIFY; }
+    public ExceptionActionKind getKind() {
+        return ExceptionActionKind.RECLASSIFY;
+    }
 
     /**
      * Get the classificationPolicyId property: (optional) The new classification policy that will determine queue,

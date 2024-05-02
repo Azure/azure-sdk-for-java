@@ -57,7 +57,9 @@ public final class PassThroughWorkerSelectorAttachment extends WorkerSelectorAtt
      * Returns kind discriminator.
      * @return kind.
      */
-    public WorkerSelectorAttachmentKind getKind() { return WorkerSelectorAttachmentKind.PASS_THROUGH; }
+    public WorkerSelectorAttachmentKind getKind() {
+        return WorkerSelectorAttachmentKind.PASS_THROUGH;
+    }
 
     /**
      * Get the key property: The label key to query against.

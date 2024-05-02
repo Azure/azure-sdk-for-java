@@ -41,7 +41,9 @@ public final class FunctionRouterRule extends RouterRule {
      * Returns kind discriminator.
      * @return kind.
      */
-    public RouterRuleKind getKind() { return RouterRuleKind.FUNCTION; }
+    public RouterRuleKind getKind() {
+        return RouterRuleKind.FUNCTION;
+    }
 
     /**
      * Get the functionUri property: URL for Azure Function.

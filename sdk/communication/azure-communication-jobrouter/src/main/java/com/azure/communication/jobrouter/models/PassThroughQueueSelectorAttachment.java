@@ -45,7 +45,9 @@ public final class PassThroughQueueSelectorAttachment extends QueueSelectorAttac
      * Returns kind discriminator.
      * @return kind.
      */
-    public QueueSelectorAttachmentKind getKind() { return QueueSelectorAttachmentKind.PASS_THROUGH; }
+    public QueueSelectorAttachmentKind getKind() {
+        return QueueSelectorAttachmentKind.PASS_THROUGH;
+    }
 
     /**
      * Get the key property: The label key to query against.

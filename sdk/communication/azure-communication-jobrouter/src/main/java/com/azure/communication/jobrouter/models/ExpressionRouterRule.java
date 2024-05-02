@@ -41,7 +41,9 @@ public final class ExpressionRouterRule extends RouterRule {
      * Returns kind discriminator.
      * @return kind.
      */
-    public RouterRuleKind getKind() { return RouterRuleKind.EXPRESSION; }
+    public RouterRuleKind getKind() {
+        return RouterRuleKind.EXPRESSION;
+    }
 
     /**
      * Get the language property: The expression language to compile to and execute.
