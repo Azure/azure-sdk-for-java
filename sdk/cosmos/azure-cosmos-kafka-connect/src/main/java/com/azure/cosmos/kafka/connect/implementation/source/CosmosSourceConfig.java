@@ -79,8 +79,9 @@ public class CosmosSourceConfig extends KafkaCosmosConfig {
     private static final String DEFAULT_METADATA_STORAGE_TYPE = CosmosMetadataStorageType.KAFKA.getName();
 
     private static final String METADATA_STORAGE_NAME =  "azure.cosmos.source.metadata.storage.name";
-    private static final String METADATA_STORAGE_NAME_DOC = "The resource name of the metadata storage. If metadata storage type is Kafka topic, then this config refers to kafka topic name, the metadata topic will be created if it does not already exist, else it will use the pre-created topic."
-        + " If metadata storage type is CosmosDB container, then this config refers to container name, please pre-create the metadata container partitioned by /id.";
+    private static final String METADATA_STORAGE_NAME_DOC = "The resource name of the metadata storage."
+        + " If metadata storage type is Kafka topic, then this config refers to kafka topic name, the metadata topic will be created if it does not already exist, else it will use the pre-created topic."
+        + " If metadata storage type is `Cosmos`, then this config refers to container name, for `MasterKey` auth, this container will be created with `AutoScale` with 4000 RU if not already exists, for `ServicePrincipal` auth, it requires the container to be created ahead of time .";
     private static final String METADATA_STORAGE_NAME_DISPLAY = "The metadata storage name.";
     private static final String DEFAULT_METADATA_STORAGE_NAME = "_cosmos.metadata.topic";
 

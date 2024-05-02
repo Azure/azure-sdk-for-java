@@ -596,7 +596,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
     @Override
     public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider, Configs configs) {
         if (this.gatewayServerErrorInjector == null) {
-            this.gatewayServerErrorInjector = new GatewayServerErrorInjector(configs);
+            this.gatewayServerErrorInjector = new GatewayServerErrorInjector(configs, collectionCache, partitionKeyRangeCache);
         }
 
         this.gatewayServerErrorInjector.registerServerErrorInjector(injectorProvider.getServerErrorInjector());
