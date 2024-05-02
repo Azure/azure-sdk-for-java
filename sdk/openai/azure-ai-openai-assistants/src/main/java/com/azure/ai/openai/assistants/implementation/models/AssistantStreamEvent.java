@@ -28,7 +28,7 @@ public final class AssistantStreamEvent extends ExpandableStringEnum<AssistantSt
      * Event sent when a run moves to `queued` status. The data of this event is of type ThreadRun.
      */
     @Generated
-    public static final AssistantStreamEvent THEARD_RUN_QUEUED = fromString("thread.run.queued");
+    public static final AssistantStreamEvent THREAD_RUN_QUEUED = fromString("thread.run.queued");
 
     /**
      * Event sent when a run moves to `in_progress` status. The data of this event is of type ThreadRun.

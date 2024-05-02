@@ -3143,7 +3143,6 @@ public final class AssistantsClient {
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the run that requires tool outputs.
      * @param toolOutputs The list of tool outputs requested by tool calls from the specified run.
-     * @param stream If `true`, returns a stream of events that happen during the Run as server-sent events, terminating
      * when the Run enters a terminal state with a `data: [DONE]` message.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3153,15 +3152,15 @@ public final class AssistantsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data representing a single evaluation run of an assistant thread.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThreadRun submitToolOutputsToRun(String threadId, String runId, List<ToolOutput> toolOutputs,
-        Boolean stream) {
-        // Generated convenience method for submitToolOutputsToRunWithResponse
+    public IterableStream<StreamUpdate> submitToolOutputsToRunStream(String threadId, String runId, List<ToolOutput> toolOutputs) {
         RequestOptions requestOptions = new RequestOptions();
-        SubmitToolOutputsToRunRequest requestObj = new SubmitToolOutputsToRunRequest(toolOutputs).setStream(stream);
+        SubmitToolOutputsToRunRequest requestObj = new SubmitToolOutputsToRunRequest(toolOutputs).setStream(true);
         BinaryData request = BinaryData.fromObject(requestObj);
-        return submitToolOutputsToRunWithResponse(threadId, runId, request, requestOptions).getValue()
-            .toObject(ThreadRun.class);
+        Flux<ByteBuffer> streamResponse = submitToolOutputsToRunWithResponse(threadId, runId, request, requestOptions)
+            .getValue().toFluxByteBuffer();
+
+        OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(streamResponse);
+        return new IterableStream<>(openAIServerSentEvents.getEvents());
     }
 }

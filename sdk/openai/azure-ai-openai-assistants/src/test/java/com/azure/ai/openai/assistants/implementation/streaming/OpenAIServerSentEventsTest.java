@@ -191,6 +191,15 @@ public class OpenAIServerSentEventsTest {
             }).verifyComplete();
     }
 
+    @Test
+    public void errorEvent() {
+        String errorEvent = "event: error\n" +
+            "data: {\"error\":{\"message\":\"The server had an error processing your request. Sorry about that! " +
+            "You can retry your request, or contact us through our help center at help.openai.com if you keep " +
+            "seeing this error. (Please include the request ID req_23c32c4251b3cab04bce519f14d4801f in your email.)\"," +
+            "\"type\":\"server_error\",\"param\":null,\"code\":null}}\n\n";
+    }
+
     private static void assertAssistantThread(AssistantThread expectedThread, AssistantThread actual) {
         assertEquals(expectedThread.getId(), actual.getId());
         assertEquals(expectedThread.getObject(), actual.getObject());

@@ -15,6 +15,8 @@ import com.azure.ai.openai.assistants.models.CreateAndRunThreadOptions;
 import com.azure.ai.openai.assistants.models.FileDeletionStatus;
 import com.azure.ai.openai.assistants.models.FileDetails;
 import com.azure.ai.openai.assistants.models.FilePurpose;
+import com.azure.ai.openai.assistants.models.FunctionDefinition;
+import com.azure.ai.openai.assistants.models.FunctionToolDefinition;
 import com.azure.ai.openai.assistants.models.MessageFile;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
@@ -193,6 +195,15 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
 
     }
 
+    void createThreadRunWithFunctionCallRunner(Consumer<CreateAndRunThreadOptions> testRunner, String assistantId) {
+        testRunner.accept(
+            new CreateAndRunThreadOptions(assistantId)
+                .setThread(new AssistantThreadCreationOptions()
+                    .setMessages(Arrays.asList(new ThreadInitializationMessage(MessageRole.USER,
+                        "Please make a graph for my boilerplate equation")))));
+
+    }
+
     void createRetrievalRunner(BiConsumer<FileDetails, AssistantCreationOptions> testRunner) {
         FileDetails fileDetails = new FileDetails(
             BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt"))
@@ -315,6 +326,20 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
                 .setName("Math Tutor")
                 .setInstructions("You are a personal math tutor. Answer questions briefly, in a sentence or less.")
                 .setTools(Arrays.asList(new CodeInterpreterToolDefinition()));
+        return createAssistant(client, assistantCreationOptions);
+    }
+
+    String createMathTutorAssistantWithFunctionTool(AssistantsClient client) {
+        AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions(GPT_4_1106_PREVIEW)
+                .setName("Math Tutor")
+                .setInstructions("You are a helpful math assistant that helps with visualizing equations. Use the code " +
+                    "interpreter tool when asked to generate images. Use provided functions to resolve appropriate unknown values")
+                .setTools(Arrays.asList(
+                    new CodeInterpreterToolDefinition(),
+                    new FunctionToolDefinition(
+                        new FunctionDefinition("get_boilerplate_equation", BinaryData.fromString("{\"type\":\"object\",\"properties\":{}}"))
+                            .setDescription("Retrieves a predefined 'boilerplate equation' from the caller")
+                )));
         return createAssistant(client, assistantCreationOptions);
     }
 

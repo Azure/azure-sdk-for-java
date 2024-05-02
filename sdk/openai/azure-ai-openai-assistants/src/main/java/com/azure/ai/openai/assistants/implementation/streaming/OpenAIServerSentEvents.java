@@ -145,9 +145,8 @@ public final class OpenAIServerSentEvents {
         if (DONE.equals(AssistantStreamEvent.fromString(eventName))) {
             return;
         }
-
         if (ERROR.equals(AssistantStreamEvent.fromString(eventName))) {
-            throw new IllegalArgumentException("Server sent event type not supported");
+            throw new IllegalArgumentException(eventJson);
         }
 
         outputValues.add(this.eventDeserializer.deserializeEvent(eventName, BinaryData.fromString(eventJson)));

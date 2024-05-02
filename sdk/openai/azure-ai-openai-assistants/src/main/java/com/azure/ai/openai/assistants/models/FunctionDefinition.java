@@ -62,8 +62,7 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
      *
      * @return the parameters value.
      */
-    @Generated
-    public Object getParameters() {
+    public BinaryData getParameters() {
         return this.parameters;
     }
 
