@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -61,13 +62,16 @@ public class GatewayServerErrorInjector {
         // faultInjection rule can be configured to only apply for a certain partition
         // but in the normal flow, only session consistency will populate the resolvePartitionKey when apply session token
         // so for other consistencies, we need to calculate here
+        if (request.getResourceType() != ResourceType.Document) {
+            return Mono.just(Utils.ValueHolder.initialize(null));
+        }
 
         if (this.collectionCache == null || this.partitionKeyRangeCache == null) {
-            return Mono.just(new Utils.ValueHolder<>(null));
+            return Mono.just(Utils.ValueHolder.initialize(null));
         }
 
         if (request == null || request.requestContext == null) {
-            return Mono.just(new Utils.ValueHolder<>(null));
+            return Mono.just(Utils.ValueHolder.initialize(null));
         }
 
         if (request.requestContext.resolvedPartitionKeyRange != null) {
