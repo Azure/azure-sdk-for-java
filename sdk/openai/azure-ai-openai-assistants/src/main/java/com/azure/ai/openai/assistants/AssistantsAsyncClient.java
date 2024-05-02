@@ -2368,7 +2368,7 @@ public final class AssistantsAsyncClient {
         createAndRunThreadOptions.setStream(true);
 
         Flux<ByteBuffer> responseStream = createThreadAndRunWithResponse(BinaryData.fromObject(createAndRunThreadOptions), requestOptions)
-            .flatMapMany(it -> it.getValue().toFluxByteBuffer());
+            .flatMapMany(response -> response.getValue().toFluxByteBuffer());
 
         OpenAIServerSentEvents eventStream = new OpenAIServerSentEvents(responseStream);
         return eventStream.getEvents();
@@ -3184,8 +3184,6 @@ public final class AssistantsAsyncClient {
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the run that requires tool outputs.
      * @param toolOutputs The list of tool outputs requested by tool calls from the specified run.
-     * @param stream If `true`, returns a stream of events that happen during the Run as server-sent events, terminating
-     * when the Run enters a terminal state with a `data: [DONE]` message.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3195,15 +3193,16 @@ public final class AssistantsAsyncClient {
      * @return data representing a single evaluation run of an assistant thread on successful completion of
      * {@link Mono}.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ThreadRun> submitToolOutputsToRun(String threadId, String runId, List<ToolOutput> toolOutputs,
-        Boolean stream) {
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<StreamUpdate> submitToolOutputsToRunStream(String threadId, String runId, List<ToolOutput> toolOutputs) {
         // Generated convenience method for submitToolOutputsToRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        SubmitToolOutputsToRunRequest requestObj = new SubmitToolOutputsToRunRequest(toolOutputs).setStream(stream);
+        SubmitToolOutputsToRunRequest requestObj = new SubmitToolOutputsToRunRequest(toolOutputs).setStream(true);
         BinaryData request = BinaryData.fromObject(requestObj);
-        return submitToolOutputsToRunWithResponse(threadId, runId, request, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ThreadRun.class));
+        Flux<ByteBuffer> responseStream =  submitToolOutputsToRunWithResponse(threadId, runId, request, requestOptions)
+            .flatMapMany(response -> response.getValue().toFluxByteBuffer());
+
+        OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(responseStream);
+        return openAIServerSentEvents.getEvents();
     }
 }

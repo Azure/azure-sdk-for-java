@@ -348,6 +348,20 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         return createAssistant(client, assistantCreationOptions);
     }
 
+    String createMathTutorAssistantWithFunctionTool(AssistantsAsyncClient client) {
+        AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions(GPT_4_1106_PREVIEW)
+            .setName("Math Tutor")
+            .setInstructions("You are a helpful math assistant that helps with visualizing equations. Use the code " +
+                "interpreter tool when asked to generate images. Use provided functions to resolve appropriate unknown values")
+            .setTools(Arrays.asList(
+                new CodeInterpreterToolDefinition(),
+                new FunctionToolDefinition(
+                    new FunctionDefinition("get_boilerplate_equation", BinaryData.fromString("{\"type\":\"object\",\"properties\":{}}"))
+                        .setDescription("Retrieves a predefined 'boilerplate equation' from the caller")
+                )));
+        return createAssistant(client, assistantCreationOptions);
+    }
+
     String createMathTutorAssistant(AssistantsAsyncClient client) {
         AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions(GPT_4_1106_PREVIEW)
                 .setName("Math Tutor")
@@ -416,17 +430,13 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
     }
 
     String createAssistant(AssistantsAsyncClient client, AssistantCreationOptions assistantCreationOptions) {
-        AtomicReference<String> assistantIdRef = new AtomicReference<>();
         // create assistant test
-        StepVerifier.create(client.createAssistant(assistantCreationOptions))
-                .assertNext(assistant -> {
-                    assistantIdRef.set(assistant.getId());
-                    assertEquals(assistantCreationOptions.getName(), assistant.getName());
-                    assertEquals(assistantCreationOptions.getDescription(), assistant.getDescription());
-                    assertEquals(assistantCreationOptions.getInstructions(), assistant.getInstructions());
-                })
-                .verifyComplete();
-        return assistantIdRef.get();
+        Assistant assistant = client.createAssistant(assistantCreationOptions).block();
+        assertNotNull(assistant);
+        assertEquals(assistantCreationOptions.getName(), assistant.getName());
+        assertEquals(assistantCreationOptions.getDescription(), assistant.getDescription());
+        assertEquals(assistantCreationOptions.getInstructions(), assistant.getInstructions());
+        return assistant.getId();
     }
 
     void deleteAssistant(AssistantsClient client, String assistantId) {
