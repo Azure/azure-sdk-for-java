@@ -3,6 +3,7 @@ import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import org.slf4j.Logger;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
