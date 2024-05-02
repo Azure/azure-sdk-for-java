@@ -58,12 +58,17 @@ public class MetricDataMapper {
         OTEL_STABLE_METRICS_TO_BREEZE.add("http.server.request.duration");
         OTEL_STABLE_METRICS_TO_BREEZE.add("http.client.request.duration");
 
-        // otel runtime stable metrics
+        // adding stable metrics from otel.instrumentation.runtime-telemetry
+        // link:
+        // https://github.com/open-telemetry/semantic-conventions/blob/main/docs/runtime/jvm-metrics.md
+        OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.memory.used");
+        OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.memory.committed");
+        OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.memory.limit");
         OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.memory.limit");
         OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.memory.used_after_last_gc");
-        OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.gc.duration"); // same as GC Total Time
-        OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.thread.count"); // same as Current Thread Count
-        OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.class.loaded"); // same as Loaded Class Count
+        OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.gc.duration");
+        OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.thread.count");
+        OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.class.loaded");
         OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.class.unloaded");
         OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.class.count");
         OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.cpu.time");
