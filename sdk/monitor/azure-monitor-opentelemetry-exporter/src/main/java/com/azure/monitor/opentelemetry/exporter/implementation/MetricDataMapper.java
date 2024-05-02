@@ -58,6 +58,18 @@ public class MetricDataMapper {
         OTEL_STABLE_METRICS_TO_BREEZE.add("http.server.request.duration");
         OTEL_STABLE_METRICS_TO_BREEZE.add("http.client.request.duration");
 
+        // otel runtime stable metrics
+        OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.memory.limit");
+        OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.memory.used_after_last_gc");
+        OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.gc.duration"); // same as GC Total Time
+        OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.thread.count"); // same as Current Thread Count
+        OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.class.loaded"); // same as Loaded Class Count
+        OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.class.unloaded");
+        OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.class.count");
+        OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.cpu.time");
+        OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.cpu.count");
+        OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.cpu.recent_utilization");
+
         // Application Insights pre-aggregated standard metrics
         OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("http.server.request.duration");
         OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("http.client.request.duration");
