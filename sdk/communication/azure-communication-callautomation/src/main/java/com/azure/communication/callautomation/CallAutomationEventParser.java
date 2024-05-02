@@ -45,6 +45,9 @@ import com.azure.communication.callautomation.models.events.TranscriptionStopped
 import com.azure.communication.callautomation.models.events.SendDtmfTonesCompleted;
 import com.azure.communication.callautomation.models.events.SendDtmfTonesFailed;
 import com.azure.communication.callautomation.models.events.TranscriptionUpdated;
+import com.azure.communication.callautomation.models.events.MediaStreamingStarted;
+import com.azure.communication.callautomation.models.events.MediaStreamingStopped;
+import com.azure.communication.callautomation.models.events.MediaStreamingFailed;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -190,6 +193,12 @@ public final class CallAutomationEventParser {
                 ret = mapper.convertValue(eventData, CreateCallFailed.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.HoldFailed")) {
                 ret = mapper.convertValue(eventData, HoldFailed.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.MediaStreamingStarted")) {
+                ret = mapper.convertValue(eventData, MediaStreamingStarted.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.MediaStreamingStopped")) {
+                ret = mapper.convertValue(eventData, MediaStreamingStopped.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.MediaStreamingFailed")) {
+                ret = mapper.convertValue(eventData, MediaStreamingFailed.class);
             }
             return ret;
         } catch (RuntimeException e) {
