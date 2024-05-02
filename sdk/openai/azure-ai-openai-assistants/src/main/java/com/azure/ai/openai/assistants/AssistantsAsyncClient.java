@@ -3001,6 +3001,17 @@ public final class AssistantsAsyncClient {
         return createRun(thread.getId(), new CreateRunOptions(assistant.getId()));
     }
 
+    // TODO docs
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<StreamUpdate> createRunStream(String assistantId, String threadId) {
+        RequestOptions requestOptions = new RequestOptions();
+        Flux<ByteBuffer> responseStream = createRunWithResponse(threadId, BinaryData.fromObject(new CreateRunOptions(assistantId).setStream(true)),
+            requestOptions).flatMapMany(it -> it.getValue().toFluxByteBuffer());
+
+        OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(responseStream);
+        return openAIServerSentEvents.getEvents();
+    }
+
     /**
      * Modifies an existing thread run.
      *

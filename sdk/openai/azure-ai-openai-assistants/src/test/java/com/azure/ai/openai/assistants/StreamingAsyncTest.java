@@ -90,22 +90,25 @@ public class StreamingAsyncTest extends AssistantsClientTestBase {
                 .verifyComplete();
         }, mathTutorAssistantId);
     }
-//
-//    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-//    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-//    public void runSimpleTest(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-//        client = getAssistantsClient(httpClient);
-//        String mathTutorAssistantId = createMathTutorAssistant(client);
-//        String threadId = createThread(client);
-//
-//        client.createMessage(threadId, MessageRole.USER, "What is the value of x in the equation x^2 + 2x + 1 = 0?");
-//
-//        IterableStream<StreamUpdate> run = client.createRunStream(threadId, mathTutorAssistantId);
-//        for (StreamUpdate streamUpdate : run) {
-//            String streamUpdateJson = BinaryData.fromObject(streamUpdate).toString();
-//            assertTrue(streamUpdateJson != null && !streamUpdateJson.isEmpty() && !streamUpdateJson.isBlank());
-//        }
-//    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    public void runSimpleTest(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
+        client = getAssistantsAsyncClient(httpClient);
+        String mathTutorAssistantId = createMathTutorAssistant(client);
+        String threadId = createThread(client);
+
+        StepVerifier.create(client.createMessage(threadId, MessageRole.USER, "What is the value of x in the equation x^2 + 2x + 1 = 0?"))
+            .assertNext(threadMessage -> validateThreadMessage(threadMessage, threadId))
+            .verifyComplete();
+
+        StepVerifier.create(client.createRunStream(mathTutorAssistantId, threadId))
+            .thenConsumeWhile(streamUpdate -> {
+                String streamUpdateJson = BinaryData.fromObject(streamUpdate).toString();
+                assertTrue(streamUpdateJson != null && !streamUpdateJson.isEmpty() && !streamUpdateJson.isBlank());
+                return true;
+            }).verifyComplete();
+    }
 //
 //    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
 //    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
