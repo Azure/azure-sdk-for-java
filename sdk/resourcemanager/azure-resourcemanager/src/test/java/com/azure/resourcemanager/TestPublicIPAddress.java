@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.LoadBalancerPublicFrontend;
 import com.azure.resourcemanager.network.models.NetworkInterface;
@@ -13,6 +15,8 @@ import org.junit.jupiter.api.Assertions;
 
 /** Tests public IPs. */
 public class TestPublicIPAddress extends TestTemplate<PublicIpAddress, PublicIpAddresses> {
+    private static final ClientLogger LOGGER = new ClientLogger(TestPublicIPAddress.class);
+
     @Override
     public PublicIpAddress createResource(PublicIpAddresses pips) throws Exception {
         final String newPipName = pips.manager().resourceManager().internalContext().randomResourceName("pip", 10);
@@ -44,7 +48,7 @@ public class TestPublicIPAddress extends TestTemplate<PublicIpAddress, PublicIpA
                 .withTag("tag2", "value2")
                 .apply();
         Assertions.assertTrue(resource.leafDomainLabel().equalsIgnoreCase(updatedDnsName));
-        Assertions.assertTrue(resource.idleTimeoutInMinutes() == updatedIdleTimeout);
+        Assertions.assertEquals(updatedIdleTimeout, resource.idleTimeoutInMinutes());
         Assertions.assertEquals("value2", resource.tags().get("tag2"));
 
         resource.updateTags().withoutTag("tag1").withTag("tag3", "value3").applyTags();
@@ -114,6 +118,6 @@ public class TestPublicIPAddress extends TestTemplate<PublicIpAddress, PublicIpA
             info.append("(None)");
         }
 
-        System.out.println(info.toString());
+        LOGGER.log(LogLevel.VERBOSE, info::toString);
     }
 }

@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.network.models.Route;
 import com.azure.resourcemanager.network.models.RouteNextHopType;
 import com.azure.resourcemanager.network.models.RouteTable;
@@ -15,6 +17,8 @@ import java.util.Map;
 
 /** Test of virtual network management. */
 public class TestRouteTables {
+    private static final ClientLogger LOGGER = new ClientLogger(TestRouteTables.class);
+
     private String route1Name = "route1";
     private String route2Name = "route2";
     private String routeAddedName = "route3";
@@ -58,13 +62,13 @@ public class TestRouteTables {
             Route route1 = routeTable.routes().get(route1Name);
             Assertions.assertTrue(route1.destinationAddressPrefix().equalsIgnoreCase(route1AddressPrefix));
             Assertions.assertTrue(route1.nextHopIpAddress().equalsIgnoreCase(virtualApplianceIp));
-            Assertions.assertTrue(route1.nextHopType().equals(RouteNextHopType.VIRTUAL_APPLIANCE));
+            Assertions.assertEquals(route1.nextHopType(), RouteNextHopType.VIRTUAL_APPLIANCE);
 
             Assertions.assertTrue(routeTable.routes().containsKey(route2Name));
             Route route2 = routeTable.routes().get(route2Name);
             Assertions.assertTrue(route2.destinationAddressPrefix().equalsIgnoreCase(route2AddressPrefix));
-            Assertions.assertTrue(route2.nextHopIpAddress() == null);
-            Assertions.assertTrue(route2.nextHopType().equals(hopType));
+            Assertions.assertNull(route2.nextHopIpAddress());
+            Assertions.assertEquals(route2.nextHopType(), hopType);
 
             Assertions.assertTrue(routeTable.isBgpRoutePropagationDisabled());
 
@@ -83,7 +87,7 @@ public class TestRouteTables {
                 .create();
 
             List<Subnet> subnets = routeTable.refresh().listAssociatedSubnets();
-            Assertions.assertTrue(subnets.size() == 1);
+            Assertions.assertEquals(1, subnets.size());
             Assertions.assertTrue(subnets.get(0).routeTableId().equalsIgnoreCase(routeTable.id()));
             return routeTable;
         }
@@ -110,7 +114,7 @@ public class TestRouteTables {
 
             Assertions.assertTrue(routeTable.tags().containsKey("tag1"));
             Assertions.assertTrue(routeTable.tags().containsKey("tag2"));
-            Assertions.assertTrue(!routeTable.routes().containsKey(route1Name));
+            Assertions.assertFalse(routeTable.routes().containsKey(route1Name));
             Assertions.assertTrue(routeTable.routes().containsKey(route2Name));
             Assertions.assertTrue(routeTable.routes().containsKey(routeAddedName));
             Assertions.assertFalse(routeTable.isBgpRoutePropagationDisabled());
@@ -126,7 +130,7 @@ public class TestRouteTables {
                 .apply();
 
             List<Subnet> subnets = routeTable.refresh().listAssociatedSubnets();
-            Assertions.assertTrue(subnets.size() == 0);
+            Assertions.assertEquals(0, subnets.size());
 
             routeTable.updateTags().withoutTag("tag1").withTag("tag3", "value3").applyTags();
             Assertions.assertFalse(routeTable.tags().containsKey("tag1"));
@@ -189,6 +193,6 @@ public class TestRouteTables {
                 .append(subnet.routeTableId());
         }
         info.append("\n\tDisable BGP route propagation: ").append(resource.isBgpRoutePropagationDisabled());
-        System.out.println(info.toString());
+        LOGGER.log(LogLevel.VERBOSE, info::toString);
     }
 }

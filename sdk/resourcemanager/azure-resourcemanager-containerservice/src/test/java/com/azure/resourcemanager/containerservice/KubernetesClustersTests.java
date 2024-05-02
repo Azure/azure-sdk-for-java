@@ -7,6 +7,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.containerservice.models.AgentPool;
 import com.azure.resourcemanager.containerservice.models.AgentPoolData;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
@@ -48,6 +50,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class KubernetesClustersTests extends ContainerServiceManagementTest {
+    private static final ClientLogger LOGGER = new ClientLogger(KubernetesClustersTests.class);
+
     private static final String SSH_KEY = sshPublicKey();
 
     @Test
@@ -256,7 +260,8 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .create();
 
         // print config
-        System.out.println(new String(kubernetesCluster.adminKubeConfigContent(), StandardCharsets.UTF_8));
+        LOGGER.log(LogLevel.VERBOSE,
+            () -> new String(kubernetesCluster.adminKubeConfigContent(), StandardCharsets.UTF_8));
 
         Assertions.assertEquals(Code.RUNNING, kubernetesCluster.powerState().code());
 
@@ -335,7 +340,8 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .create();
 
         // print config
-        System.out.println(new String(kubernetesCluster.adminKubeConfigContent(), StandardCharsets.UTF_8));
+        LOGGER.log(LogLevel.VERBOSE,
+            () -> new String(kubernetesCluster.adminKubeConfigContent(), StandardCharsets.UTF_8));
 
         KubernetesClusterAgentPool agentPoolProfile = kubernetesCluster.agentPools().get(agentPoolName);
         Assertions.assertTrue(agentPoolProfile.virtualMachinePriority() == null || agentPoolProfile.virtualMachinePriority() == ScaleSetPriority.REGULAR);

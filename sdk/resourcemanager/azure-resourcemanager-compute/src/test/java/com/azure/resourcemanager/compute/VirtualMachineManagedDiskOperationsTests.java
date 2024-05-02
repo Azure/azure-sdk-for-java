@@ -4,6 +4,8 @@
 package com.azure.resourcemanager.compute;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
 import com.azure.resourcemanager.compute.models.AvailabilitySetSkuTypes;
 import com.azure.resourcemanager.compute.models.CachingTypes;
@@ -28,6 +30,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementTest {
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineManagedDiskOperationsTests.class);
+
     private String rgName = "";
     private Region region = Region.US_EAST;
     private KnownLinuxVirtualMachineImage linuxImage = KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS;
@@ -314,7 +318,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D4a_v4"))
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
-        System.out.println("Waiting for some time before de-provision");
+        LOGGER.log(LogLevel.VERBOSE, () -> "Waiting for some time before de-provision");
         sleep(60 * 1000); // Wait for some time to ensure vm is publicly accessible
         deprovisionAgentInLinuxVM(virtualMachine1);
 

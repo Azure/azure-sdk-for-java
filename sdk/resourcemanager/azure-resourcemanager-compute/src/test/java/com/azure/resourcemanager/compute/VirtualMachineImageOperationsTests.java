@@ -4,6 +4,8 @@
 package com.azure.resourcemanager.compute;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.compute.models.DataDiskImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineOffer;
@@ -14,6 +16,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class VirtualMachineImageOperationsTests extends ComputeManagementTest {
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineImageOperationsTests.class);
+
     @Test
     public void canListVirtualMachineImages() throws Exception {
         /*
@@ -37,7 +41,7 @@ public class VirtualMachineImageOperationsTests extends ComputeManagementTest {
         for (VirtualMachineOffer offer : canonicalPublisher.offers().list()) {
             for (VirtualMachineSku sku : offer.skus().list()) {
                 for (VirtualMachineImage image : sku.images().list()) {
-                    System.out.println(image.version());
+                    LOGGER.log(LogLevel.VERBOSE, image::version);
                     firstVMImage = image;
                     break;
                 }

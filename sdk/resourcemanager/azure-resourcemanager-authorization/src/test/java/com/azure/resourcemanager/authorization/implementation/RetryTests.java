@@ -6,6 +6,8 @@ package com.azure.resourcemanager.authorization.implementation;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import org.junit.jupiter.api.Assertions;
@@ -19,6 +21,7 @@ import java.time.OffsetDateTime;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class RetryTests {
+    private static final ClientLogger LOGGER = new ClientLogger(RetryTests.class);
 
     @Test
     public void testRetryForGraph() {
@@ -33,9 +36,8 @@ public class RetryTests {
 
         RetryBackoffSpec retry = RetryUtils.backoffRetryFor404ResourceNotFound();
         AtomicInteger retryCount = new AtomicInteger(0);
-        retry = retry.doAfterRetry(ignored -> {
-            System.out.println("retry " + retryCount.incrementAndGet() + ", at " + OffsetDateTime.now());
-        });
+        retry = retry.doAfterRetry(ignored -> LOGGER.log(LogLevel.VERBOSE,
+            () -> "retry " + retryCount.incrementAndGet() + ", at " + OffsetDateTime.now()));
 
         // pass without retry
         Mono<String> monoSuccess = Mono.just("foo");
@@ -106,9 +108,8 @@ public class RetryTests {
 
         RetryBackoffSpec retry = RetryUtils.backoffRetryFor400PrincipalNotFound();
         AtomicInteger retryCount = new AtomicInteger(0);
-        retry = retry.doAfterRetry(ignored -> {
-            System.out.println("retry " + retryCount.incrementAndGet() + ", at " + OffsetDateTime.now());
-        });
+        retry = retry.doAfterRetry(ignored -> LOGGER.log(LogLevel.VERBOSE,
+            () -> "retry " + retryCount.incrementAndGet() + ", at " + OffsetDateTime.now()));
 
         // 400 with PrincipalNotFound, retry till pass
         AtomicInteger errorCount = new AtomicInteger(0);

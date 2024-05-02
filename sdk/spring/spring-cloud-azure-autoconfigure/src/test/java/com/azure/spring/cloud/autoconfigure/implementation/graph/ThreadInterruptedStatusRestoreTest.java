@@ -3,6 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.graph;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -10,6 +12,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 public class ThreadInterruptedStatusRestoreTest {
+    private static final ClientLogger LOGGER = new ClientLogger(ThreadInterruptedStatusRestoreTest.class);
 
     @Test
     void testThreadInterruptedRestoreFromAnotherThread() throws InterruptedException {
@@ -22,9 +25,9 @@ public class ThreadInterruptedStatusRestoreTest {
         testThread.interrupt();
         latchForInCatch.await();
 
-        System.out.println(Thread.currentThread().getName() + ": begin assertion");
+        LOGGER.log(LogLevel.VERBOSE, () -> Thread.currentThread().getName() + ": begin assertion");
         Assertions.assertTrue((testThread).getIsInterrupted());
-        System.out.println(Thread.currentThread().getName() + ": end assertion");
+        LOGGER.log(LogLevel.VERBOSE, () -> Thread.currentThread().getName() + ": end assertion");
     }
 
     @Test
@@ -38,9 +41,9 @@ public class ThreadInterruptedStatusRestoreTest {
         testThread.interrupt();
         latchForInCatch.await();
 
-        System.out.println(Thread.currentThread().getName() + ": begin assertion");
+        LOGGER.log(LogLevel.VERBOSE, () -> Thread.currentThread().getName() + ": begin assertion");
         Assertions.assertFalse(testThread.getIsInterrupted());
-        System.out.println(Thread.currentThread().getName() + ": end assertion");
+        LOGGER.log(LogLevel.VERBOSE, () -> Thread.currentThread().getName() + ": end assertion");
     }
 
 
@@ -64,7 +67,8 @@ public class ThreadInterruptedStatusRestoreTest {
                     latchForInWhile.countDown();
                     TimeUnit.SECONDS.sleep(3);
                 } catch (InterruptedException ex) {
-                    System.out.println(Thread.currentThread().getName() + ": current thread was interrupted!");
+                    LOGGER.log(LogLevel.VERBOSE,
+                        () -> Thread.currentThread().getName() + ": current thread was interrupted!");
                     if (restore) {
                         Thread.currentThread().interrupt();
                     }

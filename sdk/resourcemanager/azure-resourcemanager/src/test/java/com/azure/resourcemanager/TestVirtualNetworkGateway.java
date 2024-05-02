@@ -3,6 +3,8 @@
 package com.azure.resourcemanager;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.LocalNetworkGateway;
 import com.azure.resourcemanager.network.models.Network;
@@ -27,6 +29,8 @@ import java.util.Map;
 
 /** Tests Virtual Network Gateway. */
 public class TestVirtualNetworkGateway {
+    private static final ClientLogger LOGGER = new ClientLogger(TestVirtualNetworkGateway.class);
+
     private String testId = "";
     private Region region = Region.US_NORTH_CENTRAL;
     private String groupName;
@@ -324,7 +328,7 @@ public class TestVirtualNetworkGateway {
 
             // contains credential in the profile string
             String profile = vngw1.generateVpnProfile();
-            System.out.println(profile);
+            LOGGER.log(LogLevel.VERBOSE, () -> profile);
             return vngw1;
         }
 
@@ -359,6 +363,6 @@ public class TestVirtualNetworkGateway {
             .append(gateway.regionName())
             .append("\n\tTags: ")
             .append(gateway.tags());
-        System.out.println(info.toString());
+        LOGGER.log(LogLevel.VERBOSE, info::toString);
     }
 }

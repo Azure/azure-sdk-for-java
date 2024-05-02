@@ -4,12 +4,16 @@
 package com.azure.resourcemanager;
 
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.compute.models.DataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.resources.models.ManagementLock;
 
 /** Test utilities. */
 public final class TestUtils {
+    private static final ClientLogger LOGGER = new ClientLogger(TestUtils.class);
+
     private TestUtils() {
     }
 
@@ -22,11 +26,11 @@ public final class TestUtils {
     }
 
     public static void print(ManagementLock lock) {
-        StringBuffer info = new StringBuffer();
+        StringBuilder info = new StringBuilder();
         info.append("\nLock ID: ").append(lock.id())
             .append("\nLocked resource ID: ").append(lock.lockedResourceId())
             .append("\nLevel: ").append(lock.level());
-        System.out.println(info.toString());
+        LOGGER.log(LogLevel.VERBOSE, info::toString);
     }
 
     /**
@@ -120,26 +124,9 @@ public final class TestUtils {
             networkProfile.append("\n\t\tId:").append(networkInterfaceId);
         }
 
-        System
-            .out
-            .println(
-                new StringBuilder()
-                    .append("Virtual Machine: ")
-                    .append(resource.id())
-                    .append("Name: ")
-                    .append(resource.name())
-                    .append("\n\tResource group: ")
-                    .append(resource.resourceGroupName())
-                    .append("\n\tRegion: ")
-                    .append(resource.region())
-                    .append("\n\tTags: ")
-                    .append(resource.tags())
-                    .append("\n\tHardwareProfile: ")
-                    .append("\n\t\tSize: ")
-                    .append(resource.size())
-                    .append(storageProfile)
-                    .append(osProfile)
-                    .append(networkProfile)
-                    .toString());
+        LOGGER.log(LogLevel.VERBOSE, () -> "Virtual Machine: " + resource.id() + "Name: " + resource.name()
+            + "\n\tResource group: " + resource.resourceGroupName() + "\n\tRegion: " + resource.region() + "\n\tTags: "
+            + resource.tags() + "\n\tHardwareProfile: " + "\n\t\tSize: " + resource.size() + storageProfile + osProfile
+            + networkProfile);
     }
 }

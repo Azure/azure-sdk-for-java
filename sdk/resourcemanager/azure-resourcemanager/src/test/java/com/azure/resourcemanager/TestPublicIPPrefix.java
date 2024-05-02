@@ -3,6 +3,8 @@
 package com.azure.resourcemanager;
 
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.PublicIpPrefix;
 import com.azure.resourcemanager.network.models.PublicIpPrefixSku;
@@ -13,6 +15,8 @@ import org.junit.jupiter.api.Assertions;
 
 /** Tests public Prefixes. */
 public class TestPublicIPPrefix extends TestTemplate<PublicIpPrefix, PublicIpPrefixes> {
+    private static final ClientLogger LOGGER = new ClientLogger(TestPublicIPPrefix.class);
+
     @Override
     public PublicIpPrefix createResource(PublicIpPrefixes pips) throws Exception {
         final String newPipName = pips.manager().resourceManager().internalContext().randomResourceName("pip", 10);
@@ -26,7 +30,7 @@ public class TestPublicIPPrefix extends TestTemplate<PublicIpPrefix, PublicIpPre
 
         Assertions.assertEquals(pip.prefixLength(), (Integer) 28);
         Assertions.assertEquals(pip.sku().name().toString(), "Standard");
-        Assertions.assertTrue(pip.publicIpAddressVersion() == IpVersion.IPV4);
+        Assertions.assertSame(pip.publicIpAddressVersion(), IpVersion.IPV4);
         return pip;
     }
 
@@ -67,6 +71,6 @@ public class TestPublicIPPrefix extends TestTemplate<PublicIpPrefix, PublicIpPre
             info.append("(None)");
         }
 
-        System.out.println(info.toString());
+        LOGGER.log(LogLevel.VERBOSE, info::toString);
     }
 }

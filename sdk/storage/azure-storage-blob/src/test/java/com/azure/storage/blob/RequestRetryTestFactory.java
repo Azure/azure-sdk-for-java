@@ -13,6 +13,8 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.UrlBuilder;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
 import reactor.core.Disposable;
@@ -33,6 +35,8 @@ import java.util.concurrent.TimeoutException;
 import static java.lang.StrictMath.pow;
 
 class RequestRetryTestFactory {
+    private static final ClientLogger LOGGER = new ClientLogger(RequestRetryTestFactory.class);
+
     static final int RETRY_TEST_SCENARIO_RETRY_UNTIL_SUCCESS = 1;
 
     static final int RETRY_TEST_SCENARIO_RETRY_UNTIL_MAX_RETRIES = 2;
@@ -219,7 +223,8 @@ class RequestRetryTestFactory {
                 }
             });
             while (!disposable.isDisposed()) {
-                System.out.println("Waiting for Flux to finish to prevent blocking on another thread exception");
+                LOGGER.log(LogLevel.VERBOSE,
+                    () -> "Waiting for Flux to finish to prevent blocking on another thread exception");
             }
             if (retryTestDefaultData.compareTo(ByteBuffer.wrap(outputStream.toByteArray())) != 0) {
                 throw new IllegalArgumentException(("Body not reset."));
