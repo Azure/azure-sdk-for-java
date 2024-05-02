@@ -79,7 +79,9 @@ public final class WebhookRouterRule extends RouterRule {
      *
      * @return the webhookUrl value.
      */
-    public String getWebhookUrl() { return this.getWebhookUrl(); }
+    public String getWebhookUrl() {
+        return this.getWebhookUrl();
+    }
 
     /**
      * Set the webhookUri property: Uri for Contoso's Web Server.
