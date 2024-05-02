@@ -120,8 +120,8 @@ public class Slf4jLoggerShim {
                 isErrorEnabled |= (Boolean) LOGGER_IS_ERROR_ENABLED_METHOD_HANDLE.invoke(slf4jLogger, ERROR);
             }
         } catch (Throwable e) {
+            logErrorWithSlf4j(VERBOSE, "Failed to check if SLF4J log level is enabled", e);
             slf4jLogger = null;
-            DEFAULT_LOGGER.log(WARNING, "Failed to check if log level is enabled, SLF4J logging will be disabled.", e);
         }
 
         isVerboseEnabled |= defaultLogger.isEnabled(VERBOSE);
@@ -189,8 +189,7 @@ public class Slf4jLoggerShim {
                     break;
             }
         } catch (Throwable e) {
-            defaultLogger.log(WARNING, "Failed to log message, SLF4J logging will be disabled.", e);
-
+            logErrorWithSlf4j(VERBOSE, "Failed to log message with SLF4J", e);
             slf4jLogger = null;
         }
     }
@@ -204,16 +203,19 @@ public class Slf4jLoggerShim {
             Object logger = LOGGER_FACTORY_GET_LOGGER_METHOD_HANDLE.invoke(className);
 
             if (NOP_LOGGER_CLASS.isAssignableFrom(logger.getClass())) {
-                DEFAULT_LOGGER.log(VERBOSE, "Resolved NOPLogger, SLF4J logging will be disabled.", null);
-
+                logErrorWithSlf4j(VERBOSE, "Resolved NOPLogger", null);
                 return null;
             }
 
             return logger;
         } catch (Throwable e) {
-            DEFAULT_LOGGER.log(WARNING, "Failed to create SLF4J logger, SLF4J logging will be disabled.", e);
-
+            logErrorWithSlf4j(WARNING, "Failed to create SLF4J logger", e);
             return null;
         }
+    }
+
+    private static void logErrorWithSlf4j(ClientLogger.LogLevel level, String message, Throwable throwable) {
+        DEFAULT_LOGGER.log(level, String.format("[DefaultLogger]: %s. SLF4J logging will be disabled.", message),
+            throwable);
     }
 }
