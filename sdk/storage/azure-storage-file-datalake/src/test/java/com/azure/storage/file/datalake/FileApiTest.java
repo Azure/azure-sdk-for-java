@@ -3382,16 +3382,17 @@ public class FileApiTest extends DataLakeTestBase {
         assertTrue(aadFileClient.exists());
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2024-08-04")
+    @LiveOnly
     @Test
-    public void audienceError() {
+    public void audienceErrorBearerChallengeRetry() {
         DataLakeFileClient aadFileClient = getPathClientBuilderWithTokenCredential(
             ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), fc.getFilePath())
             .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
             .audience(DataLakeAudience.createDataLakeServiceAccountAudience("badAudience"))
             .buildFileClient();
 
-        DataLakeStorageException e = assertThrows(DataLakeStorageException.class, aadFileClient::exists);
-        assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO.toString(), e.getErrorCode());
+        assertTrue(aadFileClient.exists());
     }
 
     @Test

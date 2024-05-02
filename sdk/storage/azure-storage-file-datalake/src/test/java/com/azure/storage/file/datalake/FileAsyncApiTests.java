@@ -4594,8 +4594,10 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2024-08-04")
+    @LiveOnly
     @Test
-    public void audienceError() {
+    public void audienceErrorBearerChallengeRetry() {
         DataLakeFileAsyncClient aadFileClient = getPathClientBuilderWithTokenCredential(
             ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), fc.getFilePath())
             .fileSystemName(dataLakeFileSystemAsyncClient.getFileSystemName())
@@ -4603,10 +4605,8 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .buildFileAsyncClient();
 
         StepVerifier.create(aadFileClient.exists())
-            .verifyErrorSatisfies(r -> {
-                DataLakeStorageException e = assertInstanceOf(DataLakeStorageException.class, r);
-                assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO.toString(), e.getErrorCode());
-            });
+            .expectNext(true)
+            .verifyComplete();
     }
 
     @Test

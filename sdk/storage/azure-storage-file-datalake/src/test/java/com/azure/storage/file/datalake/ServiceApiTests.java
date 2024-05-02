@@ -17,6 +17,7 @@ import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.datalake.models.DataLakeAnalyticsLogging;
 import com.azure.storage.file.datalake.models.DataLakeAudience;
@@ -715,14 +716,15 @@ public class ServiceApiTests extends DataLakeTestBase {
         assertNotNull(aadServiceClient.getProperties());
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2024-08-04")
+    @LiveOnly
     @Test
-    public void audienceError() {
+    public void audienceErrorBearerChallengeRetry() {
         DataLakeServiceClient aadServiceClient = getOAuthServiceClientBuilder()
             .audience(DataLakeAudience.createDataLakeServiceAccountAudience("badAudience"))
             .buildClient();
 
-        DataLakeStorageException e = assertThrows(DataLakeStorageException.class, aadServiceClient::getProperties);
-        assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO.toString(), e.getErrorCode());
+        assertNotNull(aadServiceClient.getProperties());
     }
 
     @Test
