@@ -35,6 +35,7 @@ import java.util.stream.IntStream;
 import org.bouncycastle.jcajce.provider.digest.SHA256;
 import org.springframework.util.StringUtils;
 
+import com.azure.core.http.MatchConditions;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
@@ -75,9 +76,9 @@ class FeatureFlagLoader {
      * </p>
      *
      */
-    public void load_feature_flags(AppConfigurationReplicaClient replicaClient, String customKeyFilter,
+    public List<FeatureFlags> load_feature_flags(AppConfigurationReplicaClient replicaClient, String customKeyFilter,
         String[] labelFilter) {
-        SettingSelector settingSelector = new SettingSelector();
+        List<FeatureFlags> loadedFeatureFlags = new ArrayList<>();
 
         String keyFilter = SELECT_ALL_FEATURE_FLAGS;
 
@@ -85,18 +86,19 @@ class FeatureFlagLoader {
             keyFilter = FEATURE_FLAG_PREFIX + customKeyFilter;
         }
 
-        settingSelector.setKeyFilter(keyFilter);
-
         List<String> labels = Arrays.asList(labelFilter);
         Collections.reverse(labels);
 
         for (String label : labels) {
+            SettingSelector settingSelector = new SettingSelector();
+            settingSelector.setKeyFilter(keyFilter);
             settingSelector.setLabelFilter(label);
 
-            List<ConfigurationSetting> features = replicaClient.listSettings(settingSelector);
+            FeatureFlags features = replicaClient.listFeatureFlags(settingSelector);
+            loadedFeatureFlags.add(features);
 
             // Reading In Features
-            for (ConfigurationSetting setting : features) {
+            for (ConfigurationSetting setting : features.getFeatureFlags()) {
                 if (setting instanceof FeatureFlagConfigurationSetting
                     && FEATURE_FLAG_CONTENT_TYPE.equals(setting.getContentType())) {
                     FeatureFlagConfigurationSetting featureFlag = (FeatureFlagConfigurationSetting) setting;
@@ -104,6 +106,7 @@ class FeatureFlagLoader {
                 }
             }
         }
+        return loadedFeatureFlags;
     }
 
     /**
@@ -212,7 +215,7 @@ class FeatureFlagLoader {
      */
     public List<Feature> getProperties() {
         List<Feature> features = new ArrayList<Feature>();
-        for (Feature feature: properties.values()) {
+        for (Feature feature : properties.values()) {
             features.add(feature);
         }
         return features;

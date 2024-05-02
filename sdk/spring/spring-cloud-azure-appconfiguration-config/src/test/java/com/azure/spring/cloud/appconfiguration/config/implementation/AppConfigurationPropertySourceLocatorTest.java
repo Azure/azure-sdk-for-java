@@ -418,7 +418,7 @@ public class AppConfigurationPropertySourceLocatorTest {
             assertEquals(expectedSourceNames.length, sources.size());
             Object[] propertySources = sources.stream().map(c -> c.getProperty("feature-management.Alpha")).toArray();
             Feature alpha = (Feature) propertySources[0];
-            assertEquals("All", alpha.getRequirementType());
+            assertEquals("All", alpha.getConditions().getRequirementType());
             assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(PropertySource::getName).toArray());
 
         }

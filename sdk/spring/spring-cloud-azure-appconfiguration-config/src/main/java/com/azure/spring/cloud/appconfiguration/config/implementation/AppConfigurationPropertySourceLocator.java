@@ -29,7 +29,6 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.properties.
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreTrigger;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.FeatureFlagKeyValueSelector;
-import com.azure.spring.cloud.appconfiguration.config.implementation.properties.FeatureFlagStore;
 
 /**
  * Locates Azure App Configuration Property Sources.
@@ -132,11 +131,12 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                     // Reverse in order to add Profile specific properties earlier, and last profile comes first
                     try {
                         List<AppConfigurationPropertySource> sources = createSettings(client, configStore, profiles);
-                        createFeatureFlags(client, configStore.getFeatureFlags(), profiles);
+                        List<FeatureFlags> featureFlags = createFeatureFlags(client, configStore, profiles);
+                        // TODO: Create Feature Flag Property Source
                         sourceList.addAll(sources);
 
                         LOGGER.debug("PropertySource context.");
-                        setupMonitoring(configStore, client, sources, newState);
+                        setupMonitoring(configStore, client, sources, newState, featureFlags);
 
                         generatedPropertySources = true;
                     } catch (AppConfigurationStatusException e) {
@@ -163,6 +163,9 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                     failedToGeneratePropertySource(configStore, newState, new RuntimeException(message));
                 }
 
+                AppConfigurationFeatureManagementPropertySource acfmps = new AppConfigurationFeatureManagementPropertySource(featureFlagLoader);
+                composite.addPropertySource(acfmps);
+
             } else if (!configStore.isEnabled() && loadNewPropertySources) {
                 LOGGER.info("Not loading configurations from {} as it is not enabled.", configStore.getEndpoint());
             } else {
@@ -177,12 +180,11 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
     }
 
     private void setupMonitoring(ConfigStore configStore, AppConfigurationReplicaClient client,
-        List<AppConfigurationPropertySource> sources, StateHolder newState) {
+        List<AppConfigurationPropertySource> sources, StateHolder newState, List<FeatureFlags> featureFlags) {
         AppConfigurationStoreMonitoring monitoring = configStore.getMonitoring();
 
         if (configStore.getFeatureFlags().getEnabled()) {
-            List<ConfigurationSetting> watchKeysFeatures = getFeatureFlagWatchKeys(configStore, sources);
-            newState.setStateFeatureFlag(configStore.getEndpoint(), watchKeysFeatures,
+            newState.setStateFeatureFlag(configStore.getEndpoint(), featureFlags,
                 monitoring.getFeatureFlagRefreshInterval());
         }
 
@@ -209,20 +211,6 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
             }
         }
         return watchKeysSettings;
-    }
-
-    private List<ConfigurationSetting> getFeatureFlagWatchKeys(ConfigStore configStore,
-        List<AppConfigurationPropertySource> sources) {
-        List<ConfigurationSetting> watchKeysFeatures = new ArrayList<>();
-        if (configStore.getFeatureFlags().getEnabled()) {
-            for (AppConfigurationPropertySource propertySource : sources) {
-                if (propertySource instanceof AppConfigurationFeatureManagementPropertySource) {
-                    watchKeysFeatures.addAll(
-                        ((AppConfigurationFeatureManagementPropertySource) propertySource).getFeatureFlagSettings());
-                }
-            }
-        }
-        return watchKeysFeatures;
     }
 
     private StateHolder failedToGeneratePropertySource(ConfigStore configStore, StateHolder newState, Exception e) {
@@ -294,13 +282,17 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
      * @return a list of AppConfigurationPropertySources
      * @throws Exception creating a property source failed
      */
-    private void createFeatureFlags(AppConfigurationReplicaClient client, FeatureFlagStore store,
+    private List<FeatureFlags> createFeatureFlags(AppConfigurationReplicaClient client, ConfigStore store,
         List<String> profiles) throws Exception {
-        if (store.getEnabled()) {
-            for (FeatureFlagKeyValueSelector selectedKeys : store.getSelects()) {
-                featureFlagLoader.load_feature_flags(client,  selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles));
+        List<FeatureFlags> featureFlagWatchKeys = new ArrayList<>();
+        if (store.getFeatureFlags().getEnabled()) {
+            for (FeatureFlagKeyValueSelector selectedKeys : store.getFeatureFlags().getSelects()) {
+                List<FeatureFlags> storesFeatureFlags = featureFlagLoader.load_feature_flags(client,  selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles));
+                storesFeatureFlags.forEach(featureFlags -> featureFlags.setConfigStore(store));
+                featureFlagWatchKeys.addAll(storesFeatureFlags);
             }
         }
+        return featureFlagWatchKeys;
     }
     
     private void delayException() {

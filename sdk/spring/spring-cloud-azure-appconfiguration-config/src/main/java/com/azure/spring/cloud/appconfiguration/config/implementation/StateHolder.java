@@ -21,6 +21,8 @@ final class StateHolder {
     private static StateHolder currentState;
 
     private final Map<String, State> state = new ConcurrentHashMap<>();
+    
+    private final Map<String, FeatureFlagState> featureFlagState = new ConcurrentHashMap<>();
 
     private final Map<String, Boolean> loadState = new ConcurrentHashMap<>();
 
@@ -78,9 +80,9 @@ final class StateHolder {
      * @param watchKeys list of configuration watch keys that can trigger a refresh event
      * @param duration refresh duration.
      */
-    void setStateFeatureFlag(String originEndpoint, List<ConfigurationSetting> watchKeys,
+    void setStateFeatureFlag(String originEndpoint, List<FeatureFlags> watchKeys,
         Duration duration) {
-        setState(originEndpoint + FEATURE_ENDPOINT, watchKeys, duration);
+        featureFlagState.put(originEndpoint + FEATURE_ENDPOINT, new FeatureFlagState(watchKeys, Math.toIntExact(duration.getSeconds()), originEndpoint));
     }
 
     /**
@@ -118,7 +120,7 @@ final class StateHolder {
      * @return the loadState
      */
     static boolean getLoadStateFeatureFlag(String originEndpoint) {
-        return getLoadState(originEndpoint + FEATURE_ENDPOINT);
+        return currentState.getFullLoadState().getOrDefault(originEndpoint + FEATURE_ENDPOINT, false);
     }
 
     Map<String, Boolean> getLoadState() {

@@ -29,6 +29,9 @@ class AppConfigurationFeatureManagementPropertySource extends EnumerableProperty
 
     @Override
     public Object getProperty(String name) {
-        return featureFlagLoader.getProperties();
+        if ("feature_management.feature_flags".equals(name)) {
+            return featureFlagLoader.getProperties();
+        }
+        return null;
     }
 }

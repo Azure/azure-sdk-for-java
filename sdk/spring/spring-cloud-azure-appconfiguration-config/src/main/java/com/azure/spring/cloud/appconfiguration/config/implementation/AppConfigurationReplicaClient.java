@@ -10,10 +10,14 @@ import java.util.List;
 import org.springframework.util.StringUtils;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
+import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotComposition;
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
@@ -134,6 +138,36 @@ class AppConfigurationReplicaClient {
         }
     }
 
+    FeatureFlags listFeatureFlags(SettingSelector settingSelector)
+        throws HttpResponseException {
+        List<ConfigurationSetting> configurationSettings = new ArrayList<>();
+        List<MatchConditions> checks = new ArrayList<>();
+        try {
+            client.listConfigurationSettings(settingSelector).streamByPage().forEach(pagedResponse -> {
+                checks.add(
+                    new MatchConditions().setIfNoneMatch(pagedResponse.getHeaders().getValue(HttpHeaderName.ETAG)));
+                for (ConfigurationSetting featureFlag: pagedResponse.getValue()) {
+                    configurationSettings.add((FeatureFlagConfigurationSetting) NormalizeNull.normalizeNullLabel(featureFlag));
+                }
+            });
+            
+            // Needs to happen after or we don't know if the request succeeded or failed.
+            this.failedAttempts = 0;
+            return new FeatureFlags(settingSelector, configurationSettings, checks);
+        } catch (HttpResponseException e) {
+            if (e.getResponse() != null) {
+                int statusCode = e.getResponse().getStatusCode();
+
+                if (statusCode == 429 || statusCode == 408 || statusCode >= 500) {
+                    throw new AppConfigurationStatusException(e.getMessage(), e.getResponse(), e.getValue());
+                }
+            }
+            throw e;
+        } catch (UncheckedIOException e) {
+            throw new AppConfigurationStatusException(e.getMessage(), null, null);
+        }
+    }
+
     List<ConfigurationSetting> listSettingSnapshot(String snapshotName) {
         List<ConfigurationSetting> configurationSettings = new ArrayList<>();
         try {
@@ -158,6 +192,12 @@ class AppConfigurationReplicaClient {
         } catch (UncheckedIOException e) {
             throw new AppConfigurationStatusException(e.getMessage(), null, null);
         }
+    }
+
+    Boolean checkWatchKeys(SettingSelector settingSelector) {
+        List<PagedResponse<ConfigurationSetting>> results = client.listConfigurationSettings(settingSelector)
+            .streamByPage().filter(pagedResponse -> pagedResponse.getStatusCode() != 304).toList();
+        return results.size() > 0;
     }
 
     /**
