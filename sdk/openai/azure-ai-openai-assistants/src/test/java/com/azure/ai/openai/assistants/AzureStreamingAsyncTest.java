@@ -25,14 +25,14 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class StreamingAsyncTest extends AssistantsClientTestBase {
+public class AzureStreamingAsyncTest extends AssistantsClientTestBase {
 
     private AssistantsAsyncClient client;
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void runThreadSimpleTest(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsAsyncClient(httpClient);
+        client = getAssistantsAsyncClient(httpClient, serviceVersion);
         String mathTutorAssistantId = createMathTutorAssistant(client);
         createThreadAndRunRunner(createAndRunThreadOptions -> {
             StepVerifier.create(client.createThreadAndRunStream(createAndRunThreadOptions))
@@ -47,7 +47,7 @@ public class StreamingAsyncTest extends AssistantsClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void runThreadWithTools(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsAsyncClient(httpClient);
+        client = getAssistantsAsyncClient(httpClient, serviceVersion);
         String mathTutorAssistantId = createMathTutorAssistantWithFunctionTool(client);
 
         createThreadRunWithFunctionCallRunner(createAndRunThreadOptions -> {
@@ -92,7 +92,7 @@ public class StreamingAsyncTest extends AssistantsClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void runSimpleTest(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsAsyncClient(httpClient);
+        client = getAssistantsAsyncClient(httpClient, serviceVersion);
         String mathTutorAssistantId = createMathTutorAssistant(client);
         String threadId = createThread(client);
 
@@ -111,7 +111,7 @@ public class StreamingAsyncTest extends AssistantsClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void runWithTools(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsAsyncClient(httpClient);
+        client = getAssistantsAsyncClient(httpClient, serviceVersion);
         String assistantId = createMathTutorAssistantWithFunctionTool(client);
         createRunRunner(createThreadOption -> {
             String threadId = createThread(client);
