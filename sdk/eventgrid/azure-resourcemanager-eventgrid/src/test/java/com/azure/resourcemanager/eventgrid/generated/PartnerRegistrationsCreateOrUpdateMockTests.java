@@ -6,14 +6,11 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.PartnerRegistration;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -21,44 +18,32 @@ import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PartnerRegistrationsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"partnerRegistrationImmutableId\":\"1a29a09b-f99c-4155-8d9a-34473dae0d21\"},\"location\":\"zo\",\"tags\":{\"oxfaxdtn\":\"mfmvsmc\"},\"id\":\"i\",\"name\":\"bsat\",\"type\":\"oiauesugmocpcj\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"partnerRegistrationImmutableId\":\"dd65077b-34b5-45e1-9751-e0faabce068d\"},\"location\":\"hggabqbgamklil\",\"tags\":{\"ffhsdpzouhk\":\"d\",\"dfddtullygtav\":\"qrxqwqnjx\",\"phraspifleim\":\"zcxdfweapyfmlxrl\",\"mdbgi\":\"x\"},\"id\":\"ehfgsm\",\"name\":\"rjuqbpxtokl\",\"type\":\"mtznpaxwfqtyyqi\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        EventGridManager manager = EventGridManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        EventGridManager manager = EventGridManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        PartnerRegistration response = manager.partnerRegistrations()
+            .define("jk")
+            .withRegion("zobuzmsxgamtdtk")
+            .withExistingResourceGroup("loqd")
+            .withTags(mapOf("mrljdpoqfxye", "thuzdprm"))
+            .withPartnerRegistrationImmutableId(UUID.fromString("0cfa7164-4cc2-4b34-827c-61964056cf15"))
+            .create();
 
-        PartnerRegistration response = manager.partnerRegistrations().define("phmdzxplgtp")
-            .withRegion("zmgschnzrsbkkzov").withExistingResourceGroup("mbzayspzvrietv")
-            .withTags(mapOf("rimm", "mnfmfwsxafofuw", "nyrvaprtgelg", "vzwdehkkmvhzfov"))
-            .withPartnerRegistrationImmutableId(UUID.fromString("ab3e0df0-99ca-4335-94a5-6d6463be2580")).create();
-
-        Assertions.assertEquals("zo", response.location());
-        Assertions.assertEquals("mfmvsmc", response.tags().get("oxfaxdtn"));
-        Assertions.assertEquals(UUID.fromString("1a29a09b-f99c-4155-8d9a-34473dae0d21"),
+        Assertions.assertEquals("hggabqbgamklil", response.location());
+        Assertions.assertEquals("d", response.tags().get("ffhsdpzouhk"));
+        Assertions.assertEquals(UUID.fromString("dd65077b-34b5-45e1-9751-e0faabce068d"),
             response.partnerRegistrationImmutableId());
     }
 

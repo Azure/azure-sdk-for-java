@@ -1136,6 +1136,13 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         };
     }
 
+    @DataProvider
+    public static Object[][] simpleGatewayClient() {
+        return new Object[][] {
+            { createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true, true) }
+        };
+    }
+
     private static Object[][] simpleClientBuildersWithDirect(
         boolean contentResponseOnWriteEnabled,
         Protocol... protocols) {

@@ -32,7 +32,7 @@ public final class DevBoxAction implements JsonSerializable<DevBoxAction> {
     private final DevBoxActionType actionType;
 
     /*
-     * The id of the resource which triggered this action
+     * The id of the resource which triggered this action.
      */
     @Generated
     private final String sourceId;

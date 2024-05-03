@@ -19,6 +19,12 @@ public final class ClientAuthenticationSettings {
     @JsonProperty(value = "alternativeAuthenticationNameSources")
     private List<AlternativeAuthenticationNameSource> alternativeAuthenticationNameSources;
 
+    /*
+     * Custom JWT authentication settings for namespace resource.
+     */
+    @JsonProperty(value = "customJwtAuthentication")
+    private CustomJwtAuthenticationSettings customJwtAuthentication;
+
     /**
      * Creates an instance of ClientAuthenticationSettings class.
      */
@@ -49,10 +55,34 @@ public final class ClientAuthenticationSettings {
     }
 
     /**
+     * Get the customJwtAuthentication property: Custom JWT authentication settings for namespace resource.
+     * 
+     * @return the customJwtAuthentication value.
+     */
+    public CustomJwtAuthenticationSettings customJwtAuthentication() {
+        return this.customJwtAuthentication;
+    }
+
+    /**
+     * Set the customJwtAuthentication property: Custom JWT authentication settings for namespace resource.
+     * 
+     * @param customJwtAuthentication the customJwtAuthentication value to set.
+     * @return the ClientAuthenticationSettings object itself.
+     */
+    public ClientAuthenticationSettings
+        withCustomJwtAuthentication(CustomJwtAuthenticationSettings customJwtAuthentication) {
+        this.customJwtAuthentication = customJwtAuthentication;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (customJwtAuthentication() != null) {
+            customJwtAuthentication().validate();
+        }
     }
 }

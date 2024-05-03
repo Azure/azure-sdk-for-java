@@ -64,7 +64,8 @@ public final class PartnerNamespaceImpl
         List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
         if (inner != null) {
             return Collections.unmodifiableList(inner.stream()
-                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager())).collect(Collectors.toList()));
+                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -139,14 +140,16 @@ public final class PartnerNamespaceImpl
     }
 
     public PartnerNamespace create() {
-        this.innerObject = serviceManager.serviceClient().getPartnerNamespaces().createOrUpdate(resourceGroupName,
-            partnerNamespaceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPartnerNamespaces()
+            .createOrUpdate(resourceGroupName, partnerNamespaceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public PartnerNamespace create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPartnerNamespaces().createOrUpdate(resourceGroupName,
-            partnerNamespaceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getPartnerNamespaces()
+            .createOrUpdate(resourceGroupName, partnerNamespaceName, this.innerModel(), context);
         return this;
     }
 
@@ -162,14 +165,16 @@ public final class PartnerNamespaceImpl
     }
 
     public PartnerNamespace apply() {
-        this.innerObject = serviceManager.serviceClient().getPartnerNamespaces().update(resourceGroupName,
-            partnerNamespaceName, updatePartnerNamespaceUpdateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPartnerNamespaces()
+            .update(resourceGroupName, partnerNamespaceName, updatePartnerNamespaceUpdateParameters, Context.NONE);
         return this;
     }
 
     public PartnerNamespace apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPartnerNamespaces().update(resourceGroupName,
-            partnerNamespaceName, updatePartnerNamespaceUpdateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getPartnerNamespaces()
+            .update(resourceGroupName, partnerNamespaceName, updatePartnerNamespaceUpdateParameters, context);
         return this;
     }
 
@@ -177,25 +182,29 @@ public final class PartnerNamespaceImpl
         com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.partnerNamespaceName = Utils.getValueFromIdByName(innerObject.id(), "partnerNamespaces");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.partnerNamespaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "partnerNamespaces");
     }
 
     public PartnerNamespace refresh() {
-        this.innerObject = serviceManager.serviceClient().getPartnerNamespaces()
-            .getByResourceGroupWithResponse(resourceGroupName, partnerNamespaceName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPartnerNamespaces()
+            .getByResourceGroupWithResponse(resourceGroupName, partnerNamespaceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PartnerNamespace refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPartnerNamespaces()
-            .getByResourceGroupWithResponse(resourceGroupName, partnerNamespaceName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPartnerNamespaces()
+            .getByResourceGroupWithResponse(resourceGroupName, partnerNamespaceName, context)
+            .getValue();
         return this;
     }
 
     public Response<PartnerNamespaceSharedAccessKeys> listSharedAccessKeysWithResponse(Context context) {
-        return serviceManager.partnerNamespaces().listSharedAccessKeysWithResponse(resourceGroupName,
-            partnerNamespaceName, context);
+        return serviceManager.partnerNamespaces()
+            .listSharedAccessKeysWithResponse(resourceGroupName, partnerNamespaceName, context);
     }
 
     public PartnerNamespaceSharedAccessKeys listSharedAccessKeys() {
@@ -204,13 +213,13 @@ public final class PartnerNamespaceImpl
 
     public Response<PartnerNamespaceSharedAccessKeys>
         regenerateKeyWithResponse(PartnerNamespaceRegenerateKeyRequest regenerateKeyRequest, Context context) {
-        return serviceManager.partnerNamespaces().regenerateKeyWithResponse(resourceGroupName, partnerNamespaceName,
-            regenerateKeyRequest, context);
+        return serviceManager.partnerNamespaces()
+            .regenerateKeyWithResponse(resourceGroupName, partnerNamespaceName, regenerateKeyRequest, context);
     }
 
     public PartnerNamespaceSharedAccessKeys regenerateKey(PartnerNamespaceRegenerateKeyRequest regenerateKeyRequest) {
-        return serviceManager.partnerNamespaces().regenerateKey(resourceGroupName, partnerNamespaceName,
-            regenerateKeyRequest);
+        return serviceManager.partnerNamespaces()
+            .regenerateKey(resourceGroupName, partnerNamespaceName, regenerateKeyRequest);
     }
 
     public PartnerNamespaceImpl withRegion(Region location) {

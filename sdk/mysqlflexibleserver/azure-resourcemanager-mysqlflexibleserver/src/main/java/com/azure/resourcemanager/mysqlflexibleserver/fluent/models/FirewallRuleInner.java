@@ -10,7 +10,9 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents a server firewall rule. */
+/**
+ * Represents a server firewall rule.
+ */
 @Fluent
 public final class FirewallRuleInner extends ProxyResource {
     /*
@@ -20,18 +22,20 @@ public final class FirewallRuleInner extends ProxyResource {
     private FirewallRuleProperties innerProperties = new FirewallRuleProperties();
 
     /*
-     * The system metadata relating to this resource.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of FirewallRuleInner class. */
+    /**
+     * Creates an instance of FirewallRuleInner class.
+     */
     public FirewallRuleInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of a firewall rule.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FirewallRuleProperties innerProperties() {
@@ -39,8 +43,8 @@ public final class FirewallRuleInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: The system metadata relating to this resource.
-     *
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -49,7 +53,7 @@ public final class FirewallRuleInner extends ProxyResource {
 
     /**
      * Get the startIpAddress property: The start IP address of the server firewall rule. Must be IPv4 format.
-     *
+     * 
      * @return the startIpAddress value.
      */
     public String startIpAddress() {
@@ -58,7 +62,7 @@ public final class FirewallRuleInner extends ProxyResource {
 
     /**
      * Set the startIpAddress property: The start IP address of the server firewall rule. Must be IPv4 format.
-     *
+     * 
      * @param startIpAddress the startIpAddress value to set.
      * @return the FirewallRuleInner object itself.
      */
@@ -72,7 +76,7 @@ public final class FirewallRuleInner extends ProxyResource {
 
     /**
      * Get the endIpAddress property: The end IP address of the server firewall rule. Must be IPv4 format.
-     *
+     * 
      * @return the endIpAddress value.
      */
     public String endIpAddress() {
@@ -81,7 +85,7 @@ public final class FirewallRuleInner extends ProxyResource {
 
     /**
      * Set the endIpAddress property: The end IP address of the server firewall rule. Must be IPv4 format.
-     *
+     * 
      * @param endIpAddress the endIpAddress value to set.
      * @return the FirewallRuleInner object itself.
      */
@@ -95,15 +99,14 @@ public final class FirewallRuleInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model FirewallRuleInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model FirewallRuleInner"));
         } else {
             innerProperties().validate();
         }

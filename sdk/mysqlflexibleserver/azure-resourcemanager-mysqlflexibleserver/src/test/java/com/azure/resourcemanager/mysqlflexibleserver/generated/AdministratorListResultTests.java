@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AdministratorListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AdministratorListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"administratorType\":\"ActiveDirectory\",\"login\":\"dznrbtcqq\",\"sid\":\"qglhq\",\"tenantId\":\"ufo\",\"identityResourceId\":\"jywif\"},\"id\":\"esaagdfm\",\"name\":\"lzl\",\"type\":\"j\"}],\"nextLink\":\"ifkwmrvktsizntoc\"}")
-                .toObject(AdministratorListResult.class);
+        AdministratorListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"administratorType\":\"ActiveDirectory\",\"login\":\"dznrbtcqq\",\"sid\":\"qglhq\",\"tenantId\":\"ufo\",\"identityResourceId\":\"jywif\"},\"id\":\"esaagdfm\",\"name\":\"lzl\",\"type\":\"j\"}],\"nextLink\":\"ifkwmrvktsizntoc\"}")
+            .toObject(AdministratorListResult.class);
         Assertions.assertEquals(AdministratorType.ACTIVE_DIRECTORY, model.value().get(0).administratorType());
         Assertions.assertEquals("dznrbtcqq", model.value().get(0).login());
         Assertions.assertEquals("qglhq", model.value().get(0).sid());
@@ -29,18 +27,13 @@ public final class AdministratorListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AdministratorListResult model =
-            new AdministratorListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new AzureADAdministratorInner()
-                                .withAdministratorType(AdministratorType.ACTIVE_DIRECTORY)
-                                .withLogin("dznrbtcqq")
-                                .withSid("qglhq")
-                                .withTenantId("ufo")
-                                .withIdentityResourceId("jywif")))
-                .withNextLink("ifkwmrvktsizntoc");
+        AdministratorListResult model = new AdministratorListResult().withValue(
+            Arrays.asList(new AzureADAdministratorInner().withAdministratorType(AdministratorType.ACTIVE_DIRECTORY)
+                .withLogin("dznrbtcqq")
+                .withSid("qglhq")
+                .withTenantId("ufo")
+                .withIdentityResourceId("jywif")))
+            .withNextLink("ifkwmrvktsizntoc");
         model = BinaryData.fromObject(model).toObject(AdministratorListResult.class);
         Assertions.assertEquals(AdministratorType.ACTIVE_DIRECTORY, model.value().get(0).administratorType());
         Assertions.assertEquals("dznrbtcqq", model.value().get(0).login());

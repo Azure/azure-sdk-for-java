@@ -837,3 +837,11 @@ function Update-java-GeneratedSdks([string]$PackageDirectoriesFile) {
     }
   }
 }
+
+function Get-java-ApiviewStatusCheckRequirement($packageInfo) {
+  if ($packageInfo.IsNewSdk -and ($packageInfo.SdkType -eq "client" -or $packageInfo.SdkType -eq "spring")) {
+    return $true
+  }
+  return $false
+}
+

@@ -52,15 +52,6 @@ public final class AnswerCallRequestInternal {
     @JsonProperty(value = "answeredBy")
     private CommunicationUserIdentifierModel answeredBy;
 
-    /*
-     * The source caller Id, a phone number, that's will be used when inviting
-     * a pstn target.
-     * Required only when transferring call to PSTN, if this is an incoming
-     * voip call.
-     */
-    @JsonProperty(value = "sourceCallerIdNumber")
-    private PhoneNumberIdentifierModel sourceCallerIdNumber;
-
     /**
      * Get the incomingCallContext property: The context associated with the call.
      *
@@ -201,28 +192,6 @@ public final class AnswerCallRequestInternal {
      */
     public AnswerCallRequestInternal setAnsweredBy(CommunicationUserIdentifierModel answeredBy) {
         this.answeredBy = answeredBy;
-        return this;
-    }
-
-    /**
-     * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that's will be used when inviting a
-     * pstn target. Required only when transferring call to PSTN, if this is an incoming voip call.
-     *
-     * @return the sourceCallerIdNumber value.
-     */
-    public PhoneNumberIdentifierModel getSourceCallerIdNumber() {
-        return this.sourceCallerIdNumber;
-    }
-
-    /**
-     * Set the sourceCallerIdNumber property: The source caller Id, a phone number, that's will be used when inviting a
-     * pstn target. Required only when transferring call to PSTN, if this is an incoming voip call.
-     *
-     * @param sourceCallerIdNumber the sourceCallerIdNumber value to set.
-     * @return the AnswerCallRequestInternal object itself.
-     */
-    public AnswerCallRequestInternal setSourceCallerIdNumber(PhoneNumberIdentifierModel sourceCallerIdNumber) {
-        this.sourceCallerIdNumber = sourceCallerIdNumber;
         return this;
     }
 }

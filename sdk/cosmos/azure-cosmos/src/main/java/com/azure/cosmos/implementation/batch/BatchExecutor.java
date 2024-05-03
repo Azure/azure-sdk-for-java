@@ -37,7 +37,7 @@ public final class BatchExecutor {
         this.options = options;
         AsyncDocumentClient docClientWrapper = CosmosBridgeInternal.getAsyncDocumentClient(container.getDatabase());
         this.effectiveItemSerializer = docClientWrapper.getEffectiveItemSerializer(
-            this.options != null ? this.options.getCustomSerializer() : null
+            this.options != null ? this.options.getCustomItemSerializer() : null
         );
     }
 

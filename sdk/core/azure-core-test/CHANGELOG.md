@@ -1,6 +1,6 @@
 # Release History
 
-## 1.25.0-beta.1 (Unreleased)
+## 1.26.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -10,7 +10,31 @@
 
 ### Other Changes
 
-## 1.24.1 (2024-04-23)
+## 1.25.0 (2024-05-01)
+
+### Features Added
+
+- `TestContextManager` added `setTestIteration(Integer)` and `getTrackTestName`.
+- Added annotations `LiveOnly` and `PlaybackOnly` to skip tests from running in other testing modes.
+- Added `TestContextManagerParameterResolver` to manage resolving `TestContextManager` parameters.
+
+### Breaking Changes
+
+- `TestBase` no longer extends `BeforeEachCallback`.
+- `TestBase.setupTest` now takes `TestContextManager` rather than `TestInfo`, which is provided by `TestContextManagerParameterResolver`.
+- `TestBase.teardownTest` no longer takes a parameter.
+- `TestProxyTestBase.setupTestProxy` no lnoger takes a parameter.
+- `TestContextManager` no longer validates that a non-PLAYBACK test was ran in PLAYBACK mode, `TestBase` validates that now.
+- `DoNotRecord` deprecated `skipInPlayback`, if a test should be skipped in PLAYBACK and shouldn't be recorded it should
+  be annotated with both `DoNotRecord` and `LiveOnly`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to `1.49.0`.
+
+## 1.24.2 (2024-04-23)
 
 ### Other Changes
 

@@ -10,6 +10,11 @@
 
 ### Other Changes
 
+## 4.5.3 (2024-04-30)
+
+### Other Changes
+
+- No changes but only upgrade version to fix Microsoft Doc.
 
 ## 4.5.2 (2024-04-23)
 

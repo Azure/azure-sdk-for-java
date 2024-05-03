@@ -488,6 +488,7 @@ public class NettyAsyncHttpClientBuilderTests {
     /**
      * Tests when {@code wiretap} is set to {@code true} the Netty pipeline will have a {@link LoggingHandler} added.
      */
+    @SuppressWarnings("deprecation")
     @Test
     public void buildWiretappedClient() {
         HttpClient validatorClient = HttpClient.create()
