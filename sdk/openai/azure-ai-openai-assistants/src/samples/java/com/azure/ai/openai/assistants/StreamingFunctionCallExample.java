@@ -10,13 +10,18 @@ import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.RequiredAction;
 import com.azure.ai.openai.assistants.models.RequiredFunctionToolCall;
 import com.azure.ai.openai.assistants.models.RequiredToolCall;
+import com.azure.ai.openai.assistants.models.RunStepDeltaCodeInterpreterToolCall;
+import com.azure.ai.openai.assistants.models.RunStepDeltaToolCallObject;
+import com.azure.ai.openai.assistants.models.StreamMessageUpdate;
 import com.azure.ai.openai.assistants.models.StreamRequiredAction;
 import com.azure.ai.openai.assistants.models.StreamRunCreation;
+import com.azure.ai.openai.assistants.models.StreamRunStepUpdate;
 import com.azure.ai.openai.assistants.models.SubmitToolOutputsAction;
 import com.azure.ai.openai.assistants.models.ThreadInitializationMessage;
 import com.azure.ai.openai.assistants.models.ToolOutput;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
+import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.List;
@@ -58,7 +63,7 @@ public class StreamingFunctionCallExample {
                     .setThread(new AssistantThreadCreationOptions()
                         .setMessages(Arrays.asList(new ThreadInitializationMessage(MessageRole.USER,
                             "Please make a graph for my boilerplate equation")))));
-            }).takeWhile(streamUpdate -> {
+            }).doOnNext(streamUpdate -> {
                 System.out.println("Stream update class name: " + streamUpdate.getClass().getSimpleName());
                 if (streamUpdate instanceof StreamRequiredAction) {
                     requiredAction.set(((StreamRequiredAction) streamUpdate).getMessage().getRequiredAction());
@@ -67,20 +72,21 @@ public class StreamingFunctionCallExample {
                     runId.set(((StreamRunCreation) streamUpdate).getMessage().getRunId());
                     threadId.set(((StreamRunCreation) streamUpdate).getMessage().getThreadId());
                 }
-                if (streamUpdate instanceof StreamRequiredAction) {
-                    System.out.println(((StreamRequiredAction) streamUpdate).getMessage().getRequiredAction());
-                }
-                return runId.get() == null ||  threadId.get() == null || requiredAction.get() == null;
-            }).concatMap(it -> {
-                System.out.println("Submitting tool outputs");
-                return client.submitToolOutputsToRunStream(threadId.get(), runId.get(),
-                        prepareToolOutputs((SubmitToolOutputsAction) requiredAction.get()));
-            }).blockLast();
-//            .doOnNext(streamUpdate -> {
-//                System.out.println(streamUpdate);
-//            }).blockLast();
+            })
+            .blockLast();
 
 
+        System.out.println("Submitting tool outputs");
+        System.out.println("Generating python code:");
+        client.submitToolOutputsToRunStream(threadId.get(), runId.get(),
+            prepareToolOutputs((SubmitToolOutputsAction) requiredAction.get())
+        ).doOnNext(streamUpdate -> {
+            if (streamUpdate instanceof StreamRunStepUpdate) {
+                RunStepDeltaToolCallObject runStepDetails = (RunStepDeltaToolCallObject) ((StreamRunStepUpdate) streamUpdate).getMessage().getDelta().getStepDetails();
+                handleToolCallOutput((RunStepDeltaCodeInterpreterToolCall) runStepDetails.getToolCalls().get(0));
+            }
+        })
+        .blockLast();
 
     }
 
@@ -95,5 +101,9 @@ public class StreamingFunctionCallExample {
         }
 
         throw new IllegalStateException("No tool outputs found");
+    }
+
+    private static void handleToolCallOutput(RunStepDeltaCodeInterpreterToolCall toolCall) {
+        System.out.print(toolCall.getCodeInterpreter().getInput());
     }
 }
