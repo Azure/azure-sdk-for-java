@@ -197,24 +197,11 @@ public class RegionScopedSessionContainer implements ISessionContainer {
             this.firstPreferredReadableRegionCached.set(extractFirstEffectivePreferredReadableRegion());
         }
 
-        if (shouldUseBloomFilter(
+        boolean shouldUseBloomFilter = shouldUseBloomFilter(
             request,
             partitionKeyInternal,
             partitionKeyDefinition,
-            partitionScopedRegionLevelProgress)) {
-
-            return SessionTokenHelper.resolvePartitionLocalSessionToken(
-                request,
-                this.partitionKeyBasedBloomFilter,
-                partitionScopedRegionLevelProgress,
-                partitionKeyInternal.v,
-                partitionKeyDefinition.v,
-                collectionRid,
-                partitionKeyRangeId,
-                this.firstPreferredReadableRegionCached.get(),
-                true);
-
-        }
+            partitionScopedRegionLevelProgress);
 
         return SessionTokenHelper.resolvePartitionLocalSessionToken(
             request,
@@ -225,7 +212,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
             collectionRid,
             partitionKeyRangeId,
             this.firstPreferredReadableRegionCached.get(),
-            false);
+            shouldUseBloomFilter);
     }
 
     @Override
