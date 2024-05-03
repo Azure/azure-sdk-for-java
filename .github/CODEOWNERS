@@ -402,10 +402,10 @@
 # ServiceOwners:                                     @raedJarrar @jifems
 
 # PRLabel: %DevCenter
-/sdk/devcenter/                                      @sebrenna @mharlan
+/sdk/devcenter/                                      @sebrenna
 
 # ServiceLabel: %DevCenter
-# ServiceOwners:                                     @sebrenna @mharlan
+# ServiceOwners:                                     @sebrenna
 
 # ServiceLabel: %Device Provisioning Service
 # ServiceOwners:                                     @nberdy
