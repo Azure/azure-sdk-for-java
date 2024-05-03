@@ -110,21 +110,21 @@ public class DAGErrorTests {
         TaskGroup.InvocationContext context = pancakeFtg.newInvocationContext()
                 .withTerminateOnErrorStrategy(TaskGroupTerminateOnErrorStrategy.TERMINATE_ON_IN_PROGRESS_TASKS_COMPLETION);
         IPancake rootPancake = pancakeFtg.invokeAsync(context).map(indexable -> {
-            IPancake pancake = (IPancake) indexable;
+                IPancake pancake = (IPancake) indexable;
                 LOGGER.log(LogLevel.VERBOSE, () -> "map.onNext: " + pancake.name());
-            seen.add(pancake.name());
-            return pancake;
-        })
-                .onErrorResume(throwable -> {
-                    LOGGER.log(LogLevel.VERBOSE, () -> "map.onErrorResumeNext: ", throwable);
-                    exceptions.add(throwable);
-                    return Mono.empty();
-                }).blockLast();
+                seen.add(pancake.name());
+                return pancake;
+            })
+            .onErrorResume(throwable -> {
+                LOGGER.log(LogLevel.VERBOSE, () -> "map.onErrorResumeNext: ", throwable);
+                exceptions.add(throwable);
+                return Mono.empty();
+            }).blockLast();
 
         expectedToSee.removeAll(seen);
         Assertions.assertTrue(expectedToSee.isEmpty());
         Assertions.assertEquals(exceptions.size(), 1);
-        Assertions.assertTrue(exceptions.get(0) instanceof RuntimeException);
+        Assertions.assertInstanceOf(RuntimeException.class, exceptions.get(0));
         RuntimeException runtimeException = (RuntimeException) exceptions.get(0);
         Assertions.assertTrue(runtimeException.getMessage().equalsIgnoreCase("B"));
     }
@@ -230,21 +230,21 @@ public class DAGErrorTests {
                 .withTerminateOnErrorStrategy(TaskGroupTerminateOnErrorStrategy.TERMINATE_ON_HITTING_LCA_TASK);
 
         IPasta rootPasta = pastaFtg.invokeAsync(context).map(indexable -> {
-            IPasta pasta = (IPasta) indexable;
+                IPasta pasta = (IPasta) indexable;
                 LOGGER.log(LogLevel.VERBOSE, () -> "map.onNext: " + pasta.name());
-            seen.add(pasta.name());
-            return pasta;
-        })
-                .onErrorResume(throwable -> {
-                    LOGGER.log(LogLevel.VERBOSE, () -> "map.onErrorResumeNext: ", throwable);
-                    exceptions.add(throwable);
-                    return Mono.empty();
-                }).blockLast();
+                seen.add(pasta.name());
+                return pasta;
+            })
+            .onErrorResume(throwable -> {
+                LOGGER.log(LogLevel.VERBOSE, () -> "map.onErrorResumeNext: ", throwable);
+                exceptions.add(throwable);
+                return Mono.empty();
+            }).blockLast();
 
         expectedToSee.removeAll(seen);
         Assertions.assertTrue(expectedToSee.isEmpty());
         Assertions.assertEquals(exceptions.size(), 1);
-        Assertions.assertTrue(exceptions.get(0) instanceof RuntimeException);
+        Assertions.assertInstanceOf(RuntimeException.class, exceptions.get(0));
         RuntimeException runtimeException = (RuntimeException) exceptions.get(0);
         Assertions.assertTrue(runtimeException.getMessage().equalsIgnoreCase("B"));
     }

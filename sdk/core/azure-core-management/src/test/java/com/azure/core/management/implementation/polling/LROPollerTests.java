@@ -681,9 +681,12 @@ public class LROPollerTests {
 
             long nanoTime = System.nanoTime();
 
-            FooWithProvisioningState result = lroFlux.doOnNext(response -> LOGGER.log(LogLevel.VERBOSE,
-                () -> String.format("[%s] status %s%n", OffsetDateTime.now(), response.getStatus()))).blockLast()
-                .getFinalResult().block();
+            FooWithProvisioningState result = lroFlux
+                .doOnNext(response -> LOGGER.log(LogLevel.VERBOSE,
+                    () -> String.format("[%s] status %s%n", OffsetDateTime.now(), response.getStatus())))
+                .blockLast()
+                .getFinalResult()
+                .block();
             Assertions.assertNotNull(result);
 
             Duration pollingDuration = Duration.ofNanos(System.nanoTime() - nanoTime);
