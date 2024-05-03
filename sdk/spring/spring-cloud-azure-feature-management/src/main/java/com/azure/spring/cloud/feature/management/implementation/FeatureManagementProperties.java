@@ -87,6 +87,13 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
             for (String key : featureFlagsSection.keySet()) {
                 addServerSideFeature(featureFlagsSection, key);
             }
+        } else {
+            if (List.class.isAssignableFrom(featureFlagsObject.getClass())) {
+                final List<Object> featureFlagsSection = (List<Object>) featureFlagsObject;
+                for (Object flag : featureFlagsSection) {
+                    addServerSideFeature((Map<? extends String, ? extends Object>) flag, null);
+                }
+            }
         }
     }
 
@@ -129,7 +136,12 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
     }
 
     private void addServerSideFeature(Map<? extends String, ? extends Object> features, String key) {
-        final Object featureValue = features.get(key);
+        Object featureValue = features.get(key);
+        if (key != null) {
+            featureValue = features.get(key);
+        } else {
+            featureValue = features;
+        }
 
         ServerSideFeature serverSideFeature = null;
         try {
@@ -154,7 +166,8 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
 
         if (serverSideFeature != null && serverSideFeature.getId() != null) {
             if (serverSideFeature.getConditions() != null
-                && serverSideFeature.getConditions().getClientFilters() != null) {
+                && serverSideFeature.getConditions().getClientFilters() != null
+                && serverSideFeature.getConditions().getClientFilters().size() > 0) {
                 final Feature feature = new Feature();
                 feature.setKey(serverSideFeature.getId());
                 feature.setEvaluate(serverSideFeature.isEnabled());

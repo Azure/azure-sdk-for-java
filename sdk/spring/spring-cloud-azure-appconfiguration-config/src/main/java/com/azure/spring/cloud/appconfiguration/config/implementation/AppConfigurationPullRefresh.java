@@ -105,7 +105,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
             BaseAppConfigurationPolicy.setWatchRequests(true);
             try {
                 RefreshEventData eventData = AppConfigurationRefreshUtil.refreshStoresCheck(clientFactory,
-                    refreshInterval, profiles, defaultMinBackoff, replicaLookUp);
+                    refreshInterval, defaultMinBackoff, replicaLookUp);
                 if (eventData.getDoRefresh()) {
                     publisher.publishEvent(new RefreshEvent(this, eventData, eventData.getMessage()));
                     return true;

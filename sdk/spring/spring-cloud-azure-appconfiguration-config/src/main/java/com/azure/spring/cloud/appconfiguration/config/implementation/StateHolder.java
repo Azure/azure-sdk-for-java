@@ -16,8 +16,6 @@ final class StateHolder {
 
     private static final int MAX_JITTER = 15;
 
-    private static final String FEATURE_ENDPOINT = "_feature";
-
     private static StateHolder currentState;
 
     private final Map<String, State> state = new ConcurrentHashMap<>();
@@ -53,6 +51,10 @@ final class StateHolder {
     private Map<String, State> getFullState() {
         return state;
     }
+    
+    private Map<String, FeatureFlagState> getFullFeatureFlagState() {
+        return featureFlagState;
+    }
 
     private Map<String, Boolean> getFullLoadState() {
         return loadState;
@@ -62,8 +64,8 @@ final class StateHolder {
      * @param originEndpoint the endpoint for the origin config store
      * @return the state
      */
-    static State getStateFeatureFlag(String originEndpoint) {
-        return currentState.getFullState().get(originEndpoint + FEATURE_ENDPOINT);
+    static FeatureFlagState getStateFeatureFlag(String originEndpoint) {
+        return currentState.getFullFeatureFlagState().get(originEndpoint);
     }
 
     /**
@@ -82,7 +84,7 @@ final class StateHolder {
      */
     void setStateFeatureFlag(String originEndpoint, List<FeatureFlags> watchKeys,
         Duration duration) {
-        featureFlagState.put(originEndpoint + FEATURE_ENDPOINT, new FeatureFlagState(watchKeys, Math.toIntExact(duration.getSeconds()), originEndpoint));
+        featureFlagState.put(originEndpoint, new FeatureFlagState(watchKeys, Math.toIntExact(duration.getSeconds()), originEndpoint));
     }
 
     /**
@@ -97,6 +99,11 @@ final class StateHolder {
     void updateStateRefresh(State state, Duration duration) {
         this.state.put(state.getOriginEndpoint(),
             new State(state, Instant.now().plusSeconds(Math.toIntExact(duration.getSeconds()))));
+    }
+    
+    void updateFeatureFlagStateRefresh(FeatureFlagState state, Duration duration) {
+        this.featureFlagState.put(state.getOriginEndpoint(),
+            new FeatureFlagState(state, Instant.now().plusSeconds(Math.toIntExact(duration.getSeconds()))));
     }
 
     void expireState(String originEndpoint) {
@@ -116,13 +123,6 @@ final class StateHolder {
         return currentState.getFullLoadState().getOrDefault(originEndpoint, false);
     }
 
-    /**
-     * @return the loadState
-     */
-    static boolean getLoadStateFeatureFlag(String originEndpoint) {
-        return currentState.getFullLoadState().getOrDefault(originEndpoint + FEATURE_ENDPOINT, false);
-    }
-
     Map<String, Boolean> getLoadState() {
         return loadState;
     }
@@ -138,15 +138,6 @@ final class StateHolder {
         } else {
             loadState.put(originEndpoint, false);
         }
-    }
-
-    /**
-     * @param originEndpoint the configuration store connected to.
-     * @param loaded true if the configuration store was loaded and uses feature flags.
-     * @param failFast application started after it failed to load from a store.
-     */
-    void setLoadStateFeatureFlag(String originEndpoint, Boolean loaded, Boolean failFast) {
-        setLoadState(originEndpoint + FEATURE_ENDPOINT, loaded, failFast);
     }
 
     /**

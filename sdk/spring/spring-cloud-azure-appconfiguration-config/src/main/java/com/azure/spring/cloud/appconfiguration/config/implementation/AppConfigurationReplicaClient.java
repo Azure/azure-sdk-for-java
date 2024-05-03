@@ -120,7 +120,9 @@ class AppConfigurationReplicaClient {
         List<ConfigurationSetting> configurationSettings = new ArrayList<>();
         try {
             PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(settingSelector);
-            settings.forEach(setting -> configurationSettings.add(NormalizeNull.normalizeNullLabel(setting)));
+            settings.forEach(setting -> {
+                configurationSettings.add(NormalizeNull.normalizeNullLabel(setting));
+            });
             // Needs to happen after or we don't know if the request succeeded or failed.
             this.failedAttempts = 0;
             return configurationSettings;
@@ -135,6 +137,9 @@ class AppConfigurationReplicaClient {
             throw e;
         } catch (UncheckedIOException e) {
             throw new AppConfigurationStatusException(e.getMessage(), null, null);
+        } catch (Exception e) {
+            System.out.println(e);
+            throw e;
         }
     }
 
@@ -146,14 +151,16 @@ class AppConfigurationReplicaClient {
             client.listConfigurationSettings(settingSelector).streamByPage().forEach(pagedResponse -> {
                 checks.add(
                     new MatchConditions().setIfNoneMatch(pagedResponse.getHeaders().getValue(HttpHeaderName.ETAG)));
-                for (ConfigurationSetting featureFlag: pagedResponse.getValue()) {
-                    configurationSettings.add((FeatureFlagConfigurationSetting) NormalizeNull.normalizeNullLabel(featureFlag));
+                for (ConfigurationSetting featureFlag : pagedResponse.getValue()) {
+                    configurationSettings
+                        .add((FeatureFlagConfigurationSetting) NormalizeNull.normalizeNullLabel(featureFlag));
                 }
             });
-            
+
             // Needs to happen after or we don't know if the request succeeded or failed.
             this.failedAttempts = 0;
-            return new FeatureFlags(settingSelector, configurationSettings, checks);
+            settingSelector.setMatchConditions(checks);
+            return new FeatureFlags(settingSelector, configurationSettings);
         } catch (HttpResponseException e) {
             if (e.getResponse() != null) {
                 int statusCode = e.getResponse().getStatusCode();

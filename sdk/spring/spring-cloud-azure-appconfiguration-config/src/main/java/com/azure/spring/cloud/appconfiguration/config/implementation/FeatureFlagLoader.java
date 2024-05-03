@@ -35,7 +35,6 @@ import java.util.stream.IntStream;
 import org.bouncycastle.jcajce.provider.digest.SHA256;
 import org.springframework.util.StringUtils;
 
-import com.azure.core.http.MatchConditions;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
@@ -90,9 +89,7 @@ class FeatureFlagLoader {
         Collections.reverse(labels);
 
         for (String label : labels) {
-            SettingSelector settingSelector = new SettingSelector();
-            settingSelector.setKeyFilter(keyFilter);
-            settingSelector.setLabelFilter(label);
+            SettingSelector settingSelector = new SettingSelector().setKeyFilter(keyFilter).setLabelFilter(label);
 
             FeatureFlags features = replicaClient.listFeatureFlags(settingSelector);
             loadedFeatureFlags.add(features);
@@ -136,9 +133,9 @@ class FeatureFlagLoader {
         }
 
         Feature feature = new Feature(item, requirementType, featureTelemetry);
-        List<FeatureFlagFilter> featureEnabledFor = feature.getConditions().getClientFilters();
+        Map<Integer, FeatureFlagFilter> featureEnabledFor = feature.getConditions().getClientFilters();
 
-        for (FeatureFlagFilter featureFilter : featureEnabledFor) {
+        for (FeatureFlagFilter featureFilter : featureEnabledFor.values()) {
             Map<String, Object> parameters = featureFilter.getParameters();
 
             if (parameters == null || !TARGETING_FILTER.equals(featureFilter.getName())) {
@@ -178,7 +175,6 @@ class FeatureFlagLoader {
         return feature;
     }
 
-    @SuppressWarnings("null")
     private static Map<String, Object> mapValuesByIndex(List<Object> users) {
         return IntStream.range(0, users.size()).boxed().collect(toMap(String::valueOf, users::get));
     }
@@ -199,7 +195,7 @@ class FeatureFlagLoader {
      * @param key the key of feature flag
      * @param label the label of feature flag. If label is whitespace, treat as null
      * @return base64_url(SHA256(utf8_bytes("${key}\n${label}"))).replace('+', '-').replace('/', '_').trimEnd('=')
-     *         trimEnd() means trims everything after the first occurrence of the '='
+     * trimEnd() means trims everything after the first occurrence of the '='
      */
     private static String calculateFeatureFlagId(String key, String label) {
         final String data = String.format("%s\n%s", key, label.isEmpty() ? null : label);
@@ -213,12 +209,15 @@ class FeatureFlagLoader {
     /**
      * @return the properties
      */
-    public List<Feature> getProperties() {
-        List<Feature> features = new ArrayList<Feature>();
+    public Map<String, Feature> getProperties() {
+        /*List<Map<String, Object>> features = new ArrayList<>();
         for (Feature feature : properties.values()) {
-            features.add(feature);
-        }
-        return features;
+            Map<String, Object> map = CASE_INSENSITIVE_MAPPER.convertValue(feature,
+                new TypeReference<Map<String, Object>>() {
+                });
+            features.add(map);
+        }*/
+        return properties;
     }
 
 }

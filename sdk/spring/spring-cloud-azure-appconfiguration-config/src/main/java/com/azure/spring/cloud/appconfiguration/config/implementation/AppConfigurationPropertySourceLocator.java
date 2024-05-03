@@ -48,9 +48,9 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
     private final AppConfigurationReplicaClientFactory clientFactory;
 
     private final AppConfigurationKeyVaultClientFactory keyVaultClientFactory;
-    
+
     private final FeatureFlagLoader featureFlagLoader = new FeatureFlagLoader();
-    
+
     private final ReplicaLookUp replicaLookUp;
 
     private Duration refreshInterval;
@@ -123,7 +123,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                     sourceList = new ArrayList<>();
 
                     if (!STARTUP.get() && reloadFailed && !AppConfigurationRefreshUtil
-                        .checkStoreAfterRefreshFailed(client, clientFactory, configStore.getFeatureFlags(), profiles)) {
+                        .checkStoreAfterRefreshFailed(client, clientFactory, configStore.getFeatureFlags())) {
                         // This store doesn't have any changes where to refresh store did. Skipping Checking next.
                         continue;
                     }
@@ -132,7 +132,6 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                     try {
                         List<AppConfigurationPropertySource> sources = createSettings(client, configStore, profiles);
                         List<FeatureFlags> featureFlags = createFeatureFlags(client, configStore, profiles);
-                        // TODO: Create Feature Flag Property Source
                         sourceList.addAll(sources);
 
                         LOGGER.debug("PropertySource context.");
@@ -163,7 +162,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                     failedToGeneratePropertySource(configStore, newState, new RuntimeException(message));
                 }
 
-                AppConfigurationFeatureManagementPropertySource acfmps = new AppConfigurationFeatureManagementPropertySource(featureFlagLoader);
+                AppConfigurationFeatureManagementPropertySource acfmps = new AppConfigurationFeatureManagementPropertySource(
+                    featureFlagLoader);
                 composite.addPropertySource(acfmps);
 
             } else if (!configStore.isEnabled() && loadNewPropertySources) {
@@ -195,8 +195,6 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
             newState.setState(configStore.getEndpoint(), watchKeysSettings, monitoring.getRefreshInterval());
         }
         newState.setLoadState(configStore.getEndpoint(), true, configStore.isFailFast());
-        newState.setLoadStateFeatureFlag(configStore.getEndpoint(), configStore.getFeatureFlags().getEnabled(),
-            configStore.isFailFast());
     }
 
     private List<ConfigurationSetting> getWatchKeys(AppConfigurationReplicaClient client,
@@ -234,7 +232,6 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
             LOGGER.warn(
                 "Unable to load configuration from Azure AppConfiguration store " + configStore.getEndpoint() + ".", e);
             newState.setLoadState(configStore.getEndpoint(), false, configStore.isFailFast());
-            newState.setLoadStateFeatureFlag(configStore.getEndpoint(), false, configStore.isFailFast());
         }
         return newState;
     }
@@ -287,14 +284,15 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         List<FeatureFlags> featureFlagWatchKeys = new ArrayList<>();
         if (store.getFeatureFlags().getEnabled()) {
             for (FeatureFlagKeyValueSelector selectedKeys : store.getFeatureFlags().getSelects()) {
-                List<FeatureFlags> storesFeatureFlags = featureFlagLoader.load_feature_flags(client,  selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles));
+                List<FeatureFlags> storesFeatureFlags = featureFlagLoader.load_feature_flags(client,
+                    selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles));
                 storesFeatureFlags.forEach(featureFlags -> featureFlags.setConfigStore(store));
                 featureFlagWatchKeys.addAll(storesFeatureFlags);
             }
         }
         return featureFlagWatchKeys;
     }
-    
+
     private void delayException() {
         Instant currentDate = Instant.now();
         Instant preKillTIme = appProperties.getStartDate().plusSeconds(appProperties.getPrekillTime());
