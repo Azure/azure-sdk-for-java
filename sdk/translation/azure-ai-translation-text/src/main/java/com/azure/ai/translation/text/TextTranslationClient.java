@@ -112,7 +112,7 @@ public final class TextTranslationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -120,9 +120,9 @@ public final class TextTranslationClient {
      *     }
      * ]
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -189,7 +189,7 @@ public final class TextTranslationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -197,9 +197,9 @@ public final class TextTranslationClient {
      *     }
      * ]
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -255,7 +255,7 @@ public final class TextTranslationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -263,9 +263,9 @@ public final class TextTranslationClient {
      *     }
      * ]
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -306,7 +306,7 @@ public final class TextTranslationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -314,9 +314,9 @@ public final class TextTranslationClient {
      *     }
      * ]
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -374,7 +374,7 @@ public final class TextTranslationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -383,9 +383,9 @@ public final class TextTranslationClient {
      *     }
      * ]
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -873,8 +873,8 @@ public final class TextTranslationClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<BreakSentenceItem> findSentenceBoundaries(List<String> texts, String clientTraceId,
-        String language, String script) {
+    public List<BreakSentenceItem> findSentenceBoundaries(List<String> texts, String clientTraceId, String language,
+        String script) {
         return findSentenceBoundariesInner(convertTextToData(texts), clientTraceId, language, script);
     }
 
@@ -896,8 +896,8 @@ public final class TextTranslationClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<BreakSentenceItem> findSentenceBoundaries(String text, String clientTraceId,
-        String language, String script) {
+    public List<BreakSentenceItem> findSentenceBoundaries(String text, String clientTraceId, String language,
+        String script) {
         return findSentenceBoundaries(Arrays.asList(text), clientTraceId, language, script);
     }
 
@@ -1004,7 +1004,7 @@ public final class TextTranslationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<DictionaryLookupItem> lookupDictionaryEntries(String sourceLanguage, String targetLanguage,
         List<String> texts, String clientTraceId) {
-            return lookupDictionaryEntriesInner(sourceLanguage, targetLanguage, convertTextToData(texts), clientTraceId);
+        return lookupDictionaryEntriesInner(sourceLanguage, targetLanguage, convertTextToData(texts), clientTraceId);
     }
 
     /**
@@ -1025,8 +1025,8 @@ public final class TextTranslationClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<DictionaryLookupItem> lookupDictionaryEntries(String sourceLanguage, String targetLanguage,
-        String text, String clientTraceId) {
+    public List<DictionaryLookupItem> lookupDictionaryEntries(String sourceLanguage, String targetLanguage, String text,
+        String clientTraceId) {
         return lookupDictionaryEntries(sourceLanguage, targetLanguage, Arrays.asList(text), clientTraceId);
     }
 
@@ -1074,7 +1074,7 @@ public final class TextTranslationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<DictionaryLookupItem> lookupDictionaryEntries(String sourceLanguage, String targetLanguage,
         List<String> texts) {
-            return lookupDictionaryEntriesInner(sourceLanguage, targetLanguage, convertTextToData(texts));
+        return lookupDictionaryEntriesInner(sourceLanguage, targetLanguage, convertTextToData(texts));
     }
 
     /**
@@ -1116,8 +1116,8 @@ public final class TextTranslationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public List<DictionaryExampleItem> lookupDictionaryExamples(String sourceLanguage, String targetLanguage,
         List<DictionaryExampleTextItem> requestBody, String clientTraceId) {
         // Generated convenience method for lookupDictionaryExamplesWithResponse
@@ -1145,8 +1145,8 @@ public final class TextTranslationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public List<DictionaryExampleItem> lookupDictionaryExamples(String sourceLanguage, String targetLanguage,
         List<DictionaryExampleTextItem> requestBody) {
         // Generated convenience method for lookupDictionaryExamplesWithResponse
@@ -1214,7 +1214,7 @@ public final class TextTranslationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     translation (Optional): {
