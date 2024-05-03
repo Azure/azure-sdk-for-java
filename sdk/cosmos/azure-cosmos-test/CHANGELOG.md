@@ -1,14 +1,9 @@
 ## Release History
 
-### 1.0.0-beta.7 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
+### 1.0.0-beta.7 (2024-05-03)
 
 #### Bugs Fixed
-
-#### Other Changes
+* Fixed an issue where `FaultInjectionRule` can not apply on partition level when using `Gateway` Mode and non-session consistency - See [40005](https://github.com/Azure/azure-sdk-for-java/pull/40005)
 
 ### 1.0.0-beta.6 (2023-10-24)
 #### Features Added

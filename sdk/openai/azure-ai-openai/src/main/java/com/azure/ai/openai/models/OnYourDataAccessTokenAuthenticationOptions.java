@@ -5,21 +5,14 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The authentication options for Azure OpenAI On Your Data when using access token.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = OnYourDataAccessTokenAuthenticationOptions.class,
-    visible = true)
-@JsonTypeName("access_token")
 @Immutable
 public final class OnYourDataAccessTokenAuthenticationOptions extends OnYourDataAuthenticationOptions {
 
@@ -27,7 +20,6 @@ public final class OnYourDataAccessTokenAuthenticationOptions extends OnYourData
      * The access token to use for authentication.
      */
     @Generated
-    @JsonProperty(value = "access_token")
     private final String accessToken;
 
     /**
@@ -36,8 +28,7 @@ public final class OnYourDataAccessTokenAuthenticationOptions extends OnYourData
      * @param accessToken the accessToken value to set.
      */
     @Generated
-    @JsonCreator
-    public OnYourDataAccessTokenAuthenticationOptions(@JsonProperty(value = "access_token") String accessToken) {
+    public OnYourDataAccessTokenAuthenticationOptions(String accessToken) {
         this.accessToken = accessToken;
     }
 
@@ -55,8 +46,6 @@ public final class OnYourDataAccessTokenAuthenticationOptions extends OnYourData
      * The authentication type.
      */
     @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
     private OnYourDataAuthenticationType type = OnYourDataAuthenticationType.ACCESS_TOKEN;
 
     /**
@@ -68,5 +57,49 @@ public final class OnYourDataAccessTokenAuthenticationOptions extends OnYourData
     @Override
     public OnYourDataAuthenticationType getType() {
         return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("access_token", this.accessToken);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OnYourDataAccessTokenAuthenticationOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OnYourDataAccessTokenAuthenticationOptions if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OnYourDataAccessTokenAuthenticationOptions.
+     */
+    @Generated
+    public static OnYourDataAccessTokenAuthenticationOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String accessToken = null;
+            OnYourDataAuthenticationType type = OnYourDataAuthenticationType.ACCESS_TOKEN;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("access_token".equals(fieldName)) {
+                    accessToken = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    type = OnYourDataAuthenticationType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            OnYourDataAccessTokenAuthenticationOptions deserializedOnYourDataAccessTokenAuthenticationOptions
+                = new OnYourDataAccessTokenAuthenticationOptions(accessToken);
+            deserializedOnYourDataAccessTokenAuthenticationOptions.type = type;
+            return deserializedOnYourDataAccessTokenAuthenticationOptions;
+        });
     }
 }

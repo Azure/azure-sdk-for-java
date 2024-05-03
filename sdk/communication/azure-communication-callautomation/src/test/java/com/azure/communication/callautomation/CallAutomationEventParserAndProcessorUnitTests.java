@@ -49,6 +49,11 @@ import com.azure.communication.callautomation.models.events.TranscriptionStatus;
 import com.azure.communication.callautomation.models.events.TranscriptionStatusDetails;
 import com.azure.communication.callautomation.models.events.TranscriptionStopped;
 import com.azure.communication.callautomation.models.events.TranscriptionUpdated;
+import com.azure.communication.callautomation.models.events.MediaStreamingStarted;
+import com.azure.communication.callautomation.models.events.MediaStreamingStopped;
+import com.azure.communication.callautomation.models.events.MediaStreamingFailed;
+import com.azure.communication.callautomation.models.events.MediaStreamingStatus;
+import com.azure.communication.callautomation.models.events.MediaStreamingStatusDetails;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -1425,5 +1430,102 @@ public class CallAutomationEventParserAndProcessorUnitTests {
         assertEquals("serverCallId", holdFailed.getServerCallId());
         assertEquals(400, holdFailed.getResultInformation().getCode());
         assertEquals(ReasonCode.Play.DOWNLOAD_FAILED, holdFailed.getReasonCode());
+    }
+
+    @Test
+    public void parseMediaStreamingStartedEvent() {
+        String receivedEvent = "[{\n"
+            + "\"id\":\"d13c62c5-721e-44b9-a680-9866c33db7e7\",\n"
+            + "\"source\":\"calling/callConnections/4c1f5600-a9c6-4343-8979-b638a98de98f\",\n"
+            + "\"type\":\"Microsoft.Communication.MediaStreamingStarted\",\n"
+            + "\"data\":{\"eventSource\":\"calling/callConnections/4c1f5600-a9c6-4343-8979-b638a98de98f\",\n"
+            + "\"operationContext\":\"startMediaStreamingContext\",\n"
+            + "\"resultInformation\":{\"code\":200,\"subCode\":0,\"message\":\"Action completed successfully.\"},\n"
+            + "\"mediaStreamingUpdate\":{\"contentType\":\"Audio\",\n"
+            + "\"mediaStreamingStatus\":\"mediaStreamingStarted\",\n"
+            + "\"mediaStreamingStatusDetails\":\"subscriptionStarted\"},\n"
+            + "\"version\":\"2024-06-15-preview\",\n"
+            + "\"callConnectionId\":\"4c1f5600-a9c6-4343-8979-b638a98de98f\",\n"
+            + "\"serverCallId\":\"aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LW1hc28tMDEtcHJvZC1ha3MuY29udi5za3lwZS5jb20vY29udi9LTTQteUZBUmhVYXN3T1RqbklPSXZnP2k9MTAtMTI4LTk1LTUyJmU9NjM4NTAwMTgzOTYwNzY2MzQ0\",\n"
+            + "\"correlationId\":\"30f0ad34-d615-4bf3-8476-5630ae7fc3db\",\n"
+            + "\"publicEventType\":\"Microsoft.Communication.MediaStreamingStarted\"},\n"
+            + "\"time\":\"2024-05-02T11:20:42.9110236+00:00\",\n"
+            + "\"specversion\":\"1.0\",\n"
+            + "\"datacontenttype\":\"application/json\",\n"
+            + "\"subject\":\"calling/callConnections/4c1f5600-a9c6-4343-8979-b638a98de98f\"}]";
+
+        MediaStreamingStarted event = (MediaStreamingStarted) CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+        assertNotNull(event);
+        assertEquals("aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LW1hc28tMDEtcHJvZC1ha3MuY29udi5za3lwZS5jb20vY29udi9LTTQteUZBUmhVYXN3T1RqbklPSXZnP2k9MTAtMTI4LTk1LTUyJmU9NjM4NTAwMTgzOTYwNzY2MzQ0", event.getServerCallId());
+        assertEquals("4c1f5600-a9c6-4343-8979-b638a98de98f", event.getCallConnectionId());
+        assertEquals("30f0ad34-d615-4bf3-8476-5630ae7fc3db", event.getCorrelationId());
+        assertEquals("Action completed successfully.", event.getResultInformation().getMessage());
+
+        assertNotNull(event.getMediaStreamingUpdateResult());
+        assertEquals(MediaStreamingStatus.MEDIA_STREAMING_STARTED, event.getMediaStreamingUpdateResult().getMediaStreamingStatus());
+        assertEquals(MediaStreamingStatusDetails.SUBSCRIPTION_STARTED, event.getMediaStreamingUpdateResult().getMediaStreamingStatusDetails());
+    }
+
+    @Test
+    public void parseMediaStreamingStoppedEvent() {
+        String receivedEvent = "[{\n"
+            + "\"id\":\"41039554-9475-491a-875b-08d23c5d0e75\",\n"
+            + "\"source\":\"calling/callConnections/4c1f5600-a9c6-4343-8979-b638a98de98f\",\n"
+            + "\"type\":\"Microsoft.Communication.MediaStreamingStopped\",\n"
+            + "\"data\":{\"eventSource\":\"calling/callConnections/4c1f5600-a9c6-4343-8979-b638a98de98f\",\n"
+            + "\"operationContext\":\"startMediaStreamingContext\",\n"
+            + "\"resultInformation\":{\"code\":200,\"subCode\":0,\"message\":\"Action completed successfully.\"},\n"
+            + "\"mediaStreamingUpdate\":{\"contentType\":\"Audio\",\"mediaStreamingStatus\":\"mediaStreamingStopped\",\n"
+            + "\"mediaStreamingStatusDetails\":\"subscriptionStopped\"},\n"
+            + "\"version\":\"2024-06-15-preview\",\"callConnectionId\":\"4c1f5600-a9c6-4343-8979-b638a98de98f\",\n"
+            + "\"serverCallId\":\"aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LW1hc28tMDEtcHJvZC1ha3MuY29udi5za3lwZS5jb20vY29udi9LTTQteUZBUmhVYXN3T1RqbklPSXZnP2k9MTAtMTI4LTk1LTUyJmU9NjM4NTAwMTgzOTYwNzY2MzQ0\",\n"
+            + "\"correlationId\":\"30f0ad34-d615-4bf3-8476-5630ae7fc3db\",\n"
+            + "\"publicEventType\":\"Microsoft.Communication.MediaStreamingStopped\"},\n"
+            + "\"time\":\"2024-05-02T11:21:10.0261068+00:00\",\"specversion\":\"1.0\",\n"
+            + "\"datacontenttype\":\"application/json\",\n"
+            + "\"subject\":\"calling/callConnections/4c1f5600-a9c6-4343-8979-b638a98de98f\"}]";
+
+        MediaStreamingStopped event = (MediaStreamingStopped) CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+        assertNotNull(event);
+        assertEquals("aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LW1hc28tMDEtcHJvZC1ha3MuY29udi5za3lwZS5jb20vY29udi9LTTQteUZBUmhVYXN3T1RqbklPSXZnP2k9MTAtMTI4LTk1LTUyJmU9NjM4NTAwMTgzOTYwNzY2MzQ0", event.getServerCallId());
+        assertEquals("4c1f5600-a9c6-4343-8979-b638a98de98f", event.getCallConnectionId());
+        assertEquals("30f0ad34-d615-4bf3-8476-5630ae7fc3db", event.getCorrelationId());
+        assertEquals("Action completed successfully.", event.getResultInformation().getMessage());
+
+        assertNotNull(event.getMediaStreamingUpdateResult());
+        assertEquals(MediaStreamingStatus.MEDIA_STREAMING_STOPPED, event.getMediaStreamingUpdateResult().getMediaStreamingStatus());
+        assertEquals(MediaStreamingStatusDetails.SUBSCRIPTION_STOPPED, event.getMediaStreamingUpdateResult().getMediaStreamingStatusDetails());
+    }
+    
+    @Test
+    public void parseMediaStreamingFailedEvent() {
+        String receivedEvent = "[{\n"
+            + "\"id\":\"a9bb7545-8f87-42aa-85d0-d7120dbe2414\",\n"
+            + "\"source\":\"calling/callConnections/761f5600-43ab-48a0-bbad-ecc5ad5b15bb\",\n"
+            + "\"type\":\"Microsoft.Communication.MediaStreamingFailed\",\n"
+            + "\"data\":{\"eventSource\":\"calling/callConnections/761f5600-43ab-48a0-bbad-ecc5ad5b15bb\",\n"
+            + "\"operationContext\":\"startMediaStreamingContext\",\n"
+            + "\"resultInformation\":{\"code\":500,\"subCode\":8603,\n"
+            + "\"message\":\"Action failed, not able to establish websocket connection.\"},\n"
+            + "\"mediaStreamingUpdate\":{\"contentType\":\"Audio\",\n"
+            + "\"mediaStreamingStatus\":\"mediaStreamingFailed\",\n"
+            + "\"mediaStreamingStatusDetails\":\"streamConnectionUnsuccessful\"},\n"
+            + "\"version\":\"2024-06-15-preview\",\"callConnectionId\":\"761f5600-43ab-48a0-bbad-ecc5ad5b15bb\",\n"
+            + "\"serverCallId\":\"aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LW1hc28tMDQtcHJvZC1ha3MuY29udi5za3lwZS5jb20vY29udi94MVdMX0p3NnlVaW1aOEkzVi1MN3hnP2k9MTAtMTI4LTg0LTE3MSZlPTYzODQ5NzU2ODQ3MzUxNzU3Mg==\",\n"
+            + "\"correlationId\":\"6032c474-201d-4ad1-8900-f92a595a6d94\",\n"
+            + "\"publicEventType\":\"Microsoft.Communication.MediaStreamingFailed\"},\n"
+            + "\"time\":\"2024-05-02T12:38:31.242039+00:00\",\"specversion\":\"1.0\",\"datacontenttype\":\"application/json\",\n"
+            + "\"subject\":\"calling/callConnections/761f5600-43ab-48a0-bbad-ecc5ad5b15bb\"}]";
+
+        MediaStreamingFailed event = (MediaStreamingFailed) CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+        assertNotNull(event);
+        assertEquals("aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LW1hc28tMDQtcHJvZC1ha3MuY29udi5za3lwZS5jb20vY29udi94MVdMX0p3NnlVaW1aOEkzVi1MN3hnP2k9MTAtMTI4LTg0LTE3MSZlPTYzODQ5NzU2ODQ3MzUxNzU3Mg==", event.getServerCallId());
+        assertEquals("761f5600-43ab-48a0-bbad-ecc5ad5b15bb", event.getCallConnectionId());
+        assertEquals("6032c474-201d-4ad1-8900-f92a595a6d94", event.getCorrelationId());
+        assertEquals("Action failed, not able to establish websocket connection.", event.getResultInformation().getMessage());
+
+        assertNotNull(event.getMediaStreamingUpdateResult());
+        assertEquals(MediaStreamingStatus.MEDIA_STREAMING_FAILED, event.getMediaStreamingUpdateResult().getMediaStreamingStatus());
+        assertEquals(MediaStreamingStatusDetails.STREAM_CONNECTION_UNSUCCESSFUL, event.getMediaStreamingUpdateResult().getMediaStreamingStatusDetails());
     }
 }

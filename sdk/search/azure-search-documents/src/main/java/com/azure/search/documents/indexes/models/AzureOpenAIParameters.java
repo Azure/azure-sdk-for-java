@@ -17,7 +17,7 @@ import java.io.IOException;
  * Specifies the parameters for connecting to the Azure OpenAI resource.
  */
 @Fluent
-public final class AzureOpenAIParameters implements JsonSerializable<AzureOpenAIParameters> {
+public class AzureOpenAIParameters implements JsonSerializable<AzureOpenAIParameters> {
     /*
      * The resource URI of the Azure OpenAI resource.
      */
@@ -37,6 +37,11 @@ public final class AzureOpenAIParameters implements JsonSerializable<AzureOpenAI
      * The user-assigned managed identity used for outbound connections.
      */
     private SearchIndexerDataIdentity authIdentity;
+
+    /*
+     * The name of the embedding model that is deployed at the provided deploymentId path.
+     */
+    private AzureOpenAIModelName modelName;
 
     /**
      * Creates an instance of AzureOpenAIParameters class.
@@ -124,6 +129,26 @@ public final class AzureOpenAIParameters implements JsonSerializable<AzureOpenAI
         return this;
     }
 
+    /**
+     * Get the modelName property: The name of the embedding model that is deployed at the provided deploymentId path.
+     * 
+     * @return the modelName value.
+     */
+    public AzureOpenAIModelName getModelName() {
+        return this.modelName;
+    }
+
+    /**
+     * Set the modelName property: The name of the embedding model that is deployed at the provided deploymentId path.
+     * 
+     * @param modelName the modelName value to set.
+     * @return the AzureOpenAIParameters object itself.
+     */
+    public AzureOpenAIParameters setModelName(AzureOpenAIModelName modelName) {
+        this.modelName = modelName;
+        return this;
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -131,6 +156,7 @@ public final class AzureOpenAIParameters implements JsonSerializable<AzureOpenAI
         jsonWriter.writeStringField("deploymentId", this.deploymentId);
         jsonWriter.writeStringField("apiKey", this.apiKey);
         jsonWriter.writeJsonField("authIdentity", this.authIdentity);
+        jsonWriter.writeStringField("modelName", this.modelName == null ? null : this.modelName.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -157,6 +183,8 @@ public final class AzureOpenAIParameters implements JsonSerializable<AzureOpenAI
                     deserializedAzureOpenAIParameters.apiKey = reader.getString();
                 } else if ("authIdentity".equals(fieldName)) {
                     deserializedAzureOpenAIParameters.authIdentity = SearchIndexerDataIdentity.fromJson(reader);
+                } else if ("modelName".equals(fieldName)) {
+                    deserializedAzureOpenAIParameters.modelName = AzureOpenAIModelName.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

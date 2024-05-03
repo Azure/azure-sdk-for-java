@@ -265,9 +265,6 @@
 # PRLabel: %Communication - Common
 /sdk/communication/azure-communication-common/        @Azure/acs-identity-sdk @AikoBB @maximrytych-ms @mjafferi-msft
 
-# PRLabel: %Communication - Network Traversal
-/sdk/communication/azure-communication-networktraversal/ @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
-
 # PRLabel: %Communication - Phone Numbers
 /sdk/communication/azure-communication-phonenumbers/  @miguhern @whisper6284 @RoyHerrod @danielav7
 

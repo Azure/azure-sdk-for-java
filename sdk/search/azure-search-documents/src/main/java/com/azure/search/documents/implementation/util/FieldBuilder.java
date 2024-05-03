@@ -18,6 +18,7 @@ import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.LexicalNormalizerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
+import com.azure.search.documents.indexes.models.VectorEncodingFormat;
 import reactor.util.annotation.Nullable;
 
 import java.lang.annotation.Annotation;
@@ -279,6 +280,7 @@ public final class FieldBuilder {
         String normalizerName;
         Integer vectorSearchDimensions = null;
         String vectorSearchProfileName = null;
+        String vectorEncodingFormat = null;
 
         if (simpleField != null) {
             key = simpleField.isKey();
@@ -304,6 +306,8 @@ public final class FieldBuilder {
                 ? searchableField.vectorSearchDimensions() : null;
             vectorSearchProfileName = CoreUtils.isNullOrEmpty(searchableField.vectorSearchProfileName())
                 ? null : searchableField.vectorSearchProfileName();
+            vectorEncodingFormat = CoreUtils.isNullOrEmpty(searchableField.vectorEncodingFormat())
+                ? null : searchableField.vectorEncodingFormat();
         }
 
         StringBuilder errorMessage = new StringBuilder();
@@ -314,6 +318,7 @@ public final class FieldBuilder {
         boolean hasSearchAnalyzerName = !CoreUtils.isNullOrEmpty(searchAnalyzerName);
         boolean hasIndexAnalyzerName = !CoreUtils.isNullOrEmpty(indexAnalyzerName);
         boolean hasNormalizerName = !CoreUtils.isNullOrEmpty(normalizerName);
+        boolean hasVectorEncodingFormat = !CoreUtils.isNullOrEmpty(vectorEncodingFormat);
         if (searchable) {
             if (!isSearchableType) {
                 errorMessage.append("SearchField can only be used on 'Edm.String', 'Collection(Edm.String)', or "
@@ -369,6 +374,10 @@ public final class FieldBuilder {
 
         if (hasNormalizerName) {
             searchField.setNormalizerName(LexicalNormalizerName.fromString(normalizerName));
+        }
+
+        if (hasVectorEncodingFormat) {
+            searchField.setVectorEncodingFormat(VectorEncodingFormat.fromString(vectorEncodingFormat));
         }
 
         if (!CoreUtils.isNullOrEmpty(synonymMapNames)) {

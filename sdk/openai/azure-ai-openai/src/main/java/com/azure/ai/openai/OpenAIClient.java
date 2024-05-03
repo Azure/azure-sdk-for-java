@@ -30,12 +30,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
-import static com.azure.ai.openai.implementation.AudioTranscriptionValidator.validateAudioResponseFormatForTranscription;
-import static com.azure.ai.openai.implementation.AudioTranscriptionValidator.validateAudioResponseFormatForTranscriptionText;
-import static com.azure.ai.openai.implementation.AudioTranslationValidator.validateAudioResponseFormatForTranslation;
-import static com.azure.ai.openai.implementation.AudioTranslationValidator.validateAudioResponseFormatForTranslationText;
-import static com.azure.ai.openai.implementation.EmbeddingsUtils.addEncodingFormat;
-import static com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl.addModelIdJson;
 import com.azure.ai.openai.implementation.CompletionsUtils;
 import com.azure.ai.openai.implementation.MultipartDataHelper;
 import com.azure.ai.openai.implementation.MultipartDataSerializationResult;
@@ -43,9 +37,14 @@ import com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIServerSentEvents;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
+import java.nio.ByteBuffer;
+import static com.azure.ai.openai.implementation.AudioTranscriptionValidator.validateAudioResponseFormatForTranscription;
+import static com.azure.ai.openai.implementation.AudioTranscriptionValidator.validateAudioResponseFormatForTranscriptionText;
+import static com.azure.ai.openai.implementation.AudioTranslationValidator.validateAudioResponseFormatForTranslation;
+import static com.azure.ai.openai.implementation.AudioTranslationValidator.validateAudioResponseFormatForTranslationText;
+import static com.azure.ai.openai.implementation.EmbeddingsUtils.addEncodingFormat;
+import static com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl.addModelIdJson;
 
 /**
  * Initializes a new instance of the synchronous OpenAIClient type.
@@ -133,14 +132,11 @@ public final class OpenAIClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEmbeddingsWithResponse(String deploymentOrModelName, BinaryData embeddingsOptions,
         RequestOptions requestOptions) {
-        try {
-            embeddingsOptions = addEncodingFormat(embeddingsOptions);
-        } catch (JsonProcessingException e) {
-            throw LOGGER.logExceptionAsWarning(new RuntimeException(e));
-        }
+        final BinaryData embeddingsOptionsUpdated = addEncodingFormat(embeddingsOptions);
         return openAIServiceClient != null
-            ? openAIServiceClient.getEmbeddingsWithResponse(deploymentOrModelName, embeddingsOptions, requestOptions)
-            : serviceClient.getEmbeddingsWithResponse(deploymentOrModelName, embeddingsOptions, requestOptions);
+            ? openAIServiceClient.getEmbeddingsWithResponse(deploymentOrModelName, embeddingsOptionsUpdated,
+                requestOptions)
+            : serviceClient.getEmbeddingsWithResponse(deploymentOrModelName, embeddingsOptionsUpdated, requestOptions);
     }
 
     /**
@@ -1441,12 +1437,8 @@ public final class OpenAIClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> generateSpeechFromTextWithResponse(String deploymentOrModelName,
         BinaryData speechGenerationOptions, RequestOptions requestOptions) {
-        BinaryData speechGenerationOptionsWithModelId = null;
-        try {
-            speechGenerationOptionsWithModelId = addModelIdJson(speechGenerationOptions, deploymentOrModelName);
-        } catch (JsonProcessingException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
-        }
+        final BinaryData speechGenerationOptionsWithModelId
+            = addModelIdJson(speechGenerationOptions, deploymentOrModelName);
         return openAIServiceClient != null
             ? this.openAIServiceClient.generateSpeechFromTextWithResponse(speechGenerationOptionsWithModelId,
                 requestOptions)

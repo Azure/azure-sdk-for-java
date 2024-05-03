@@ -18,6 +18,7 @@ import com.azure.core.util.logging.ClientLogger;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.handler.logging.LoggingHandler;
 import io.netty.resolver.AddressResolverGroup;
 import io.netty.resolver.DefaultAddressResolverGroup;
 import io.netty.resolver.NoopAddressResolverGroup;
@@ -61,7 +62,6 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  * <pre>
  * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
  *     .port&#40;8080&#41;
- *     .wiretap&#40;true&#41;
  *     .build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.core.http.netty.instantiation-simple -->
@@ -79,7 +79,6 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  * <pre>
  * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
  *     .port&#40;8080&#41;
- *     .wiretap&#40;true&#41;
  *     .build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.core.http.netty.instantiation-simple -->
@@ -92,7 +91,6 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  * <pre>
  * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
  *     .port&#40;8080&#41;
- *     .wiretap&#40;true&#41;
  *     .build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.core.http.netty.instantiation-simple -->
@@ -216,7 +214,6 @@ public class NettyAsyncHttpClientBuilder {
         // instead of overwritten.
         HttpResponseDecoderSpec initialSpec = nettyHttpClient.configuration().decoder();
         nettyHttpClient = nettyHttpClient.port(port)
-            .wiretap(enableWiretap)
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS,
                 (int) getTimeoutMillis(connectTimeout, DEFAULT_CONNECT_TIMEOUT))
             // TODO (alzimmer): What does validating HTTP response headers get us?
@@ -224,6 +221,15 @@ public class NettyAsyncHttpClientBuilder {
             .doOnRequest(
                 (request, connection) -> addHandler(request, connection, writeTimeout, responseTimeout, readTimeout))
             .doAfterResponseSuccess((ignored, connection) -> removeHandler(connection));
+
+        LoggingHandler loggingHandler = nettyHttpClient.configuration().loggingHandler();
+        if (loggingHandler == null) {
+            // Only enable wiretap if the LoggingHandler is null. If the LoggingHandler isn't null this means that a
+            // base client was passed with logging enabled. 'wiretap(boolean)' is a basic API that doesn't allow for
+            // in-depth settings to be done on how logging works, so setting it always can replace a customized logger
+            // with a basic one that isn't as useful in troubleshooting scenarios.
+            nettyHttpClient.wiretap(enableWiretap);
+        }
 
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
@@ -349,7 +355,11 @@ public class NettyAsyncHttpClientBuilder {
      *
      * @param enableWiretap Flag indicating wiretap status
      * @return the updated NettyAsyncHttpClientBuilder object.
+     * @deprecated If logging should be enabled as the Reactor Netty level, construct the builder using
+     * {@link #NettyAsyncHttpClientBuilder(HttpClient)} where the passed Reactor Netty HttpClient has logging
+     * configured.
      */
+    @Deprecated
     public NettyAsyncHttpClientBuilder wiretap(boolean enableWiretap) {
         this.enableWiretap = enableWiretap;
         return this;
