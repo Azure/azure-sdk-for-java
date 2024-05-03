@@ -855,7 +855,7 @@ public class LROPollerTests {
         }
     }
 
-    private static class ServerConfigure {
+    private static final class ServerConfigure {
         private int pollingCountTillSuccess = 2;
         private HttpHeaders additionalHeaders = HttpHeaders.noHeaders();
     }

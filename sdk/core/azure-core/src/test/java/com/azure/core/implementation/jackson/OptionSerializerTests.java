@@ -69,7 +69,7 @@ public class OptionSerializerTests {
         Assertions.assertEquals("\"test\"", serialized1);
     }
 
-    private static class PatchModel {
+    private static final class PatchModel {
         @JsonProperty("sku")
         private Option<String> sku;
 
@@ -79,7 +79,7 @@ public class OptionSerializerTests {
         }
     }
 
-    private static class RawModel {
+    private static final class RawModel {
         @JsonProperty("name")
         private String name;
 

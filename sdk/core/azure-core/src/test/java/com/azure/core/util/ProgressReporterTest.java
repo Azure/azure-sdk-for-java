@@ -124,7 +124,7 @@ public class ProgressReporterTest {
         }
     }
 
-    private static class ListProgressListener implements ProgressListener {
+    private static final class ListProgressListener implements ProgressListener {
         private final List<Long> progresses = Collections.synchronizedList(new ArrayList<>());
 
         @Override

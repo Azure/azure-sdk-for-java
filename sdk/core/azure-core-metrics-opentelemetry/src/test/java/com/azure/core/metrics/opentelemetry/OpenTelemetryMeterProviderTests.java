@@ -33,7 +33,7 @@ public class OpenTelemetryMeterProviderTests {
         assertSame(OpenTelemetryMeterProvider.class, new OpenTelemetryMetricsOptions().getMeterProvider());
     }
 
-    private static class TestMeterProvider implements MeterProvider {
+    private static final class TestMeterProvider implements MeterProvider {
         @Override
         public Meter createMeter(String libraryName, String libraryVersion, MetricsOptions options) {
             return new TestMeter();

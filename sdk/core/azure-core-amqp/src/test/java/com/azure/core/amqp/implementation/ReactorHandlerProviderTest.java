@@ -273,7 +273,7 @@ public class ReactorHandlerProviderTest {
         // The default port used for the first ConnectionOptions constructor is the default HTTPS_PORT.
         when(proxySelector.select(
             argThat(u -> u.getHost().equals(hostname) && u.getPort() == WebSocketsConnectionHandler.HTTPS_PORT)))
-                .thenReturn(Collections.singletonList(PROXY));
+            .thenReturn(Collections.singletonList(PROXY));
 
         final ConnectionOptions connectionOptions = new ConnectionOptions(hostname, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "scope", AmqpTransportType.AMQP_WEB_SOCKETS,

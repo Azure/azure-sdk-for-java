@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -138,11 +139,11 @@ public class RestProxyTracingTests {
     private static Span getSpan(Context context) {
         Optional<Object> spanOpt = context.getData("span");
         assertTrue(spanOpt.isPresent());
-        assertTrue(spanOpt.get() instanceof Span);
+        assertInstanceOf(Span.class, spanOpt.get());
         return (Span) spanOpt.get();
     }
 
-    private static class TestTracer implements Tracer {
+    private static final class TestTracer implements Tracer {
         private final List<Span> spans = new ArrayList<>();
 
         @Override
@@ -227,7 +228,7 @@ public class RestProxyTracingTests {
         }
     }
 
-    private static class SimpleMockHttpClient implements HttpClient {
+    private static final class SimpleMockHttpClient implements HttpClient {
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
             if (request.getHttpMethod() == HttpMethod.GET) {

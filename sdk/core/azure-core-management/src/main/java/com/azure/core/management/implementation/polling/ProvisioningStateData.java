@@ -172,7 +172,8 @@ final class ProvisioningStateData implements JsonSerializable<ProvisioningStateD
     /**
      * Schema of an azure resource with provisioningState property.
      */
-    private static class ResourceWithProvisioningState implements JsonSerializable<ResourceWithProvisioningState> {
+    private static final class ResourceWithProvisioningState
+        implements JsonSerializable<ResourceWithProvisioningState> {
         @JsonProperty(value = "properties")
         private Properties properties;
 
@@ -215,7 +216,7 @@ final class ProvisioningStateData implements JsonSerializable<ProvisioningStateD
             });
         }
 
-        private static class Properties implements JsonSerializable<Properties> {
+        private static final class Properties implements JsonSerializable<Properties> {
             @JsonProperty(value = "provisioningState")
             private String provisioningState;
 

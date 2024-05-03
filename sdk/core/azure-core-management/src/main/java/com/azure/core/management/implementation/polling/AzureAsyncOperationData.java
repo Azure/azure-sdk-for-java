@@ -234,7 +234,7 @@ final class AzureAsyncOperationData implements JsonSerializable<AzureAsyncOperat
     /**
      * The schema of Azure-AzureOperation poll response.
      */
-    private static class AsyncOperationResource implements JsonSerializable<AsyncOperationResource> {
+    private static final class AsyncOperationResource implements JsonSerializable<AsyncOperationResource> {
         @JsonProperty(value = "status")
         private String provisioningState;
 

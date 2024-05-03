@@ -96,7 +96,7 @@ public class HttpPipelinePolicyTests {
         pipeline.sendSync(new HttpRequest(HttpMethod.GET, url), Context.NONE);
     }
 
-    private static class SyncAsyncPolicy implements HttpPipelinePolicy {
+    private static final class SyncAsyncPolicy implements HttpPipelinePolicy {
         final AtomicInteger asyncCalls = new AtomicInteger();
         final AtomicInteger syncCalls = new AtomicInteger();
 
@@ -113,7 +113,7 @@ public class HttpPipelinePolicyTests {
         }
     }
 
-    private static class DefaultImplementationSyncPolicy implements HttpPipelinePolicy {
+    private static final class DefaultImplementationSyncPolicy implements HttpPipelinePolicy {
         final AtomicInteger asyncCalls = new AtomicInteger();
         final AtomicInteger syncCalls = new AtomicInteger();
 

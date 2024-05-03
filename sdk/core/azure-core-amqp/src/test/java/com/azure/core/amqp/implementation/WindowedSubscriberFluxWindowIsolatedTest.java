@@ -472,7 +472,7 @@ public final class WindowedSubscriberFluxWindowIsolatedTest {
         }
     }
 
-    private static class Releaser<T> implements Consumer<T> {
+    private static final class Releaser<T> implements Consumer<T> {
         private final Deque<T> released = new ConcurrentLinkedDeque<>();
 
         @Override

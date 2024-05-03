@@ -797,7 +797,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
         }
     }
 
-    private static class DeliveryTagComparator implements Comparator<WeightedDeliveryTag>, Serializable {
+    private static final class DeliveryTagComparator implements Comparator<WeightedDeliveryTag>, Serializable {
         private static final long serialVersionUID = -7057500582037295635L;
 
         @Override

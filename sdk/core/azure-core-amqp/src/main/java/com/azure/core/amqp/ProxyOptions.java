@@ -43,9 +43,9 @@ public class ProxyOptions implements AutoCloseable {
     private static final ConfigurationProperty<ProxyAuthenticationType> AUTH_TYPE_PROPERTY
         = new ConfigurationPropertyBuilder<>(ConfigurationProperties.AMQP_PROXY_AUTHENTICATION_TYPE,
             s -> ProxyAuthenticationType.valueOf(s)).shared(true)
-                .logValue(true)
-                .defaultValue(ProxyAuthenticationType.NONE)
-                .build();
+            .logValue(true)
+            .defaultValue(ProxyAuthenticationType.NONE)
+            .build();
 
     private static final ConfigurationProperty<Proxy.Type> TYPE_PROPERTY
         = new ConfigurationPropertyBuilder<>(ConfigurationProperties.AMQP_PROXY_TYPE, s -> Proxy.Type.valueOf(s))
@@ -249,7 +249,7 @@ public class ProxyOptions implements AutoCloseable {
     /**
      * Lists available configuration property names for AMQP {@link ProxyOptions}.
      */
-    private static class ConfigurationProperties {
+    private static final class ConfigurationProperties {
         /**
          * The AMQP proxy server authentication type that match {@link ProxyAuthenticationType} enum.
          * Supported values are {@code NONE} (no authentication), {@code BASIC} or {@code DIGEST}.

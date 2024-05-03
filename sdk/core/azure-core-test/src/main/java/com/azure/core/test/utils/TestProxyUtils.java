@@ -65,7 +65,7 @@ public class TestProxyUtils {
         new TestProxySanitizer("Operation-Location", URL_REGEX, REDACTED_VALUE, TestProxySanitizerType.HEADER),
         new TestProxySanitizer("ServiceBusDlqSupplementaryAuthorization",
             "(?:(sv|sig|se|srt|ss|sp)=)(?<secret>[^&\\\"]+)", REDACTED_VALUE, TestProxySanitizerType.HEADER)
-                .setGroupForReplace("secret"),
+            .setGroupForReplace("secret"),
         new TestProxySanitizer("ServiceBusSupplementaryAuthorization", "(?:(sv|sig|se|srt|ss|sp)=)(?<secret>[^&\\\"]+)",
             REDACTED_VALUE, TestProxySanitizerType.HEADER).setGroupForReplace("secret"));
 

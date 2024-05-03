@@ -25,7 +25,7 @@ public class InterceptorManagerTests {
             new TestContextManager(METHOD_WITHOUT_DONOTRECORD, TestMode.LIVE, false, false, null)).getRecordedData());
         assertNull(new InterceptorManager(
             new TestContextManager(DONOTRECORD_FALSE_SKIPINPLAYBACK, TestMode.LIVE, false, false, null))
-                .getRecordedData());
+            .getRecordedData());
     }
 
     /**
@@ -37,13 +37,13 @@ public class InterceptorManagerTests {
     public void recordedDataIsNullWhenDoNotRecord() {
         assertNull(new InterceptorManager(
             new TestContextManager(DONOTRECORD_FALSE_SKIPINPLAYBACK, TestMode.RECORD, false, false, null))
-                .getRecordedData());
+            .getRecordedData());
         assertNull(new InterceptorManager(
             new TestContextManager(DONOTRECORD_FALSE_SKIPINPLAYBACK, TestMode.LIVE, false, false, null))
-                .getRecordedData());
+            .getRecordedData());
         assertNull(new InterceptorManager(
             new TestContextManager(DONOTRECORD_FALSE_SKIPINPLAYBACK, TestMode.PLAYBACK, false, false, null))
-                .getRecordedData());
+            .getRecordedData());
         assertNull(new InterceptorManager("testName", new HashMap<>(), true).getRecordedData());
     }
 }

@@ -56,6 +56,6 @@ public class VertxAsyncHttpClientSingletonTests {
     private static Configuration getConfiguration(boolean enableSharing) {
         return new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
             new TestConfigurationSource().put("AZURE_ENABLE_HTTP_CLIENT_SHARING", Boolean.toString(enableSharing)))
-                .build();
+            .build();
     }
 }

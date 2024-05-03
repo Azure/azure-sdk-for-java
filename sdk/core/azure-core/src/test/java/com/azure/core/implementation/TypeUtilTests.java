@@ -96,7 +96,7 @@ public class TypeUtilTests {
     private static class Human {
     }
 
-    private static class Kid extends Human {
+    private static final class Kid extends Human {
     }
 
     private static class Dog<T extends Human> extends Pet<T, String> {
@@ -108,6 +108,6 @@ public class TypeUtilTests {
         }
     }
 
-    private static class Puppy extends Dog<Kid> {
+    private static final class Puppy extends Dog<Kid> {
     }
 }

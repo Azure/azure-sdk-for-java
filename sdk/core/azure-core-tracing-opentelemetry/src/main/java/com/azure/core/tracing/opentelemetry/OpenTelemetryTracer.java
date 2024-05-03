@@ -347,7 +347,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         return false;
     }
 
-    private static class Getter implements TextMapGetter<Function<String, String>> {
+    private static final class Getter implements TextMapGetter<Function<String, String>> {
 
         public static final TextMapGetter<Function<String, String>> INSTANCE = new Getter();
         private static final Iterable<String> KEYS = Arrays.asList("traceparent", "tracestate");

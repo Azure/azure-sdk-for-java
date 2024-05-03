@@ -546,10 +546,10 @@ public class NettyAsyncHttpClientTests {
                             promise.setFailure(new SSLException(new ProxyConnectException("Simulated SSLException")));
                         }
                     });
-                })).proxy(
+                }))
+                .proxy(
                     new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress()).setCredentials("1", "1"))
-                    .build())
-                .build();
+                .build()).build();
 
             StepVerifier.create(httpPipeline.send(new HttpRequest(HttpMethod.GET, url(PROXY_TO_ADDRESS))))
                 .verifyErrorMatches(exception -> exception instanceof SSLException
@@ -585,8 +585,8 @@ public class NettyAsyncHttpClientTests {
         try (MockProxyServer mockProxyServer = new MockProxyServer()) {
             NettyAsyncHttpClient httpClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(
                 reactor.netty.http.client.HttpClient.create().resolver(DefaultAddressResolverGroup.INSTANCE))
-                    .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress()))
-                    .build();
+                .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress()))
+                .build();
             assertNotEquals(NoopAddressResolverGroup.INSTANCE, httpClient.nettyClient.configuration().resolver());
         }
     }

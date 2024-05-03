@@ -805,7 +805,7 @@ public abstract class HttpClientTests {
         }
     }
 
-    private static class ByteArraySerializer implements ObjectSerializer {
+    private static final class ByteArraySerializer implements ObjectSerializer {
         @Override
         public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {
             throw new UnsupportedOperationException("Not supported");

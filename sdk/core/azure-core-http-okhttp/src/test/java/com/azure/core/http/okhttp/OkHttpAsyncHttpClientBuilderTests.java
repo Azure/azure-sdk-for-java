@@ -458,7 +458,8 @@ public class OkHttpAsyncHttpClientBuilderTests {
 
         Configuration simpleEnvProxy = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
             new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:12345")
-                .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true")).build();
+                .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true"))
+            .build();
         arguments.add(Arguments.of(true, simpleEnvProxy, SERVER_HTTP_URI + DEFAULT_PATH));
 
         /*
@@ -471,7 +472,8 @@ public class OkHttpAsyncHttpClientBuilderTests {
 
         Configuration envProxyWithAuthentication = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
             new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, "http://1:1@localhost:12345")
-                .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true")).build();
+                .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true"))
+            .build();
         arguments.add(Arguments.of(true, envProxyWithAuthentication, SERVER_HTTP_URI + DEFAULT_PATH));
 
         /*

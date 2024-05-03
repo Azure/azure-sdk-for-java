@@ -17,7 +17,7 @@ import java.io.IOException;
 
 public class ResourceTests {
 
-    private static class ProxyResourceWithSystemData extends ProxyResource {
+    private static final class ProxyResourceWithSystemData extends ProxyResource {
         @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
         private SystemData systemData;
 
@@ -68,7 +68,7 @@ public class ResourceTests {
         }
     }
 
-    private static class ResourceWithSystemData extends Resource {
+    private static final class ResourceWithSystemData extends Resource {
         @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
         private SystemData systemData;
 

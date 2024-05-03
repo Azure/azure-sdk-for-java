@@ -204,8 +204,8 @@ public class OpenTelemetryHttpPolicyTests {
                 new OpenTelemetryTracer("test", null, null,
                     new OpenTelemetryTracingOptions()
                         .setOpenTelemetry(OpenTelemetrySdk.builder().setTracerProvider(providerWithSampler).build())))
-                            .send(request)
-                            .block();
+                .send(request)
+                .block();
         }
         // Assert
         List<SpanData> exportedSpans = exporter.getFinishedSpanItems();
@@ -519,7 +519,7 @@ public class OpenTelemetryHttpPolicyTests {
         return arguments.stream();
     }
 
-    private static class SimpleMockHttpClient implements HttpClient {
+    private static final class SimpleMockHttpClient implements HttpClient {
 
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {

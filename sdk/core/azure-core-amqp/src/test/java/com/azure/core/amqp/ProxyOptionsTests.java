@@ -234,7 +234,8 @@ public class ProxyOptionsTests {
             new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, proxyConfiguration)
                 .put(ProxyOptions.PROXY_AUTHENTICATION_TYPE, AUTH_TYPE)
                 .put(ProxyOptions.PROXY_USERNAME, SOME_USERNAME)
-                .put(ProxyOptions.PROXY_PASSWORD, SOME_PASSWORD)).build();
+                .put(ProxyOptions.PROXY_PASSWORD, SOME_PASSWORD))
+            .build();
 
         ProxyOptions proxyConfig = ProxyOptions.fromConfiguration(configuration);
         if (expectSystemDefault) {
@@ -255,7 +256,8 @@ public class ProxyOptionsTests {
             new TestConfigurationSource().put(JAVA_NET_USE_SYSTEM_PROXIES, "true")
                 .put(ProxyOptions.PROXY_AUTHENTICATION_TYPE, AUTH_TYPE)
                 .put(ProxyOptions.PROXY_USERNAME, SOME_USERNAME)
-                .put(ProxyOptions.PROXY_PASSWORD, SOME_PASSWORD)).build();
+                .put(ProxyOptions.PROXY_PASSWORD, SOME_PASSWORD))
+            .build();
 
         ProxyOptions proxyConfig = ProxyOptions.fromConfiguration(configuration);
         assertIsSystemDefaultProxy(proxyConfig);
@@ -272,7 +274,8 @@ public class ProxyOptionsTests {
                 .put(Configuration.PROPERTY_HTTP_PROXY, PROXY_HOST)
                 .put(ProxyOptions.PROXY_AUTHENTICATION_TYPE, AUTH_TYPE)
                 .put(ProxyOptions.PROXY_USERNAME, SOME_USERNAME)
-                .put(ProxyOptions.PROXY_PASSWORD, SOME_PASSWORD)).build();
+                .put(ProxyOptions.PROXY_PASSWORD, SOME_PASSWORD))
+            .build();
 
         ProxyOptions proxyOptions = ProxyOptions.fromConfiguration(configuration);
         assertEquals(ProxyAuthenticationType.DIGEST, proxyOptions.getAuthentication());
@@ -296,7 +299,8 @@ public class ProxyOptionsTests {
                 .put(Configuration.PROPERTY_HTTP_PROXY, "localhost:4242")
                 .put(ProxyOptions.PROXY_AUTHENTICATION_TYPE, "BASIC")
                 .put(ProxyOptions.PROXY_USERNAME, SOME_USERNAME)
-                .put(ProxyOptions.PROXY_PASSWORD, SOME_PASSWORD)).build();
+                .put(ProxyOptions.PROXY_PASSWORD, SOME_PASSWORD))
+            .build();
 
         ProxyOptions proxyOptions = ProxyOptions.fromConfiguration(configuration);
         assertEquals(ProxyAuthenticationType.BASIC, proxyOptions.getAuthentication());
@@ -317,7 +321,8 @@ public class ProxyOptionsTests {
         Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
             new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, "invalid_proxy")
                 .put(Configuration.PROPERTY_HTTPS_PROXY, "https://localhost:80")
-                .put(JAVA_NET_USE_SYSTEM_PROXIES, "true")).build();
+                .put(JAVA_NET_USE_SYSTEM_PROXIES, "true"))
+            .build();
 
         ProxyOptions proxyConfig = ProxyOptions.fromConfiguration(configuration);
         assertNotNull(proxyConfig);

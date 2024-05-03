@@ -233,7 +233,7 @@ public class ReactorConnection implements AmqpConnection {
 
             final TokenManager tokenManager = new AzureTokenManagerProvider(connectionOptions.getAuthorizationType(),
                 connectionOptions.getFullyQualifiedNamespace(), connectionOptions.getAuthorizationScope())
-                    .getTokenManager(getClaimsBasedSecurityNode(), entityPath);
+                .getTokenManager(getClaimsBasedSecurityNode(), entityPath);
 
             return tokenManager.authorize().thenReturn(managementNodes.compute(entityPath, (key, current) -> {
                 if (current != null) {

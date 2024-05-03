@@ -464,7 +464,7 @@ public class RequestResponseChannelCacheTest {
                 when(receiveLinkHandler.getMessages()).thenReturn(Flux.never());
                 when(
                     handlerProvider.createSendLinkHandler(eq(connectionId), eq(fqdn), eq(chLinkName), eq(chEntityPath)))
-                        .thenReturn(sendLinkHandler);
+                    .thenReturn(sendLinkHandler);
 
                 final MessageSerializer serializer = mock(MessageSerializer.class);
                 final SenderSettleMode settleMode = SenderSettleMode.SETTLED;

@@ -149,7 +149,7 @@ class ReactorConnectionTest {
         when(reactor.selectable()).thenReturn(selectable);
         when(
             reactor.connectionToHost(FULLY_QUALIFIED_NAMESPACE, connectionHandler.getProtocolPort(), connectionHandler))
-                .thenReturn(connectionProtonJ);
+            .thenReturn(connectionProtonJ);
         when(reactor.attachments()).thenReturn(mock(Record.class));
 
         final Pipe pipe = Pipe.open();
@@ -159,7 +159,7 @@ class ReactorConnectionTest {
         when(reactorProvider.createReactor(CONNECTION_ID, connectionHandler.getMaxFrameSize())).thenReturn(reactor);
         when(reactorProvider.createExecutor(any(Reactor.class), anyString(), anyString(),
             any(ReactorConnection.ReactorExceptionHandler.class), any(AmqpRetryOptions.class)))
-                .then(answerByCreatingExecutor());
+            .then(answerByCreatingExecutor());
 
         when(reactorHandlerProvider.createConnectionHandler(CONNECTION_ID, connectionOptions))
             .thenReturn(connectionHandler);
@@ -838,7 +838,7 @@ class ReactorConnectionTest {
         when(sessionHandler.getEndpointStates()).thenReturn(sessionEndpoints.flux());
         when(reactorHandlerProvider.createSessionHandler(any(),
             argThat(path -> path.contains("mgmt") && path.contains(entityPath)), anyString(), any()))
-                .thenReturn(sessionHandler);
+            .thenReturn(sessionHandler);
 
         final SendLinkHandler linkHandler = new SendLinkHandler(CONNECTION_ID, FULLY_QUALIFIED_NAMESPACE, linkName,
             entityPath, AmqpMetricsProvider.noop());
@@ -847,7 +847,7 @@ class ReactorConnectionTest {
             argThat(path -> path.contains("management")))).thenReturn(linkHandler);
         when(reactorHandlerProvider.createSendLinkHandler(eq(CONNECTION_ID), eq(FULLY_QUALIFIED_NAMESPACE),
             argThat(path -> path.contains("cbs") && path.contains(entityPath)), argThat(path -> path.contains("cbs"))))
-                .thenReturn(linkHandler);
+            .thenReturn(linkHandler);
 
         final ReceiveLinkHandler receiveLinkHandler = new ReceiveLinkHandler(CONNECTION_ID, FULLY_QUALIFIED_NAMESPACE,
             linkName, entityPath, AmqpMetricsProvider.noop());
@@ -856,7 +856,7 @@ class ReactorConnectionTest {
             argThat(path -> path.contains("management")))).thenReturn(receiveLinkHandler);
         when(reactorHandlerProvider.createReceiveLinkHandler(eq(CONNECTION_ID), eq(FULLY_QUALIFIED_NAMESPACE),
             argThat(path -> path.contains("cbs") && path.contains(entityPath)), argThat(path -> path.contains("cbs"))))
-                .thenReturn(receiveLinkHandler);
+            .thenReturn(receiveLinkHandler);
 
         // Act and Assert
         StepVerifier.create(connection.getManagementNode(entityPath))

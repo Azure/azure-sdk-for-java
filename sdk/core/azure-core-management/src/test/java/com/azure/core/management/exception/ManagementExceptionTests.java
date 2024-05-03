@@ -79,7 +79,7 @@ public class ManagementExceptionTests {
     }
 
     @Immutable
-    private static class WebError extends ManagementError {
+    private static final class WebError extends ManagementError {
         @JsonProperty(value = "innererror", access = JsonProperty.Access.WRITE_ONLY)
         private String innererror;
 

@@ -104,7 +104,7 @@ public class MemberNameConverterImplTests {
         assertNull(memberNameConverter.convertMemberName(getNoAnnotationPrivate));
     }
 
-    private static class Foo {
+    private static final class Foo {
         @JsonProperty(value = "public-field-with-annotation-and-value")
         public String publicFieldWithAnnotationAndValue;
 

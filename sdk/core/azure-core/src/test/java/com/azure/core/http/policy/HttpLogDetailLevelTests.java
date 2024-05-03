@@ -92,6 +92,6 @@ public class HttpLogDetailLevelTests {
     private static Configuration makeConfiguration(String detailLevelValue) {
         return new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
             new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL, detailLevelValue))
-                .build();
+            .build();
     }
 }

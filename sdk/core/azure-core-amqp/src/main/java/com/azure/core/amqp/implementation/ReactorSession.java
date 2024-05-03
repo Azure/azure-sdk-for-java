@@ -238,8 +238,8 @@ public class ReactorSession implements AmqpSession {
         // Here we've to pass (DeliverySettleMode.SETTLE_ON_DELIVERY, false) as the values for those two parameters.
         return createConsumer(linkName, entityPath, timeout, retry, null, null, null, SenderSettleMode.UNSETTLED,
             ReceiverSettleMode.SECOND, new ConsumerFactory())
-                .or(onClosedError("Connection closed while waiting for new receive link.", entityPath, linkName))
-                .cast(AmqpLink.class);
+            .or(onClosedError("Connection closed while waiting for new receive link.", entityPath, linkName))
+            .cast(AmqpLink.class);
     }
 
     /**
@@ -319,8 +319,8 @@ public class ReactorSession implements AmqpSession {
                     return transactionCoordinator.get();
                 }
             })
-                .or(onClosedError("Connection closed while waiting for transaction coordinator creation.",
-                    NOT_APPLICABLE, NOT_APPLICABLE));
+            .or(onClosedError("Connection closed while waiting for transaction coordinator creation.", NOT_APPLICABLE,
+                NOT_APPLICABLE));
     }
 
     /**

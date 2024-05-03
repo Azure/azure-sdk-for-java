@@ -151,7 +151,8 @@ public class JdkHttpClientBuilderTests {
             new TestConfigurationSource()
                 .put(Configuration.PROPERTY_HTTP_PROXY,
                     "http://" + PROXY_USER_INFO + "localhost:" + PROXY_SERVER_HTTP_PORT)
-                .put("java.net.useSystemProxies", "true")).build();
+                .put("java.net.useSystemProxies", "true"))
+            .build();
 
         configurationProxyTest(configuration);
     }
@@ -193,7 +194,8 @@ public class JdkHttpClientBuilderTests {
 
         final Configuration envConfiguration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
             new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:8888")
-                .put(Configuration.PROPERTY_NO_PROXY, "localhost")).build();
+                .put(Configuration.PROPERTY_NO_PROXY, "localhost"))
+            .build();
 
         arguments.add(Arguments.of(envConfiguration));
 

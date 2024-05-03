@@ -92,7 +92,7 @@ public class JacksonAdapterTests {
         assertEquals("{\"\":\"test\"}", ADAPTER.serialize(map, SerializerEncoding.JSON));
     }
 
-    private static class MapHolder {
+    private static final class MapHolder {
 
         @JsonInclude(content = JsonInclude.Include.ALWAYS)
         private Map<String, String> map = new HashMap<>();
@@ -108,7 +108,7 @@ public class JacksonAdapterTests {
     }
 
     @JacksonXmlRootElement(localName = "XmlString")
-    private static class XmlString {
+    private static final class XmlString {
 
         @JsonProperty("Value")
         private String value;
@@ -185,7 +185,7 @@ public class JacksonAdapterTests {
     }
 
     @JacksonXmlRootElement(localName = "Wrapper")
-    private static class DateTimeWrapper {
+    private static final class DateTimeWrapper {
         @JsonProperty(value = "OffsetDateTime", required = true)
         private OffsetDateTime offsetDateTime;
 

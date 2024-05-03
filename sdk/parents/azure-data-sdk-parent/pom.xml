@@ -80,7 +80,7 @@
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
             <artifactId>checkstyle</artifactId>
-            <version>9.3</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
+            <version>9.3</version> <!-- {x-version-update;dataplane_com.puppycrawl.tools:checkstyle;external_dependency} -->
           </dependency>
         </dependencies>
         <configuration>
@@ -88,7 +88,7 @@
           <suppressionsLocation>checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
           <headerLocation>checkstyle/java.header</headerLocation>
           <propertyExpansion>samedir=</propertyExpansion>
-          <encoding>UTF-8</encoding>
+          <outputEncoding>UTF-8</outputEncoding>
           <consoleOutput>true</consoleOutput>
           <includeTestSourceDirectory>true</includeTestSourceDirectory>
           <linkXRef>true</linkXRef>
@@ -349,7 +349,7 @@
           <suppressionsLocation>checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
           <headerLocation>checkstyle/java.header</headerLocation>
           <propertyExpansion>samedir=</propertyExpansion>
-          <encoding>UTF-8</encoding>
+          <outputEncoding>UTF-8</outputEncoding>
           <consoleOutput>true</consoleOutput>
           <includeTestSourceDirectory>true</includeTestSourceDirectory>
           <linkXRef>true</linkXRef>
