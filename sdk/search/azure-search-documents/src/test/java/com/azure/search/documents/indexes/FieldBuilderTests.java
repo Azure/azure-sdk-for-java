@@ -25,6 +25,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -126,7 +127,7 @@ public class FieldBuilderTests {
     public void supportedFields() {
         List<SearchField> fields = SearchIndexClient.buildSearchFields(AllSupportedFields.class, null);
 
-        assertEquals(23, fields.size());
+        assertEquals(25, fields.size());
 
         Map<String, SearchFieldDataType> fieldToDataType = fields.stream()
             .collect(Collectors.toMap(SearchField::getName, SearchField::getType));
@@ -154,6 +155,9 @@ public class FieldBuilderTests {
         assertEquals(SearchFieldDataType.INT16, fieldToDataType.get("primitiveShort"));
         assertEquals(SearchFieldDataType.SBYTE, fieldToDataType.get("nullableByte"));
         assertEquals(SearchFieldDataType.SBYTE, fieldToDataType.get("primitiveByte"));
+        assertEquals(SearchFieldDataType.collection(SearchFieldDataType.SBYTE), fieldToDataType.get("byteArray"));
+        assertEquals(SearchFieldDataType.collection(SearchFieldDataType.SBYTE), fieldToDataType.get("byteList"));
+
     }
 
     @SuppressWarnings({"unused", "UseOfObsoleteDateTimeApi"})
@@ -295,6 +299,18 @@ public class FieldBuilderTests {
         private Byte nullableByte;
         public Byte getNullableByte() {
             return nullableByte;
+        }
+
+        // 24. name = 'byteArray', OData type = COMPLEX
+        private byte[] byteArray;
+        public byte[] getByteArray() {
+            return byteArray;
+        }
+
+        // 25. name = 'byteList', OData type = COMPLEX
+        private List<Byte> byteList;
+        public List<Byte> getByteList() {
+            return byteList;
         }
     }
     @Test
