@@ -100,7 +100,7 @@ public class StreamingAsyncTest extends AssistantsClientTestBase {
             .assertNext(threadMessage -> validateThreadMessage(threadMessage, threadId))
             .verifyComplete();
 
-        StepVerifier.create(client.createRunStream(mathTutorAssistantId, threadId))
+        StepVerifier.create(client.createRunStream(threadId, mathTutorAssistantId))
             .thenConsumeWhile(streamUpdate -> {
                 String streamUpdateJson = BinaryData.fromObject(streamUpdate).toString();
                 assertTrue(streamUpdateJson != null && !streamUpdateJson.isEmpty() && !streamUpdateJson.isBlank());

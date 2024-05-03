@@ -2361,7 +2361,19 @@ public final class AssistantsAsyncClient {
             .map(protocolMethodData -> protocolMethodData.toObject(ThreadRun.class));
     }
 
-    // TODO add documentation
+    /**
+     * Creates a new assistant thread and immediately starts a run using that new thread. Updates are returned as a stream.
+     *
+     * @param createAndRunThreadOptions The details used when creating and immediately running a new assistant thread.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data representing a single evaluation run of an assistant thread on successful completion of
+     * {@link Flux}.
+     */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<StreamUpdate> createThreadAndRunStream(CreateAndRunThreadOptions createAndRunThreadOptions) {
         RequestOptions requestOptions = new RequestOptions();
@@ -3001,9 +3013,22 @@ public final class AssistantsAsyncClient {
         return createRun(thread.getId(), new CreateRunOptions(assistant.getId()));
     }
 
-    // TODO docs
+    /**
+     * Creates a new run for an assistant thread returning a stream of updates.
+     *
+     * @param threadId The ID of the thread to run
+     * @param assistantId The ID of the assistant that will run the thread.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data representing a single evaluation run of an assistant thread on successful completion of
+     * {@link Mono}.
+     */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Flux<StreamUpdate> createRunStream(String assistantId, String threadId) {
+    public Flux<StreamUpdate> createRunStream(String threadId, String assistantId) {
         RequestOptions requestOptions = new RequestOptions();
         Flux<ByteBuffer> responseStream = createRunWithResponse(threadId, BinaryData.fromObject(new CreateRunOptions(assistantId).setStream(true)),
             requestOptions).flatMapMany(it -> it.getValue().toFluxByteBuffer());
@@ -3012,7 +3037,20 @@ public final class AssistantsAsyncClient {
         return openAIServerSentEvents.getEvents();
     }
 
-    // TODO docs
+    /**
+     * Creates a new run for an assistant thread returning a stream of updates.
+     *
+     * @param threadId The ID of the thread to run.
+     * @param createRunOptions The details for the run to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data representing a single evaluation run of an assistant thread on successful completion of
+     * {@link Flux}.
+     */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<StreamUpdate> createRunStream(String threadId, CreateRunOptions createRunOptions) {
         RequestOptions requestOptions = new RequestOptions();

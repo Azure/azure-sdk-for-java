@@ -46,7 +46,6 @@ public final class StreamTypeFactory {
     public StreamUpdate deserializeEvent(String eventName, BinaryData eventJson) throws IllegalArgumentException {
         AssistantStreamEvent event = AssistantStreamEvent.fromString(eventName);
 
-        // TODO add all available enums to the decision tree
         if (THREAD_CREATED.equals(event)) {
             return new StreamThreadCreation(eventJson.toObject(AssistantThread.class));
         } else if  (THREAD_RUN_CREATED.equals(event) ||  THREAD_RUN_QUEUED.equals(event) ||

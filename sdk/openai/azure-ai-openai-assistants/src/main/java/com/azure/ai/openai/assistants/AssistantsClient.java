@@ -2321,7 +2321,18 @@ public final class AssistantsClient {
             .toObject(ThreadRun.class);
     }
 
-    // TODO add documentation
+    /**
+     * Creates a new assistant thread and immediately starts a run using that new thread. Updates are returned as a stream.
+     *
+     * @param createAndRunThreadOptions The details used when creating and immediately running a new assistant thread.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data representing a single evaluation run of an assistant thread.
+     */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public IterableStream<StreamUpdate> createThreadAndRunStream(CreateAndRunThreadOptions createAndRunThreadOptions) {
         RequestOptions requestOptions = new RequestOptions();
@@ -2333,30 +2344,6 @@ public final class AssistantsClient {
         OpenAIServerSentEvents eventStream = new OpenAIServerSentEvents(responseStream);
         return new IterableStream<>(eventStream.getEvents());
 
-    }
-
-    // TODO add documentation
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public IterableStream<StreamUpdate> createRunStream(String threadId, CreateRunOptions createRunOptions) {
-        RequestOptions requestOptions = new RequestOptions();
-        createRunOptions.setStream(true);
-
-        Flux<ByteBuffer> responseStream = createRunWithResponse(threadId, BinaryData.fromObject(createRunOptions), requestOptions)
-            .getValue().toFluxByteBuffer();
-
-        OpenAIServerSentEvents eventStream = new OpenAIServerSentEvents(responseStream);
-        return new IterableStream<>(eventStream.getEvents());
-    }
-
-    // TODO add documentation
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public IterableStream<StreamUpdate> createRunStream(String threadId, String assistantId) {
-        RequestOptions requestOptions = new RequestOptions();
-        Flux<ByteBuffer> responseStream = createRunWithResponse(threadId, BinaryData.fromObject(new CreateRunOptions(assistantId).setStream(true)),
-            requestOptions).getValue().toFluxByteBuffer();
-
-        OpenAIServerSentEvents eventStream = new OpenAIServerSentEvents(responseStream);
-        return new IterableStream<>(eventStream.getEvents());
     }
 
     /**
@@ -2969,6 +2956,54 @@ public final class AssistantsClient {
         RequestOptions requestOptions = new RequestOptions();
         return createRunWithResponse(thread.getId(), BinaryData.fromObject(new CreateRunOptions(assistant.getId())),
             requestOptions).getValue().toObject(ThreadRun.class);
+    }
+
+    /**
+     * Creates a new run for an assistant thread returning a stream of updates.
+     *
+     * @param threadId The ID of the thread to run.
+     * @param createRunOptions The details for the run to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data representing a single evaluation run of an assistant thread.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public IterableStream<StreamUpdate> createRunStream(String threadId, CreateRunOptions createRunOptions) {
+        RequestOptions requestOptions = new RequestOptions();
+        createRunOptions.setStream(true);
+
+        Flux<ByteBuffer> responseStream = createRunWithResponse(threadId, BinaryData.fromObject(createRunOptions), requestOptions)
+            .getValue().toFluxByteBuffer();
+
+        OpenAIServerSentEvents eventStream = new OpenAIServerSentEvents(responseStream);
+        return new IterableStream<>(eventStream.getEvents());
+    }
+
+    /**
+     * Creates a new run for an assistant thread returning a stream of updates.
+     *
+     * @param threadId The thread to run.
+     * @param assistantId The assistant that will run the thread.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data representing a single evaluation run of an assistant thread.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public IterableStream<StreamUpdate> createRunStream(String threadId, String assistantId) {
+        RequestOptions requestOptions = new RequestOptions();
+        Flux<ByteBuffer> responseStream = createRunWithResponse(threadId, BinaryData.fromObject(new CreateRunOptions(assistantId).setStream(true)),
+            requestOptions).getValue().toFluxByteBuffer();
+
+        OpenAIServerSentEvents eventStream = new OpenAIServerSentEvents(responseStream);
+        return new IterableStream<>(eventStream.getEvents());
     }
 
     /**
