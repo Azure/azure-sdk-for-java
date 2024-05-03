@@ -303,7 +303,7 @@ public class GlobalEndpointManager implements AutoCloseable {
                                     this::getDatabaseAccountAsync);
 
                             return databaseAccountObs.flatMap(dbAccount -> {
-                                logger.info("db account retrieved {}", databaseAccountObs);
+                                logger.info("db account retrieved {}", dbAccount);
                                 this.refreshInBackground.set(false);
                                 return this.refreshLocationPrivateAsync(dbAccount);
                             });
