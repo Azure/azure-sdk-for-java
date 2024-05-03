@@ -1101,6 +1101,7 @@ public final class TableClient {
             .setSelect(select)
             .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
 
+
         final ResponseBase<TablesQueryEntitiesHeaders, TableEntityQueryResponse> response =
             tablesImplementation.getTables().queryEntitiesWithResponse(tableName, null, null,
             nextPartitionKey, nextRowKey, queryOptions, contextValue);

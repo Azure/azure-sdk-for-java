@@ -30,6 +30,8 @@ import com.azure.data.tables.sas.TableSasPermission;
 import com.azure.data.tables.sas.TableSasProtocol;
 import com.azure.data.tables.sas.TableSasSignatureValues;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.DefaultAzureCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
@@ -67,8 +69,9 @@ public class TableAsyncClientTest extends TableClientTestBase {
 
     protected void beforeTest() {
         final String tableName = testResourceNamer.randomName("tableName", 20);
-        final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
-        tableClient = getClientBuilder(tableName, connectionString).buildAsyncClient();
+        final String endpoint = TestUtils.getEndpoint(interceptorManager.isPlaybackMode());
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+        tableClient = getClientBuilder(tableName, endpoint, credential, true).buildAsyncClient();
 
         tableClient.createTable().block(DEFAULT_TIMEOUT);
     }
@@ -77,8 +80,9 @@ public class TableAsyncClientTest extends TableClientTestBase {
     public void createTable() {
         // Arrange
         final String tableName2 = testResourceNamer.randomName("tableName", 20);
-        final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
-        final TableAsyncClient tableClient2 = getClientBuilder(tableName2, connectionString).buildAsyncClient();
+        final String endpoint = TestUtils.getEndpoint(interceptorManager.isPlaybackMode());
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+        final TableAsyncClient tableClient2 = getClientBuilder(tableName2, endpoint, credential, true).buildAsyncClient();
 
         // Act & Assert
         StepVerifier.create(tableClient2.createTable())
@@ -139,8 +143,9 @@ public class TableAsyncClientTest extends TableClientTestBase {
     public void createTableWithResponse() {
         // Arrange
         final String tableName2 = testResourceNamer.randomName("tableName", 20);
-        final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
-        final TableAsyncClient tableClient2 = getClientBuilder(tableName2, connectionString).buildAsyncClient();
+        final String endpoint = TestUtils.getEndpoint(interceptorManager.isPlaybackMode());
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+        final TableAsyncClient tableClient2 = getClientBuilder(tableName2, endpoint, credential, true).buildAsyncClient();
         final int expectedStatusCode = 204;
 
         // Act & Assert

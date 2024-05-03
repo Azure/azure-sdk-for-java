@@ -43,9 +43,12 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -630,4 +633,54 @@ public final class TableUtils {
             }
         }
     }
+
+
+    public static Map<String, Object> adjustOdataPropertyMap(Map<String, Object> propertyMap) {
+        Map<String, Object> adjustedMap = new HashMap<>(propertyMap);
+
+        for (String key : propertyMap.keySet()) {
+            if (!key.endsWith("@odata.type")) {
+                Object convertedOdataObject = adjustedMap.computeIfPresent(key.concat("@odata.type"), (k, v) -> {
+                    String odataType = (String) v;
+                    if (odataType.equals("Edm.Binary")) {
+                        if (!(adjustedMap.get(key) instanceof byte[])) {
+                            byte[] bytes = java.util.Base64.getDecoder().decode(((String) adjustedMap.get(key)).getBytes());
+                            return bytes;
+                        }
+                    } else if (odataType.equals("Edm.DateTime")) {
+                        if (!(adjustedMap.get(key) instanceof OffsetDateTime)) {
+                            return OffsetDateTime.parse((String) adjustedMap.get(key));
+                        }
+                    } else if (odataType.equals("Edm.Guid")) {
+                        if (!(adjustedMap.get(key) instanceof UUID)) {
+                            return UUID.fromString((String) adjustedMap.get(key));
+                        }
+                    } else if (odataType.equals("Edm.Int32")) {
+                        if (!(adjustedMap.get(key) instanceof Integer)) {
+                            return Integer.parseInt((String) adjustedMap.get(key));
+                        }
+                    } else if (odataType.equals("Edm.Int64")) {
+                        if (!(adjustedMap.get(key) instanceof Long)) {
+                            return Long.parseLong((String) adjustedMap.get(key));
+                        }
+                    } else if (odataType.equals("Edm.Double")) {
+                        if (!(adjustedMap.get(key) instanceof Double)) {
+                            return Double.parseDouble((String) adjustedMap.get(key));
+                        }
+                    } else if (odataType.equals("Edm.Boolean")) {
+                        if (!(adjustedMap.get(key) instanceof Boolean)) {
+                            return Boolean.parseBoolean((String) adjustedMap.get(key));
+                        }
+                    }
+                    return null;
+                });
+                if (convertedOdataObject != null) {
+                    adjustedMap.put(key, convertedOdataObject);
+                }
+            }
+        }
+
+        return adjustedMap;
+    }
+
 }

@@ -15,6 +15,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.TestResourceNamer;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableAccessPolicies;
@@ -32,8 +33,12 @@ import com.azure.data.tables.sas.TableSasIpRange;
 import com.azure.data.tables.sas.TableSasPermission;
 import com.azure.data.tables.sas.TableSasProtocol;
 import com.azure.data.tables.sas.TableSasSignatureValues;
+import com.azure.identity.AzureCliCredential;
+import com.azure.identity.AzureCliCredentialBuilder;
 import com.azure.identity.ClientSecretCredentialBuilder;
 
+import com.azure.identity.DefaultAzureCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
@@ -71,8 +76,9 @@ public class TableClientTest extends TableClientTestBase {
 
     protected void beforeTest() {
         final String tableName = testResourceNamer.randomName("tableName", 20);
-        final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
-        tableClient = getClientBuilder(tableName, connectionString).buildClient();
+        final String endpoint = "https://tb914c4cd1614894eprim.table.core.windows.net";
+        AzureCliCredential credential = new AzureCliCredentialBuilder().build();
+        tableClient = getClientBuilder(tableName, endpoint, credential, true).buildClient();
         tableClient.createTable();
     }
 
@@ -84,8 +90,9 @@ public class TableClientTest extends TableClientTestBase {
     public void createTable() {
         // Arrange
         final String tableName2 = testResourceNamer.randomName("tableName", 20);
-        final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
-        final TableClient tableClient2 = getClientBuilder(tableName2, connectionString).buildClient();
+        final String endpoint = TestUtils.getEndpoint(interceptorManager.isPlaybackMode());
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+        final TableClient tableClient2 = getClientBuilder(tableName2, endpoint, credential, true).buildClient();
 
         // Act & Assert
         assertNotNull(tableClient2.createTable());
@@ -138,8 +145,9 @@ public class TableClientTest extends TableClientTestBase {
     public void createTableWithResponse() {
         // Arrange
         final String tableName2 = testResourceNamer.randomName("tableName", 20);
-        final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
-        final TableClient tableClient2 = getClientBuilder(tableName2, connectionString).buildClient();
+        final String endpoint = TestUtils.getEndpoint(interceptorManager.isPlaybackMode());
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();;
+        final TableClient tableClient2 = getClientBuilder(tableName2, endpoint, credential, true).buildClient();
         final int expectedStatusCode = 204;
 
         // Act & Assert
@@ -955,6 +963,100 @@ public class TableClientTest extends TableClientTestBase {
         // Fail if exception was not thrown.
         fail();
     }
+
+    /**
+     * Create an entity with a property for each supported type and verify that getProperty returns the correct type for each.
+     */
+    @Test
+    public void createEntityWithAllSupportedTypes() {
+        // Arrange
+        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+        final byte[] bytes = new byte[]{4, 5, 6};
+        final boolean b = true;
+        final OffsetDateTime dateTime = OffsetDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+        final double d = 1.23D;
+        final UUID uuid = UUID.fromString("11111111-2222-3333-4444-555555555555");
+        final int i = 123;
+        final long l = 123L;
+        final String s = "Test";
+
+        final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue)
+            .addProperty("byteField", bytes)
+            .addProperty("booleanField", b)
+            .addProperty("dateTimeField", dateTime)
+            .addProperty("doubleField", d)
+            .addProperty("uuidField", uuid)
+            .addProperty("intField", i)
+            .addProperty("longField", l)
+            .addProperty("stringField", s);
+
+        // Act
+        tableClient.createEntity(tableEntity);
+
+        // Assert
+        final TableEntity retrievedEntity = tableClient.getEntity(partitionKeyValue, rowKeyValue);
+
+        Assertions.assertArrayEquals(bytes, (byte[]) retrievedEntity.getProperties().get("byteField"));
+        assertEquals(b, (boolean) retrievedEntity.getProperties().get("booleanField"));
+        assertTrue(dateTime.isEqual((OffsetDateTime) retrievedEntity.getProperties().get("dateTimeField")));
+        assertEquals(d, (double) retrievedEntity.getProperties().get("doubleField"));
+        assertEquals(0, uuid.compareTo((UUID) retrievedEntity.getProperties().get("uuidField")));
+        assertEquals(i, (int) retrievedEntity.getProperties().get("intField"));
+        assertEquals(l, (long) retrievedEntity.getProperties().get("longField"));
+        assertEquals(s, (String) retrievedEntity.getProperties().get("stringField"));
+    }
+
+    /**
+     * Create an entity with a property for each supported type, retrieve the entity using listEntities, and verify that getProperty returns the correct type for each.
+     */
+    @Test
+    public void listEntitiesWithAllSupportedTypes() {
+        // Arrange
+        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+        final BinaryData binaryData = BinaryData.fromString("This is string bytes.");
+        final byte[] bytes = new byte[]{4, 5, 6, 7};
+        final boolean b = true;
+        final OffsetDateTime dateTime = OffsetDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+        final double d = 1.23D;
+        final UUID uuid = UUID.fromString("11111111-2222-3333-4444-555555555555");
+        final int i = 123;
+        final long l = 123L;
+        final String s = "Test";
+
+        final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue)
+            .addProperty("binaryField", binaryData.toBytes())
+            .addProperty("byteField", bytes)
+            .addProperty("booleanField", b)
+            .addProperty("dateTimeField", dateTime)
+            .addProperty("doubleField", d)
+            .addProperty("uuidField", uuid)
+            .addProperty("intField", i)
+            .addProperty("longField", l)
+            .addProperty("stringField", s);
+
+        tableClient.createEntity(tableEntity);
+
+        // Act
+        final Iterator<PagedResponse<TableEntity>> iterator = tableClient.listEntities().iterableByPage().iterator();
+        assertTrue(iterator.hasNext());
+
+        final TableEntity retrievedEntity = iterator.next().getValue().get(0);
+
+        // Assert
+        //assertEquals(binaryData, (BinaryData) retrievedEntity.getProperties().get("binaryField"));
+
+        Assertions.assertArrayEquals(bytes, (byte[]) retrievedEntity.getProperties().get("byteField"));
+        assertEquals(b, (boolean) retrievedEntity.getProperties().get("booleanField"));
+        assertTrue(dateTime.isEqual((OffsetDateTime) retrievedEntity.getProperties().get("dateTimeField")));
+        assertEquals(d, (double) retrievedEntity.getProperties().get("doubleField"));
+        assertEquals(0, uuid.compareTo((UUID) retrievedEntity.getProperties().get("uuidField")));
+        assertEquals(i, (int) retrievedEntity.getProperties().get("intField"));
+        assertEquals(l, (long) retrievedEntity.getProperties().get("longField"));
+        assertEquals(s, (String) retrievedEntity.getProperties().get("stringField"));
+    }
+
 
     @Test
     public void generateSasTokenWithMinimumParameters() {

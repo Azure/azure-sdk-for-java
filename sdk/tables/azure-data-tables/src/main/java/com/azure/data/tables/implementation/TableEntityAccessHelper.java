@@ -50,7 +50,7 @@ public final class TableEntityAccessHelper {
             }
         }
 
-        return creator.get().setProperties(properties);
+        return creator.get().setProperties(TableUtils.adjustOdataPropertyMap(properties));
     }
 
     private TableEntityAccessHelper() {
