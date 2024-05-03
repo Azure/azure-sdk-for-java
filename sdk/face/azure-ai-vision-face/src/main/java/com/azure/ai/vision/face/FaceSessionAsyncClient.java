@@ -5,7 +5,9 @@ package com.azure.ai.vision.face;
 
 import com.azure.ai.vision.face.implementation.FaceSessionClientImpl;
 import com.azure.ai.vision.face.implementation.MultipartFormDataHelper;
+import com.azure.ai.vision.face.implementation.models.CreateLivenessSessionContentForMultipart;
 import com.azure.ai.vision.face.implementation.models.CreateLivenessWithVerifySessionContent;
+import com.azure.ai.vision.face.implementation.models.VerifyImageFileDetails;
 import com.azure.ai.vision.face.models.CreateLivenessSessionContent;
 import com.azure.ai.vision.face.models.CreateLivenessSessionResult;
 import com.azure.ai.vision.face.models.CreateLivenessWithVerifySessionResult;
@@ -1134,4 +1136,59 @@ public final class FaceSessionAsyncClient {
     private static final TypeReference<List<LivenessSessionAuditEntry>> TYPE_REFERENCE_LIST_LIVENESS_SESSION_AUDIT_ENTRY
         = new TypeReference<List<LivenessSessionAuditEntry>>() {
         };
+
+    /**
+     * Create a new liveness session with verify. Client device submits VerifyImage during the
+     * /detectLivenessWithVerify/singleModal call.
+     *
+     * A session is best for client device scenarios where developers want to authorize a client device to perform only
+     * a liveness detection without granting full access to their resource. Created sessions have a limited life span
+     * and only authorize clients to perform the desired action before access is expired.
+     *
+     * Permissions includes...
+     * &gt;
+     * *
+     * * Ability to call /detectLivenessWithVerify/singleModal for up to 3 retries.
+     * * A token lifetime of 10 minutes.
+     *
+     * &gt; [!NOTE]
+     * &gt;
+     * &gt; *
+     * &gt; * Client access can be revoked by deleting the session using the Delete Liveness With Verify Session
+     * operation.
+     * &gt; * To retrieve a result, use the Get Liveness With Verify Session.
+     * &gt; * To audit the individual requests that a client has made to your resource, use the List Liveness With
+     * Verify Session Audit Entries.
+     *
+     * Alternative Option: Client device submits VerifyImage during the /detectLivenessWithVerify/singleModal call.
+     * &gt; [!NOTE]
+     * &gt; Extra measures should be taken to validate that the client is sending the expected VerifyImage.
+     *
+     * @param createLivenessSessionParameters Request for creating liveness session.
+     * @param verifyImage the content value of the verify image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of liveness session with verify creation with verify image provided on successful completion of
+     * {@link Mono}.
+     */
+    public Mono<CreateLivenessWithVerifySessionResult> createLivenessWithVerifySession(
+        CreateLivenessSessionContent createLivenessSessionParameters, BinaryData verifyImage) {
+        if (verifyImage == null) {
+            return createLivenessWithVerifySession(createLivenessSessionParameters);
+        }
+        CreateLivenessSessionContentForMultipart sessionParameters
+            = new CreateLivenessSessionContentForMultipart(createLivenessSessionParameters.getLivenessOperationMode())
+                .setDeviceCorrelationId(createLivenessSessionParameters.getDeviceCorrelationId())
+                .setDeviceCorrelationIdSetInClient(createLivenessSessionParameters.isDeviceCorrelationIdSetInClient())
+                .setAuthTokenTimeToLiveInSeconds(createLivenessSessionParameters.getAuthTokenTimeToLiveInSeconds())
+                .setSendResultsToClient(createLivenessSessionParameters.isSendResultsToClient());
+        VerifyImageFileDetails verifyImageFileDetails = new VerifyImageFileDetails(verifyImage);
+        CreateLivenessWithVerifySessionContent realParameters
+            = new CreateLivenessWithVerifySessionContent(sessionParameters, verifyImageFileDetails);
+        return this.createLivenessWithVerifySessionWithVerifyImage(realParameters);
+    }
 }
