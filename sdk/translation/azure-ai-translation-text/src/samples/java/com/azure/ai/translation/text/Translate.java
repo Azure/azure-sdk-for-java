@@ -12,6 +12,7 @@ import com.azure.ai.translation.text.models.ProfanityMarker;
 import com.azure.ai.translation.text.models.TextType;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
 import com.azure.ai.translation.text.models.TranslationText;
+import com.azure.ai.translation.text.options.TranslateOptions;
 
 /**
  * Translate text from known source language to target language.
@@ -34,13 +35,11 @@ public class Translate {
                 .buildClient();
 
         // BEGIN: getTextTranslationMultiple
-        String from = "en";
-        List<String> targetLanguages = new ArrayList<>();
-        targetLanguages.add("cs");
-        List<InputTextItem> content = new ArrayList<>();
-        content.add(new InputTextItem("This is a test."));
+        TranslateOptions translateOptions = new TranslateOptions()
+            .setSourceLanguage("en")
+            .addTargetLanguage("es");
 
-        List<TranslatedTextItem> translations = client.translate(targetLanguages, content, null, from, TextType.PLAIN, null, ProfanityAction.NO_ACTION, ProfanityMarker.ASTERISK, false, false, null, null, null, false);
+        List<TranslatedTextItem> translations = client.translate("This is a test.", translateOptions);
 
         for (TranslatedTextItem translation : translations) {
             for (TranslationText textTranslation : translation.getTranslations()) {

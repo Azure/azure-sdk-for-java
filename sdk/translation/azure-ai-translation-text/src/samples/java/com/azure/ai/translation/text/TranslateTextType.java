@@ -12,6 +12,7 @@ import com.azure.ai.translation.text.models.ProfanityMarker;
 import com.azure.ai.translation.text.models.TextType;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
 import com.azure.ai.translation.text.models.TranslationText;
+import com.azure.ai.translation.text.options.TranslateOptions;
 
 /**
  * You can select whether the translated text is plain text or HTML text. Any HTML needs to be a well-formed,
@@ -34,14 +35,12 @@ public class TranslateTextType {
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
 
-        TextType textType = TextType.HTML;
-        String from = "en";
-        List<String> targetLanguages = new ArrayList<>();
-        targetLanguages.add("cs");
-        List<InputTextItem> content = new ArrayList<>();
-        content.add(new InputTextItem("<html><body>This <b>is</b> a test.</body></html>"));
+        TranslateOptions translateOptions = new TranslateOptions()
+            .addTargetLanguage("en")
+            .setSourceLanguage("cs")
+            .setTextType(TextType.HTML);
 
-        List<TranslatedTextItem> translations = client.translate(targetLanguages, content, null, from, textType, null, ProfanityAction.NO_ACTION, ProfanityMarker.ASTERISK, false, false, null, null, null, false);
+        List<TranslatedTextItem> translations = client.translate("<html><body>This <b>is</b> a test.</body></html>", translateOptions);
 
         for (TranslatedTextItem translation : translations) {
             for (TranslationText textTranslation : translation.getTranslations()) {

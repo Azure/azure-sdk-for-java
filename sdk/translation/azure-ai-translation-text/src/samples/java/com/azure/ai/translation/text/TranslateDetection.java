@@ -38,12 +38,7 @@ public class TranslateDetection {
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
 
-        List<String> targetLanguages = new ArrayList<>();
-        targetLanguages.add("cs");
-        List<InputTextItem> content = new ArrayList<>();
-        content.add(new InputTextItem("This is a test."));
-
-        List<TranslatedTextItem> translations = client.translate(targetLanguages, content);
+        List<TranslatedTextItem> translations = client.translate("cs", "This is a test.");
 
         for (TranslatedTextItem translation : translations) {
             if (translation.getDetectedLanguage() != null) {

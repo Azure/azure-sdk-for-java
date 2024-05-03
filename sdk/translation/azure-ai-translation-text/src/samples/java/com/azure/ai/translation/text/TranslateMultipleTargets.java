@@ -12,6 +12,7 @@ import com.azure.ai.translation.text.models.ProfanityMarker;
 import com.azure.ai.translation.text.models.TextType;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
 import com.azure.ai.translation.text.models.TranslationText;
+import com.azure.ai.translation.text.options.TranslateOptions;
 
 /**
  * You can provide multiple target languages which results to each input element be translated to
@@ -34,15 +35,13 @@ public class TranslateMultipleTargets {
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
 
-        String from = "en";
-        List<String> targetLanguages = new ArrayList<>();
-        targetLanguages.add("cs");
-        targetLanguages.add("es");
-        targetLanguages.add("de");
-        List<InputTextItem> content = new ArrayList<>();
-        content.add(new InputTextItem("This is a test."));
+        TranslateOptions translateOptions = new TranslateOptions()
+            .setSourceLanguage("en")
+            .addTargetLanguage("cs")
+            .addTargetLanguage("es")
+            .addTargetLanguage("de");
 
-        List<TranslatedTextItem> translations = client.translate(targetLanguages, content, null, from, TextType.PLAIN, null, ProfanityAction.NO_ACTION, ProfanityMarker.ASTERISK, false, false, null, null, null, false);
+        List<TranslatedTextItem> translations = client.translate("This is a test.", translateOptions);
 
         for (TranslatedTextItem translation : translations) {
             for (TranslationText textTranslation : translation.getTranslations()) {

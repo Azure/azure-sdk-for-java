@@ -16,10 +16,7 @@ public class BreakSentenceTests extends TextTranslationClientBase {
 
     @Test
     public void breakSentenceWithAutoDetect() {
-        ArrayList<InputTextItem> content = new ArrayList<>();
-        content.add(new InputTextItem("hello world"));
-
-        List<BreakSentenceItem> response = getTranslationClient().findSentenceBoundaries(content);
+        List<BreakSentenceItem> response = getTranslationClient().findSentenceBoundaries("hello world");
         assertEquals("en", response.get(0).getDetectedLanguage().getLanguage());
         assertEquals(0.98, response.get(0).getDetectedLanguage().getConfidence());
         assertEquals(11, response.get(0).getLengthsOfSentences().get(0));
@@ -27,8 +24,7 @@ public class BreakSentenceTests extends TextTranslationClientBase {
 
     @Test
     public void breakSentenceWithLanguage() {
-        ArrayList<InputTextItem> content = new ArrayList<>();
-        content.add(new InputTextItem("Mi familia es muy muy bonita. no padre .mi madre es bonita y muy bajo . mi hermano es alto. Me gusta mi familia."));
+        String content = "Mi familia es muy muy bonita. no padre .mi madre es bonita y muy bajo . mi hermano es alto. Me gusta mi familia.";
 
         List<BreakSentenceItem> response = getTranslationClient().findSentenceBoundaries(content, null, "es", null);
         int[] expectedLengths = new int[]{ 30, 42, 20, 20 };
@@ -39,18 +35,15 @@ public class BreakSentenceTests extends TextTranslationClientBase {
 
     @Test
     public void breakSentenceWithLanguageAndScript() {
-        ArrayList<InputTextItem> content = new ArrayList<>();
-        content.add(new InputTextItem("zhè shì gè cè shì。"));
-
-        List<BreakSentenceItem> response = getTranslationClient().findSentenceBoundaries(content, null, "zh-Hans", "Latn");
+        List<BreakSentenceItem> response = getTranslationClient().findSentenceBoundaries("zhè shì gè cè shì。", null, "zh-Hans", "Latn");
         assertEquals(18, response.get(0).getLengthsOfSentences().get(0));
     }
 
     @Test
     public void breakSentenceWithMultipleLanguages() {
-        ArrayList<InputTextItem> content = new ArrayList<>();
-        content.add(new InputTextItem("hello world"));
-        content.add(new InputTextItem("العالم هو مكان مثير جدا للاهتمام"));
+        ArrayList<String> content = new ArrayList<>();
+        content.add("hello world");
+        content.add("العالم هو مكان مثير جدا للاهتمام");
 
         List<BreakSentenceItem> response = getTranslationClient().findSentenceBoundaries(content);
         assertEquals("en", response.get(0).getDetectedLanguage().getLanguage());

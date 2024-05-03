@@ -12,6 +12,7 @@ import com.azure.ai.translation.text.models.ProfanityMarker;
 import com.azure.ai.translation.text.models.TextType;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
 import com.azure.ai.translation.text.models.TranslationText;
+import com.azure.ai.translation.text.options.TranslateOptions;
 
 /**
  * Translate text from known source language to target language.
@@ -33,15 +34,13 @@ public class TranslateWithTransliteration {
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
 
-        String fromScript = "Latn";
-        String fromLanguage = "ar";
-        String toScript = "Latn";
-        List<String> targetLanguages = new ArrayList<>();
-        targetLanguages.add("zh-Hans");
-        List<InputTextItem> content = new ArrayList<>();
-        content.add(new InputTextItem("hudha akhtabar."));
+        TranslateOptions translateOptions = new TranslateOptions()
+            .addTargetLanguage("zh-Hans")
+            .setSourceLanguage("ar")
+            .setSourceLanguageScript("Latn")
+            .setTargetLanguageScript("Latn");
 
-        List<TranslatedTextItem> translations = client.translate(targetLanguages, content, null, fromLanguage, TextType.PLAIN, null, ProfanityAction.NO_ACTION, ProfanityMarker.ASTERISK, false, false, null, fromScript, toScript, false);
+        List<TranslatedTextItem> translations = client.translate("hudha akhtabar.", translateOptions);
 
         for (TranslatedTextItem translation : translations) {
             System.out.println("Source Text: " + translation.getSourceText().getText());

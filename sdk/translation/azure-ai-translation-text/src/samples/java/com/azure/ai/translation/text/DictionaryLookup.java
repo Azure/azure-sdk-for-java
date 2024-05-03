@@ -32,8 +32,7 @@ public class DictionaryLookup {
         // BEGIN: getTextTranslationDictionaryLookup
         String sourceLanguage = "en";
         String targetLanguage = "es";
-        List<InputTextItem> content = new ArrayList<>();
-        content.add(new InputTextItem("fly"));
+        String content = "fly";
 
         List<DictionaryLookupItem> dictionaryEntries = client.lookupDictionaryEntries(sourceLanguage, targetLanguage, content);
 

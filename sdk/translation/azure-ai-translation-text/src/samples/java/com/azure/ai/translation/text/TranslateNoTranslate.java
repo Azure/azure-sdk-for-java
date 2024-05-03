@@ -12,6 +12,7 @@ import com.azure.ai.translation.text.models.ProfanityMarker;
 import com.azure.ai.translation.text.models.TextType;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
 import com.azure.ai.translation.text.models.TranslationText;
+import com.azure.ai.translation.text.options.TranslateOptions;
 
 /**
  * It's sometimes useful to exclude specific content from translation. You can use the attribute
@@ -36,14 +37,12 @@ public class TranslateNoTranslate {
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
 
-        TextType textType = TextType.HTML;
-        String from = "en";
-        List<String> targetLanguages = new ArrayList<>();
-        targetLanguages.add("cs");
-        List<InputTextItem> content = new ArrayList<>();
-        content.add(new InputTextItem("<div class=\"notranslate\">This will not be translated.</div><div>This will be translated. </div>"));
+        TranslateOptions translateOptions = new TranslateOptions()
+            .addTargetLanguage("en")
+            .setSourceLanguage("cs")
+            .setTextType(TextType.HTML);
 
-        List<TranslatedTextItem> translations = client.translate(targetLanguages, content, null, from, TextType.PLAIN, null, ProfanityAction.NO_ACTION, ProfanityMarker.ASTERISK, false, false, null, null, null, false);
+        List<TranslatedTextItem> translations = client.translate("<div class=\"notranslate\">This will not be translated.</div><div>This will be translated. </div>", translateOptions);
 
         for (TranslatedTextItem translation : translations) {
             for (TranslationText textTranslation : translation.getTranslations()) {

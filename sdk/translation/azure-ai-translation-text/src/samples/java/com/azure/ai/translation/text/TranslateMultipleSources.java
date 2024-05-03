@@ -34,14 +34,12 @@ public class TranslateMultipleSources {
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
 
-        List<String> targetLanguages = new ArrayList<>();
-        targetLanguages.add("cs");
-        List<InputTextItem> content = new ArrayList<>();
-        content.add(new InputTextItem("This is a test."));
-        content.add(new InputTextItem("Esto es una prueba."));
-        content.add(new InputTextItem("Dies ist ein Test."));
+        List<String> content = new ArrayList<>();
+        content.add("This is a test.");
+        content.add("Esto es una prueba.");
+        content.add("Dies ist ein Test.");
 
-        List<TranslatedTextItem> translations = client.translate(targetLanguages, content);
+        List<TranslatedTextItem> translations = client.translate("cs", content);
 
         for (TranslatedTextItem translation : translations) {
             if (translation.getDetectedLanguage() != null) {

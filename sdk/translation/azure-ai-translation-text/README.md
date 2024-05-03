@@ -125,13 +125,11 @@ Please refer to the service documentation for a conceptual discussion of [langua
 Renders single source-language text to multiple target-language texts with a single request.
 
 ```java getTextTranslationMultiple
-String from = "en";
-List<String> targetLanguages = new ArrayList<>();
-targetLanguages.add("cs");
-List<InputTextItem> content = new ArrayList<>();
-content.add(new InputTextItem("This is a test."));
+TranslateOptions translateOptions = new TranslateOptions()
+    .setSourceLanguage("en")
+    .addTargetLanguage("es");
 
-List<TranslatedTextItem> translations = client.translate(targetLanguages, content, null, from, TextType.PLAIN, null, ProfanityAction.NO_ACTION, ProfanityMarker.ASTERISK, false, false, null, null, null, false);
+List<TranslatedTextItem> translations = client.translate("This is a test.", translateOptions);
 
 for (TranslatedTextItem translation : translations) {
     for (TranslationText textTranslation : translation.getTranslations()) {
@@ -150,8 +148,7 @@ Converts characters or letters of a source language to the corresponding charact
 String language = "zh-Hans";
 String fromScript = "Hans";
 String toScript = "Latn";
-List<InputTextItem> content = new ArrayList<>();
-content.add(new InputTextItem("这是个测试。"));
+String content = "这是个测试。";
 
 List<TransliteratedText> transliterations = client.transliterate(language, fromScript, toScript, content);
 
@@ -169,8 +166,7 @@ Identifies the positioning of sentence boundaries in a piece of text.
 ```java getTextTranslationSentenceBoundaries
 String sourceLanguage = "zh-Hans";
 String sourceScript = "Latn";
-List<InputTextItem> content = new ArrayList<>();
-content.add(new InputTextItem("zhè shì gè cè shì。"));
+String content = "zhè shì gè cè shì。";
 
 List<BreakSentenceItem> breakSentences = client.findSentenceBoundaries(content, null, sourceLanguage, sourceScript);
 
@@ -188,8 +184,7 @@ Returns equivalent words for the source term in the target language.
 ```java getTextTranslationDictionaryLookup
 String sourceLanguage = "en";
 String targetLanguage = "es";
-List<InputTextItem> content = new ArrayList<>();
-content.add(new InputTextItem("fly"));
+String content = "fly";
 
 List<DictionaryLookupItem> dictionaryEntries = client.lookupDictionaryEntries(sourceLanguage, targetLanguage, content);
 

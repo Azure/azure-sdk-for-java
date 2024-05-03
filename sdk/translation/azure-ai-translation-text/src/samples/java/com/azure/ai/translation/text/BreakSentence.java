@@ -32,8 +32,7 @@ public class BreakSentence {
         // BEGIN: getTextTranslationSentenceBoundaries
         String sourceLanguage = "zh-Hans";
         String sourceScript = "Latn";
-        List<InputTextItem> content = new ArrayList<>();
-        content.add(new InputTextItem("zhè shì gè cè shì。"));
+        String content = "zhè shì gè cè shì。";
 
         List<BreakSentenceItem> breakSentences = client.findSentenceBoundaries(content, null, sourceLanguage, sourceScript);
 

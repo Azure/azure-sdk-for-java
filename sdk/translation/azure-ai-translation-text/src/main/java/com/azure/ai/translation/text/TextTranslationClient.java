@@ -28,7 +28,10 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import com.azure.ai.translation.text.options.TranslateOptions;
 
 /**
  * Initializes a new instance of the synchronous TextTranslationClient type.
@@ -109,7 +112,7 @@ public final class TextTranslationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -117,9 +120,9 @@ public final class TextTranslationClient {
      *     }
      * ]
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -186,7 +189,7 @@ public final class TextTranslationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -194,9 +197,9 @@ public final class TextTranslationClient {
      *     }
      * ]
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -252,7 +255,7 @@ public final class TextTranslationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -260,9 +263,9 @@ public final class TextTranslationClient {
      *     }
      * ]
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -303,7 +306,7 @@ public final class TextTranslationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -311,9 +314,9 @@ public final class TextTranslationClient {
      *     }
      * ]
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -371,7 +374,7 @@ public final class TextTranslationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -380,9 +383,9 @@ public final class TextTranslationClient {
      *     }
      * ]
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -478,9 +481,8 @@ public final class TextTranslationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<TranslatedTextItem> translate(List<String> targetLanguages, List<InputTextItem> requestBody,
+    private List<TranslatedTextItem> translate(List<String> targetLanguages, List<InputTextItem> requestBody,
         String clientTraceId, String sourceLanguage, TextType textType, String category,
         ProfanityAction profanityAction, ProfanityMarker profanityMarker, Boolean includeAlignment,
         Boolean includeSentenceLength, String suggestedSourceLanguage, String sourceLanguageScript,
@@ -544,13 +546,101 @@ public final class TextTranslationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<TranslatedTextItem> translate(List<String> targetLanguages, List<InputTextItem> requestBody) {
+    private List<TranslatedTextItem> translateInner(List<String> targetLanguages, List<InputTextItem> requestBody) {
         // Generated convenience method for translateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return translateWithResponse(targetLanguages, BinaryData.fromObject(requestBody), requestOptions).getValue()
             .toObject(TYPE_REFERENCE_LIST_TRANSLATED_TEXT_ITEM);
+    }
+
+    /**
+     * Translate Text.
+     *
+     * @param targetLanguages Specifies the language of the output text. The target language must be one of the
+     * supported languages included
+     * in the translation scope. For example, use to=de to translate to German.
+     * It's possible to translate to multiple languages simultaneously by repeating the parameter in the query string.
+     * For example, use to=de&amp;to=it to translate to German and Italian.
+     * @param texts Defines the content of the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<TranslatedTextItem> translate(String targetLanguage, List<String> texts) {
+        return translateInner(Arrays.asList(targetLanguage), convertTextToData(texts));
+    }
+
+    /**
+     * Translate Text.
+     *
+     * @param targetLanguages Specifies the language of the output text. The target language must be one of the
+     * supported languages included
+     * in the translation scope. For example, use to=de to translate to German.
+     * It's possible to translate to multiple languages simultaneously by repeating the parameter in the query string.
+     * For example, use to=de&amp;to=it to translate to German and Italian.
+     * @param text Defines the content of the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<TranslatedTextItem> translate(String targetLanguages, String text) {
+        return translate(targetLanguages, Arrays.asList(text));
+    }
+
+    /**
+     * Translate Text.
+     *
+     * @param text Text to translate.
+     * @param translateOptions Translate Options.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<TranslatedTextItem> translate(String text, TranslateOptions translateOptions) {
+        return translate(Arrays.asList(text), translateOptions);
+    }
+
+    /**
+     * Translate Text.
+     *
+     * @param texts List of text to translate.
+     * @param translateOptions Translate Options.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<TranslatedTextItem> translate(List<String> texts, TranslateOptions translateOptions) {
+        ArrayList<InputTextItem> content = new ArrayList<>();
+        for (String text : texts) {
+            content.add(new InputTextItem(text));
+        }
+        return translate(translateOptions.getTargetLanguages(), content, translateOptions.getClientTraceId(),
+            translateOptions.getSourceLanguage(), translateOptions.getTextType(), translateOptions.getCategory(),
+            translateOptions.getProfanityAction(), translateOptions.getProfanityMarker(),
+            translateOptions.isIncludeAlignment(), translateOptions.isIncludeSentenceLength(),
+            translateOptions.getSuggestedSourceLanguage(), translateOptions.getSourceLanguageScript(),
+            translateOptions.getTargetLanguageScript(), translateOptions.isAllowFallback());
     }
 
     /**
@@ -575,9 +665,8 @@ public final class TextTranslationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<TransliteratedText> transliterate(String language, String sourceLanguageScript,
+    private List<TransliteratedText> transliterateInner(String language, String sourceLanguageScript,
         String targetLanguageScript, List<InputTextItem> requestBody, String clientTraceId) {
         // Generated convenience method for transliterateWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -602,6 +691,7 @@ public final class TextTranslationClient {
      * scope, to find output
      * scripts available for the selected combination of input language and input script.
      * @param requestBody Defines the content of the request.
+     * @param clientTraceId A client-generated GUID to uniquely identify the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -610,15 +700,124 @@ public final class TextTranslationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<TransliteratedText> transliterate(String language, String sourceLanguageScript,
+        String targetLanguageScript, List<String> requestBody, String clientTraceId) {
+        return transliterateInner(language, sourceLanguageScript, targetLanguageScript, convertTextToData(requestBody),
+            clientTraceId);
+    }
+
+    /**
+     * Transliterate Text.
+     *
+     * @param language Specifies the language of the text to convert from one script to another.
+     * Possible languages are listed in the transliteration scope obtained by querying the service
+     * for its supported languages.
+     * @param sourceLanguageScript Specifies the script used by the input text. Look up supported languages using the
+     * transliteration scope,
+     * to find input scripts available for the selected language.
+     * @param targetLanguageScript Specifies the output script. Look up supported languages using the transliteration
+     * scope, to find output
+     * scripts available for the selected combination of input language and input script.
+     * @param text Defines the content of the request.
+     * @param clientTraceId A client-generated GUID to uniquely identify the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<TransliteratedText> transliterate(String language, String sourceLanguageScript,
+        String targetLanguageScript, String text, String clientTraceId) {
+        return transliterate(language, sourceLanguageScript, targetLanguageScript, Arrays.asList(text), clientTraceId);
+    }
+
+    /**
+     * Transliterate Text.
+     *
+     * @param language Specifies the language of the text to convert from one script to another.
+     * Possible languages are listed in the transliteration scope obtained by querying the service
+     * for its supported languages.
+     * @param sourceLanguageScript Specifies the script used by the input text. Look up supported languages using the
+     * transliteration scope,
+     * to find input scripts available for the selected language.
+     * @param targetLanguageScript Specifies the output script. Look up supported languages using the transliteration
+     * scope, to find output
+     * scripts available for the selected combination of input language and input script.
+     * @param requestBody Defines the content of the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private List<TransliteratedText> transliterateInner(String language, String sourceLanguageScript,
         String targetLanguageScript, List<InputTextItem> requestBody) {
         // Generated convenience method for transliterateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return transliterateWithResponse(language, sourceLanguageScript, targetLanguageScript,
             BinaryData.fromObject(requestBody), requestOptions).getValue()
             .toObject(TYPE_REFERENCE_LIST_TRANSLITERATED_TEXT);
+    }
+
+    /**
+     * Transliterate Text.
+     *
+     * @param language Specifies the language of the text to convert from one script to another.
+     * Possible languages are listed in the transliteration scope obtained by querying the service
+     * for its supported languages.
+     * @param sourceLanguageScript Specifies the script used by the input text. Look up supported languages using the
+     * transliteration scope,
+     * to find input scripts available for the selected language.
+     * @param targetLanguageScript Specifies the output script. Look up supported languages using the transliteration
+     * scope, to find output
+     * scripts available for the selected combination of input language and input script.
+     * @param requestBody Defines the content of the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<TransliteratedText> transliterate(String language, String sourceLanguageScript,
+        String targetLanguageScript, List<String> requestBody) {
+        return transliterateInner(language, sourceLanguageScript, targetLanguageScript, convertTextToData(requestBody));
+    }
+
+    /**
+     * Transliterate Text.
+     *
+     * @param language Specifies the language of the text to convert from one script to another.
+     * Possible languages are listed in the transliteration scope obtained by querying the service
+     * for its supported languages.
+     * @param sourceLanguageScript Specifies the script used by the input text. Look up supported languages using the
+     * transliteration scope,
+     * to find input scripts available for the selected language.
+     * @param targetLanguageScript Specifies the output script. Look up supported languages using the transliteration
+     * scope, to find output
+     * scripts available for the selected combination of input language and input script.
+     * @param text Defines the content of the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<TransliteratedText> transliterate(String language, String sourceLanguageScript,
+        String targetLanguageScript, String text) {
+        return transliterate(language, sourceLanguageScript, targetLanguageScript, Arrays.asList(text));
     }
 
     /**
@@ -638,9 +837,8 @@ public final class TextTranslationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<BreakSentenceItem> findSentenceBoundaries(List<InputTextItem> requestBody, String clientTraceId,
+    private List<BreakSentenceItem> findSentenceBoundariesInner(List<InputTextItem> requestBody, String clientTraceId,
         String language, String script) {
         // Generated convenience method for findSentenceBoundariesWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -660,6 +858,52 @@ public final class TextTranslationClient {
     /**
      * Find Sentence Boundaries.
      *
+     * @param texts Defines the content of the request.
+     * @param clientTraceId A client-generated GUID to uniquely identify the request.
+     * @param language Language tag identifying the language of the input text.
+     * If a code isn't specified, automatic language detection will be applied.
+     * @param script Script tag identifying the script used by the input text.
+     * If a script isn't specified, the default script of the language will be assumed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<BreakSentenceItem> findSentenceBoundaries(List<String> texts, String clientTraceId,
+        String language, String script) {
+        return findSentenceBoundariesInner(convertTextToData(texts), clientTraceId, language, script);
+    }
+
+    /**
+     * Find Sentence Boundaries.
+     *
+     * @param text Defines the content of the request.
+     * @param clientTraceId A client-generated GUID to uniquely identify the request.
+     * @param language Language tag identifying the language of the input text.
+     * If a code isn't specified, automatic language detection will be applied.
+     * @param script Script tag identifying the script used by the input text.
+     * If a script isn't specified, the default script of the language will be assumed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<BreakSentenceItem> findSentenceBoundaries(String text, String clientTraceId,
+        String language, String script) {
+        return findSentenceBoundaries(Arrays.asList(text), clientTraceId, language, script);
+    }
+
+    /**
+     * Find Sentence Boundaries.
+     *
      * @param requestBody Defines the content of the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -669,13 +913,46 @@ public final class TextTranslationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<BreakSentenceItem> findSentenceBoundaries(List<InputTextItem> requestBody) {
+    private List<BreakSentenceItem> findSentenceBoundariesInner(List<InputTextItem> requestBody) {
         // Generated convenience method for findSentenceBoundariesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return findSentenceBoundariesWithResponse(BinaryData.fromObject(requestBody), requestOptions).getValue()
             .toObject(TYPE_REFERENCE_LIST_BREAK_SENTENCE_ITEM);
+    }
+
+    /**
+     * Find Sentence Boundaries.
+     *
+     * @param requestBody Defines the content of the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<BreakSentenceItem> findSentenceBoundaries(List<String> texts) {
+        return findSentenceBoundariesInner(convertTextToData(texts));
+    }
+
+    /**
+     * Find Sentence Boundaries.
+     *
+     * @param requestBody Defines the content of the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<BreakSentenceItem> findSentenceBoundaries(String text) {
+        return findSentenceBoundaries(Arrays.asList(text));
     }
 
     /**
@@ -695,9 +972,8 @@ public final class TextTranslationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<DictionaryLookupItem> lookupDictionaryEntries(String sourceLanguage, String targetLanguage,
+    private List<DictionaryLookupItem> lookupDictionaryEntriesInner(String sourceLanguage, String targetLanguage,
         List<InputTextItem> requestBody, String clientTraceId) {
         // Generated convenience method for lookupDictionaryEntriesWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -706,6 +982,52 @@ public final class TextTranslationClient {
         }
         return lookupDictionaryEntriesWithResponse(sourceLanguage, targetLanguage, BinaryData.fromObject(requestBody),
             requestOptions).getValue().toObject(TYPE_REFERENCE_LIST_DICTIONARY_LOOKUP_ITEM);
+    }
+
+    /**
+     * Lookup Dictionary Entries.
+     *
+     * @param sourceLanguage Specifies the language of the input text.
+     * The source language must be one of the supported languages included in the dictionary scope.
+     * @param targetLanguage Specifies the language of the output text.
+     * The target language must be one of the supported languages included in the dictionary scope.
+     * @param texts Defines the content of the request.
+     * @param clientTraceId A client-generated GUID to uniquely identify the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<DictionaryLookupItem> lookupDictionaryEntries(String sourceLanguage, String targetLanguage,
+        List<String> texts, String clientTraceId) {
+            return lookupDictionaryEntriesInner(sourceLanguage, targetLanguage, convertTextToData(texts), clientTraceId);
+    }
+
+    /**
+     * Lookup Dictionary Entries.
+     *
+     * @param sourceLanguage Specifies the language of the input text.
+     * The source language must be one of the supported languages included in the dictionary scope.
+     * @param targetLanguage Specifies the language of the output text.
+     * The target language must be one of the supported languages included in the dictionary scope.
+     * @param text Defines the content of the request.
+     * @param clientTraceId A client-generated GUID to uniquely identify the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<DictionaryLookupItem> lookupDictionaryEntries(String sourceLanguage, String targetLanguage,
+        String text, String clientTraceId) {
+        return lookupDictionaryEntries(sourceLanguage, targetLanguage, Arrays.asList(text), clientTraceId);
     }
 
     /**
@@ -724,14 +1046,57 @@ public final class TextTranslationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<DictionaryLookupItem> lookupDictionaryEntries(String sourceLanguage, String targetLanguage,
+    private List<DictionaryLookupItem> lookupDictionaryEntriesInner(String sourceLanguage, String targetLanguage,
         List<InputTextItem> requestBody) {
         // Generated convenience method for lookupDictionaryEntriesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return lookupDictionaryEntriesWithResponse(sourceLanguage, targetLanguage, BinaryData.fromObject(requestBody),
             requestOptions).getValue().toObject(TYPE_REFERENCE_LIST_DICTIONARY_LOOKUP_ITEM);
+    }
+
+    /**
+     * Lookup Dictionary Entries.
+     *
+     * @param sourceLanguage Specifies the language of the input text.
+     * The source language must be one of the supported languages included in the dictionary scope.
+     * @param targetLanguage Specifies the language of the output text.
+     * The target language must be one of the supported languages included in the dictionary scope.
+     * @param texts Defines the content of the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<DictionaryLookupItem> lookupDictionaryEntries(String sourceLanguage, String targetLanguage,
+        List<String> texts) {
+            return lookupDictionaryEntriesInner(sourceLanguage, targetLanguage, convertTextToData(texts));
+    }
+
+    /**
+     * Lookup Dictionary Entries.
+     *
+     * @param sourceLanguage Specifies the language of the input text.
+     * The source language must be one of the supported languages included in the dictionary scope.
+     * @param targetLanguage Specifies the language of the output text.
+     * The target language must be one of the supported languages included in the dictionary scope.
+     * @param text Defines the content of the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<DictionaryLookupItem> lookupDictionaryEntries(String sourceLanguage, String targetLanguage,
+        String text) {
+        return lookupDictionaryEntries(sourceLanguage, targetLanguage, Arrays.asList(text));
     }
 
     /**
@@ -751,8 +1116,8 @@ public final class TextTranslationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
+    @Generated
     public List<DictionaryExampleItem> lookupDictionaryExamples(String sourceLanguage, String targetLanguage,
         List<DictionaryExampleTextItem> requestBody, String clientTraceId) {
         // Generated convenience method for lookupDictionaryExamplesWithResponse
@@ -780,8 +1145,8 @@ public final class TextTranslationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
+    @Generated
     public List<DictionaryExampleItem> lookupDictionaryExamples(String sourceLanguage, String targetLanguage,
         List<DictionaryExampleTextItem> requestBody) {
         // Generated convenience method for lookupDictionaryExamplesWithResponse
@@ -849,7 +1214,7 @@ public final class TextTranslationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     translation (Optional): {
@@ -977,5 +1342,13 @@ public final class TextTranslationClient {
         // Generated convenience method for getSupportedLanguagesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getSupportedLanguagesWithResponse(requestOptions).getValue().toObject(GetSupportedLanguagesResult.class);
+    }
+
+    private ArrayList<InputTextItem> convertTextToData(List<String> texts) {
+        ArrayList<InputTextItem> content = new ArrayList<>();
+        for (String text : texts) {
+            content.add(new InputTextItem(text));
+        }
+        return content;
     }
 }
