@@ -84,8 +84,9 @@ public final class PerCallTimeoutCall {
 
         @Override
         public void run() {
-            call.cancel();
+            // Set timeout first.
             perCallTimeoutCall.timedOut = true;
+            call.cancel();
         }
     }
 }
