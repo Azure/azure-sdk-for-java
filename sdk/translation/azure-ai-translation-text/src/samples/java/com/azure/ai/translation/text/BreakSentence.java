@@ -37,7 +37,7 @@ public class BreakSentence {
         List<BreakSentenceItem> breakSentences = client.findSentenceBoundaries(content, null, sourceLanguage, sourceScript);
 
         for (BreakSentenceItem breakSentence : breakSentences) {
-            System.out.println("The detected sentence boundaries: " + breakSentence.getLengthsOfSentences());
+            System.out.println("The detected sentence boundaries: " + breakSentence.getSentencesLengths());
         }
         // END: getTextTranslationSentenceBoundaries
     }
