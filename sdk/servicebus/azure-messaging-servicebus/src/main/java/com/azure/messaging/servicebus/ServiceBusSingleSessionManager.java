@@ -52,12 +52,7 @@ final class ServiceBusSingleSessionManager implements IServiceBusSessionManager 
         this.instrumentation = Objects.requireNonNull(instrumentation, "instrumentation cannot be null");
         MessageFlux messageFluxLocal = new MessageFlux(messageFluxUpstream, prefetch, CreditFlowMode.RequestDriven,
             NULL_RETRY_POLICY);
-        final boolean useFluxTrace = instrumentation.isEnabled() && instrumentation.isAsyncReceiverInstrumentation();
-        if (useFluxTrace) {
-            this.messageFlux = FluxTraceV2.createForMessage(messageFluxLocal, instrumentation);
-        } else {
-            this.messageFlux = messageFluxLocal;
-        }
+        this.messageFlux = TracingFluxOperator.create(messageFluxLocal, instrumentation);
     }
 
     @Override
