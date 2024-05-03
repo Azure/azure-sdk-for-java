@@ -28,16 +28,16 @@ import java.util.function.Function;
  * <p>
  * The shared executor service is created using the following configuration settings:
  * <ul>
- *     <li>{@code azure.sdk.shared.threadpool.maxpoolsize} system property or
- *     {@code AZURE_SDK_SHARED_THREADPOOL_MAXPOOLSIZE} environment variable - The maximum pool size of the shared
+ *     <li>{@code clientcore.sdk.shared.threadpool.maxpoolsize} system property or
+ *     {@code CLIENTCORE_SDK_SHARED_THREADPOOL_MAXPOOLSIZE} environment variable - The maximum pool size of the shared
  *     executor service. If not set, it defaults to 10 times the number of available processors.</li>
- *     <li>{@code azure.sdk.shared.threadpool.keepalivemillis} system property or
- *     {code AZURE_SDK_SHARED_THREADPOOL_KEEPALIVEMILLIS} environment variable - The keep alive time in millis for
+ *     <li>{@code clientcore.sdk.shared.threadpool.keepalivemillis} system property or
+ *     {code CLIENTCORE_SDK_SHARED_THREADPOOL_KEEPALIVEMILLIS} environment variable - The keep alive time in millis for
  *     threads in the shared executor service. If not set, it defaults to 60 seconds. Limited to integer size.</li>
- *     <li>{@code azure.sdk.shared.threadpool.usevirtualthreads} system property or
- *     {@code AZURE_SDK_SHARED_THREADPOOL_USEVIRTUALTHREADS} environment variable - A boolean flag to indicate if the
- *     shared executor service should use virtual threads. If not set, it defaults to true. Ignored if virtual threads
- *     are not available in the runtime.</li>
+ *     <li>{@code clientcore.sdk.shared.threadpool.usevirtualthreads} system property or
+ *     {@code CLIENTCORE_SDK_SHARED_THREADPOOL_USEVIRTUALTHREADS} environment variable - A boolean flag to indicate if
+ *     the shared executor service should use virtual threads. If not set, it defaults to true. Ignored if virtual
+ *     threads are not available in the runtime.</li>
  * </ul>
  */
 @SuppressWarnings({ "resource", "NullableProblems" })
@@ -45,8 +45,8 @@ public final class SharedExecutorService implements ExecutorService {
     private static final ClientLogger LOGGER = new ClientLogger(SharedExecutorService.class);
 
     // Shared thread counter for all instances of SharedExecutorService created using the empty factory method.
-    private static final AtomicLong AZURE_SDK_THREAD_COUNTER = new AtomicLong();
-    private static final String AZURE_SDK_THREAD_NAME = "azure-sdk-global-thread-";
+    private static final AtomicLong CLIENTCORE_SDK_THREAD_COUNTER = new AtomicLong();
+    private static final String CLIENTCORE_SDK_THREAD_NAME = "clientcore-sdk-global-thread-";
 
     // The thread pool size for the shared executor service.
     private static final int THREAD_POOL_SIZE;
@@ -61,14 +61,14 @@ public final class SharedExecutorService implements ExecutorService {
 
     static {
         THREAD_POOL_SIZE
-            = getConfig("azure.sdk.shared.threadpool.maxpoolsize", "AZURE_SDK_SHARED_THREADPOOL_MAXPOOLSIZE",
+            = getConfig("clientcore.sdk.shared.threadpool.maxpoolsize", "CLIENTCORE_SDK_SHARED_THREADPOOL_MAXPOOLSIZE",
             Integer::parseInt, 10 * Runtime.getRuntime().availableProcessors());
 
-        THREAD_POOL_KEEP_ALIVE_MILLIS = getConfig("azure.sdk.shared.threadpool.keepalivemillis",
-            "AZURE_SDK_SHARED_THREADPOOL_KEEPALIVEMILLIS", Integer::parseInt, 60_000);
+        THREAD_POOL_KEEP_ALIVE_MILLIS = getConfig("clientcore.sdk.shared.threadpool.keepalivemillis",
+            "CLIENTCORE_SDK_SHARED_THREADPOOL_KEEPALIVEMILLIS", Integer::parseInt, 60_000);
 
-        THREAD_POOL_VIRTUAL = getConfig("azure.sdk.shared.threadpool.usevirtualthreads",
-            "AZURE_SDK_SHARED_THREADPOOL_USEVIRTUALTHREADS", Boolean::parseBoolean, true);
+        THREAD_POOL_VIRTUAL = getConfig("clientcore.sdk.shared.threadpool.usevirtualthreads",
+            "CLIENTCORE_SDK_SHARED_THREADPOOL_USEVIRTUALTHREADS", Boolean::parseBoolean, true);
 
         INSTANCE = new SharedExecutorService();
     }
@@ -170,11 +170,11 @@ public final class SharedExecutorService implements ExecutorService {
     //     */
     //    public static void setExecutorService(ExecutorService executorService) {
     //        // We allow for the global executor service to be set from an external source to allow for consumers of the SDK
-    //        // to use their own thread management to run Azure SDK tasks. This allows for the SDKs to perform deeper
+    //        // to use their own thread management to run ClientCore SDK tasks. This allows for the SDKs to perform deeper
     //        // integration into an environment, such as the consumer environment knowing details about capacity, allowing
     //        // the custom executor service to better manage resources than our more general 10x the number of processors.
     //        // Another scenario could be an executor service that creates threads with specific permissions, such as
-    //        // allowing Azure Core or Jackson to perform deep reflection on classes that are not normally allowed.
+    //        // allowing to perform deep reflection on classes that are not normally allowed.
     //        Objects.requireNonNull(executorService, "'executorService' cannot be null.");
     //        if (executorService.isShutdown() || executorService.isTerminated()) {
     //            throw new IllegalStateException("The passed executor service is shutdown or terminated.");
@@ -337,13 +337,13 @@ public final class SharedExecutorService implements ExecutorService {
 
     private static ThreadFactory createVirtualThreadFactory() throws Exception {
         Object virtualThreadBuilder = GET_VIRTUAL_THREAD_BUILDER.invokeStatic();
-        SET_VIRTUAL_THREAD_BUILDER_THREAD_NAME.invokeWithArguments(virtualThreadBuilder, AZURE_SDK_THREAD_NAME);
+        SET_VIRTUAL_THREAD_BUILDER_THREAD_NAME.invokeWithArguments(virtualThreadBuilder, CLIENTCORE_SDK_THREAD_NAME);
         return (ThreadFactory) CREATE_VIRTUAL_THREAD_FACTORY.invokeWithArguments(virtualThreadBuilder);
     }
 
     private static ThreadFactory createNonVirtualThreadFactory() {
         return r -> {
-            Thread thread = new Thread(r, AZURE_SDK_THREAD_NAME + AZURE_SDK_THREAD_COUNTER.getAndIncrement());
+            Thread thread = new Thread(r, CLIENTCORE_SDK_THREAD_NAME + CLIENTCORE_SDK_THREAD_COUNTER.getAndIncrement());
             thread.setDaemon(true);
 
             return thread;
