@@ -113,7 +113,7 @@ public final class TextTranslationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -121,9 +121,9 @@ public final class TextTranslationClient {
      *     }
      * ]
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -190,7 +190,7 @@ public final class TextTranslationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -198,9 +198,9 @@ public final class TextTranslationClient {
      *     }
      * ]
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -256,7 +256,7 @@ public final class TextTranslationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -264,9 +264,9 @@ public final class TextTranslationClient {
      *     }
      * ]
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -307,7 +307,7 @@ public final class TextTranslationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -315,9 +315,9 @@ public final class TextTranslationClient {
      *     }
      * ]
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -375,7 +375,7 @@ public final class TextTranslationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -384,9 +384,9 @@ public final class TextTranslationClient {
      *     }
      * ]
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -558,7 +558,7 @@ public final class TextTranslationClient {
     /**
      * Translate Text.
      *
-     * @param targetLanguages Specifies the language of the output text. The target language must be one of the
+     * @param targetLanguage Specifies the language of the output text. The target language must be one of the
      * supported languages included
      * in the translation scope. For example, use to=de to translate to German.
      * It's possible to translate to multiple languages simultaneously by repeating the parameter in the query string.
@@ -925,7 +925,7 @@ public final class TextTranslationClient {
     /**
      * Find Sentence Boundaries.
      *
-     * @param requestBody Defines the content of the request.
+     * @param texts Defines the content of the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -942,7 +942,7 @@ public final class TextTranslationClient {
     /**
      * Find Sentence Boundaries.
      *
-     * @param requestBody Defines the content of the request.
+     * @param text Defines the content of the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1215,7 +1215,7 @@ public final class TextTranslationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     translation (Optional): {
