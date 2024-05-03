@@ -25,7 +25,6 @@ import com.azure.communication.jobrouter.models.UnassignJobResult;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -150,9 +149,7 @@ public class RouterJobAsyncLiveTests extends JobRouterTestBase {
         assertEquals(2, jobDeserialized.getRequestedWorkerSelectors().size());
         assertEquals(Duration.ofSeconds(100), jobDeserialized.getRequestedWorkerSelectors().get(0).getExpiresAfter());
 
-        if (this.getTestMode() != TestMode.PLAYBACK) {
-            Thread.sleep(2000);
-        }
+        sleepIfRunningAgainstService(2000);
 
         jobDeserialized.setPriority(10);
         RouterJob updatedJob = jobRouterAsyncClient.updateJob(jobId, jobDeserialized).block();
@@ -207,9 +204,7 @@ public class RouterJobAsyncLiveTests extends JobRouterTestBase {
         // Verify
         assertTrue(unassignJobResult.getUnassignmentCount() > 0);
 
-        if (this.getTestMode() != TestMode.PLAYBACK) {
-            Thread.sleep(5000);
-        }
+        sleepIfRunningAgainstService(5000);
 
         RouterQueueStatistics queueStatistics = jobRouterAsyncClient.getQueueStatistics(queueId).block();
 
@@ -236,9 +231,7 @@ public class RouterJobAsyncLiveTests extends JobRouterTestBase {
         jobRouterAsyncClient.cancelJob(jobId, requestOptions).block();
         jobRouterAsyncClient.deleteJob(jobId).block();
         jobRouterAsyncClient.deleteWorker(workerId).block();
-        if (this.getTestMode() != TestMode.PLAYBACK) {
-            Thread.sleep(5000);
-        }
+        sleepIfRunningAgainstService(5000);
         administrationAsyncClient.deleteQueue(queueId).block();
         administrationAsyncClient.deleteDistributionPolicy(distributionPolicyId).block();
     }

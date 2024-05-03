@@ -16,7 +16,6 @@ import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
 import com.azure.security.keyvault.keys.KeyServiceVersion;
@@ -342,10 +341,6 @@ public abstract class CryptographyClientTestBase extends TestProxyTestBase {
     }
 
     public void sleep(long millis) {
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            LOGGER.log(LogLevel.VERBOSE, () -> "Thread sleep interrupted.", e);
-        }
+        sleepIfRunningAgainstService(millis);
     }
 }

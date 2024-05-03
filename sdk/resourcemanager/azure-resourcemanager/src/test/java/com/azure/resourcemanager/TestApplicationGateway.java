@@ -3,7 +3,7 @@
 package com.azure.resourcemanager;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.models.LogLevel;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ApplicationGatewayAuthenticationCertificate;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackend;

@@ -125,7 +125,6 @@ public class TestUtils {
     static void importImage(TestMode mode, String repository, List<String> tags) {
         try {
             importImage(mode, REGISTRY_NAME, repository, tags, REGISTRY_ENDPOINT);
-            Thread.sleep(SLEEP_TIME_IN_MILLISECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -190,6 +189,8 @@ public class TestUtils {
                 Thread.sleep(SLEEP_TIME_IN_MILLISECONDS);
             }
         } while (++index < 3);
+
+        Thread.sleep(SLEEP_TIME_IN_MILLISECONDS);
     }
 
     private static OciImageManifest createManifest() {

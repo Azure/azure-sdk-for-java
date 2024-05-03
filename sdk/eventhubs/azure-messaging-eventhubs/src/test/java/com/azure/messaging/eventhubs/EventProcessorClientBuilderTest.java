@@ -187,7 +187,7 @@ public class EventProcessorClientBuilderTest {
             .processError(errorContext -> {
                 LOGGER.log(LogLevel.VERBOSE, () -> String.format(
                     "Error occurred in partition processor for partition %s, %s%n",
-                    errorContext.getPartitionContext().getPartitionId(), errorContext.getThrowable());
+                    errorContext.getPartitionContext().getPartitionId(), errorContext.getThrowable()));
             })
             .checkpointStore(new SampleCheckpointStore());
 

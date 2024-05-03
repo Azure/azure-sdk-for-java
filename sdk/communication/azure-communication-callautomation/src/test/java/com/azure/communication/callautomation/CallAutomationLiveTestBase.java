@@ -62,17 +62,17 @@ public class CallAutomationLiveTestBase extends TestProxyTestBase {
     protected static final String MEDIA_SOURCE = Configuration.getGlobalConfiguration()
         .get("ACS_MEDIA_SOURCE", "https://contoso.com/music.wav");
     protected static final String URL_REGEX = "(?<=http:\\/\\/|https:\\/\\/)([^\\/?]+)";
-    
+
     protected CommunicationIdentityClientBuilder getCommunicationIdentityClientUsingConnectionString(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder()
             .connectionString(CONNECTION_STRING)
             .httpClient(getHttpClientOrUsePlayback(httpClient));
-            
+
         if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
         addTestProxyTestSanitizersAndMatchers(interceptorManager);
-            
+
         return builder;
     }
 
@@ -88,12 +88,12 @@ public class CallAutomationLiveTestBase extends TestProxyTestBase {
                 .connectionString(CONNECTION_STRING)
                 .httpClient(getHttpClientOrUsePlayback(httpClient));
         }
-        
+
         if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
         addTestProxyTestSanitizersAndMatchers(interceptorManager);
- 
+
         return builder;
     }
 
@@ -137,12 +137,6 @@ public class CallAutomationLiveTestBase extends TestProxyTestBase {
             });
     }
 
-    protected void waitForOperationCompletion(int milliSeconds) throws InterruptedException {
-        if (getTestMode() != TestMode.PLAYBACK) {
-            Thread.sleep(milliSeconds);
-        }
-    }
-
     static class FakeCredentials implements TokenCredential {
         @Override
         public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
@@ -159,15 +153,15 @@ public class CallAutomationLiveTestBase extends TestProxyTestBase {
         }
         return content;
     }
-    
+
     protected void addTestProxyTestSanitizersAndMatchers(InterceptorManager interceptorManager) {
-        
+
         if (interceptorManager.isLiveMode()) {
             return;
         }
 
         List<TestProxySanitizer> customSanitizers = new ArrayList<>();
-            
+
         customSanitizers.add(new TestProxySanitizer("Authorization", null, "REDACTED", TestProxySanitizerType.HEADER));
         customSanitizers.add(new TestProxySanitizer("x-ms-client-request-id", null, "REDACTED", TestProxySanitizerType.HEADER));
         customSanitizers.add(new TestProxySanitizer("x-ms-content-sha256", null, "REDACTED", TestProxySanitizerType.HEADER));
@@ -187,7 +181,7 @@ public class CallAutomationLiveTestBase extends TestProxyTestBase {
         customSanitizers.add(new TestProxySanitizer("$..mediaSubscriptionId", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
         customSanitizers.add(new TestProxySanitizer("$..dataSubscriptionId", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
         customSanitizers.add(new TestProxySanitizer(URL_REGEX, "REDACTED", TestProxySanitizerType.BODY_REGEX));
-        
+
         interceptorManager.addSanitizers(customSanitizers);
 
         if (interceptorManager.isPlaybackMode()) {

@@ -1352,7 +1352,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
             }
         }
 
-        Assertions.assertTrue(sb.isEmpty(), sb.toString());
+        Assertions.assertEquals(0, sb.length(), sb.toString());
     }
 
     private static Region findByLabelOrName(String labelOrName) {

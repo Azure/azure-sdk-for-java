@@ -8,11 +8,13 @@ import com.azure.communication.callautomation.implementation.models.Communicatio
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.amqp.AmqpTransportType;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
@@ -20,18 +22,13 @@ import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusException;
 import com.azure.messaging.servicebus.ServiceBusFailureReason;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
-import com.azure.core.http.HttpClient;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.azure.core.util.CoreUtils;
-import java.util.StringJoiner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -41,9 +38,11 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestBase {
     private static final ClientLogger LOGGER = new ClientLogger(CallAutomationAutomatedLiveTestBase.class);
@@ -234,12 +233,8 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
             LOGGER.log(LogLevel.VERBOSE,
                 () -> String.format("Message lock lost for message: %s%n", context.getException()));
         } else if (reason == ServiceBusFailureReason.SERVICE_BUSY) {
-            try {
-                // Choosing an arbitrary amount of time to wait until trying again.
-                TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                LOGGER.log(LogLevel.VERBOSE, () -> "Unable to sleep for period of time");
-            }
+            // Choosing an arbitrary amount of time to wait until trying again.
+            sleepIfRunningAgainstService(1000);
         } else {
             LOGGER.log(LogLevel.VERBOSE, () -> String.format("Error source %s, reason %s, message: %s%n",
                 context.getErrorSource(), reason, context.getException()));
@@ -267,7 +262,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
             if (incomingCallContext != null) {
                 return incomingCallContext;
             }
-            Thread.sleep(1000);
+            sleepIfRunningAgainstService(1000);
         }
         return null;
     }
@@ -282,7 +277,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
                     return event;
                 }
             }
-            Thread.sleep(1000);
+            sleepIfRunningAgainstService(1000);
         }
         return null;
     }

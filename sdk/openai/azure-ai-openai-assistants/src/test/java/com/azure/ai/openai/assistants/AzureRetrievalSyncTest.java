@@ -58,11 +58,7 @@ public class AzureRetrievalSyncTest extends AssistantsClientTestBase {
             ThreadRun run = client.createRun(thread, assistant);
 
             do {
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                sleepIfRunningAgainstService(500);
                 run = client.getRun(thread.getId(), run.getId());
             } while (run.getStatus() == RunStatus.IN_PROGRESS
                 || run.getStatus() == RunStatus.QUEUED);
