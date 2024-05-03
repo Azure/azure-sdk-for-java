@@ -6,6 +6,7 @@ package io.clientcore.http.jdk.httpclient;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.util.SharedExecutorService;
 import io.clientcore.core.util.configuration.Configuration;
 import io.clientcore.http.jdk.httpclient.implementation.JdkHttpClientProxySelector;
 
@@ -87,6 +88,7 @@ public class JdkHttpClientBuilder {
      * Creates JdkHttpClientBuilder.
      */
     public JdkHttpClientBuilder() {
+        this.executor = SharedExecutorService.getInstance();
     }
 
     /**
@@ -102,8 +104,11 @@ public class JdkHttpClientBuilder {
     /**
      * Sets the executor to be used for asynchronous and dependent tasks. This cannot be null.
      * <p>
-     * If this method is not invoked prior to {@linkplain #build() building}, a default executor is created for each
-     * newly built {@code HttpClient}.
+     * If this method is not invoked prior to {@link #build() building}, handling for a default will be based on whether
+     * the builder was created with the default constructor or the constructor that accepts an existing
+     * {@link java.net.http.HttpClient.Builder}. If the default constructor was used, the default executor will be
+     * {@link SharedExecutorService#getInstance()}. If the constructor that accepts an existing
+     * {@link java.net.http.HttpClient.Builder} was used, the executor from the existing builder will be used.
      *
      * @param executor the executor to be used for asynchronous and dependent tasks
      * @return the updated JdkHttpClientBuilder object
@@ -288,6 +293,7 @@ public class JdkHttpClientBuilder {
                     new ProxyAuthenticator(buildProxyOptions.getUsername(), buildProxyOptions.getPassword()));
             }
         }
+
         return new JdkHttpClient(httpClientBuilder.build(), Collections.unmodifiableSet(getRestrictedHeaders()),
             writeTimeout, responseTimeout, readTimeout);
     }

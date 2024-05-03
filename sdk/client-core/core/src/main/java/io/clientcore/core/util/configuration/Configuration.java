@@ -5,8 +5,9 @@ package io.clientcore.core.util.configuration;
 
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.client.HttpClientProvider;
-import io.clientcore.core.implementation.util.EnvironmentConfiguration;
 import io.clientcore.core.implementation.util.CoreUtils;
+import io.clientcore.core.implementation.util.EnvironmentConfiguration;
+import io.clientcore.core.implementation.util.ImplUtils;
 import io.clientcore.core.util.ClientLogger;
 
 import java.util.Collections;
@@ -91,6 +92,7 @@ public class Configuration {
      * If the configured value is equal to or less than 0 no timeout will be applied.
      */
     public static final String PROPERTY_REQUEST_READ_TIMEOUT = "REQUEST_READ_TIMEOUT";
+
     /**
      * Sets the name of the {@link HttpClientProvider} implementation that should be used to construct instances of
      * {@link HttpClient}.
@@ -99,17 +101,18 @@ public class Configuration {
      * {@code OkHttpHttpClientProvider}, to disambiguate multiple providers with the same name but from different
      * packages.
      * <p>
-     * If the value isn't set or is an empty string the first {@link HttpClientProvider} resolved by {@link java.util.ServiceLoader} will be
-     * used to create an instance of {@link HttpClient}. If the value is set and doesn't match any
-     * {@link HttpClientProvider} resolved by {@link java.util.ServiceLoader} an {@link IllegalStateException} will be thrown when
-     * attempting to create an instance of {@link HttpClient}.
+     * If the value isn't set or is an empty string the first {@link HttpClientProvider} resolved by
+     * {@link java.util.ServiceLoader} will be used to create an instance of {@link HttpClient}. If the value is set
+     * and doesn't match any {@link HttpClientProvider} resolved by {@link java.util.ServiceLoader} an
+     * {@link IllegalStateException} will be thrown when attempting to create an instance of {@link HttpClient}.
      */
     public static final String PROPERTY_HTTP_CLIENT_IMPLEMENTATION = "HTTP_CLIENT_IMPLEMENTATION";
 
     /*
      * Gets the global configuration shared by all client libraries.
      */
-    private static final Configuration GLOBAL_CONFIGURATION = new Configuration(Collections.emptyMap(), EnvironmentConfiguration.getGlobalConfiguration(), null, null);
+    private static final Configuration GLOBAL_CONFIGURATION = new Configuration(Collections.emptyMap(),
+        EnvironmentConfiguration.getGlobalConfiguration(), null, null);
 
     private static final ClientLogger LOGGER = new ClientLogger(Configuration.class);
 
@@ -272,7 +275,8 @@ public class Configuration {
      * </ul>
      *
      * <p>
-     * Property value is converted to specified type. If property value is missing and not required, default value is returned.
+     * Property value is converted to specified type. If property value is missing and not required, default value is
+     * returned.
      *
      * <!-- src_embed io.clientcore.core.util.Configuration.get#ConfigurationProperty -->
      * <pre>
@@ -352,7 +356,7 @@ public class Configuration {
         return null;
     }
 
-    private <T> String getWithFallback(ConfigurationProperty<T> property) {
+    private String getWithFallback(ConfigurationProperty<?> property) {
         String name = property.getName();
         if (!CoreUtils.isNullOrEmpty(name)) {
             String value = getLocalProperty(name, property.getAliases(), property.getValueSanitizer());
@@ -367,37 +371,12 @@ public class Configuration {
                 }
             }
         }
-        return getFromEnvironment(property);
+        return getFromEnvironment(property.getSystemPropertyName(), property.getEnvironmentVariableName(),
+            property.getValueSanitizer());
     }
 
-    private <T> String getFromEnvironment(ConfigurationProperty<T> property) {
-        String systemProperty = property.getSystemPropertyName();
-        if (systemProperty != null) {
-            final String value = environmentConfiguration.getSystemProperty(systemProperty);
-            if (value != null) {
-                LOGGER.atVerbose()
-                    .addKeyValue("name", property.getName())
-                    .addKeyValue("systemProperty", systemProperty)
-                    .addKeyValue("value", () -> property.getValueSanitizer().apply(value))
-                    .log("Got property from system property.");
-                return value;
-            }
-        }
-
-        String envVar = property.getEnvironmentVariableName();
-        if (envVar != null) {
-            final String value = environmentConfiguration.getEnvironmentVariable(envVar);
-            if (value != null) {
-                LOGGER.atVerbose()
-                    .addKeyValue("name", property.getName())
-                    .addKeyValue("envVar", envVar)
-                    .addKeyValue("value", () -> property.getValueSanitizer().apply(value))
-                    .log("Got property from environment variable.");
-                return value;
-            }
-        }
-
-        return null;
+    private String getFromEnvironment(String systemProperty, String envVar, Function<String, String> valueSanitizer) {
+        return ImplUtils.getFromEnvironment(environmentConfiguration, systemProperty, envVar, valueSanitizer, LOGGER);
     }
 
     private static Map<String, String> readConfigurations(ConfigurationSource source, String path) {
@@ -414,16 +393,12 @@ public class Configuration {
             String key = CoreUtils.isNullOrEmpty(path) ? prop.getKey() : prop.getKey().substring(path.length() + 1);
             String value = prop.getValue();
 
-            LOGGER.atVerbose()
-                .addKeyValue("name", prop.getKey())
-                .log("Got property from configuration source.");
+            LOGGER.atVerbose().addKeyValue("name", prop.getKey()).log("Got property from configuration source.");
 
             if (key != null && value != null) {
                 props.put(key, value);
             } else {
-                LOGGER.atWarning()
-                    .addKeyValue("name", prop.getKey())
-                    .log("Key or value is null, property is ignored.");
+                LOGGER.atWarning().addKeyValue("name", prop.getKey()).log("Key or value is null, property is ignored.");
             }
         }
 

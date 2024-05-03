@@ -3,6 +3,8 @@
 
 package io.clientcore.core.util.configuration;
 
+import io.clientcore.core.implementation.util.ImplUtils;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -16,8 +18,6 @@ import java.util.function.Function;
  * @param <T> Type of property value.
  */
 public final class ConfigurationProperty<T> {
-    private static final Function<String, String> REDACT_VALUE_SANITIZER = (value) -> "redacted";
-
     private final String name;
     private final List<String> aliases;
     private final String environmentVariable;
@@ -52,7 +52,7 @@ public final class ConfigurationProperty<T> {
         this.defaultValue = defaultValue;
         this.isRequired = isRequired;
         this.isShared = isShared;
-        this.valueSanitizer = valueSanitizer == null ? REDACT_VALUE_SANITIZER : valueSanitizer;
+        this.valueSanitizer = valueSanitizer == null ? ImplUtils.DEFAULT_SANITIZER : valueSanitizer;
     }
 
     /**
