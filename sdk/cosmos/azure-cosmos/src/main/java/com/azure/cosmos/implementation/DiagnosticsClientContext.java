@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.SessionRetryOptions;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.guava27.Strings;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -85,7 +86,7 @@ public interface DiagnosticsClientContext {
                 generator.writeStringField("e2ePolicyCfg", clientConfig.endToEndOperationLatencyPolicyConfigAsString);
                 generator.writeStringField("sessionRetryCfg", clientConfig.sessionRetryOptionsAsString);
 
-                if (!clientConfig.regionScopedSessionContainerOptionsAsString.isEmpty()) {
+                if (!StringUtils.isEmpty(clientConfig.regionScopedSessionContainerOptionsAsString)) {
                     generator.writeStringField("regionScopedSessionCfg", clientConfig.regionScopedSessionContainerOptionsAsString);
                 }
             } catch (Exception e) {

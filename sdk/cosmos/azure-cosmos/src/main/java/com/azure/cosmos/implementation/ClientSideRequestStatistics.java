@@ -698,7 +698,7 @@ public class ClientSideRequestStatistics {
             generator.writeObjectField("serializationDiagnosticsContext", statistics.getSerializationDiagnosticsContext());
             generator.writeObjectField("gatewayStatisticsList", statistics.gatewayStatisticsList);
             generator.writeObjectField("samplingRateSnapshot", statistics.samplingRateSnapshot);
-            generator.writeObjectField("bloomFilterInsertionCountSnapshot", statistics.approximateInsertionCountInBloomFilter);
+            generator.writeNumberField("bloomFilterInsertionCountSnapshot", statistics.approximateInsertionCountInBloomFilter);
 
             try {
                 CosmosDiagnosticsSystemUsageSnapshot systemInformation = fetchSystemInformation();

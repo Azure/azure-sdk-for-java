@@ -828,6 +828,18 @@ public class CosmosClientBuilder implements
         this.writeRetryPolicy = WriteRetryPolicy.DISABLED;
     }
 
+    void resetSessionCapturingType() {
+        String sessionCapturingType = Configs.getSessionCapturingType();
+
+        if (!StringUtils.isEmpty(sessionCapturingType)) {
+            if (sessionCapturingType.equalsIgnoreCase("REGION_SCOPED")) {
+                this.isRegionScopedSessionCapturingEnabled = true;
+            } else {
+                this.isRegionScopedSessionCapturingEnabled = false;
+            }
+        }
+    }
+
     /**
      * Sets the {@link CosmosContainerProactiveInitConfig} which enable warming up of caches and connections
      * associated with containers obtained from {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} to replicas
@@ -1142,6 +1154,7 @@ public class CosmosClientBuilder implements
     CosmosAsyncClient buildAsyncClient(boolean logStartupInfo) {
         StopWatch stopwatch = new StopWatch();
         stopwatch.start();
+        this.resetSessionCapturingType();
         validateConfig();
         buildConnectionPolicy();
         CosmosAsyncClient cosmosAsyncClient = new CosmosAsyncClient(this);
@@ -1175,6 +1188,7 @@ public class CosmosClientBuilder implements
     public CosmosClient buildClient() {
         StopWatch stopwatch = new StopWatch();
         stopwatch.start();
+        this.resetSessionCapturingType();
         validateConfig();
         buildConnectionPolicy();
         CosmosClient cosmosClient = new CosmosClient(this);

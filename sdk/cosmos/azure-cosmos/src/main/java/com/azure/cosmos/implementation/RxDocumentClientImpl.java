@@ -56,6 +56,7 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.implementation.routing.RegionNameToRegionIdMap;
 import com.azure.cosmos.implementation.spark.OperationContext;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.implementation.spark.OperationListener;
@@ -102,6 +103,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -239,6 +241,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final String clientCorrelationId;
     private final SessionRetryOptions sessionRetryOptions;
     private final boolean sessionCapturingOverrideEnabled;
+    private final boolean sessionCapturingDisabled;
+    private final boolean isRegionScopedSessionCapturingEnabledOnClientOrSystemConfig;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -515,6 +519,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             this.sessionCapturingOverrideEnabled = sessionCapturingOverrideEnabled;
             boolean disableSessionCapturing = (ConsistencyLevel.SESSION != consistencyLevel && !sessionCapturingOverrideEnabled);
+            this.sessionCapturingDisabled = disableSessionCapturing;
 
             this.consistencyLevel = consistencyLevel;
 
@@ -529,16 +534,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.reactorHttpClient = httpClient();
 
             this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, /**/configs);
-
-            if (isRegionScopedSessionCapturingEnabled || Configs.isRegionScopedSessionTokenCapturingEnabled()) {
-                this.sessionContainer = new RegionScopedSessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing, this.globalEndpointManager);
-                this.diagnosticsClientConfig.withRegionScopedSessionContainerOptions((RegionScopedSessionContainer) this.sessionContainer);
-            } else {
-                this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
-            }
-
-            // todo: revert to use config
-            // this.sessionContainer = new RegionScopedSessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing, this.globalEndpointManager);
+            this.isRegionScopedSessionCapturingEnabledOnClientOrSystemConfig = isRegionScopedSessionCapturingEnabled;
             this.retryPolicy = new RetryPolicy(this, this.globalEndpointManager, this.connectionPolicy);
             this.resetSessionTokenRetryPolicy = retryPolicy;
             CpuMemoryMonitor.register(this);
@@ -593,9 +589,43 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         this.useMultipleWriteLocations = this.connectionPolicy.isMultipleWriteRegionsEnabled() && BridgeInternal.isEnableMultipleWriteLocations(databaseAccount);
+        boolean isRegionScopingOfSessionTokensPossible = this.isRegionScopingOfSessionTokensPossible(databaseAccount, this.useMultipleWriteLocations, this.isRegionScopedSessionCapturingEnabledOnClientOrSystemConfig);
+
+        if (isRegionScopingOfSessionTokensPossible) {
+            this.sessionContainer = new RegionScopedSessionContainer(this.serviceEndpoint.getHost(), this.sessionCapturingDisabled, this.globalEndpointManager);
+            this.diagnosticsClientConfig.withRegionScopedSessionContainerOptions((RegionScopedSessionContainer) this.sessionContainer);
+        } else {
+            this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), this.sessionCapturingDisabled);
+        }
 
         // TODO: add support for openAsync
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/332589
+    }
+
+    private boolean isRegionScopingOfSessionTokensPossible(DatabaseAccount databaseAccount, boolean useMultipleWriteLocations, boolean isRegionScopedSessionCapturingEnabled) {
+
+        if (!isRegionScopedSessionCapturingEnabled) {
+            return false;
+        }
+
+        if (!useMultipleWriteLocations) {
+            return false;
+        }
+
+        Iterable<DatabaseAccountLocation> readableLocationsIterable = databaseAccount.getReadableLocations();
+        Iterator<DatabaseAccountLocation> readableLocationsIterator = readableLocationsIterable.iterator();
+
+        while (readableLocationsIterator.hasNext()) {
+            DatabaseAccountLocation readableLocation = readableLocationsIterator.next();
+
+            String normalizedReadableRegion = readableLocation.getName().toLowerCase(Locale.ROOT).trim().replace(" ", "");
+
+            if (RegionNameToRegionIdMap.getRegionId(normalizedReadableRegion) == -1) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private void updateGatewayProxy() {
@@ -605,7 +635,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         (this.gatewayProxy).setUseMultipleWriteLocations(this.useMultipleWriteLocations);
     }
 
-    public void init(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot, Function<HttpClient, HttpClient> httpClientInterceptor) {
+    public void init(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot, Function<HttpClient, HttpClient> httpClientInterceptor, boolean isRegionScopedSessionCapturingEnabled) {
         try {
             // TODO: add support for openAsync
             // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/332589

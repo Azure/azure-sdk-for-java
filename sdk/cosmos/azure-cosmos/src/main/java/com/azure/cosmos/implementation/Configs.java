@@ -130,13 +130,12 @@ public class Configs {
     private static final int DEFAULT_MIN_IN_REGION_RETRY_TIME_FOR_WRITES_MS = 500;
 
     // RegionScopedSessionContainer related constants
-    public static final String IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED_NAME = "COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED";
-    private static final boolean DEFAULT_IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED = false;
+    public static final String SESSION_CAPTURING_TYPE = "COSMOS.SESSION_CAPTURING_TYPE";
+    public static final String DEFAULT_SESSION_CAPTURING_TYPE = StringUtils.EMPTY;
     public static final String PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT_NAME = "COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT";
     private static final long DEFAULT_PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT = 5_000_000;
     public static final String PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE_NAME = "COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE";
     private static final double DEFAULT_PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE = 0.001;
-
 
     // Whether to process the response on a different thread
     private static final String SWITCH_OFF_IO_THREAD_FOR_RESPONSE_NAME = "COSMOS.SWITCH_OFF_IO_THREAD_FOR_RESPONSE";
@@ -182,6 +181,7 @@ public class Configs {
     // Error handling strategy in diagnostics provider
     public static final String DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR = "COSMOS.DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR";
     public static final boolean DEFAULT_DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR = true;
+
 
     // Metrics
     // Samples:
@@ -520,15 +520,15 @@ public class Configs {
         );
     }
 
-    public static boolean isRegionScopedSessionTokenCapturingEnabled() {
+    public static String getSessionCapturingType() {
 
-        String isRegionSessionTokenCapturingEnabled = System.getProperty(
-            IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED_NAME,
+        String sessionCapturingType = System.getProperty(
+            SESSION_CAPTURING_TYPE,
             firstNonNull(
-                emptyToNull(System.getenv().get(IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED_NAME)),
-                String.valueOf(DEFAULT_IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED)));
+                emptyToNull(System.getenv().get(SESSION_CAPTURING_TYPE)),
+                DEFAULT_SESSION_CAPTURING_TYPE));
 
-        return Boolean.parseBoolean(isRegionSessionTokenCapturingEnabled);
+        return sessionCapturingType;
     }
 
     public static long getPkBasedBloomFilterExpectedInsertionCount() {

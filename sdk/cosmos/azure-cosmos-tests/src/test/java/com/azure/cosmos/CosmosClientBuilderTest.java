@@ -203,7 +203,7 @@ public class CosmosClientBuilderTest {
     public void validateSessionTokenCapturingForAccountDefaultConsistency(boolean shouldRegionScopedSessionContainerEnabled) {
 
         if (shouldRegionScopedSessionContainerEnabled) {
-            System.setProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED", "true");
+            System.setProperty("COSMOS.SESSION_CAPTURING_TYPE", "REGION_SCOPED");
         }
 
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
@@ -221,12 +221,12 @@ public class CosmosClientBuilderTest {
 
         ISessionContainer sessionContainer = documentClient.getSession();
 
-        if (System.getProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED").equals("true")) {
+        if (System.getProperty("COSMOS.SESSION_CAPTURING_TYPE").equals("REGION_SCOPED")) {
             assertThat(sessionContainer instanceof RegionScopedSessionContainer).isTrue();
         }
 
         assertThat(sessionContainer.getDisableSessionCapturing()).isEqualTo(false);
 
-        System.clearProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED");
+        System.clearProperty("COSMOS.SESSION_CAPTURING_TYPE");
     }
 }

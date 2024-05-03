@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.routing.RegionNameToRegionIdMap;
@@ -15,6 +14,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -26,7 +26,10 @@ public class PartitionScopedRegionLevelProgress {
 
     private final ConcurrentHashMap<String, String> normalizedRegionLookupMap;
 
+    private final AtomicBoolean hasPartitionSeenNonPointRequests = new AtomicBoolean(false);
+
     public final static String GLOBAL_PROGRESS_KEY = "global";
+
 
     public PartitionScopedRegionLevelProgress() {
         this.partitionKeyRangeIdToRegionLevelProgress = new ConcurrentHashMap<>();
@@ -69,6 +72,15 @@ public class PartitionScopedRegionLevelProgress {
                 // if regionId to localLsn mappings cannot be extracted, the only mapping would be "global" to whatever is the session token corresponding to the globalLsn seen across all regions
                 if (!SessionTokenHelper.tryEvaluateLocalLsnByRegionMappingWithNullSafety(parsedSessionToken, localLsnByRegion)) {
                     request.requestContext.getSessionTokenEvaluationResults().add("Recording only the global session token either because session token doesn't have region id to localLsn mappings or is not a vector session token.");
+                    return null;
+                }
+
+                if (!this.isRequestScopedToLogicalPartition(request)) {
+                    this.hasPartitionSeenNonPointRequests.set(true);
+                }
+
+                if (this.hasPartitionSeenNonPointRequests.get()) {
+                    request.requestContext.getSessionTokenEvaluationResults().add("Recording only the global session token either because the partition has seen non-point operations.");
                     return null;
                 }
 
@@ -175,6 +187,11 @@ public class PartitionScopedRegionLevelProgress {
                 return globalSessionToken;
             }
 
+            if (this.hasPartitionSeenNonPointRequests.get()) {
+                request.requestContext.getSessionTokenEvaluationResults().add("Resolving to the global session token since partition has seen non-point requests.");
+                return globalSessionToken;
+            }
+
             RegionLevelProgress baseLevelProgress = resolvePartitionKeyRangeIdBasedProgress(partitionKeyRangeId, firstEffectivePreferredReadableRegion);
 
             if (baseLevelProgress == null || baseLevelProgress.sessionToken == null) {
@@ -277,6 +294,14 @@ public class PartitionScopedRegionLevelProgress {
         checkNotNull(regionToRegionLevelProgress, "regionToRegionLevelProgress cannot be null!");
 
         return regionToRegionLevelProgress.get(progressScope);
+    }
+
+    private boolean isRequestScopedToLogicalPartition(RxDocumentServiceRequest request) {
+        return request.getPartitionKeyInternal() == null;
+    }
+
+    public boolean getHasPartitionSeenNonPointRequests() {
+        return hasPartitionSeenNonPointRequests.get();
     }
 
     static class RegionLevelProgress {

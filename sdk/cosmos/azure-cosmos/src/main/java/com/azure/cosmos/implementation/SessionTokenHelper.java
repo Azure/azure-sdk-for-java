@@ -217,7 +217,6 @@ public class SessionTokenHelper {
                                     firstEffectivePreferredReadableRegion,
                                     canUseBloomFilter);
 
-
                             if (resolvedSessionTokenForParentPkRangeId != null) {
                                 parentSessionToken = parentSessionToken != null ?
                                     parentSessionToken.merge(resolvedSessionTokenForParentPkRangeId) :

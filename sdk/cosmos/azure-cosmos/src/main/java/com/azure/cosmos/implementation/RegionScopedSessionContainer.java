@@ -134,34 +134,6 @@ public class RegionScopedSessionContainer implements ISessionContainer {
         return this.getCombinedSessionToken(partitionScopedRegionLevelProgress);
     }
 
-    private PartitionScopedRegionLevelProgress getPartitionAndRegionScopedProgressForCollection(RxDocumentServiceRequest request) {
-        return getPartitionAndRegionScopedProgressForCollection(request.getIsNameBased(), request.getResourceId(), request.getResourceAddress());
-    }
-
-    // fetch progress / session information for a given collection
-    private PartitionScopedRegionLevelProgress getPartitionAndRegionScopedProgressForCollection(boolean isNameBased, String rId, String resourceAddress) {
-
-        PartitionScopedRegionLevelProgress partitionScopedRegionLevelProgress = null;
-
-        if (!isNameBased) {
-            if (!StringUtils.isEmpty(rId)) {
-                ResourceId resourceId = ResourceId.parse(rId);
-                if (resourceId.getDocumentCollection() != 0) {
-                    partitionScopedRegionLevelProgress =
-                        this.collectionResourceIdToPartitionScopedRegionLevelProgress.get(resourceId.getUniqueDocumentCollectionId());
-                }
-            }
-        } else {
-            String collectionName = Utils.getCollectionName(resourceAddress);
-            if (!StringUtils.isEmpty(collectionName) && this.collectionNameToCollectionResourceId.containsKey(collectionName)) {
-                partitionScopedRegionLevelProgress = this.collectionResourceIdToPartitionScopedRegionLevelProgress.get(
-                    this.collectionNameToCollectionResourceId.get(collectionName));
-            }
-        }
-
-        return partitionScopedRegionLevelProgress;
-    }
-
     private Pair<Long, PartitionScopedRegionLevelProgress> getCollectionRidToPartitionScopedRegionLevelProgress(RxDocumentServiceRequest request) {
         return getCollectionRidToPartitionScopedRegionLevelProgress(request.getIsNameBased(), request.getResourceId(), request.getResourceAddress());
     }
@@ -194,12 +166,13 @@ public class RegionScopedSessionContainer implements ISessionContainer {
     }
 
     public String resolveGlobalSessionToken(RxDocumentServiceRequest request) {
-        PartitionScopedRegionLevelProgress partitionScopedRegionLevelProgress = this.getPartitionAndRegionScopedProgressForCollection(request);
-        if (partitionScopedRegionLevelProgress != null) {
-            return this.getCombinedSessionToken(partitionScopedRegionLevelProgress);
-        }
+        Pair<Long, PartitionScopedRegionLevelProgress> collectionRidToPartitionScopedRegionLevelProgress = this.getCollectionRidToPartitionScopedRegionLevelProgress(request);
 
-        return StringUtils.EMPTY;
+        checkNotNull(collectionRidToPartitionScopedRegionLevelProgress, "collectionRidToPartitionScopedRegionLevelProgress cannot be null");
+        checkNotNull(collectionRidToPartitionScopedRegionLevelProgress.getKey(), "collectionRid cannot be null!");
+        checkNotNull(collectionRidToPartitionScopedRegionLevelProgress.getValue(), "partitionScopedRegionLevelProgress cannot be null!");
+
+        return this.getCombinedSessionToken(collectionRidToPartitionScopedRegionLevelProgress.getValue());
     }
 
     @Override
@@ -227,7 +200,8 @@ public class RegionScopedSessionContainer implements ISessionContainer {
         if (shouldUseBloomFilter(
             request,
             partitionKeyInternal,
-            partitionKeyDefinition)) {
+            partitionKeyDefinition,
+            partitionScopedRegionLevelProgress)) {
 
             return SessionTokenHelper.resolvePartitionLocalSessionToken(
                 request,
@@ -434,7 +408,8 @@ public class RegionScopedSessionContainer implements ISessionContainer {
             if (shouldUseBloomFilter(
                 request,
                 partitionKeyInternal,
-                partitionKeyDefinition)) {
+                partitionKeyDefinition,
+                partitionScopedRegionLevelProgress)) {
 
                 this.recordPartitionKeyInBloomFilter(
                     request,
@@ -481,7 +456,8 @@ public class RegionScopedSessionContainer implements ISessionContainer {
             if (shouldUseBloomFilter(
                 request,
                 partitionKeyInternal,
-                partitionKeyDefinition)) {
+                partitionKeyDefinition,
+                partitionScopedRegionLevelProgress)) {
 
                 this.recordPartitionKeyInBloomFilter(
                     request,
@@ -557,10 +533,12 @@ public class RegionScopedSessionContainer implements ISessionContainer {
     private boolean shouldUseBloomFilter(
         RxDocumentServiceRequest request,
         Utils.ValueHolder<PartitionKeyInternal> partitionKeyInternal,
-        Utils.ValueHolder<PartitionKeyDefinition> partitionKeyDefinition) {
+        Utils.ValueHolder<PartitionKeyDefinition> partitionKeyDefinition,
+        PartitionScopedRegionLevelProgress partitionScopedRegionLevelProgress) {
 
         checkNotNull(request, "request cannot be null!");
         checkNotNull(this.globalEndpointManager, "globalEndpointManager cannot be nulL!");
+        checkNotNull(partitionScopedRegionLevelProgress, "partitionScopedRegionLevelProgress cannot be null!");
 
         partitionKeyInternal.v = request.getPartitionKeyInternal();
 
@@ -571,6 +549,10 @@ public class RegionScopedSessionContainer implements ISessionContainer {
         partitionKeyDefinition.v = request.getPartitionKeyDefinition();
 
         if (partitionKeyDefinition.v == null) {
+            return false;
+        }
+
+        if (partitionScopedRegionLevelProgress.getHasPartitionSeenNonPointRequests()) {
             return false;
         }
 

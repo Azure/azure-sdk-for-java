@@ -60,7 +60,7 @@ public class PartitionKeyBasedBloomFilter {
     public void tryRecordPartitionKey(
         RxDocumentServiceRequest request,
         Long collectionRid,
-        String firstPreferredWritableRegion,
+        String firstPreferredReadableRegion,
         String regionRoutedTo,
         PartitionKeyInternal partitionKeyInternal,
         PartitionKeyDefinition partitionKeyDefinition) {
@@ -74,7 +74,7 @@ public class PartitionKeyBasedBloomFilter {
                 return;
             }
 
-            if (Strings.isNullOrEmpty(firstPreferredWritableRegion)) {
+            if (Strings.isNullOrEmpty(firstPreferredReadableRegion)) {
                 return;
             }
 
@@ -89,7 +89,7 @@ public class PartitionKeyBasedBloomFilter {
             // merged when resolving the session token for a request, so it is not
             // needed to also record which EPK got resolved in the first preferred region
             // 3. this avoids the bloom filter from getting filled up in steady state
-            if (!normalizedRegionRoutedTo.equals(firstPreferredWritableRegion)) {
+            if (!normalizedRegionRoutedTo.equals(firstPreferredReadableRegion)) {
                 this.pkBasedBloomFilter.put(
                     new PartitionKeyBasedBloomFilterType(
                         effectivePartitionKeyString,
