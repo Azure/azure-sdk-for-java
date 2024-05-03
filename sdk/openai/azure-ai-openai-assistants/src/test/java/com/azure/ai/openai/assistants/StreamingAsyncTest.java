@@ -109,52 +109,56 @@ public class StreamingAsyncTest extends AssistantsClientTestBase {
                 return true;
             }).verifyComplete();
     }
-//
-//    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-//    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-//    public void runWithTools(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-//        client = getAssistantsClient(httpClient);
-//        String assistantId = createMathTutorAssistantWithFunctionTool(client);
-//        createRunRunner(createThreadOption -> {
-//            String threadId = createThread(client);
-//
-//            client.createMessage(threadId, MessageRole.USER, "Please make a graph for my boilerplate equation");
-//
-//            IterableStream<StreamUpdate> streamEvents = client.createRunStream(threadId, createThreadOption);
-//
-//            RequiredAction requiredAction = null;
-//            RunStep runStep = null;
-//            for (StreamUpdate streamUpdate : streamEvents) {
-//                String streamUpdateJson = BinaryData.fromObject(streamUpdate).toString();
-//                assertTrue(streamUpdateJson != null && !streamUpdateJson.isEmpty() && !streamUpdateJson.isBlank());
-//                if (streamUpdate instanceof StreamRequiredAction) {
-//                    requiredAction = ((StreamRequiredAction) streamUpdate).getAction().getRequiredAction();
-//                }
-//
-//                if (streamUpdate instanceof StreamRunCreation) {
-//                    runStep = ((StreamRunCreation) streamUpdate).getRun();
-//                }
-//            }
-//
-//            assertNotNull(runStep);
-//            assertNotNull(requiredAction);
-//            assertInstanceOf(SubmitToolOutputsAction.class, requiredAction);
-//
-//            List<ToolOutput> toolOutputs = null;
-//            for (RequiredToolCall toolCall : ((SubmitToolOutputsAction) requiredAction).getSubmitToolOutputs().getToolCalls()) {
-//                assertInstanceOf(RequiredFunctionToolCall.class, toolCall);
-//                assertEquals(((RequiredFunctionToolCall) toolCall).getFunction().getName(), "get_boilerplate_equation");
-//                toolOutputs = Arrays.asList(new ToolOutput()
-//                    .setToolCallId(toolCall.getId())
-//                    .setOutput("x^2 + y^2 = z^2"));
-//            }
-//
-//            IterableStream<StreamUpdate> result = client.submitToolOutputsToRunStream(runStep.getThreadId(), runStep.getRunId(), toolOutputs);
-//            for (StreamUpdate streamUpdate : result) {
-//                String streamUpdateJson = BinaryData.fromObject(streamUpdate).toString();
-//                assertTrue(streamUpdateJson != null && !streamUpdateJson.isEmpty() && !streamUpdateJson.isBlank());
-//            }
-//        }, assistantId);
-//
-//    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    public void runWithTools(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
+        client = getAssistantsAsyncClient(httpClient);
+        String assistantId = createMathTutorAssistantWithFunctionTool(client);
+        createRunRunner(createThreadOption -> {
+            String threadId = createThread(client);
+
+            StepVerifier.create(client.createMessage(threadId, MessageRole.USER, "Please make a graph for my boilerplate equation"))
+                .assertNext(threadMessage -> validateThreadMessage(threadMessage, threadId))
+                .verifyComplete();
+
+            final AtomicReference<RequiredAction> requiredAction = new AtomicReference<>();
+            final AtomicReference<RunStep> runStep = new AtomicReference<>();
+            StepVerifier.create(client.createRunStream(threadId, createThreadOption))
+                .thenConsumeWhile(streamUpdate -> {
+                    String streamUpdateJson = BinaryData.fromObject(streamUpdate).toString();
+                    assertTrue(streamUpdateJson != null && !streamUpdateJson.isEmpty() && !streamUpdateJson.isBlank());
+                    if (streamUpdate instanceof StreamRequiredAction) {
+                        requiredAction.set(((StreamRequiredAction) streamUpdate).getAction().getRequiredAction());
+                    }
+
+                    if (streamUpdate instanceof StreamRunCreation) {
+                        runStep.set(((StreamRunCreation) streamUpdate).getRun());
+                    }
+                    return true;
+                }).verifyComplete();
+
+
+            assertNotNull(runStep.get());
+            assertNotNull(requiredAction.get());
+            assertInstanceOf(SubmitToolOutputsAction.class, requiredAction.get());
+
+            List<ToolOutput> toolOutputs = null;
+            for (RequiredToolCall toolCall : ((SubmitToolOutputsAction) requiredAction.get()).getSubmitToolOutputs().getToolCalls()) {
+                assertInstanceOf(RequiredFunctionToolCall.class, toolCall);
+                assertEquals(((RequiredFunctionToolCall) toolCall).getFunction().getName(), "get_boilerplate_equation");
+                toolOutputs = Arrays.asList(new ToolOutput()
+                    .setToolCallId(toolCall.getId())
+                    .setOutput("x^2 + y^2 = z^2"));
+            }
+
+            StepVerifier.create(client.submitToolOutputsToRunStream(runStep.get().getThreadId(), runStep.get().getRunId(), toolOutputs))
+                .thenConsumeWhile(streamUpdate -> {
+                    String streamUpdateJson = BinaryData.fromObject(streamUpdate).toString();
+                    assertTrue(streamUpdateJson != null && !streamUpdateJson.isEmpty() && !streamUpdateJson.isBlank());
+                    return true;
+                }).verifyComplete();
+        }, assistantId);
+
+    }
 }
