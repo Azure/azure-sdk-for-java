@@ -22,23 +22,15 @@ public final class BreakSentenceItem {
     @JsonProperty(value = "detectedLanguage")
     private DetectedLanguage detectedLanguage;
 
-    /*
-     * An integer array representing the lengths of the sentences in the input text.
-     * The length of the array is the number of sentences, and the values are the length of each sentence.
-     */
-    @Generated
-    @JsonProperty(value = "sentLen")
-    private final List<Integer> sentLen;
-
     /**
      * Creates an instance of BreakSentenceItem class.
      *
-     * @param sentLen the sentLen value to set.
+     * @param lengthsOfSentences the lengthsOfSentences value to set.
      */
     @Generated
     @JsonCreator
-    private BreakSentenceItem(@JsonProperty(value = "sentLen") List<Integer> sentLen) {
-        this.sentLen = sentLen;
+    private BreakSentenceItem(@JsonProperty(value = "sentLen") List<Integer> lengthsOfSentences) {
+        this.lengthsOfSentences = lengthsOfSentences;
     }
 
     /**
@@ -52,14 +44,23 @@ public final class BreakSentenceItem {
         return this.detectedLanguage;
     }
 
-    /**
-     * Get the sentLen property: An integer array representing the lengths of the sentences in the input text.
+    /*
+     * An integer array representing the lengths of the sentences in the input text.
      * The length of the array is the number of sentences, and the values are the length of each sentence.
-     *
-     * @return the sentLen value.
      */
     @Generated
-    public List<Integer> getSentLen() {
-        return this.sentLen;
+    @JsonProperty(value = "sentLen")
+    private final List<Integer> lengthsOfSentences;
+
+    /**
+     * Get the lengthsOfSentences property: An integer array representing the lengths of the sentences in the input
+     * text.
+     * The length of the array is the number of sentences, and the values are the length of each sentence.
+     *
+     * @return the lengthsOfSentences value.
+     */
+    @Generated
+    public List<Integer> getLengthsOfSentences() {
+        return this.lengthsOfSentences;
     }
 }

@@ -11,7 +11,7 @@ import com.azure.ai.translation.text.models.ProfanityAction;
 import com.azure.ai.translation.text.models.ProfanityMarker;
 import com.azure.ai.translation.text.models.TextType;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
-import com.azure.ai.translation.text.models.Translation;
+import com.azure.ai.translation.text.models.TranslationText;
 
 /**
  * You can provide multiple target languages which results to each input element be translated to
@@ -45,7 +45,7 @@ public class TranslateMultipleTargets {
         List<TranslatedTextItem> translations = client.translate(targetLanguages, content, null, from, TextType.PLAIN, null, ProfanityAction.NO_ACTION, ProfanityMarker.ASTERISK, false, false, null, null, null, false);
 
         for (TranslatedTextItem translation : translations) {
-            for (Translation textTranslation : translation.getTranslations()) {
+            for (TranslationText textTranslation : translation.getTranslations()) {
                 System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
             }
         }

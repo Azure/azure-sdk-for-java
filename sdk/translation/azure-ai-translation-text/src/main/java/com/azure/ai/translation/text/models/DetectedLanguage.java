@@ -21,26 +21,18 @@ public final class DetectedLanguage {
     @JsonProperty(value = "language")
     private final String language;
 
-    /*
-     * A float value indicating the confidence in the result.
-     * The score is between zero and one and a low score indicates a low confidence.
-     */
-    @Generated
-    @JsonProperty(value = "score")
-    private final double score;
-
     /**
      * Creates an instance of DetectedLanguage class.
      *
      * @param language the language value to set.
-     * @param score the score value to set.
+     * @param confidence the confidence value to set.
      */
     @Generated
     @JsonCreator
     private DetectedLanguage(@JsonProperty(value = "language") String language,
-        @JsonProperty(value = "score") double score) {
+        @JsonProperty(value = "score") double confidence) {
         this.language = language;
-        this.score = score;
+        this.confidence = confidence;
     }
 
     /**
@@ -53,14 +45,22 @@ public final class DetectedLanguage {
         return this.language;
     }
 
-    /**
-     * Get the score property: A float value indicating the confidence in the result.
+    /*
+     * A float value indicating the confidence in the result.
      * The score is between zero and one and a low score indicates a low confidence.
-     *
-     * @return the score value.
      */
     @Generated
-    public double getScore() {
-        return this.score;
+    @JsonProperty(value = "score")
+    private final double confidence;
+
+    /**
+     * Get the confidence property: A float value indicating the confidence in the result.
+     * The score is between zero and one and a low score indicates a low confidence.
+     *
+     * @return the confidence value.
+     */
+    @Generated
+    public double getConfidence() {
+        return this.confidence;
     }
 }

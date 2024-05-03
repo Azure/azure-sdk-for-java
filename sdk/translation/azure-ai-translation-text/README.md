@@ -96,7 +96,7 @@ The following section provides several code snippets using the `client` [created
 Gets the set of languages currently supported by other operations of the Translator.
 
 ```java getTextTranslationLanguages
-GetLanguagesResult languages = client.getLanguages();
+GetSupportedLanguagesResult languages = client.getSupportedLanguages();
 
 System.out.println("Number of supported languages for translate operation: " + languages.getTranslation().size() + ".");
 System.out.println("Number of supported languages for transliterate operation: " + languages.getTransliteration().size() + ".");
@@ -134,7 +134,7 @@ content.add(new InputTextItem("This is a test."));
 List<TranslatedTextItem> translations = client.translate(targetLanguages, content, null, from, TextType.PLAIN, null, ProfanityAction.NO_ACTION, ProfanityMarker.ASTERISK, false, false, null, null, null, false);
 
 for (TranslatedTextItem translation : translations) {
-    for (Translation textTranslation : translation.getTranslations()) {
+    for (TranslationText textTranslation : translation.getTranslations()) {
         System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
     }
 }
@@ -175,7 +175,7 @@ content.add(new InputTextItem("zhè shì gè cè shì。"));
 List<BreakSentenceItem> breakSentences = client.findSentenceBoundaries(content, null, sourceLanguage, sourceScript);
 
 for (BreakSentenceItem breakSentence : breakSentences) {
-    System.out.println("The detected sentence boundaries: " + breakSentence.getSentLen());
+    System.out.println("The detected sentence boundaries: " + breakSentence.getLengthsOfSentences());
 }
 ```
 

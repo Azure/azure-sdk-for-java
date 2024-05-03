@@ -29,29 +29,6 @@ public final class TranslationLanguage {
     @JsonProperty(value = "nativeName")
     private final String nativeName;
 
-    /*
-     * Directionality, which is rtl for right-to-left languages or ltr for left-to-right languages.
-     */
-    @Generated
-    @JsonProperty(value = "dir")
-    private final String dir;
-
-    /**
-     * Creates an instance of TranslationLanguage class.
-     *
-     * @param name the name value to set.
-     * @param nativeName the nativeName value to set.
-     * @param dir the dir value to set.
-     */
-    @Generated
-    @JsonCreator
-    private TranslationLanguage(@JsonProperty(value = "name") String name,
-        @JsonProperty(value = "nativeName") String nativeName, @JsonProperty(value = "dir") String dir) {
-        this.name = name;
-        this.nativeName = nativeName;
-        this.dir = dir;
-    }
-
     /**
      * Get the name property: Display name of the language in the locale requested via Accept-Language header.
      *
@@ -72,14 +49,38 @@ public final class TranslationLanguage {
         return this.nativeName;
     }
 
-    /**
-     * Get the dir property: Directionality, which is rtl for right-to-left languages or ltr for left-to-right
-     * languages.
-     *
-     * @return the dir value.
+    /*
+     * Directionality, which is rtl for right-to-left languages or ltr for left-to-right languages.
      */
     @Generated
-    public String getDir() {
-        return this.dir;
+    @JsonProperty(value = "dir")
+    private final LanguageDirectionality directionality;
+
+    /**
+     * Creates an instance of TranslationLanguage class.
+     *
+     * @param name the name value to set.
+     * @param nativeName the nativeName value to set.
+     * @param directionality the directionality value to set.
+     */
+    @Generated
+    @JsonCreator
+    private TranslationLanguage(@JsonProperty(value = "name") String name,
+        @JsonProperty(value = "nativeName") String nativeName,
+        @JsonProperty(value = "dir") LanguageDirectionality directionality) {
+        this.name = name;
+        this.nativeName = nativeName;
+        this.directionality = directionality;
+    }
+
+    /**
+     * Get the directionality property: Directionality, which is rtl for right-to-left languages or ltr for
+     * left-to-right languages.
+     *
+     * @return the directionality value.
+     */
+    @Generated
+    public LanguageDirectionality getDirectionality() {
+        return this.directionality;
     }
 }

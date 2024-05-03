@@ -124,9 +124,9 @@ public class TranslateTests extends TextTranslationClientBase {
         assertEquals("es", response.get(1).getDetectedLanguage().getLanguage());
         assertEquals("de", response.get(2).getDetectedLanguage().getLanguage());
 
-        assertEquals(1, response.get(0).getDetectedLanguage().getScore());
-        assertEquals(1, response.get(1).getDetectedLanguage().getScore());
-        assertEquals(1, response.get(2).getDetectedLanguage().getScore());
+        assertEquals(1, response.get(0).getDetectedLanguage().getConfidence());
+        assertEquals(1, response.get(1).getDetectedLanguage().getConfidence());
+        assertEquals(1, response.get(2).getDetectedLanguage().getConfidence());
 
         assertNotNull(response.get(0).getTranslations().get(0).getText());
         assertNotNull(response.get(1).getTranslations().get(0).getText());
@@ -148,7 +148,7 @@ public class TranslateTests extends TextTranslationClientBase {
         assertEquals(1, response.size());
         assertEquals(3, response.get(0).getTranslations().size());
         assertEquals("en", response.get(0).getDetectedLanguage().getLanguage());
-        assertEquals(1, response.get(0).getDetectedLanguage().getScore());
+        assertEquals(1, response.get(0).getDetectedLanguage().getConfidence());
         assertNotNull(response.get(0).getTranslations().get(0).getText());
         assertNotNull(response.get(0).getTranslations().get(1).getText());
         assertNotNull(response.get(0).getTranslations().get(2).getText());
@@ -167,7 +167,7 @@ public class TranslateTests extends TextTranslationClientBase {
         assertEquals(1, response.size());
         assertEquals(1, response.get(0).getTranslations().size());
         assertEquals("en", response.get(0).getDetectedLanguage().getLanguage());
-        assertEquals(1, response.get(0).getDetectedLanguage().getScore());
+        assertEquals(1, response.get(0).getDetectedLanguage().getConfidence());
     }
 
     @Test
@@ -186,7 +186,7 @@ public class TranslateTests extends TextTranslationClientBase {
         assertEquals(1, response.size());
         assertEquals(1, response.get(0).getTranslations().size());
         assertEquals("en", response.get(0).getDetectedLanguage().getLanguage());
-        assertEquals(1, response.get(0).getDetectedLanguage().getScore());
+        assertEquals(1, response.get(0).getDetectedLanguage().getConfidence());
         assertTrue(response.get(0).getTranslations().get(0).getText().contains("***"));
     }
 
@@ -203,8 +203,8 @@ public class TranslateTests extends TextTranslationClientBase {
         assertEquals(1, response.size());
         assertEquals(1, response.get(0).getTranslations().size());
         assertEquals("en", response.get(0).getDetectedLanguage().getLanguage());
-        assertEquals(1, response.get(0).getDetectedLanguage().getScore());
-        assertNotNull(response.get(0).getTranslations().get(0).getAlignment().getProj());
+        assertEquals(1, response.get(0).getDetectedLanguage().getConfidence());
+        assertNotNull(response.get(0).getTranslations().get(0).getAlignment().getProjections());
     }
 
     @Test
@@ -219,10 +219,10 @@ public class TranslateTests extends TextTranslationClientBase {
 
         assertEquals(1, response.size());
         assertEquals("fr", response.get(0).getDetectedLanguage().getLanguage());
-        assertEquals(1, response.get(0).getDetectedLanguage().getScore());
+        assertEquals(1, response.get(0).getDetectedLanguage().getConfidence());
         assertEquals(1, response.get(0).getTranslations().size());
-        assertEquals(3, response.get(0).getTranslations().get(0).getSentLen().getSrcSentLen().size());
-        assertEquals(3, response.get(0).getTranslations().get(0).getSentLen().getTransSentLen().size());
+        assertEquals(3, response.get(0).getTranslations().get(0).getSentenceBoundaries().getSourceSentencesLengths().size());
+        assertEquals(3, response.get(0).getTranslations().get(0).getSentenceBoundaries().getTranslatedSentencesLengths().size());
     }
 
     @Test
@@ -237,7 +237,7 @@ public class TranslateTests extends TextTranslationClientBase {
 
         assertEquals(1, response.size());
         assertEquals("en", response.get(0).getDetectedLanguage().getLanguage());
-        assertEquals(1, response.get(0).getDetectedLanguage().getScore());
+        assertEquals(1, response.get(0).getDetectedLanguage().getConfidence());
         assertEquals(1, response.get(0).getTranslations().size());
         assertNotNull(response.get(0).getTranslations().get(0).getText());
     }
@@ -254,7 +254,7 @@ public class TranslateTests extends TextTranslationClientBase {
 
         assertNotNull(response.get(0).getTranslations().get(0).getText());
         assertEquals("en", response.get(0).getDetectedLanguage().getLanguage());
-        assertEquals(1, response.get(0).getDetectedLanguage().getScore());
+        assertEquals(1, response.get(0).getDetectedLanguage().getConfidence());
         assertEquals(1, response.get(0).getTranslations().size());
         assertNotNull(response.get(0).getTranslations().get(0).getText());
     }
@@ -271,7 +271,7 @@ public class TranslateTests extends TextTranslationClientBase {
 
         assertNotNull(response.get(0).getTranslations().get(0).getText());
         assertEquals("en", response.get(0).getDetectedLanguage().getLanguage());
-        assertEquals(1, response.get(0).getDetectedLanguage().getScore());
+        assertEquals(1, response.get(0).getDetectedLanguage().getConfidence());
         assertEquals(1, response.get(0).getTranslations().size());
         assertNotNull(response.get(0).getTranslations().get(0).getText());
     }

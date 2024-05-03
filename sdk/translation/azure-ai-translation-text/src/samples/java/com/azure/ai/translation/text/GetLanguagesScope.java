@@ -4,7 +4,7 @@
 package com.azure.ai.translation.text;
 
 import java.util.Map;
-import com.azure.ai.translation.text.models.GetLanguagesResult;
+import com.azure.ai.translation.text.models.GetSupportedLanguagesResult;
 import com.azure.ai.translation.text.models.TranslationLanguage;
 
 /**
@@ -25,7 +25,7 @@ public class GetLanguagesScope {
             .buildClient();
 
         String scope = "translation";
-        GetLanguagesResult languages = client.getLanguages(null, scope, null, null);
+        GetSupportedLanguagesResult languages = client.getSupportedLanguages(null, scope, null, null);
 
         System.out.println("Number of supported languages for translate operation: " + languages.getTranslation().size() + ".");
         System.out.println("Number of supported languages for transliterate operation: " + (languages.getTransliteration() == null ? 0 : languages.getTransliteration().size()) + ".");

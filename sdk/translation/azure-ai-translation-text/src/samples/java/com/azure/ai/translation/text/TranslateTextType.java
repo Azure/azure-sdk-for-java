@@ -11,7 +11,7 @@ import com.azure.ai.translation.text.models.ProfanityAction;
 import com.azure.ai.translation.text.models.ProfanityMarker;
 import com.azure.ai.translation.text.models.TextType;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
-import com.azure.ai.translation.text.models.Translation;
+import com.azure.ai.translation.text.models.TranslationText;
 
 /**
  * You can select whether the translated text is plain text or HTML text. Any HTML needs to be a well-formed,
@@ -44,7 +44,7 @@ public class TranslateTextType {
         List<TranslatedTextItem> translations = client.translate(targetLanguages, content, null, from, textType, null, ProfanityAction.NO_ACTION, ProfanityMarker.ASTERISK, false, false, null, null, null, false);
 
         for (TranslatedTextItem translation : translations) {
-            for (Translation textTranslation : translation.getTranslations()) {
+            for (TranslationText textTranslation : translation.getTranslations()) {
                 System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
             }
         }

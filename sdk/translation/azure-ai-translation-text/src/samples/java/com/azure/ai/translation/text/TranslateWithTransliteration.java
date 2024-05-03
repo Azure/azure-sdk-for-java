@@ -11,7 +11,7 @@ import com.azure.ai.translation.text.models.ProfanityAction;
 import com.azure.ai.translation.text.models.ProfanityMarker;
 import com.azure.ai.translation.text.models.TextType;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
-import com.azure.ai.translation.text.models.Translation;
+import com.azure.ai.translation.text.models.TranslationText;
 
 /**
  * Translate text from known source language to target language.
@@ -45,7 +45,7 @@ public class TranslateWithTransliteration {
 
         for (TranslatedTextItem translation : translations) {
             System.out.println("Source Text: " + translation.getSourceText().getText());
-            for (Translation textTranslation : translation.getTranslations()) {
+            for (TranslationText textTranslation : translation.getTranslations()) {
                 System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
                 System.out.println("Transliterated text (" + textTranslation.getTransliteration().getScript() + "): " + textTranslation.getTransliteration().getText());
             }

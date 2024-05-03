@@ -13,32 +13,14 @@ import java.util.List;
  * Script definition with list of script into which given script can be translitered.
  */
 @Immutable
-public final class TransliterableScript extends CommonScriptModel {
+public final class TransliterableScript extends LanguageScript {
 
     /*
      * List of scripts available to convert text to.
      */
     @Generated
     @JsonProperty(value = "toScripts")
-    private final List<CommonScriptModel> toScripts;
-
-    /**
-     * Creates an instance of TransliterableScript class.
-     *
-     * @param code the code value to set.
-     * @param name the name value to set.
-     * @param nativeName the nativeName value to set.
-     * @param dir the dir value to set.
-     * @param toScripts the toScripts value to set.
-     */
-    @Generated
-    @JsonCreator
-    private TransliterableScript(@JsonProperty(value = "code") String code, @JsonProperty(value = "name") String name,
-        @JsonProperty(value = "nativeName") String nativeName, @JsonProperty(value = "dir") String dir,
-        @JsonProperty(value = "toScripts") List<CommonScriptModel> toScripts) {
-        super(code, name, nativeName, dir);
-        this.toScripts = toScripts;
-    }
+    private final List<LanguageScript> toScripts;
 
     /**
      * Get the toScripts property: List of scripts available to convert text to.
@@ -46,7 +28,26 @@ public final class TransliterableScript extends CommonScriptModel {
      * @return the toScripts value.
      */
     @Generated
-    public List<CommonScriptModel> getToScripts() {
+    public List<LanguageScript> getToScripts() {
         return this.toScripts;
+    }
+
+    /**
+     * Creates an instance of TransliterableScript class.
+     *
+     * @param code the code value to set.
+     * @param name the name value to set.
+     * @param nativeName the nativeName value to set.
+     * @param directionality the directionality value to set.
+     * @param toScripts the toScripts value to set.
+     */
+    @Generated
+    @JsonCreator
+    private TransliterableScript(@JsonProperty(value = "code") String code, @JsonProperty(value = "name") String name,
+        @JsonProperty(value = "nativeName") String nativeName,
+        @JsonProperty(value = "dir") LanguageDirectionality directionality,
+        @JsonProperty(value = "toScripts") List<LanguageScript> toScripts) {
+        super(code, name, nativeName, directionality);
+        this.toScripts = toScripts;
     }
 }

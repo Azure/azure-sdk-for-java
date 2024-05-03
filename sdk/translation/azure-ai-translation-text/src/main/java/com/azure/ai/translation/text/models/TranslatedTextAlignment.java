@@ -14,6 +14,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class TranslatedTextAlignment {
 
+    /**
+     * Creates an instance of TranslatedTextAlignment class.
+     *
+     * @param projections the projections value to set.
+     */
+    @Generated
+    @JsonCreator
+    private TranslatedTextAlignment(@JsonProperty(value = "proj") String projections) {
+        this.projections = projections;
+    }
+
     /*
      * Maps input text to translated text. The alignment information is only provided when the request 
      * parameter includeAlignment is true. Alignment is returned as a string value of the following 
@@ -24,32 +35,21 @@ public final class TranslatedTextAlignment {
      */
     @Generated
     @JsonProperty(value = "proj")
-    private final String proj;
+    private final String projections;
 
     /**
-     * Creates an instance of TranslatedTextAlignment class.
-     *
-     * @param proj the proj value to set.
-     */
-    @Generated
-    @JsonCreator
-    private TranslatedTextAlignment(@JsonProperty(value = "proj") String proj) {
-        this.proj = proj;
-    }
-
-    /**
-     * Get the proj property: Maps input text to translated text. The alignment information is only provided when the
-     * request
+     * Get the projections property: Maps input text to translated text. The alignment information is only provided when
+     * the request
      * parameter includeAlignment is true. Alignment is returned as a string value of the following
      * format: [[SourceTextStartIndex]:[SourceTextEndIndex]–[TgtTextStartIndex]:[TgtTextEndIndex]].
      * The colon separates start and end index, the dash separates the languages, and space separates the words.
      * One word may align with zero, one, or multiple words in the other language, and the aligned words may
      * be non-contiguous. When no alignment information is available, the alignment element will be empty.
      *
-     * @return the proj value.
+     * @return the projections value.
      */
     @Generated
-    public String getProj() {
-        return this.proj;
+    public String getProjections() {
+        return this.projections;
     }
 }

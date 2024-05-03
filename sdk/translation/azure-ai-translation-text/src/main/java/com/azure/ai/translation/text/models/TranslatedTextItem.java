@@ -28,7 +28,7 @@ public final class TranslatedTextItem {
      */
     @Generated
     @JsonProperty(value = "translations")
-    private final List<Translation> translations;
+    private final List<TranslationText> translations;
 
     /*
      * Input text in the default script of the source language. sourceText property is present only when 
@@ -47,7 +47,7 @@ public final class TranslatedTextItem {
      */
     @Generated
     @JsonCreator
-    private TranslatedTextItem(@JsonProperty(value = "translations") List<Translation> translations) {
+    private TranslatedTextItem(@JsonProperty(value = "translations") List<TranslationText> translations) {
         this.translations = translations;
     }
 
@@ -70,7 +70,7 @@ public final class TranslatedTextItem {
      * @return the translations value.
      */
     @Generated
-    public List<Translation> getTranslations() {
+    public List<TranslationText> getTranslations() {
         return this.translations;
     }
 

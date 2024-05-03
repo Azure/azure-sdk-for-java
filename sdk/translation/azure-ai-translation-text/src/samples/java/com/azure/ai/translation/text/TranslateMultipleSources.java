@@ -9,7 +9,7 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.ai.translation.text.models.DetectedLanguage;
 import com.azure.ai.translation.text.models.InputTextItem;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
-import com.azure.ai.translation.text.models.Translation;
+import com.azure.ai.translation.text.models.TranslationText;
 
 /**
  * You can translate multiple text elements with a various length. Each input element can be in different
@@ -46,10 +46,10 @@ public class TranslateMultipleSources {
         for (TranslatedTextItem translation : translations) {
             if (translation.getDetectedLanguage() != null) {
                 DetectedLanguage detectedLanguage = translation.getDetectedLanguage();
-                System.out.println("Detected languages of the input text: " + detectedLanguage.getLanguage() + " with score: " + detectedLanguage.getScore() + ".");
+                System.out.println("Detected languages of the input text: " + detectedLanguage.getLanguage() + " with score: " + detectedLanguage.getConfidence() + ".");
             }
 
-            for (Translation textTranslation : translation.getTranslations()) {
+            for (TranslationText textTranslation : translation.getTranslations()) {
                 System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
             }
         }

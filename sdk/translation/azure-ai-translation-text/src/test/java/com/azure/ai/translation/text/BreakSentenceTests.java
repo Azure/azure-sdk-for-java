@@ -21,8 +21,8 @@ public class BreakSentenceTests extends TextTranslationClientBase {
 
         List<BreakSentenceItem> response = getTranslationClient().findSentenceBoundaries(content);
         assertEquals("en", response.get(0).getDetectedLanguage().getLanguage());
-        assertEquals(0.98, response.get(0).getDetectedLanguage().getScore());
-        assertEquals(11, response.get(0).getSentLen().get(0));
+        assertEquals(0.98, response.get(0).getDetectedLanguage().getConfidence());
+        assertEquals(11, response.get(0).getLengthsOfSentences().get(0));
     }
 
     @Test
@@ -33,7 +33,7 @@ public class BreakSentenceTests extends TextTranslationClientBase {
         List<BreakSentenceItem> response = getTranslationClient().findSentenceBoundaries(content, null, "es", null);
         int[] expectedLengths = new int[]{ 30, 42, 20, 20 };
         for (int i = 0; i < expectedLengths.length; i++) {
-            assertEquals(expectedLengths[i], response.get(0).getSentLen().get(i));
+            assertEquals(expectedLengths[i], response.get(0).getLengthsOfSentences().get(i));
         }
     }
 
@@ -43,7 +43,7 @@ public class BreakSentenceTests extends TextTranslationClientBase {
         content.add(new InputTextItem("zhè shì gè cè shì。"));
 
         List<BreakSentenceItem> response = getTranslationClient().findSentenceBoundaries(content, null, "zh-Hans", "Latn");
-        assertEquals(18, response.get(0).getSentLen().get(0));
+        assertEquals(18, response.get(0).getLengthsOfSentences().get(0));
     }
 
     @Test
@@ -55,7 +55,7 @@ public class BreakSentenceTests extends TextTranslationClientBase {
         List<BreakSentenceItem> response = getTranslationClient().findSentenceBoundaries(content);
         assertEquals("en", response.get(0).getDetectedLanguage().getLanguage());
         assertEquals("ar", response.get(1).getDetectedLanguage().getLanguage());
-        assertEquals(11, response.get(0).getSentLen().get(0));
-        assertEquals(32, response.get(1).getSentLen().get(0));
+        assertEquals(11, response.get(0).getLengthsOfSentences().get(0));
+        assertEquals(32, response.get(1).getLengthsOfSentences().get(0));
     }
 }

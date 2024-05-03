@@ -11,7 +11,7 @@ import com.azure.ai.translation.text.models.ProfanityAction;
 import com.azure.ai.translation.text.models.ProfanityMarker;
 import com.azure.ai.translation.text.models.TextType;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
-import com.azure.ai.translation.text.models.Translation;
+import com.azure.ai.translation.text.models.TranslationText;
 
 /**
  * You can ask translator service to include sentence boundaries for the input text and the translated text.
@@ -43,10 +43,10 @@ public class TranslateSentenceLength {
         List<TranslatedTextItem> translations = client.translate(targetLanguages, content, null, from, TextType.PLAIN, null, ProfanityAction.NO_ACTION, ProfanityMarker.ASTERISK, false, includeSentenceLength, null, null, null, false);
 
         for (TranslatedTextItem translation : translations) {
-            for (Translation textTranslation : translation.getTranslations()) {
+            for (TranslationText textTranslation : translation.getTranslations()) {
                 System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
-                System.out.println("Source Sentence length: " + textTranslation.getSentLen().getSrcSentLen());
-                System.out.println("Translated Sentence length: " + textTranslation.getSentLen().getTransSentLen());
+                System.out.println("Source Sentence length: " + textTranslation.getSentenceBoundaries().getSourceSentencesLengths());
+                System.out.println("Translated Sentence length: " + textTranslation.getSentenceBoundaries().getTranslatedSentencesLengths());
             }
         }
     }
