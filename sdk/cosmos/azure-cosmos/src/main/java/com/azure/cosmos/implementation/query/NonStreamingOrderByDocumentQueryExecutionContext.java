@@ -113,8 +113,7 @@ public class NonStreamingOrderByDocumentQueryExecutionContext
                 initParams.getQueryInfo().getOrderBy(),
                 initParams.getQueryInfo().getOrderByExpressions(),
                 initParams.getInitialPageSize(),
-                collection,
-                ModelBridgeInternal.getMaxSizePerPartitionFromQueryRequestOptions(initParams.getCosmosQueryRequestOptions()));
+                collection);
 
             return Flux.just(context);
         } catch (CosmosException dce) {
@@ -126,8 +125,7 @@ public class NonStreamingOrderByDocumentQueryExecutionContext
         List<FeedRangeEpkImpl> feedRanges, List<SortOrder> sortOrders,
         Collection<String> orderByExpressions,
         int initialPageSize,
-        DocumentCollection collection,
-        int maxSizePerPartition) throws CosmosException {
+        DocumentCollection collection) throws CosmosException {
         // Since the continuation token will always be null,
         // we don't need to handle any initialization based on continuationToken.
         // We can directly initialize without any consideration for continuationToken.
@@ -145,7 +143,6 @@ public class NonStreamingOrderByDocumentQueryExecutionContext
             documentProducers,
             initialPageSize,
             queryMetricMap,
-            maxSizePerPartition,
             clientSideRequestStatistics);
     }
 

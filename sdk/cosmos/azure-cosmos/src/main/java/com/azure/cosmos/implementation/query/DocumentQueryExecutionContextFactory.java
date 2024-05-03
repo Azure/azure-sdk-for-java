@@ -369,15 +369,6 @@ public class DocumentQueryExecutionContextFactory {
                         "with you vector search query.");
             }
 
-            // Validate the size of TOP or LIMIT against MaxSizePerPartition
-            int maxLimit = Math.max(queryInfo.hasTop() ? queryInfo.getTop() : 0,
-                queryInfo.hasLimit() ? queryInfo.getLimit() : 0);
-            if (maxLimit > cosmosQueryRequestOptions.getMaxSizePerPartition()) {
-                throw new NonStreamingOrderByBadRequestException(HttpConstants.StatusCodes.BADREQUEST,
-                    "Executing a vector search query with TOP or LIMIT larger than the MaxSizePerPartition " +
-                        "is not allowed");
-            }
-
             // Set initialPageSize based on the smallest of TOP or LIMIT
             if (queryInfo.hasTop() || queryInfo.hasLimit() ) {
                 initialPageSize = Math.min(queryInfo.hasTop() ? queryInfo.getTop() : Integer.MAX_VALUE,

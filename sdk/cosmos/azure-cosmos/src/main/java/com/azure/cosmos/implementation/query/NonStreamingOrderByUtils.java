@@ -29,7 +29,6 @@ public class NonStreamingOrderByUtils {
                                                                                                  List<DocumentProducer<Document>> documentProducers,
                                                                                                  int initialPageSize,
                                                                                                  Map<String, QueryMetrics> queryMetricsMap,
-                                                                                                 int maxSizePerPartition,
                                                                                                  Collection<ClientSideRequestStatistics> clientSideRequestStatistics) {
         @SuppressWarnings("unchecked")
         Flux<OrderByRowResult<Document>>[] fluxes = documentProducers
@@ -37,7 +36,7 @@ public class NonStreamingOrderByUtils {
             .stream()
             .map(producer ->
                 toNonStreamingOrderByQueryResultObservable(producer, tracker, queryMetricsMap, initialPageSize,
-                    maxSizePerPartition, consumeComparer, clientSideRequestStatistics))
+                    consumeComparer, clientSideRequestStatistics))
             .toArray(Flux[]::new);
         return Flux.mergeOrdered(consumeComparer, fluxes);
     }
@@ -46,13 +45,12 @@ public class NonStreamingOrderByUtils {
                                                                                                RequestChargeTracker tracker,
                                                                                                Map<String, QueryMetrics> queryMetricsMap,
                                                                                                int initialPageSize,
-                                                                                               int maxSizePerPartition,
                                                                                                OrderbyRowComparer<Document> consumeComparer,
                                                                                                Collection<ClientSideRequestStatistics> clientSideRequestStatisticsList) {
         return producer
             .produceAsync()
             .transformDeferred(new NonStreamingOrderByUtils.PageToItemTransformer(tracker, queryMetricsMap, initialPageSize,
-                maxSizePerPartition, consumeComparer, clientSideRequestStatisticsList));
+                consumeComparer, clientSideRequestStatisticsList));
     }
 
     private static class PageToItemTransformer implements
@@ -60,17 +58,15 @@ public class NonStreamingOrderByUtils {
         private final RequestChargeTracker tracker;
         private final Map<String, QueryMetrics> queryMetricsMap;
         private final Integer initialPageSize;
-        private final Integer maxSizePerPartition;
         private final OrderbyRowComparer<Document> consumeComparer;
         private final Collection<ClientSideRequestStatistics> clientSideRequestStatistics;
 
         private PageToItemTransformer(RequestChargeTracker tracker, Map<String, QueryMetrics> queryMetricsMap,
-                                      Integer initialPageSize, Integer maxSizePerPartition, OrderbyRowComparer<Document> consumeComparer,
+                                      Integer initialPageSize, OrderbyRowComparer<Document> consumeComparer,
                                       Collection<ClientSideRequestStatistics> clientSideRequestStatistics) {
             this.tracker = tracker;
             this.queryMetricsMap = queryMetricsMap;
             this.initialPageSize = initialPageSize;
-            this.maxSizePerPartition = maxSizePerPartition;
             this.consumeComparer = consumeComparer;
             this.clientSideRequestStatistics = clientSideRequestStatistics;
         }

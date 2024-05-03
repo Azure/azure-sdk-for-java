@@ -393,12 +393,6 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setMaxSizePerPartitionFromQueryRequestOptions(CosmosQueryRequestOptions options, Integer maxSizePerPartition) {
-        options.setMaxSizePerPartition(maxSizePerPartition);
-    }
-
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosChangeFeedRequestOptions getEffectiveChangeFeedRequestOptions(
         CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions,
         CosmosPagedFluxOptions pagedFlexOptions) {
@@ -544,11 +538,6 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static Integer getMaxItemCountFromQueryRequestOptions(CosmosQueryRequestOptions options) {
         return options.getMaxItemCount();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static Integer getMaxSizePerPartitionFromQueryRequestOptions(CosmosQueryRequestOptions options) {
-        return options.getMaxSizePerPartition();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
