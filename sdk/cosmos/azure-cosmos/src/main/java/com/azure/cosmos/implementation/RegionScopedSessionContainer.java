@@ -539,7 +539,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
             return false;
         }
 
-        if (partitionScopedRegionLevelProgress.getHasPartitionSeenNonPointRequests()) {
+        if (partitionScopedRegionLevelProgress.getHasPartitionSeenNonPointRequestsForDocuments()) {
             return false;
         }
 

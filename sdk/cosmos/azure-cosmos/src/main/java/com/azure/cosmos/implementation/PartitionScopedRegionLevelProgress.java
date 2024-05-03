@@ -26,7 +26,7 @@ public class PartitionScopedRegionLevelProgress {
 
     private final ConcurrentHashMap<String, String> normalizedRegionLookupMap;
 
-    private final AtomicBoolean hasPartitionSeenNonPointRequests = new AtomicBoolean(false);
+    private final AtomicBoolean hasPartitionSeenNonPointRequestsForDocuments = new AtomicBoolean(false);
 
     public final static String GLOBAL_PROGRESS_KEY = "global";
 
@@ -75,11 +75,13 @@ public class PartitionScopedRegionLevelProgress {
                     return null;
                 }
 
-                if (!this.isRequestScopedToLogicalPartition(request)) {
-                    this.hasPartitionSeenNonPointRequests.set(true);
+                if (request.getResourceType() == ResourceType.Document) {
+                    if (!this.isRequestScopedToLogicalPartition(request)) {
+                        this.hasPartitionSeenNonPointRequestsForDocuments.set(true);
+                    }
                 }
 
-                if (this.hasPartitionSeenNonPointRequests.get()) {
+                if (this.hasPartitionSeenNonPointRequestsForDocuments.get()) {
                     request.requestContext.getSessionTokenEvaluationResults().add("Recording only the global session token either because the partition has seen non-point operations.");
                     return null;
                 }
@@ -187,7 +189,7 @@ public class PartitionScopedRegionLevelProgress {
                 return globalSessionToken;
             }
 
-            if (this.hasPartitionSeenNonPointRequests.get()) {
+            if (this.hasPartitionSeenNonPointRequestsForDocuments.get()) {
                 request.requestContext.getSessionTokenEvaluationResults().add("Resolving to the global session token since partition has seen non-point requests.");
                 return globalSessionToken;
             }
@@ -297,11 +299,11 @@ public class PartitionScopedRegionLevelProgress {
     }
 
     private boolean isRequestScopedToLogicalPartition(RxDocumentServiceRequest request) {
-        return request.getPartitionKeyInternal() == null;
+        return request.getPartitionKeyInternal() != null;
     }
 
-    public boolean getHasPartitionSeenNonPointRequests() {
-        return hasPartitionSeenNonPointRequests.get();
+    public boolean getHasPartitionSeenNonPointRequestsForDocuments() {
+        return hasPartitionSeenNonPointRequestsForDocuments.get();
     }
 
     static class RegionLevelProgress {
