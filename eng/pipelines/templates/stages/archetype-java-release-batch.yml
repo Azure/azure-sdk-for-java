@@ -258,11 +258,11 @@ stages:
                       ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
                   - template: /eng/common/pipelines/templates/steps/create-apireview.yml
                     parameters:
-                      ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
+                      ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
                       Artifacts: ${{parameters.Artifacts}}
-                      ConfigFileDir: $(Pipeline.Workspace)/${{parameters.ArtifactName}}/PackageInfo
+                      ConfigFileDir: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/PackageInfo
                       MarkPackageAsShipped: true
-                      ArtifactName: ${{parameters.ArtifactName}}
+                      ArtifactName: ${{parameters.ArtifactName}}-signed
 
         - deployment: UpdatePackageVersion
           displayName: "Update Package Version"
