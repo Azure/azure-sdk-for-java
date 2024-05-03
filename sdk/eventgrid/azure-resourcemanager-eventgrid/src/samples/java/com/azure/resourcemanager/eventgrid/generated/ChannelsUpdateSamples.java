@@ -12,9 +12,7 @@ import java.time.OffsetDateTime;
  */
 public final class ChannelsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/Channels_Update.
-     * json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/Channels_Update.json
      */
     /**
      * Sample code: Channels_Update.
@@ -22,9 +20,10 @@ public final class ChannelsUpdateSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void channelsUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.channels().updateWithResponse(
-            "examplerg", "examplePartnerNamespaceName1", "exampleChannelName1", new ChannelUpdateParameters()
-                .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2022-03-23T23:06:11.785Z")),
-            com.azure.core.util.Context.NONE);
+        manager.channels()
+            .updateWithResponse(
+                "examplerg", "examplePartnerNamespaceName1", "exampleChannelName1", new ChannelUpdateParameters()
+                    .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2022-03-23T23:06:11.785Z")),
+                com.azure.core.util.Context.NONE);
     }
 }

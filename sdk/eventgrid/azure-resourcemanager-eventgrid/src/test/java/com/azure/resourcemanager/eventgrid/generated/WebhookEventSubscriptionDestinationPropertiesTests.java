@@ -15,32 +15,35 @@ public final class WebhookEventSubscriptionDestinationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WebhookEventSubscriptionDestinationProperties model = BinaryData.fromString(
-            "{\"endpointUrl\":\"ywymxgaabj\",\"endpointBaseUrl\":\"tfohf\",\"maxEventsPerBatch\":1247623577,\"preferredBatchSizeInKilobytes\":1317708678,\"azureActiveDirectoryTenantId\":\"iwr\",\"azureActiveDirectoryApplicationIdOrUri\":\"wdyjqurykcrrauee\",\"deliveryAttributeMappings\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"eh\"}],\"minimumTlsVersionAllowed\":\"1.2\"}")
+            "{\"endpointUrl\":\"cly\",\"endpointBaseUrl\":\"gxvrpjl\",\"maxEventsPerBatch\":116232980,\"preferredBatchSizeInKilobytes\":1979415273,\"azureActiveDirectoryTenantId\":\"ac\",\"azureActiveDirectoryApplicationIdOrUri\":\"nettepdjxqeskoy\",\"deliveryAttributeMappings\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"lpckaewsedves\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"xegqphr\"}],\"minimumTlsVersionAllowed\":\"1.0\"}")
             .toObject(WebhookEventSubscriptionDestinationProperties.class);
-        Assertions.assertEquals("ywymxgaabj", model.endpointUrl());
-        Assertions.assertEquals(1247623577, model.maxEventsPerBatch());
-        Assertions.assertEquals(1317708678, model.preferredBatchSizeInKilobytes());
-        Assertions.assertEquals("iwr", model.azureActiveDirectoryTenantId());
-        Assertions.assertEquals("wdyjqurykcrrauee", model.azureActiveDirectoryApplicationIdOrUri());
-        Assertions.assertEquals("eh", model.deliveryAttributeMappings().get(0).name());
-        Assertions.assertEquals(TlsVersion.ONE_TWO, model.minimumTlsVersionAllowed());
+        Assertions.assertEquals("cly", model.endpointUrl());
+        Assertions.assertEquals(116232980, model.maxEventsPerBatch());
+        Assertions.assertEquals(1979415273, model.preferredBatchSizeInKilobytes());
+        Assertions.assertEquals("ac", model.azureActiveDirectoryTenantId());
+        Assertions.assertEquals("nettepdjxqeskoy", model.azureActiveDirectoryApplicationIdOrUri());
+        Assertions.assertEquals("lpckaewsedves", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals(TlsVersion.ONE_ZERO, model.minimumTlsVersionAllowed());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WebhookEventSubscriptionDestinationProperties model
-            = new WebhookEventSubscriptionDestinationProperties().withEndpointUrl("ywymxgaabj")
-                .withMaxEventsPerBatch(1247623577).withPreferredBatchSizeInKilobytes(1317708678)
-                .withAzureActiveDirectoryTenantId("iwr").withAzureActiveDirectoryApplicationIdOrUri("wdyjqurykcrrauee")
-                .withDeliveryAttributeMappings(Arrays.asList(new DeliveryAttributeMapping().withName("eh")))
-                .withMinimumTlsVersionAllowed(TlsVersion.ONE_TWO);
+            = new WebhookEventSubscriptionDestinationProperties().withEndpointUrl("cly")
+                .withMaxEventsPerBatch(116232980)
+                .withPreferredBatchSizeInKilobytes(1979415273)
+                .withAzureActiveDirectoryTenantId("ac")
+                .withAzureActiveDirectoryApplicationIdOrUri("nettepdjxqeskoy")
+                .withDeliveryAttributeMappings(Arrays.asList(new DeliveryAttributeMapping().withName("lpckaewsedves"),
+                    new DeliveryAttributeMapping().withName("xegqphr")))
+                .withMinimumTlsVersionAllowed(TlsVersion.ONE_ZERO);
         model = BinaryData.fromObject(model).toObject(WebhookEventSubscriptionDestinationProperties.class);
-        Assertions.assertEquals("ywymxgaabj", model.endpointUrl());
-        Assertions.assertEquals(1247623577, model.maxEventsPerBatch());
-        Assertions.assertEquals(1317708678, model.preferredBatchSizeInKilobytes());
-        Assertions.assertEquals("iwr", model.azureActiveDirectoryTenantId());
-        Assertions.assertEquals("wdyjqurykcrrauee", model.azureActiveDirectoryApplicationIdOrUri());
-        Assertions.assertEquals("eh", model.deliveryAttributeMappings().get(0).name());
-        Assertions.assertEquals(TlsVersion.ONE_TWO, model.minimumTlsVersionAllowed());
+        Assertions.assertEquals("cly", model.endpointUrl());
+        Assertions.assertEquals(116232980, model.maxEventsPerBatch());
+        Assertions.assertEquals(1979415273, model.preferredBatchSizeInKilobytes());
+        Assertions.assertEquals("ac", model.azureActiveDirectoryTenantId());
+        Assertions.assertEquals("nettepdjxqeskoy", model.azureActiveDirectoryApplicationIdOrUri());
+        Assertions.assertEquals("lpckaewsedves", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals(TlsVersion.ONE_ZERO, model.minimumTlsVersionAllowed());
     }
 }

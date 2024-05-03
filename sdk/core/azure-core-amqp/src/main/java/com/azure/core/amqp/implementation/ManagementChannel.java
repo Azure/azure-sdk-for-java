@@ -138,7 +138,7 @@ public class ManagementChannel implements AmqpManagementNode {
                 = String.format("entityPath[%s] deliveryState[%s] No response received from management channel.",
                     entityPath, deliveryState);
             AmqpException exception = new AmqpException(true, error, channel.getErrorContext());
-            return logger.atError().addKeyValue(DELIVERY_STATE_KEY, deliveryState).log(exception);
+            return logger.atWarning().addKeyValue(DELIVERY_STATE_KEY, deliveryState).log(exception);
         });
     }
 

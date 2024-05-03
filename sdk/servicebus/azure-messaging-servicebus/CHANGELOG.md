@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 - Fixes the session message disposition to use management node as fall back. ([#39913](https://github.com/Azure/azure-sdk-for-java/issues/ 39913))
+- Fixes the session processor idle timeout to fall back to RetryOptions::tryTimeout. ([#39993](https://github.com/Azure/azure-sdk-for-java/issues/39993))
 
 ### Other Changes
 

@@ -11,7 +11,10 @@ import com.azure.core.util.logging.ClientLogger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Method;
 import java.util.Locale;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Implementation utility class.
@@ -24,12 +27,9 @@ public final class TestingHelpers {
     public static final HttpHeaderName X_RECORDING_FILE_LOCATION
         = HttpHeaderName.fromString("x-base64-recording-file-location");
 
-    /**
-     * Gets the {@link TestMode} being used to run tests.
-     *
-     * @return The {@link TestMode} being used to run tests.
-     */
-    public static TestMode getTestMode() {
+    private static final TestMode TEST_MODE = initializeTestMode();
+
+    private static TestMode initializeTestMode() {
         final String azureTestMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE);
 
         if (azureTestMode != null) {
@@ -46,6 +46,15 @@ public final class TestingHelpers {
     }
 
     /**
+     * Gets the {@link TestMode} being used to run tests.
+     *
+     * @return The {@link TestMode} being used to run tests.
+     */
+    public static TestMode getTestMode() {
+        return TEST_MODE;
+    }
+
+    /**
      * Copies the data from the input stream to the output stream.
      *
      * @param source The input stream to copy from.
@@ -59,5 +68,28 @@ public final class TestingHelpers {
         while ((read = source.read(buffer, 0, buffer.length)) != -1) {
             destination.write(buffer, 0, read);
         }
+    }
+
+    /**
+     * Gets the formated test name.
+     *
+     * @param testMethod The test method.
+     * @param displayName The test display name.
+     * @param testClass The test class.
+     * @return The formated test name.
+     */
+    public static String getTestName(Optional<Method> testMethod, String displayName, Optional<Class<?>> testClass) {
+        String testName = "";
+        String fullyQualifiedTestName = "";
+        if (testMethod.isPresent()) {
+            Method method = testMethod.get();
+            String className = testClass.map(Class::getName).orElse(method.getDeclaringClass().getName());
+            testName = method.getName();
+            fullyQualifiedTestName = className + "." + testName;
+        }
+
+        return Objects.equals(displayName, testName)
+            ? fullyQualifiedTestName
+            : fullyQualifiedTestName + "(" + displayName + ")";
     }
 }

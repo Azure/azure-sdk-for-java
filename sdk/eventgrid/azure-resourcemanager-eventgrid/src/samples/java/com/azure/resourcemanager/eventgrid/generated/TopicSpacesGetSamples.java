@@ -9,9 +9,7 @@ package com.azure.resourcemanager.eventgrid.generated;
  */
 public final class TopicSpacesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/TopicSpaces_Get.
-     * json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/TopicSpaces_Get.json
      */
     /**
      * Sample code: TopicSpaces_Get.
@@ -19,7 +17,8 @@ public final class TopicSpacesGetSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void topicSpacesGet(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.topicSpaces().getWithResponse("examplerg", "exampleNamespaceName1", "exampleTopicSpaceName1",
-            com.azure.core.util.Context.NONE);
+        manager.topicSpaces()
+            .getWithResponse("examplerg", "exampleNamespaceName1", "exampleTopicSpaceName1",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -17,8 +17,8 @@ public final class WebhookRouterRule extends RouterRule {
     /*
      * Uri for Authorization Server.
      */
-    @JsonProperty(value = "authorizationServerUri")
-    private String authorizationServerUri;
+    @JsonProperty(value = "authorizationServerUrl")
+    private String authorizationServerUrl;
 
     /*
      * OAuth2.0 Credentials used to Contoso's Authorization server. Reference:
@@ -28,33 +28,39 @@ public final class WebhookRouterRule extends RouterRule {
     private OAuth2WebhookClientCredential clientCredential;
 
     /*
-     * Uri for Contoso's Web Server.
+     * Url for Contoso's Web Server.
      */
-    @JsonProperty(value = "webhookUri")
-    private String webhookUri;
+    @JsonProperty(value = "webhookUrl")
+    private String webhookUrl;
 
     /** Creates an instance of WebhookRouterRule class. */
-    public WebhookRouterRule() {
-        this.kind = RouterRuleKind.WEBHOOK;
+    public WebhookRouterRule() {}
+
+    /**
+     * Returns kind discriminator.
+     * @return kind.
+     */
+    public RouterRuleKind getKind() {
+        return RouterRuleKind.WEBHOOK;
     }
 
     /**
-     * Get the authorizationServerUri property: Uri for Authorization Server.
+     * Get the authorizationServerUrl property: Url for Authorization Server.
      *
-     * @return the authorizationServerUri value.
+     * @return the authorizationServerUrl value.
      */
-    public String getAuthorizationServerUri() {
-        return this.authorizationServerUri;
+    public String getAuthorizationServerUrl() {
+        return this.authorizationServerUrl;
     }
 
     /**
      * Set the authorizationServerUri property: Uri for Authorization Server.
      *
-     * @param authorizationServerUri the authorizationServerUri value to set.
+     * @param authorizationServerUrl the authorizationServerUri value to set.
      * @return the WebhookRouterRule object itself.
      */
-    public WebhookRouterRule setAuthorizationServerUri(String authorizationServerUri) {
-        this.authorizationServerUri = authorizationServerUri;
+    public WebhookRouterRule setAuthorizationServerUrl(String authorizationServerUrl) {
+        this.authorizationServerUrl = authorizationServerUrl;
         return this;
     }
 
@@ -71,20 +77,20 @@ public final class WebhookRouterRule extends RouterRule {
     /**
      * Get the webhookUri property: Uri for Contoso's Web Server.
      *
-     * @return the webhookUri value.
+     * @return the webhookUrl value.
      */
-    public String getWebhookUri() {
-        return this.webhookUri;
+    public String getWebhookUrl() {
+        return this.getWebhookUrl();
     }
 
     /**
      * Set the webhookUri property: Uri for Contoso's Web Server.
      *
-     * @param webhookUri the webhookUri value to set.
+     * @param webhookUrl the webhookUri value to set.
      * @return the WebhookRouterRule object itself.
      */
-    public WebhookRouterRule setWebhookUri(String webhookUri) {
-        this.webhookUri = webhookUri;
+    public WebhookRouterRule setWebhookUrl(String webhookUrl) {
+        this.webhookUrl = webhookUrl;
         return this;
     }
 

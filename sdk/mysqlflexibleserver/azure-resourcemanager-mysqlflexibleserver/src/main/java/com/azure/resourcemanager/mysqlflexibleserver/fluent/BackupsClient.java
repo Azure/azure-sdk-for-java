@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.ServerBackupInner;
 
-/** An instance of this class provides access to all the operations defined in BackupsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BackupsClient.
+ */
 public interface BackupsClient {
     /**
      * Create backup for a given server with specified backup name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param backupName The name of the backup.
@@ -26,12 +28,12 @@ public interface BackupsClient {
      * @return server backup properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServerBackupInner> putWithResponse(
-        String resourceGroupName, String serverName, String backupName, Context context);
+    Response<ServerBackupInner> putWithResponse(String resourceGroupName, String serverName, String backupName,
+        Context context);
 
     /**
      * Create backup for a given server with specified backup name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param backupName The name of the backup.
@@ -45,7 +47,7 @@ public interface BackupsClient {
 
     /**
      * List all the backups for a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param backupName The name of the backup.
@@ -56,12 +58,12 @@ public interface BackupsClient {
      * @return server backup properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServerBackupInner> getWithResponse(
-        String resourceGroupName, String serverName, String backupName, Context context);
+    Response<ServerBackupInner> getWithResponse(String resourceGroupName, String serverName, String backupName,
+        Context context);
 
     /**
      * List all the backups for a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param backupName The name of the backup.
@@ -75,7 +77,7 @@ public interface BackupsClient {
 
     /**
      * List all the backups for a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -88,7 +90,7 @@ public interface BackupsClient {
 
     /**
      * List all the backups for a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.

@@ -32,13 +32,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import static com.azure.ai.openai.implementation.AudioTranscriptionValidator.validateAudioResponseFormatForTranscription;
-import static com.azure.ai.openai.implementation.AudioTranscriptionValidator.validateAudioResponseFormatForTranscriptionText;
-import static com.azure.ai.openai.implementation.AudioTranslationValidator.validateAudioResponseFormatForTranslation;
-import static com.azure.ai.openai.implementation.AudioTranslationValidator.validateAudioResponseFormatForTranslationText;
-import static com.azure.ai.openai.implementation.EmbeddingsUtils.addEncodingFormat;
-import static com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl.addModelIdJson;
-import static com.azure.core.util.FluxUtil.monoError;
 import com.azure.ai.openai.implementation.CompletionsUtils;
 import com.azure.ai.openai.implementation.MultipartDataHelper;
 import com.azure.ai.openai.implementation.MultipartDataSerializationResult;
@@ -46,9 +39,15 @@ import com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIServerSentEvents;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicReference;
+import static com.azure.ai.openai.implementation.AudioTranscriptionValidator.validateAudioResponseFormatForTranscription;
+import static com.azure.ai.openai.implementation.AudioTranscriptionValidator.validateAudioResponseFormatForTranscriptionText;
+import static com.azure.ai.openai.implementation.AudioTranslationValidator.validateAudioResponseFormatForTranslation;
+import static com.azure.ai.openai.implementation.AudioTranslationValidator.validateAudioResponseFormatForTranslationText;
+import static com.azure.ai.openai.implementation.EmbeddingsUtils.addEncodingFormat;
+import static com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl.addModelIdJson;
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * Initializes a new instance of the asynchronous OpenAIClient type.
@@ -140,15 +139,12 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEmbeddingsWithResponse(String deploymentOrModelName,
         BinaryData embeddingsOptions, RequestOptions requestOptions) {
-        try {
-            embeddingsOptions = addEncodingFormat(embeddingsOptions);
-        } catch (JsonProcessingException e) {
-            return Mono.error(new RuntimeException(e));
-        }
+        final BinaryData embeddingsOptionsUpdated = addEncodingFormat(embeddingsOptions);
         return openAIServiceClient != null
-            ? openAIServiceClient.getEmbeddingsWithResponseAsync(deploymentOrModelName, embeddingsOptions,
+            ? openAIServiceClient.getEmbeddingsWithResponseAsync(deploymentOrModelName, embeddingsOptionsUpdated,
                 requestOptions)
-            : serviceClient.getEmbeddingsWithResponseAsync(deploymentOrModelName, embeddingsOptions, requestOptions);
+            : serviceClient.getEmbeddingsWithResponseAsync(deploymentOrModelName, embeddingsOptionsUpdated,
+                requestOptions);
     }
 
     /**
@@ -1482,17 +1478,13 @@ public final class OpenAIAsyncClient {
     public Mono<Response<BinaryData>> generateSpeechFromTextWithResponse(String deploymentOrModelName,
         BinaryData speechGenerationOptions, RequestOptions requestOptions) {
         // modelId is part of the request body in nonAzure OpenAI
-        try {
-            BinaryData speechGenerationOptionsWithModelId
-                = addModelIdJson(speechGenerationOptions, deploymentOrModelName);
-            return this.openAIServiceClient != null
-                ? this.openAIServiceClient.generateSpeechFromTextWithResponseAsync(deploymentOrModelName,
-                    speechGenerationOptionsWithModelId, requestOptions)
-                : this.serviceClient.generateSpeechFromTextWithResponseAsync(deploymentOrModelName,
-                    speechGenerationOptionsWithModelId, requestOptions);
-        } catch (JsonProcessingException e) {
-            return Mono.error(e);
-        }
+        final BinaryData speechGenerationOptionsWithModelId
+            = addModelIdJson(speechGenerationOptions, deploymentOrModelName);
+        return this.openAIServiceClient != null
+            ? this.openAIServiceClient.generateSpeechFromTextWithResponseAsync(deploymentOrModelName,
+                speechGenerationOptionsWithModelId, requestOptions)
+            : this.serviceClient.generateSpeechFromTextWithResponseAsync(deploymentOrModelName,
+                speechGenerationOptionsWithModelId, requestOptions);
     }
 
     /**

@@ -28,7 +28,7 @@ public abstract class DistributionMode {
      * kind discriminator.
      */
     @JsonProperty(value = "kind")
-    protected DistributionModeKind kind;
+    private DistributionModeKind kind;
 
     /*
      * Governs the minimum desired number of active concurrent offers a job can have.
@@ -123,7 +123,5 @@ public abstract class DistributionMode {
      * Returns kind discriminator.
      * @return kind.
      */
-    public DistributionModeKind getKind() {
-        return this.kind;
-    }
+    public abstract DistributionModeKind getKind();
 }

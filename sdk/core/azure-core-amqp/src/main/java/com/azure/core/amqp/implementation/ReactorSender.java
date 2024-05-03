@@ -14,7 +14,6 @@ import com.azure.core.amqp.exception.OperationCancelledException;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
@@ -70,6 +69,7 @@ import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.MAX_AMQP_HEADER_SIZE_BYTES;
 import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
 import static com.azure.core.amqp.implementation.ClientConstants.SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS;
+import static com.azure.core.util.FluxUtil.monoError;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -153,7 +153,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
             handler.getConnectionId(), handler.getLinkName());
 
         this.endpointStates = this.handler.getEndpointStates().map(state -> {
-            logger.verbose("State {}", state);
+            logger.atVerbose().addKeyValue("state", state).log("onEndpointState");
             this.hasConnected.set(state == EndpointState.ACTIVE);
             return AmqpEndpointStateUtil.getConnectionState(state);
         }).doOnError(error -> {
@@ -332,7 +332,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
     }
 
     private Mono<Void> batchBufferOverflowError(int maxMessageSize) {
-        return FluxUtil.monoError(logger,
+        return monoError(logger,
             new AmqpException(
                 false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, String.format(Locale.US,
                     "Size of the payload exceeded maximum message size: %s kb", maxMessageSize / 1024),

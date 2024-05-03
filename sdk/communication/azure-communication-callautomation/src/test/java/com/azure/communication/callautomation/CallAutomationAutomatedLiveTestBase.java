@@ -26,7 +26,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
+import com.azure.core.util.CoreUtils;
+import java.util.StringJoiner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -55,8 +58,24 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
             "https://incomingcalldispatcher.azurewebsites.net");
     protected static final String DISPATCHER_CALLBACK = DISPATCHER_ENDPOINT + "/api/servicebuscallback/events";
     protected static final String BOT_APP_ID = Configuration.getGlobalConfiguration()
-        .get("BOT_APP_ID",
-            "REDACTED-bedb-REDACTED-b8c6-REDACTED");
+        .get("BOT_APP_ID", "REDACTED-bedb-REDACTED-b8c6-REDACTED");
+
+    private static final StringJoiner JSON_PROPERTIES_TO_REDACT 
+        = new StringJoiner("\":\"|\"", "\"", "\":\"")
+        .add("value")
+        .add("rawId")
+        .add("id")
+        .add("callbackUri")
+        .add("botAppId")
+        .add("ivrContext")
+        .add("incomingCallContext")
+        .add("serverCallId");
+        
+    protected static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
+        = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT),
+        Pattern.CASE_INSENSITIVE);
+    
+    protected static final String URL_REGEX = "(?<=http:\\/\\/|https:\\/\\/)([^\\/?]+)";
 
     @Override
     protected void beforeTest() {
@@ -259,5 +278,15 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
             Thread.sleep(1000);
         }
         return null;
+    }
+    
+    protected String redact(String content, Matcher matcher) {
+        while (matcher.find()) {
+            String captureGroup = matcher.group(1);
+            if (!CoreUtils.isNullOrEmpty(captureGroup)) {
+                content = content.replace(matcher.group(1), "REDACTED");
+            }
+        }
+        return content;
     }
 }

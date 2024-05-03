@@ -56,7 +56,7 @@ class TransientIOErrorsRetryingIteratorITest
 
     val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
     val queryOptions = new CosmosQueryRequestOptions()
-      .setCustomSerializer(
+      .setCustomItemSerializer(
         new CosmosItemSerializer {
           override def serialize[T](item: T): util.Map[String, AnyRef] = ???
 
@@ -199,7 +199,7 @@ class TransientIOErrorsRetryingIteratorITest
     )
     val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
     val queryOptions = new CosmosQueryRequestOptions()
-      .setCustomSerializer(
+      .setCustomItemSerializer(
         new CosmosItemSerializer {
           override def serialize[T](item: T): util.Map[String, AnyRef] = ???
 

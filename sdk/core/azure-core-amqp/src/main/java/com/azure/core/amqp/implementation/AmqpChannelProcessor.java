@@ -232,7 +232,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
                 }
             });
         } else {
-            logger.atWarning()
+            logger.atError()
                 .addKeyValue(TRY_COUNT_KEY, attemptsMade)
                 .log("Retry attempts exhausted or exception was not retriable.", throwable);
 
@@ -267,8 +267,9 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
                 actual.onSubscribe(Operators.emptySubscription());
                 actual.onError(lastError);
             } else {
-                Operators.error(actual, logger.logExceptionAsError(
-                    new IllegalStateException("Cannot subscribe. Processor is already terminated.")));
+                IllegalStateException error
+                    = new IllegalStateException("Cannot subscribe. Processor is already terminated.");
+                Operators.error(actual, logger.logExceptionAsWarning(error));
             }
 
             return;

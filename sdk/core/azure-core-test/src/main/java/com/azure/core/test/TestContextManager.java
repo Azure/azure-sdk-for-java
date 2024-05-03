@@ -8,8 +8,6 @@ import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
-
 /**
  * This class handles managing context about a test, such as custom testing annotations and verifying whether the test
  * is capable of running.
@@ -25,6 +23,7 @@ public class TestContextManager {
     private Integer testIteration;
     private final boolean skipRecordingRequestBody;
     private final Path testClassPath;
+    private final String trackerTestName;
 
     /**
      * Constructs a {@link TestContextManager} based on the test method.
@@ -48,6 +47,24 @@ public class TestContextManager {
      */
     public TestContextManager(Method testMethod, TestMode testMode, boolean enableTestProxy,
         boolean recordWithoutRequestBodyClassAnnotation, Path testClassPath) {
+        this(testMethod, testMode, enableTestProxy, recordWithoutRequestBodyClassAnnotation, testClassPath,
+            testMethod.getName());
+    }
+
+    /**
+     * Constructs a {@link TestContextManager} based on the test method.
+     *
+     * @param testMethod Test method being ran.
+     * @param testMode The {@link TestMode} the test is running in.
+     * @param enableTestProxy True if the external test proxy is in use.
+     * @param recordWithoutRequestBodyClassAnnotation flag indicating if {@code RecordWithoutRequestBody} annotation
+     * present on test class.
+     * @param testClassPath the test class path
+     * @param trackerTestName The formatted test name used in logging and tracking its progress.
+     */
+    @SuppressWarnings("deprecation")
+    public TestContextManager(Method testMethod, TestMode testMode, boolean enableTestProxy,
+        boolean recordWithoutRequestBodyClassAnnotation, Path testClassPath, String trackerTestName) {
         this.testName = testMethod.getName();
         this.className = testMethod.getDeclaringClass().getSimpleName();
         this.testMode = testMode;
@@ -67,7 +84,7 @@ public class TestContextManager {
         }
         this.testClassPath = testClassPath;
         this.testRan = !(skipInPlayback && testMode == TestMode.PLAYBACK);
-        assumeTrue(testRan, "Test does not allow playback and was ran in 'TestMode.PLAYBACK'");
+        this.trackerTestName = trackerTestName;
     }
 
     /**
@@ -154,7 +171,16 @@ public class TestContextManager {
      *
      * @param testIteration Test iteration.
      */
-    void setTestIteration(Integer testIteration) {
+    public void setTestIteration(Integer testIteration) {
         this.testIteration = testIteration;
+    }
+
+    /**
+     * Gets the formatted name of the test used to log and track its progress.
+     *
+     * @return The formatted test name.
+     */
+    public String getTrackerTestName() {
+        return trackerTestName;
     }
 }

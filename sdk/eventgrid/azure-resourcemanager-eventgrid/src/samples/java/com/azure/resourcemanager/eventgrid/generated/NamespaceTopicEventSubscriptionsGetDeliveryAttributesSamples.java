@@ -9,9 +9,7 @@ package com.azure.resourcemanager.eventgrid.generated;
  */
 public final class NamespaceTopicEventSubscriptionsGetDeliveryAttributesSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
-     * NamespaceTopicEventSubscriptions_GetDeliveryAttributes.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/NamespaceTopicEventSubscriptions_GetDeliveryAttributes.json
      */
     /**
      * Sample code: NamespaceTopicEventSubscriptions_GetDeliveryAttributes.
@@ -20,7 +18,8 @@ public final class NamespaceTopicEventSubscriptionsGetDeliveryAttributesSamples 
      */
     public static void namespaceTopicEventSubscriptionsGetDeliveryAttributes(
         com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.namespaceTopicEventSubscriptions().getDeliveryAttributesWithResponse("examplerg", "exampleNamespace",
-            "exampleNamespaceTopic", "exampleEventSubscriptionName", com.azure.core.util.Context.NONE);
+        manager.namespaceTopicEventSubscriptions()
+            .getDeliveryAttributesWithResponse("examplerg", "exampleNamespace", "exampleNamespaceTopic",
+                "exampleEventSubscriptionName", com.azure.core.util.Context.NONE);
     }
 }

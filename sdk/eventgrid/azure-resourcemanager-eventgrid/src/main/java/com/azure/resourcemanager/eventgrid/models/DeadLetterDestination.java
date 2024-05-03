@@ -5,7 +5,9 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -16,17 +18,34 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "endpointType",
-    defaultImpl = DeadLetterDestination.class)
+    defaultImpl = DeadLetterDestination.class,
+    visible = true)
 @JsonTypeName("DeadLetterDestination")
 @JsonSubTypes({ @JsonSubTypes.Type(name = "StorageBlob", value = StorageBlobDeadLetterDestination.class) })
 @Immutable
 public class DeadLetterDestination {
+    /*
+     * Type of the endpoint for the dead letter destination
+     */
+    @JsonTypeId
+    @JsonProperty(value = "endpointType", required = true)
+    private DeadLetterEndPointType endpointType;
+
     /**
      * Creates an instance of DeadLetterDestination class.
      */
     public DeadLetterDestination() {
+        this.endpointType = DeadLetterEndPointType.fromString("DeadLetterDestination");
+    }
+
+    /**
+     * Get the endpointType property: Type of the endpoint for the dead letter destination.
+     * 
+     * @return the endpointType value.
+     */
+    public DeadLetterEndPointType endpointType() {
+        return this.endpointType;
     }
 
     /**

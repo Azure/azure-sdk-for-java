@@ -139,7 +139,7 @@ public final class BulkExecutor<TContext> implements Disposable {
             .CosmosAsyncDatabaseHelper
             .getCosmosAsyncDatabaseAccessor()
             .getCosmosAsyncClient(container.getDatabase());
-        this.effectiveItemSerializer = this.docClientWrapper.getEffectiveItemSerializer(cosmosBulkOptions.getCustomSerializer());
+        this.effectiveItemSerializer = this.docClientWrapper.getEffectiveItemSerializer(cosmosBulkOptions.getCustomItemSerializer());
 
         this.throttlingRetryOptions = docClientWrapper.getConnectionPolicy().getThrottlingRetryOptions();
 
