@@ -142,6 +142,11 @@ public final class SearchField implements JsonSerializable<SearchField> {
     private String vectorSearchProfileName;
 
     /*
+     * The encoding format to interpret the field contents.
+     */
+    private VectorEncodingFormat vectorEncodingFormat;
+
+    /*
      * A list of the names of synonym maps to associate with this field. This option can be used only with searchable
      * fields. Currently only one synonym map per field is supported. Assigning a synonym map to a field ensures that
      * query terms targeting that field are expanded at query-time using the rules in the synonym map. This attribute
@@ -544,6 +549,26 @@ public final class SearchField implements JsonSerializable<SearchField> {
     }
 
     /**
+     * Get the vectorEncodingFormat property: The encoding format to interpret the field contents.
+     *
+     * @return the vectorEncodingFormat value.
+     */
+    public VectorEncodingFormat getVectorEncodingFormat() {
+        return this.vectorEncodingFormat;
+    }
+
+    /**
+     * Set the vectorEncodingFormat property: The encoding format to interpret the field contents.
+     *
+     * @param vectorEncodingFormat the vectorEncodingFormat value to set.
+     * @return the SearchField object itself.
+     */
+    public SearchField setVectorEncodingFormat(VectorEncodingFormat vectorEncodingFormat) {
+        this.vectorEncodingFormat = vectorEncodingFormat;
+        return this;
+    }
+
+    /**
      * Get the synonymMapNames property: A list of the names of synonym maps to associate with this field. This option
      * can be used only with searchable fields. Currently only one synonym map per field is supported. Assigning a
      * synonym map to a field ensures that query terms targeting that field are expanded at query-time using the rules
@@ -613,6 +638,8 @@ public final class SearchField implements JsonSerializable<SearchField> {
         jsonWriter.writeStringField("normalizer", this.normalizerName == null ? null : this.normalizerName.toString());
         jsonWriter.writeNumberField("dimensions", this.vectorSearchDimensions);
         jsonWriter.writeStringField("vectorSearchProfile", this.vectorSearchProfileName);
+        jsonWriter.writeStringField("vectorEncoding",
+            this.vectorEncodingFormat == null ? null : this.vectorEncodingFormat.toString());
         jsonWriter.writeArrayField("synonymMaps", this.synonymMapNames,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("fields", this.fields, (writer, element) -> writer.writeJson(element));
@@ -647,6 +674,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
             LexicalNormalizerName normalizerName = null;
             Integer vectorSearchDimensions = null;
             String vectorSearchProfileName = null;
+            VectorEncodingFormat vectorEncodingFormat = null;
             List<String> synonymMapNames = null;
             List<SearchField> fields = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -684,6 +712,8 @@ public final class SearchField implements JsonSerializable<SearchField> {
                     vectorSearchDimensions = reader.getNullable(JsonReader::getInt);
                 } else if ("vectorSearchProfile".equals(fieldName)) {
                     vectorSearchProfileName = reader.getString();
+                } else if ("vectorEncoding".equals(fieldName)) {
+                    vectorEncodingFormat = VectorEncodingFormat.fromString(reader.getString());
                 } else if ("synonymMaps".equals(fieldName)) {
                     synonymMapNames = reader.readArray(reader1 -> reader1.getString());
                 } else if ("fields".equals(fieldName)) {
@@ -707,6 +737,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
                 deserializedSearchField.normalizerName = normalizerName;
                 deserializedSearchField.vectorSearchDimensions = vectorSearchDimensions;
                 deserializedSearchField.vectorSearchProfileName = vectorSearchProfileName;
+                deserializedSearchField.vectorEncodingFormat = vectorEncodingFormat;
                 deserializedSearchField.synonymMapNames = synonymMapNames;
                 deserializedSearchField.fields = fields;
                 return deserializedSearchField;

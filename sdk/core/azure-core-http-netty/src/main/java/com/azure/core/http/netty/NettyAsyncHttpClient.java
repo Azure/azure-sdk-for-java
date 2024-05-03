@@ -78,7 +78,6 @@ import java.util.function.BiFunction;
  * <pre>
  * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
  *     .port&#40;8080&#41;
- *     .wiretap&#40;true&#41;
  *     .build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.core.http.netty.instantiation-simple -->

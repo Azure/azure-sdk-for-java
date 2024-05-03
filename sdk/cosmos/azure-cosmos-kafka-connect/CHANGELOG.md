@@ -1,6 +1,6 @@
 ## Release History
 
-### 1.0.0-beta.2 (Unreleased)
+### 1.0.0-beta.3 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,11 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 1.0.0-beta.2 (2024-05-01)
+
+#### Other Changes
+* Added support to create metadata container if not exists when using `Cosmos` as the metadata storage type and using `MasterKey` auth - See [PR 39973](https://github.com/Azure/azure-sdk-for-java/pull/39973)
 
 ### 1.0.0-beta.1 (2024-04-26)
 
