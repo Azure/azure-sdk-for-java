@@ -16,6 +16,7 @@ import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
+import io.clientcore.core.implementation.util.UrlBuilder;
 import io.clientcore.core.models.SocketConnection;
 import io.clientcore.core.models.SocketConnectionCache;
 import io.clientcore.core.util.ClientLogger;
@@ -429,7 +430,9 @@ class DefaultHttpClient implements HttpClient {
                 if (redirectLocation.startsWith("http")) {
                     httpRequest.setUrl(redirectLocation);
                 } else {
-                    httpRequest.setUrl(new URL(httpRequest.getUrl(), redirectLocation));
+                    UrlBuilder urlBuilder = UrlBuilder.parse(httpRequest.getUrl())
+                        .setPath(redirectLocation);
+                    httpRequest.setUrl(urlBuilder.toUrl());
                 }
                 return sendPatchRequest(httpRequest, bufferedInputStream, outputStream);
             }
