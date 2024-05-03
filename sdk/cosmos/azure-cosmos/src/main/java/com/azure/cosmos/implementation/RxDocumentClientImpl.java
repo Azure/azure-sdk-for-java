@@ -536,12 +536,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, /**/configs);
             this.isRegionScopedSessionCapturingEnabledOnClientOrSystemConfig = isRegionScopedSessionCapturingEnabled;
 
-            if (isRegionScopedSessionCapturingEnabled) {
-                this.sessionContainer = new RegionScopedSessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing, this.globalEndpointManager);
-                this.diagnosticsClientConfig.withRegionScopedSessionContainerOptions((RegionScopedSessionContainer) this.sessionContainer);
-            } else {
+//            if (isRegionScopedSessionCapturingEnabled) {
+//                this.sessionContainer = new RegionScopedSessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing, this.globalEndpointManager);
+//                this.diagnosticsClientConfig.withRegionScopedSessionContainerOptions((RegionScopedSessionContainer) this.sessionContainer);
+//            } else {
                 this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
-            }
+//            }
 
             this.retryPolicy = new RetryPolicy(this, this.globalEndpointManager, this.connectionPolicy);
             this.resetSessionTokenRetryPolicy = retryPolicy;
@@ -602,46 +602,47 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/332589
     }
 
-//    private void resetSessionContainerIfNeeded(DatabaseAccount databaseAccount) {
-//        boolean isRegionScopingOfSessionTokensPossible = this.isRegionScopingOfSessionTokensPossible(databaseAccount, this.useMultipleWriteLocations, this.isRegionScopedSessionCapturingEnabledOnClientOrSystemConfig);
-//
-//        if (isRegionScopingOfSessionTokensPossible) {
-//            this.sessionContainer = new RegionScopedSessionContainer(this.serviceEndpoint.getHost(), this.sessionCapturingDisabled, this.globalEndpointManager);
-//            this.diagnosticsClientConfig.withRegionScopedSessionContainerOptions((RegionScopedSessionContainer) this.sessionContainer);
-//        }
-//    }
-//
-//    private boolean isRegionScopingOfSessionTokensPossible(DatabaseAccount databaseAccount, boolean useMultipleWriteLocations, boolean isRegionScopedSessionCapturingEnabled) {
-//
-//        if (!isRegionScopedSessionCapturingEnabled) {
-//            return false;
-//        }
-//
-//        if (!useMultipleWriteLocations) {
-//            return false;
-//        }
-//
-//        Iterable<DatabaseAccountLocation> readableLocationsIterable = databaseAccount.getReadableLocations();
-//        Iterator<DatabaseAccountLocation> readableLocationsIterator = readableLocationsIterable.iterator();
-//
-//        while (readableLocationsIterator.hasNext()) {
-//            DatabaseAccountLocation readableLocation = readableLocationsIterator.next();
-//
-//            String normalizedReadableRegion = readableLocation.getName().toLowerCase(Locale.ROOT).trim().replace(" ", "");
-//
-//            if (RegionNameToRegionIdMap.getRegionId(normalizedReadableRegion) == -1) {
-//                return false;
-//            }
-//        }
-//
-//        return true;
-//    }
+    private void resetSessionContainerIfNeeded(DatabaseAccount databaseAccount) {
+        boolean isRegionScopingOfSessionTokensPossible = this.isRegionScopingOfSessionTokensPossible(databaseAccount, this.useMultipleWriteLocations, this.isRegionScopedSessionCapturingEnabledOnClientOrSystemConfig);
+
+        if (isRegionScopingOfSessionTokensPossible) {
+            this.sessionContainer = new RegionScopedSessionContainer(this.serviceEndpoint.getHost(), this.sessionCapturingDisabled, this.globalEndpointManager);
+            this.diagnosticsClientConfig.withRegionScopedSessionContainerOptions((RegionScopedSessionContainer) this.sessionContainer);
+        }
+    }
+
+    private boolean isRegionScopingOfSessionTokensPossible(DatabaseAccount databaseAccount, boolean useMultipleWriteLocations, boolean isRegionScopedSessionCapturingEnabled) {
+
+        if (!isRegionScopedSessionCapturingEnabled) {
+            return false;
+        }
+
+        if (!useMultipleWriteLocations) {
+            return false;
+        }
+
+        Iterable<DatabaseAccountLocation> readableLocationsIterable = databaseAccount.getReadableLocations();
+        Iterator<DatabaseAccountLocation> readableLocationsIterator = readableLocationsIterable.iterator();
+
+        while (readableLocationsIterator.hasNext()) {
+            DatabaseAccountLocation readableLocation = readableLocationsIterator.next();
+
+            String normalizedReadableRegion = readableLocation.getName().toLowerCase(Locale.ROOT).trim().replace(" ", "");
+
+            if (RegionNameToRegionIdMap.getRegionId(normalizedReadableRegion) == -1) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     private void updateGatewayProxy() {
         (this.gatewayProxy).setGatewayServiceConfigurationReader(this.gatewayConfigurationReader);
         (this.gatewayProxy).setCollectionCache(this.collectionCache);
         (this.gatewayProxy).setPartitionKeyRangeCache(this.partitionKeyRangeCache);
         (this.gatewayProxy).setUseMultipleWriteLocations(this.useMultipleWriteLocations);
+        (this.gatewayProxy).setSessionContainer(this.sessionContainer);
     }
 
     public void init(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot, Function<HttpClient, HttpClient> httpClientInterceptor) {
@@ -664,7 +665,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             this.globalEndpointManager.init();
             DatabaseAccount databaseAccountSnapshot = this.initializeGatewayConfigurationReader();
-//            this.resetSessionContainerIfNeeded(databaseAccountSnapshot);
+            this.resetSessionContainerIfNeeded(databaseAccountSnapshot);
 
             if (metadataCachesSnapshot != null) {
                 this.collectionCache = new RxClientCollectionCache(this,

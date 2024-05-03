@@ -135,6 +135,10 @@ public class RxGatewayStoreModel implements RxStoreModel {
         this.useMultipleWriteLocations = useMultipleWriteLocations;
     }
 
+    public void setSessionContainer(ISessionContainer sessionContainer) {
+        this.sessionContainer = sessionContainer;
+    }
+
     boolean isUseMultipleWriteLocations() {
         return useMultipleWriteLocations;
     }
