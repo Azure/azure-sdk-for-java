@@ -27,6 +27,7 @@ public class NonStreamingOrderByUtils {
     public static <T extends Resource> Flux<OrderByRowResult<Document>> nonStreamingOrderedMerge(OrderbyRowComparer<Document> consumeComparer,
                                                                                                  RequestChargeTracker tracker,
                                                                                                  List<DocumentProducer<Document>> documentProducers,
+                                                                                                 int initialPageSize,
                                                                                                  Map<String, QueryMetrics> queryMetricsMap,
                                                                                                  int maxSizePerPartition,
                                                                                                  Collection<ClientSideRequestStatistics> clientSideRequestStatistics) {
@@ -35,7 +36,7 @@ public class NonStreamingOrderByUtils {
             .subList(0, documentProducers.size())
             .stream()
             .map(producer ->
-                toNonStreamingOrderByQueryResultObservable(producer, tracker, queryMetricsMap,
+                toNonStreamingOrderByQueryResultObservable(producer, tracker, queryMetricsMap, initialPageSize,
                     maxSizePerPartition, consumeComparer, clientSideRequestStatistics))
             .toArray(Flux[]::new);
         return Flux.mergeOrdered(consumeComparer, fluxes);
@@ -44,12 +45,13 @@ public class NonStreamingOrderByUtils {
     private static Flux<OrderByRowResult<Document>> toNonStreamingOrderByQueryResultObservable(DocumentProducer<Document> producer,
                                                                                                RequestChargeTracker tracker,
                                                                                                Map<String, QueryMetrics> queryMetricsMap,
+                                                                                               int initialPageSize,
                                                                                                int maxSizePerPartition,
                                                                                                OrderbyRowComparer<Document> consumeComparer,
                                                                                                Collection<ClientSideRequestStatistics> clientSideRequestStatisticsList) {
         return producer
             .produceAsync()
-            .transformDeferred(new NonStreamingOrderByUtils.PageToItemTransformer(tracker, queryMetricsMap,
+            .transformDeferred(new NonStreamingOrderByUtils.PageToItemTransformer(tracker, queryMetricsMap, initialPageSize,
                 maxSizePerPartition, consumeComparer, clientSideRequestStatisticsList));
     }
 
@@ -57,15 +59,17 @@ public class NonStreamingOrderByUtils {
         Function<Flux<DocumentProducer<Document>.DocumentProducerFeedResponse>, Flux<OrderByRowResult<Document>>> {
         private final RequestChargeTracker tracker;
         private final Map<String, QueryMetrics> queryMetricsMap;
+        private final Integer initialPageSize;
         private final Integer maxSizePerPartition;
         private final OrderbyRowComparer<Document> consumeComparer;
         private final Collection<ClientSideRequestStatistics> clientSideRequestStatistics;
 
         private PageToItemTransformer(RequestChargeTracker tracker, Map<String, QueryMetrics> queryMetricsMap,
-                                      Integer maxSizePerPartition, OrderbyRowComparer<Document> consumeComparer,
+                                      Integer initialPageSize, Integer maxSizePerPartition, OrderbyRowComparer<Document> consumeComparer,
                                       Collection<ClientSideRequestStatistics> clientSideRequestStatistics) {
             this.tracker = tracker;
             this.queryMetricsMap = queryMetricsMap;
+            this.initialPageSize = initialPageSize;
             this.maxSizePerPartition = maxSizePerPartition;
             this.consumeComparer = consumeComparer;
             this.clientSideRequestStatistics = clientSideRequestStatistics;
@@ -74,31 +78,28 @@ public class NonStreamingOrderByUtils {
         @Override
         public Flux<OrderByRowResult<Document>> apply(Flux<DocumentProducer<Document>.DocumentProducerFeedResponse> source) {
             PriorityQueue<OrderByRowResult<Document>> priorityQueue = new PriorityQueue<>(consumeComparer);
-            AtomicBoolean emitFlag = new AtomicBoolean(true);
 
             return source.flatMap(documentProducerFeedResponse -> {
-                    // Checks if the max size has been reached, if so, stop processing new pages
-                    if (emitFlag.get()) {
-                        clientSideRequestStatistics.addAll(
-                            diagnosticsAccessor.getClientSideRequestStatisticsForQueryPipelineAggregations(documentProducerFeedResponse
-                                .pageResult.getCosmosDiagnostics()));
+                    clientSideRequestStatistics.addAll(
+                        diagnosticsAccessor.getClientSideRequestStatisticsForQueryPipelineAggregations(documentProducerFeedResponse
+                            .pageResult.getCosmosDiagnostics()));
 
-                        QueryMetrics.mergeQueryMetricsMap(queryMetricsMap,
-                            BridgeInternal.queryMetricsFromFeedResponse(documentProducerFeedResponse.pageResult));
-                        List<Document> results = documentProducerFeedResponse.pageResult.getResults();
-                        results.forEach(r -> {
-                            OrderByRowResult<Document> orderByRowResult = new OrderByRowResult<Document>(
-                                ModelBridgeInternal.toJsonFromJsonSerializable(r),
-                                documentProducerFeedResponse.sourceFeedRange,
-                                null);
-                            if (priorityQueue.size() < maxSizePerPartition) {
-                                priorityQueue.add(orderByRowResult);
-                            } else {
-                                emitFlag.set(false);
-                            }
-                        });
-                        tracker.addCharge(documentProducerFeedResponse.pageResult.getRequestCharge());
-                    }
+                    QueryMetrics.mergeQueryMetricsMap(queryMetricsMap,
+                        BridgeInternal.queryMetricsFromFeedResponse(documentProducerFeedResponse.pageResult));
+                    List<Document> results = documentProducerFeedResponse.pageResult.getResults();
+                    results.forEach(r -> {
+                        OrderByRowResult<Document> orderByRowResult = new OrderByRowResult<Document>(
+                            r.toJson(),
+                            documentProducerFeedResponse.sourceFeedRange,
+                            null);
+                        if (priorityQueue.size() < initialPageSize) {
+                            priorityQueue.add(orderByRowResult);
+                        } else {
+                            priorityQueue.add(orderByRowResult);
+                            priorityQueue.poll();
+                        }
+                    });
+                    tracker.addCharge(documentProducerFeedResponse.pageResult.getRequestCharge());
                     // Returning an empty Flux since we are only processing and managing state here
                     return Flux.empty();
                 }, 1)

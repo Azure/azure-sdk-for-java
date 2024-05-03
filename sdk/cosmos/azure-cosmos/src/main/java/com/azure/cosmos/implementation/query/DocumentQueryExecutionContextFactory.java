@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -357,6 +358,32 @@ public class DocumentQueryExecutionContextFactory {
         }
 
         boolean getLazyFeedResponse = queryInfo.hasTop();
+
+        // We need to compute the optimal initial age size for non-streaming order-by queries
+        if (queryInfo.hasNonStreamingOrderBy()) {
+            // Validate the TOP or LIMIT for non-streaming order-by queries
+            if (!queryInfo.hasTop() || !queryInfo.hasLimit() || queryInfo.getTop() < 0 || queryInfo.getLimit() < 0) {
+                throw new NonStreamingOrderByBadRequestException(HttpConstants.StatusCodes.BADREQUEST,
+                    "Executing a vector search query without TOP or LIMIT can consume a large number of RUs" +
+                        "very fast and have long runtimes. Please ensure you are using one of the above two filters" +
+                        "with you vector search query.");
+            }
+
+            // Validate the size of TOP or LIMIT against MaxSizePerPartition
+            int maxLimit = Math.max(queryInfo.hasTop() ? queryInfo.getTop() : 0,
+                queryInfo.hasLimit() ? queryInfo.getLimit() : 0);
+            if (maxLimit > cosmosQueryRequestOptions.getMaxSizePerPartition()) {
+                throw new NonStreamingOrderByBadRequestException(HttpConstants.StatusCodes.BADREQUEST,
+                    "Executing a vector search query with TOP or LIMIT larger than the MaxSizePerPartition " +
+                        "is not allowed");
+            }
+
+            // Set initialPageSize based on the smallest of TOP or LIMIT
+            if (queryInfo.hasTop() || queryInfo.hasLimit() ) {
+                initialPageSize = Math.min(queryInfo.hasTop() ? queryInfo.getTop() : Integer.MAX_VALUE,
+                                           queryInfo.hasLimit() ? queryInfo.getLimit() : Integer.MAX_VALUE);
+            }
+        }
 
         // We need to compute the optimal initial page size for order-by queries
         if (queryInfo.hasOrderBy()) {

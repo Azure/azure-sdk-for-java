@@ -54,12 +54,12 @@ public class PipelinedDocumentQueryExecutionContext<T>
                 CosmosQueryRequestOptions orderByCosmosQueryRequestOptions =
                     qryOptAccessor.clone(requestOptions);
                 if (queryInfo.hasNonStreamingOrderBy()) {
-                    qryOptAccessor.getImpl(orderByCosmosQueryRequestOptions).setItemFactoryMethod(null);
+                    qryOptAccessor.getImpl(orderByCosmosQueryRequestOptions).setCustomItemSerializer(null);
                     documentQueryParams.setCosmosQueryRequestOptions(orderByCosmosQueryRequestOptions);
                     return NonStreamingOrderByDocumentQueryExecutionContext.createAsync(diagnosticsClientContext, client, documentQueryParams, collection, 1000);
                 } else {
                     ModelBridgeInternal.setQueryRequestOptionsContinuationToken(orderByCosmosQueryRequestOptions, continuationToken);
-                    qryOptAccessor.getImpl(orderByCosmosQueryRequestOptions).setItemFactoryMethod(null);
+                    qryOptAccessor.getImpl(orderByCosmosQueryRequestOptions).setCustomItemSerializer(null);
                     documentQueryParams.setCosmosQueryRequestOptions(orderByCosmosQueryRequestOptions);
                     return OrderByDocumentQueryExecutionContext.createAsync(diagnosticsClientContext, client, documentQueryParams, collection);
                 }

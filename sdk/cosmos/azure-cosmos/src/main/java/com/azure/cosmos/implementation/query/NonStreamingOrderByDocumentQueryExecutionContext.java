@@ -143,6 +143,7 @@ public class NonStreamingOrderByDocumentQueryExecutionContext
             consumeComparer,
             tracker,
             documentProducers,
+            initialPageSize,
             queryMetricMap,
             maxSizePerPartition,
             clientSideRequestStatistics);
