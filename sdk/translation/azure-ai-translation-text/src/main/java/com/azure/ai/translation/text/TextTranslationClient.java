@@ -31,6 +31,7 @@ import com.azure.core.util.serializer.TypeReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import com.azure.ai.translation.text.models.LanguageScope;
 import com.azure.ai.translation.text.options.TranslateOptions;
 
 /**
@@ -1305,9 +1306,8 @@ public final class TextTranslationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the set of languages currently supported by other operations of the Translator.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GetSupportedLanguagesResult getSupportedLanguages(String clientTraceId, String scope, String acceptLanguage,
+    private GetSupportedLanguagesResult getSupportedLanguages(String clientTraceId, String scope, String acceptLanguage,
         String ifNoneMatch) {
         // Generated convenience method for getSupportedLanguagesWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -1324,6 +1324,35 @@ public final class TextTranslationClient {
             requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
         }
         return getSupportedLanguagesWithResponse(requestOptions).getValue().toObject(GetSupportedLanguagesResult.class);
+    }
+
+    /**
+     * Gets the set of languages currently supported by other operations of the Translator.
+     *
+     * @param clientTraceId A client-generated GUID to uniquely identify the request.
+     * @param scopes List of names defining the group of languages to return.
+     * @param acceptLanguage The language to use for user interface strings. Some of the fields in the response are
+     * names of languages or
+     * names of regions. Use this parameter to define the language in which these names are returned.
+     * The language is specified by providing a well-formed BCP 47 language tag. For instance, use the value `fr`
+     * to request names in French or use the value `zh-Hant` to request names in Chinese Traditional.
+     * Names are provided in the English language when a target language is not specified or when localization
+     * is not available.
+     * @param ifNoneMatch Passing the value of the ETag response header in an If-None-Match field will allow the service
+     * to optimize the response.
+     * If the resource has not been modified, the service will return status code 304 and an empty response body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the set of languages currently supported by other operations of the Translator.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GetSupportedLanguagesResult getSupportedLanguages(String clientTraceId, List<LanguageScope> scopes,
+        String acceptLanguage, String ifNoneMatch) {
+        return getSupportedLanguages(clientTraceId, convertToScopesString(scopes), acceptLanguage, ifNoneMatch);
     }
 
     /**
@@ -1350,5 +1379,19 @@ public final class TextTranslationClient {
             content.add(new InputTextItem(text));
         }
         return content;
+    }
+
+    private String convertToScopesString(List<LanguageScope> scopes) {
+        if (scopes == null) {
+            return null;
+        }
+        String result = "";
+        for (LanguageScope scope : scopes) {
+            if (!result.isEmpty()) {
+                result += ",";
+            }
+            result += scope.toString();
+        }
+        return result;
     }
 }
