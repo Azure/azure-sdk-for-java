@@ -46,15 +46,17 @@ import static com.azure.core.http.vertx.implementation.VertxUtils.wrapVertxExcep
 class VertxAsyncHttpClient implements HttpClient {
     private final Vertx vertx;
     final io.vertx.core.http.HttpClient client;
+    private final Duration responseTimeout;
 
     /**
      * Constructs a {@link VertxAsyncHttpClient}.
      *
      * @param client The Vert.x {@link io.vertx.core.http.HttpClient}
      */
-    VertxAsyncHttpClient(io.vertx.core.http.HttpClient client, Vertx vertx) {
+    VertxAsyncHttpClient(io.vertx.core.http.HttpClient client, Vertx vertx, Duration responseTimeout) {
         this.client = Objects.requireNonNull(client, "client cannot be null");
         this.vertx = Objects.requireNonNull(vertx, "vertx cannot be null");
+        this.responseTimeout = responseTimeout;
     }
 
     @Override

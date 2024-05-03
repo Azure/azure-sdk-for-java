@@ -35,26 +35,29 @@ public class VertxAsyncHttpClientBuilder {
     private static final Pattern NON_PROXY_HOSTS_SPLIT = Pattern.compile("(?<!\\\\)\\|");
     private static final Pattern NON_PROXY_HOST_DESANITIZE = Pattern.compile("(\\?|\\\\|\\(|\\)|\\\\E|\\\\Q|\\.\\.)");
     private static final Pattern NON_PROXY_HOST_DOT_STAR = Pattern.compile("(\\.\\*)");
-    private static final long DEFAULT_CONNECT_TIMEOUT;
-    private static final long DEFAULT_WRITE_TIMEOUT;
-    private static final long DEFAULT_RESPONSE_TIMEOUT;
-    private static final long DEFAULT_READ_TIMEOUT;
+
+    private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
+    private static final Duration DEFAULT_CONNECT_TIMEOUT;
+    private static final Duration DEFAULT_WRITE_TIMEOUT;
+    private static final Duration DEFAULT_RESPONSE_TIMEOUT;
+    private static final Duration DEFAULT_READ_TIMEOUT;
 
     static {
         Configuration configuration = Configuration.getGlobalConfiguration();
         DEFAULT_CONNECT_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, Duration.ofSeconds(10), LOGGER).toMillis();
+            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, Duration.ofSeconds(10), LOGGER);
         DEFAULT_WRITE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
-            Duration.ofSeconds(60), LOGGER).toMillis();
+            Duration.ofSeconds(60), LOGGER);
         DEFAULT_RESPONSE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, Duration.ofSeconds(60), LOGGER).toMillis();
+            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, Duration.ofSeconds(60), LOGGER);
         DEFAULT_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT,
-            Duration.ofSeconds(60), LOGGER).toMillis();
+            Duration.ofSeconds(60), LOGGER);
     }
 
-    private Duration readIdleTimeout;
-    private Duration writeIdleTimeout;
     private Duration connectTimeout;
+    private Duration writeTimeout;
+    private Duration responseTimeout;
+    private Duration readTimeout;
     private Duration idleTimeout;
     private ProxyOptions proxyOptions;
     private Configuration configuration;
@@ -68,48 +71,92 @@ public class VertxAsyncHttpClientBuilder {
     }
 
     /**
-     * Sets the read idle timeout.
+     * Sets the connection timeout for a request to be sent.
      * <p>
-     * The default read idle timeout is 60 seconds.
-     *
-     * @param readIdleTimeout the read idle timeout
-     * @return the updated VertxAsyncHttpClientBuilder object
-     */
-    public VertxAsyncHttpClientBuilder readIdleTimeout(Duration readIdleTimeout) {
-        this.readIdleTimeout = readIdleTimeout;
-        return this;
-    }
-
-    /**
-     * Sets the write idle timeout.
+     * The connection timeout begins once the request attempts to connect to the remote host and finishes once the
+     * connection is resolved.
      * <p>
-     * The default read idle timeout is 60 seconds.
-     *
-     * @param writeIdleTimeout the write idle timeout
-     * @return the updated VertxAsyncHttpClientBuilder object
-     */
-    public VertxAsyncHttpClientBuilder writeIdleTimeout(Duration writeIdleTimeout) {
-        this.writeIdleTimeout = writeIdleTimeout;
-        return this;
-    }
-
-    /**
-     * Sets the connect timeout.
+     * If {@code connectTimeout} is null either {@link Configuration#PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT} or a
+     * 10-second timeout will be used, if it is a {@link Duration} less than or equal to zero then no timeout will be
+     * applied. When applying the timeout the greatest of one millisecond and the value of {@code connectTimeout} will
+     * be used.
      * <p>
-     * The default connect timeout is 10 seconds.
+     * By default, the connection timeout is 10 seconds.
      *
-     * @param connectTimeout the connection timeout
-     * @return the updated VertxAsyncHttpClientBuilder object
+     * @param connectTimeout Connect timeout duration.
+     * @return The updated OkHttpAsyncHttpClientBuilder object.
      */
     public VertxAsyncHttpClientBuilder connectTimeout(Duration connectTimeout) {
+        // setConnectionTimeout can be null
         this.connectTimeout = connectTimeout;
+        return this;
+    }
+
+
+    /**
+     * Sets the read timeout duration used when reading the server response.
+     * <p>
+     * The read timeout begins once the first response read is triggered after the server response is received. This
+     * timeout triggers periodically but won't fire its operation if another read operation has completed between when
+     * the timeout is triggered and completes.
+     * <p>
+     * If {@code readTimeout} is null or {@link Configuration#PROPERTY_AZURE_REQUEST_READ_TIMEOUT} or a 60-second
+     * timeout will be used, if it is a {@link Duration} less than or equal to zero then no timeout period will be
+     * applied to response read. When applying the timeout the greatest of one millisecond and the value of {@code
+     * readTimeout} will be used.
+     *
+     * @param readTimeout Read timeout duration.
+     * @return The updated OkHttpAsyncHttpClientBuilder object.
+     */
+    public VertxAsyncHttpClientBuilder readTimeout(Duration readTimeout) {
+        this.readTimeout = readTimeout;
+        return this;
+    }
+
+    /**
+     * Sets the response timeout duration used when waiting for a server to reply.
+     * <p>
+     * The response timeout begins once the request write completes and finishes once the first response read is
+     * triggered when the server response is received.
+     * <p>
+     * If {@code responseTimeout} is null either {@link Configuration#PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT} or a
+     * 60-second timeout will be used, if it is a {@link Duration} less than or equal to zero then no timeout will be
+     * applied to the response. When applying the timeout the greatest of one millisecond and the value of {@code
+     * responseTimeout} will be used.
+     * <p>
+     * Given OkHttp doesn't have an equivalent timeout for just responses, this is handled manually.
+     *
+     * @param responseTimeout Response timeout duration.
+     * @return The updated VertxAsyncHttpClientBuilder object.
+     */
+    public VertxAsyncHttpClientBuilder responseTimeout(Duration responseTimeout) {
+        this.responseTimeout = responseTimeout;
+        return this;
+    }
+
+    /**
+     * Sets the writing timeout for a request to be sent.
+     * <p>
+     * The writing timeout does not apply to the entire request but to the request being sent over the wire. For example
+     * a request body which emits {@code 10} {@code 8KB} buffers will trigger {@code 10} write operations, the last
+     * write tracker will update when each operation completes and the outbound buffer will be periodically checked to
+     * determine if it is still draining.
+     * <p>
+     * If {@code writeTimeout} is null either {@link Configuration#PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT} or a 60-second
+     * timeout will be used, if it is a {@link Duration} less than or equal to zero then no write timeout will be
+     * applied. When applying the timeout the greatest of one millisecond and the value of {@code writeTimeout} will be
+     * used.
+     *
+     * @param writeTimeout Write operation timeout duration.
+     * @return The updated VertxAsyncHttpClientBuilder object.
+     */
+    public VertxAsyncHttpClientBuilder writeTimeout(Duration writeTimeout) {
+        this.writeTimeout = writeTimeout;
         return this;
     }
 
     /**
      * Sets the connection idle timeout.
-     * <p>
-     * The default connect timeout is 60 seconds.
      *
      * @param idleTimeout the connection idle timeout
      * @return the updated VertxAsyncHttpClientBuilder object
@@ -183,31 +230,11 @@ public class VertxAsyncHttpClientBuilder {
         }
 
         if (this.httpClientOptions == null) {
-            this.httpClientOptions = new HttpClientOptions().setIdleTimeoutUnit(TimeUnit.MILLISECONDS);
-
-            if (this.connectTimeout != null) {
-                this.httpClientOptions.setConnectTimeout((int) this.connectTimeout.toMillis());
-            } else {
-                this.httpClientOptions.setConnectTimeout((int) DEFAULT_CONNECT_TIMEOUT);
-            }
-
-            if (this.readIdleTimeout != null) {
-                this.httpClientOptions.setReadIdleTimeout((int) this.readIdleTimeout.toMillis());
-            } else {
-                this.httpClientOptions.setReadIdleTimeout((int) DEFAULT_READ_TIMEOUT);
-            }
-
-            if (this.writeIdleTimeout != null) {
-                this.httpClientOptions.setWriteIdleTimeout((int) this.writeIdleTimeout.toMillis());
-            } else {
-                this.httpClientOptions.setWriteIdleTimeout((int) DEFAULT_WRITE_TIMEOUT);
-            }
-
-            if (this.idleTimeout != null) {
-                this.httpClientOptions.setIdleTimeout((int) this.idleTimeout.toMillis());
-            } else {
-                this.httpClientOptions.setIdleTimeout((int) DEFAULT_RESPONSE_TIMEOUT);
-            }
+            this.httpClientOptions = new HttpClientOptions().setIdleTimeoutUnit(TimeUnit.MILLISECONDS)
+                .setIdleTimeout((int) getTimeout(this.idleTimeout, Duration.ZERO).toMillis())
+                .setConnectTimeout((int) getTimeout(this.connectTimeout, DEFAULT_CONNECT_TIMEOUT).toMillis())
+                .setReadIdleTimeout((int) getTimeout(this.readTimeout, DEFAULT_READ_TIMEOUT).toMillis())
+                .setWriteIdleTimeout((int) getTimeout(this.writeTimeout, DEFAULT_WRITE_TIMEOUT).toMillis());
 
             Configuration buildConfiguration
                 = (this.configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
@@ -255,7 +282,8 @@ public class VertxAsyncHttpClientBuilder {
         }
 
         io.vertx.core.http.HttpClient client = configuredVertx.createHttpClient(this.httpClientOptions);
-        return new VertxAsyncHttpClient(client, configuredVertx);
+        return new VertxAsyncHttpClient(client, configuredVertx,
+            getTimeout(this.responseTimeout, DEFAULT_RESPONSE_TIMEOUT));
     }
 
     static Vertx getVertx(Iterator<VertxProvider> iterator) {
@@ -335,5 +363,30 @@ public class VertxAsyncHttpClientBuilder {
                 Thread.currentThread().interrupt();
             }
         };
+    }
+
+    /*
+     * Returns the timeout in milliseconds to use based on the passed Duration and default timeout.
+     *
+     * If the timeout is {@code null} the default timeout will be used. If the timeout is less than or equal to zero
+     * no timeout will be used. If the timeout is less than one millisecond a timeout of one millisecond will be used.
+     */
+    static Duration getTimeout(Duration configuredTimeout, Duration defaultTimeout) {
+        // Timeout is null, use the default timeout.
+        if (configuredTimeout == null) {
+            return defaultTimeout;
+        }
+
+        // Timeout is less than or equal to zero, return no timeout.
+        if (configuredTimeout.isZero() || configuredTimeout.isNegative()) {
+            return Duration.ZERO;
+        }
+
+        // Return the maximum of the timeout period and the minimum allowed timeout period.
+        if (configuredTimeout.compareTo(MINIMUM_TIMEOUT) < 0) {
+            return MINIMUM_TIMEOUT;
+        } else {
+            return configuredTimeout;
+        }
     }
 }

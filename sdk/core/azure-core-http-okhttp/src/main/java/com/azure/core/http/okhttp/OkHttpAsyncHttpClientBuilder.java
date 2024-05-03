@@ -206,7 +206,6 @@ public class OkHttpAsyncHttpClientBuilder {
      * @see OkHttpClient.Builder#readTimeout(Duration)
      */
     public OkHttpAsyncHttpClientBuilder readTimeout(Duration readTimeout) {
-        // setReadTimeout can be null
         this.readTimeout = readTimeout;
         return this;
     }
@@ -228,7 +227,6 @@ public class OkHttpAsyncHttpClientBuilder {
      * @return The updated OkHttpAsyncHttpClientBuilder object.
      */
     public OkHttpAsyncHttpClientBuilder responseTimeout(Duration responseTimeout) {
-        // setReadTimeout can be null
         this.responseTimeout = responseTimeout;
         return this;
     }
@@ -426,7 +424,8 @@ public class OkHttpAsyncHttpClientBuilder {
         // Set the followRedirects property.
         httpClientBuilder.followRedirects(this.followRedirects);
 
-        return new OkHttpAsyncHttpClient(httpClientBuilder.build(), responseTimeout);
+        return new OkHttpAsyncHttpClient(httpClientBuilder.build(),
+            getTimeout(responseTimeout, DEFAULT_RESPONSE_TIMEOUT));
     }
 
     /*

@@ -245,7 +245,7 @@ public class VertxAsyncHttpClientTests {
 
     @Test
     public void perCallTimeout() {
-        HttpClient client = new VertxAsyncHttpClientBuilder().idleTimeout(Duration.ofSeconds(10)).build();
+        HttpClient client = new VertxAsyncHttpClientBuilder().responseTimeout(Duration.ofSeconds(10)).build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(TIMEOUT));
 
@@ -267,7 +267,7 @@ public class VertxAsyncHttpClientTests {
 
     @Test
     public void perCallTimeoutSync() {
-        HttpClient client = new VertxAsyncHttpClientBuilder().idleTimeout(Duration.ofSeconds(10)).build();
+        HttpClient client = new VertxAsyncHttpClientBuilder().responseTimeout(Duration.ofSeconds(10)).build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(TIMEOUT));
 
