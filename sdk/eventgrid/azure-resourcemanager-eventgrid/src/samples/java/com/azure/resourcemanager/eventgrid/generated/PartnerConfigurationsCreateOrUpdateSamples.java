@@ -16,9 +16,7 @@ import java.util.UUID;
  */
 public final class PartnerConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
-     * PartnerConfigurations_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/PartnerConfigurations_CreateOrUpdate.json
      */
     /**
      * Sample code: PartnerConfigurations_CreateOrUpdate.
@@ -40,7 +38,8 @@ public final class PartnerConfigurationsCreateOrUpdateSamples {
                             new Partner()
                                 .withPartnerRegistrationImmutableId(
                                     UUID.fromString("5362bdb6-ce3e-4d0d-9a5b-3eb92c8aab38"))
-                                .withPartnerName("fabrikam.HR").withAuthorizationExpirationTimeInUtc(
+                                .withPartnerName("fabrikam.HR")
+                                .withAuthorizationExpirationTimeInUtc(
                                     OffsetDateTime.parse("2022-02-20T01:00:00.142Z"))))),
                 com.azure.core.util.Context.NONE);
     }

@@ -20,19 +20,19 @@ public final class FileDetailsProperties {
     private OffsetDateTime createdOn;
 
     /*
-     * Size of each chunk
+     * Size of each chunk. The size of each chunk should be provided in bytes and must not exceed 2.5 megabytes (MB).
      */
     @JsonProperty(value = "chunkSize")
     private Integer chunkSize;
 
     /*
-     * Size of the file to be uploaded
+     * Size of the file to be uploaded. The file size must not exceed 5 MB and should be provided in bytes.
      */
     @JsonProperty(value = "fileSize")
     private Integer fileSize;
 
     /*
-     * Number of chunks to be uploaded
+     * Number of chunks to be uploaded. The maximum number of allowed chunks is 2.
      */
     @JsonProperty(value = "numberOfChunks")
     private Integer numberOfChunks;
@@ -53,7 +53,8 @@ public final class FileDetailsProperties {
     }
 
     /**
-     * Get the chunkSize property: Size of each chunk.
+     * Get the chunkSize property: Size of each chunk. The size of each chunk should be provided in bytes and must not
+     * exceed 2.5 megabytes (MB).
      * 
      * @return the chunkSize value.
      */
@@ -62,7 +63,8 @@ public final class FileDetailsProperties {
     }
 
     /**
-     * Set the chunkSize property: Size of each chunk.
+     * Set the chunkSize property: Size of each chunk. The size of each chunk should be provided in bytes and must not
+     * exceed 2.5 megabytes (MB).
      * 
      * @param chunkSize the chunkSize value to set.
      * @return the FileDetailsProperties object itself.
@@ -73,7 +75,8 @@ public final class FileDetailsProperties {
     }
 
     /**
-     * Get the fileSize property: Size of the file to be uploaded.
+     * Get the fileSize property: Size of the file to be uploaded. The file size must not exceed 5 MB and should be
+     * provided in bytes.
      * 
      * @return the fileSize value.
      */
@@ -82,7 +85,8 @@ public final class FileDetailsProperties {
     }
 
     /**
-     * Set the fileSize property: Size of the file to be uploaded.
+     * Set the fileSize property: Size of the file to be uploaded. The file size must not exceed 5 MB and should be
+     * provided in bytes.
      * 
      * @param fileSize the fileSize value to set.
      * @return the FileDetailsProperties object itself.
@@ -93,7 +97,7 @@ public final class FileDetailsProperties {
     }
 
     /**
-     * Get the numberOfChunks property: Number of chunks to be uploaded.
+     * Get the numberOfChunks property: Number of chunks to be uploaded. The maximum number of allowed chunks is 2.
      * 
      * @return the numberOfChunks value.
      */
@@ -102,7 +106,7 @@ public final class FileDetailsProperties {
     }
 
     /**
-     * Set the numberOfChunks property: Number of chunks to be uploaded.
+     * Set the numberOfChunks property: Number of chunks to be uploaded. The maximum number of allowed chunks is 2.
      * 
      * @param numberOfChunks the numberOfChunks value to set.
      * @return the FileDetailsProperties object itself.

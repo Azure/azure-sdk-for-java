@@ -9,7 +9,9 @@ import com.azure.resourcemanager.confidentialledger.fluent.models.ResourceProvid
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List containing this Resource Provider's available operations. */
+/**
+ * List containing this Resource Provider's available operations.
+ */
 @Immutable
 public final class ResourceProviderOperationList {
     /*
@@ -24,13 +26,15 @@ public final class ResourceProviderOperationList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ResourceProviderOperationList class. */
+    /**
+     * Creates an instance of ResourceProviderOperationList class.
+     */
     public ResourceProviderOperationList() {
     }
 
     /**
      * Get the value property: Resource provider operations list.
-     *
+     * 
      * @return the value value.
      */
     public List<ResourceProviderOperationDefinitionInner> value() {
@@ -39,7 +43,7 @@ public final class ResourceProviderOperationList {
 
     /**
      * Get the nextLink property: The URI that can be used to request the next page for list of Azure operations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class ResourceProviderOperationList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

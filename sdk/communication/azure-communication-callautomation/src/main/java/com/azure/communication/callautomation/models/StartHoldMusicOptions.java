@@ -21,11 +21,6 @@ public class StartHoldMusicOptions {
     private final PlaySource playSourceInfo;
 
     /**
-     * If Audio will loop. Default is true.
-     */
-    private boolean loop;
-
-    /**
      * Operation context.
      */
     private String operationContext;
@@ -38,7 +33,6 @@ public class StartHoldMusicOptions {
     public StartHoldMusicOptions(CommunicationIdentifier targetParticipant, PlaySource playSourceInfo) {
         this.targetParticipant = targetParticipant;
         this.playSourceInfo = playSourceInfo;
-        loop = true;
     }
 
     /**
@@ -55,24 +49,6 @@ public class StartHoldMusicOptions {
      */
     public PlaySource getPlaySourceInfo() {
         return playSourceInfo;
-    }
-
-    /**
-     * Get if the music is in loop.
-     * @return true for loop, false for play once.
-     */
-    public boolean isLoop() {
-        return loop;
-    }
-
-    /**
-     * Set the value for loop.
-     * @param loop - boolean.
-     * @return The StartHoldMusicOptions object.
-     */
-    public StartHoldMusicOptions setLoop(boolean loop) {
-        this.loop = loop;
-        return this;
     }
 
     /**

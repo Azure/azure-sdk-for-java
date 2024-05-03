@@ -21,22 +21,18 @@ public final class CheckVirtualNetworkSubnetUsagesImpl implements CheckVirtualNe
 
     private final com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager;
 
-    public CheckVirtualNetworkSubnetUsagesImpl(
-        CheckVirtualNetworkSubnetUsagesClient innerClient,
+    public CheckVirtualNetworkSubnetUsagesImpl(CheckVirtualNetworkSubnetUsagesClient innerClient,
         com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<VirtualNetworkSubnetUsageResult> executeWithResponse(
-        String locationName, VirtualNetworkSubnetUsageParameter parameters, Context context) {
-        Response<VirtualNetworkSubnetUsageResultInner> inner =
-            this.serviceClient().executeWithResponse(locationName, parameters, context);
+    public Response<VirtualNetworkSubnetUsageResult> executeWithResponse(String locationName,
+        VirtualNetworkSubnetUsageParameter parameters, Context context) {
+        Response<VirtualNetworkSubnetUsageResultInner> inner
+            = this.serviceClient().executeWithResponse(locationName, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new VirtualNetworkSubnetUsageResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;

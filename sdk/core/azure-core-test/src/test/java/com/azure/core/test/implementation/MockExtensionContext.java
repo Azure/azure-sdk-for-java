@@ -38,7 +38,7 @@ final class MockExtensionContext implements ExtensionContext {
 
     @Override
     public String getUniqueId() {
-        return null;
+        return "";
     }
 
     @Override

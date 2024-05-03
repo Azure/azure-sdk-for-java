@@ -14,26 +14,29 @@ public final class CommunicationsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommunicationsListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"communicationType\":\"phone\",\"communicationDirection\":\"outbound\",\"sender\":\"dagxtibqd\",\"subject\":\"bxwakbog\",\"body\":\"xndlkzgxhu\",\"createdDate\":\"2021-03-23T13:44:10Z\"},\"id\":\"lbpodxunk\",\"name\":\"ebxmubyynt\",\"type\":\"lrb\"},{\"properties\":{\"communicationType\":\"phone\",\"communicationDirection\":\"outbound\",\"sender\":\"seotgqrllt\",\"subject\":\"u\",\"body\":\"lauwzizxbmpgcjef\",\"createdDate\":\"2021-09-15T06:09:09Z\"},\"id\":\"uvpb\",\"name\":\"tdum\",\"type\":\"rp\"},{\"properties\":{\"communicationType\":\"phone\",\"communicationDirection\":\"inbound\",\"sender\":\"btbhjpglkfgohd\",\"subject\":\"euel\",\"body\":\"phsdyhto\",\"createdDate\":\"2021-12-10T07:50:41Z\"},\"id\":\"kd\",\"name\":\"wwquuvxzxclvithh\",\"type\":\"zonosgg\"}],\"nextLink\":\"c\"}")
+            "{\"value\":[{\"properties\":{\"communicationType\":\"web\",\"communicationDirection\":\"inbound\",\"sender\":\"ro\",\"subject\":\"qbex\",\"body\":\"mcqibycnojv\",\"createdDate\":\"2021-02-06T03:19:14Z\"},\"id\":\"fqsgzvahapjy\",\"name\":\"hpvgqz\",\"type\":\"j\"},{\"properties\":{\"communicationType\":\"phone\",\"communicationDirection\":\"inbound\",\"sender\":\"lmwlxkvugfhzo\",\"subject\":\"awjvzunluthnnp\",\"body\":\"nxipeil\",\"createdDate\":\"2021-07-12T01:35:59Z\"},\"id\":\"uaejxdultsk\",\"name\":\"bbtdzumvee\",\"type\":\"gpw\"},{\"properties\":{\"communicationType\":\"web\",\"communicationDirection\":\"inbound\",\"sender\":\"p\",\"subject\":\"sjyofdx\",\"body\":\"uusdttouwa\",\"createdDate\":\"2021-08-12T22:43:04Z\"},\"id\":\"kqvkelnsmvbxwyjs\",\"name\":\"lh\",\"type\":\"caalnjixisxyaw\"},{\"properties\":{\"communicationType\":\"phone\",\"communicationDirection\":\"outbound\",\"sender\":\"slyjpkiid\",\"subject\":\"yexz\",\"body\":\"eli\",\"createdDate\":\"2021-06-22T01:42:27Z\"},\"id\":\"rzt\",\"name\":\"o\",\"type\":\"hb\"}],\"nextLink\":\"knalaulppg\"}")
             .toObject(CommunicationsListResult.class);
-        Assertions.assertEquals("dagxtibqd", model.value().get(0).sender());
-        Assertions.assertEquals("bxwakbog", model.value().get(0).subject());
-        Assertions.assertEquals("xndlkzgxhu", model.value().get(0).body());
-        Assertions.assertEquals("c", model.nextLink());
+        Assertions.assertEquals("ro", model.value().get(0).sender());
+        Assertions.assertEquals("qbex", model.value().get(0).subject());
+        Assertions.assertEquals("mcqibycnojv", model.value().get(0).body());
+        Assertions.assertEquals("knalaulppg", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CommunicationsListResult model = new CommunicationsListResult()
             .withValue(Arrays.asList(
-                new CommunicationDetailsInner().withSender("dagxtibqd").withSubject("bxwakbog").withBody("xndlkzgxhu"),
-                new CommunicationDetailsInner().withSender("seotgqrllt").withSubject("u").withBody("lauwzizxbmpgcjef"),
-                new CommunicationDetailsInner().withSender("btbhjpglkfgohd").withSubject("euel").withBody("phsdyhto")))
-            .withNextLink("c");
+                new CommunicationDetailsInner().withSender("ro").withSubject("qbex").withBody("mcqibycnojv"),
+                new CommunicationDetailsInner().withSender("lmwlxkvugfhzo")
+                    .withSubject("awjvzunluthnnp")
+                    .withBody("nxipeil"),
+                new CommunicationDetailsInner().withSender("p").withSubject("sjyofdx").withBody("uusdttouwa"),
+                new CommunicationDetailsInner().withSender("slyjpkiid").withSubject("yexz").withBody("eli")))
+            .withNextLink("knalaulppg");
         model = BinaryData.fromObject(model).toObject(CommunicationsListResult.class);
-        Assertions.assertEquals("dagxtibqd", model.value().get(0).sender());
-        Assertions.assertEquals("bxwakbog", model.value().get(0).subject());
-        Assertions.assertEquals("xndlkzgxhu", model.value().get(0).body());
-        Assertions.assertEquals("c", model.nextLink());
+        Assertions.assertEquals("ro", model.value().get(0).sender());
+        Assertions.assertEquals("qbex", model.value().get(0).subject());
+        Assertions.assertEquals("mcqibycnojv", model.value().get(0).body());
+        Assertions.assertEquals("knalaulppg", model.nextLink());
     }
 }

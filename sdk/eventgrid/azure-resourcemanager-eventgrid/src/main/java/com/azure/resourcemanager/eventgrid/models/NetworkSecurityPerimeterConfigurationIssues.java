@@ -158,8 +158,7 @@ public final class NetworkSecurityPerimeterConfigurationIssues {
     }
 
     /**
-     * Get the suggestedAccessRules property: Access rules that can be added to the same profile to remediate the
-     * issue.
+     * Get the suggestedAccessRules property: Access rules that can be added to the same profile to remediate the issue.
      * 
      * @return the suggestedAccessRules value.
      */
@@ -168,8 +167,7 @@ public final class NetworkSecurityPerimeterConfigurationIssues {
     }
 
     /**
-     * Set the suggestedAccessRules property: Access rules that can be added to the same profile to remediate the
-     * issue.
+     * Set the suggestedAccessRules property: Access rules that can be added to the same profile to remediate the issue.
      * 
      * @param suggestedAccessRules the suggestedAccessRules value to set.
      * @return the NetworkSecurityPerimeterConfigurationIssues object itself.

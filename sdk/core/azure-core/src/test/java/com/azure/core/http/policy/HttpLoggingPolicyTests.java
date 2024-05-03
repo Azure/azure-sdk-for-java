@@ -47,6 +47,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -566,9 +567,6 @@ public class HttpLoggingPolicyTests {
         @JsonProperty("url")
         private String url;
 
-        @JsonProperty("contentLength")
-        private Integer contentLength;
-
         @JsonProperty("body")
         private String body;
 
@@ -590,8 +588,7 @@ public class HttpLoggingPolicyTests {
             return new HttpLogMessage().setMessage("HTTP request")
                 .setMethod(method.toString())
                 .setUrl(url)
-                .setBody(body != null ? new String(body, StandardCharsets.UTF_8) : null)
-                .setContentLength(body == null ? 0 : body.length);
+                .setBody(body != null ? new String(body, StandardCharsets.UTF_8) : null);
         }
 
         private static HttpLogMessage response(String url, byte[] body, Integer statusCode) {
@@ -599,8 +596,7 @@ public class HttpLoggingPolicyTests {
                 .setUrl(url)
                 .setStatusCode(statusCode)
                 .setDurationMs(MAGIC_NUMBER)
-                .setBody(body != null ? new String(body, StandardCharsets.UTF_8) : null)
-                .setContentLength(body == null ? 0 : body.length);
+                .setBody(body != null ? new String(body, StandardCharsets.UTF_8) : null);
         }
 
         public HttpLogMessage setMessage(String message) {
@@ -628,15 +624,6 @@ public class HttpLoggingPolicyTests {
 
         public String getUrl() {
             return url;
-        }
-
-        public HttpLogMessage setContentLength(Integer contentLength) {
-            this.contentLength = contentLength;
-            return this;
-        }
-
-        public Integer getContentLength() {
-            return contentLength;
         }
 
         public HttpLogMessage setTryCount(Integer tryCount) {
@@ -717,7 +704,6 @@ public class HttpLoggingPolicyTests {
             assertEquals(this.message, other.message);
             assertEquals(this.method, other.method);
             assertEquals(this.url, other.url);
-            assertEquals(this.contentLength, other.contentLength);
             assertEquals(this.tryCount, other.tryCount);
             assertEquals(this.statusCode, other.statusCode);
             if (this.durationMs != null) {
@@ -735,7 +721,7 @@ public class HttpLoggingPolicyTests {
                     boolean isAllowed = logOptions.getAllowedHeaderNames().contains(kvp.getKey());
                     if (isAllowed) {
                         expectedHeaders++;
-                        assertEquals(kvp.getValue(), other.headers.get(kvp.getKey()));
+                        assertEquals(kvp.getValue(), other.headers.get(kvp.getKey().toLowerCase(Locale.ROOT)));
                     } else if (!logOptions.isRedactedHeaderLoggingDisabled()) {
                         expectRedactedHeaders = true;
                         assertTrue(other.headers.get("redactedHeaders").contains(kvp.getKey()));

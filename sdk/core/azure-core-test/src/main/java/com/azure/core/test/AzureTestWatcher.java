@@ -7,8 +7,8 @@ import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
 import org.junit.jupiter.api.extension.BeforeTestExecutionCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
-import static com.azure.core.test.TestBase.getTestName;
 import static com.azure.core.test.TestBase.shouldLogExecutionStatus;
+import static com.azure.core.test.implementation.TestingHelpers.getTestName;
 
 /**
  * JUnit 5 extension class which reports on testing running and simple metrics about the test such as run time.

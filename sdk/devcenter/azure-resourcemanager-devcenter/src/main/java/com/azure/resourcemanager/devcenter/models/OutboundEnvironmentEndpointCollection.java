@@ -9,7 +9,9 @@ import com.azure.resourcemanager.devcenter.fluent.models.OutboundEnvironmentEndp
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Values returned by the List operation. */
+/**
+ * Values returned by the List operation.
+ */
 @Fluent
 public final class OutboundEnvironmentEndpointCollection {
     /*
@@ -24,14 +26,16 @@ public final class OutboundEnvironmentEndpointCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of OutboundEnvironmentEndpointCollection class. */
+    /**
+     * Creates an instance of OutboundEnvironmentEndpointCollection class.
+     */
     public OutboundEnvironmentEndpointCollection() {
     }
 
     /**
      * Get the value property: The collection of outbound network dependency endpoints returned by the listing
      * operation.
-     *
+     * 
      * @return the value value.
      */
     public List<OutboundEnvironmentEndpointInner> value() {
@@ -40,7 +44,7 @@ public final class OutboundEnvironmentEndpointCollection {
 
     /**
      * Get the nextLink property: The continuation token.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -49,7 +53,7 @@ public final class OutboundEnvironmentEndpointCollection {
 
     /**
      * Set the nextLink property: The continuation token.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the OutboundEnvironmentEndpointCollection object itself.
      */
@@ -60,7 +64,7 @@ public final class OutboundEnvironmentEndpointCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

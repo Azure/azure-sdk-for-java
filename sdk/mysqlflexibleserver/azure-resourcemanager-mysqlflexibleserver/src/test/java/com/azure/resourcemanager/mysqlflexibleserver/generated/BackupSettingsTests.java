@@ -12,20 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupSettings model =
-            BinaryData
-                .fromString("{\"backupName\":\"suuv\",\"backupFormat\":\"CollatedFormat\"}")
-                .toObject(BackupSettings.class);
+        BackupSettings model = BinaryData.fromString("{\"backupName\":\"suuv\",\"backupFormat\":\"Raw\"}")
+            .toObject(BackupSettings.class);
         Assertions.assertEquals("suuv", model.backupName());
-        Assertions.assertEquals(BackupFormat.COLLATED_FORMAT, model.backupFormat());
+        Assertions.assertEquals(BackupFormat.RAW, model.backupFormat());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupSettings model =
-            new BackupSettings().withBackupName("suuv").withBackupFormat(BackupFormat.COLLATED_FORMAT);
+        BackupSettings model = new BackupSettings().withBackupName("suuv").withBackupFormat(BackupFormat.RAW);
         model = BinaryData.fromObject(model).toObject(BackupSettings.class);
         Assertions.assertEquals("suuv", model.backupName());
-        Assertions.assertEquals(BackupFormat.COLLATED_FORMAT, model.backupFormat());
+        Assertions.assertEquals(BackupFormat.RAW, model.backupFormat());
     }
 }

@@ -12,26 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Network model =
-            BinaryData
-                .fromString(
-                    "{\"publicNetworkAccess\":\"Disabled\",\"delegatedSubnetResourceId\":\"cpecfvmmcoofs\",\"privateDnsZoneResourceId\":\"zevgb\"}")
-                .toObject(Network.class);
-        Assertions.assertEquals(EnableStatusEnum.DISABLED, model.publicNetworkAccess());
-        Assertions.assertEquals("cpecfvmmcoofs", model.delegatedSubnetResourceId());
-        Assertions.assertEquals("zevgb", model.privateDnsZoneResourceId());
+        Network model = BinaryData.fromString(
+            "{\"publicNetworkAccess\":\"Enabled\",\"delegatedSubnetResourceId\":\"chcbonqvpkvlrxnj\",\"privateDnsZoneResourceId\":\"seiphe\"}")
+            .toObject(Network.class);
+        Assertions.assertEquals(EnableStatusEnum.ENABLED, model.publicNetworkAccess());
+        Assertions.assertEquals("chcbonqvpkvlrxnj", model.delegatedSubnetResourceId());
+        Assertions.assertEquals("seiphe", model.privateDnsZoneResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Network model =
-            new Network()
-                .withPublicNetworkAccess(EnableStatusEnum.DISABLED)
-                .withDelegatedSubnetResourceId("cpecfvmmcoofs")
-                .withPrivateDnsZoneResourceId("zevgb");
+        Network model = new Network().withPublicNetworkAccess(EnableStatusEnum.ENABLED)
+            .withDelegatedSubnetResourceId("chcbonqvpkvlrxnj")
+            .withPrivateDnsZoneResourceId("seiphe");
         model = BinaryData.fromObject(model).toObject(Network.class);
-        Assertions.assertEquals(EnableStatusEnum.DISABLED, model.publicNetworkAccess());
-        Assertions.assertEquals("cpecfvmmcoofs", model.delegatedSubnetResourceId());
-        Assertions.assertEquals("zevgb", model.privateDnsZoneResourceId());
+        Assertions.assertEquals(EnableStatusEnum.ENABLED, model.publicNetworkAccess());
+        Assertions.assertEquals("chcbonqvpkvlrxnj", model.delegatedSubnetResourceId());
+        Assertions.assertEquals("seiphe", model.privateDnsZoneResourceId());
     }
 }

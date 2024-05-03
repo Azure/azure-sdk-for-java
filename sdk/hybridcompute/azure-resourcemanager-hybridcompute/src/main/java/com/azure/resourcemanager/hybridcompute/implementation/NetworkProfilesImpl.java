@@ -20,21 +20,17 @@ public final class NetworkProfilesImpl implements NetworkProfiles {
 
     private final com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager;
 
-    public NetworkProfilesImpl(
-        NetworkProfilesClient innerClient,
+    public NetworkProfilesImpl(NetworkProfilesClient innerClient,
         com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public Response<NetworkProfile> getWithResponse(String resourceGroupName, String machineName, Context context) {
-        Response<NetworkProfileInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, machineName, context);
+        Response<NetworkProfileInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, machineName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new NetworkProfileImpl(inner.getValue(), this.manager()));
         } else {
             return null;

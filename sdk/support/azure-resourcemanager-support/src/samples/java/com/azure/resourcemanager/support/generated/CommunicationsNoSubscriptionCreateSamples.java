@@ -11,8 +11,7 @@ import com.azure.resourcemanager.support.fluent.models.CommunicationDetailsInner
  */
 public final class CommunicationsNoSubscriptionCreateSamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/
-     * CreateNoSubscriptionSupportTicketCommunication.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/CreateNoSubscriptionSupportTicketCommunication.json
      */
     /**
      * Sample code: AddCommunicationToNoSubscriptionTicket.
@@ -21,10 +20,11 @@ public final class CommunicationsNoSubscriptionCreateSamples {
      */
     public static void
         addCommunicationToNoSubscriptionTicket(com.azure.resourcemanager.support.SupportManager manager) {
-        manager.communicationsNoSubscriptions().create("testticket", "testcommunication",
-            new CommunicationDetailsInner().withSender("user@contoso.com")
-                .withSubject("This is a test message from a customer!")
-                .withBody("This is a test message from a customer!"),
-            com.azure.core.util.Context.NONE);
+        manager.communicationsNoSubscriptions()
+            .create("testticket", "testcommunication",
+                new CommunicationDetailsInner().withSender("user@contoso.com")
+                    .withSubject("This is a test message from a customer!")
+                    .withBody("This is a test message from a customer!"),
+                com.azure.core.util.Context.NONE);
     }
 }

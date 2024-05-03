@@ -10,7 +10,8 @@ import requests
 import tempfile
 import subprocess
 import urllib.parse
-from typing import Tuple, List
+from typing import Tuple, List, Union
+from typespec_utils import validate_tspconfig
 
 pwd = os.getcwd()
 #os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])))
@@ -77,7 +78,12 @@ def generate(
         )
     logging.info(command)
     if os.system(command) != 0:
-        logging.error('[GENERATE] Autorest fail')
+        error_message = ('[GENERATE][Error] Code generation failed.\n'
+                         'Please first check if the failure happens only to Java automation, or for all SDK automations.\n'
+                         'If it happens for all SDK automations, please double check your Swagger, and check whether there is errors in ModelValidation and LintDiff.\n'
+                         'If it happens to Java alone, you can open an issue to https://github.com/Azure/autorest.java/issues. Please include the link of this Pull Request in the issue.')
+        logging.error(error_message)
+        print(error_message, file=sys.stderr)
         return False
 
     group = GROUP_ID
@@ -93,7 +99,10 @@ def compile_package(sdk_root, module) -> bool:
     if os.system(
             'mvn --no-transfer-progress clean verify -f {0}/pom.xml -Dmaven.javadoc.skip -Dgpg.skip -DskipTestCompile -Djacoco.skip -Drevapi.skip -pl {1}:{2} -am'.format(
                 sdk_root, GROUP_ID, module)) != 0:
-        logging.error('[COMPILE] Maven build fail')
+        error_message = ('[COMPILE] Maven build fail.\n'
+                         'You can inquire in "Language - Java" Teams channel. Please include the link of this Pull Request in the query.')
+        logging.error(error_message)
+        print(error_message, file=sys.stderr)
         return False
     return True
 
@@ -208,7 +217,7 @@ def compare_with_maven_package(sdk_root: str, service: str, stable_version: str,
 def get_version(
     sdk_root: str,
     module: str,
-) -> str:
+) -> Union[str, None]:
     version_file = os.path.join(sdk_root, 'eng/versioning/version_client.txt')
     project = '{0}:{1}'.format(GROUP_ID, module)
 
@@ -299,7 +308,15 @@ def update_spec(spec: str, subspec: str) -> str:
     return spec
 
 
-def generate_typespec_project(tsp_project: str, sdk_root: str, spec_root: str, head_sha: str, repo_url: str):
+def generate_typespec_project(
+    tsp_project: str,
+    sdk_root: str,
+    spec_root: str = None,
+    head_sha: str = "",
+    repo_url: str = ""):
+
+    if not tsp_project:
+        return False
 
     succeeded = False
     sdk_folder = None
@@ -307,20 +324,41 @@ def generate_typespec_project(tsp_project: str, sdk_root: str, spec_root: str, h
     module = None
     require_sdk_integration = False
 
-    tsp_dir = os.path.join(spec_root, tsp_project)
-
     try:
-        cmd = ['pwsh', './eng/common/scripts/TypeSpec-Project-Process.ps1', tsp_dir, head_sha, repo_url]
-        logging.info('Command line: ' + ' '.join(cmd))
-        output = subprocess.check_output(cmd, cwd=sdk_root)
-        output_str = str(output, 'utf-8')
-        script_return = output_str.splitlines()[-1] # the path to sdk folder
-        sdk_folder = os.path.relpath(script_return, sdk_root)
-        logging.info('SDK folder: ' + sdk_folder)
-        if sdk_folder:
-            succeeded = True
+        url_match = re.match(
+            r'^https://github.com/(?P<repo>[^/]*/azure-rest-api-specs(-pr)?)/blob/(?P<commit>[0-9a-f]{40})/(?P<path>.*)/tspconfig.yaml$',
+            tsp_project,
+            re.IGNORECASE
+        )
+
+        tspconfig_valid = True
+        if url_match:
+            # generate from remote url
+            cmd = ['npx', 'tsp-client', 'init', '--debug',
+                   '--tsp-config', tsp_project]
+        else:
+            # sdk automation
+            tsp_dir = os.path.join(spec_root, tsp_project) if spec_root else tsp_project
+            tspconfig_valid = validate_tspconfig(tsp_dir)
+            repo = remove_prefix(repo_url, 'https://github.com/')
+            cmd = ['npx', 'tsp-client', 'init', '--debug',
+                   '--tsp-config', tsp_dir,
+                   '--commit', head_sha,
+                   '--repo', repo,
+                   '--local-spec-repo', tsp_dir]
+
+        if tspconfig_valid:
+            check_call(cmd, sdk_root)
+
+            sdk_folder = find_sdk_folder(sdk_root)
+            logging.info('SDK folder: ' + sdk_folder)
+            if sdk_folder:
+                succeeded = True
     except subprocess.CalledProcessError as error:
-        logging.error(f'TypeSpec-Project-Process.ps1 fail: {error}')
+        error_message = (f'[GENERATE][Error] Code generation failed. tsp-client init fails: {error}\n'
+                         'If TypeSpec Validation passes, you can open an issue to https://github.com/Azure/autorest.java/issues. Please include the link of this Pull Request in the issue.')
+        logging.error(error_message)
+        print(error_message, file=sys.stderr)
 
     if succeeded:
         # check require_sdk_integration
@@ -343,6 +381,33 @@ def generate_typespec_project(tsp_project: str, sdk_root: str, spec_root: str, h
 
     return succeeded, require_sdk_integration, sdk_folder, service, module
 
+
 def check_call(cmd: List[str], work_dir: str):
     logging.info('Command line: ' + ' '.join(cmd))
     subprocess.check_call(cmd, cwd=work_dir)
+
+
+def remove_prefix(text, prefix):
+    if text.startswith(prefix):
+        return text[len(prefix):]
+    return text
+
+
+def find_sdk_folder(sdk_root: str):
+    cmd = ['git', 'add', '.']
+    check_call(cmd, sdk_root)
+
+    cmd = ['git', 'status', '--porcelain', '**/tsp-location.yaml']
+    logging.info('Command line: ' + ' '.join(cmd))
+    output = subprocess.check_output(cmd, cwd=sdk_root)
+    output_str = str(output, 'utf-8')
+    git_items = output_str.splitlines()
+    sdk_folder = None
+    if len(git_items) > 0:
+        tsp_location_item: str = git_items[0]
+        sdk_folder = tsp_location_item[1:].strip()[0:-len('/tsp-location.yaml')]
+
+    cmd = ['git', 'reset', '.']
+    check_call(cmd, sdk_root)
+
+    return sdk_folder

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Defines values for RoutingIdentityType.
+ * Routing identity type for topic spaces configuration.
  */
 public final class RoutingIdentityType extends ExpandableStringEnum<RoutingIdentityType> {
     /**

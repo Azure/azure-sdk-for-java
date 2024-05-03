@@ -10,11 +10,9 @@ import com.azure.resourcemanager.confidentialledger.models.ResourceProviderOpera
 public final class ResourceProviderOperationListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceProviderOperationList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"quvgjxpybczme\",\"isDataAction\":true,\"display\":{\"provider\":\"pbsphrupidgs\",\"resource\":\"bejhphoycmsxa\",\"operation\":\"hdxbmtqio\",\"description\":\"zehtbmu\"}},{\"name\":\"ownoizhw\",\"isDataAction\":true,\"display\":{\"provider\":\"qsoqijgkd\",\"resource\":\"pazlobcufpdz\",\"operation\":\"btcqq\",\"description\":\"qglhq\"}},{\"name\":\"ufo\",\"isDataAction\":false,\"display\":{\"provider\":\"ifsqesaagdfmg\",\"resource\":\"lhjxr\",\"operation\":\"kwm\",\"description\":\"ktsizntocipaou\"}}],\"nextLink\":\"psqucmpoyf\"}")
-                .toObject(ResourceProviderOperationList.class);
+        ResourceProviderOperationList model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"quvgjxpybczme\",\"isDataAction\":true,\"display\":{\"provider\":\"pbsphrupidgs\",\"resource\":\"bejhphoycmsxa\",\"operation\":\"hdxbmtqio\",\"description\":\"zehtbmu\"}},{\"name\":\"ownoizhw\",\"isDataAction\":true,\"display\":{\"provider\":\"qsoqijgkd\",\"resource\":\"pazlobcufpdz\",\"operation\":\"btcqq\",\"description\":\"qglhq\"}},{\"name\":\"ufo\",\"isDataAction\":false,\"display\":{\"provider\":\"ifsqesaagdfmg\",\"resource\":\"lhjxr\",\"operation\":\"kwm\",\"description\":\"ktsizntocipaou\"}}],\"nextLink\":\"psqucmpoyf\"}")
+            .toObject(ResourceProviderOperationList.class);
     }
 
     @org.junit.jupiter.api.Test

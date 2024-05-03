@@ -13,17 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class PartnerDestinationUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PartnerDestinationUpdateParameters model = BinaryData.fromString("{\"tags\":{\"foj\":\"ojcmisofieyp\"}}")
+        PartnerDestinationUpdateParameters model = BinaryData
+            .fromString(
+                "{\"tags\":{\"hwwn\":\"cse\",\"ousnfepgfewe\":\"jhlfzswpchwahf\",\"hdjhlimmbcx\":\"wlyxgncxyk\"}}")
             .toObject(PartnerDestinationUpdateParameters.class);
-        Assertions.assertEquals("ojcmisofieyp", model.tags().get("foj"));
+        Assertions.assertEquals("cse", model.tags().get("hwwn"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PartnerDestinationUpdateParameters model
-            = new PartnerDestinationUpdateParameters().withTags(mapOf("foj", "ojcmisofieyp"));
+        PartnerDestinationUpdateParameters model = new PartnerDestinationUpdateParameters()
+            .withTags(mapOf("hwwn", "cse", "ousnfepgfewe", "jhlfzswpchwahf", "hdjhlimmbcx", "wlyxgncxyk"));
         model = BinaryData.fromObject(model).toObject(PartnerDestinationUpdateParameters.class);
-        Assertions.assertEquals("ojcmisofieyp", model.tags().get("foj"));
+        Assertions.assertEquals("cse", model.tags().get("hwwn"));
     }
 
     // Use "Map.of" if available
