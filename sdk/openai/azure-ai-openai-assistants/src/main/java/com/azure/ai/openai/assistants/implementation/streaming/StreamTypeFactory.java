@@ -4,7 +4,6 @@ import com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent
 import com.azure.ai.openai.assistants.models.MessageDeltaChunk;
 import com.azure.ai.openai.assistants.models.RunStep;
 import com.azure.ai.openai.assistants.models.RunStepDeltaChunk;
-import com.azure.ai.openai.assistants.models.StreamMessageCompletion;
 import com.azure.ai.openai.assistants.models.StreamMessageCreation;
 import com.azure.ai.openai.assistants.models.StreamMessageUpdate;
 import com.azure.ai.openai.assistants.models.StreamRequiredAction;
@@ -41,8 +40,21 @@ import static com.azure.ai.openai.assistants.implementation.models.AssistantStre
 import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.THREAD_RUN_STEP_FAILED;
 import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.THREAD_RUN_STEP_IN_PROGRESS;
 
+/**
+ * Deserializes the server sent event into the appropriate type. Which subtype of {@link StreamUpdate} is used, is
+ * determined by the event {@link AssistantStreamEvent}. The subtype is merely a wrapper around the actual deserialized
+ * data.
+ */
 public final class StreamTypeFactory {
 
+    /**
+     * Deserializes the server sent event into the appropriate type.
+     *
+     * @param eventName The name of the event.
+     * @param eventJson The event data.
+     * @return The deserialized event.
+     * @throws IllegalArgumentException If the event type is unknown.
+     */
     public StreamUpdate deserializeEvent(String eventName, BinaryData eventJson) throws IllegalArgumentException {
         AssistantStreamEvent event = AssistantStreamEvent.fromString(eventName);
 
