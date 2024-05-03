@@ -3,17 +3,12 @@ package com.azure.ai.openai.assistants.implementation.streaming;
 import com.azure.ai.openai.assistants.AssistantsClientTestBase;
 import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.StreamThreadCreation;
-import com.azure.ai.openai.assistants.models.StreamUpdate;
-import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -55,7 +50,7 @@ public class OpenAIServerSentEventsTest {
         StepVerifier.create(openAIServerSentEvents.getEvents())
             .assertNext(event -> {
                 assertInstanceOf(StreamThreadCreation.class, event);
-                assertAssistantThread(expectedThread, ((StreamThreadCreation) event).getThread());
+                assertAssistantThread(expectedThread, ((StreamThreadCreation) event).getMessage());
             }).verifyComplete();
     }
 
@@ -77,7 +72,7 @@ public class OpenAIServerSentEventsTest {
         StepVerifier.create(openAIServerSentEvents.getEvents())
             .assertNext(event -> {
                 assertInstanceOf(StreamThreadCreation.class, event);
-                assertAssistantThread(expectedThread, ((StreamThreadCreation) event).getThread());
+                assertAssistantThread(expectedThread, ((StreamThreadCreation) event).getMessage());
             }).verifyComplete();
     }
 
@@ -99,7 +94,7 @@ public class OpenAIServerSentEventsTest {
         StepVerifier.create(openAIServerSentEvents.getEvents())
             .assertNext(event -> {
                 assertInstanceOf(StreamThreadCreation.class, event);
-                assertAssistantThread(expectedThread, ((StreamThreadCreation) event).getThread());
+                assertAssistantThread(expectedThread, ((StreamThreadCreation) event).getMessage());
             }).verifyComplete();
     }
 
@@ -121,7 +116,7 @@ public class OpenAIServerSentEventsTest {
         StepVerifier.create(openAIServerSentEvents.getEvents())
             .assertNext(event -> {
                 assertInstanceOf(StreamThreadCreation.class, event);
-                assertAssistantThread(expectedThread, ((StreamThreadCreation) event).getThread());
+                assertAssistantThread(expectedThread, ((StreamThreadCreation) event).getMessage());
             }).verifyComplete();
     }
 
@@ -143,7 +138,7 @@ public class OpenAIServerSentEventsTest {
         StepVerifier.create(openAIServerSentEvents.getEvents())
             .assertNext(event -> {
                 assertInstanceOf(StreamThreadCreation.class, event);
-                assertAssistantThread(expectedThread, ((StreamThreadCreation) event).getThread());
+                assertAssistantThread(expectedThread, ((StreamThreadCreation) event).getMessage());
             }).verifyComplete();
     }
 
@@ -165,7 +160,7 @@ public class OpenAIServerSentEventsTest {
         StepVerifier.create(openAIServerSentEvents.getEvents())
             .assertNext(event -> {
                 assertInstanceOf(StreamThreadCreation.class, event);
-                assertAssistantThread(expectedThread, ((StreamThreadCreation) event).getThread());
+                assertAssistantThread(expectedThread, ((StreamThreadCreation) event).getMessage());
             }).verifyComplete();
     }
 
@@ -187,7 +182,7 @@ public class OpenAIServerSentEventsTest {
         StepVerifier.create(openAIServerSentEvents.getEvents())
             .assertNext(event -> {
                 assertInstanceOf(StreamThreadCreation.class, event);
-                assertAssistantThread(expectedThread, ((StreamThreadCreation) event).getThread());
+                assertAssistantThread(expectedThread, ((StreamThreadCreation) event).getMessage());
             }).verifyComplete();
     }
 

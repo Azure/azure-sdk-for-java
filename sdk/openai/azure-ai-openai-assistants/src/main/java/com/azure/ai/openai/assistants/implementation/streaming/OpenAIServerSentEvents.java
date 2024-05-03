@@ -17,20 +17,44 @@ import java.util.List;
 import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.DONE;
 import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.ERROR;
 
+/**
+ * A class that handles the deserialization of server sent events.
+ */
 public final class OpenAIServerSentEvents {
 
     // Server sent events are divided by 2 CRLF or single LF character
     private static final int SSE_CHUNK_LINE_BREAK_COUNT_MARKER = 2;
 
+    /**
+     * A factory that determines into which type to deserialize the server sent events.
+     */
     private final StreamTypeFactory eventDeserializer = new StreamTypeFactory();
+
+    /**
+     * The source of the server sent events.
+     */
     private final Flux<ByteBuffer> source;
+
+    /**
+     * The output stream accumulating the server sent events.
+     */
     private ByteArrayOutputStream outStream;
 
+    /**
+     * Creates a new instance of OpenAIServerSentEvents.
+     *
+     * @param source The source of the server sent events.
+     */
     public OpenAIServerSentEvents(Flux<ByteBuffer> source) {
         this.source = source;
         this.outStream = new ByteArrayOutputStream();
     }
 
+    /**
+     * Gets the stream of server sent events.
+     *
+     * @return A stream of server sent events.
+     */
     public Flux<StreamUpdate> getEvents() {
         return mapEventStream();
     }

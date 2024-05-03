@@ -59,10 +59,10 @@ public class StreamingAsyncTest extends AssistantsClientTestBase {
                         String streamUpdateJson = BinaryData.fromObject(streamUpdate).toString();
                         assertTrue(streamUpdateJson != null && !streamUpdateJson.isEmpty() && !streamUpdateJson.isBlank());
                         if (streamUpdate instanceof StreamRequiredAction) {
-                            requiredAction.set(((StreamRequiredAction) streamUpdate).getAction().getRequiredAction());
+                            requiredAction.set(((StreamRequiredAction) streamUpdate).getMessage().getRequiredAction());
                         }
                         if (streamUpdate instanceof StreamRunCreation) {
-                            runStep.set(((StreamRunCreation) streamUpdate).getRun());
+                            runStep.set(((StreamRunCreation) streamUpdate).getMessage());
                         }
                     })
                 .verifyComplete();
@@ -127,11 +127,11 @@ public class StreamingAsyncTest extends AssistantsClientTestBase {
                     String streamUpdateJson = BinaryData.fromObject(streamUpdate).toString();
                     assertTrue(streamUpdateJson != null && !streamUpdateJson.isEmpty() && !streamUpdateJson.isBlank());
                     if (streamUpdate instanceof StreamRequiredAction) {
-                        requiredAction.set(((StreamRequiredAction) streamUpdate).getAction().getRequiredAction());
+                        requiredAction.set(((StreamRequiredAction) streamUpdate).getMessage().getRequiredAction());
                     }
 
                     if (streamUpdate instanceof StreamRunCreation) {
-                        runStep.set(((StreamRunCreation) streamUpdate).getRun());
+                        runStep.set(((StreamRunCreation) streamUpdate).getMessage());
                     }
                     return true;
                 }).verifyComplete();

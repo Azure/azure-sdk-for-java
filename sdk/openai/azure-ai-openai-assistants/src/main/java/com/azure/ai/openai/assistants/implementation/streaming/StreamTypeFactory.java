@@ -57,10 +57,9 @@ public final class StreamTypeFactory {
                 THREAD_RUN_STEP_COMPLETED.equals(event) || THREAD_RUN_STEP_FAILED.equals(event) ||
                 THREAD_RUN_STEP_CANCELLED.equals(event) || THREAD_RUN_STEP_EXPIRED.equals(event)) {
             return new StreamRunCreation(eventJson.toObject(RunStep.class));
-        } else if (THREAD_MESSAGE_CREATED.equals(event) || THREAD_MESSAGE_IN_PROGRESS.equals(event)) {
+        } else if (THREAD_MESSAGE_CREATED.equals(event) || THREAD_MESSAGE_IN_PROGRESS.equals(event) ||
+                THREAD_MESSAGE_COMPLETED.equals(event) || THREAD_MESSAGE_INCOMPLETE.equals(event)) {
             return new StreamMessageCreation(eventJson.toObject(ThreadMessage.class));
-        } else if (THREAD_MESSAGE_COMPLETED.equals(event) || THREAD_MESSAGE_INCOMPLETE.equals(event)) {
-            return new StreamMessageCompletion(eventJson.toObject(ThreadMessage.class));
         } else if (THREAD_MESSAGE_DELTA.equals(event)) {
             return new StreamMessageUpdate(eventJson.toObject(MessageDeltaChunk.class));
         } else if (THREAD_RUN_STEP_DELTA.equals(event)) {
