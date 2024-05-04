@@ -168,7 +168,10 @@ public class RegionScopedSessionContainer implements ISessionContainer {
     public String resolveGlobalSessionToken(RxDocumentServiceRequest request) {
         Pair<Long, PartitionScopedRegionLevelProgress> collectionRidToPartitionScopedRegionLevelProgress = this.getCollectionRidToPartitionScopedRegionLevelProgress(request);
 
-        checkNotNull(collectionRidToPartitionScopedRegionLevelProgress, "collectionRidToPartitionScopedRegionLevelProgress cannot be null");
+        if (collectionRidToPartitionScopedRegionLevelProgress == null) {
+            return StringUtils.EMPTY;
+        }
+
         checkNotNull(collectionRidToPartitionScopedRegionLevelProgress.getKey(), "collectionRid cannot be null!");
         checkNotNull(collectionRidToPartitionScopedRegionLevelProgress.getValue(), "partitionScopedRegionLevelProgress cannot be null!");
 
@@ -199,6 +202,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
 
         boolean shouldUseBloomFilter = shouldUseBloomFilter(
             request,
+            partitionKeyRangeId,
             partitionKeyInternal,
             partitionKeyDefinition,
             partitionScopedRegionLevelProgress);
@@ -394,6 +398,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
 
             if (shouldUseBloomFilter(
                 request,
+                partitionKeyRangeId,
                 partitionKeyInternal,
                 partitionKeyDefinition,
                 partitionScopedRegionLevelProgress)) {
@@ -442,6 +447,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
 
             if (shouldUseBloomFilter(
                 request,
+                partitionKeyRangeId,
                 partitionKeyInternal,
                 partitionKeyDefinition,
                 partitionScopedRegionLevelProgress)) {
@@ -519,6 +525,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
     // independently as multiple regions can process writes
     private boolean shouldUseBloomFilter(
         RxDocumentServiceRequest request,
+        String partitionKeyRangeId,
         Utils.ValueHolder<PartitionKeyInternal> partitionKeyInternal,
         Utils.ValueHolder<PartitionKeyDefinition> partitionKeyDefinition,
         PartitionScopedRegionLevelProgress partitionScopedRegionLevelProgress) {
@@ -539,7 +546,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
             return false;
         }
 
-        if (partitionScopedRegionLevelProgress.getHasPartitionSeenNonPointRequestsForDocuments()) {
+        if (partitionScopedRegionLevelProgress.getHasPartitionSeenNonPointRequestsForDocuments(partitionKeyRangeId)) {
             return false;
         }
 

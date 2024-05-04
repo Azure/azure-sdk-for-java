@@ -26,8 +26,6 @@ public class PartitionScopedRegionLevelProgress {
 
     private final ConcurrentHashMap<String, String> normalizedRegionLookupMap;
 
-    private final AtomicBoolean hasPartitionSeenNonPointRequestsForDocuments = new AtomicBoolean(false);
-
     public final static String GLOBAL_PROGRESS_KEY = "global";
 
 
@@ -57,13 +55,15 @@ public class PartitionScopedRegionLevelProgress {
                     regionLevelProgressAsVal = new ConcurrentHashMap<>();
                 }
 
+                AtomicBoolean hasPartitionSeenNonPointOperations = new AtomicBoolean(false);
+
                 // store the global merged progress of the session token for a given physical partition
-                regionLevelProgressAsVal.merge(GLOBAL_PROGRESS_KEY, new RegionLevelProgress(Long.MIN_VALUE, Long.MIN_VALUE, parsedSessionToken), (regionLevelProgressExisting, regionLevelProgressNew) -> {
+                regionLevelProgressAsVal.merge(GLOBAL_PROGRESS_KEY, new RegionLevelProgress(Long.MIN_VALUE, Long.MIN_VALUE, parsedSessionToken, hasPartitionSeenNonPointOperations), (regionLevelProgressExisting, regionLevelProgressNew) -> {
 
                     ISessionToken existingSessionToken = regionLevelProgressExisting.sessionToken;
                     ISessionToken newSessionToken = regionLevelProgressNew.sessionToken;
 
-                    return new RegionLevelProgress(Long.MIN_VALUE, Long.MIN_VALUE, existingSessionToken.merge(newSessionToken));
+                    return new RegionLevelProgress(Long.MIN_VALUE, Long.MIN_VALUE, existingSessionToken.merge(newSessionToken), hasPartitionSeenNonPointOperations);
                 });
 
                 // identify whether regionRoutedTo has a regionId mapping in session token
@@ -72,18 +72,18 @@ public class PartitionScopedRegionLevelProgress {
                 // if regionId to localLsn mappings cannot be extracted, the only mapping would be "global" to whatever is the session token corresponding to the globalLsn seen across all regions
                 if (!SessionTokenHelper.tryEvaluateLocalLsnByRegionMappingWithNullSafety(parsedSessionToken, localLsnByRegion)) {
                     request.requestContext.getSessionTokenEvaluationResults().add("Recording only the global session token either because session token doesn't have region id to localLsn mappings or is not a vector session token.");
-                    return null;
+                    return regionLevelProgressAsVal;
                 }
 
                 if (request.getResourceType() == ResourceType.Document) {
                     if (!this.isRequestScopedToLogicalPartition(request)) {
-                        this.hasPartitionSeenNonPointRequestsForDocuments.set(true);
+                        hasPartitionSeenNonPointOperations.set(true);
                     }
                 }
 
-                if (this.hasPartitionSeenNonPointRequestsForDocuments.get()) {
+                if (hasPartitionSeenNonPointOperations.get()) {
                     request.requestContext.getSessionTokenEvaluationResults().add("Recording only the global session token either because the partition has seen non-point operations.");
-                    return null;
+                    return regionLevelProgressAsVal;
                 }
 
                 this.normalizedRegionLookupMap.computeIfAbsent(regionRoutedTo, (regionRoutedToAsVal) -> regionRoutedToAsVal.toLowerCase(Locale.ROOT).trim().replace(" ", ""));
@@ -100,7 +100,7 @@ public class PartitionScopedRegionLevelProgress {
                         regionLevelProgressAsVal.compute(normalizedRegionRoutedTo, (normalizedRegionAsKey, regionLevelProgressAsValInner) -> {
 
                             if (regionLevelProgressAsValInner == null) {
-                                return new RegionLevelProgress(parsedSessionToken.getLSN(), localLsn, null);
+                                return new RegionLevelProgress(parsedSessionToken.getLSN(), localLsn, null, hasPartitionSeenNonPointOperations);
                             }
 
                             // regionLevelProgressAsValInner.parsedSessionToken is passed
@@ -110,7 +110,8 @@ public class PartitionScopedRegionLevelProgress {
                             return new RegionLevelProgress(
                                 Math.max(regionLevelProgressAsValInner.getMaxGlobalLsnSeen(), parsedSessionToken.getLSN()),
                                 Math.max(regionLevelProgressAsValInner.getMaxLocalLsnSeen(), localLsn),
-                                regionLevelProgressAsValInner.sessionToken);
+                                regionLevelProgressAsValInner.sessionToken,
+                                hasPartitionSeenNonPointOperations);
                         });
                     }
                     // regionId maps to a hub region
@@ -118,7 +119,7 @@ public class PartitionScopedRegionLevelProgress {
                         regionLevelProgressAsVal.compute(normalizedRegionRoutedTo, (normalizedRegionAsKey, regionLevelProgressAsValInner) -> {
 
                             if (regionLevelProgressAsValInner == null) {
-                                return new RegionLevelProgress(parsedSessionToken.getLSN(), Long.MIN_VALUE, null);
+                                return new RegionLevelProgress(parsedSessionToken.getLSN(), Long.MIN_VALUE, null, hasPartitionSeenNonPointOperations);
                             }
 
                             // regionLevelProgressAsValInner.parsedSessionToken is passed
@@ -128,7 +129,8 @@ public class PartitionScopedRegionLevelProgress {
                             return new RegionLevelProgress(
                                 Math.max(regionLevelProgressAsValInner.getMaxGlobalLsnSeen(), parsedSessionToken.getLSN()),
                                 Long.MIN_VALUE,
-                                regionLevelProgressAsValInner.sessionToken);
+                                regionLevelProgressAsValInner.sessionToken,
+                                hasPartitionSeenNonPointOperations);
                         });
                     }
 
@@ -136,7 +138,7 @@ public class PartitionScopedRegionLevelProgress {
                     if (normalizedRegionRoutedTo.equals(firstEffectivePreferredReadableRegion)) {
                         regionLevelProgressAsVal.compute(normalizedRegionRoutedTo, (normalizedRegionAsKey, regionLevelProgressAsValInner) -> {
                             if (regionLevelProgressAsValInner == null) {
-                                return new RegionLevelProgress(parsedSessionToken.getLSN(), Long.MIN_VALUE, parsedSessionToken);
+                                return new RegionLevelProgress(parsedSessionToken.getLSN(), Long.MIN_VALUE, parsedSessionToken, hasPartitionSeenNonPointOperations);
                             }
 
                             ISessionToken mergedBasedSessionToken = regionLevelProgressAsValInner.sessionToken == null ? parsedSessionToken : regionLevelProgressAsValInner.sessionToken.merge(parsedSessionToken);
@@ -145,7 +147,8 @@ public class PartitionScopedRegionLevelProgress {
                             return new RegionLevelProgress(
                                 Math.max(regionLevelProgressAsValInner.getMaxGlobalLsnSeen(), parsedSessionToken.getLSN()),
                                 Long.MIN_VALUE,
-                                mergedBasedSessionToken);
+                                mergedBasedSessionToken,
+                                hasPartitionSeenNonPointOperations);
                         });
                     }
                 } else {
@@ -189,7 +192,7 @@ public class PartitionScopedRegionLevelProgress {
                 return globalSessionToken;
             }
 
-            if (this.hasPartitionSeenNonPointRequestsForDocuments.get()) {
+            if (globalLevelProgress.hasPartitionSeenNonPointDocumentOperations.get()) {
                 request.requestContext.getSessionTokenEvaluationResults().add("Resolving to the global session token since partition has seen non-point requests.");
                 return globalSessionToken;
             }
@@ -302,19 +305,33 @@ public class PartitionScopedRegionLevelProgress {
         return request.getPartitionKeyInternal() != null;
     }
 
-    public boolean getHasPartitionSeenNonPointRequestsForDocuments() {
-        return hasPartitionSeenNonPointRequestsForDocuments.get();
+    public boolean getHasPartitionSeenNonPointRequestsForDocuments(String partitionKeyRangeId) {
+
+        if (this.partitionKeyRangeIdToRegionLevelProgress.containsKey(partitionKeyRangeId)) {
+            ConcurrentHashMap<String, RegionLevelProgress> regionToRegionLevelProgress = this.partitionKeyRangeIdToRegionLevelProgress.get(partitionKeyRangeId);
+            RegionLevelProgress regionLevelProgress = regionToRegionLevelProgress.get(GLOBAL_PROGRESS_KEY);
+
+            if (regionLevelProgress == null) {
+                return false;
+            } else {
+                regionLevelProgress.hasPartitionSeenNonPointDocumentOperations.get();
+            }
+        }
+
+        return false;
     }
 
     static class RegionLevelProgress {
         private final long maxGlobalLsnSeen;
         private final long maxLocalLsnSeen;
         private final ISessionToken sessionToken;
+        private final AtomicBoolean hasPartitionSeenNonPointDocumentOperations;
 
-        public RegionLevelProgress(long maxGlobalLsnSeen, long maxLocalLsnSeen, ISessionToken sessionToken) {
+        public RegionLevelProgress(long maxGlobalLsnSeen, long maxLocalLsnSeen, ISessionToken sessionToken, AtomicBoolean hasPartitionSeenNonPointDocumentOperations) {
             this.maxGlobalLsnSeen = maxGlobalLsnSeen;
             this.maxLocalLsnSeen = maxLocalLsnSeen;
             this.sessionToken = sessionToken;
+            this.hasPartitionSeenNonPointDocumentOperations = hasPartitionSeenNonPointDocumentOperations;
         }
 
         public long getMaxGlobalLsnSeen() {
@@ -329,17 +346,24 @@ public class PartitionScopedRegionLevelProgress {
             return sessionToken;
         }
 
+        public void setHasPartitionSeenNonPointDocumentOperations(boolean hasPartitionSeenNonPointDocumentOperations) {
+            this.hasPartitionSeenNonPointDocumentOperations.set(hasPartitionSeenNonPointDocumentOperations);
+        }
+
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             RegionLevelProgress that = (RegionLevelProgress) o;
-            return maxGlobalLsnSeen == that.maxGlobalLsnSeen && maxLocalLsnSeen == that.maxLocalLsnSeen && Objects.equals(sessionToken, that.sessionToken);
+            return maxGlobalLsnSeen == that.maxGlobalLsnSeen &&
+                maxLocalLsnSeen == that.maxLocalLsnSeen &&
+                Objects.equals(sessionToken, that.sessionToken) &&
+                hasPartitionSeenNonPointDocumentOperations.get() == that.hasPartitionSeenNonPointDocumentOperations.get();
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(maxGlobalLsnSeen, maxLocalLsnSeen, sessionToken);
+            return Objects.hash(maxGlobalLsnSeen, maxLocalLsnSeen, sessionToken, hasPartitionSeenNonPointDocumentOperations);
         }
     }
 }
