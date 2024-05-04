@@ -8,8 +8,14 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * ATTENTION: Please ensure the below map is consistent with <a href="https://msdata.visualstudio.com/CosmosDB/_git/CosmosDB?path=%2FProduct%2FCosmos%2FCosmosFabric%2FBackend%2FCommon%2FRegionToIdMap.cs&version=GBmaster">RegionToIdMap.cs</a> to avoid breaking behavior.
+ * <p>
+ * The purpose of the below map is to track region-specific progress from the session token (localLsn). If we know
+ * the region name a request was routed to - the below map will help us obtain the localLsn for that region and partition combination
+ * */
 public class RegionNameToRegionIdMap {
-    private static final Map<String, Integer> regionNameToRegionIdMappings = new HashMap<String, Integer>() {
+    public static final Map<String, Integer> REGION_NAME_TO_REGION_ID_MAPPINGS = new HashMap<String, Integer>() {
         {
             put("East US", 1);
             put("East US 2", 2);
@@ -84,10 +90,11 @@ public class RegionNameToRegionIdMap {
             put("Sweden Central", 71);
             put("Sweden South", 72);
             put("Korea South 2", 73);
+            put("USSec West Central", 113);
         }
     };
 
-    private static final Map<Integer, String> regionIdToNormalizedRegionNameMappings = new HashMap<Integer, String>() {
+    public static final Map<Integer, String> REGION_ID_TO_NORMALIZED_REGION_NAME_MAPPINGS = new HashMap<Integer, String>() {
         {
             put(49, "uaecentral");
             put(14, "francecentral");
@@ -162,10 +169,11 @@ public class RegionNameToRegionIdMap {
             put(46, "ussecwest");
             put(15, "francesouth");
             put(48, "southafricanorth");
+            put(113, "ussecwestcentral");
         }
     };
 
-    private static final Map<String, Integer> normalizedRegionNameToRegionIdMappings = new HashMap<String, Integer>() {
+    public static final Map<String, Integer> NORMALIZED_REGION_NAME_TO_REGION_ID_MAPPINGS = new HashMap<String, Integer>() {
         {
             put("southafricanorth", 48);
             put("westus2", 8);
@@ -240,14 +248,15 @@ public class RegionNameToRegionIdMap {
             put("germanynortheast", 19);
             put("switzerlandnorth", 22);
             put("northeurope", 12);
+            put("ussecwestcentral", 113);
         }
     };
 
     public static String getRegionName(int regionId) {
-        return regionIdToNormalizedRegionNameMappings.getOrDefault(regionId, StringUtils.EMPTY);
+        return REGION_ID_TO_NORMALIZED_REGION_NAME_MAPPINGS.getOrDefault(regionId, StringUtils.EMPTY);
     }
 
     public static int getRegionId(String regionName) {
-        return normalizedRegionNameToRegionIdMappings.getOrDefault(regionName, -1);
+        return NORMALIZED_REGION_NAME_TO_REGION_ID_MAPPINGS.getOrDefault(regionName, -1);
     }
 }

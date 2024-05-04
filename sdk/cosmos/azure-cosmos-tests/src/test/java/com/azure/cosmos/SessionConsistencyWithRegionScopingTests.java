@@ -59,6 +59,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -1216,6 +1217,112 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             return new HashSet<>();
         };
 
+        Function<CosmosAsyncContainer, Set<String>> pointReadFollowsQueryFollowsPointCreate_createInFirstPreferredRegion_pointReadAndQueryInSecondPreferredRegion_Func = (container) -> {
+            TestObject testObjectToBeCreated = TestObject.create();
+
+            String id = testObjectToBeCreated.getId();
+            String pk = testObjectToBeCreated.getMypk();
+
+            container.createItem(testObjectToBeCreated).block();
+
+            try {
+                Thread.sleep(10_000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+            Iterator<FeedResponse<TestObject>> feedResponseIterator = container
+                .queryItems("SELECT * FROM C", new CosmosQueryRequestOptions(), TestObject.class).byPage().toIterable().iterator();
+
+            while (feedResponseIterator.hasNext()) {
+                FeedResponse<TestObject> feedResponse = feedResponseIterator.next();
+                assertThat(feedResponse.getResults()).isNotNull();
+                assertThat(feedResponse.getResults()).isNotEmpty();
+            }
+
+            CosmosItemResponse<TestObject> testObjectFromRead = container.readItem(id, new PartitionKey(pk), new CosmosItemRequestOptions().setExcludedRegions(ImmutableList.of(this.writeRegions.get(0))), TestObject.class).block();
+
+            assertThat(testObjectFromRead).isNotNull();
+            validateTestObjectEquality(testObjectToBeCreated, testObjectFromRead.getItem());
+
+            return ImmutableSet.of(pk);
+        };
+
+        Function<CosmosAsyncContainer, Set<String>> pointReadFollowsQueryOnDifferentPartitionAsPointReadFollowsPointCreate_createInFirstPreferredRegion_pointReadAndQueryInSecondPreferredRegion_Func = (container) -> {
+            try (CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), this.writeRegions, false)) {
+
+                int createOperationCount = 100;
+
+                CosmosAsyncDatabase database = client.getDatabase(container.getDatabase().getId());
+                CosmosAsyncContainer helperContainer = database.getContainer(container.getId());
+
+                Flux.range(0, createOperationCount)
+                    .flatMap(integer -> {
+                        TestObject objectToBeCreated = TestObject.create();
+                        return container.upsertItem(
+                                objectToBeCreated,
+                                new PartitionKey(objectToBeCreated.getMypk()),
+                                new CosmosItemRequestOptions())
+                            .onErrorResume(throwable -> {
+                                logger.warn("Throwable: ", throwable);
+                                return Mono.empty();
+                            });
+                    })
+                    .blockLast();
+
+                List<FeedRange> feedRanges = helperContainer.getFeedRanges(true).block();
+
+                assertThat(feedRanges).isNotNull();
+                assertThat(feedRanges.size()).as("feedRanges' size is expected to be greater than 1.").isGreaterThan(1);
+
+                FeedRange feedRangeOne = feedRanges.get(0);
+                FeedRange feedRangeTwo = feedRanges.get(1);
+
+                SqlQuerySpec selectFirstQuery = new SqlQuerySpec("SELECT * FROM C OFFSET 0 LIMIT 1");
+
+                List<TestObject> objectsFromFirstFeedRange = helperContainer
+                    .queryItems(selectFirstQuery, new CosmosQueryRequestOptions().setFeedRange(feedRangeOne), TestObject.class)
+                    .collectList()
+                    .block();
+
+                assertThat(objectsFromFirstFeedRange).isNotNull();
+                assertThat(objectsFromFirstFeedRange).isNotEmpty();
+                assertThat(objectsFromFirstFeedRange.size()).isEqualTo(1);
+
+                List<TestObject> objectsFromSecondFeedRange = container.queryItems(
+                    "SELECT * FROM C",
+                        new CosmosQueryRequestOptions()
+                            .setFeedRange(feedRangeTwo)
+                            .setExcludedRegions(ImmutableList.of(this.writeRegions.get(0))),
+                        TestObject.class)
+                    .collectList()
+                    .block();
+
+                assertThat(objectsFromSecondFeedRange).isNotNull();
+                assertThat(objectsFromSecondFeedRange).isNotEmpty();
+
+                CosmosItemResponse<TestObject> readItemResponse = container.readItem(
+                        objectsFromFirstFeedRange.get(0).getId(),
+                        new PartitionKey(objectsFromFirstFeedRange.get(0).getMypk()),
+                        new CosmosItemRequestOptions().setExcludedRegions(ImmutableList.of(this.writeRegions.get(0))),
+                        TestObject.class)
+                    .block();
+
+                assertThat(readItemResponse).isNotNull();
+
+                TestObject testObjectFromRead = readItemResponse.getItem();
+
+                assertThat(testObjectFromRead).isNotNull();
+                validateTestObjectEquality(objectsFromFirstFeedRange.get(0), testObjectFromRead);
+
+                return ImmutableSet.of(testObjectFromRead.getMypk());
+            } catch (Exception ex) {
+                logger.error("Exception occurred : ", ex);
+                fail("Reads, queries and creates should have succeeded!");
+            }
+
+            return new HashSet<>();
+        };
 
         return new Object[][] {
             {
@@ -1297,6 +1404,22 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
                 !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+            },
+            {
+                pointReadFollowsQueryFollowsPointCreate_createInFirstPreferredRegion_pointReadAndQueryInSecondPreferredRegion_Func,
+                "pointReadFollowsQueryFollowsPointCreate_createInFirstPreferredRegion_pointReadAndQueryInSecondPreferredRegion",
+                "Point read or query operation should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+            },
+            {
+                pointReadFollowsQueryOnDifferentPartitionAsPointReadFollowsPointCreate_createInFirstPreferredRegion_pointReadAndQueryInSecondPreferredRegion_Func,
+                "pointReadFollowsQueryOnDifferentPartitionAsPointReadFollowsPointCreate_createInFirstPreferredRegion_pointReadAndQueryInSecondPreferredRegion",
+                "Point read or query should have succeeded!",
+                BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
             }
         };
     }
