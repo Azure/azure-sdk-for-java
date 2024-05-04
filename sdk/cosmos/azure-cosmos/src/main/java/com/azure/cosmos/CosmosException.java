@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -140,7 +141,7 @@ public class CosmosException extends AzureException {
     /***
      * All selectable replica status.
      */
-    private final Map<String, List<String>> replicaStatusList = new HashMap<>();
+    private final Map<String, Set<String>> replicaStatusList = new HashMap<>();
 
     /**
      * Fault injection ruleId
@@ -611,7 +612,7 @@ public class CosmosException extends AzureException {
         return this.faultInjectionEvaluationResults;
     }
 
-    Map<String, List<String>> getReplicaStatusList() {
+    Map<String, Set<String>> getReplicaStatusList() {
         return this.replicaStatusList;
     }
 
@@ -627,7 +628,7 @@ public class CosmosException extends AzureException {
                     }
 
                     @Override
-                    public Map<String, List<String>> getReplicaStatusList(CosmosException cosmosException) {
+                    public Map<String, Set<String>> getReplicaStatusList(CosmosException cosmosException) {
                         return cosmosException.getReplicaStatusList();
                     }
 

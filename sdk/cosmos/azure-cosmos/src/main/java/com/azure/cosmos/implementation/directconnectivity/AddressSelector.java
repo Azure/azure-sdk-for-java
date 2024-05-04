@@ -15,6 +15,7 @@ import reactor.core.publisher.Mono;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -47,12 +48,12 @@ public class AddressSelector {
         });
     }
 
-    public Mono<Uri> resolvePrimaryUriAsync(RxDocumentServiceRequest request, boolean forceAddressRefresh, AtomicReference<List<String>> replicaStatuses) {
+    public Mono<Uri> resolvePrimaryUriAsync(RxDocumentServiceRequest request, boolean forceAddressRefresh, Set<String> replicaStatuses) {
         Mono<List<AddressInformation>> replicaAddressesObs = this.resolveAddressesAsync(request, forceAddressRefresh);
         return replicaAddressesObs.flatMap(replicaAddresses -> {
             try {
                 replicaAddresses.stream().filter(replica -> !replica.isPrimary()).forEach(replica ->
-                    replicaStatuses.get().add(replica.getPhysicalUri().getHealthStatusDiagnosticString()));
+                    replicaStatuses.add(replica.getPhysicalUri().getHealthStatusDiagnosticString()));
                 return Mono.just(AddressSelector.getPrimaryUri(request, replicaAddresses));
             } catch (Exception e) {
                 return Mono.error(e);

@@ -40,6 +40,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
@@ -638,8 +639,8 @@ public class StoreReaderTest {
                 .withGlobalCommittedLsn(bigLsn)
                 .build();
 
-        Map<String, List<String>> replicaStatusList = new HashMap<>();
-        replicaStatusList.put(Uri.ATTEMPTING, Arrays.asList(primaryURI.getHealthStatusDiagnosticString()));
+        Map<String, Set<String>> replicaStatusList = new HashMap<>();
+        replicaStatusList.put(Uri.ATTEMPTING, Set.of(primaryURI.getHealthStatusDiagnosticString()));
         StoreResult result = storeReader.createStoreResult(
                 storeResponse,
                 null,

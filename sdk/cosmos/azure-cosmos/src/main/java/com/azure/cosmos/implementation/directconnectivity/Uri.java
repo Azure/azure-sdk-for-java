@@ -239,8 +239,7 @@ public class Uri {
         private String diagnosticString;
         private final HealthStatus status;
         public HealthStatusAndDiagnosticStringTuple(URI uri, HealthStatus status) {
-            this.diagnosticString = uri.getPort() + ":" + Uri.SECONDARY + ":" + status;
-            this.status = status;
+            this(uri, status, false);
         }
         public HealthStatusAndDiagnosticStringTuple(URI uri, HealthStatus status, boolean isPrimary) {
             this.diagnosticString = uri.getPort() + ":" + (isPrimary ? Uri.PRIMARY : Uri.SECONDARY) + ":" + status;

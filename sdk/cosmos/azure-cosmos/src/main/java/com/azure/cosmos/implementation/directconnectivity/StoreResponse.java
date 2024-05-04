@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
@@ -38,7 +39,7 @@ public class StoreResponse {
     private RntbdChannelStatistics channelStatistics;
     private int rntbdRequestLength;
     private int rntbdResponseLength;
-    private final Map<String, List<String>> replicaStatusList;
+    private final Map<String, Set<String>> replicaStatusList;
     private String faultInjectionRuleId;
     private List<String> faultInjectionRuleEvaluationResults;
 
@@ -246,7 +247,7 @@ public class StoreResponse {
         return subStatusCode;
     }
 
-    public Map<String, List<String>> getReplicaStatusList() {
+    public Map<String, Set<String>> getReplicaStatusList() {
         return this.replicaStatusList;
     }
 
