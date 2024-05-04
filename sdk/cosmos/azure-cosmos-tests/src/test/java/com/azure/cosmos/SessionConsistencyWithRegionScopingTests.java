@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -13,6 +14,7 @@ import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.PartitionKeyBasedBloomFilter;
 import com.azure.cosmos.implementation.RegionScopedSessionContainer;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
+import com.azure.cosmos.implementation.SessionContainer;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.guava25.base.Charsets;
 import com.azure.cosmos.implementation.guava25.base.Function;
@@ -1624,8 +1626,16 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         PartitionKeyInternal internalPartitionKey = partitionKeyAccessor.getPartitionKeyInternal(partitionKey);
 
         ISessionContainer sessionContainer = ReflectionUtils.getSessionContainer(documentClient);
-        assertThat(sessionContainer instanceof RegionScopedSessionContainer).isTrue();
+        GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(documentClient);
+        DatabaseAccount databaseAccountSnapshot = globalEndpointManager.getLatestDatabaseAccount();
+        ConnectionPolicy connectionPolicy = globalEndpointManager.getConnectionPolicy();
 
+        if (!(databaseAccountSnapshot.getEnableMultipleWriteLocations() && connectionPolicy.isMultipleWriteRegionsEnabled())) {
+            assertThat(sessionContainer instanceof SessionContainer).isTrue();
+            return;
+        }
+
+        assertThat(sessionContainer instanceof RegionScopedSessionContainer).isTrue();
         RegionScopedSessionContainer regionScopedSessionContainer = (RegionScopedSessionContainer) sessionContainer;
 
         if (shouldPartitionKeyBePresentInBloomFilter) {
@@ -1645,6 +1655,5 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                     normalizedRegion))
                 .isFalse();
         }
-
     }
 }
