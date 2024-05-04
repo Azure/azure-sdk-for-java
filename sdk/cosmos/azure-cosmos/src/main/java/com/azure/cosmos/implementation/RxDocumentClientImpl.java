@@ -605,10 +605,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private void resetSessionContainerIfNeeded(DatabaseAccount databaseAccount) {
         boolean isRegionScopingOfSessionTokensPossible = this.isRegionScopingOfSessionTokensPossible(databaseAccount, this.useMultipleWriteLocations, this.isRegionScopedSessionCapturingEnabledOnClientOrSystemConfig);
 
-        if (isRegionScopingOfSessionTokensPossible) {
+        // TODO: Revert commented out code before merge
+//        if (isRegionScopingOfSessionTokensPossible) {
             this.sessionContainer = new RegionScopedSessionContainer(this.serviceEndpoint.getHost(), this.sessionCapturingDisabled, this.globalEndpointManager);
             this.diagnosticsClientConfig.withRegionScopedSessionContainerOptions((RegionScopedSessionContainer) this.sessionContainer);
-        }
+//        }
     }
 
     private boolean isRegionScopingOfSessionTokensPossible(DatabaseAccount databaseAccount, boolean useMultipleWriteLocations, boolean isRegionScopedSessionCapturingEnabled) {
