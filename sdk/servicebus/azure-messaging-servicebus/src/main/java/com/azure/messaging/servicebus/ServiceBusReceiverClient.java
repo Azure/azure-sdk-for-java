@@ -12,6 +12,7 @@ import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
+import com.azure.messaging.servicebus.models.DeleteMessagesOptions;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
@@ -813,6 +814,39 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      */
     public void rollbackTransaction(ServiceBusTransactionContext transactionContext) {
         asyncClient.rollbackTransaction(transactionContext).block(operationTimeout);
+    }
+
+    /**
+     * Deletes up to {@code messageCount} messages from the entity enqueued before {@link OffsetDateTime#now()}.
+     * The actual number of deleted messages may be less if there are fewer eligible messages in the entity.
+     *
+     * <p>If the lock for a message is held by a receiver, it will be respected and the message will not be deleted.</p>
+     *
+     * @param messageCount the desired number of messages to delete.
+     * @return the number of messages deleted.
+     *
+     * @throws IllegalArgumentException when the {@code messageCount} is less than 1 or exceeds the maximum allowed, as
+     * determined by the Service Bus service.
+     */
+    public int deleteMessages(int messageCount) {
+        return deleteMessages(messageCount, new DeleteMessagesOptions());
+    }
+
+    /**
+     * Deletes up to {@code messageCount} messages from the entity. The actual number of deleted messages may be less
+     * if there are fewer eligible messages in the entity.
+     *
+     * <p>If the lock for a message is held by a receiver, it will be respected and the message will not be deleted.</p>
+     *
+     * @param messageCount the desired number of messages to delete.
+     * @param options options used to delete the messages.
+     * @return the number of messages deleted.
+     *
+     * @throws IllegalArgumentException when the {@code messageCount} is less than 1 or exceeds the maximum allowed, as
+     * determined by the Service Bus service.
+     */
+    public int deleteMessages(int messageCount, DeleteMessagesOptions options) {
+        return asyncClient.deleteMessages(messageCount, options).block(operationTimeout);
     }
 
     /**

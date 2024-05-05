@@ -56,6 +56,7 @@ import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_ADD_RULE;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_DELETE_MESSAGES;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_GET_RULES;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_GET_SESSION_STATE;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_PEEK;
@@ -530,6 +531,58 @@ public class ManagementChannel implements ServiceBusManagementNode {
             }
 
             return Flux.fromIterable(list);
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Mono<Integer> deleteMessages(int messageCount, OffsetDateTime beforeEnqueueTimeUtc,
+        String associatedLinkName, String sessionId) {
+        return isAuthorized(OPERATION_DELETE_MESSAGES).then(createChannel.flatMap(channel -> {
+            final Message message = createManagementMessage(OPERATION_DELETE_MESSAGES, associatedLinkName);
+            final Map<String, Object> body = new HashMap<>(3);
+            body.put(ManagementConstants.MESSAGE_COUNT_KEY, messageCount);
+            body.put(ManagementConstants.ENQUEUED_TIME_UTC, Date.from(beforeEnqueueTimeUtc.toInstant()));
+            if (!CoreUtils.isNullOrEmpty(sessionId)) {
+                body.put(ManagementConstants.SESSION_ID, sessionId);
+            }
+            message.setBody(new AmqpValue(body));
+            return sendWithVerify(channel, message, null);
+        })).flatMap(response -> {
+            AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(response);
+            if (statusCode == AmqpResponseCode.OK) {
+                if (!(response.getBody() instanceof AmqpValue)) {
+                    return monoError(logger, new AmqpException(false,
+                        String.format("Expected response body of type AmqpValue not found %s", response.getBody()),
+                        getErrorContext()));
+                }
+                final AmqpValue body = (AmqpValue) response.getBody();
+                if (!(body.getValue() instanceof Map)) {
+                    return monoError(logger, new AmqpException(false,
+                        String.format("Expected value of type Map not found in the response body %s", body.getValue()),
+                        getErrorContext()));
+                }
+                @SuppressWarnings("unchecked") final Map<String,  Integer> map = (Map<String, Integer>) body.getValue();
+                if (!map.containsKey("message-count")) {
+                    return monoError(logger, new AmqpException(false,
+                        String.format("Expected message-count entry not found in the map %s", map),
+                        getErrorContext()));
+                }
+                final int count = map.get("message-count");
+                return Mono.just(count);
+            } else if (statusCode == AmqpResponseCode.NO_CONTENT) {
+                return Mono.just(0);
+            } else if (statusCode == AmqpResponseCode.NOT_FOUND) {
+                final String errorCondition = RequestResponseUtils.getErrorCondition(response);
+                final AmqpErrorCondition amqpErrorCondition = AmqpErrorCondition.fromString(errorCondition);
+                if (amqpErrorCondition == AmqpErrorCondition.MESSAGE_NOT_FOUND) {
+                    return Mono.just(0);
+                }
+            }
+            return monoError(logger,
+                new IllegalStateException("Unexpected state when deleting messages."));
         });
     }
 
