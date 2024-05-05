@@ -31,6 +31,7 @@ import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
+import com.azure.messaging.servicebus.models.DeleteMessagesOptions;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
@@ -330,6 +331,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private static final Duration EXPIRED_RENEWAL_CLEANUP_INTERVAL = Duration.ofMinutes(2);
     private static final DeadLetterOptions DEFAULT_DEAD_LETTER_OPTIONS = new DeadLetterOptions();
     private static final String TRANSACTION_LINK_NAME = "coordinator";
+    // the maximum number of messages to delete in a single batch.  This cap is established and enforced by the service.
+    private static final int MAX_DELETE_MESSAGES_COUNT = 4000;
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverAsyncClient.class);
 
     private final LockContainer<LockRenewalOperation> renewalContainer;
@@ -1458,6 +1461,77 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                         transactionContext.getTransactionId()))))
                 .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE));
 
+    }
+
+    /**
+     * Deletes up to {@code messageCount} messages from the entity enqueued before {@link OffsetDateTime#now()}.
+     * The actual number of deleted messages may be less if there are fewer eligible messages in the entity.
+     *
+     * <p>If the lock for a message is held by a receiver, it will be respected and the message will not be deleted.</p>
+     *
+     * @param messageCount the desired number of messages to delete.
+     * @return a {@link Mono} indicating the number of messages deleted.
+     *
+     * @throws IllegalArgumentException when the {@code messageCount} is less than 1 or exceeds the maximum allowed, as
+     * determined by the Service Bus service.
+     */
+    public Mono<Integer> deleteMessages(int messageCount) {
+        return deleteMessages(messageCount, new DeleteMessagesOptions(), receiverOptions.getSessionId());
+    }
+
+    /**
+     * Deletes up to {@code messageCount} messages from the entity. The actual number of deleted messages may be less
+     * if there are fewer eligible messages in the entity.
+     *
+     * <p>If the lock for a message is held by a receiver, it will be respected and the message will not be deleted.</p>
+     *
+     * @param messageCount the desired number of messages to delete.
+     * @param options options used to delete the messages.
+     * @return a {@link Mono} indicating the number of messages deleted.
+     *
+     * @throws IllegalArgumentException when the {@code messageCount} is less than 1 or exceeds the maximum allowed, as
+     * determined by the Service Bus service.
+     */
+    public Mono<Integer> deleteMessages(int messageCount, DeleteMessagesOptions options) {
+        return deleteMessages(messageCount, options, receiverOptions.getSessionId());
+    }
+
+    /**
+     * Deletes up to {@code messageCount} messages from the entity. The actual number of deleted messages may be less
+     * if there are fewer eligible messages in the entity.
+     *
+     * <p>If the lock for a message is held by a receiver, it will be respected and the message will not be deleted.</p>
+     *
+     * @param messageCount the desired number of messages to delete.
+     * @param options options used to delete the messages.
+     * @param sessionId Session id of the messages to delete from. {@code null} if there is no session.
+     * @return a {@link Mono} indicating the number of messages deleted.
+     *
+     * @throws IllegalArgumentException when the {@code messageCount} is less than 1 or exceeds the maximum allowed, as
+     * determined by the Service Bus service.
+     */
+    Mono<Integer> deleteMessages(int messageCount, DeleteMessagesOptions options, String sessionId) {
+        if (isDisposed.get()) {
+            return monoError(LOGGER, new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "deleteMessages")));
+        }
+        if (Objects.isNull(options)) {
+            return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
+        }
+        if (messageCount <= 0 || messageCount > MAX_DELETE_MESSAGES_COUNT) {
+            final String message = "'maxMessages' must be a positive number and less than " + MAX_DELETE_MESSAGES_COUNT;
+            return monoError(LOGGER, new IllegalArgumentException(message));
+        }
+        final OffsetDateTime beforeEnqueueTimeUtc;
+        if (options.getBeforeEnqueueTimeUtc() != null) {
+            beforeEnqueueTimeUtc = options.getBeforeEnqueueTimeUtc();
+        } else {
+            beforeEnqueueTimeUtc = OffsetDateTime.now();
+        }
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+            .flatMap(managementNode -> managementNode.deleteMessages(messageCount, beforeEnqueueTimeUtc, getLinkName(sessionId), sessionId))
+            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.DELETE_MESSAGES));
     }
 
     /**
