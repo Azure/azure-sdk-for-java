@@ -38,6 +38,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -640,7 +641,7 @@ public class StoreReaderTest {
                 .build();
 
         Map<String, Set<String>> replicaStatusList = new HashMap<>();
-        replicaStatusList.put(Uri.ATTEMPTING, Set.of(primaryURI.getHealthStatusDiagnosticString()));
+        replicaStatusList.put(Uri.ATTEMPTING, new HashSet<>(Arrays.asList(primaryURI.getHealthStatusDiagnosticString())));
         StoreResult result = storeReader.createStoreResult(
                 storeResponse,
                 null,
