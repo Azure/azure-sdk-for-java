@@ -601,7 +601,7 @@ public class StoreReader {
                                 entity);
 
                         replicaStatusList.put(Uri.IGNORING, replicaStatuses);
-                        replicaStatusList.put(Uri.ATTEMPTING, Set.of(primaryUri.getHealthStatusDiagnosticString()));
+                        replicaStatusList.put(Uri.ATTEMPTING, new HashSet<>(Arrays.asList(primaryUri.getHealthStatusDiagnosticString())));
 
                         return storeResponseObsAndUri.getLeft().flatMap(
                                 storeResponse -> {
