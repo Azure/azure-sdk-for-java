@@ -75,13 +75,6 @@ public class MetricDataMapper {
     }
 
     public void map(MetricData metricData, Consumer<TelemetryItem> consumer) {
-        // only emit stable metrics from the OpenTelemetry instrumentation libraries
-        // custom metrics are always emitted
-        if (!OTEL_STABLE_METRICS_TO_BREEZE.contains(metricData.getName())
-            && metricData.getInstrumentationScopeInfo().getName().startsWith(OTEL_INSTRUMENTATION_NAME_PREFIX)) {
-           return;
-        }
-
         MetricDataType type = metricData.getType();
         if (type == DOUBLE_SUM
             || type == DOUBLE_GAUGE
@@ -90,10 +83,17 @@ public class MetricDataMapper {
             || type == HISTOGRAM) {
             boolean isPreAggregatedStandardMetric =
                 OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.contains(metricData.getName());
-            List<TelemetryItem> telemetryItemList =
-                convertOtelMetricToAzureMonitorMetric(metricData, isPreAggregatedStandardMetric);
-            for (TelemetryItem telemetryItem : telemetryItemList) {
-                consumer.accept(telemetryItem);
+            if (isPreAggregatedStandardMetric) {
+                List<TelemetryItem> preAggregatedStandardMetrics =
+                    convertOtelMetricToAzureMonitorMetric(metricData, true);
+                preAggregatedStandardMetrics.forEach(consumer::accept);
+            }
+
+            // emit stable metrics from the OpenTelemetry instrumentation libraries
+            // custom metrics are always emitted
+            if (OTEL_STABLE_METRICS_TO_BREEZE.contains(metricData.getName())) {
+                List<TelemetryItem> stableOtelMetrics = convertOtelMetricToAzureMonitorMetric(metricData, false);
+                stableOtelMetrics.forEach(consumer::accept);
             }
         } else {
             logger.warning("metric data type {} is not supported yet.", metricData.getType());
