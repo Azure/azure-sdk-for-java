@@ -58,7 +58,6 @@ public class VertxAsyncHttpClientBuilder {
     private Duration writeTimeout;
     private Duration responseTimeout;
     private Duration readTimeout;
-    private Duration idleTimeout;
     private ProxyOptions proxyOptions;
     private Configuration configuration;
     private HttpClientOptions httpClientOptions;
@@ -91,7 +90,6 @@ public class VertxAsyncHttpClientBuilder {
         this.connectTimeout = connectTimeout;
         return this;
     }
-
 
     /**
      * Sets the read timeout duration used when reading the server response.
@@ -152,17 +150,6 @@ public class VertxAsyncHttpClientBuilder {
      */
     public VertxAsyncHttpClientBuilder writeTimeout(Duration writeTimeout) {
         this.writeTimeout = writeTimeout;
-        return this;
-    }
-
-    /**
-     * Sets the connection idle timeout.
-     *
-     * @param idleTimeout the connection idle timeout
-     * @return the updated VertxAsyncHttpClientBuilder object
-     */
-    public VertxAsyncHttpClientBuilder idleTimeout(Duration idleTimeout) {
-        this.idleTimeout = idleTimeout;
         return this;
     }
 
@@ -229,19 +216,18 @@ public class VertxAsyncHttpClientBuilder {
             configuredVertx = getVertx(vertxProviders.iterator());
         }
 
-        if (this.httpClientOptions == null) {
-            this.httpClientOptions = new HttpClientOptions().setIdleTimeoutUnit(TimeUnit.MILLISECONDS)
-                .setIdleTimeout((int) getTimeout(this.idleTimeout, Duration.ZERO).toMillis())
+        HttpClientOptions buildOptions = this.httpClientOptions;
+        if (buildOptions == null) {
+            buildOptions = new HttpClientOptions().setIdleTimeoutUnit(TimeUnit.MILLISECONDS)
                 .setConnectTimeout((int) getTimeout(this.connectTimeout, DEFAULT_CONNECT_TIMEOUT).toMillis())
                 .setReadIdleTimeout((int) getTimeout(this.readTimeout, DEFAULT_READ_TIMEOUT).toMillis())
                 .setWriteIdleTimeout((int) getTimeout(this.writeTimeout, DEFAULT_WRITE_TIMEOUT).toMillis());
 
             Configuration buildConfiguration
-                = (this.configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+                = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
-            ProxyOptions buildProxyOptions = (this.proxyOptions == null)
-                ? ProxyOptions.fromConfiguration(buildConfiguration, true)
-                : this.proxyOptions;
+            ProxyOptions buildProxyOptions
+                = (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration, true) : proxyOptions;
 
             if (buildProxyOptions != null) {
                 io.vertx.core.net.ProxyOptions vertxProxyOptions = new io.vertx.core.net.ProxyOptions();
@@ -273,17 +259,16 @@ public class VertxAsyncHttpClientBuilder {
                 String nonProxyHosts = buildProxyOptions.getNonProxyHosts();
                 if (!CoreUtils.isNullOrEmpty(nonProxyHosts)) {
                     for (String nonProxyHost : desanitizedNonProxyHosts(nonProxyHosts)) {
-                        this.httpClientOptions.addNonProxyHost(nonProxyHost);
+                        buildOptions.addNonProxyHost(nonProxyHost);
                     }
                 }
 
-                this.httpClientOptions.setProxyOptions(vertxProxyOptions);
+                buildOptions.setProxyOptions(vertxProxyOptions);
             }
         }
 
-        io.vertx.core.http.HttpClient client = configuredVertx.createHttpClient(this.httpClientOptions);
-        return new VertxAsyncHttpClient(client, configuredVertx,
-            getTimeout(this.responseTimeout, DEFAULT_RESPONSE_TIMEOUT));
+        io.vertx.core.http.HttpClient client = configuredVertx.createHttpClient(buildOptions);
+        return new VertxAsyncHttpClient(client, getTimeout(this.responseTimeout, DEFAULT_RESPONSE_TIMEOUT));
     }
 
     static Vertx getVertx(Iterator<VertxProvider> iterator) {

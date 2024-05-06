@@ -15,7 +15,6 @@ import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.ByteArrayContent;
 import com.azure.core.implementation.util.ByteBufferContent;
-import com.azure.core.implementation.util.FileContent;
 import com.azure.core.implementation.util.HttpUtils;
 import com.azure.core.implementation.util.SerializableContent;
 import com.azure.core.implementation.util.StringContent;
@@ -24,10 +23,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.ProgressReporter;
 import io.netty.buffer.Unpooled;
-import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
-import io.vertx.core.file.AsyncFile;
-import io.vertx.core.file.OpenOptions;
 import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpClientResponse;
 import io.vertx.core.http.HttpMethod;
@@ -37,6 +33,7 @@ import reactor.core.publisher.MonoSink;
 
 import java.time.Duration;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import static com.azure.core.http.vertx.implementation.VertxUtils.wrapVertxException;
 
@@ -44,7 +41,6 @@ import static com.azure.core.http.vertx.implementation.VertxUtils.wrapVertxExcep
  * {@link HttpClient} implementation for the Vert.x {@link io.vertx.core.http.HttpClient}.
  */
 class VertxAsyncHttpClient implements HttpClient {
-    private final Vertx vertx;
     final io.vertx.core.http.HttpClient client;
     private final Duration responseTimeout;
 
@@ -53,9 +49,8 @@ class VertxAsyncHttpClient implements HttpClient {
      *
      * @param client The Vert.x {@link io.vertx.core.http.HttpClient}
      */
-    VertxAsyncHttpClient(io.vertx.core.http.HttpClient client, Vertx vertx, Duration responseTimeout) {
+    VertxAsyncHttpClient(io.vertx.core.http.HttpClient client, Duration responseTimeout) {
         this.client = Objects.requireNonNull(client, "client cannot be null");
-        this.vertx = Objects.requireNonNull(vertx, "vertx cannot be null");
         this.responseTimeout = responseTimeout;
     }
 
@@ -68,19 +63,14 @@ class VertxAsyncHttpClient implements HttpClient {
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
         boolean eagerlyReadResponse = (boolean) context.getData(HttpUtils.AZURE_EAGERLY_READ_RESPONSE).orElse(false);
         boolean ignoreResponseBody = (boolean) context.getData(HttpUtils.AZURE_IGNORE_RESPONSE_BODY).orElse(false);
-        Long responseTimeout = context.getData(HttpUtils.AZURE_RESPONSE_TIMEOUT)
+        Duration perCallTimeout = (Duration) context.getData(HttpUtils.AZURE_RESPONSE_TIMEOUT)
             .filter(timeoutDuration -> timeoutDuration instanceof Duration)
-            .map(timeoutDuration -> ((Duration) timeoutDuration).toMillis())
-            .orElse(null);
+            .orElse(responseTimeout);
 
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
 
         RequestOptions options = new RequestOptions().setMethod(HttpMethod.valueOf(request.getHttpMethod().name()))
             .setAbsoluteURI(request.getUrl());
-
-        if (responseTimeout != null) {
-            options.setIdleTimeout(responseTimeout);
-        }
 
         return Mono.create(sink -> client.request(options, requestResult -> {
             if (requestResult.failed()) {
@@ -98,7 +88,14 @@ class VertxAsyncHttpClient implements HttpClient {
                 vertxRequest.setChunked(true);
             }
 
-            vertxRequest.response(event -> {
+            io.vertx.core.Future<HttpClientResponse> bodySendFuture
+                = sendBody(sink, request, progressReporter, vertxRequest);
+
+            if (!perCallTimeout.isZero() && !perCallTimeout.isNegative()) {
+                bodySendFuture = bodySendFuture.timeout(perCallTimeout.toMillis(), TimeUnit.MILLISECONDS);
+            }
+
+            bodySendFuture.andThen(event -> {
                 if (event.succeeded()) {
                     HttpClientResponse vertxHttpResponse = event.result();
                     vertxHttpResponse.exceptionHandler(exception -> sink.error(wrapVertxException(exception)));
@@ -121,9 +118,7 @@ class VertxAsyncHttpClient implements HttpClient {
                 } else {
                     sink.error(wrapVertxException(event.cause()));
                 }
-            });
-
-            sendBody(sink, request, progressReporter, vertxRequest);
+            }).onFailure(cause -> sink.error(wrapVertxException(cause)));
         }));
     }
 
@@ -133,64 +128,37 @@ class VertxAsyncHttpClient implements HttpClient {
     }
 
     @SuppressWarnings("deprecation")
-    private void sendBody(MonoSink<HttpResponse> sink, HttpRequest azureRequest, ProgressReporter progressReporter,
-        HttpClientRequest vertxRequest) {
+    private io.vertx.core.Future<HttpClientResponse> sendBody(MonoSink<HttpResponse> sink, HttpRequest azureRequest,
+        ProgressReporter progressReporter, HttpClientRequest vertxRequest) {
         BinaryData body = azureRequest.getBodyAsBinaryData();
         if (body == null) {
-            vertxRequest.send(result -> {
-                if (result.failed()) {
-                    sink.error(wrapVertxException(result.cause()));
-                }
-            });
-            return;
+            return vertxRequest.send();
         }
 
+        io.vertx.core.Future<?> writeAndEnd;
         BinaryDataContent bodyContent = BinaryDataHelper.getContent(body);
         if (bodyContent instanceof ByteArrayContent
             || bodyContent instanceof StringContent
             || bodyContent instanceof SerializableContent) {
             byte[] content = bodyContent.toBytes();
-            vertxRequest.send(Buffer.buffer(Unpooled.wrappedBuffer(content)), result -> {
-                if (result.succeeded()) {
-                    reportProgress(content.length, progressReporter);
-                } else {
-                    sink.error(wrapVertxException(result.cause()));
-                }
-            });
+            writeAndEnd = vertxRequest.write(Buffer.buffer(content))
+                .onSuccess(ignored -> reportProgress(content.length, progressReporter))
+                .compose(ignored -> vertxRequest.end());
         } else if (bodyContent instanceof ByteBufferContent) {
             long contentLength = bodyContent.getLength();
-            vertxRequest.send(Buffer.buffer(Unpooled.wrappedBuffer(bodyContent.toByteBuffer())), result -> {
-                if (result.succeeded()) {
-                    reportProgress(contentLength, progressReporter);
-                } else {
-                    sink.error(wrapVertxException(result.cause()));
-                }
-            });
-        } else if (bodyContent instanceof FileContent) {
-            FileContent fileContent = (FileContent) bodyContent;
-            vertx.fileSystem().open(fileContent.getFile().toString(), new OpenOptions().setRead(true), event -> {
-                if (event.succeeded()) {
-                    AsyncFile file = event.result();
-                    file.setReadPos(fileContent.getPosition());
-                    if (fileContent.getLength() != null) {
-                        file.setReadLength(fileContent.getLength());
-                    }
-
-                    vertxRequest.send(file, result -> {
-                        if (result.succeeded()) {
-                            reportProgress(fileContent.getLength(), progressReporter);
-                        } else {
-                            sink.error(wrapVertxException(result.cause()));
-                        }
-                    });
-                } else {
-                    sink.error(wrapVertxException(event.cause()));
-                }
-            });
+            writeAndEnd = vertxRequest.write(Buffer.buffer(Unpooled.wrappedBuffer(bodyContent.toByteBuffer())))
+                .onSuccess(ignored -> reportProgress(contentLength, progressReporter))
+                .compose(ignored -> vertxRequest.end());
         } else {
             // Right now both Flux<ByteBuffer> and InputStream bodies are being handled reactively.
-            azureRequest.getBody().subscribe(new VertxRequestWriteSubscriber(vertxRequest, sink, progressReporter));
+            io.vertx.core.Promise<Void> promise = io.vertx.core.Promise.promise();
+            azureRequest.getBody()
+                .subscribe(
+                    new VertxRequestWriteSubscriber(vertxRequest, promise, progressReporter, sink.contextView()));
+            writeAndEnd = promise.future();
         }
+
+        return writeAndEnd.compose(ignored -> vertxRequest.response());
     }
 
     private static void reportProgress(long progress, ProgressReporter progressReporter) {
