@@ -270,3 +270,5 @@ ccmshowbackdevs is an invalid user. Ensure the user exists, is public member of 
 sagivf is not a public member of Azure.
 Aviv-Yaniv is not a public member of Azure.
 tmahmood-microsoft is not a public member of Azure.
+Kishp01 is not a public member of Azure.
+ahamad-MS is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
