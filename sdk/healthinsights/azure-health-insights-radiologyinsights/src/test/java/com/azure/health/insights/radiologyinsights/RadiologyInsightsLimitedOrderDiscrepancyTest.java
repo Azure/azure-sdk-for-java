@@ -56,7 +56,7 @@ public class RadiologyInsightsLimitedOrderDiscrepancyTest extends RadiologyInsig
         try {
             testRadiologyInsightsWithResponse(request -> {
                 RadiologyInsightsJob riResponse = setPlaybackSyncPollerPollInterval(
-                        getClient().beginInferRadiologyInsights("job1713192245084", request)).getFinalResult();
+                        getClient().beginInferRadiologyInsights(/*"job" + new Date().getTime()*/"job1715007637970", request)).getFinalResult();
 
                 List<RadiologyInsightsPatientResult> patients = riResponse.getResult().getPatientResults();
                 assertEquals(1, patients.size());

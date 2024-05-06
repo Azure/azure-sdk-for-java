@@ -33,22 +33,15 @@ public final class FollowupCommunicationInference extends RadiologyInsightsInfer
     @JsonProperty(value = "recipient")
     private List<MedicalProfessionalType> recipient;
 
-    /*
-     * Communication was acknowledged.
-     */
-    @Generated
-    @JsonProperty(value = "wasAcknowledged")
-    private final boolean wasAcknowledged;
-
     /**
      * Creates an instance of FollowupCommunicationInference class.
      *
-     * @param wasAcknowledged the wasAcknowledged value to set.
+     * @param acknowledged the acknowledged value to set.
      */
     @Generated
     @JsonCreator
-    private FollowupCommunicationInference(@JsonProperty(value = "wasAcknowledged") boolean wasAcknowledged) {
-        this.wasAcknowledged = wasAcknowledged;
+    private FollowupCommunicationInference(@JsonProperty(value = "wasAcknowledged") boolean acknowledged) {
+        this.acknowledged = acknowledged;
     }
 
     /**
@@ -59,16 +52,6 @@ public final class FollowupCommunicationInference extends RadiologyInsightsInfer
     @Generated
     public List<MedicalProfessionalType> getRecipient() {
         return this.recipient;
-    }
-
-    /**
-     * Get the wasAcknowledged property: Communication was acknowledged.
-     *
-     * @return the wasAcknowledged value.
-     */
-    @Generated
-    public boolean isWasAcknowledged() {
-        return this.wasAcknowledged;
     }
 
     /*
@@ -105,5 +88,22 @@ public final class FollowupCommunicationInference extends RadiologyInsightsInfer
     @Override
     public RadiologyInsightsInferenceType getKind() {
         return this.kind;
+    }
+
+    /*
+     * Communication was acknowledged.
+     */
+    @Generated
+    @JsonProperty(value = "wasAcknowledged")
+    private final boolean acknowledged;
+
+    /**
+     * Get the acknowledged property: Communication was acknowledged.
+     *
+     * @return the acknowledged value.
+     */
+    @Generated
+    public boolean isAcknowledged() {
+        return this.acknowledged;
     }
 }

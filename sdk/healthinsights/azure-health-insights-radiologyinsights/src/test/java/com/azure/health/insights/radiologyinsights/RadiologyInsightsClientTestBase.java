@@ -50,7 +50,8 @@ import com.azure.health.insights.radiologyinsights.models.TimePeriod;
 
 abstract class RadiologyInsightsClientTestBase extends TestProxyTestBase {
     
-    private static final String FAKE_API_KEY = "fakeKeyPlaceholder";
+    //private static final String FAKE_API_KEY = "fakeKeyPlaceholder";
+    private static final String FAKE_API_KEY = "REDACTED";
     private String documentContent;
     private RadiologyInsightsInferenceType inferenceType;
     private String orderCode;
@@ -62,10 +63,10 @@ abstract class RadiologyInsightsClientTestBase extends TestProxyTestBase {
 
     RadiologyInsightsClientBuilder getClientBuilder() {
         String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTHINSIGHTS_API_KEY", FAKE_API_KEY);
-        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTHINSIGHTS_ENDPOINT", "http://localhost:8080");
+        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTHINSIGHTS_ENDPOINT", "https://localhost:8080/");
 
         RadiologyInsightsClientBuilder builder = new RadiologyInsightsClientBuilder().endpoint(endpoint);
-        if (apiKey != null && !apiKey.equals(FAKE_API_KEY)) {
+        if (apiKey != null /*&& !apiKey.equals(FAKE_API_KEY)*/) {
             builder = builder.credential(new AzureKeyCredential(apiKey));
         }
 

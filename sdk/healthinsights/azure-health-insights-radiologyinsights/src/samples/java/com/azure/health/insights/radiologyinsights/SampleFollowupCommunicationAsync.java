@@ -147,7 +147,7 @@ public class SampleFollowupCommunicationAsync {
                     for (MedicalProfessionalType recipient : recipientList) {
                         System.out.println("      " + recipient);
                     }
-                    System.out.println("   Acknowledged: " + followupCommunicationInference.isWasAcknowledged());
+                    System.out.println("   Acknowledged: " + followupCommunicationInference.isAcknowledged());
                 }
             }
         }
