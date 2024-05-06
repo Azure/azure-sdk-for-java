@@ -107,10 +107,12 @@ public class MetricDataMapper {
 
             // emit stable metrics from the OpenTelemetry instrumentation libraries
             // custom metrics are always emitted
-            if (OTEL_STABLE_METRICS_TO_BREEZE.contains(metricData.getName())) {
-                List<TelemetryItem> stableOtelMetrics = convertOtelMetricToAzureMonitorMetric(metricData, false);
-                stableOtelMetrics.forEach(consumer::accept);
+            if (!OTEL_STABLE_METRICS_TO_BREEZE.contains(metricData.getName())
+                && metricData.getInstrumentationScopeInfo().getName().startsWith(OTEL_INSTRUMENTATION_NAME_PREFIX)) {
+                return;
             }
+            List<TelemetryItem> stableOtelMetrics = convertOtelMetricToAzureMonitorMetric(metricData, false);
+            stableOtelMetrics.forEach(consumer::accept);
         } else {
             logger.warning("metric data type {} is not supported yet.", metricData.getType());
         }
