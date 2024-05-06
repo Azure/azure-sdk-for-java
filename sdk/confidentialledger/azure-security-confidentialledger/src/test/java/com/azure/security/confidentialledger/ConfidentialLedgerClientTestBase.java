@@ -18,6 +18,8 @@ import com.azure.core.test.models.TestProxyRecordingOptions;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateClient;
 import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateClientBuilder;
@@ -39,6 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ConfidentialLedgerClientTestBase extends TestProxyTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(ConfidentialLedgerClientTestBase.class);
 
     protected static final String TRANSACTION_ID = "transactionId";
     protected static final String COLLECTION_ID = "collectionId";
@@ -82,7 +85,7 @@ class ConfidentialLedgerClientTestBase extends TestProxyTestBase {
         try {
             jsonNode = mapper.readTree(identityResponse.toBytes());
         } catch (IOException ex) {
-            System.out.println("Caught IO exception " + ex);
+            LOGGER.log(LogLevel.VERBOSE, () -> "Caught IO exception", ex);
             Assertions.fail();
         }
 
@@ -104,7 +107,7 @@ class ConfidentialLedgerClientTestBase extends TestProxyTestBase {
             reactorClient = reactor.netty.http.client.HttpClient.create()
                 .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
         } catch (SSLException ex) {
-            System.out.println("Caught SSL exception " + ex);
+            LOGGER.log(LogLevel.VERBOSE, () -> "Caught SSL exception", ex);
             Assertions.fail();
         }
 

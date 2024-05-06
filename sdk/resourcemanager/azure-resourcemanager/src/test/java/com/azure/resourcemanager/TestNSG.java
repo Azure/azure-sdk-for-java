@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
 import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
@@ -17,6 +19,8 @@ import java.util.List;
 
 /** Test for network security group CRUD. */
 public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityGroups> {
+    private static final ClientLogger LOGGER = new ClientLogger(TestNSG.class);
+
     @Override
     public NetworkSecurityGroup createResource(NetworkSecurityGroups nsgs) throws Exception {
         String postFix = nsgs.manager().resourceManager().internalContext().randomResourceName("", 8);
@@ -61,7 +65,7 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
                 .createAsync();
 
         resourceStream
-            .doOnSuccess((_ignore) -> System.out.print("completed"));
+            .doOnSuccess((_ignore) -> LOGGER.log(LogLevel.VERBOSE, () -> "completed"));
 
         NetworkSecurityGroup nsg = resourceStream.block();
 
@@ -80,8 +84,8 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
         nsg.refresh();
 
         // Verify
-        Assertions.assertTrue(nsg.region().equals(region));
-        Assertions.assertTrue(nsg.securityRules().size() == 2);
+        Assertions.assertEquals(nsg.region(), region);
+        Assertions.assertEquals(2, nsg.securityRules().size());
 
         // Confirm NIC association
         Assertions.assertEquals(1, nsg.networkInterfaceIds().size());
@@ -191,7 +195,7 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
         // Output associated subnets
         info.append("\n\tAssociated subnets: ");
         List<Subnet> subnets = resource.listAssociatedSubnets();
-        if (subnets == null || subnets.size() == 0) {
+        if (subnets == null || subnets.isEmpty()) {
             info.append("(None)");
         } else {
             for (Subnet subnet : subnets) {
@@ -203,7 +207,7 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
             }
         }
 
-        System.out.println(info.toString());
+        LOGGER.log(LogLevel.VERBOSE, info::toString);
     }
 
     @Override
