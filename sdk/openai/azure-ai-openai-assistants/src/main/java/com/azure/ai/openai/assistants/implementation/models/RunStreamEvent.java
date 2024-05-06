@@ -19,12 +19,6 @@ public final class RunStreamEvent extends ExpandableStringEnum<RunStreamEvent> {
     public static final RunStreamEvent THREAD_RUN_CREATED = fromString("thread.run.created");
 
     /**
-     * Event sent when a run moves to `queued` status. The data of this event is of type ThreadRun.
-     */
-    @Generated
-    public static final RunStreamEvent THEARD_RUN_QUEUED = fromString("thread.run.queued");
-
-    /**
      * Event sent when a run moves to `in_progress` status. The data of this event is of type ThreadRun.
      */
     @Generated
@@ -96,4 +90,10 @@ public final class RunStreamEvent extends ExpandableStringEnum<RunStreamEvent> {
     public static Collection<RunStreamEvent> values() {
         return values(RunStreamEvent.class);
     }
+
+    /**
+     * Event sent when a run moves to `queued` status. The data of this event is of type ThreadRun.
+     */
+    @Generated
+    public static final RunStreamEvent THREAD_RUN_QUEUED = fromString("thread.run.queued");
 }

@@ -11,11 +11,6 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum AssistantsServiceVersion implements ServiceVersion {
     /**
-     * Enum value 2024-02-15-preview.
-     */
-    V2024_02_15_PREVIEW("2024-02-15-preview"),
-
-    /**
      * Enum value placeholder-for-future-release.
      */
     VPLACEHOLDER_FOR_FUTURE_RELEASE("placeholder-for-future-release");

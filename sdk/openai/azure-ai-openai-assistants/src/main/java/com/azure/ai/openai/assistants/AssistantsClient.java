@@ -19,7 +19,6 @@ import com.azure.ai.openai.assistants.implementation.models.UpdateMessageRequest
 import com.azure.ai.openai.assistants.implementation.models.UpdateRunRequest;
 import com.azure.ai.openai.assistants.implementation.models.UpdateThreadRequest;
 import com.azure.ai.openai.assistants.implementation.models.UploadFileRequest;
-import com.azure.ai.openai.assistants.implementation.streaming.OpenAIServerSentEvents;
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantDeletionStatus;
@@ -37,7 +36,6 @@ import com.azure.ai.openai.assistants.models.MessageFile;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
 import com.azure.ai.openai.assistants.models.RunStep;
-import com.azure.ai.openai.assistants.models.StreamUpdate;
 import com.azure.ai.openai.assistants.models.ThreadDeletionStatus;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
@@ -54,11 +52,12 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-
-import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import com.azure.ai.openai.assistants.implementation.streaming.OpenAIServerSentEvents;
+import com.azure.ai.openai.assistants.models.StreamUpdate;
+import java.nio.ByteBuffer;
 import static com.azure.ai.openai.assistants.implementation.OpenAIUtils.addAzureVersionToRequestOptions;
 import com.azure.ai.openai.assistants.implementation.accesshelpers.PageableListAccessHelper;
 import com.azure.ai.openai.assistants.models.PageableList;
@@ -2322,7 +2321,8 @@ public final class AssistantsClient {
     }
 
     /**
-     * Creates a new assistant thread and immediately starts a run using that new thread. Updates are returned as a stream.
+     * Creates a new assistant thread and immediately starts a run using that new thread. Updates are returned as a
+     * stream.
      *
      * @param createAndRunThreadOptions The details used when creating and immediately running a new assistant thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2337,13 +2337,12 @@ public final class AssistantsClient {
     public IterableStream<StreamUpdate> createThreadAndRunStream(CreateAndRunThreadOptions createAndRunThreadOptions) {
         RequestOptions requestOptions = new RequestOptions();
         createAndRunThreadOptions.setStream(true);
-
-        Flux<ByteBuffer> responseStream = createThreadAndRunWithResponse(BinaryData.fromObject(createAndRunThreadOptions), requestOptions)
-            .getValue().toFluxByteBuffer();
-
+        Flux<ByteBuffer> responseStream
+            = createThreadAndRunWithResponse(BinaryData.fromObject(createAndRunThreadOptions), requestOptions)
+                .getValue()
+                .toFluxByteBuffer();
         OpenAIServerSentEvents eventStream = new OpenAIServerSentEvents(responseStream);
         return new IterableStream<>(eventStream.getEvents());
-
     }
 
     /**
@@ -2975,10 +2974,9 @@ public final class AssistantsClient {
     public IterableStream<StreamUpdate> createRunStream(String threadId, CreateRunOptions createRunOptions) {
         RequestOptions requestOptions = new RequestOptions();
         createRunOptions.setStream(true);
-
-        Flux<ByteBuffer> responseStream = createRunWithResponse(threadId, BinaryData.fromObject(createRunOptions), requestOptions)
-            .getValue().toFluxByteBuffer();
-
+        Flux<ByteBuffer> responseStream
+            = createRunWithResponse(threadId, BinaryData.fromObject(createRunOptions), requestOptions).getValue()
+                .toFluxByteBuffer();
         OpenAIServerSentEvents eventStream = new OpenAIServerSentEvents(responseStream);
         return new IterableStream<>(eventStream.getEvents());
     }
@@ -2999,9 +2997,9 @@ public final class AssistantsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public IterableStream<StreamUpdate> createRunStream(String threadId, String assistantId) {
         RequestOptions requestOptions = new RequestOptions();
-        Flux<ByteBuffer> responseStream = createRunWithResponse(threadId, BinaryData.fromObject(new CreateRunOptions(assistantId).setStream(true)),
-            requestOptions).getValue().toFluxByteBuffer();
-
+        Flux<ByteBuffer> responseStream
+            = createRunWithResponse(threadId, BinaryData.fromObject(new CreateRunOptions(assistantId).setStream(true)),
+                requestOptions).getValue().toFluxByteBuffer();
         OpenAIServerSentEvents eventStream = new OpenAIServerSentEvents(responseStream);
         return new IterableStream<>(eventStream.getEvents());
     }
@@ -3191,14 +3189,43 @@ public final class AssistantsClient {
      * @return data representing a single evaluation run of an assistant thread.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IterableStream<StreamUpdate> submitToolOutputsToRunStream(String threadId, String runId, List<ToolOutput> toolOutputs) {
+    public IterableStream<StreamUpdate> submitToolOutputsToRunStream(String threadId, String runId,
+        List<ToolOutput> toolOutputs) {
         RequestOptions requestOptions = new RequestOptions();
         SubmitToolOutputsToRunRequest requestObj = new SubmitToolOutputsToRunRequest(toolOutputs).setStream(true);
         BinaryData request = BinaryData.fromObject(requestObj);
-        Flux<ByteBuffer> streamResponse = submitToolOutputsToRunWithResponse(threadId, runId, request, requestOptions)
-            .getValue().toFluxByteBuffer();
-
+        Flux<ByteBuffer> streamResponse
+            = submitToolOutputsToRunWithResponse(threadId, runId, request, requestOptions).getValue()
+                .toFluxByteBuffer();
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(streamResponse);
         return new IterableStream<>(openAIServerSentEvents.getEvents());
+    }
+
+    /**
+     * Submits outputs from tools as requested by tool calls in a run. Runs that need submitted tool outputs will have a
+     * status of 'requires_action' with a required_action.type of 'submit_tool_outputs'.
+     *
+     * @param threadId The ID of the thread that was run.
+     * @param runId The ID of the run that requires tool outputs.
+     * @param toolOutputs The list of tool outputs requested by tool calls from the specified run.
+     * @param stream If `true`, returns a stream of events that happen during the Run as server-sent events, terminating
+     * when the Run enters a terminal state with a `data: [DONE]` message.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data representing a single evaluation run of an assistant thread.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThreadRun submitToolOutputsToRun(String threadId, String runId, List<ToolOutput> toolOutputs,
+        Boolean stream) {
+        // Generated convenience method for submitToolOutputsToRunWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        SubmitToolOutputsToRunRequest requestObj = new SubmitToolOutputsToRunRequest(toolOutputs).setStream(stream);
+        BinaryData request = BinaryData.fromObject(requestObj);
+        return submitToolOutputsToRunWithResponse(threadId, runId, request, requestOptions).getValue()
+            .toObject(ThreadRun.class);
     }
 }

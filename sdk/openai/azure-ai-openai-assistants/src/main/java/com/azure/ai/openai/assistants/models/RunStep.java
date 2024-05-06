@@ -276,65 +276,6 @@ public final class RunStep implements JsonSerializable<RunStep> {
     }
 
     /**
-     * Creates an instance of RunStep class.
-     *
-     * @param id the id value to set.
-     * @param type the type value to set.
-     * @param assistantId the assistantId value to set.
-     * @param threadId the threadId value to set.
-     * @param runId the runId value to set.
-     * @param status the status value to set.
-     * @param stepDetails the stepDetails value to set.
-     * @param lastError the lastError value to set.
-     * @param createdAt the createdAt value to set.
-     * @param expiredAt the expiredAt value to set.
-     * @param completedAt the completedAt value to set.
-     * @param cancelledAt the cancelledAt value to set.
-     * @param failedAt the failedAt value to set.
-     * @param metadata the metadata value to set.
-     */
-    @Generated
-    private RunStep(String id, RunStepType type, String assistantId, String threadId, String runId,
-        RunStepStatus status, RunStepDetails stepDetails, RunStepError lastError, OffsetDateTime createdAt,
-        OffsetDateTime expiredAt, OffsetDateTime completedAt, OffsetDateTime cancelledAt, OffsetDateTime failedAt,
-        Map<String, String> metadata) {
-        this.id = id;
-        this.type = type;
-        this.assistantId = assistantId;
-        this.threadId = threadId;
-        this.runId = runId;
-        this.status = status;
-        this.stepDetails = stepDetails;
-        this.lastError = lastError;
-        if (createdAt == null) {
-            this.createdAt = 0L;
-        } else {
-            this.createdAt = createdAt.toEpochSecond();
-        }
-        if (expiredAt == null) {
-            this.expiredAt = null;
-        } else {
-            this.expiredAt = expiredAt.toEpochSecond();
-        }
-        if (completedAt == null) {
-            this.completedAt = null;
-        } else {
-            this.completedAt = completedAt.toEpochSecond();
-        }
-        if (cancelledAt == null) {
-            this.cancelledAt = null;
-        } else {
-            this.cancelledAt = cancelledAt.toEpochSecond();
-        }
-        if (failedAt == null) {
-            this.failedAt = null;
-        } else {
-            this.failedAt = failedAt.toEpochSecond();
-        }
-        this.metadata = metadata;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -355,6 +296,7 @@ public final class RunStep implements JsonSerializable<RunStep> {
         jsonWriter.writeNumberField("completed_at", this.completedAt);
         jsonWriter.writeNumberField("cancelled_at", this.cancelledAt);
         jsonWriter.writeNumberField("failed_at", this.failedAt);
+        jsonWriter.writeJsonField("usage", this.usage);
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
@@ -384,6 +326,7 @@ public final class RunStep implements JsonSerializable<RunStep> {
             OffsetDateTime completedAt = null;
             OffsetDateTime cancelledAt = null;
             OffsetDateTime failedAt = null;
+            RunStepCompletionUsage usage = null;
             Map<String, String> metadata = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -428,6 +371,8 @@ public final class RunStep implements JsonSerializable<RunStep> {
                     if (failedAtHolder != null) {
                         failedAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(failedAtHolder), ZoneOffset.UTC);
                     }
+                } else if ("usage".equals(fieldName)) {
+                    usage = RunStepCompletionUsage.fromJson(reader);
                 } else if ("metadata".equals(fieldName)) {
                     metadata = reader.readMap(reader1 -> reader1.getString());
                 } else {
@@ -435,7 +380,85 @@ public final class RunStep implements JsonSerializable<RunStep> {
                 }
             }
             return new RunStep(id, type, assistantId, threadId, runId, status, stepDetails, lastError, createdAt,
-                expiredAt, completedAt, cancelledAt, failedAt, metadata);
+                expiredAt, completedAt, cancelledAt, failedAt, usage, metadata);
         });
+    }
+
+    /*
+     * Usage statistics related to the run step. This value will be `null` while the run step's status is `in_progress`.
+     */
+    @Generated
+    private final RunStepCompletionUsage usage;
+
+    /**
+     * Creates an instance of RunStep class.
+     *
+     * @param id the id value to set.
+     * @param type the type value to set.
+     * @param assistantId the assistantId value to set.
+     * @param threadId the threadId value to set.
+     * @param runId the runId value to set.
+     * @param status the status value to set.
+     * @param stepDetails the stepDetails value to set.
+     * @param lastError the lastError value to set.
+     * @param createdAt the createdAt value to set.
+     * @param expiredAt the expiredAt value to set.
+     * @param completedAt the completedAt value to set.
+     * @param cancelledAt the cancelledAt value to set.
+     * @param failedAt the failedAt value to set.
+     * @param usage the usage value to set.
+     * @param metadata the metadata value to set.
+     */
+    @Generated
+    private RunStep(String id, RunStepType type, String assistantId, String threadId, String runId,
+        RunStepStatus status, RunStepDetails stepDetails, RunStepError lastError, OffsetDateTime createdAt,
+        OffsetDateTime expiredAt, OffsetDateTime completedAt, OffsetDateTime cancelledAt, OffsetDateTime failedAt,
+        RunStepCompletionUsage usage, Map<String, String> metadata) {
+        this.id = id;
+        this.type = type;
+        this.assistantId = assistantId;
+        this.threadId = threadId;
+        this.runId = runId;
+        this.status = status;
+        this.stepDetails = stepDetails;
+        this.lastError = lastError;
+        if (createdAt == null) {
+            this.createdAt = 0L;
+        } else {
+            this.createdAt = createdAt.toEpochSecond();
+        }
+        if (expiredAt == null) {
+            this.expiredAt = null;
+        } else {
+            this.expiredAt = expiredAt.toEpochSecond();
+        }
+        if (completedAt == null) {
+            this.completedAt = null;
+        } else {
+            this.completedAt = completedAt.toEpochSecond();
+        }
+        if (cancelledAt == null) {
+            this.cancelledAt = null;
+        } else {
+            this.cancelledAt = cancelledAt.toEpochSecond();
+        }
+        if (failedAt == null) {
+            this.failedAt = null;
+        } else {
+            this.failedAt = failedAt.toEpochSecond();
+        }
+        this.usage = usage;
+        this.metadata = metadata;
+    }
+
+    /**
+     * Get the usage property: Usage statistics related to the run step. This value will be `null` while the run step's
+     * status is `in_progress`.
+     *
+     * @return the usage value.
+     */
+    @Generated
+    public RunStepCompletionUsage getUsage() {
+        return this.usage;
     }
 }

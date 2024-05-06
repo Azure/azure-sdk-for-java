@@ -5,14 +5,13 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import com.azure.core.util.BinaryData;
 
-// Field "parameters" has been customized to correctly represent it in JSON
 /**
  * The input definition information for a function.
  */
@@ -64,18 +63,6 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
      */
     public BinaryData getParameters() {
         return this.parameters;
-    }
-
-    /**
-     * Creates an instance of FunctionDefinition class.
-     *
-     * @param name the name value to set.
-     * @param parameters the parameters value to set.
-     */
-    @Generated
-    public FunctionDefinition(String name, BinaryData parameters) {
-        this.name = name;
-        this.parameters = parameters;
     }
 
     /**
@@ -134,5 +121,16 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
             deserializedFunctionDefinition.description = description;
             return deserializedFunctionDefinition;
         });
+    }
+
+    /**
+     * Creates an instance of FunctionDefinition class.
+     *
+     * @param name the name value to set.
+     * @param parameters the parameters value to set.
+     */
+    public FunctionDefinition(String name, BinaryData parameters) {
+        this.name = name;
+        this.parameters = parameters;
     }
 }
