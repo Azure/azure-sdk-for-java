@@ -8,7 +8,6 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.net.URL;
 import java.util.Objects;
 
 /**
@@ -93,31 +92,37 @@ public final class SocketConnection {
      * Class to hold the properties of the socket connection
      */
     public static final class SocketConnectionProperties {
-        private final URL requestUrl;
+        private final String protocol;
         private final String host;
-        private final String port;
+        private final int port;
         private final SSLSocketFactory sslSocketFactory;
+        private final int readTimeout;
 
         /**
          * Creates a new instance of SocketConnectionProperties
          *
-         * @param requestUrl the HTTP request url
+         * @param protocol the HTTP request protocol
          * @param host the host name
          * @param port the port number
          * @param sslSocketFactory the SSL socket factory
          */
-        public SocketConnectionProperties(URL requestUrl, String host, String port, SSLSocketFactory sslSocketFactory) {
-            this.requestUrl = requestUrl;
+        public SocketConnectionProperties(String protocol, String host, int port, SSLSocketFactory sslSocketFactory,
+            int readTimeout) {
+            this.protocol = protocol;
             this.host = host;
             this.port = port;
             this.sslSocketFactory = sslSocketFactory;
+            this.readTimeout = readTimeout;
         }
 
         @Override public boolean equals(Object other) {
             if (other instanceof SocketConnectionProperties) {
                 SocketConnectionProperties that = (SocketConnectionProperties) other;
                 boolean p = Objects.equals(this.host, that.host)
-                    && this.port.equals(that.port);
+                    && this.port == that.port
+                    && this.sslSocketFactory == that.sslSocketFactory
+                    && this.protocol.equals(that.protocol)
+                    && this.readTimeout == that.readTimeout;
                 return p;
 
             }
@@ -129,11 +134,11 @@ public final class SocketConnection {
         }
 
         /**
-         * Get the HTTP request URL
-         * @return the HTTP request URL
+         * Get the HTTP request protocol
+         * @return the HTTP request protocol
          */
-        public URL getRequestUrl() {
-            return requestUrl;
+        public String getProtocol() {
+            return protocol;
         }
 
         /**
@@ -142,6 +147,30 @@ public final class SocketConnection {
          */
         public SSLSocketFactory getSslSocketFactory() {
             return sslSocketFactory;
+        }
+
+        /**
+         * Get the host name
+         * @return the host name
+         */
+        public String getHost() {
+            return host;
+        }
+
+        /**
+         * Get the port number
+         * @return the port number
+         */
+        public int getPort() {
+            return port;
+        }
+
+        /**
+         * Get the read timeout
+         * @return the read timeout
+         */
+        public int getReadTimeout() {
+            return readTimeout;
         }
     }
 }

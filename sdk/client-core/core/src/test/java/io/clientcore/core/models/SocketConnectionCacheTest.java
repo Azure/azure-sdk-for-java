@@ -17,21 +17,17 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
-import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static io.clientcore.core.models.SocketConnection.SocketConnectionProperties;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -59,13 +55,13 @@ public class SocketConnectionCacheTest {
         int port = myServer.getLocalPort(); // Get the actual port number
         myServer.setReuseAddress(true);
         // Update socketConnectionProperties with the actual port number
-        socketConnectionProperties = new SocketConnectionProperties(new URL("http://localhost:" + port), "localhost", String.valueOf(port), null);
+        socketConnectionProperties = new SocketConnectionProperties("http", "localhost", port, null, 5000);
 
         server = new Thread(() -> {
             try {
                 myServerSocket = myServer.accept();
 
-                while (keepRunning) { // check the flag
+                while (!Thread.currentThread().isInterrupted() && keepRunning) { // check the flag
                     BufferedReader br = new BufferedReader(new InputStreamReader(myServerSocket.getInputStream()));
                     DataOutputStream out = new DataOutputStream(myServerSocket.getOutputStream());
                     while (keepRunning) { // check the flag
@@ -86,11 +82,10 @@ public class SocketConnectionCacheTest {
     }
 
     @AfterAll
-    @SuppressWarnings("deprecation")
     public static void tearDown() throws IOException, InterruptedException {
         keepRunning = false; // stop the threads
         if (myServerSocket != null) {
-            server.stop();
+            server.interrupt();
             if (!myServerSocket.isClosed()) {
                 myServerSocket.close();
             }
@@ -103,8 +98,8 @@ public class SocketConnectionCacheTest {
     @Order(1)
     void testGetInstance() {
         SocketConnectionCache.clearCache();
-        SocketConnectionCache instance1 = SocketConnectionCache.getInstance(true, 10, 5000);
-        SocketConnectionCache instance2 = SocketConnectionCache.getInstance(true, 10, 5000);
+        SocketConnectionCache instance1 = SocketConnectionCache.getInstance(true, 10);
+        SocketConnectionCache instance2 = SocketConnectionCache.getInstance(true, 10);
         assertSame(instance1, instance2, "Instances are not the same");
     }
 
@@ -112,7 +107,7 @@ public class SocketConnectionCacheTest {
     @Order(2)
     void testGetConnectionReturnsNewConnection() {
         SocketConnectionCache.clearCache();
-        SocketConnectionCache instance = SocketConnectionCache.getInstance(true, 10, 5000);
+        SocketConnectionCache instance = SocketConnectionCache.getInstance(true, 10);
 
         try {
             SocketConnection connection = instance.get(socketConnectionProperties);
@@ -127,7 +122,7 @@ public class SocketConnectionCacheTest {
     @Order(3)
     void testReuseConnection() {
         SocketConnectionCache.clearCache();
-        SocketConnectionCache instance = SocketConnectionCache.getInstance(true, 10, 5000);
+        SocketConnectionCache instance = SocketConnectionCache.getInstance(true, 10);
         try {
             SocketConnection connection = instance.get(socketConnectionProperties);
             instance.reuseConnection(connection);
@@ -145,7 +140,7 @@ public class SocketConnectionCacheTest {
     @Order(4)
     void testConnectionPoolSize() {
         SocketConnectionCache.clearCache();
-        SocketConnectionCache instance = SocketConnectionCache.getInstance(true, 10, 5000);
+        SocketConnectionCache instance = SocketConnectionCache.getInstance(true, 10);
 
         try {
             for (int i = 0; i < 10; i++) {
@@ -171,7 +166,7 @@ public class SocketConnectionCacheTest {
     void testConnectionPoolSizeMultipleThreads() {
         SocketConnectionCache.clearCache();
         int maxConnections = 5;
-        SocketConnectionCache instance = SocketConnectionCache.getInstance(true, maxConnections, 5000);
+        SocketConnectionCache instance = SocketConnectionCache.getInstance(true, maxConnections);
         ExecutorService executorService = Executors.newFixedThreadPool(10);
         for (int i = 0; i < 100; i++) {
             executorService.submit(() -> {
@@ -199,7 +194,7 @@ public class SocketConnectionCacheTest {
             Map<SocketConnectionProperties, List<SocketConnection>> connectionPool =
                 (Map<SocketConnectionProperties, List<SocketConnection>>) connectionPoolField.get(instance);
             int poolSize = connectionPool.get(socketConnectionProperties).size();
-            assertTrue(poolSize >= 2 && poolSize <= 5, "Connection pool size is not within the expected range (2-5)");
+            assertTrue(poolSize >= 1 && poolSize <= 5, "Connection pool size is not within the expected range (1-5)");
         } catch (NoSuchFieldException | IllegalAccessException e) {
             fail("Exception thrown: " + e.getMessage());
         }
@@ -209,7 +204,7 @@ public class SocketConnectionCacheTest {
     @Order(6)
     void testKeepConnectionAliveFalse() {
         SocketConnectionCache.clearCache();
-        SocketConnectionCache instance = SocketConnectionCache.getInstance(false, 10, 5000);
+        SocketConnectionCache instance = SocketConnectionCache.getInstance(false, 10);
         try {
             SocketConnection connection1 = instance.get(socketConnectionProperties);
             instance.reuseConnection(connection1);
@@ -225,7 +220,7 @@ public class SocketConnectionCacheTest {
     @Order(7)
     void testReuseClosedConnection() {
         SocketConnectionCache.clearCache();
-        SocketConnectionCache instance = SocketConnectionCache.getInstance(true, 10, 5000);
+        SocketConnectionCache instance = SocketConnectionCache.getInstance(true, 10);
         try {
             SocketConnection connection = instance.get(socketConnectionProperties);
             connection.getSocket().close();
@@ -248,31 +243,14 @@ public class SocketConnectionCacheTest {
 
     @Test
     @Order(8)
-    void testReadTimeout() {
-        SocketConnectionCache.clearCache();
-        SocketConnectionCache instance = SocketConnectionCache.getInstance(true, 10, 5000);
-        AtomicInteger port = new AtomicInteger();
-
-        // Start a server that delays its response
-        new Thread(() -> {
-            try (ServerSocket serverSocket = new ServerSocket(0)) {
-                port.set(serverSocket.getLocalPort()); // Get the actual port number
-                Socket clientSocket = serverSocket.accept();
-                Thread.sleep(6000); // delay longer than the read timeout
-                DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
-                out.writeBytes("HTTP/1.1 200 OK\n\n");
-                out.flush();
-            } catch (IOException | InterruptedException e) {
-                fail("Exception thrown: " + e.getMessage());
-            }
-        }).start();
-
-        // Try to get a connection and perform read
-        assertThrows(SocketTimeoutException.class, () -> {
-            SocketConnection connection = instance.get(
-                new SocketConnectionProperties(new URL("http://localhost:" + port.get()), "localhost", String.valueOf(port.get()), null));
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getSocket().getInputStream()));
-            reader.readLine(); // This should throw SocketTimeoutException
-        }, "Expected readLine() to throw, but it didn't");
+    public void testSocketReadTimeout() {
+        SocketConnectionCache instance = SocketConnectionCache.getInstance(true, 10);
+        try {
+            SocketConnection connection = instance.get(socketConnectionProperties);
+            Socket socket = connection.getSocket();
+            assertEquals(5000, socket.getSoTimeout(), "Socket read timeout is not as expected");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

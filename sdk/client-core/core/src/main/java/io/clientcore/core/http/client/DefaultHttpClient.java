@@ -36,6 +36,7 @@ import java.io.OutputStreamWriter;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
+import java.net.ProtocolException;
 import java.net.Proxy;
 import java.net.URL;
 import java.time.Duration;
@@ -71,9 +72,18 @@ class DefaultHttpClient implements HttpClient {
     private final long readTimeout;
     private final ProxyOptions proxyOptions;
     private final SSLSocketFactory sslSocketFactory;
-    private static int maxConnections;
-    private static boolean keepConnectionAlive = true;
-    private final SocketConnectionCache socketConnectionCache;
+    private static final int maxConnections;
+    private static final boolean keepConnectionAlive;
+    private static final SocketConnectionCache socketConnectionCache;
+
+    static {
+        String keepAlive = System.getProperty("http.keepAlive");
+        keepConnectionAlive = keepAlive != null && Boolean.parseBoolean(keepAlive);
+
+        String maxConnectionsString = System.getProperty("http.maxConnections");
+        maxConnections = maxConnectionsString != null ? Integer.parseInt(maxConnectionsString) : 0;
+        socketConnectionCache = SocketConnectionCache.getInstance(keepConnectionAlive, maxConnections);
+    }
 
     DefaultHttpClient(Duration connectionTimeout, Duration readTimeout, ProxyOptions proxyOptions,
         SSLSocketFactory sslSocketFactory) {
@@ -81,28 +91,19 @@ class DefaultHttpClient implements HttpClient {
         this.readTimeout = readTimeout == null ? -1 : readTimeout.toMillis();
         this.proxyOptions = proxyOptions;
         this.sslSocketFactory = sslSocketFactory;
-        String keepAlive = System.getProperty("http.keepAlive");
-        if (keepAlive != null && !Boolean.parseBoolean(keepAlive)) {
-            keepConnectionAlive = false;
-        }
-        String maxConnectionsString = System.getProperty("http.maxConnections");
-        maxConnections = maxConnectionsString != null
-            ? Integer.parseInt(maxConnectionsString)
-            : 0;
-        this.socketConnectionCache = SocketConnectionCache.getInstance(keepConnectionAlive, maxConnections,
-            readTimeout == null ? -1 : (int) readTimeout.toMillis());
     }
 
     @Override
     public Response<?> send(HttpRequest httpRequest) throws IOException {
-        SocketConnection socketConnection = null;
+        SocketConnection socketConnection;
         if (httpRequest.getHttpMethod() == HttpMethod.PATCH) {
             final URL requestUrl = httpRequest.getUrl();
+            final String protocol = requestUrl.getProtocol();
             final String host = requestUrl.getHost();
             final int port = requestUrl.getPort();
 
             socketConnection = socketConnectionCache.get(
-                new SocketConnection.SocketConnectionProperties(requestUrl, host, String.valueOf(port), getSslSocketFactory()));
+                new SocketConnection.SocketConnectionProperties(protocol, host, port, getSslSocketFactory(), (int) readTimeout));
 
             Response<?> response
                 = SocketClient.sendPatchRequest(httpRequest, socketConnection.getSocketInputStream(),
@@ -500,7 +501,7 @@ class DefaultHttpClient implements HttpClient {
             throws IOException {
             int contentLength;
             if (contentLengthHeader == null || contentLengthHeader.getValue() == null) {
-                contentLength = -1;
+                return null;
             } else {
                 contentLength = Integer.parseInt(contentLengthHeader.getValue());
             }
@@ -512,6 +513,15 @@ class DefaultHttpClient implements HttpClient {
                 while (totalBytesRead < contentLength
                     && (bytesRead = inputStream.read(buffer, totalBytesRead, contentLength - totalBytesRead)) != -1) {
                     totalBytesRead += bytesRead;
+                }
+
+                if (totalBytesRead != contentLength) {
+                    try {
+                        inputStream.close(); // close the input stream
+                    } catch (IOException e) {
+                        // handle the exception
+                    }
+                    throw new IOException("Read " + totalBytesRead + " bytes but expected " + contentLength);
                 }
 
                 return buffer;
@@ -527,11 +537,13 @@ class DefaultHttpClient implements HttpClient {
             }
             String statusLine = byteOutputStream.toString("UTF-8").trim();
             if (statusLine.isEmpty()) {
-                throw new IllegalStateException("Unexpected response from server.");
+                inputStream.close();
+                throw new ProtocolException("Unexpected response from server.");
             }
             String[] parts = statusLine.split(" ");
             if (parts.length < 2) {
-                throw new IllegalStateException("Unexpected response from server. Status : " + statusLine);
+                inputStream.close();
+                throw new ProtocolException(("Unexpected response from server. Status : " + statusLine));
             }
             return Integer.parseInt(parts[1]);
         }

@@ -12,44 +12,46 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Class to maintain a cache of socket connections
  */
 public final class SocketConnectionCache {
-    private static ClientLogger logger = new ClientLogger(SocketConnectionCache.class);
+    private static final ClientLogger logger = new ClientLogger(SocketConnectionCache.class);
     private static SocketConnectionCache instance;
+    private static final ReentrantLock LOCK = new ReentrantLock();
     private static final Map<SocketConnectionProperties, List<SocketConnection>> CONNECTION_POOL
         = new ConcurrentHashMap<>();
-    private final int readTimeout;
     private final boolean keepConnectionAlive;
     private final int maxConnections;
-    private long readPos = 0;
 
-    private SocketConnectionCache(boolean connectionKeepAlive, int maximumConnections, int readTimeout) {
+    private SocketConnectionCache(boolean connectionKeepAlive, int maximumConnections) {
         this.keepConnectionAlive = connectionKeepAlive;
         this.maxConnections = maximumConnections;
-        this.readTimeout = readTimeout;
     }
 
     /**
      * Get the instance of the SocketConnectionCache (Singleton)
+     *
      * @param connectionKeepAlive boolean to keep the connection alive
-     * @param maximumConnections maximum number of connections to keep alive
-     * @param readTimeout read timeout for the connection
+     * @param maximumConnections  maximum number of connections to keep alive
      * @return the instance of the SocketConnectionCache if it exists, else create a new one
      */
-    public static synchronized SocketConnectionCache getInstance(boolean connectionKeepAlive, int maximumConnections,
-        int readTimeout) {
-        if (instance == null) {
-            instance = new SocketConnectionCache(connectionKeepAlive, maximumConnections, readTimeout);
+    public static SocketConnectionCache getInstance(boolean connectionKeepAlive, int maximumConnections) {
+        LOCK.lock();
+        try {
+            if (instance == null) {
+                instance = new SocketConnectionCache(connectionKeepAlive, maximumConnections);
+            }
+            return instance;
+        } finally {
+            LOCK.unlock();
         }
-        return instance;
     }
 
     /**
@@ -62,7 +64,9 @@ public final class SocketConnectionCache {
     public SocketConnection get(SocketConnectionProperties socketConnectionProperties) throws IOException {
         SocketConnection connection = null;
         // try to get a connection from the cache
-        synchronized (CONNECTION_POOL) {
+        LOCK.lock();
+        try {
+
             List<SocketConnection> connections = CONNECTION_POOL.get(socketConnectionProperties);
             while (!CoreUtils.isNullOrEmpty(connections)) {
                 connection = connections.remove(connections.size() - 1);
@@ -77,20 +81,25 @@ public final class SocketConnectionCache {
                     return connection;
                 }
             }
+        } finally {
+            LOCK.unlock();
         }
 
         // If no connection is available, create a new one
         if (connection == null) {
             // If the request is a PATCH request, we need to use a socket connection
-            connection = getSocketSocketConnection(socketConnectionProperties, readTimeout, keepConnectionAlive);
+            connection = getSocketSocketConnection(socketConnectionProperties, keepConnectionAlive);
         }
 
-        synchronized (CONNECTION_POOL) {
-            List<SocketConnection> connections = CONNECTION_POOL.get(socketConnectionProperties);
+        LOCK.lock();
+        try {
+         List<SocketConnection> connections = CONNECTION_POOL.get(socketConnectionProperties);
             if (connections == null) {
                 connections = new ArrayList<>();
                 CONNECTION_POOL.put(socketConnectionProperties, connections);
             }
+        } finally {
+            LOCK.unlock();
         }
         return connection;
     }
@@ -99,8 +108,11 @@ public final class SocketConnectionCache {
      * Clear the cache of connections
      */
     static void clearCache() {
-        synchronized (CONNECTION_POOL) {
+        LOCK.lock();
+        try {
             CONNECTION_POOL.clear();
+        } finally {
+            LOCK.unlock();
         }
         instance = null;
     }
@@ -114,7 +126,8 @@ public final class SocketConnectionCache {
         if (maxConnections > 0 && keepConnectionAlive && connection.canBeReused()) {
             SocketConnectionProperties connectionProperties = connection.getConnectionProperties();
             // try and put the connection back in the pool
-            synchronized (CONNECTION_POOL) {
+            LOCK.lock();
+            try {
                 List<SocketConnection> connections = CONNECTION_POOL.get(connectionProperties);
                 if (connections == null) {
                     connections = new ArrayList<SocketConnection>();
@@ -131,6 +144,8 @@ public final class SocketConnectionCache {
                     CONNECTION_POOL.put(connectionProperties, connections);
                 }
                 return; // keep the connection open
+            } finally {
+                LOCK.unlock();
             }
         }
 
@@ -139,11 +154,11 @@ public final class SocketConnectionCache {
     }
 
     private static SocketConnection getSocketSocketConnection(SocketConnectionProperties socketConnectionProperties,
-        int readTimeout, boolean keepConnectionAlive) throws IOException {
-        URL requestUrl = socketConnectionProperties.getRequestUrl();
-        String protocol = requestUrl.getProtocol();
-        String host = requestUrl.getHost();
-        int port = requestUrl.getPort();
+        boolean keepConnectionAlive) throws IOException {
+        String protocol = socketConnectionProperties.getProtocol();
+        String host = socketConnectionProperties.getHost();
+        int port = socketConnectionProperties.getPort();
+        int readTimeout = socketConnectionProperties.getReadTimeout();
 
         Socket socket;
         if ("https".equals(protocol)) {
@@ -157,6 +172,7 @@ public final class SocketConnectionCache {
             socket.setKeepAlive(true);
             socket.setReuseAddress(true);
         }
+
         if (readTimeout != -1) {
             socket.setSoTimeout(readTimeout);
         }
@@ -166,7 +182,6 @@ public final class SocketConnectionCache {
 
     private void skipRemaining(InputStream is) throws IOException {
         long count = is.available();
-        readPos += count;
         long pos = 0;
         int chunkSize = 4096; // Define your chunk size here
 
