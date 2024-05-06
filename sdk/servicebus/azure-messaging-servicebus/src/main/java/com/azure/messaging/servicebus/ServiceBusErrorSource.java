@@ -23,7 +23,7 @@ public final class ServiceBusErrorSource extends ExpandableStringEnum<ServiceBus
     public static final ServiceBusErrorSource RENEW_LOCK = fromString("RENEW_LOCK", ServiceBusErrorSource.class);
     /** Error while deleting messages. */
     public static final ServiceBusErrorSource DELETE_MESSAGES = fromString("DELETE_MESSAGES", ServiceBusErrorSource.class);
-
+    /** Error while purging messages. */
     /** Error when we could not determine the source.*/
     public static final ServiceBusErrorSource UNKNOWN = fromString("UNKNOWN", ServiceBusErrorSource.class);
 
