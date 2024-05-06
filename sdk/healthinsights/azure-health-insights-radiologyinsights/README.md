@@ -451,7 +451,7 @@ private static void displayFollowupCommunications(RadiologyInsightsInferenceResu
                 for (MedicalProfessionalType recipient : recipientList) {
                     System.out.println("      " + recipient);
                 }
-                System.out.println("   Acknowledged: " + followupCommunicationInference.isWasAcknowledged());
+                System.out.println("   Acknowledged: " + followupCommunicationInference.isAcknowledged());
             }
         }
     }
