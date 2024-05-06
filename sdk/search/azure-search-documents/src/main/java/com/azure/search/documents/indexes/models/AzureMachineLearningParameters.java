@@ -19,7 +19,7 @@ import java.time.Duration;
  * Specifies the properties for connecting to an AML vectorizer.
  */
 @Fluent
-public final class AMLParameters implements JsonSerializable<AMLParameters> {
+public final class AzureMachineLearningParameters implements JsonSerializable<AzureMachineLearningParameters> {
     /*
      * (Required for no authentication or key authentication) The scoring URI of the AML service to which the JSON
      * payload will be sent. Only the https URI scheme is allowed.
@@ -55,11 +55,11 @@ public final class AMLParameters implements JsonSerializable<AMLParameters> {
     private AIStudioModelCatalogName modelName;
 
     /**
-     * Creates an instance of AMLParameters class.
+     * Creates an instance of AzureMachineLearningParameters class.
      * 
      * @param scoringUri the scoringUri value to set.
      */
-    public AMLParameters(String scoringUri) {
+    public AzureMachineLearningParameters(String scoringUri) {
         this.scoringUri = scoringUri;
     }
 
@@ -86,9 +86,9 @@ public final class AMLParameters implements JsonSerializable<AMLParameters> {
      * Set the authenticationKey property: (Required for key authentication) The key for the AML service.
      * 
      * @param authenticationKey the authenticationKey value to set.
-     * @return the AMLParameters object itself.
+     * @return the AzureMachineLearningParameters object itself.
      */
-    public AMLParameters setAuthenticationKey(String authenticationKey) {
+    public AzureMachineLearningParameters setAuthenticationKey(String authenticationKey) {
         this.authenticationKey = authenticationKey;
         return this;
     }
@@ -110,9 +110,9 @@ public final class AMLParameters implements JsonSerializable<AMLParameters> {
      * subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.MachineLearningServices/workspaces/{workspace-name}/services/{service_name}.
      * 
      * @param resourceId the resourceId value to set.
-     * @return the AMLParameters object itself.
+     * @return the AzureMachineLearningParameters object itself.
      */
-    public AMLParameters setResourceId(String resourceId) {
+    public AzureMachineLearningParameters setResourceId(String resourceId) {
         this.resourceId = resourceId;
         return this;
     }
@@ -132,9 +132,9 @@ public final class AMLParameters implements JsonSerializable<AMLParameters> {
      * call.
      * 
      * @param timeout the timeout value to set.
-     * @return the AMLParameters object itself.
+     * @return the AzureMachineLearningParameters object itself.
      */
-    public AMLParameters setTimeout(Duration timeout) {
+    public AzureMachineLearningParameters setTimeout(Duration timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -152,9 +152,9 @@ public final class AMLParameters implements JsonSerializable<AMLParameters> {
      * Set the region property: (Optional for token authentication). The region the AML service is deployed in.
      * 
      * @param region the region value to set.
-     * @return the AMLParameters object itself.
+     * @return the AzureMachineLearningParameters object itself.
      */
-    public AMLParameters setRegion(String region) {
+    public AzureMachineLearningParameters setRegion(String region) {
         this.region = region;
         return this;
     }
@@ -174,9 +174,9 @@ public final class AMLParameters implements JsonSerializable<AMLParameters> {
      * the provided endpoint.
      * 
      * @param modelName the modelName value to set.
-     * @return the AMLParameters object itself.
+     * @return the AzureMachineLearningParameters object itself.
      */
-    public AMLParameters setModelName(AIStudioModelCatalogName modelName) {
+    public AzureMachineLearningParameters setModelName(AIStudioModelCatalogName modelName) {
         this.modelName = modelName;
         return this;
     }
@@ -194,15 +194,15 @@ public final class AMLParameters implements JsonSerializable<AMLParameters> {
     }
 
     /**
-     * Reads an instance of AMLParameters from the JsonReader.
+     * Reads an instance of AzureMachineLearningParameters from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AMLParameters if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     * @return An instance of AzureMachineLearningParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AMLParameters.
+     * @throws IOException If an error occurs while reading the AzureMachineLearningParameters.
      */
-    public static AMLParameters fromJson(JsonReader jsonReader) throws IOException {
+    public static AzureMachineLearningParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean scoringUriFound = false;
             String scoringUri = null;
@@ -233,14 +233,15 @@ public final class AMLParameters implements JsonSerializable<AMLParameters> {
                 }
             }
             if (scoringUriFound) {
-                AMLParameters deserializedAMLParameters = new AMLParameters(scoringUri);
-                deserializedAMLParameters.authenticationKey = authenticationKey;
-                deserializedAMLParameters.resourceId = resourceId;
-                deserializedAMLParameters.timeout = timeout;
-                deserializedAMLParameters.region = region;
-                deserializedAMLParameters.modelName = modelName;
+                AzureMachineLearningParameters deserializedAzureMachineLearningParameters
+                    = new AzureMachineLearningParameters(scoringUri);
+                deserializedAzureMachineLearningParameters.authenticationKey = authenticationKey;
+                deserializedAzureMachineLearningParameters.resourceId = resourceId;
+                deserializedAzureMachineLearningParameters.timeout = timeout;
+                deserializedAzureMachineLearningParameters.region = region;
+                deserializedAzureMachineLearningParameters.modelName = modelName;
 
-                return deserializedAMLParameters;
+                return deserializedAzureMachineLearningParameters;
             }
             throw new IllegalStateException("Missing required property: uri");
         });
