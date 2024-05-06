@@ -4,6 +4,7 @@ import com.azure.ai.openai.assistants.AssistantsClientTestBase;
 import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.StreamThreadCreation;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
@@ -26,7 +27,7 @@ public class OpenAIServerSentEventsTest {
         StepVerifier.create(
                 openAIServerSentEvents.getEvents()
                     .doOnNext(event -> {
-                        assertFalse(BinaryData.fromObject(event).toString().isBlank());
+                        assertFalse(CoreUtils.isNullOrEmpty(BinaryData.fromObject(event).toString()));
                     })
             ).expectNextCount(30)
             .verifyComplete();
@@ -41,9 +42,8 @@ public class OpenAIServerSentEventsTest {
             ByteBuffer.wrap("data: [DONE]\n\n".getBytes())
         );
         AssistantThread expectedThread =
-            BinaryData.fromString("""
-                {"id":"thread_yprSWEXT25cgpL8rCwsUchVC","object":"thread","created_at":1710548044,"metadata":{}}
-                """).toObject(AssistantThread.class);
+            BinaryData.fromString("{\"id\":\"thread_yprSWEXT25cgpL8rCwsUchVC\",\"object\":\"thread\"," +
+                "\"created_at\":1710548044,\"metadata\":{}}").toObject(AssistantThread.class);
 
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testInput);
 
@@ -63,9 +63,8 @@ public class OpenAIServerSentEventsTest {
             ByteBuffer.wrap("data: [DONE]\n\n".getBytes())
         );
         AssistantThread expectedThread =
-            BinaryData.fromString("""
-                {"id":"thread_yprSWEXT25cgpL8rCwsUchVC","object":"thread","created_at":1710548044,"metadata":{}}
-                """).toObject(AssistantThread.class);
+            BinaryData.fromString("{\"id\":\"thread_yprSWEXT25cgpL8rCwsUchVC\",\"object\":\"thread\"," +
+                "\"created_at\":1710548044,\"metadata\":{}}").toObject(AssistantThread.class);
 
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testInput);
 
@@ -85,9 +84,8 @@ public class OpenAIServerSentEventsTest {
             ByteBuffer.wrap("data: [DONE]\n\n".getBytes())
         );
         AssistantThread expectedThread =
-            BinaryData.fromString("""
-                {"id":"thread_yprSWEXT25cgpL8rCwsUchVC","object":"thread","created_at":1710548044,"metadata":{}}
-                """).toObject(AssistantThread.class);
+            BinaryData.fromString("{\"id\":\"thread_yprSWEXT25cgpL8rCwsUchVC\",\"object\":\"thread\"," +
+                "\"created_at\":1710548044,\"metadata\":{}}").toObject(AssistantThread.class);
 
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testInput);
 
@@ -107,9 +105,8 @@ public class OpenAIServerSentEventsTest {
             ByteBuffer.wrap("data: [DONE]\r\n\r\n".getBytes())
         );
         AssistantThread expectedThread =
-            BinaryData.fromString("""
-                {"id":"thread_yprSWEXT25cgpL8rCwsUchVC","object":"thread","created_at":1710548044,"metadata":{}}
-                """).toObject(AssistantThread.class);
+            BinaryData.fromString("{\"id\":\"thread_yprSWEXT25cgpL8rCwsUchVC\",\"object\":\"thread\"," +
+                "\"created_at\":1710548044,\"metadata\":{}}").toObject(AssistantThread.class);
 
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testInput);
 
@@ -129,9 +126,8 @@ public class OpenAIServerSentEventsTest {
             ByteBuffer.wrap("data: [DONE]\r\n\r\n".getBytes())
         );
         AssistantThread expectedThread =
-            BinaryData.fromString("""
-                {"id":"thread_yprSWEXT25cgpL8rCwsUchVC","object":"thread","created_at":1710548044,"metadata":{}}
-                """).toObject(AssistantThread.class);
+            BinaryData.fromString("{\"id\":\"thread_yprSWEXT25cgpL8rCwsUchVC\",\"object\":\"thread\"," +
+                "\"created_at\":1710548044,\"metadata\":{}}").toObject(AssistantThread.class);
 
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testInput);
 
@@ -151,9 +147,8 @@ public class OpenAIServerSentEventsTest {
             ByteBuffer.wrap("data: [DONE]\r\n\r\n".getBytes())
         );
         AssistantThread expectedThread =
-            BinaryData.fromString("""
-                {"id":"thread_yprSWEXT25cgpL8rCwsUchVC","object":"thread","created_at":1710548044,"metadata":{}}
-                """).toObject(AssistantThread.class);
+            BinaryData.fromString("{\"id\":\"thread_yprSWEXT25cgpL8rCwsUchVC\",\"object\":\"thread\"," +
+                "\"created_at\":1710548044,\"metadata\":{}}").toObject(AssistantThread.class);
 
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testInput);
 
@@ -173,9 +168,8 @@ public class OpenAIServerSentEventsTest {
             ByteBuffer.wrap("data: [DONE]\n\n".getBytes())
         );
         AssistantThread expectedThread =
-            BinaryData.fromString("""
-                {"id":"thread_yprSWEXT25cgpL8rCwsUchVC","object":"thread","created_at":1710548044,"metadata":{}}
-                """).toObject(AssistantThread.class);
+            BinaryData.fromString("{\"id\":\"thread_yprSWEXT25cgpL8rCwsUchVC\",\"object\":\"thread\"," +
+                "\"created_at\":1710548044,\"metadata\":{}}").toObject(AssistantThread.class);
 
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(testInput);
 
@@ -185,15 +179,15 @@ public class OpenAIServerSentEventsTest {
                 assertAssistantThread(expectedThread, ((StreamThreadCreation) event).getMessage());
             }).verifyComplete();
     }
-
-    @Test
-    public void errorEvent() {
-        String errorEvent = "event: error\n" +
-            "data: {\"error\":{\"message\":\"The server had an error processing your request. Sorry about that! " +
-            "You can retry your request, or contact us through our help center at help.openai.com if you keep " +
-            "seeing this error. (Please include the request ID req_23c32c4251b3cab04bce519f14d4801f in your email.)\"," +
-            "\"type\":\"server_error\",\"param\":null,\"code\":null}}\n\n";
-    }
+//
+//    @Test
+//    public void errorEvent() {
+//        String errorEvent = "event: error\n" +
+//            "data: {\"error\":{\"message\":\"The server had an error processing your request. Sorry about that! " +
+//            "You can retry your request, or contact us through our help center at help.openai.com if you keep " +
+//            "seeing this error. (Please include the request ID req_23c32c4251b3cab04bce519f14d4801f in your email.)\"," +
+//            "\"type\":\"server_error\",\"param\":null,\"code\":null}}\n\n";
+//    }
 
     private static void assertAssistantThread(AssistantThread expectedThread, AssistantThread actual) {
         assertEquals(expectedThread.getId(), actual.getId());
