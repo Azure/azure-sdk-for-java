@@ -1573,7 +1573,7 @@ public final class ServiceBusClientBuilder implements
          * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
          */
         public ServiceBusSessionProcessorClientBuilder maxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
-            validateAndThrow(maxAutoLockRenewDuration);
+            validateAndThrow(maxAutoLockRenewDuration, "maxAutoLockRenewDuration");
             sessionReceiverClientBuilder.maxAutoLockRenewDuration(maxAutoLockRenewDuration);
             return this;
         }
@@ -1593,7 +1593,7 @@ public final class ServiceBusClientBuilder implements
          * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
          */
         public ServiceBusSessionProcessorClientBuilder sessionIdleTimeout(Duration sessionIdleTimeout) {
-            validateAndThrow(sessionIdleTimeout);
+            validateAndThrow(sessionIdleTimeout, "sessionIdleTimeout");
             sessionReceiverClientBuilder.sessionIdleTimeout(sessionIdleTimeout);
             return this;
         }
@@ -1842,7 +1842,7 @@ public final class ServiceBusClientBuilder implements
          * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
          */
         public ServiceBusSessionReceiverClientBuilder maxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
-            validateAndThrow(maxAutoLockRenewDuration);
+            validateAndThrow(maxAutoLockRenewDuration, "maxAutoLockRenewDuration");
             this.maxAutoLockRenewDuration = maxAutoLockRenewDuration;
             return this;
         }
@@ -1857,7 +1857,7 @@ public final class ServiceBusClientBuilder implements
          * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
          */
         ServiceBusSessionReceiverClientBuilder sessionIdleTimeout(Duration sessionIdleTimeout) {
-            validateAndThrow(sessionIdleTimeout);
+            validateAndThrow(sessionIdleTimeout, "sessionIdleTimeout");
             this.sessionIdleTimeout = sessionIdleTimeout;
             return this;
         }
@@ -2391,7 +2391,7 @@ public final class ServiceBusClientBuilder implements
          * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
          */
         public ServiceBusProcessorClientBuilder maxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
-            validateAndThrow(maxAutoLockRenewDuration);
+            validateAndThrow(maxAutoLockRenewDuration, "maxAutoLockRenewDuration");
             serviceBusReceiverClientBuilder.maxAutoLockRenewDuration(maxAutoLockRenewDuration);
             return this;
         }
@@ -2515,7 +2515,7 @@ public final class ServiceBusClientBuilder implements
          * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
          */
         public ServiceBusReceiverClientBuilder maxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
-            validateAndThrow(maxAutoLockRenewDuration);
+            validateAndThrow(maxAutoLockRenewDuration, "maxAutoLockRenewDuration");
             this.maxAutoLockRenewDuration = maxAutoLockRenewDuration;
             return this;
         }
@@ -2796,10 +2796,10 @@ public final class ServiceBusClientBuilder implements
         }
     }
 
-    private void validateAndThrow(Duration maxLockRenewalDuration) {
+    private void validateAndThrow(Duration maxLockRenewalDuration, String parameterName) {
         if (maxLockRenewalDuration != null && maxLockRenewalDuration.isNegative()) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "'maxLockRenewalDuration' cannot be negative."));
+                String.format("'%s' cannot be negative.", parameterName)));
         }
     }
 

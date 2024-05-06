@@ -1488,6 +1488,9 @@ public class ImplementationBridgeHelpers {
             void setUseLegacyTracing(CosmosClientTelemetryConfig config, boolean useLegacyTracing);
             void setTracer(CosmosClientTelemetryConfig config, Tracer tracer);
             double getSamplingRate(CosmosClientTelemetryConfig config);
+            double[] getDefaultPercentiles(CosmosClientTelemetryConfig config);
+            boolean shouldPublishHistograms(CosmosClientTelemetryConfig config);
+            boolean shouldApplyDiagnosticThresholdsForTransportLevelMeters(CosmosClientTelemetryConfig config);
         }
     }
 

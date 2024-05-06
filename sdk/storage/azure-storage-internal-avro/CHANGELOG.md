@@ -10,6 +10,17 @@
 
 ### Other Changes
 
+
+## 12.10.4 (2024-04-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-storage-common` from `12.24.3` to version `12.24.4`.
+
+
 ## 12.11.0-beta.1 (2024-04-15)
 
 ### Features Added

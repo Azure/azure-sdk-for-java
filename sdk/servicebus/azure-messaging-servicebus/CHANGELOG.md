@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixes the session message disposition to use management node as fall back. ([#39913](https://github.com/Azure/azure-sdk-for-java/issues/ 39913))
+
 ### Other Changes
 
 ## 7.16.0 (2024-04-22)
