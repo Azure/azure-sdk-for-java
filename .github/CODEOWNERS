@@ -430,7 +430,7 @@
 
 # ServiceLabel: %Event Grid
 # AzureSdkOwners:                                   @billwert
-# ServiceOwners:                                    @jfggdl
+# ServiceOwners:                                    @Kishp01 @ahamad-MS
 
 # PRLabel: %Event Hubs
 /sdk/eventhubs/                                      @conniey @anuchandy @lmolkova
@@ -646,9 +646,6 @@
 
 # ServiceLabel: %Redis Cache
 # ServiceOwners:                                     @yegu-ms
-
-# ServiceLabel: %Relay
-# ServiceOwners:                                     @jfggdl
 
 # PRLabel: %Remote Rendering
 /sdk/remoterendering/                                @MichaelZp0 @ChristopherManthei
