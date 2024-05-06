@@ -9,7 +9,7 @@
 
 #### Bugs Fixed
 * Fixed all saveAll/insertAll bulk functionality to populated audit data - See [PR 39811](https://github.com/Azure/azure-sdk-for-java/pull/39811).
-* Fixed `existsById` API in `ReactiveCosmosTemplate` to return `Mono<Boolean>` containing `False` in case the item does not exist - See [PR 40022](https://github.com/Azure/azure-sdk-for-java/pull/39811).
+* Fixed `existsById` API in `ReactiveCosmosTemplate` to return `Mono<Boolean>` containing `False` in case the item does not exist - See [PR 40050](https://github.com/Azure/azure-sdk-for-java/pull/40050).
 
 #### Other Changes
 
