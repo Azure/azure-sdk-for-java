@@ -32,6 +32,7 @@ import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
 import com.azure.messaging.servicebus.models.DeleteMessagesOptions;
+import com.azure.messaging.servicebus.models.PurgeMessagesOptions;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
@@ -1482,7 +1483,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     /**
      * Deletes up to {@code messageCount} messages from the entity. The actual number of deleted messages may be less
      * if there are fewer eligible messages in the entity.
-     *
      * <p>If the lock for a message is held by a receiver, it will be respected and the message will not be deleted.</p>
      *
      * @param messageCount the desired number of messages to delete.
@@ -1493,7 +1493,46 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * determined by the Service Bus service.
      */
     public Mono<Integer> deleteMessages(int messageCount, DeleteMessagesOptions options) {
-        return deleteMessages(messageCount, options, receiverOptions.getSessionId());
+        return deleteMessages(messageCount, options, receiverOptions.getSessionId())
+            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.DELETE_MESSAGES));
+    }
+
+    /**
+     * Attempts to purge all messages from an entity.  Locked messages are not eligible for removal and will remain in
+     * the entity.
+     * <p>If the lock for a message is held by a receiver, it will be respected and the message will not be deleted.</p>
+     * <p>
+     * This method may invoke multiple service requests to delete all messages. Because multiple service requests may be
+     * made, the possibility of partial success exists.  In this scenario, the method will stop attempting to delete
+     * additional messages and throw the exception that was encountered.
+     * </p>
+     * @param options options used to purge the messages.
+     *
+     * @return a {@link Mono} indicating the number of messages deleted.
+     */
+    public Mono<Integer> purgeMessages(PurgeMessagesOptions options) {
+        final DeleteMessagesOptions deleteMessagesOptions;
+        if (options.getBeforeEnqueueTimeUtc() != null) {
+            deleteMessagesOptions = new DeleteMessagesOptions()
+                .setBeforeEnqueueTimeUtc(options.getBeforeEnqueueTimeUtc());
+        } else {
+            deleteMessagesOptions = new DeleteMessagesOptions()
+                .setBeforeEnqueueTimeUtc(OffsetDateTime.now());
+        }
+        return deleteMessages(MAX_DELETE_MESSAGES_COUNT, deleteMessagesOptions, receiverOptions.getSessionId())
+            .expand(deleted -> {
+                // The service currently has a known bug that should be fixed before GA, where the delete operation may
+                // not delete the requested batch size in a single call, even when there are enough messages to do so.
+                // This logic should check "deleted == MAX_DELETE_MESSAGES_COUNT". Until this is fixed, we'll need to
+                // loop if there were any messages deleted, which will cost an extra service call.
+                if (deleted > 0) {
+                    return deleteMessages(MAX_DELETE_MESSAGES_COUNT, deleteMessagesOptions, receiverOptions.getSessionId());
+                } else {
+                    return Mono.empty();
+                }
+            })
+            .reduce(0, Integer::sum)
+            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.DELETE_MESSAGES));
     }
 
     /**
@@ -1530,8 +1569,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(managementNode -> managementNode.deleteMessages(messageCount, beforeEnqueueTimeUtc, getLinkName(sessionId), sessionId))
-            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.DELETE_MESSAGES));
+            .flatMap(managementNode -> managementNode.deleteMessages(messageCount, beforeEnqueueTimeUtc, getLinkName(sessionId), sessionId));
     }
 
     /**
