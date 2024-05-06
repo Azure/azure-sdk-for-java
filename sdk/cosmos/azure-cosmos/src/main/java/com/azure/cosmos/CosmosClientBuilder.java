@@ -833,8 +833,10 @@ public class CosmosClientBuilder implements
 
         if (!StringUtils.isEmpty(sessionCapturingType)) {
             if (sessionCapturingType.equalsIgnoreCase("REGION_SCOPED")) {
+                logger.info("Session capturing type is set to REGION_SCOPED");
                 this.isRegionScopedSessionCapturingEnabled = true;
             } else {
+                logger.info("Session capturing type is set to {} which is not a known session capturing type.", sessionCapturingType);
                 this.isRegionScopedSessionCapturingEnabled = false;
             }
         }
@@ -1313,13 +1315,13 @@ public class CosmosClientBuilder implements
                     "configuration: serviceEndpoint [{}], preferredRegions [{}], excludedRegions [{}], connectionPolicy [{}], " +
                     "consistencyLevel [{}], contentResponseOnWriteEnabled [{}], sessionCapturingOverride [{}], " +
                     "connectionSharingAcrossClients [{}], clientTelemetryEnabled [{}], proactiveContainerInit [{}], " +
-                    "diagnostics [{}], tracing [{}], nativeTransport [{}] fastClientOpen [{}]",
+                    "diagnostics [{}], tracing [{}], nativeTransport [{}] fastClientOpen [{}] isRegionScopedSessionCapturingEnabled [{}]",
                 client.getContextClient().getClientCorrelationId(), time, getEndpoint(), getPreferredRegions(), getExcludedRegions(),
                 getConnectionPolicy(), getConsistencyLevel(), isContentResponseOnWriteEnabled(),
                 isSessionCapturingOverrideEnabled(), isConnectionSharingAcrossClientsEnabled(),
                 isClientTelemetryEnabled(), getProactiveContainerInitConfig(), diagnosticsCfg,
                 tracingCfg, io.netty.channel.epoll.Epoll.isAvailable(),
-                io.netty.channel.epoll.Epoll.isTcpFastOpenClientSideAvailable());
+                io.netty.channel.epoll.Epoll.isTcpFastOpenClientSideAvailable(), isRegionScopedSessionCapturingEnabled());
         }
     }
 

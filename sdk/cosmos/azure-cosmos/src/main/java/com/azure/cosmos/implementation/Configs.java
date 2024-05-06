@@ -522,13 +522,11 @@ public class Configs {
 
     public static String getSessionCapturingType() {
 
-        String sessionCapturingType = System.getProperty(
+        return System.getProperty(
             SESSION_CAPTURING_TYPE,
             firstNonNull(
                 emptyToNull(System.getenv().get(SESSION_CAPTURING_TYPE)),
                 DEFAULT_SESSION_CAPTURING_TYPE));
-
-        return sessionCapturingType;
     }
 
     public static long getPkBasedBloomFilterExpectedInsertionCount() {
