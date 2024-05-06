@@ -562,6 +562,9 @@ public final class TextTranslationAsyncClient {
 
     /**
      * Translate Text.
+     * <p>
+     * This method is used when you have single target language and multiple texts to translate.
+     * </p>
      *
      * @param targetLanguage Specifies the language of the output text. The target language must be one of the
      * supported languages included
@@ -584,8 +587,11 @@ public final class TextTranslationAsyncClient {
 
     /**
      * Translate Text.
+     * <p>
+     * This method is used when you have single target language and single text to translate.
+     * </p>
      *
-     * @param targetLanguages Specifies the language of the output text. The target language must be one of the
+     * @param targetLanguage Specifies the language of the output text. The target language must be one of the
      * supported languages included
      * in the translation scope. For example, use to=de to translate to German.
      * It's possible to translate to multiple languages simultaneously by repeating the parameter in the query string.
@@ -600,12 +606,16 @@ public final class TextTranslationAsyncClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<TranslatedTextItem>> translate(String targetLanguages, String text) {
-        return translate(targetLanguages, Arrays.asList(text));
+    public Mono<List<TranslatedTextItem>> translate(String targetLanguage, String text) {
+        return translate(targetLanguage, Arrays.asList(text));
     }
 
     /**
      * Translate Text.
+     * <p>
+     * This method is used when you have one input text and the optional parameters are needed such as specification
+     * of a source language, profanity handling etc.
+     * </p>
      *
      * @param text Text to translate.
      * @param translateOptions Translate Options.
@@ -624,6 +634,10 @@ public final class TextTranslationAsyncClient {
 
     /**
      * Translate Text.
+     * <p>
+     * This method is used when you have multiple texts and the optional parameters are needed such as specification
+     * of a source language, profanity handling etc..
+     * </p>
      *
      * @param texts List of text to translate.
      * @param translateOptions Translate Options.
@@ -637,7 +651,7 @@ public final class TextTranslationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<TranslatedTextItem>> translate(List<String> texts, TranslateOptions translateOptions) {
-        ArrayList<InputTextItem> content = new ArrayList<>();
+        List<InputTextItem> content = new ArrayList<>();
         for (String text : texts) {
             content.add(new InputTextItem(text));
         }
@@ -686,6 +700,9 @@ public final class TextTranslationAsyncClient {
 
     /**
      * Transliterate Text.
+     * <p>
+     * This method is used when you have multiple texts to transliterate and you want to provide client trace id.
+     * </p>
      *
      * @param language Specifies the language of the text to convert from one script to another.
      * Possible languages are listed in the transliteration scope obtained by querying the service
@@ -715,6 +732,9 @@ public final class TextTranslationAsyncClient {
 
     /**
      * Transliterate Text.
+     * <p>
+     * This method is used when you have single text to transliterate and you want to provide client trace id.
+     * </p>
      *
      * @param language Specifies the language of the text to convert from one script to another.
      * Possible languages are listed in the transliteration scope obtained by querying the service
@@ -763,7 +783,7 @@ public final class TextTranslationAsyncClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<TransliteratedText>> transliterateInner(String language, String sourceLanguageScript,
+    private Mono<List<TransliteratedText>> transliterateInner(String language, String sourceLanguageScript,
         String targetLanguageScript, List<InputTextItem> requestBody) {
         // Generated convenience method for transliterateWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -774,6 +794,9 @@ public final class TextTranslationAsyncClient {
 
     /**
      * Transliterate Text.
+     * <p>
+     * This method is used when you have multiple texts to transliterate.
+     * </p>
      *
      * @param language Specifies the language of the text to convert from one script to another.
      * Possible languages are listed in the transliteration scope obtained by querying the service
@@ -801,6 +824,9 @@ public final class TextTranslationAsyncClient {
 
     /**
      * Transliterate Text.
+     * <p>
+     * This method is used when you have single text to transliterate.
+     * </p>
      *
      * @param language Specifies the language of the text to convert from one script to another.
      * Possible languages are listed in the transliteration scope obtained by querying the service
@@ -864,6 +890,10 @@ public final class TextTranslationAsyncClient {
 
     /**
      * Find Sentence Boundaries.
+     * <p>
+     * This method is used when you have multiple texts for which you want to find sentence boundaries and you want to provide
+     * client trace id.
+     * </p>
      *
      * @param texts Defines the content of the request.
      * @param clientTraceId A client-generated GUID to uniquely identify the request.
@@ -887,6 +917,10 @@ public final class TextTranslationAsyncClient {
 
     /**
      * Find Sentence Boundaries.
+     * <p>
+     * This method is used when you have single text for which you want to find sentence boundaries and you want to provide
+     * client trace id.
+     * </p>
      *
      * @param text Defines the content of the request.
      * @param clientTraceId A client-generated GUID to uniquely identify the request.
@@ -931,6 +965,10 @@ public final class TextTranslationAsyncClient {
 
     /**
      * Find Sentence Boundaries.
+     * <p>
+     * This method is used when you have multiple texts for which you want to find sentence boundaries and you want
+     * the source language to be auto-detected by the service.
+     * </p>
      *
      * @param texts Defines the content of the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -948,6 +986,10 @@ public final class TextTranslationAsyncClient {
 
     /**
      * Find Sentence Boundaries.
+     * <p>
+     * This method is used when you have single text for which you want to find sentence boundaries and you want
+     * the source language to be auto-detected by the service.
+     * </p>
      *
      * @param text Defines the content of the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -995,6 +1037,10 @@ public final class TextTranslationAsyncClient {
 
     /**
      * Lookup Dictionary Entries.
+     * <p>
+     * This method is used when you want lookup multiple entries in the dictionary and you want to provide
+     * client trace id.
+     * </p>
      *
      * @param sourceLanguage Specifies the language of the input text.
      * The source language must be one of the supported languages included in the dictionary scope.
@@ -1018,6 +1064,10 @@ public final class TextTranslationAsyncClient {
 
     /**
      * Lookup Dictionary Entries.
+     * <p>
+     * This method is used when you want lookup single entry in the dictionary and you want to provide
+     * client trace id.
+     * </p>
      *
      * @param sourceLanguage Specifies the language of the input text.
      * The source language must be one of the supported languages included in the dictionary scope.
@@ -1067,6 +1117,9 @@ public final class TextTranslationAsyncClient {
 
     /**
      * Lookup Dictionary Entries.
+     * <p>
+     * This method is used when you want lookup multiple entries in the dictionary.
+     * </p>
      *
      * @param sourceLanguage Specifies the language of the input text.
      * The source language must be one of the supported languages included in the dictionary scope.
@@ -1089,6 +1142,9 @@ public final class TextTranslationAsyncClient {
 
     /**
      * Lookup Dictionary Entries.
+     * <p>
+     * This method is used when you want lookup single entry in the dictionary.
+     * </p>
      *
      * @param sourceLanguage Specifies the language of the input text.
      * The source language must be one of the supported languages included in the dictionary scope.
@@ -1388,8 +1444,8 @@ public final class TextTranslationAsyncClient {
             .map(protocolMethodData -> protocolMethodData.toObject(GetSupportedLanguagesResult.class));
     }
 
-    private ArrayList<InputTextItem> convertTextToData(List<String> texts) {
-        ArrayList<InputTextItem> content = new ArrayList<>();
+    private List<InputTextItem> convertTextToData(List<String> texts) {
+        List<InputTextItem> content = new ArrayList<>();
         for (String text : texts) {
             content.add(new InputTextItem(text));
         }
