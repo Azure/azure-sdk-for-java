@@ -110,16 +110,15 @@ public class DAGErrorTests {
         TaskGroup.InvocationContext context = pancakeFtg.newInvocationContext()
                 .withTerminateOnErrorStrategy(TaskGroupTerminateOnErrorStrategy.TERMINATE_ON_IN_PROGRESS_TASKS_COMPLETION);
         IPancake rootPancake = pancakeFtg.invokeAsync(context).map(indexable -> {
-                IPancake pancake = (IPancake) indexable;
-                LOGGER.log(LogLevel.VERBOSE, () -> "map.onNext: " + pancake.name());
-                seen.add(pancake.name());
-                return pancake;
-            })
-            .onErrorResume(throwable -> {
-                LOGGER.log(LogLevel.VERBOSE, () -> "map.onErrorResumeNext: ", throwable);
-                exceptions.add(throwable);
-                return Mono.empty();
-            }).blockLast();
+            IPancake pancake = (IPancake) indexable;
+            LOGGER.log(LogLevel.VERBOSE, () -> "map.onNext: " + pancake.name());
+            seen.add(pancake.name());
+            return pancake;
+        }).onErrorResume(throwable -> {
+            LOGGER.log(LogLevel.VERBOSE, () -> "map.onErrorResumeNext: ", throwable);
+            exceptions.add(throwable);
+            return Mono.empty();
+        }).blockLast();
 
         expectedToSee.removeAll(seen);
         Assertions.assertTrue(expectedToSee.isEmpty());
@@ -230,16 +229,15 @@ public class DAGErrorTests {
                 .withTerminateOnErrorStrategy(TaskGroupTerminateOnErrorStrategy.TERMINATE_ON_HITTING_LCA_TASK);
 
         IPasta rootPasta = pastaFtg.invokeAsync(context).map(indexable -> {
-                IPasta pasta = (IPasta) indexable;
-                LOGGER.log(LogLevel.VERBOSE, () -> "map.onNext: " + pasta.name());
-                seen.add(pasta.name());
-                return pasta;
-            })
-            .onErrorResume(throwable -> {
-                LOGGER.log(LogLevel.VERBOSE, () -> "map.onErrorResumeNext: ", throwable);
-                exceptions.add(throwable);
-                return Mono.empty();
-            }).blockLast();
+            IPasta pasta = (IPasta) indexable;
+            LOGGER.log(LogLevel.VERBOSE, () -> "map.onNext: " + pasta.name());
+            seen.add(pasta.name());
+            return pasta;
+        }).onErrorResume(throwable -> {
+            LOGGER.log(LogLevel.VERBOSE, () -> "map.onErrorResumeNext: ", throwable);
+            exceptions.add(throwable);
+            return Mono.empty();
+        }).blockLast();
 
         expectedToSee.removeAll(seen);
         Assertions.assertTrue(expectedToSee.isEmpty());

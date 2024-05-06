@@ -850,7 +850,8 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      */
     public Mono<Boolean> existsById(Object id, Class<?> domainType, String containerName) {
         return findById(containerName, id, domainType)
-            .flatMap(o -> Mono.just(o != null));
+            .flatMap(o -> Mono.just(o != null))
+            .switchIfEmpty(Mono.just(false));
     }
 
     /**
