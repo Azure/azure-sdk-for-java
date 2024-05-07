@@ -740,7 +740,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     final RntbdRequestManager manager = channel.pipeline().get(RntbdRequestManager.class);
 
                     if (manager == null) {
-                        logger.info("Channel({} --> {}) closed due to CPU > 0.90D", channel, this.remoteAddress());
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("Channel({} --> {}) closed due to CPU > 0.90D", channel, this.remoteAddress());
+                        }
                     } else {
                         final long pendingRequestCount = manager.pendingRequestCount();
 
@@ -1220,15 +1222,18 @@ public final class RntbdClientChannelPool implements ChannelPool {
                         return channel;
                     });
                 } else {
-                    logger.info("notifyChannelConnect local {}, remote {} promise.trySuccess(channel)=false", channel.localAddress(), channel.remoteAddress());
-
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("notifyChannelConnect local {}, remote {} promise.trySuccess(channel)=false",
+                                channel.localAddress(), channel.remoteAddress());
+                    }
                     // Promise was completed in the meantime (like cancelled), just close the channel
                     this.closeChannel(channel);
                 }
 
             } else {
-                logger.error("notifyChannelConnect future was not successful {}", future.cause());
-
+                if (logger.isDebugEnabled()) {
+                    logger.debug("notifyChannelConnect future was not successful");
+                }
                 promise.tryFailure(future.cause());
             }
         } finally {
