@@ -30,12 +30,6 @@ public final class MessageDelta implements JsonSerializable<MessageDelta> {
     @Generated
     private final List<MessageDeltaContent> content;
 
-    /*
-     * A list of file IDs that the assistant can use.
-     */
-    @Generated
-    private List<String> fileIds;
-
     /**
      * Creates an instance of MessageDelta class.
      *
@@ -69,16 +63,6 @@ public final class MessageDelta implements JsonSerializable<MessageDelta> {
     }
 
     /**
-     * Get the fileIds property: A list of file IDs that the assistant can use.
-     *
-     * @return the fileIds value.
-     */
-    @Generated
-    public List<String> getFileIds() {
-        return this.fileIds;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -87,7 +71,6 @@ public final class MessageDelta implements JsonSerializable<MessageDelta> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
         jsonWriter.writeArrayField("content", this.content, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("file_ids", this.fileIds, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -105,7 +88,6 @@ public final class MessageDelta implements JsonSerializable<MessageDelta> {
         return jsonReader.readObject(reader -> {
             MessageRole role = null;
             List<MessageDeltaContent> content = null;
-            List<String> fileIds = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -113,15 +95,11 @@ public final class MessageDelta implements JsonSerializable<MessageDelta> {
                     role = MessageRole.fromString(reader.getString());
                 } else if ("content".equals(fieldName)) {
                     content = reader.readArray(reader1 -> MessageDeltaContent.fromJson(reader1));
-                } else if ("file_ids".equals(fieldName)) {
-                    fileIds = reader.readArray(reader1 -> reader1.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            MessageDelta deserializedMessageDelta = new MessageDelta(role, content);
-            deserializedMessageDelta.fileIds = fileIds;
-            return deserializedMessageDelta;
+            return new MessageDelta(role, content);
         });
     }
 }

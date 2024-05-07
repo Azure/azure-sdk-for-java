@@ -26,7 +26,7 @@ public final class CreateAndRunThreadOptions implements JsonSerializable<CreateA
     private final String assistantId;
 
     /*
-     * The details used to create the new thread.
+     * The details used to create the new thread. If no thread is provided, an empty one will be created.
      */
     @Generated
     private AssistantThreadCreationOptions thread;
@@ -76,7 +76,8 @@ public final class CreateAndRunThreadOptions implements JsonSerializable<CreateA
     }
 
     /**
-     * Get the thread property: The details used to create the new thread.
+     * Get the thread property: The details used to create the new thread. If no thread is provided, an empty one will
+     * be created.
      *
      * @return the thread value.
      */
@@ -86,7 +87,8 @@ public final class CreateAndRunThreadOptions implements JsonSerializable<CreateA
     }
 
     /**
-     * Set the thread property: The details used to create the new thread.
+     * Set the thread property: The details used to create the new thread. If no thread is provided, an empty one will
+     * be created.
      *
      * @param thread the thread value to set.
      * @return the CreateAndRunThreadOptions object itself.

@@ -85,7 +85,7 @@ public final class AssistantStreamEvent extends ExpandableStringEnum<AssistantSt
     public static final AssistantStreamEvent THREAD_RUN_STEP_IN_PROGRESS = fromString("thread.run.step.in_progress");
 
     /**
-     * Event sent when a run stepis being streamed. The data of this event is of type RunStepDelta.
+     * Event sent when a run stepis being streamed. The data of this event is of type RunStepDeltaChunk.
      */
     @Generated
     public static final AssistantStreamEvent THREAD_RUN_STEP_DELTA = fromString("thread.run.step.delta");
@@ -127,7 +127,7 @@ public final class AssistantStreamEvent extends ExpandableStringEnum<AssistantSt
     public static final AssistantStreamEvent THREAD_MESSAGE_IN_PROGRESS = fromString("thread.message.in_progress");
 
     /**
-     * Event sent when a message is being streamed. The data of this event is of type MessageDelta.
+     * Event sent when a message is being streamed. The data of this event is of type MessageDeltaChunk.
      */
     @Generated
     public static final AssistantStreamEvent THREAD_MESSAGE_DELTA = fromString("thread.message.delta");

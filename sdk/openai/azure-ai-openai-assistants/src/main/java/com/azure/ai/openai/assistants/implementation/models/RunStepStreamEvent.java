@@ -25,7 +25,7 @@ public final class RunStepStreamEvent extends ExpandableStringEnum<RunStepStream
     public static final RunStepStreamEvent THREAD_RUN_STEP_IN_PROGRESS = fromString("thread.run.step.in_progress");
 
     /**
-     * Event sent when a run stepis being streamed. The data of this event is of type RunStepDelta.
+     * Event sent when a run stepis being streamed. The data of this event is of type RunStepDeltaChunk.
      */
     @Generated
     public static final RunStepStreamEvent THREAD_RUN_STEP_DELTA = fromString("thread.run.step.delta");

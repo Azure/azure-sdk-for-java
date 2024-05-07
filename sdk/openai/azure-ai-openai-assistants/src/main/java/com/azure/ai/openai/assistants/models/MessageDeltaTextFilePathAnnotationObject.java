@@ -103,6 +103,7 @@ public final class MessageDeltaTextFilePathAnnotationObject extends MessageDelta
         jsonWriter.writeJsonField("file_path", this.filePath);
         jsonWriter.writeNumberField("start_index", this.startIndex);
         jsonWriter.writeNumberField("end_index", this.endIndex);
+        jsonWriter.writeStringField("text", this.text);
         return jsonWriter.writeEndObject();
     }
 
@@ -123,6 +124,7 @@ public final class MessageDeltaTextFilePathAnnotationObject extends MessageDelta
             MessageDeltaTextFilePathAnnotation filePath = null;
             Integer startIndex = null;
             Integer endIndex = null;
+            String text = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -136,6 +138,8 @@ public final class MessageDeltaTextFilePathAnnotationObject extends MessageDelta
                     startIndex = reader.getNullable(JsonReader::getInt);
                 } else if ("end_index".equals(fieldName)) {
                     endIndex = reader.getNullable(JsonReader::getInt);
+                } else if ("text".equals(fieldName)) {
+                    text = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
@@ -146,7 +150,24 @@ public final class MessageDeltaTextFilePathAnnotationObject extends MessageDelta
             deserializedMessageDeltaTextFilePathAnnotationObject.filePath = filePath;
             deserializedMessageDeltaTextFilePathAnnotationObject.startIndex = startIndex;
             deserializedMessageDeltaTextFilePathAnnotationObject.endIndex = endIndex;
+            deserializedMessageDeltaTextFilePathAnnotationObject.text = text;
             return deserializedMessageDeltaTextFilePathAnnotationObject;
         });
+    }
+
+    /*
+     * The text in the message content that needs to be replaced
+     */
+    @Generated
+    private String text;
+
+    /**
+     * Get the text property: The text in the message content that needs to be replaced.
+     *
+     * @return the text value.
+     */
+    @Generated
+    public String getText() {
+        return this.text;
     }
 }

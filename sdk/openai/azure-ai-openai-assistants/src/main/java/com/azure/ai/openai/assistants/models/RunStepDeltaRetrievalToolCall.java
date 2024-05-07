@@ -23,12 +23,6 @@ public final class RunStepDeltaRetrievalToolCall extends RunStepDeltaToolCall {
     @Generated
     private String type = "retrieval";
 
-    /*
-     * Reserved for future use.
-     */
-    @Generated
-    private Map<String, String> retrieval;
-
     /**
      * Creates an instance of RunStepDeltaRetrievalToolCall class.
      *
@@ -52,16 +46,6 @@ public final class RunStepDeltaRetrievalToolCall extends RunStepDeltaToolCall {
     }
 
     /**
-     * Get the retrieval property: Reserved for future use.
-     *
-     * @return the retrieval value.
-     */
-    @Generated
-    public Map<String, String> getRetrieval() {
-        return this.retrieval;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -71,7 +55,7 @@ public final class RunStepDeltaRetrievalToolCall extends RunStepDeltaToolCall {
         jsonWriter.writeIntField("index", getIndex());
         jsonWriter.writeStringField("id", getId());
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeMapField("retrieval", this.retrieval, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("file_search", this.fileSearch, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -90,7 +74,7 @@ public final class RunStepDeltaRetrievalToolCall extends RunStepDeltaToolCall {
             int index = 0;
             String id = null;
             String type = "retrieval";
-            Map<String, String> retrieval = null;
+            Map<String, String> fileSearch = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -100,8 +84,8 @@ public final class RunStepDeltaRetrievalToolCall extends RunStepDeltaToolCall {
                     id = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     type = reader.getString();
-                } else if ("retrieval".equals(fieldName)) {
-                    retrieval = reader.readMap(reader1 -> reader1.getString());
+                } else if ("file_search".equals(fieldName)) {
+                    fileSearch = reader.readMap(reader1 -> reader1.getString());
                 } else {
                     reader.skipChildren();
                 }
@@ -109,8 +93,24 @@ public final class RunStepDeltaRetrievalToolCall extends RunStepDeltaToolCall {
             RunStepDeltaRetrievalToolCall deserializedRunStepDeltaRetrievalToolCall
                 = new RunStepDeltaRetrievalToolCall(index, id);
             deserializedRunStepDeltaRetrievalToolCall.type = type;
-            deserializedRunStepDeltaRetrievalToolCall.retrieval = retrieval;
+            deserializedRunStepDeltaRetrievalToolCall.fileSearch = fileSearch;
             return deserializedRunStepDeltaRetrievalToolCall;
         });
+    }
+
+    /*
+     * Reserved for future use.
+     */
+    @Generated
+    private Map<String, String> fileSearch;
+
+    /**
+     * Get the fileSearch property: Reserved for future use.
+     *
+     * @return the fileSearch value.
+     */
+    @Generated
+    public Map<String, String> getFileSearch() {
+        return this.fileSearch;
     }
 }

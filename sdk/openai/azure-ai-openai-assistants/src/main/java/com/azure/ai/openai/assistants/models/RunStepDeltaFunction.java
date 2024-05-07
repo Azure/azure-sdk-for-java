@@ -21,33 +21,19 @@ public final class RunStepDeltaFunction implements JsonSerializable<RunStepDelta
      * The name of the function.
      */
     @Generated
-    private final String name;
+    private String name;
 
     /*
      * The arguments passed to the function as input.
      */
     @Generated
-    private final String arguments;
+    private String arguments;
 
     /*
      * The output of the function, null if outputs have not yet been submitted.
      */
     @Generated
-    private final String output;
-
-    /**
-     * Creates an instance of RunStepDeltaFunction class.
-     *
-     * @param name the name value to set.
-     * @param arguments the arguments value to set.
-     * @param output the output value to set.
-     */
-    @Generated
-    private RunStepDeltaFunction(String name, String arguments, String output) {
-        this.name = name;
-        this.arguments = arguments;
-        this.output = output;
-    }
+    private String output;
 
     /**
      * Get the name property: The name of the function.
@@ -98,29 +84,33 @@ public final class RunStepDeltaFunction implements JsonSerializable<RunStepDelta
      * @param jsonReader The JsonReader being read.
      * @return An instance of RunStepDeltaFunction if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RunStepDeltaFunction.
      */
     @Generated
     public static RunStepDeltaFunction fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String name = null;
-            String arguments = null;
-            String output = null;
+            RunStepDeltaFunction deserializedRunStepDeltaFunction = new RunStepDeltaFunction();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("name".equals(fieldName)) {
-                    name = reader.getString();
+                    deserializedRunStepDeltaFunction.name = reader.getString();
                 } else if ("arguments".equals(fieldName)) {
-                    arguments = reader.getString();
+                    deserializedRunStepDeltaFunction.arguments = reader.getString();
                 } else if ("output".equals(fieldName)) {
-                    output = reader.getString();
+                    deserializedRunStepDeltaFunction.output = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new RunStepDeltaFunction(name, arguments, output);
+            return deserializedRunStepDeltaFunction;
         });
+    }
+
+    /**
+     * Creates an instance of RunStepDeltaFunction class.
+     */
+    @Generated
+    private RunStepDeltaFunction() {
     }
 }

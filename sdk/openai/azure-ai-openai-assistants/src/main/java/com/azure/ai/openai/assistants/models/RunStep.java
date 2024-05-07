@@ -296,8 +296,8 @@ public final class RunStep implements JsonSerializable<RunStep> {
         jsonWriter.writeNumberField("completed_at", this.completedAt);
         jsonWriter.writeNumberField("cancelled_at", this.cancelledAt);
         jsonWriter.writeNumberField("failed_at", this.failedAt);
-        jsonWriter.writeJsonField("usage", this.usage);
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("usage", this.usage);
         return jsonWriter.writeEndObject();
     }
 
@@ -326,8 +326,8 @@ public final class RunStep implements JsonSerializable<RunStep> {
             OffsetDateTime completedAt = null;
             OffsetDateTime cancelledAt = null;
             OffsetDateTime failedAt = null;
-            RunStepCompletionUsage usage = null;
             Map<String, String> metadata = null;
+            RunStepCompletionUsage usage = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -371,16 +371,18 @@ public final class RunStep implements JsonSerializable<RunStep> {
                     if (failedAtHolder != null) {
                         failedAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(failedAtHolder), ZoneOffset.UTC);
                     }
-                } else if ("usage".equals(fieldName)) {
-                    usage = RunStepCompletionUsage.fromJson(reader);
                 } else if ("metadata".equals(fieldName)) {
                     metadata = reader.readMap(reader1 -> reader1.getString());
+                } else if ("usage".equals(fieldName)) {
+                    usage = RunStepCompletionUsage.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new RunStep(id, type, assistantId, threadId, runId, status, stepDetails, lastError, createdAt,
-                expiredAt, completedAt, cancelledAt, failedAt, usage, metadata);
+            RunStep deserializedRunStep = new RunStep(id, type, assistantId, threadId, runId, status, stepDetails,
+                lastError, createdAt, expiredAt, completedAt, cancelledAt, failedAt, metadata);
+            deserializedRunStep.usage = usage;
+            return deserializedRunStep;
         });
     }
 
@@ -388,7 +390,18 @@ public final class RunStep implements JsonSerializable<RunStep> {
      * Usage statistics related to the run step. This value will be `null` while the run step's status is `in_progress`.
      */
     @Generated
-    private final RunStepCompletionUsage usage;
+    private RunStepCompletionUsage usage;
+
+    /**
+     * Get the usage property: Usage statistics related to the run step. This value will be `null` while the run step's
+     * status is `in_progress`.
+     *
+     * @return the usage value.
+     */
+    @Generated
+    public RunStepCompletionUsage getUsage() {
+        return this.usage;
+    }
 
     /**
      * Creates an instance of RunStep class.
@@ -406,14 +419,13 @@ public final class RunStep implements JsonSerializable<RunStep> {
      * @param completedAt the completedAt value to set.
      * @param cancelledAt the cancelledAt value to set.
      * @param failedAt the failedAt value to set.
-     * @param usage the usage value to set.
      * @param metadata the metadata value to set.
      */
     @Generated
     private RunStep(String id, RunStepType type, String assistantId, String threadId, String runId,
         RunStepStatus status, RunStepDetails stepDetails, RunStepError lastError, OffsetDateTime createdAt,
         OffsetDateTime expiredAt, OffsetDateTime completedAt, OffsetDateTime cancelledAt, OffsetDateTime failedAt,
-        RunStepCompletionUsage usage, Map<String, String> metadata) {
+        Map<String, String> metadata) {
         this.id = id;
         this.type = type;
         this.assistantId = assistantId;
@@ -447,18 +459,6 @@ public final class RunStep implements JsonSerializable<RunStep> {
         } else {
             this.failedAt = failedAt.toEpochSecond();
         }
-        this.usage = usage;
         this.metadata = metadata;
-    }
-
-    /**
-     * Get the usage property: Usage statistics related to the run step. This value will be `null` while the run step's
-     * status is `in_progress`.
-     *
-     * @return the usage value.
-     */
-    @Generated
-    public RunStepCompletionUsage getUsage() {
-        return this.usage;
     }
 }

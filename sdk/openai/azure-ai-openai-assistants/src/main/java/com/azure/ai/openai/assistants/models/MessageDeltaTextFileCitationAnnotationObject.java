@@ -101,6 +101,7 @@ public final class MessageDeltaTextFileCitationAnnotationObject extends MessageD
         jsonWriter.writeIntField("index", getIndex());
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeJsonField("file_citation", this.fileCitation);
+        jsonWriter.writeStringField("text", this.text);
         jsonWriter.writeNumberField("start_index", this.startIndex);
         jsonWriter.writeNumberField("end_index", this.endIndex);
         return jsonWriter.writeEndObject();
@@ -121,6 +122,7 @@ public final class MessageDeltaTextFileCitationAnnotationObject extends MessageD
             int index = 0;
             String type = "file_citation";
             MessageDeltaTextFileCitationAnnotation fileCitation = null;
+            String text = null;
             Integer startIndex = null;
             Integer endIndex = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -132,6 +134,8 @@ public final class MessageDeltaTextFileCitationAnnotationObject extends MessageD
                     type = reader.getString();
                 } else if ("file_citation".equals(fieldName)) {
                     fileCitation = MessageDeltaTextFileCitationAnnotation.fromJson(reader);
+                } else if ("text".equals(fieldName)) {
+                    text = reader.getString();
                 } else if ("start_index".equals(fieldName)) {
                     startIndex = reader.getNullable(JsonReader::getInt);
                 } else if ("end_index".equals(fieldName)) {
@@ -144,9 +148,26 @@ public final class MessageDeltaTextFileCitationAnnotationObject extends MessageD
                 = new MessageDeltaTextFileCitationAnnotationObject(index);
             deserializedMessageDeltaTextFileCitationAnnotationObject.type = type;
             deserializedMessageDeltaTextFileCitationAnnotationObject.fileCitation = fileCitation;
+            deserializedMessageDeltaTextFileCitationAnnotationObject.text = text;
             deserializedMessageDeltaTextFileCitationAnnotationObject.startIndex = startIndex;
             deserializedMessageDeltaTextFileCitationAnnotationObject.endIndex = endIndex;
             return deserializedMessageDeltaTextFileCitationAnnotationObject;
         });
+    }
+
+    /*
+     * The text in the message content that needs to be replaced
+     */
+    @Generated
+    private String text;
+
+    /**
+     * Get the text property: The text in the message content that needs to be replaced.
+     *
+     * @return the text value.
+     */
+    @Generated
+    public String getText() {
+        return this.text;
     }
 }

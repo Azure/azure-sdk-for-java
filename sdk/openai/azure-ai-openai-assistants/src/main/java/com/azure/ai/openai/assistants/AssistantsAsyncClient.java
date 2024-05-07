@@ -14,7 +14,6 @@ import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOf
 import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfRunStep;
 import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfThreadMessage;
 import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfThreadRun;
-import com.azure.ai.openai.assistants.implementation.models.SubmitToolOutputsToRunRequest;
 import com.azure.ai.openai.assistants.implementation.models.UpdateMessageRequest;
 import com.azure.ai.openai.assistants.implementation.models.UpdateRunRequest;
 import com.azure.ai.openai.assistants.implementation.models.UpdateThreadRequest;
@@ -58,6 +57,7 @@ import java.util.Map;
 import java.util.Objects;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import com.azure.ai.openai.assistants.implementation.models.SubmitToolOutputsToRunRequest;
 import com.azure.ai.openai.assistants.implementation.streaming.OpenAIServerSentEvents;
 import com.azure.ai.openai.assistants.models.StreamUpdate;
 import java.nio.ByteBuffer;
@@ -2283,33 +2283,6 @@ public final class AssistantsAsyncClient {
         // Generated convenience method for getRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getRunWithResponse(threadId, runId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ThreadRun.class));
-    }
-
-    /**
-     * Submits outputs from tools as requested by tool calls in a run. Runs that need submitted tool outputs will have a
-     * status of 'requires_action' with a required_action.type of 'submit_tool_outputs'.
-     *
-     * @param threadId The ID of the thread that was run.
-     * @param runId The ID of the run that requires tool outputs.
-     * @param toolOutputs The list of tool outputs requested by tool calls from the specified run.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data representing a single evaluation run of an assistant thread on successful completion of
-     * {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ThreadRun> submitToolOutputsToRun(String threadId, String runId, List<ToolOutput> toolOutputs) {
-        // Generated convenience method for submitToolOutputsToRunWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        SubmitToolOutputsToRunRequest requestObj = new SubmitToolOutputsToRunRequest(toolOutputs);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return submitToolOutputsToRunWithResponse(threadId, runId, request, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ThreadRun.class));
     }
 

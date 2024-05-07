@@ -66,4 +66,10 @@ public final class MessageIncompleteDetailsReason extends ExpandableStringEnum<M
     public static Collection<MessageIncompleteDetailsReason> values() {
         return values(MessageIncompleteDetailsReason.class);
     }
+
+    /**
+     * The run generating the message expired.
+     */
+    @Generated
+    public static final MessageIncompleteDetailsReason RUN_EXPIRED = fromString("run_expired");
 }

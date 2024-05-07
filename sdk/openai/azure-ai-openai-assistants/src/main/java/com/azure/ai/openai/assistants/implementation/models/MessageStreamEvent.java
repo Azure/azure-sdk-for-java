@@ -25,7 +25,7 @@ public final class MessageStreamEvent extends ExpandableStringEnum<MessageStream
     public static final MessageStreamEvent THREAD_MESSAGE_IN_PROGRESS = fromString("thread.message.in_progress");
 
     /**
-     * Event sent when a message is being streamed. The data of this event is of type MessageDelta.
+     * Event sent when a message is being streamed. The data of this event is of type MessageDeltaChunk.
      */
     @Generated
     public static final MessageStreamEvent THREAD_MESSAGE_DELTA = fromString("thread.message.delta");

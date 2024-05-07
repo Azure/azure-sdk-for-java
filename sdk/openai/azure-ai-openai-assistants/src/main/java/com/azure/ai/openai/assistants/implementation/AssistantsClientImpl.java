@@ -623,7 +623,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> submitToolOutputsToRun(@HostParam("endpoint") String endpoint,
             @PathParam("threadId") String threadId, @PathParam("runId") String runId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData request,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData submitToolOutputsOptions,
             RequestOptions requestOptions, Context context);
 
         @Post("/threads/{threadId}/runs/{runId}/submit_tool_outputs")
@@ -634,7 +634,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> submitToolOutputsToRunSync(@HostParam("endpoint") String endpoint,
             @PathParam("threadId") String threadId, @PathParam("runId") String runId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData request,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData submitToolOutputsOptions,
             RequestOptions requestOptions, Context context);
 
         @Post("/threads/{threadId}/runs/{runId}/cancel")
@@ -1992,7 +1992,7 @@ public final class AssistantsClientImpl {
      *     created_at: long (Required)
      *     thread_id: String (Required)
      *     status: String(in_progress/incomplete/completed) (Required)
-     *     incomplete_details: String(content_filter/max_tokens/run_cancelled/run_failed) (Required)
+     *     incomplete_details: String(content_filter/max_tokens/run_cancelled/run_failed/run_expired) (Required)
      *     completed_at: Long (Required)
      *     incomplete_at: Long (Required)
      *     role: String(user/assistant) (Required)
@@ -2056,7 +2056,7 @@ public final class AssistantsClientImpl {
      *     created_at: long (Required)
      *     thread_id: String (Required)
      *     status: String(in_progress/incomplete/completed) (Required)
-     *     incomplete_details: String(content_filter/max_tokens/run_cancelled/run_failed) (Required)
+     *     incomplete_details: String(content_filter/max_tokens/run_cancelled/run_failed/run_expired) (Required)
      *     completed_at: Long (Required)
      *     incomplete_at: Long (Required)
      *     role: String(user/assistant) (Required)
@@ -2123,7 +2123,7 @@ public final class AssistantsClientImpl {
      *             created_at: long (Required)
      *             thread_id: String (Required)
      *             status: String(in_progress/incomplete/completed) (Required)
-     *             incomplete_details: String(content_filter/max_tokens/run_cancelled/run_failed) (Required)
+     *             incomplete_details: String(content_filter/max_tokens/run_cancelled/run_failed/run_expired) (Required)
      *             completed_at: Long (Required)
      *             incomplete_at: Long (Required)
      *             role: String(user/assistant) (Required)
@@ -2195,7 +2195,7 @@ public final class AssistantsClientImpl {
      *             created_at: long (Required)
      *             thread_id: String (Required)
      *             status: String(in_progress/incomplete/completed) (Required)
-     *             incomplete_details: String(content_filter/max_tokens/run_cancelled/run_failed) (Required)
+     *             incomplete_details: String(content_filter/max_tokens/run_cancelled/run_failed/run_expired) (Required)
      *             completed_at: Long (Required)
      *             incomplete_at: Long (Required)
      *             role: String(user/assistant) (Required)
@@ -2245,7 +2245,7 @@ public final class AssistantsClientImpl {
      *     created_at: long (Required)
      *     thread_id: String (Required)
      *     status: String(in_progress/incomplete/completed) (Required)
-     *     incomplete_details: String(content_filter/max_tokens/run_cancelled/run_failed) (Required)
+     *     incomplete_details: String(content_filter/max_tokens/run_cancelled/run_failed/run_expired) (Required)
      *     completed_at: Long (Required)
      *     incomplete_at: Long (Required)
      *     role: String(user/assistant) (Required)
@@ -2294,7 +2294,7 @@ public final class AssistantsClientImpl {
      *     created_at: long (Required)
      *     thread_id: String (Required)
      *     status: String(in_progress/incomplete/completed) (Required)
-     *     incomplete_details: String(content_filter/max_tokens/run_cancelled/run_failed) (Required)
+     *     incomplete_details: String(content_filter/max_tokens/run_cancelled/run_failed/run_expired) (Required)
      *     completed_at: Long (Required)
      *     incomplete_at: Long (Required)
      *     role: String(user/assistant) (Required)
@@ -2351,7 +2351,7 @@ public final class AssistantsClientImpl {
      *     created_at: long (Required)
      *     thread_id: String (Required)
      *     status: String(in_progress/incomplete/completed) (Required)
-     *     incomplete_details: String(content_filter/max_tokens/run_cancelled/run_failed) (Required)
+     *     incomplete_details: String(content_filter/max_tokens/run_cancelled/run_failed/run_expired) (Required)
      *     completed_at: Long (Required)
      *     incomplete_at: Long (Required)
      *     role: String(user/assistant) (Required)
@@ -2411,7 +2411,7 @@ public final class AssistantsClientImpl {
      *     created_at: long (Required)
      *     thread_id: String (Required)
      *     status: String(in_progress/incomplete/completed) (Required)
-     *     incomplete_details: String(content_filter/max_tokens/run_cancelled/run_failed) (Required)
+     *     incomplete_details: String(content_filter/max_tokens/run_cancelled/run_failed/run_expired) (Required)
      *     completed_at: Long (Required)
      *     incomplete_at: Long (Required)
      *     role: String(user/assistant) (Required)
@@ -2677,6 +2677,7 @@ public final class AssistantsClientImpl {
      *     completed_at: Long (Required)
      *     cancelled_at: Long (Required)
      *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
      *     usage (Required): {
      *         completion_tokens: long (Required)
      *         prompt_tokens: long (Required)
@@ -2760,6 +2761,7 @@ public final class AssistantsClientImpl {
      *     completed_at: Long (Required)
      *     cancelled_at: Long (Required)
      *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
      *     usage (Required): {
      *         completion_tokens: long (Required)
      *         prompt_tokens: long (Required)
@@ -2842,6 +2844,7 @@ public final class AssistantsClientImpl {
      *             completed_at: Long (Required)
      *             cancelled_at: Long (Required)
      *             failed_at: Long (Required)
+     *             incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
      *             usage (Required): {
      *                 completion_tokens: long (Required)
      *                 prompt_tokens: long (Required)
@@ -2928,6 +2931,7 @@ public final class AssistantsClientImpl {
      *             completed_at: Long (Required)
      *             cancelled_at: Long (Required)
      *             failed_at: Long (Required)
+     *             incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
      *             usage (Required): {
      *                 completion_tokens: long (Required)
      *                 prompt_tokens: long (Required)
@@ -2992,6 +2996,7 @@ public final class AssistantsClientImpl {
      *     completed_at: Long (Required)
      *     cancelled_at: Long (Required)
      *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
      *     usage (Required): {
      *         completion_tokens: long (Required)
      *         prompt_tokens: long (Required)
@@ -3055,6 +3060,7 @@ public final class AssistantsClientImpl {
      *     completed_at: Long (Required)
      *     cancelled_at: Long (Required)
      *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
      *     usage (Required): {
      *         completion_tokens: long (Required)
      *         prompt_tokens: long (Required)
@@ -3125,6 +3131,7 @@ public final class AssistantsClientImpl {
      *     completed_at: Long (Required)
      *     cancelled_at: Long (Required)
      *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
      *     usage (Required): {
      *         completion_tokens: long (Required)
      *         prompt_tokens: long (Required)
@@ -3199,6 +3206,7 @@ public final class AssistantsClientImpl {
      *     completed_at: Long (Required)
      *     cancelled_at: Long (Required)
      *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
      *     usage (Required): {
      *         completion_tokens: long (Required)
      *         prompt_tokens: long (Required)
@@ -3277,6 +3285,7 @@ public final class AssistantsClientImpl {
      *     completed_at: Long (Required)
      *     cancelled_at: Long (Required)
      *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
      *     usage (Required): {
      *         completion_tokens: long (Required)
      *         prompt_tokens: long (Required)
@@ -3290,7 +3299,7 @@ public final class AssistantsClientImpl {
      * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the run that requires tool outputs.
-     * @param request The request parameter.
+     * @param submitToolOutputsOptions Submit the results for the requested tool calls from the service.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3301,10 +3310,10 @@ public final class AssistantsClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> submitToolOutputsToRunWithResponseAsync(String threadId, String runId,
-        BinaryData request, RequestOptions requestOptions) {
+        BinaryData submitToolOutputsOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.submitToolOutputsToRun(this.getEndpoint(), threadId, runId,
-            accept, request, requestOptions, context));
+            accept, submitToolOutputsOptions, requestOptions, context));
     }
 
     /**
@@ -3356,6 +3365,7 @@ public final class AssistantsClientImpl {
      *     completed_at: Long (Required)
      *     cancelled_at: Long (Required)
      *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
      *     usage (Required): {
      *         completion_tokens: long (Required)
      *         prompt_tokens: long (Required)
@@ -3369,7 +3379,7 @@ public final class AssistantsClientImpl {
      * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the run that requires tool outputs.
-     * @param request The request parameter.
+     * @param submitToolOutputsOptions Submit the results for the requested tool calls from the service.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3378,11 +3388,11 @@ public final class AssistantsClientImpl {
      * @return data representing a single evaluation run of an assistant thread along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> submitToolOutputsToRunWithResponse(String threadId, String runId, BinaryData request,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> submitToolOutputsToRunWithResponse(String threadId, String runId,
+        BinaryData submitToolOutputsOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.submitToolOutputsToRunSync(this.getEndpoint(), threadId, runId, accept, request, requestOptions,
-            Context.NONE);
+        return service.submitToolOutputsToRunSync(this.getEndpoint(), threadId, runId, accept, submitToolOutputsOptions,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -3419,6 +3429,7 @@ public final class AssistantsClientImpl {
      *     completed_at: Long (Required)
      *     cancelled_at: Long (Required)
      *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
      *     usage (Required): {
      *         completion_tokens: long (Required)
      *         prompt_tokens: long (Required)
@@ -3482,6 +3493,7 @@ public final class AssistantsClientImpl {
      *     completed_at: Long (Required)
      *     cancelled_at: Long (Required)
      *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
      *     usage (Required): {
      *         completion_tokens: long (Required)
      *         prompt_tokens: long (Required)
@@ -3578,6 +3590,7 @@ public final class AssistantsClientImpl {
      *     completed_at: Long (Required)
      *     cancelled_at: Long (Required)
      *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
      *     usage (Required): {
      *         completion_tokens: long (Required)
      *         prompt_tokens: long (Required)
@@ -3676,6 +3689,7 @@ public final class AssistantsClientImpl {
      *     completed_at: Long (Required)
      *     cancelled_at: Long (Required)
      *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
      *     usage (Required): {
      *         completion_tokens: long (Required)
      *         prompt_tokens: long (Required)
@@ -3728,7 +3742,7 @@ public final class AssistantsClientImpl {
      *     completed_at: Long (Required)
      *     cancelled_at: Long (Required)
      *     failed_at: Long (Required)
-     *     usage (Required): {
+     *     usage (Optional): {
      *         completion_tokens: long (Required)
      *         prompt_tokens: long (Required)
      *         total_tokens: long (Required)
@@ -3782,7 +3796,7 @@ public final class AssistantsClientImpl {
      *     completed_at: Long (Required)
      *     cancelled_at: Long (Required)
      *     failed_at: Long (Required)
-     *     usage (Required): {
+     *     usage (Optional): {
      *         completion_tokens: long (Required)
      *         prompt_tokens: long (Required)
      *         total_tokens: long (Required)
@@ -3856,7 +3870,7 @@ public final class AssistantsClientImpl {
      *             completed_at: Long (Required)
      *             cancelled_at: Long (Required)
      *             failed_at: Long (Required)
-     *             usage (Required): {
+     *             usage (Optional): {
      *                 completion_tokens: long (Required)
      *                 prompt_tokens: long (Required)
      *                 total_tokens: long (Required)
@@ -3935,7 +3949,7 @@ public final class AssistantsClientImpl {
      *             completed_at: Long (Required)
      *             cancelled_at: Long (Required)
      *             failed_at: Long (Required)
-     *             usage (Required): {
+     *             usage (Optional): {
      *                 completion_tokens: long (Required)
      *                 prompt_tokens: long (Required)
      *                 total_tokens: long (Required)
