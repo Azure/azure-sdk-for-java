@@ -40,6 +40,7 @@ import static com.azure.messaging.eventhubs.implementation.instrumentation.Instr
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_NAME;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_CONSUMER_GROUP_NAME;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_PARTITION_ID;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_OPERATION_NAME;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_SYSTEM;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_SYSTEM_VALUE;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.SERVER_ADDRESS;
@@ -188,8 +189,8 @@ public final class TestUtils {
             && expectedValue.equals(event.getProperties().get(MESSAGE_ID));
     }
 
-    public static void assertAttributes(String hostname, String entityName, Map<String, Object> attributes) {
-        assertAllAttributes(hostname, entityName, null, null, null, attributes);
+    public static void assertAttributes(String hostname, String entityName, OperationName operationName, Map<String, Object> attributes) {
+        assertAllAttributes(hostname, entityName, null, null, null, operationName, attributes);
     }
 
     public static Map<String, Object> attributesToMap(Attributes attributes) {
@@ -201,12 +202,14 @@ public final class TestUtils {
         return String.format("%s %s", operation, eventHubName);
     }
 
-    public static void assertAllAttributes(String hostname, String entityName, String partitionId, String consumerGroup, String errorType, Map<String, Object> attributes) {
+    public static void assertAllAttributes(String hostname, String entityName, String partitionId,
+        String consumerGroup, String errorType, OperationName operationName, Map<String, Object> attributes) {
         assertEquals(MESSAGING_SYSTEM_VALUE, attributes.get(MESSAGING_SYSTEM));
         assertEquals(hostname, attributes.get(SERVER_ADDRESS));
         assertEquals(entityName, attributes.get(MESSAGING_DESTINATION_NAME));
         assertEquals(partitionId, attributes.get(MESSAGING_DESTINATION_PARTITION_ID));
         assertEquals(consumerGroup, attributes.get(MESSAGING_CONSUMER_GROUP_NAME));
+        assertEquals(operationName == null ? null : operationName.toString(), attributes.get(MESSAGING_OPERATION_NAME));
         assertEquals(errorType, attributes.get(ERROR_TYPE));
     }
 

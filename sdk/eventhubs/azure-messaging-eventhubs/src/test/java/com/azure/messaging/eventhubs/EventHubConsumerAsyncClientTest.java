@@ -759,7 +759,8 @@ class EventHubConsumerAsyncClientTest {
                 List<TestMeasurement<Double>> measurements = consumerLag.getMeasurements();
                 TestMeasurement<Double> last = measurements.get(measurements.size() - 1);
                 assertEquals(Duration.between(enqueuedTime, afterReceived).toMillis() / 1000d, last.getValue(), 1);
-                assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, e.getPartitionContext().getPartitionId(), CONSUMER_GROUP, null, last.getAttributes());
+                assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, e.getPartitionContext().getPartitionId(), CONSUMER_GROUP, null,
+                    null, last.getAttributes());
                 return true;
             })
             .expectComplete()
@@ -796,7 +797,8 @@ class EventHubConsumerAsyncClientTest {
                 List<TestMeasurement<Double>> measurements = consumerLag.getMeasurements();
                 TestMeasurement<Double> last = measurements.get(measurements.size() - 1);
                 assertEquals(0, last.getValue());
-                assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, e.getPartitionContext().getPartitionId(), CONSUMER_GROUP, null, last.getAttributes());
+                assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, e.getPartitionContext().getPartitionId(), CONSUMER_GROUP, null,
+                    null, last.getAttributes());
             })
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
@@ -877,7 +879,8 @@ class EventHubConsumerAsyncClientTest {
             invocation -> {
                 StartSpanOptions startOpts = invocation.getArgument(1, StartSpanOptions.class);
                 assertEquals(SpanKind.CLIENT, startOpts.getSpanKind());
-                assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, PARTITION_ID, CONSUMER_GROUP, null, startOpts.getAttributes());
+                assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, PARTITION_ID, CONSUMER_GROUP, null,
+                    GET_PARTITION_PROPERTIES, startOpts.getAttributes());
                 return invocation.getArgument(2, Context.class)
                         .addData(PARENT_TRACE_CONTEXT_KEY, "getPartitionProperties");
             }
@@ -888,7 +891,8 @@ class EventHubConsumerAsyncClientTest {
             invocation -> {
                 StartSpanOptions startOpts = invocation.getArgument(1, StartSpanOptions.class);
                 assertEquals(SpanKind.CLIENT, startOpts.getSpanKind());
-                assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, null, CONSUMER_GROUP, null, startOpts.getAttributes());
+                assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, null, CONSUMER_GROUP, null,
+                    GET_EVENT_HUB_PROPERTIES, startOpts.getAttributes());
                 return invocation.getArgument(2, Context.class)
                     .addData(PARENT_TRACE_CONTEXT_KEY, "getEventHubsProperties");
             }

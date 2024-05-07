@@ -16,54 +16,66 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.ERROR_TYPE;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_CLIENT_CONSUMED_MESSAGES;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_CLIENT_OPERATION_DURATION;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_CLIENT_PUBLISHED_MESSAGES;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_CONSUMER_PROCESS_DURATION;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_NAME;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_CONSUMER_GROUP_NAME;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_EVENTHUBS_CONSUMER_LAG;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_PARTITION_ID;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_PROCESS_DURATION;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_PROCESS_MESSAGES;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_PUBLISH_DURATION;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_PUBLISH_MESSAGES;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_RECEIVE_DURATION;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_RECEIVE_MESSAGES;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_SETTLE_DURATION;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_OPERATION_NAME;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_SYSTEM;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_SYSTEM_VALUE;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.SERVER_ADDRESS;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.getDurationInSeconds;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.CHECKPOINT;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.PROCESS;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.RECEIVE;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.SEND;
 
 public class EventHubsMetricsProvider {
     private final Meter meter;
     private final boolean isEnabled;
     private Map<String, Object> commonAttributes;
-    private AttributeCache attributeCacheSuccess;
-    private LongCounter sendEventCounter;
-    private LongCounter processEventCounter;
-    private LongCounter receiveEventCounter;
-    private DoubleHistogram sendBatchDuration;
-    private DoubleHistogram processBatchDuration;
-    private DoubleHistogram receiveBatchDuration;
+    private AttributeCache sendAttributeCacheSuccess;
+    private AttributeCache receiveAttributeCacheSuccess;
+    private AttributeCache checkpointAttributeCacheSuccess;
+    private AttributeCache processAttributeCacheSuccess;
+    private AttributeCache lagAttributeCache;
+    private LongCounter publishedEventCounter;
+    private LongCounter consumedEventCounter;
+    private DoubleHistogram operationDuration;
+    private DoubleHistogram processDuration;
     private DoubleHistogram consumerLag;
-    private DoubleHistogram checkpointDuration;
     public EventHubsMetricsProvider(Meter meter, String namespace, String entityName, String consumerGroup) {
         this.meter = meter;
         this.isEnabled = meter != null && meter.isEnabled();
         if (this.isEnabled) {
             this.commonAttributes = getCommonAttributes(namespace, entityName, consumerGroup);
-            this.attributeCacheSuccess = new AttributeCache(MESSAGING_DESTINATION_PARTITION_ID, commonAttributes);
+            this.sendAttributeCacheSuccess = createAttributeCache(meter, SEND, commonAttributes);
+            this.receiveAttributeCacheSuccess = createAttributeCache(meter, RECEIVE, commonAttributes);
+            this.checkpointAttributeCacheSuccess = createAttributeCache(meter, CHECKPOINT, commonAttributes);
+            this.processAttributeCacheSuccess = createAttributeCache(meter, PROCESS, commonAttributes);
+            this.lagAttributeCache = new AttributeCache(meter, MESSAGING_DESTINATION_PARTITION_ID, commonAttributes);
 
-            this.sendEventCounter = meter.createLongCounter(MESSAGING_PUBLISH_MESSAGES, "Number of sent events", "{event}");
-            this.sendBatchDuration = meter.createDoubleHistogram(MESSAGING_PUBLISH_DURATION, "Duration of publish operation including all retries", "s");
+            this.publishedEventCounter = meter.createLongCounter(MESSAGING_CLIENT_PUBLISHED_MESSAGES, "The number of published events", "{event}");
+            this.consumedEventCounter = meter.createLongCounter(MESSAGING_CLIENT_CONSUMED_MESSAGES, "The number of consumed events", "{event}");
 
-            this.processEventCounter = meter.createLongCounter(MESSAGING_PROCESS_MESSAGES, "Number of processed events", "{event}");
-            this.processBatchDuration = meter.createDoubleHistogram(MESSAGING_PROCESS_DURATION, "Duration of processing callback", "s");
-
-            this.receiveEventCounter = meter.createLongCounter(MESSAGING_RECEIVE_MESSAGES, "Number of received events", "{event}");
-            this.receiveBatchDuration = meter.createDoubleHistogram(MESSAGING_RECEIVE_DURATION, "Duration of synchronous receive.", "s");
-            this.checkpointDuration = meter.createDoubleHistogram(MESSAGING_SETTLE_DURATION, "Duration of checkpoint call", "ss");
+            this.operationDuration = meter.createDoubleHistogram(MESSAGING_CLIENT_OPERATION_DURATION, "The duration of client messaging operations involving communication with the Event Hubs namespace", "s");
+            this.processDuration = meter.createDoubleHistogram(MESSAGING_CONSUMER_PROCESS_DURATION, "The duration of the processing callback", "s");
 
             this.consumerLag = meter.createDoubleHistogram(MESSAGING_EVENTHUBS_CONSUMER_LAG, "Difference between local time when event was received and the local time it was enqueued on broker", "s");
         }
+    }
+
+    private static AttributeCache createAttributeCache(
+        Meter meter,
+        OperationName operationName,
+        Map<String, Object> commonAttributes) {
+        Map<String, Object> attributes = new HashMap<>(commonAttributes);
+        attributes.put(MESSAGING_OPERATION_NAME, operationName.toString());
+        return new AttributeCache(meter, MESSAGING_DESTINATION_PARTITION_ID, attributes);
     }
 
     public boolean isEnabled() {
@@ -71,51 +83,60 @@ public class EventHubsMetricsProvider {
     }
 
     public void reportBatchSend(int batchSize, String partitionId, InstrumentationScope scope) {
-        if (isEnabled && (sendEventCounter.isEnabled() || sendBatchDuration.isEnabled())) {
-            TelemetryAttributes attributes = getOrCreateAttributes(partitionId, scope.getErrorType());
-            sendEventCounter.add(batchSize, attributes, scope.getSpan());
-            sendBatchDuration.record(getDurationInSeconds(scope.getStartTime()), attributes, scope.getSpan());
+        if (isEnabled && (publishedEventCounter.isEnabled() || operationDuration.isEnabled())) {
+            TelemetryAttributes attributes = getOrCreateAttributes(SEND, partitionId, scope.getErrorType());
+            publishedEventCounter.add(batchSize, attributes, scope.getSpan());
+            operationDuration.record(getDurationInSeconds(scope.getStartTime()), attributes, scope.getSpan());
         }
     }
 
     public void reportProcess(int batchSize, String partitionId, InstrumentationScope scope) {
-        if (isEnabled && (processEventCounter.isEnabled() || processBatchDuration.isEnabled())) {
-            TelemetryAttributes attributes = getOrCreateAttributes(partitionId, scope.getErrorType());
-            processEventCounter.add(batchSize, attributes, scope.getSpan());
-            processBatchDuration.record(getDurationInSeconds(scope.getStartTime()), attributes, scope.getSpan());
+        if (isEnabled && (consumedEventCounter.isEnabled() || processDuration.isEnabled())) {
+            TelemetryAttributes attributes = getOrCreateAttributes(PROCESS, partitionId, scope.getErrorType());
+            consumedEventCounter.add(batchSize, attributes, scope.getSpan());
+            processDuration.record(getDurationInSeconds(scope.getStartTime()), attributes, scope.getSpan());
         }
     }
 
     public void reportReceiveDuration(int receivedCount, String partitionId, InstrumentationScope scope) {
-        if (isEnabled && (receiveBatchDuration.isEnabled() || receiveEventCounter.isEnabled())) {
+        if (isEnabled && (operationDuration.isEnabled() || consumedEventCounter.isEnabled())) {
             String errorType = scope.getErrorType();
-            TelemetryAttributes attributes = getOrCreateAttributes(partitionId, errorType);
+            TelemetryAttributes attributes = getOrCreateAttributes(RECEIVE, partitionId, errorType);
             if (receivedCount > 0) {
-                receiveEventCounter.add(receivedCount,
-                        errorType == null ? attributes : getOrCreateAttributes(partitionId, null),
+                consumedEventCounter.add(receivedCount,
+                        errorType == null ? attributes : getOrCreateAttributes(RECEIVE, partitionId, null),
                         scope.getSpan());
             }
 
-            receiveBatchDuration.record(getDurationInSeconds(scope.getStartTime()), attributes, scope.getSpan());
+            operationDuration.record(getDurationInSeconds(scope.getStartTime()), attributes, scope.getSpan());
         }
     }
 
     public void reportLag(Instant enqueuedTime, String partitionId, InstrumentationScope scope) {
         if (isEnabled && consumerLag.isEnabled()) {
-            consumerLag.record(getDurationInSeconds(enqueuedTime), attributeCacheSuccess.getOrCreate(partitionId), scope.getSpan());
+            consumerLag.record(getDurationInSeconds(enqueuedTime), lagAttributeCache.getOrCreate(partitionId), scope.getSpan());
         }
     }
 
     public void reportCheckpoint(Checkpoint checkpoint, InstrumentationScope scope) {
-        if (isEnabled && checkpointDuration.isEnabled()) {
-            checkpointDuration.record(getDurationInSeconds(scope.getStartTime()),
-                    getOrCreateAttributes(checkpoint.getPartitionId(), scope.getErrorType()), scope.getSpan());
+        if (isEnabled && operationDuration.isEnabled()) {
+            operationDuration.record(getDurationInSeconds(scope.getStartTime()),
+                    getOrCreateAttributes(CHECKPOINT, checkpoint.getPartitionId(), scope.getErrorType()), scope.getSpan());
         }
     }
 
-    private TelemetryAttributes getOrCreateAttributes(String partitionId, String errorType) {
+    private TelemetryAttributes getOrCreateAttributes(OperationName operationName, String partitionId, String errorType) {
         if (errorType == null) {
-            return attributeCacheSuccess.getOrCreate(partitionId);
+            switch (operationName) {
+                case SEND:
+                    return sendAttributeCacheSuccess.getOrCreate(partitionId);
+                case RECEIVE:
+                    return receiveAttributeCacheSuccess.getOrCreate(partitionId);
+                case CHECKPOINT:
+                    return checkpointAttributeCacheSuccess.getOrCreate(partitionId);
+                case PROCESS:
+                    return processAttributeCacheSuccess.getOrCreate(partitionId);
+            }
         }
 
         // we can potentially cache failure attributes, but the assumption is that
@@ -124,6 +145,7 @@ public class EventHubsMetricsProvider {
         if (partitionId != null) {
             attributes.put(MESSAGING_DESTINATION_PARTITION_ID, partitionId);
         }
+        attributes.put(MESSAGING_OPERATION_NAME, operationName.toString());
         attributes.put(ERROR_TYPE, errorType);
         return meter.createAttributes(attributes);
     }
@@ -140,15 +162,17 @@ public class EventHubsMetricsProvider {
         return Collections.unmodifiableMap(commonAttributesMap);
     }
 
-    class AttributeCache {
+    static class AttributeCache {
         private final Map<String, TelemetryAttributes> attr = new ConcurrentHashMap<>();
         private final TelemetryAttributes commonAttr;
         private final Map<String, Object> commonMap;
         private final String dimensionName;
+        private final Meter meter;
 
-        AttributeCache(String dimensionName, Map<String, Object> common) {
+        AttributeCache(Meter meter, String dimensionName, Map<String, Object> common) {
             this.dimensionName = dimensionName;
             this.commonMap = common;
+            this.meter = meter;
             this.commonAttr = meter.createAttributes(commonMap);
         }
 

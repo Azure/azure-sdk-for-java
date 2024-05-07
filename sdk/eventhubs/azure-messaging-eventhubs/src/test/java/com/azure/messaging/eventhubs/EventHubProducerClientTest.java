@@ -255,8 +255,8 @@ public class EventHubProducerClientTest {
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8));
         eventData.getProperties().put("traceparent", "traceparent");
 
-        final String expectedSendSpanName = String.format("%s send", EVENT_HUB_NAME);
-        final String expectedMessageSpanName = String.format("%s create", EVENT_HUB_NAME);
+        final String expectedSendSpanName = getSpanName(SEND, EVENT_HUB_NAME);
+        final String expectedMessageSpanName = getSpanName(EVENT, EVENT_HUB_NAME);
         when(tracer1.start(eq(expectedSendSpanName), any(), any(Context.class))).thenAnswer(
             invocation -> {
                 assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), SpanKind.CLIENT, 1);

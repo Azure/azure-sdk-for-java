@@ -369,7 +369,7 @@ class EventHubProducerAsyncClientTest {
         final String expectedMessageSpanName = getSpanName(EVENT, EVENT_HUB_NAME);
         when(tracer1.start(eq(expectedMessageSpanName), any(), any(Context.class))).thenAnswer(
             invocation -> {
-                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), SpanKind.PRODUCER, null, 0);
+                assertStartOptions(EVENT, invocation.getArgument(1, StartSpanOptions.class), SpanKind.PRODUCER, null, 0);
                 return invocation.getArgument(2, Context.class)
                     .addData(SPAN_CONTEXT_KEY, "span");
             });
@@ -377,7 +377,7 @@ class EventHubProducerAsyncClientTest {
         final String expectedSendSpanName = getSpanName(SEND, EVENT_HUB_NAME);
         when(tracer1.start(eq(expectedSendSpanName), any(), any(Context.class))).thenAnswer(
             invocation -> {
-                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), SpanKind.CLIENT, null, 1);
+                assertStartOptions(SEND, invocation.getArgument(1, StartSpanOptions.class), SpanKind.CLIENT, null, 1);
                 return invocation.getArgument(2, Context.class)
                     .addData(PARENT_TRACE_CONTEXT_KEY, "trace-context");
             }
@@ -433,7 +433,7 @@ class EventHubProducerAsyncClientTest {
         final String expectedMessageSpanName = getSpanName(EVENT, EVENT_HUB_NAME);
         when(tracer1.start(eq(expectedMessageSpanName), any(), any(Context.class))).thenAnswer(
             invocation -> {
-                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), SpanKind.PRODUCER, null, 0);
+                assertStartOptions(EVENT, invocation.getArgument(1, StartSpanOptions.class), SpanKind.PRODUCER, null, 0);
                 return invocation.getArgument(2, Context.class)
                     .addData(SPAN_CONTEXT_KEY, "span");
             });
@@ -441,7 +441,7 @@ class EventHubProducerAsyncClientTest {
         final String expectedSendSpanName = getSpanName(SEND, EVENT_HUB_NAME);
         when(tracer1.start(eq(expectedSendSpanName), any(), any(Context.class))).thenAnswer(
             invocation -> {
-                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), SpanKind.CLIENT, null, 1);
+                assertStartOptions(SEND, invocation.getArgument(1, StartSpanOptions.class), SpanKind.CLIENT, null, 1);
                 return invocation.getArgument(2, Context.class)
                     .addData(PARENT_TRACE_CONTEXT_KEY, "trace-context");
             }
@@ -490,7 +490,7 @@ class EventHubProducerAsyncClientTest {
         final String expectedPartitionSpanName = getSpanName(GET_PARTITION_PROPERTIES, EVENT_HUB_NAME);
         when(tracer1.start(eq(expectedPartitionSpanName), any(), any(Context.class))).thenAnswer(
             invocation -> {
-                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), SpanKind.CLIENT, partitionId, 0);
+                assertStartOptions(GET_PARTITION_PROPERTIES, invocation.getArgument(1, StartSpanOptions.class), SpanKind.CLIENT, partitionId, 0);
                 return invocation.getArgument(2, Context.class).addData(PARENT_TRACE_CONTEXT_KEY, "getPartitionProperties");
             }
         );
@@ -498,7 +498,7 @@ class EventHubProducerAsyncClientTest {
         final String expectedHubPropertiesSpanName = getSpanName(GET_EVENT_HUB_PROPERTIES, EVENT_HUB_NAME);
         when(tracer1.start(eq(expectedHubPropertiesSpanName), any(), any(Context.class))).thenAnswer(
             invocation -> {
-                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), SpanKind.CLIENT, null, 0);
+                assertStartOptions(GET_EVENT_HUB_PROPERTIES, invocation.getArgument(1, StartSpanOptions.class), SpanKind.CLIENT, null, 0);
                 return invocation.getArgument(2, Context.class).addData(PARENT_TRACE_CONTEXT_KEY, "getEventHubProperties");
             }
         );
@@ -599,7 +599,7 @@ class EventHubProducerAsyncClientTest {
         final String expectedSendSpanName = getSpanName(SEND, EVENT_HUB_NAME);
         when(tracer1.start(eq(expectedSendSpanName), any(), any(Context.class))).thenAnswer(
             invocation -> {
-                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), SpanKind.CLIENT, null, 1);
+                assertStartOptions(SEND, invocation.getArgument(1, StartSpanOptions.class), SpanKind.CLIENT, null, 1);
                 return invocation.getArgument(2, Context.class)
                     .addData(PARENT_TRACE_CONTEXT_KEY, "trace-context");
             }
@@ -748,7 +748,7 @@ class EventHubProducerAsyncClientTest {
         final String expectedMessageSpanName = getSpanName(EVENT, EVENT_HUB_NAME);
         when(tracer1.start(eq(expectedMessageSpanName), any(), any(Context.class))).thenAnswer(
             invocation -> {
-                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), SpanKind.PRODUCER, null, 0);
+                assertStartOptions(EVENT, invocation.getArgument(1, StartSpanOptions.class), SpanKind.PRODUCER, null, 0);
                 return invocation.getArgument(2, Context.class)
                     .addData(SPAN_CONTEXT_KEY, "span");
             });
@@ -756,7 +756,7 @@ class EventHubProducerAsyncClientTest {
         final String expectedSendSpanName = getSpanName(SEND, EVENT_HUB_NAME);
         when(tracer1.start(eq(expectedSendSpanName), any(), any(Context.class))).thenAnswer(
             invocation -> {
-                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), SpanKind.CLIENT, partitionId, 2);
+                assertStartOptions(SEND, invocation.getArgument(1, StartSpanOptions.class), SpanKind.CLIENT, partitionId, 2);
                 return invocation.getArgument(2, Context.class)
                     .addData(PARENT_TRACE_CONTEXT_KEY, "trace-context");
             }
@@ -1052,7 +1052,7 @@ class EventHubProducerAsyncClientTest {
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
 
-        TestCounter eventCounter = meter.getCounters().get("messaging.publish.messages");
+        TestCounter eventCounter = meter.getCounters().get("messaging.client.published.messages");
         assertNotNull(eventCounter);
 
         List<TestMeasurement<Long>> measurements = eventCounter.getMeasurements();
@@ -1060,8 +1060,8 @@ class EventHubProducerAsyncClientTest {
 
         assertEquals(1, measurements.get(0).getValue());
         assertEquals(2, measurements.get(1).getValue());
-        assertAttributes(HOSTNAME, eventHub1, measurements.get(0).getAttributes());
-        assertAttributes(HOSTNAME, eventHub2, measurements.get(1).getAttributes());
+        assertAttributes(HOSTNAME, eventHub1, SEND, measurements.get(0).getAttributes());
+        assertAttributes(HOSTNAME, eventHub2, SEND, measurements.get(1).getAttributes());
     }
 
     public static Stream<Arguments> errorSource() {
@@ -1146,7 +1146,7 @@ class EventHubProducerAsyncClientTest {
         final String expectedMessageSpanName = getSpanName(EVENT, EVENT_HUB_NAME);
         when(tracer.start(eq(expectedMessageSpanName), any(), any(Context.class))).thenAnswer(
             invocation -> {
-                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), SpanKind.PRODUCER, null, 0);
+                assertStartOptions(EVENT, invocation.getArgument(1, StartSpanOptions.class), SpanKind.PRODUCER, null, 0);
                 return invocation.getArgument(2, Context.class)
                     .addData(SPAN_CONTEXT_KEY, "span");
             });
@@ -1154,7 +1154,7 @@ class EventHubProducerAsyncClientTest {
         final String expectedSendSpanName = getSpanName(SEND, EVENT_HUB_NAME);
         when(tracer.start(eq(expectedSendSpanName), any(), any(Context.class))).thenAnswer(
             invocation -> {
-                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), SpanKind.CLIENT,  null, 1);
+                assertStartOptions(SEND, invocation.getArgument(1, StartSpanOptions.class), SpanKind.CLIENT,  null, 1);
                 return invocation.getArgument(2, Context.class)
                     .addData(PARENT_TRACE_CONTEXT_KEY, "parent span");
             }
@@ -1192,8 +1192,8 @@ class EventHubProducerAsyncClientTest {
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
 
-        assertFalse(meter.getCounters().containsKey("messaging.publish.messages"));
-        assertFalse(meter.getHistograms().containsKey("messaging.publish.duration"));
+        assertFalse(meter.getCounters().containsKey("messaging.client.published.messages"));
+        assertFalse(meter.getHistograms().containsKey("messaging.client.operation.duration"));
     }
 
     @Test
@@ -1580,9 +1580,11 @@ class EventHubProducerAsyncClientTest {
         return serializer.deserialize(receivedMessage, EventData.class);
     }
 
-    private void assertStartOptions(StartSpanOptions startOpts, SpanKind kind, String partitionId, int linkCount) {
+    private void assertStartOptions(
+        com.azure.messaging.eventhubs.implementation.instrumentation.OperationName operationName, StartSpanOptions startOpts, SpanKind kind, String partitionId, int linkCount) {
         assertEquals(kind, startOpts.getSpanKind());
-        assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, partitionId, null, null, startOpts.getAttributes());
+        assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, partitionId, null, null, operationName,
+            startOpts.getAttributes());
         assertNotNull(startOpts.getAttributes().get(MESSAGING_OPERATION_NAME));
 
         if (linkCount == 0) {
@@ -1593,20 +1595,21 @@ class EventHubProducerAsyncClientTest {
     }
 
     private void assertSendCount(TestMeter meter, String partitionId, int expectedValue, String expectedErrorType, Object parentContext) {
-        TestCounter eventCounter = meter.getCounters().get("messaging.publish.messages");
+        TestCounter eventCounter = meter.getCounters().get("messaging.client.published.messages");
         assertNotNull(eventCounter);
 
         List<TestMeasurement<Long>> measurements = eventCounter.getMeasurements();
         assertEquals(1, measurements.size());
         assertEquals(expectedValue, measurements.get(0).getValue(), expectedValue);
-        assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, partitionId, null, expectedErrorType, measurements.get(0).getAttributes());
+        assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, partitionId, null, expectedErrorType,
+            SEND, measurements.get(0).getAttributes());
         if (parentContext != null) {
             assertEquals(parentContext, measurements.get(0).getContext().getData(PARENT_TRACE_CONTEXT_KEY).get());
         }
     }
 
     private void assertSendDuration(TestMeter meter, String partitionId, Double expectedValue, String expectedErrorType, Object parentContext) {
-        TestHistogram sendDuration = meter.getHistograms().get("messaging.publish.duration");
+        TestHistogram sendDuration = meter.getHistograms().get("messaging.client.operation.duration");
         assertNotNull(sendDuration);
         List<TestMeasurement<Double>> measurements = sendDuration.getMeasurements();
         assertEquals(1, measurements.size());
@@ -1614,7 +1617,8 @@ class EventHubProducerAsyncClientTest {
             assertEquals(expectedValue, measurements.get(0).getValue(), expectedValue);
         }
 
-        assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, partitionId, null, expectedErrorType, measurements.get(0).getAttributes());
+        assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, partitionId, null, expectedErrorType,
+            SEND, measurements.get(0).getAttributes());
         if (parentContext != null) {
             assertEquals(parentContext, measurements.get(0).getContext().getData(PARENT_TRACE_CONTEXT_KEY).get());
         }

@@ -12,6 +12,7 @@ import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracingLink;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
+import com.azure.messaging.eventhubs.implementation.instrumentation.*;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventContext;
@@ -261,7 +262,7 @@ public class EventProcessorClientTest {
         final String expectedProcessSpanName = getSpanName(PROCESS, EVENT_HUB_NAME);
         when(tracer.start(eq(expectedProcessSpanName), any(StartSpanOptions.class), any(Context.class))).thenAnswer(
             invocation -> {
-                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), 1);
+                assertStartOptions(PROCESS, invocation.getArgument(1, StartSpanOptions.class), 1);
                 return invocation.getArgument(2, Context.class).addData(PARENT_TRACE_CONTEXT_KEY, "value2");
             }
         );
@@ -367,7 +368,7 @@ public class EventProcessorClientTest {
         final String expectedProcessSpanName = getSpanName(PROCESS, EVENT_HUB_NAME);
         when(tracer.start(eq(expectedProcessSpanName), any(StartSpanOptions.class), any(Context.class))).thenAnswer(
             invocation -> {
-                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), 2);
+                assertStartOptions(PROCESS, invocation.getArgument(1, StartSpanOptions.class), 2);
                 return invocation.getArgument(2, Context.class).addData(PARENT_TRACE_CONTEXT_KEY, "value2");
             }
         );
@@ -557,8 +558,8 @@ public class EventProcessorClientTest {
 
         //Assert
         verify(tracer, never()).start(anyString(), any(), any(Context.class));
-        assertEquals(0, meter.getCounters().get("messaging.process.messages").getMeasurements().size());
-        assertEquals(0, meter.getHistograms().get("messaging.process.duration").getMeasurements().size());
+        assertEquals(0, meter.getCounters().get("messaging.client.consumed.messages").getMeasurements().size());
+        assertEquals(0, meter.getHistograms().get("messaging.consumer.process.duration").getMeasurements().size());
     }
 
     /**
@@ -601,7 +602,7 @@ public class EventProcessorClientTest {
         final String expectedProcessSpanName = getSpanName(PROCESS, EVENT_HUB_NAME);
         when(tracer.start(eq(expectedProcessSpanName), any(StartSpanOptions.class), any(Context.class))).thenAnswer(
             invocation -> {
-                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), 1);
+                assertStartOptions(PROCESS, invocation.getArgument(1, StartSpanOptions.class), 1);
                 return invocation.getArgument(2, Context.class).addData(PARENT_TRACE_CONTEXT_KEY, "value2");
             }
         );
@@ -1059,9 +1060,10 @@ public class EventProcessorClientTest {
         return new PartitionEvent(context, event, null);
     }
 
-    private void assertStartOptions(StartSpanOptions startOpts, int linkCount) {
+    private void assertStartOptions(OperationName operationName, StartSpanOptions startOpts, int linkCount) {
         assertEquals(SpanKind.CONSUMER, startOpts.getSpanKind());
-        assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, PARTITION_ID, CONSUMER_GROUP, null, startOpts.getAttributes());
+        assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, PARTITION_ID, CONSUMER_GROUP, null,
+            operationName, startOpts.getAttributes());
 
         if (linkCount == 0) {
             assertTrue(startOpts.getAttributes().containsKey(MESSAGING_EVENTHUBS_MESSAGE_ENQUEUED_TIME));
@@ -1080,29 +1082,33 @@ public class EventProcessorClientTest {
 
     private void assertCheckpointStartOptions(StartSpanOptions startOpts) {
         assertEquals(SpanKind.INTERNAL, startOpts.getSpanKind());
-        assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, PARTITION_ID, CONSUMER_GROUP, null, startOpts.getAttributes());
+        assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, PARTITION_ID, CONSUMER_GROUP, null,
+            CHECKPOINT, startOpts.getAttributes());
         assertNull(startOpts.getLinks());
     }
 
     private static void assertProcessMetrics(TestMeter meter, int batchSize, String expectedErrorType) {
-        TestCounter eventCounter = meter.getCounters().get("messaging.process.messages");
+        TestCounter eventCounter = meter.getCounters().get("messaging.client.consumed.messages");
         assertNotNull(eventCounter);
         assertEquals(1, eventCounter.getMeasurements().size());
         assertEquals(batchSize, eventCounter.getMeasurements().get(0).getValue());
-        assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, PARTITION_ID, CONSUMER_GROUP, expectedErrorType, eventCounter.getMeasurements().get(0).getAttributes());
+        assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, PARTITION_ID, CONSUMER_GROUP, expectedErrorType,
+            PROCESS, eventCounter.getMeasurements().get(0).getAttributes());
 
-        TestHistogram processDuration = meter.getHistograms().get("messaging.process.duration");
+        TestHistogram processDuration = meter.getHistograms().get("messaging.consumer.process.duration");
         assertNotNull(processDuration);
         assertEquals(1, processDuration.getMeasurements().size());
         assertNotNull(processDuration.getMeasurements().get(0).getValue());
-        assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, PARTITION_ID, CONSUMER_GROUP, expectedErrorType, processDuration.getMeasurements().get(0).getAttributes());
+        assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, PARTITION_ID, CONSUMER_GROUP, expectedErrorType,
+            PROCESS, processDuration.getMeasurements().get(0).getAttributes());
 
         if (expectedErrorType == null) {
-            TestHistogram settleDuration = meter.getHistograms().get("messaging.settle.duration");
-            assertNotNull(settleDuration);
-            assertEquals(1, settleDuration.getMeasurements().size());
-            assertNotNull(settleDuration.getMeasurements().get(0).getValue());
-            assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, PARTITION_ID, CONSUMER_GROUP, null, settleDuration.getMeasurements().get(0).getAttributes());
+            TestHistogram checkpointDuration = meter.getHistograms().get("messaging.client.operation.duration");
+            assertNotNull(checkpointDuration);
+            assertEquals(1, checkpointDuration.getMeasurements().size());
+            assertNotNull(checkpointDuration.getMeasurements().get(0).getValue());
+            assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, PARTITION_ID, CONSUMER_GROUP, null,
+                CHECKPOINT, checkpointDuration.getMeasurements().get(0).getAttributes());
         }
     }
 

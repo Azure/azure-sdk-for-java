@@ -24,13 +24,11 @@ public final class InstrumentationUtils {
     public static final String MESSAGING_EVENTHUBS_MESSAGE_ENQUEUED_TIME = "messaging.eventhubs.message.enqueued_time";
 
     // metrics
-    public static final String MESSAGING_PUBLISH_MESSAGES = "messaging.publish.messages";
-    public static final String MESSAGING_PUBLISH_DURATION = "messaging.publish.duration";
-    public static final String MESSAGING_PROCESS_MESSAGES = "messaging.process.messages";
-    public static final String MESSAGING_PROCESS_DURATION = "messaging.process.duration";
-    public static final String MESSAGING_RECEIVE_MESSAGES = "messaging.receive.messages";
-    public static final String MESSAGING_RECEIVE_DURATION = "messaging.receive.duration";
-    public static final String MESSAGING_SETTLE_DURATION = "messaging.settle.duration";
+    public static final String MESSAGING_CLIENT_PUBLISHED_MESSAGES = "messaging.client.published.messages";
+    public static final String MESSAGING_CLIENT_CONSUMED_MESSAGES = "messaging.client.consumed.messages";
+    public static final String MESSAGING_CLIENT_OPERATION_DURATION = "messaging.client.operation.duration";
+    public static final String MESSAGING_CONSUMER_PROCESS_DURATION = "messaging.consumer.process.duration";
+
     // custom metrics
     public static final String MESSAGING_EVENTHUBS_CONSUMER_LAG = "messaging.eventhubs.consumer.lag";
 

@@ -165,14 +165,14 @@ public class EventHubsConsumerInstrumentationTests {
         assertEquals(measurements, lag.getMeasurements().size());
         for (int i = 0; i < measurements; i++) {
             assertEquals(expectedLags[i], lag.getMeasurements().get(i).getValue(), 10);
-            assertAllAttributes(FQDN, ENTITY_NAME, partitionIds[i], CONSUMER_GROUP, null,
+            assertAllAttributes(FQDN, ENTITY_NAME, partitionIds[i], CONSUMER_GROUP, null, null,
                     lag.getMeasurements().get(i).getAttributes());
         }
 
         // sync consumer reports spans in different instrumentation point
         assertEquals(0, spanProcessor.getEndedSpans().size());
 
-        assertEquals(0, meter.getHistograms().get("messaging.process.duration").getMeasurements().size());
+        assertEquals(0, meter.getHistograms().get("messaging.consumer.process.duration").getMeasurements().size());
     }
 
     @Test
@@ -208,7 +208,8 @@ public class EventHubsConsumerInstrumentationTests {
             SpanData span = spanProcessor.getEndedSpans().get(i).toSpanData();
             assertEquals(getSpanName(PROCESS, ENTITY_NAME), span.getName());
             Map<String, Object> attributes = attributesToMap(span.getAttributes());
-            assertAllAttributes(FQDN, ENTITY_NAME, partitionIds[i], CONSUMER_GROUP, expectedErrors[i], attributes);
+            assertAllAttributes(FQDN, ENTITY_NAME, partitionIds[i], CONSUMER_GROUP, expectedErrors[i],
+                PROCESS, attributes);
             assertNotNull(attributes.get("messaging.eventhubs.message.enqueued_time"));
             assertSpanStatus(i == 0 ? "cancelled" : i == 1 ? "test" : null, span);
             assertProcessDuration(null, partitionIds[i], expectedErrors[i]);
@@ -238,7 +239,7 @@ public class EventHubsConsumerInstrumentationTests {
         assertTrue(span.getEndEpochNanos() - span.getStartEpochNanos() >= durationMillis * 1_000_000);
 
         Map<String, Object> attributes = attributesToMap(span.getAttributes());
-        assertAllAttributes(FQDN, ENTITY_NAME, "0", CONSUMER_GROUP, null, attributes);
+        assertAllAttributes(FQDN, ENTITY_NAME, "0", CONSUMER_GROUP, null, PROCESS, attributes);
         assertEquals(enqueuedTime.getEpochSecond(), attributes.get("messaging.eventhubs.message.enqueued_time"));
 
         assertTrue(span.getLinks().get(0).getSpanContext().isValid());
@@ -292,8 +293,8 @@ public class EventHubsConsumerInstrumentationTests {
                     .verify();
         }
 
-        assertReceiveDuration(partitionId, expectedErrorType);
-        assertReceivedCount(expectedErrorType == null ? 1 : 0, partitionId);
+        assertOperationDuration(RECEIVE, partitionId, expectedErrorType);
+        assertConsumedCount(expectedErrorType == null ? 1 : 0, partitionId, null, RECEIVE);
         assertReceiveSpan(expectedErrorType == null ? 1 : 0, partitionId, expectedErrorType, spanDescription);
     }
 
@@ -332,8 +333,8 @@ public class EventHubsConsumerInstrumentationTests {
                     .verify();
         }
 
-        assertReceiveDuration(partitionId, expectedErrorType);
-        assertReceivedCount(count, partitionId);
+        assertOperationDuration(RECEIVE, partitionId, expectedErrorType);
+        assertConsumedCount(count, partitionId, null, RECEIVE);
         SpanData span = assertReceiveSpan(count, partitionId, expectedErrorType, spanDescription);
         assertEquals(count, span.getLinks().size());
         for (int j = 0; j < count; j++) {
@@ -367,7 +368,7 @@ public class EventHubsConsumerInstrumentationTests {
         }
 
         assertProcessDuration(Duration.ofMillis(200), partitionId, expectedErrorType);
-        assertProcessCount(1, partitionId, expectedErrorType);
+        assertConsumedCount(1, partitionId, expectedErrorType, PROCESS);
         SpanData span = assertProcessSpan(partitionId, expectedErrorType, spanDescription);
         assertNull(span.getAttributes().get(AttributeKey.longKey("messaging.batch.message_count")));
         assertNotNull(span.getAttributes().get(AttributeKey.longKey("messaging.eventhubs.message.enqueued_time")));
@@ -400,7 +401,7 @@ public class EventHubsConsumerInstrumentationTests {
         }
 
         assertProcessDuration(Duration.ofMillis(200), partitionId, expectedErrorType);
-        assertProcessCount(3, partitionId, expectedErrorType);
+        assertConsumedCount(3, partitionId, expectedErrorType, PROCESS);
         SpanData span = assertProcessSpan(partitionId, expectedErrorType, spanDescription);
         assertEquals(count, span.getAttributes().get(AttributeKey.longKey("messaging.batch.message_count")));
         assertNull(span.getAttributes().get(AttributeKey.longKey("messaging.eventhubs.message.enqueued_time")));
@@ -457,7 +458,7 @@ public class EventHubsConsumerInstrumentationTests {
             stepVerifier.expectComplete().verify();
         }
 
-        assertCheckpointDuration(partitionId, expectedErrorType);
+        assertOperationDuration(CHECKPOINT, partitionId, expectedErrorType);
         assertCheckpointSpan(partitionId, expectedErrorType, spanDescription);
     }
 
@@ -489,7 +490,7 @@ public class EventHubsConsumerInstrumentationTests {
         assertInstanceOf(io.opentelemetry.context.Context.class, capturedContext.get().get("trace-context"));
         assertEquals("bar", capturedContext.get().get("foo"));
 
-        assertCheckpointDuration(partitionId, null);
+        assertOperationDuration(CHECKPOINT, partitionId, null);
         assertCheckpointSpan(partitionId, null, null);
     }
 
@@ -544,7 +545,7 @@ public class EventHubsConsumerInstrumentationTests {
         assertEquals(getSpanName(RECEIVE, ENTITY_NAME), span.getName());
         assertEquals(CONSUMER, span.getKind());
         Map<String, Object> attributes = attributesToMap(span.getAttributes());
-        assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, expectedErrorType, attributes);
+        assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, expectedErrorType, RECEIVE, attributes);
         assertSpanStatus(spanDescription, span);
 
         assertEquals((long) expectedBatchSize, attributes.get("messaging.batch.message_count"));
@@ -557,7 +558,7 @@ public class EventHubsConsumerInstrumentationTests {
         assertEquals(getSpanName(PROCESS, ENTITY_NAME), span.getName());
         assertEquals(CONSUMER, span.getKind());
         Map<String, Object> attributes = attributesToMap(span.getAttributes());
-        assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, expectedErrorType, attributes);
+        assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, expectedErrorType, PROCESS, attributes);
         assertSpanStatus(spanDescription, span);
         return span;
     }
@@ -568,21 +569,21 @@ public class EventHubsConsumerInstrumentationTests {
         assertEquals(getSpanName(CHECKPOINT, ENTITY_NAME), span.getName());
         assertEquals(INTERNAL, span.getKind());
         Map<String, Object> attributes = attributesToMap(span.getAttributes());
-        assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, expectedErrorType, attributes);
+        assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, expectedErrorType, CHECKPOINT, attributes);
         assertSpanStatus(spanDescription, span);
         return span;
     }
 
-    private void assertReceiveDuration(String partitionId, String expectedErrorType) {
-        TestHistogram receiveDuration = meter.getHistograms().get("messaging.receive.duration");
-        assertNotNull(receiveDuration);
-        assertEquals(1, receiveDuration.getMeasurements().size());
+    private void assertOperationDuration(OperationName operationName, String partitionId, String expectedErrorType) {
+        TestHistogram operationDuration = meter.getHistograms().get("messaging.client.operation.duration");
+        assertNotNull(operationDuration);
+        assertEquals(1, operationDuration.getMeasurements().size());
         assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, expectedErrorType,
-                receiveDuration.getMeasurements().get(0).getAttributes());
+                operationName, operationDuration.getMeasurements().get(0).getAttributes());
     }
 
     private void assertProcessDuration(Duration duration, String partitionId, String expectedErrorType) {
-        TestHistogram processDuration = meter.getHistograms().get("messaging.process.duration");
+        TestHistogram processDuration = meter.getHistograms().get("messaging.consumer.process.duration");
         assertNotNull(processDuration);
         List<TestMeasurement<Double>> durationPerPartition = processDuration.getMeasurements().stream()
                         .filter(m -> partitionId.equals(m.getAttributes().get("messaging.destination.partition.id")))
@@ -594,35 +595,18 @@ public class EventHubsConsumerInstrumentationTests {
         }
 
         assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, expectedErrorType,
-                durationPerPartition.get(0).getAttributes());
+                PROCESS, durationPerPartition.get(0).getAttributes());
     }
 
-    private void assertCheckpointDuration(String partitionId, String expectedErrorType) {
-        TestHistogram settleDuration = meter.getHistograms().get("messaging.settle.duration");
-        assertNotNull(settleDuration);
-        assertEquals(1, settleDuration.getMeasurements().size());
-        assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, expectedErrorType,
-                settleDuration.getMeasurements().get(0).getAttributes());
-    }
-
-    private void assertReceivedCount(int count, String partitionId) {
-        TestCounter receiveCounter = meter.getCounters().get("messaging.receive.messages");
-        assertNotNull(receiveCounter);
-        assertEquals(count > 0 ? 1 : 0, receiveCounter.getMeasurements().size());
-        if (count > 0) {
-            assertEquals(Long.valueOf(count), receiveCounter.getMeasurements().get(0).getValue());
-            assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, null,
-                    receiveCounter.getMeasurements().get(0).getAttributes());
-        }
-    }
-
-    private void assertProcessCount(int count, String partitionId, String expectedErrorType) {
-        TestCounter processCounter = meter.getCounters().get("messaging.process.messages");
+    private void assertConsumedCount(int count, String partitionId, String errorType, OperationName operationName) {
+        TestCounter processCounter = meter.getCounters().get("messaging.client.consumed.messages");
         assertNotNull(processCounter);
-        assertEquals(1, processCounter.getMeasurements().size());
-        assertEquals(Long.valueOf(count), processCounter.getMeasurements().get(0).getValue());
-        assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, expectedErrorType,
+        assertEquals(count > 0 ? 1 : 0, processCounter.getMeasurements().size());
+        if (count > 0) {
+            assertEquals(Long.valueOf(count), processCounter.getMeasurements().get(0).getValue());
+            assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, errorType, operationName,
                 processCounter.getMeasurements().get(0).getAttributes());
+        }
     }
 
     private double getDoubleSeconds(Duration duration) {

@@ -118,7 +118,7 @@ public class EventHubsProducerInstrumentationTests {
             stepVerifier.expectComplete().verify();
         }
 
-        assertBatchDuration(null, expectedErrorType);
+        assertSendDuration(null, expectedErrorType);
         assertBatchCount(1, null, expectedErrorType);
         assertSpans(1, null, expectedErrorType, spanDescription);
     }
@@ -152,17 +152,17 @@ public class EventHubsProducerInstrumentationTests {
             stepVerifier.expectComplete().verify();
         }
 
-        assertBatchDuration(partitionId, expectedErrorType);
+        assertSendDuration(partitionId, expectedErrorType);
         assertBatchCount(count, partitionId, expectedErrorType);
         assertSpans(count, partitionId, expectedErrorType, spanDescription);
     }
 
-    private void assertBatchDuration(String partitionId, String expectedErrorType) {
-        TestHistogram publishDuration = meter.getHistograms().get("messaging.publish.duration");
+    private void assertSendDuration(String partitionId, String expectedErrorType) {
+        TestHistogram publishDuration = meter.getHistograms().get("messaging.client.operation.duration");
         assertNotNull(publishDuration);
         assertEquals(1, publishDuration.getMeasurements().size());
         assertAllAttributes(FQDN, ENTITY_NAME, partitionId, null, expectedErrorType,
-                publishDuration.getMeasurements().get(0).getAttributes());
+                SEND, publishDuration.getMeasurements().get(0).getAttributes());
     }
 
     private void assertSpans(int batchSize, String partitionId, String expectedErrorType, String spanDescription) {
@@ -181,7 +181,8 @@ public class EventHubsProducerInstrumentationTests {
 
         assertEquals(getSpanName(SEND, ENTITY_NAME), publishSpans.get(0).getName());
         Map<String, Object> publishAttributes = attributesToMap(publishSpans.get(0).getAttributes());
-        assertAllAttributes(FQDN, ENTITY_NAME, partitionId, null, expectedErrorType, publishAttributes);
+        assertAllAttributes(FQDN, ENTITY_NAME, partitionId, null, expectedErrorType,
+            SEND, publishAttributes);
         assertEquals(Long.valueOf(batchSize), publishAttributes.get("messaging.batch.message_count"));
         assertSpanStatus(spanDescription, publishSpans.get(0));
 
@@ -189,7 +190,8 @@ public class EventHubsProducerInstrumentationTests {
         for (int i = 0; i < batchSize; i++) {
             assertEquals(getSpanName(EVENT, ENTITY_NAME), eventSpans.get(i).getName());
             Map<String, Object> eventAttributes = attributesToMap(eventSpans.get(i).getAttributes());
-            assertAllAttributes(FQDN, ENTITY_NAME, null, null, null, eventAttributes);
+            assertAllAttributes(FQDN, ENTITY_NAME, null, null, null,
+                EVENT, eventAttributes);
             assertSpanStatus(null, eventSpans.get(i));
 
             SpanContext createContext = eventSpans.get(i).getSpanContext();
@@ -208,11 +210,11 @@ public class EventHubsProducerInstrumentationTests {
     }
 
     private void assertBatchCount(int count, String partitionId, String expectedErrorType) {
-        TestCounter batchCounter = meter.getCounters().get("messaging.publish.messages");
+        TestCounter batchCounter = meter.getCounters().get("messaging.client.published.messages");
         assertNotNull(batchCounter);
         assertEquals(1, batchCounter.getMeasurements().size());
         assertEquals(Long.valueOf(count), batchCounter.getMeasurements().get(0).getValue());
         assertAllAttributes(FQDN, ENTITY_NAME, partitionId, null, expectedErrorType,
-                batchCounter.getMeasurements().get(0).getAttributes());
+                SEND, batchCounter.getMeasurements().get(0).getAttributes());
     }
 }
