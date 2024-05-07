@@ -10,7 +10,7 @@ import com.azure.communication.callautomation.implementation.models.ContinuousDt
 import com.azure.communication.callautomation.implementation.models.DtmfOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.DtmfToneInternal;
 import com.azure.communication.callautomation.implementation.models.FileSourceInternal;
-import com.azure.communication.callautomation.implementation.models.HoldRequest;
+import com.azure.communication.callautomation.implementation.models.HoldRequestInternal;
 import com.azure.communication.callautomation.implementation.models.PlayOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.PlayRequest;
 import com.azure.communication.callautomation.implementation.models.PlaySourceInternal;
@@ -27,7 +27,7 @@ import com.azure.communication.callautomation.implementation.models.StartTranscr
 import com.azure.communication.callautomation.implementation.models.StopHoldMusicRequestInternal;
 import com.azure.communication.callautomation.implementation.models.StopTranscriptionRequestInternal;
 import com.azure.communication.callautomation.implementation.models.TextSourceInternal;
-import com.azure.communication.callautomation.implementation.models.UnholdRequest;
+import com.azure.communication.callautomation.implementation.models.UnholdRequestInternal;
 import com.azure.communication.callautomation.implementation.models.UpdateTranscriptionRequestInternal;
 import com.azure.communication.callautomation.implementation.models.VoiceKindInternal;
 import com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOptions;
@@ -787,7 +787,7 @@ public final class CallMediaAsync {
     Mono<Response<Void>> holdInternal(CommunicationIdentifier targetParticipant, Context context) {
         try {
             context = context == null ? Context.NONE : context;
-            HoldRequest request = new HoldRequest()
+            HoldRequestInternal request = new HoldRequestInternal()
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant));
 
             return contentsInternal
@@ -811,7 +811,7 @@ public final class CallMediaAsync {
     Mono<Response<Void>> holdWithResponseInternal(HoldOptions options, Context context) {
         try {
             context = context == null ? Context.NONE : context;
-            HoldRequest request = new HoldRequest()
+            HoldRequestInternal request = new HoldRequestInternal()
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(options.getTargetParticipant()))
                 .setPlaySourceInfo(convertPlaySourceToPlaySourceInternal(options.getPlaySourceInfo()))
                 .setOperationContext(options.getOperationContext());
@@ -850,7 +850,7 @@ public final class CallMediaAsync {
                                                             Context context) {
         try {
             context = context == null ? Context.NONE : context;
-            UnholdRequest request = new UnholdRequest()
+            UnholdRequestInternal request = new UnholdRequestInternal()
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant))
                 .setOperationContext(operationContext);
 
