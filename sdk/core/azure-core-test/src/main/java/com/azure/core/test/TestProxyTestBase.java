@@ -31,7 +31,7 @@ public abstract class TestProxyTestBase extends TestBase {
     public static void setupTestProxy(TestInfo testInfo) {
         testMode = initializeTestMode();
         if (isTestProxyEnabled() && (testMode == TestMode.PLAYBACK || testMode == TestMode.RECORD)) {
-            TestProxyManager.startProxy();
+           TestProxyManager.startProxy();
         }
     }
 }
