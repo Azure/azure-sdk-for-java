@@ -46,8 +46,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithPagedResponse;
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithResponse;
 import static com.azure.data.appconfiguration.implementation.Utility.ETAG_ANY;
-import static com.azure.data.appconfiguration.implementation.Utility.addTracingNamespace;
-import static com.azure.data.appconfiguration.implementation.Utility.enableSyncRestProxy;
 import static com.azure.data.appconfiguration.implementation.Utility.getETag;
 import static com.azure.data.appconfiguration.implementation.Utility.getPageETag;
 import static com.azure.data.appconfiguration.implementation.Utility.handleNotModifiedErrorToValidResponse;
@@ -356,7 +354,7 @@ public final class ConfigurationClient {
     /**
      * Adds a configuration value in the service if that key and label does not exist. The label value of the
      * ConfigurationSetting is optional.
-     *
+     * <p>
      * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
      * {@link SecretReferenceConfigurationSetting}.
      *
@@ -392,7 +390,7 @@ public final class ConfigurationClient {
     /**
      * Adds a configuration value in the service if that key and label does not exist. The label value of the
      * ConfigurationSetting is optional.
-     *
+     * <p>
      * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
      * {@link SecretReferenceConfigurationSetting}.
      *
@@ -433,7 +431,7 @@ public final class ConfigurationClient {
         // return an error.
         final ResponseBase<PutKeyValueHeaders, KeyValue> response =
             serviceClient.putKeyValueWithResponse(setting.getKey(), setting.getLabel(), null, ETAG_ANY,
-                toKeyValue(setting), enableSyncRestProxy(addTracingNamespace(context)));
+                toKeyValue(setting), context);
         return toConfigurationSettingWithResponse(response);
     }
 
@@ -475,7 +473,7 @@ public final class ConfigurationClient {
     /**
      * Creates or updates a configuration value in the service. Partial updates are not supported and the entire
      * configuration setting is updated.
-     *
+     * <p>
      * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
      * {@link SecretReferenceConfigurationSetting}.
      *
@@ -521,10 +519,10 @@ public final class ConfigurationClient {
     /**
      * Creates or updates a configuration value in the service. Partial updates are not supported and the entire
      * configuration setting is updated.
-     *
+     * <p>
      * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
      * {@link SecretReferenceConfigurationSetting}.
-     *
+     * <p>
      * If {@link ConfigurationSetting#getETag() ETag} is specified, the configuration value is updated if the current
      * setting's ETag matches. If the ETag's value is equal to the wildcard character ({@code "*"}), the setting will
      * always be updated.
@@ -578,9 +576,8 @@ public final class ConfigurationClient {
         boolean ifUnchanged, Context context) {
         validateSetting(setting);
         final ResponseBase<PutKeyValueHeaders, KeyValue> response =
-            serviceClient.putKeyValueWithResponse(setting.getKey(), setting.getLabel(),
-                getETag(ifUnchanged, setting), null, toKeyValue(setting),
-                enableSyncRestProxy(addTracingNamespace(context)));
+            serviceClient.putKeyValueWithResponse(setting.getKey(), setting.getLabel(), getETag(ifUnchanged, setting),
+                null, toKeyValue(setting), context);
         return toConfigurationSettingWithResponse(response);
     }
 
@@ -646,7 +643,7 @@ public final class ConfigurationClient {
     /**
      * Attempts to get the ConfigurationSetting with a matching {@link ConfigurationSetting#getKey() key}, and optional
      * {@link ConfigurationSetting#getLabel() label}, optional {@code acceptDateTime} and optional ETag combination.
-     *
+     * <p>
      * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
      * {@link SecretReferenceConfigurationSetting}.
      *
@@ -681,7 +678,7 @@ public final class ConfigurationClient {
     /**
      * Attempts to get the ConfigurationSetting with a matching {@link ConfigurationSetting#getKey() key}, and optional
      * {@link ConfigurationSetting#getLabel() label}, optional {@code acceptDateTime} and optional ETag combination.
-     *
+     * <p>
      * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
      * {@link SecretReferenceConfigurationSetting}.
      *
@@ -725,8 +722,8 @@ public final class ConfigurationClient {
         try {
             final ResponseBase<GetKeyValueHeaders, KeyValue> response =
                 serviceClient.getKeyValueWithResponse(setting.getKey(), setting.getLabel(),
-                    acceptDateTime == null ? null : acceptDateTime.toString(), null,
-                    getETag(ifChanged, setting), null, enableSyncRestProxy(addTracingNamespace(context)));
+                    acceptDateTime == null ? null : acceptDateTime.toString(), null, getETag(ifChanged, setting), null,
+                    context);
             return toConfigurationSettingWithResponse(response);
         } catch (HttpResponseException ex) {
             final HttpResponse httpResponse = ex.getResponse();
@@ -769,7 +766,7 @@ public final class ConfigurationClient {
     /**
      * Deletes the {@link ConfigurationSetting} with a matching {@link ConfigurationSetting#getKey() key}, and optional
      * {@link ConfigurationSetting#getLabel() label} and optional ETag combination.
-     *
+     * <p>
      * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
      * {@link SecretReferenceConfigurationSetting}.
      *
@@ -806,10 +803,10 @@ public final class ConfigurationClient {
     /**
      * Deletes the {@link ConfigurationSetting} with a matching {@link ConfigurationSetting#getKey() key}, and optional
      * {@link ConfigurationSetting#getLabel() label} and optional ETag combination.
-     *
+     * <p>
      * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
      * {@link SecretReferenceConfigurationSetting}.
-     *
+     * <p>
      * If {@link ConfigurationSetting#getETag() ETag} is specified and is not the wildcard character ({@code "*"}), then
      * the setting is <b>only</b> deleted if the ETag matches the current ETag; this means that no one has updated the
      * ConfigurationSetting yet.
@@ -852,7 +849,7 @@ public final class ConfigurationClient {
         validateSetting(setting);
         final ResponseBase<DeleteKeyValueHeaders, KeyValue> response =
             serviceClient.deleteKeyValueWithResponse(setting.getKey(), setting.getLabel(),
-                getETag(ifUnchanged, setting), enableSyncRestProxy(addTracingNamespace(context)));
+                getETag(ifUnchanged, setting), context);
         return toConfigurationSettingWithResponse(response);
     }
 
@@ -898,7 +895,7 @@ public final class ConfigurationClient {
 
     /**
      * Sets the read-only status for the {@link ConfigurationSetting}.
-     *
+     * <p>
      * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
      * {@link SecretReferenceConfigurationSetting}.
      *
@@ -945,7 +942,7 @@ public final class ConfigurationClient {
 
     /**
      * Sets the read-only status for the {@link ConfigurationSetting}.
-     *
+     * <p>
      * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
      * {@link SecretReferenceConfigurationSetting}.
      *
@@ -995,7 +992,6 @@ public final class ConfigurationClient {
         validateSetting(setting);
         final String key = setting.getKey();
         final String label = setting.getLabel();
-        context = enableSyncRestProxy(addTracingNamespace(context));
 
         return isReadOnly
             ? toConfigurationSettingWithResponse(serviceClient.putLockWithResponse(key, label, null, null, context))
@@ -1061,34 +1057,21 @@ public final class ConfigurationClient {
         final List<SettingFields> settingFields = selector == null ? null : toSettingFieldsList(selector.getFields());
         final List<MatchConditions> matchConditionsList = selector == null ? null : selector.getMatchConditions();
         AtomicInteger pageETagIndex = new AtomicInteger(0);
-        return new PagedIterable<>(
-            () -> {
-                PagedResponse<KeyValue> pagedResponse;
-                try {
-                    pagedResponse = serviceClient.getKeyValuesSinglePage(
-                            keyFilter,
-                            labelFilter,
-                            null,
-                            acceptDateTime,
-                            settingFields,
-                            null,
-                            null,
-                            getPageETag(matchConditionsList, pageETagIndex),
-                            enableSyncRestProxy(addTracingNamespace(context)));
-                } catch (HttpResponseException ex) {
-                    return handleNotModifiedErrorToValidResponse(ex, LOGGER);
-                }
-                return toConfigurationSettingWithPagedResponse(pagedResponse);
-            },
+        return new PagedIterable<>(() -> {
+            PagedResponse<KeyValue> pagedResponse;
+            try {
+                pagedResponse = serviceClient.getKeyValuesSinglePage(keyFilter, labelFilter, null, acceptDateTime,
+                    settingFields, null, null, getPageETag(matchConditionsList, pageETagIndex), context);
+            } catch (HttpResponseException ex) {
+                return handleNotModifiedErrorToValidResponse(ex, LOGGER);
+            }
+            return toConfigurationSettingWithPagedResponse(pagedResponse);
+        },
             nextLink -> {
                 PagedResponse<KeyValue> pagedResponse;
                 try {
-                    pagedResponse = serviceClient.getKeyValuesNextSinglePage(
-                            nextLink,
-                            acceptDateTime,
-                            null,
-                            getPageETag(matchConditionsList, pageETagIndex),
-                            enableSyncRestProxy(addTracingNamespace(context)));
+                    pagedResponse = serviceClient.getKeyValuesNextSinglePage(nextLink, acceptDateTime, null,
+                        getPageETag(matchConditionsList, pageETagIndex), context);
                 } catch (HttpResponseException ex) {
                     return handleNotModifiedErrorToValidResponse(ex, LOGGER);
                 }
@@ -1152,28 +1135,16 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSetting> listConfigurationSettingsForSnapshot(String snapshotName,
-                                                                                    List<SettingFields> fields,
-                                                                                    Context context) {
-        return new PagedIterable<>(
-            () -> {
-                final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesSinglePage(
-                    null,
-                    null,
-                    null,
-                    null,
-                    fields,
-                    snapshotName,
-                    null,
-                    null,
-                    enableSyncRestProxy(addTracingNamespace(context)));
-                return toConfigurationSettingWithPagedResponse(pagedResponse);
-            },
-            nextLink -> {
-                final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesNextSinglePage(nextLink,
-                    null, null, null, enableSyncRestProxy(addTracingNamespace(context)));
-                return toConfigurationSettingWithPagedResponse(pagedResponse);
-            }
-        );
+        List<SettingFields> fields, Context context) {
+        return new PagedIterable<>(() -> {
+            final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesSinglePage(null, null, null, null,
+                fields, snapshotName, null, null, context);
+            return toConfigurationSettingWithPagedResponse(pagedResponse);
+        }, nextLink -> {
+            final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesNextSinglePage(nextLink, null, null,
+                null, context);
+            return toConfigurationSettingWithPagedResponse(pagedResponse);
+        });
     }
 
     /**
@@ -1181,8 +1152,7 @@ public final class ConfigurationClient {
      * in descending order from their {@link ConfigurationSetting#getLastModified() lastModified} date.
      * Revisions expire after a period of time, see <a href="https://azure.microsoft.com/pricing/details/app-configuration/">Pricing</a>
      * for more information.
-     *
-     *
+     * <p>
      * If {@code selector} is {@code null}, then all the {@link ConfigurationSetting ConfigurationSettings} are fetched
      * in their current state. Otherwise, the results returned match the parameters given in {@code selector}.
      *
@@ -1217,7 +1187,7 @@ public final class ConfigurationClient {
      * in descending order from their {@link ConfigurationSetting#getLastModified() lastModified} date.
      * Revisions expire after a period of time, see <a href="https://azure.microsoft.com/pricing/details/app-configuration/">Pricing</a>
      * for more information.
-     *
+     * <p>
      * If {@code selector} is {@code null}, then all the {@link ConfigurationSetting ConfigurationSettings} are fetched
      * in their current state. Otherwise, the results returned match the parameters given in {@code selector}.
      *
@@ -1243,23 +1213,16 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSetting> listRevisions(SettingSelector selector, Context context) {
         final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
-        return new PagedIterable<>(
-            () -> {
-                final PagedResponse<KeyValue> pagedResponse = serviceClient.getRevisionsSinglePage(
-                    selector == null ? null : selector.getKeyFilter(),
-                    selector == null ? null : selector.getLabelFilter(),
-                    null,
-                    acceptDateTime,
-                    selector == null ? null : toSettingFieldsList(selector.getFields()),
-                    enableSyncRestProxy(addTracingNamespace(context)));
-                return toConfigurationSettingWithPagedResponse(pagedResponse);
-            },
-            nextLink -> {
-                final PagedResponse<KeyValue> pagedResponse = serviceClient.getRevisionsNextSinglePage(nextLink,
-                    acceptDateTime, enableSyncRestProxy(addTracingNamespace(context)));
-                return toConfigurationSettingWithPagedResponse(pagedResponse);
-            }
-        );
+        return new PagedIterable<>(() -> {
+            final PagedResponse<KeyValue> pagedResponse = serviceClient.getRevisionsSinglePage(
+                selector == null ? null : selector.getKeyFilter(), selector == null ? null : selector.getLabelFilter(),
+                null, acceptDateTime, selector == null ? null : toSettingFieldsList(selector.getFields()), context);
+            return toConfigurationSettingWithPagedResponse(pagedResponse);
+        }, nextLink -> {
+            final PagedResponse<KeyValue> pagedResponse = serviceClient.getRevisionsNextSinglePage(nextLink,
+                acceptDateTime, context);
+            return toConfigurationSettingWithPagedResponse(pagedResponse);
+        });
     }
 
     /**
@@ -1525,15 +1488,10 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSnapshot> listSnapshots(SnapshotSelector selector, Context context) {
-        return new PagedIterable<>(
-            () -> serviceClient.getSnapshotsSinglePage(
-                selector == null ? null : selector.getNameFilter(),
-                null,
-                selector == null ? null : selector.getFields(),
-                selector == null ? null : selector.getStatus(),
-                enableSyncRestProxy(addTracingNamespace(context))),
-            nextLink -> serviceClient.getSnapshotsNextSinglePage(nextLink,
-                enableSyncRestProxy(addTracingNamespace(context))));
+        return new PagedIterable<>(() -> serviceClient.getSnapshotsSinglePage(
+            selector == null ? null : selector.getNameFilter(), null, selector == null ? null : selector.getFields(),
+            selector == null ? null : selector.getStatus(), context),
+            nextLink -> serviceClient.getSnapshotsNextSinglePage(nextLink, context));
     }
 
     /**

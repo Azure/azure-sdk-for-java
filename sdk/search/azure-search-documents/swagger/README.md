@@ -216,17 +216,6 @@ directive:
       return $;
 ```
 
-### Rename `maxStoragePerIndex` property to `maxStoragePerIndexInBytes` in ServiceLimits
-
-``` yaml $(tag) == 'searchservice'
-directive:
-  - from: swagger-document
-    where: $.definitions.ServiceLimits.properties
-    transform: >
-      $.maxStoragePerIndexInBytes = $.maxStoragePerIndex;
-      delete $.maxStoragePerIndex;
-```
-
 ### Set `hybridSearch` property to be type `HybridSearch` in SearchRequest
 
 ``` yaml $(tag) == 'searchindex'
@@ -264,6 +253,7 @@ directive:
     transform: >
       $.ServiceCounters["x-ms-client-name"] = "SearchServiceCounters";
       $.ServiceLimits["x-ms-client-name"] = "SearchServiceLimits";
+      $.ServiceLimits.properties.maxStoragePerIndex["x-ms-client-name"] = "maxStoragePerIndexInBytes";
       $.ServiceStatistics["x-ms-client-name"] = "SearchServiceStatistics";
 ```
 
@@ -437,4 +427,22 @@ directive:
 - from: swagger-document
   where: $.definitions.VectorQuery.properties.k
   transform: $["x-ms-client-name"] = "KNearestNeighborsCount";
+```
+
+### Rename `AMLVectorizer` to `AzureMachineLearningVectorizer`
+
+```yaml $(tag) == 'searchservice'
+directive:
+- from: swagger-document
+  where: $.definitions.AMLVectorizer
+  transform: $["x-ms-client-name"] = "AzureMachineLearningVectorizer";
+```
+
+### Rename `AMLParameters` to `AzureMachineLearningParameters`
+
+```yaml $(tag) == 'searchservice'
+directive:
+- from: swagger-document
+  where: $.definitions.AMLParameters
+  transform: $["x-ms-client-name"] = "AzureMachineLearningParameters";
 ```

@@ -17,18 +17,18 @@ import java.io.IOException;
  * vector embedding of a query string.
  */
 @Fluent
-public final class AMLVectorizer extends VectorSearchVectorizer {
+public final class AzureMachineLearningVectorizer extends VectorSearchVectorizer {
     /*
      * Specifies the properties of the AML vectorizer.
      */
-    private AMLParameters aMLParameters;
+    private AzureMachineLearningParameters aMLParameters;
 
     /**
-     * Creates an instance of AMLVectorizer class.
+     * Creates an instance of AzureMachineLearningVectorizer class.
      * 
      * @param name the name value to set.
      */
-    public AMLVectorizer(String name) {
+    public AzureMachineLearningVectorizer(String name) {
         super(name);
     }
 
@@ -37,7 +37,7 @@ public final class AMLVectorizer extends VectorSearchVectorizer {
      * 
      * @return the aMLParameters value.
      */
-    public AMLParameters getAMLParameters() {
+    public AzureMachineLearningParameters getAMLParameters() {
         return this.aMLParameters;
     }
 
@@ -45,9 +45,9 @@ public final class AMLVectorizer extends VectorSearchVectorizer {
      * Set the aMLParameters property: Specifies the properties of the AML vectorizer.
      * 
      * @param aMLParameters the aMLParameters value to set.
-     * @return the AMLVectorizer object itself.
+     * @return the AzureMachineLearningVectorizer object itself.
      */
-    public AMLVectorizer setAMLParameters(AMLParameters aMLParameters) {
+    public AzureMachineLearningVectorizer setAMLParameters(AzureMachineLearningParameters aMLParameters) {
         this.aMLParameters = aMLParameters;
         return this;
     }
@@ -63,20 +63,20 @@ public final class AMLVectorizer extends VectorSearchVectorizer {
     }
 
     /**
-     * Reads an instance of AMLVectorizer from the JsonReader.
+     * Reads an instance of AzureMachineLearningVectorizer from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AMLVectorizer if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     * @return An instance of AzureMachineLearningVectorizer if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
      * polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the AMLVectorizer.
+     * @throws IOException If an error occurs while reading the AzureMachineLearningVectorizer.
      */
-    public static AMLVectorizer fromJson(JsonReader jsonReader) throws IOException {
+    public static AzureMachineLearningVectorizer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;
             String name = null;
-            AMLParameters aMLParameters = null;
+            AzureMachineLearningParameters aMLParameters = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -92,16 +92,17 @@ public final class AMLVectorizer extends VectorSearchVectorizer {
                     name = reader.getString();
                     nameFound = true;
                 } else if ("amlParameters".equals(fieldName)) {
-                    aMLParameters = AMLParameters.fromJson(reader);
+                    aMLParameters = AzureMachineLearningParameters.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             if (nameFound) {
-                AMLVectorizer deserializedAMLVectorizer = new AMLVectorizer(name);
-                deserializedAMLVectorizer.aMLParameters = aMLParameters;
+                AzureMachineLearningVectorizer deserializedAzureMachineLearningVectorizer
+                    = new AzureMachineLearningVectorizer(name);
+                deserializedAzureMachineLearningVectorizer.aMLParameters = aMLParameters;
 
-                return deserializedAMLVectorizer;
+                return deserializedAzureMachineLearningVectorizer;
             }
             throw new IllegalStateException("Missing required property: name");
         });

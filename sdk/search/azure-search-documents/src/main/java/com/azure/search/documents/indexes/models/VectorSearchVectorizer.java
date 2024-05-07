@@ -82,7 +82,7 @@ public class VectorSearchVectorizer implements JsonSerializable<VectorSearchVect
             } else if ("aiServicesVision".equals(discriminatorValue)) {
                 return AIServicesVisionVectorizer.fromJson(readerToUse.reset());
             } else if ("aml".equals(discriminatorValue)) {
-                return AMLVectorizer.fromJson(readerToUse.reset());
+                return AzureMachineLearningVectorizer.fromJson(readerToUse.reset());
             } else {
                 return fromJsonKnownDiscriminator(readerToUse.reset());
             }
