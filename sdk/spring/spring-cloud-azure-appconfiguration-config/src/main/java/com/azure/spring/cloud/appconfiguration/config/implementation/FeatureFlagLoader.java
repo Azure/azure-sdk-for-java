@@ -75,7 +75,7 @@ class FeatureFlagLoader {
      * </p>
      *
      */
-    public List<FeatureFlags> load_feature_flags(AppConfigurationReplicaClient replicaClient, String customKeyFilter,
+    public List<FeatureFlags> loadFeatureFlags(AppConfigurationReplicaClient replicaClient, String customKeyFilter,
         String[] labelFilter) {
         List<FeatureFlags> loadedFeatureFlags = new ArrayList<>();
 
@@ -210,13 +210,6 @@ class FeatureFlagLoader {
      * @return the properties
      */
     public Map<String, Feature> getProperties() {
-        /*List<Map<String, Object>> features = new ArrayList<>();
-        for (Feature feature : properties.values()) {
-            Map<String, Object> map = CASE_INSENSITIVE_MAPPER.convertValue(feature,
-                new TypeReference<Map<String, Object>>() {
-                });
-            features.add(map);
-        }*/
         return properties;
     }
 

@@ -284,7 +284,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         List<FeatureFlags> featureFlagWatchKeys = new ArrayList<>();
         if (store.getFeatureFlags().getEnabled()) {
             for (FeatureFlagKeyValueSelector selectedKeys : store.getFeatureFlags().getSelects()) {
-                List<FeatureFlags> storesFeatureFlags = featureFlagLoader.load_feature_flags(client,
+                List<FeatureFlags> storesFeatureFlags = featureFlagLoader.loadFeatureFlags(client,
                     selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles));
                 storesFeatureFlags.forEach(featureFlags -> featureFlags.setConfigStore(store));
                 featureFlagWatchKeys.addAll(storesFeatureFlags);

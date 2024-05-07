@@ -12,24 +12,27 @@ import org.springframework.core.env.EnumerablePropertySource;
  * </p>
  */
 class AppConfigurationFeatureManagementPropertySource extends EnumerablePropertySource<FeatureFlagLoader> {
-    
+
     private final FeatureFlagLoader featureFlagLoader;
 
-    AppConfigurationFeatureManagementPropertySource(FeatureFlagLoader featureFlagLoader) {
-       super("feature_management", featureFlagLoader);
-       this.featureFlagLoader = featureFlagLoader;
-    }
+    private static final String FEATURE_MANAGEMENT_KEY = "feature_management";
 
+    private static final String FEATURE_FLAG_KEY = FEATURE_MANAGEMENT_KEY + ".feature_flags";
+
+    AppConfigurationFeatureManagementPropertySource(FeatureFlagLoader featureFlagLoader) {
+        super(FEATURE_MANAGEMENT_KEY, featureFlagLoader);
+        this.featureFlagLoader = featureFlagLoader;
+    }
 
     @Override
     public String[] getPropertyNames() {
-        String[] names = {"feature_management.feature_flags"};
+        String[] names = { FEATURE_FLAG_KEY };
         return names;
     }
 
     @Override
     public Object getProperty(String name) {
-        if ("feature_management.feature_flags".equals(name)) {
+        if (FEATURE_FLAG_KEY.equals(name)) {
             return featureFlagLoader.getProperties();
         }
         return null;

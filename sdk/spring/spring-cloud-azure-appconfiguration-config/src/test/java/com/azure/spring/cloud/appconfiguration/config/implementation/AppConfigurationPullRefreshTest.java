@@ -55,7 +55,7 @@ public class AppConfigurationPullRefreshTest {
             .mockStatic(AppConfigurationRefreshUtil.class)) {
             refreshUtils
                 .when(() -> AppConfigurationRefreshUtil.refreshStoresCheck(Mockito.eq(clientFactoryMock),
-                    Mockito.eq(refreshInterval), Mockito.any(), Mockito.any(), Mockito.any()))
+                    Mockito.eq(refreshInterval), Mockito.any(), Mockito.any()))
                 .thenReturn(eventData);
 
             AppConfigurationPullRefresh refresh = new AppConfigurationPullRefresh(clientFactoryMock, refreshInterval,
@@ -71,7 +71,7 @@ public class AppConfigurationPullRefreshTest {
             .mockStatic(AppConfigurationRefreshUtil.class)) {
             refreshUtils
                 .when(() -> AppConfigurationRefreshUtil.refreshStoresCheck(Mockito.eq(clientFactoryMock),
-                    Mockito.eq(refreshInterval), Mockito.any(), Mockito.any(), Mockito.any()))
+                    Mockito.eq(refreshInterval), Mockito.any(), Mockito.any()))
                 .thenReturn(eventData);
 
             AppConfigurationPullRefresh refresh = new AppConfigurationPullRefresh(clientFactoryMock, refreshInterval,
