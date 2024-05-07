@@ -102,6 +102,8 @@ public class PartitionScopedRegionLevelProgress {
                 if (localLsn != Long.MIN_VALUE) {
                     regionLevelProgressAsVal.compute(normalizedRegionRoutedTo, (normalizedRegionAsKey, regionLevelProgressAsValInner) -> {
 
+                        request.requestContext.getSessionTokenEvaluationResults().add("Recording region specific progress of region : " + normalizedRegionRoutedTo + ".");
+
                         if (regionLevelProgressAsValInner == null) {
                             return new RegionLevelProgress(parsedSessionToken.getLSN(), localLsn, null, globalLevelProgress.hasPartitionSeenNonPointDocumentOperations);
                         }
@@ -109,7 +111,6 @@ public class PartitionScopedRegionLevelProgress {
                         // regionLevelProgressAsValInner.parsedSessionToken is passed
                         // to have a session token to merge with in case normalizedRegionRoutedTo
                         // is equal to the first preferred region in the subsequent step
-                        request.requestContext.getSessionTokenEvaluationResults().add("Recording region specific progress of region : " + normalizedRegionRoutedTo + ".");
                         return new RegionLevelProgress(
                             Math.max(regionLevelProgressAsValInner.getMaxGlobalLsnSeen(), parsedSessionToken.getLSN()),
                             Math.max(regionLevelProgressAsValInner.getMaxLocalLsnSeen(), localLsn),
@@ -121,6 +122,8 @@ public class PartitionScopedRegionLevelProgress {
                 else {
                     regionLevelProgressAsVal.compute(normalizedRegionRoutedTo, (normalizedRegionAsKey, regionLevelProgressAsValInner) -> {
 
+                        request.requestContext.getSessionTokenEvaluationResults().add("Recording region specific progress of region : " + normalizedRegionRoutedTo + ".");
+
                         if (regionLevelProgressAsValInner == null) {
                             return new RegionLevelProgress(parsedSessionToken.getLSN(), Long.MIN_VALUE, null, globalLevelProgress.hasPartitionSeenNonPointDocumentOperations);
                         }
@@ -128,7 +131,6 @@ public class PartitionScopedRegionLevelProgress {
                         // regionLevelProgressAsValInner.parsedSessionToken is passed
                         // to have a session token to merge with in case normalizedRegionRoutedTo
                         // is equal to the first preferred region in the subsequent step
-                        request.requestContext.getSessionTokenEvaluationResults().add("Recording region specific progress of region : " + normalizedRegionRoutedTo + ".");
                         return new RegionLevelProgress(
                             Math.max(regionLevelProgressAsValInner.getMaxGlobalLsnSeen(), parsedSessionToken.getLSN()),
                             Long.MIN_VALUE,
@@ -140,13 +142,15 @@ public class PartitionScopedRegionLevelProgress {
                 // store the session token in parsed form if obtained from the firstEffectivePreferredReadableRegion (a merge is necessary to store latest progress from first preferred region)
                 if (normalizedRegionRoutedTo.equals(firstEffectivePreferredReadableRegion)) {
                     regionLevelProgressAsVal.compute(normalizedRegionRoutedTo, (normalizedRegionAsKey, regionLevelProgressAsValInner) -> {
+
+                        request.requestContext.getSessionTokenEvaluationResults().add("Recording region specific progress of first preferred region : " + regionRoutedTo + ".");
+
                         if (regionLevelProgressAsValInner == null) {
                             return new RegionLevelProgress(parsedSessionToken.getLSN(), Long.MIN_VALUE, parsedSessionToken, globalLevelProgress.hasPartitionSeenNonPointDocumentOperations);
                         }
 
                         ISessionToken mergedBasedSessionToken = regionLevelProgressAsValInner.sessionToken == null ? parsedSessionToken : regionLevelProgressAsValInner.sessionToken.merge(parsedSessionToken);
 
-                        request.requestContext.getSessionTokenEvaluationResults().add("Recording region specific progress of first preferred region : " + regionRoutedTo + ".");
                         return new RegionLevelProgress(
                             Math.max(regionLevelProgressAsValInner.getMaxGlobalLsnSeen(), parsedSessionToken.getLSN()),
                             Long.MIN_VALUE,
