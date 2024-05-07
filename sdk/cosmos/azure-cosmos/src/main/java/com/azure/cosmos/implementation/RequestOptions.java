@@ -11,20 +11,20 @@ import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.IndexingDirective;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.CosmosCommonRequestOptions;
 import com.azure.cosmos.models.ThroughputProperties;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 /**
  * Encapsulates options that can be specified for a request issued to the Azure Cosmos DB database service.
  */
-public class RequestOptions {
+public class RequestOptions extends CosmosCommonRequestOptions {
     private Map<String, String> customOptions;
     private List<String> preTriggerInclude;
     private List<String> postTriggerInclude;
@@ -517,14 +517,6 @@ public class RequestOptions {
         return ctxSupplierSnapshot.get();
     }
 
-    public void setCosmosEndToEndLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig) {
-        this.endToEndOperationLatencyConfig = endToEndOperationLatencyPolicyConfig;
-    }
-
-    public CosmosEndToEndOperationLatencyPolicyConfig getCosmosEndToEndLatencyPolicyConfig(){
-        return this.endToEndOperationLatencyConfig;
-    }
-
     public List<String> getExcludeRegions() {
         return this.excludeRegions;
     }
@@ -535,5 +527,10 @@ public class RequestOptions {
 
     public AtomicReference<Runnable> getMarkE2ETimeoutInRequestContextCallbackHook() {
         return this.markE2ETimeoutInRequestContextCallbackHook;
+    }
+
+    public void override(CosmosCommonRequestOptions cosmosCommonRequestOptions) {
+        // null checks here
+        this.endToEndOperationLatencyConfig = cosmosCommonRequestOptions.getCosmosEndToEndLatencyPolicyConfig();
     }
 }

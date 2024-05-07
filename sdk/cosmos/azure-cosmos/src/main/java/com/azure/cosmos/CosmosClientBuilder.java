@@ -23,6 +23,7 @@ import com.azure.cosmos.implementation.routing.LocationHelper;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosPermissionProperties;
+import com.azure.cosmos.models.CosmosRequestOptionsTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +37,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper;
@@ -143,6 +145,7 @@ public class CosmosClientBuilder implements
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
     private SessionRetryOptions sessionRetryOptions;
     private Supplier<CosmosExcludedRegions> cosmosExcludedRegionsSupplier;
+    private Consumer<CosmosRequestOptionsTransformer> requestOptionsTransformer;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -174,6 +177,15 @@ public class CosmosClientBuilder implements
     CosmosClientBuilder setApiType(ApiType apiType){
         this.apiType = apiType;
         return this;
+    }
+
+    public CosmosClientBuilder setRequestOptionsTransformer(Consumer<CosmosRequestOptionsTransformer> callableRequestOptions) {
+        this.requestOptionsTransformer = callableRequestOptions;
+        return this;
+    }
+
+    Consumer<CosmosRequestOptionsTransformer> getRequestOptionsTransformer() {
+        return requestOptionsTransformer;
     }
 
     /**

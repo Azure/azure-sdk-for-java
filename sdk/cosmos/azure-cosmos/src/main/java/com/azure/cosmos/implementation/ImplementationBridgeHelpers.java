@@ -37,10 +37,8 @@ import com.azure.cosmos.implementation.directconnectivity.ContainerDirectConnect
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
-import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
@@ -67,6 +65,7 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PriorityLevel;
+import com.azure.cosmos.models.CosmosRequestOptionsTransformer;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
@@ -88,6 +87,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class ImplementationBridgeHelpers {
@@ -714,6 +714,42 @@ public class ImplementationBridgeHelpers {
                 ConcurrentMap<String, PartitionScopeThresholds> partitionScopeThresholds);
         }
     }
+    public static final class CosmosRequestOptionsTransformerHelper  {
+        private final static AtomicBoolean cosmosRequestOptionsTransformerClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<CosmosRequestOptionsTransformerAccessor> accessor = new AtomicReference<>();
+
+        private CosmosRequestOptionsTransformerHelper() {
+        }
+
+        public static void setCosmosRequestOptionsTransformerAccessor(final CosmosRequestOptionsTransformerAccessor newAccessor) {
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("CosmosRequestOptionsTransformerAccessor already initialized!");
+            } else {
+                logger.debug("Setting CosmosRequestOptionsTransformerAccessor ...");
+                cosmosRequestOptionsTransformerClassLoaded.set(true);
+            }
+        }
+
+        public static CosmosRequestOptionsTransformerAccessor getCosmosRequestOptionsTransformerAccessor() {
+            if (!cosmosRequestOptionsTransformerClassLoaded.get()) {
+                logger.debug("Initializing CosmosRequestOptionsTransformerAccessor...");
+                initializeAllAccessors();
+            }
+
+            CosmosRequestOptionsTransformerAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosRequestOptionsTransformerAccessor is not initialized yet!");
+
+            }
+
+            return snapshot;
+        }
+
+        public interface CosmosRequestOptionsTransformerAccessor {
+            CosmosRequestOptionsTransformer create(RequestOptions requestOptions,
+                CosmosQueryRequestOptionsImpl queryRequestOptions, CosmosDiagnosticsContext diagnosticsContext);
+        }
+    }
 
     public static final class CosmosDiagnosticsHelper {
         private final static AtomicBoolean cosmosDiagnosticsClassLoaded = new AtomicBoolean(false);
@@ -1306,6 +1342,7 @@ public class ImplementationBridgeHelpers {
                 CosmosDiagnosticsThresholds operationLevelThresholds);
 
             DiagnosticsProvider getDiagnosticsProvider(CosmosAsyncClient client);
+            Consumer<CosmosRequestOptionsTransformer> getRequestOptionsTransformer(CosmosAsyncClient client);
         }
     }
 
