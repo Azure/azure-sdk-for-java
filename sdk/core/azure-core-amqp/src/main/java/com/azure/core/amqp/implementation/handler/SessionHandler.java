@@ -40,24 +40,6 @@ public class SessionHandler extends Handler {
      * @param sessionName Name of the session.
      * @param reactorDispatcher Reactor dispatcher.
      * @param openTimeout Timeout for opening the session.
-     * @deprecated use {@link #SessionHandler(String, String, String, ReactorDispatcher, Duration, AmqpMetricsProvider)}
-     * instead.
-     */
-    @Deprecated
-    public SessionHandler(String connectionId, String hostname, String sessionName, ReactorDispatcher reactorDispatcher,
-        Duration openTimeout) {
-        this(connectionId, hostname, sessionName, reactorDispatcher, openTimeout,
-            new AmqpMetricsProvider(null, hostname, null));
-    }
-
-    /**
-     * Creates a session handler.
-     *
-     * @param connectionId Identifier for the connection.
-     * @param hostname Hostname of the connection.
-     * @param sessionName Name of the session.
-     * @param reactorDispatcher Reactor dispatcher.
-     * @param openTimeout Timeout for opening the session.
      * @param metricProvider Metrics provider.
      */
     public SessionHandler(String connectionId, String hostname, String sessionName, ReactorDispatcher reactorDispatcher,

@@ -167,7 +167,7 @@ final class SessionsMessagePump {
         this.instrumentation = Objects.requireNonNull(instrumentation, "'instrumentation' cannot be null");
         this.sessionAcquirer = Objects.requireNonNull(sessionAcquirer, "'sessionAcquirer' cannot be null");
         this.maxSessionLockRenew = Objects.requireNonNull(maxSessionLockRenew, "'maxSessionLockRenew' cannot be null.");
-        this.sessionIdleTimeout = sessionIdleTimeout;
+        this.sessionIdleTimeout = sessionIdleTimeout != null ? sessionIdleTimeout : retryPolicy.getRetryOptions().getTryTimeout();
         this.maxConcurrentSessions = maxConcurrentSessions;
         this.concurrencyPerSession = concurrencyPerSession;
         this.prefetch = prefetch;
@@ -177,7 +177,7 @@ final class SessionsMessagePump {
         this.processMessage = Objects.requireNonNull(processMessage, "'processMessage' cannot be null.");
         this.processError = Objects.requireNonNull(processError, "'processError' cannot be null.");
         this.onTerminate = Objects.requireNonNull(onTerminate, "'onTerminate' cannot be null.");
-        this.receiversTracker = new SessionReceiversTracker(logger, maxConcurrentSessions, fullyQualifiedNamespace, entityPath, receiveMode);
+        this.receiversTracker = new SessionReceiversTracker(logger, maxConcurrentSessions, fullyQualifiedNamespace, entityPath, receiveMode, instrumentation);
         this.nextSession = new NextSession(pumpId, fullyQualifiedNamespace, entityPath, sessionAcquirer).mono();
     }
 
@@ -645,14 +645,16 @@ final class SessionsMessagePump {
         private final String entityPath;
         private final ServiceBusReceiveMode receiveMode;
         private final ConcurrentHashMap<String, ServiceBusSessionReactorReceiver> receivers;
+        private final ServiceBusReceiverInstrumentation instrumentation;
 
         private SessionReceiversTracker(ClientLogger logger, int size, String fullyQualifiedNamespace, String entityPath,
-            ServiceBusReceiveMode receiveMode) {
+            ServiceBusReceiveMode receiveMode, ServiceBusReceiverInstrumentation instrumentation) {
             this.logger = logger;
             this.fullyQualifiedNamespace = fullyQualifiedNamespace;
             this.entityPath = entityPath;
             this.receiveMode = receiveMode;
             this.receivers = new ConcurrentHashMap<>(size);
+            this.instrumentation = instrumentation;
         }
 
         private void track(ServiceBusSessionReactorReceiver receiver) {
@@ -749,11 +751,14 @@ final class SessionsMessagePump {
             final ServiceBusSessionReactorReceiver receiver = receivers.get(sessionId);
             final DeliveryState deliveryState = MessageUtils.getDeliveryState(dispositionStatus, deadLetterReason,
                 deadLetterDescription, propertiesToModify, transactionContext);
+
+            Mono<Void> updateDispositionMono;
             if (receiver != null) {
-                return receiver.updateDisposition(message.getLockToken(), deliveryState);
+                updateDispositionMono = receiver.updateDisposition(message.getLockToken(), deliveryState);
             } else {
-                return Mono.error(DeliveryNotOnLinkException.noMatchingDelivery(message.getLockToken(), deliveryState));
+                updateDispositionMono = Mono.error(DeliveryNotOnLinkException.noMatchingDelivery(message.getLockToken(), deliveryState));
             }
+            return instrumentation.instrumentSettlement(updateDispositionMono, message, message.getContext(), dispositionStatus);
         }
 
         private Mono<Void> checkNull(Object options, ServiceBusTransactionContext transactionContext) {

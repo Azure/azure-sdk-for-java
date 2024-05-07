@@ -14,29 +14,37 @@ public final class EventTypesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EventTypesListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"displayName\":\"h\",\"description\":\"yhzlwxaeaovurexd\",\"schemaUrl\":\"sbdweaderzmwnt\",\"isInDefaultSet\":false},\"id\":\"gttmvmmagoaqyl\",\"name\":\"jz\",\"type\":\"jiuazjc\"},{\"properties\":{\"displayName\":\"itpfinzcpdl\",\"description\":\"rlgjm\",\"schemaUrl\":\"drvcqguef\",\"isInDefaultSet\":true},\"id\":\"mpheqdur\",\"name\":\"lyujlfyoump\",\"type\":\"kyeclcdigpta\"},{\"properties\":{\"displayName\":\"zmqxucyci\",\"description\":\"clxiutg\",\"schemaUrl\":\"yzyzjd\",\"isInDefaultSet\":true},\"id\":\"jb\",\"name\":\"xjeaoqaqbzgyh\",\"type\":\"w\"},{\"properties\":{\"displayName\":\"atbwbqam\",\"description\":\"uliyslpkcv\",\"schemaUrl\":\"f\",\"isInDefaultSet\":false},\"id\":\"xe\",\"name\":\"myw\",\"type\":\"ormcqmic\"}]}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"blkwqpatvbqs\",\"description\":\"cjbctviv\",\"schemaUrl\":\"qymtuowogtgits\",\"isInDefaultSet\":true},\"id\":\"vbrzcdb\",\"name\":\"nfzndscxmxeat\",\"type\":\"db\"},{\"properties\":{\"displayName\":\"rdjyibqb\",\"description\":\"omhjrmkuhm\",\"schemaUrl\":\"ljalfihcjmobc\",\"isInDefaultSet\":false},\"id\":\"de\",\"name\":\"xqcwgax\",\"type\":\"gvaknokzwjjzrl\"},{\"properties\":{\"displayName\":\"l\",\"description\":\"yyfytpqsixymm\",\"schemaUrl\":\"jivyqlkjuv\",\"isInDefaultSet\":true},\"id\":\"msl\",\"name\":\"oyovwz\",\"type\":\"bpqvybefg\"},{\"properties\":{\"displayName\":\"nokcv\",\"description\":\"ubseskvcuartr\",\"schemaUrl\":\"nlp\",\"isInDefaultSet\":true},\"id\":\"kycndzfqivjreuy\",\"name\":\"bbmnwagltb\",\"type\":\"oeeonqlnfwm\"}]}")
             .toObject(EventTypesListResult.class);
-        Assertions.assertEquals("h", model.value().get(0).displayName());
-        Assertions.assertEquals("yhzlwxaeaovurexd", model.value().get(0).description());
-        Assertions.assertEquals("sbdweaderzmwnt", model.value().get(0).schemaUrl());
-        Assertions.assertEquals(false, model.value().get(0).isInDefaultSet());
+        Assertions.assertEquals("blkwqpatvbqs", model.value().get(0).displayName());
+        Assertions.assertEquals("cjbctviv", model.value().get(0).description());
+        Assertions.assertEquals("qymtuowogtgits", model.value().get(0).schemaUrl());
+        Assertions.assertEquals(true, model.value().get(0).isInDefaultSet());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EventTypesListResult model = new EventTypesListResult().withValue(Arrays.asList(
-            new EventTypeInner().withDisplayName("h").withDescription("yhzlwxaeaovurexd")
-                .withSchemaUrl("sbdweaderzmwnt").withIsInDefaultSet(false),
-            new EventTypeInner().withDisplayName("itpfinzcpdl").withDescription("rlgjm").withSchemaUrl("drvcqguef")
+            new EventTypeInner().withDisplayName("blkwqpatvbqs")
+                .withDescription("cjbctviv")
+                .withSchemaUrl("qymtuowogtgits")
                 .withIsInDefaultSet(true),
-            new EventTypeInner().withDisplayName("zmqxucyci").withDescription("clxiutg").withSchemaUrl("yzyzjd")
+            new EventTypeInner().withDisplayName("rdjyibqb")
+                .withDescription("omhjrmkuhm")
+                .withSchemaUrl("ljalfihcjmobc")
+                .withIsInDefaultSet(false),
+            new EventTypeInner().withDisplayName("l")
+                .withDescription("yyfytpqsixymm")
+                .withSchemaUrl("jivyqlkjuv")
                 .withIsInDefaultSet(true),
-            new EventTypeInner().withDisplayName("atbwbqam").withDescription("uliyslpkcv").withSchemaUrl("f")
-                .withIsInDefaultSet(false)));
+            new EventTypeInner().withDisplayName("nokcv")
+                .withDescription("ubseskvcuartr")
+                .withSchemaUrl("nlp")
+                .withIsInDefaultSet(true)));
         model = BinaryData.fromObject(model).toObject(EventTypesListResult.class);
-        Assertions.assertEquals("h", model.value().get(0).displayName());
-        Assertions.assertEquals("yhzlwxaeaovurexd", model.value().get(0).description());
-        Assertions.assertEquals("sbdweaderzmwnt", model.value().get(0).schemaUrl());
-        Assertions.assertEquals(false, model.value().get(0).isInDefaultSet());
+        Assertions.assertEquals("blkwqpatvbqs", model.value().get(0).displayName());
+        Assertions.assertEquals("cjbctviv", model.value().get(0).description());
+        Assertions.assertEquals("qymtuowogtgits", model.value().get(0).schemaUrl());
+        Assertions.assertEquals(true, model.value().get(0).isInDefaultSet());
     }
 }

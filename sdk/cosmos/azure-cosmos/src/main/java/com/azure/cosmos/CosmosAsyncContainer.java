@@ -532,7 +532,7 @@ public class CosmosAsyncContainer {
         String trackingId = null;
         CosmosItemRequestOptions effectiveOptions = getEffectiveOptions(nonIdempotentWriteRetryPolicy, options);
         CosmosItemSerializer effectiveItemSerializer =
-            this.database.getClient().getEffectiveItemSerializer(effectiveOptions.getCustomSerializer());
+            this.database.getClient().getEffectiveItemSerializer(effectiveOptions.getCustomItemSerializer());
         RequestOptions requestOptions =
             itemOptionsAccessor.toRequestOptions(effectiveOptions, effectiveItemSerializer);
 
@@ -1390,7 +1390,7 @@ public class CosmosAsyncContainer {
 
         ModelBridgeInternal.setPartitionKey(options, partitionKey);
         CosmosItemSerializer effectiveItemSerializer =
-            this.database.getClient().getEffectiveItemSerializer(options.getCustomSerializer());
+            this.database.getClient().getEffectiveItemSerializer(options.getCustomItemSerializer());
         RequestOptions requestOptions =
             itemOptionsAccessor.toRequestOptions(options, effectiveItemSerializer);
         return withContext(context -> readItemInternal(itemId, requestOptions, itemType, context));
@@ -1858,7 +1858,7 @@ public class CosmosAsyncContainer {
         }
         ModelBridgeInternal.setPartitionKey(options, partitionKey);
         CosmosItemSerializer effectiveItemSerializer =
-            this.database.getClient().getEffectiveItemSerializer(options.getCustomSerializer());
+            this.database.getClient().getEffectiveItemSerializer(options.getCustomItemSerializer());
         RequestOptions requestOptions =
             itemOptionsAccessor.toRequestOptions(options, effectiveItemSerializer);
         return withContext(context -> deleteAllItemsByPartitionKeyInternal(partitionKey, requestOptions, context));
@@ -2112,7 +2112,7 @@ public class CosmosAsyncContainer {
         CosmosItemRequestOptions effectiveOptions = getEffectiveOptions(nonIdempotentWriteRetryPolicy, options);
 
         CosmosItemSerializer effectiveItemSerializer =
-            this.database.getClient().getEffectiveItemSerializer(effectiveOptions.getCustomSerializer());
+            this.database.getClient().getEffectiveItemSerializer(effectiveOptions.getCustomItemSerializer());
         RequestOptions requestOptions =
             itemOptionsAccessor.toRequestOptions(effectiveOptions, effectiveItemSerializer);
 
@@ -2228,7 +2228,7 @@ public class CosmosAsyncContainer {
 
         CosmosItemRequestOptions effectiveOptions = getEffectiveOptions(nonIdempotentWriteRetryPolicy, options);
         CosmosItemSerializer effectiveItemSerializer =
-            this.database.getClient().getEffectiveItemSerializer(effectiveOptions.getCustomSerializer());
+            this.database.getClient().getEffectiveItemSerializer(effectiveOptions.getCustomItemSerializer());
         RequestOptions requestOptions =
             itemOptionsAccessor.toRequestOptions(effectiveOptions, effectiveItemSerializer);
 
@@ -2272,7 +2272,7 @@ public class CosmosAsyncContainer {
                 this.database.getClient().getNonIdempotentWriteRetryPolicy(),
                 false);
         CosmosItemSerializer effectiveItemSerializer =
-            this.database.getClient().getEffectiveItemSerializer(options != null ? options.getCustomSerializer() : null);
+            this.database.getClient().getEffectiveItemSerializer(options != null ? options.getCustomItemSerializer() : null);
         RequestOptions requestOptions = itemOptionsAccessor.toRequestOptions(options, effectiveItemSerializer);
         if (nonIdempotentWriteRetryPolicy.isEnabled()) {
             requestOptions.setNonIdempotentWriteRetriesEnabled(true);
@@ -2313,7 +2313,7 @@ public class CosmosAsyncContainer {
 
         CosmosItemRequestOptions effectiveOptions = getEffectiveOptions(nonIdempotentWriteRetryPolicy, options);
         CosmosItemSerializer effectiveItemSerializer =
-            this.database.getClient().getEffectiveItemSerializer(effectiveOptions.getCustomSerializer());
+            this.database.getClient().getEffectiveItemSerializer(effectiveOptions.getCustomItemSerializer());
         RequestOptions requestOptions =
             itemOptionsAccessor.toRequestOptions(effectiveOptions, effectiveItemSerializer);
 

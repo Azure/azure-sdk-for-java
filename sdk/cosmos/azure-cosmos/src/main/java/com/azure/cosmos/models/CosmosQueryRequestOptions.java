@@ -470,19 +470,19 @@ public class CosmosQueryRequestOptions {
      * Gets the custom item serializer defined for this instance of request options
      * @return the custom item serializer
      */
-    public CosmosItemSerializer getCustomSerializer() {
-        return this.actualRequestOptions.getCustomSerializer();
+    public CosmosItemSerializer getCustomItemSerializer() {
+        return this.actualRequestOptions.getCustomItemSerializer();
     }
 
     /**
      * Allows specifying a custom item serializer to be used for this operation. If the serializer
      * on the request options is null, the serializer on CosmosClientBuilder is used. If both serializers
      * are null (the default), an internal Jackson ObjectMapper is ued for serialization/deserialization.
-     * @param itemSerializerOverride the custom item serializer for this operation
+     * @param customItemSerializer the custom item serializer for this operation
      * @return  the CosmosItemRequestOptions.
      */
-    public CosmosQueryRequestOptions setCustomSerializer(CosmosItemSerializer itemSerializerOverride) {
-        this.actualRequestOptions.setCustomSerializer(itemSerializerOverride);
+    public CosmosQueryRequestOptions setCustomItemSerializer(CosmosItemSerializer customItemSerializer) {
+        this.actualRequestOptions.setCustomItemSerializer(customItemSerializer);
 
         return this;
     }

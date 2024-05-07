@@ -22,8 +22,10 @@ public final class InlineEventPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InlineEventProperties model = new InlineEventProperties().withDescription("cukjf").withDisplayName("iawxklry")
-            .withDocumentationUrl("wckbasyypnd").withDataSchemaUrl("sgcbac");
+        InlineEventProperties model = new InlineEventProperties().withDescription("cukjf")
+            .withDisplayName("iawxklry")
+            .withDocumentationUrl("wckbasyypnd")
+            .withDataSchemaUrl("sgcbac");
         model = BinaryData.fromObject(model).toObject(InlineEventProperties.class);
         Assertions.assertEquals("cukjf", model.description());
         Assertions.assertEquals("iawxklry", model.displayName());

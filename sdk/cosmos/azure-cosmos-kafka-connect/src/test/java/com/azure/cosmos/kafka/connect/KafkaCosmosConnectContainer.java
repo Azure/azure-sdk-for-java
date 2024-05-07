@@ -6,13 +6,13 @@ package com.azure.cosmos.kafka.connect;
 import com.azure.core.exception.ResourceNotFoundException;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.NewTopic;
-import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sourcelab.kafka.connect.apiclient.Configuration;
 import org.sourcelab.kafka.connect.apiclient.KafkaConnectClient;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorDefinition;
+import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorStatus;
 import org.sourcelab.kafka.connect.apiclient.request.dto.NewConnectorDefinition;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.KafkaContainer;
@@ -180,6 +180,11 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
 
             logger.warn("Failed to delete connector {}", name);
         }
+    }
+
+    public ConnectorStatus getConnectorStatus(String name) {
+        KafkaConnectClient kafkaConnectClient = new KafkaConnectClient(new Configuration(getTarget()));
+        return kafkaConnectClient.getConnectorStatus(name);
     }
 
     public String getTarget() {

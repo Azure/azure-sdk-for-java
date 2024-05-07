@@ -181,7 +181,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
      */
     public Mono<Void> sendDisposition(String deliveryTag, DeliveryState desiredState) {
         if (isTerminated.get()) {
-            return monoError(logger, DeliveryNotOnLinkException.linkClosed(deliveryTag, desiredState));
+            return monoError(logger.atWarning(), DeliveryNotOnLinkException.linkClosed(deliveryTag, desiredState));
         } else {
             return sendDispositionImpl(deliveryTag, desiredState);
         }
@@ -288,7 +288,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
         final List<Mono<Void>> workMonoList = new ArrayList<>();
         final StringJoiner deliveryTags = new StringJoiner(", ");
         for (DispositionWork work : pendingDispositions.values()) {
-            if (work == null || work.hasTimedout()) {
+            if (work == null || work.hasTimedOut()) {
                 continue;
             }
             if (work.getDesiredState() instanceof TransactionalState) {
@@ -475,7 +475,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
         final StringJoiner deliveryTags = new StringJoiner(", ");
 
         pendingDispositions.forEach((deliveryTag, work) -> {
-            if (work == null || !work.hasTimedout()) {
+            if (work == null || !work.hasTimedOut()) {
                 return;
             }
 
@@ -697,7 +697,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
          *
          * @return {@code true} if the work has timed out, {@code false} otherwise.
          */
-        boolean hasTimedout() {
+        boolean hasTimedOut() {
             return expirationTime != null && expirationTime.isBefore(Instant.now());
         }
 

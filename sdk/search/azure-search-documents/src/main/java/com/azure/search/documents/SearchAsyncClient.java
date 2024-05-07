@@ -1339,6 +1339,8 @@ public final class SearchAsyncClient {
                 .setVectorQueries(vectorSearchOptions.getQueries());
         }
 
+        request.setHybridSearch(options.getHybridSearch());
+
         return request;
     }
 

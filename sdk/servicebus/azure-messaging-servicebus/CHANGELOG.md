@@ -1,14 +1,11 @@
 # Release History
 
-## 7.17.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 7.17.0 (2024-05-06)
 
 ### Bugs Fixed
 
-### Other Changes
+- Fixes the session message disposition to use management node as fall back. ([#39913](https://github.com/Azure/azure-sdk-for-java/issues/39913))
+- Fixes the session processor idle timeout to fall back to RetryOptions::tryTimeout. ([#39993](https://github.com/Azure/azure-sdk-for-java/issues/39993))
 
 ## 7.16.0 (2024-04-22)
 

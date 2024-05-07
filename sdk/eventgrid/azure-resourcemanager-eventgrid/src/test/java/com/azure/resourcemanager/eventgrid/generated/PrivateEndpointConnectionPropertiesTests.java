@@ -30,9 +30,11 @@ public final class PrivateEndpointConnectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateEndpointConnectionProperties model = new PrivateEndpointConnectionProperties()
-            .withPrivateEndpoint(new PrivateEndpoint().withId("ualupjmkh")).withGroupIds(Arrays.asList("bbcswsrtjri"))
+            .withPrivateEndpoint(new PrivateEndpoint().withId("ualupjmkh"))
+            .withGroupIds(Arrays.asList("bbcswsrtjri"))
             .withPrivateLinkServiceConnectionState(new ConnectionState().withStatus(PersistedConnectionStatus.REJECTED)
-                .withDescription("bewtghfg").withActionsRequired("c"))
+                .withDescription("bewtghfg")
+                .withActionsRequired("c"))
             .withProvisioningState(ResourceProvisioningState.DELETING);
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionProperties.class);
         Assertions.assertEquals("ualupjmkh", model.privateEndpoint().id());

@@ -116,8 +116,19 @@ public final class PropertyHelper {
             logger.warn("could not detect os: {}", System.getProperty("os.name"));
             sdkNamePrefix.append("u");
         }
+
+        sdkNamePrefix.append(getRpAttachTypeChar());
         sdkNamePrefix.append("_");
         return sdkNamePrefix.toString();
+    }
+
+    private static char getRpAttachTypeChar() {
+        if (RpAttachType.getRpAttachType() == RpAttachType.INTEGRATED_AUTO) {
+            return 'i';
+        } else if (RpAttachType.getRpAttachType() == RpAttachType.STANDALONE_AUTO) {
+            return 'a';
+        }
+        return 'm'; // Manual (This is the default when RP integration is not used)
     }
 
     private static class SdkPropertyValues {

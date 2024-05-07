@@ -123,7 +123,7 @@ private[spark] case class ItemsPartitionReaderWithReadMany
         partitionKeyDefinition)
 
   readManyOptionsImpl
-    .setCustomSerializer(
+    .setCustomItemSerializer(
       new CosmosItemSerializer {
         /**
          * Used to serialize a POJO into a json tree

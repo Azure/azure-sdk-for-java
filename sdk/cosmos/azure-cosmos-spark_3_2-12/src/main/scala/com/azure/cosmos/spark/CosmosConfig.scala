@@ -51,6 +51,7 @@ private[spark] object CosmosConfigNames {
   val AzureEnvironment = "spark.cosmos.account.azureEnvironment"
   val AuthType = "spark.cosmos.auth.type"
   val ClientId = "spark.cosmos.auth.aad.clientId"
+  val ResourceId = "spark.cosmos.auth.aad.resourceId"
   val ClientSecret = "spark.cosmos.auth.aad.clientSecret"
   val Database = "spark.cosmos.database"
   val Container = "spark.cosmos.container"
@@ -139,6 +140,7 @@ private[spark] object CosmosConfigNames {
     AccountEndpoint,
     AccountKey,
     AuthType,
+    ResourceId,
     SubscriptionId,
     TenantId,
     ResourceGroupName,
@@ -232,6 +234,18 @@ private[spark] object CosmosConfigNames {
 }
 
 private object CosmosConfig {
+  lazy val accountDataResolverCls = getAccountDataResolver
+  def getAccountDataResolver(): Option[AccountDataResolver] = {
+    var accountDataResolverCls = None: Option[AccountDataResolver]
+    val serviceLoader = ServiceLoader.load(classOf[AccountDataResolver])
+    val iterator = serviceLoader.iterator()
+    if (iterator.hasNext()) {
+      accountDataResolverCls = Some(iterator.next())
+    }
+
+    accountDataResolverCls
+  }
+
   def getEffectiveConfig
   (
     databaseName: Option[String],
@@ -241,13 +255,6 @@ private object CosmosConfig {
     userProvidedOptions: Map[String, String], // user provided config,
     executorCount: Option[Int] // total executor count
   ) : Map[String, String] = {
-    var accountDataResolverCls = None : Option[AccountDataResolver]
-    val serviceLoader = ServiceLoader.load(classOf[AccountDataResolver])
-    val iterator = serviceLoader.iterator()
-    if (iterator.hasNext()) {
-        accountDataResolverCls = Some(iterator.next())
-    }
-
     var effectiveUserConfig = CaseInsensitiveMap(userProvidedOptions)
     if (accountDataResolverCls.isDefined) {
         val accountDataConfig = accountDataResolverCls.get.getAccountDataConfig(effectiveUserConfig)
@@ -534,10 +541,14 @@ private object CosmosAccountConfig {
     assert(azureEnvironmentOpt.isDefined)
 
     authConfig match {
-        case _: CosmosAadAuthConfig =>
+        case _: CosmosServicePrincipalAuthConfig =>
             assert(subscriptionIdOpt.isDefined)
             assert(resourceGroupNameOpt.isDefined)
             assert(tenantIdOpt.isDefined)
+        case _: CosmosManagedIdentityAuthConfig =>
+          assert(subscriptionIdOpt.isDefined)
+          assert(resourceGroupNameOpt.isDefined)
+          assert(tenantIdOpt.isDefined)
         case  _ =>
     }
 
@@ -583,7 +594,7 @@ private object CosmosAccountConfig {
 
 object CosmosAuthType extends Enumeration {
     type CosmosAuthType = Value
-    val MasterKey, ServicePrinciple, ServicePrincipal = Value
+    val MasterKey, ServicePrinciple, ServicePrincipal, ManagedIdentity = Value
 }
 
 private object AzureEnvironmentType extends Enumeration {
@@ -594,10 +605,13 @@ private object AzureEnvironmentType extends Enumeration {
 trait CosmosAuthConfig {}
 
 private case class CosmosMasterKeyAuthConfig(accountKey: String) extends CosmosAuthConfig
-private case class CosmosAadAuthConfig(
+private case class CosmosServicePrincipalAuthConfig(
                                        clientId: String,
                                        tenantId: String,
                                        clientSecret: String) extends CosmosAuthConfig
+private case class CosmosManagedIdentityAuthConfig( tenantId: String,
+                                                     clientId: Option[String],
+                                                     resourceId: Option[String]) extends CosmosAuthConfig
 
 private object CosmosAuthConfig {
     private val DefaultAuthType = CosmosAuthType.MasterKey
@@ -614,7 +628,9 @@ private object CosmosAuthConfig {
         parseFromStringFunction = authTypeAsString =>
             CosmosConfigEntry.parseEnumeration(authTypeAsString, CosmosAuthType),
         helpMessage = "There are two auth types are supported currently: " +
-            "`MasterKey`(PrimaryReadWriteKeys, SecondReadWriteKeys, PrimaryReadOnlyKeys, SecondReadWriteKeys), `ServicePrincipal`")
+            "`MasterKey`(PrimaryReadWriteKeys, SecondReadWriteKeys, PrimaryReadOnlyKeys, SecondReadWriteKeys), " +
+            "`ServicePrincipal` and 'ManagedIdentity' (when the underlying Spark runtime supports it - currently " +
+            "linked services in Azure Synapse/Fabric don't support managed identity auth for Cosmos DB yet.)")
 
     private val TenantId = CosmosConfigEntry[String](key = CosmosConfigNames.TenantId,
         defaultValue = None,
@@ -626,7 +642,13 @@ private object CosmosAuthConfig {
         defaultValue = None,
         mandatory = false,
         parseFromStringFunction = clientId => clientId,
-        helpMessage = "The clientId/ApplicationId of the service principal. Required for `ServicePrincipal` authentication. ")
+        helpMessage = "The clientId/ApplicationId of the service principal. Required for `ServicePrincipal` authentication, optional for user-provided managed identities. ")
+
+    private val ResourceId = CosmosConfigEntry[String](key = CosmosConfigNames.ResourceId,
+      defaultValue = None,
+      mandatory = false,
+      parseFromStringFunction = resourceId => resourceId,
+      helpMessage = "The optional resourceId of a user-provided managed identity. ")
 
     private val ClientSecret = CosmosConfigEntry[String](key = CosmosConfigNames.ClientSecret,
         defaultValue = None,
@@ -638,20 +660,24 @@ private object CosmosAuthConfig {
         val authType = CosmosConfigEntry.parse(cfg, AuthenticationType)
         val key = CosmosConfigEntry.parse(cfg, CosmosKey)
         val clientId = CosmosConfigEntry.parse(cfg, ClientId)
+        val resourceId = CosmosConfigEntry.parse(cfg, ResourceId)
         val tenantId = CosmosConfigEntry.parse(cfg, TenantId)
         val clientSecret = CosmosConfigEntry.parse(cfg, ClientSecret)
 
         assert(authType.isDefined)
 
         if (authType.get == CosmosAuthType.MasterKey) {
-            assert(key.isDefined)
-            CosmosMasterKeyAuthConfig(key.get)
+          assert(key.isDefined)
+          CosmosMasterKeyAuthConfig(key.get)
+        } else if (authType.get == CosmosAuthType.ManagedIdentity) {
+          assert(tenantId.isDefined)
+          CosmosManagedIdentityAuthConfig(tenantId.get, clientId, resourceId)
         } else {
             assert(clientId.isDefined)
             assert(tenantId.isDefined)
             assert(clientSecret.isDefined)
 
-            CosmosAadAuthConfig(
+            CosmosServicePrincipalAuthConfig(
                 clientId.get,
                 tenantId.get,
                 clientSecret.get)

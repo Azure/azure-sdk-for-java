@@ -19,44 +19,46 @@ public final class PushInfo {
     private Integer maxDeliveryCount;
 
     /*
-     * Time span duration in ISO 8601 format that determines how long messages are available to the subscription from
-     * the time the message was published.
+     * Time span duration in ISO 8601 format that determines how long messages are available to the subscription from the time the message was published.
      * This duration value is expressed using the following format: \'P(n)Y(n)M(n)DT(n)H(n)M(n)S\', where:
-     * - (n) is replaced by the value of each time element that follows the (n).
-     * - P is the duration (or Period) designator and is always placed at the beginning of the duration.
-     * - Y is the year designator, and it follows the value for the number of years.
-     * - M is the month designator, and it follows the value for the number of months.
-     * - W is the week designator, and it follows the value for the number of weeks.
-     * - D is the day designator, and it follows the value for the number of days.
-     * - T is the time designator, and it precedes the time components.
-     * - H is the hour designator, and it follows the value for the number of hours.
-     * - M is the minute designator, and it follows the value for the number of minutes.
-     * - S is the second designator, and it follows the value for the number of seconds.
-     * This duration value cannot be set greater than the topic’s EventRetentionInDays. It is is an optional field
-     * where its minimum value is 1 minute, and its maximum is determined
+     *     - (n) is replaced by the value of each time element that follows the (n).
+     *     - P is the duration (or Period) designator and is always placed at the beginning of the duration.
+     *     - Y is the year designator, and it follows the value for the number of years.
+     *     - M is the month designator, and it follows the value for the number of months.
+     *     - W is the week designator, and it follows the value for the number of weeks.
+     *     - D is the day designator, and it follows the value for the number of days.
+     *     - T is the time designator, and it precedes the time components.
+     *     - H is the hour designator, and it follows the value for the number of hours.
+     *     - M is the minute designator, and it follows the value for the number of minutes.
+     *     - S is the second designator, and it follows the value for the number of seconds.
+     * This duration value cannot be set greater than the topic’s EventRetentionInDays. It is is an optional field where its minimum value is 1 minute, and its maximum is determined
      * by topic’s EventRetentionInDays value. The followings are examples of valid values:
-     * - \'P0DT23H12M\' or \'PT23H12M\': for duration of 23 hours and 12 minutes.
-     * - \'P1D\' or \'P1DT0H0M0S\': for duration of 1 day.
+     *     - \'P0DT23H12M\' or \'PT23H12M\': for duration of 23 hours and 12 minutes.
+     *     - \'P1D\' or \'P1DT0H0M0S\': for duration of 1 day.
      */
     @JsonProperty(value = "eventTimeToLive")
     private String eventTimeToLive;
 
     /*
-     * The dead letter destination of the event subscription. Any event that cannot be delivered to its' destination is
-     * sent to the dead letter destination.
-     * Uses the managed identity setup on the parent resource (namely, namespace) to acquire the authentication tokens
-     * being used during delivery / dead-lettering.
+     * The dead letter destination of the event subscription. Any event that cannot be delivered to its' destination is sent to the dead letter destination.
+     * Uses the managed identity setup on the parent resource (namely, namespace) to acquire the authentication tokens being used during dead-lettering.
      */
     @JsonProperty(value = "deadLetterDestinationWithResourceIdentity")
     private DeadLetterWithResourceIdentity deadLetterDestinationWithResourceIdentity;
 
     /*
      * Information about the destination where events have to be delivered for the event subscription.
-     * Uses the managed identity setup on the parent resource (namely, topic or domain) to acquire the authentication
-     * tokens being used during delivery / dead-lettering.
+     * Uses the managed identity setup on the parent resource (namely, topic or domain) to acquire the authentication tokens being used during delivery.
      */
     @JsonProperty(value = "deliveryWithResourceIdentity")
     private DeliveryWithResourceIdentity deliveryWithResourceIdentity;
+
+    /*
+     * Information about the destination where events have to be delivered for the event subscription.
+     * Uses Azure Event Grid's identity to acquire the authentication tokens being used during delivery.
+     */
+    @JsonProperty(value = "destination")
+    private EventSubscriptionDestination destination;
 
     /**
      * Creates an instance of PushInfo class.
@@ -98,8 +100,8 @@ public final class PushInfo {
      * - H is the hour designator, and it follows the value for the number of hours.
      * - M is the minute designator, and it follows the value for the number of minutes.
      * - S is the second designator, and it follows the value for the number of seconds.
-     * This duration value cannot be set greater than the topic’s EventRetentionInDays. It is is an optional field
-     * where its minimum value is 1 minute, and its maximum is determined
+     * This duration value cannot be set greater than the topic’s EventRetentionInDays. It is is an optional field where
+     * its minimum value is 1 minute, and its maximum is determined
      * by topic’s EventRetentionInDays value. The followings are examples of valid values:
      * - \'P0DT23H12M\' or \'PT23H12M\': for duration of 23 hours and 12 minutes.
      * - \'P1D\' or \'P1DT0H0M0S\': for duration of 1 day.
@@ -124,8 +126,8 @@ public final class PushInfo {
      * - H is the hour designator, and it follows the value for the number of hours.
      * - M is the minute designator, and it follows the value for the number of minutes.
      * - S is the second designator, and it follows the value for the number of seconds.
-     * This duration value cannot be set greater than the topic’s EventRetentionInDays. It is is an optional field
-     * where its minimum value is 1 minute, and its maximum is determined
+     * This duration value cannot be set greater than the topic’s EventRetentionInDays. It is is an optional field where
+     * its minimum value is 1 minute, and its maximum is determined
      * by topic’s EventRetentionInDays value. The followings are examples of valid values:
      * - \'P0DT23H12M\' or \'PT23H12M\': for duration of 23 hours and 12 minutes.
      * - \'P1D\' or \'P1DT0H0M0S\': for duration of 1 day.
@@ -142,7 +144,7 @@ public final class PushInfo {
      * Get the deadLetterDestinationWithResourceIdentity property: The dead letter destination of the event
      * subscription. Any event that cannot be delivered to its' destination is sent to the dead letter destination.
      * Uses the managed identity setup on the parent resource (namely, namespace) to acquire the authentication tokens
-     * being used during delivery / dead-lettering.
+     * being used during dead-lettering.
      * 
      * @return the deadLetterDestinationWithResourceIdentity value.
      */
@@ -154,7 +156,7 @@ public final class PushInfo {
      * Set the deadLetterDestinationWithResourceIdentity property: The dead letter destination of the event
      * subscription. Any event that cannot be delivered to its' destination is sent to the dead letter destination.
      * Uses the managed identity setup on the parent resource (namely, namespace) to acquire the authentication tokens
-     * being used during delivery / dead-lettering.
+     * being used during dead-lettering.
      * 
      * @param deadLetterDestinationWithResourceIdentity the deadLetterDestinationWithResourceIdentity value to set.
      * @return the PushInfo object itself.
@@ -169,7 +171,7 @@ public final class PushInfo {
      * Get the deliveryWithResourceIdentity property: Information about the destination where events have to be
      * delivered for the event subscription.
      * Uses the managed identity setup on the parent resource (namely, topic or domain) to acquire the authentication
-     * tokens being used during delivery / dead-lettering.
+     * tokens being used during delivery.
      * 
      * @return the deliveryWithResourceIdentity value.
      */
@@ -181,13 +183,37 @@ public final class PushInfo {
      * Set the deliveryWithResourceIdentity property: Information about the destination where events have to be
      * delivered for the event subscription.
      * Uses the managed identity setup on the parent resource (namely, topic or domain) to acquire the authentication
-     * tokens being used during delivery / dead-lettering.
+     * tokens being used during delivery.
      * 
      * @param deliveryWithResourceIdentity the deliveryWithResourceIdentity value to set.
      * @return the PushInfo object itself.
      */
     public PushInfo withDeliveryWithResourceIdentity(DeliveryWithResourceIdentity deliveryWithResourceIdentity) {
         this.deliveryWithResourceIdentity = deliveryWithResourceIdentity;
+        return this;
+    }
+
+    /**
+     * Get the destination property: Information about the destination where events have to be delivered for the event
+     * subscription.
+     * Uses Azure Event Grid's identity to acquire the authentication tokens being used during delivery.
+     * 
+     * @return the destination value.
+     */
+    public EventSubscriptionDestination destination() {
+        return this.destination;
+    }
+
+    /**
+     * Set the destination property: Information about the destination where events have to be delivered for the event
+     * subscription.
+     * Uses Azure Event Grid's identity to acquire the authentication tokens being used during delivery.
+     * 
+     * @param destination the destination value to set.
+     * @return the PushInfo object itself.
+     */
+    public PushInfo withDestination(EventSubscriptionDestination destination) {
+        this.destination = destination;
         return this;
     }
 
@@ -202,6 +228,9 @@ public final class PushInfo {
         }
         if (deliveryWithResourceIdentity() != null) {
             deliveryWithResourceIdentity().validate();
+        }
+        if (destination() != null) {
+            destination().validate();
         }
     }
 }
