@@ -74,7 +74,6 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
                 new AnalyzeDocumentRequest().setUrlSource(documentUrl))
             // if polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
-            .map(AnalyzeResultOperation::getAnalyzeResult)
             .subscribe(analyzeResult ->
                 analyzeResult.getDocuments()
                     .forEach(document ->

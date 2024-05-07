@@ -11,6 +11,7 @@ import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -26,6 +27,9 @@ public class PollingUtils {
 
     public static final TypeReference<Map<String, Object>> POST_POLL_RESULT_TYPE_REFERENCE
         = new TypeReference<Map<String, Object>>() { };
+
+    public static final HttpHeaderName OPERATION_LOCATION_HEADER
+        = HttpHeaderName.fromString("Operation-Location");
 
     public static final String HTTP_METHOD = "httpMethod";
     public static final String POLL_RESPONSE_BODY = "pollResponseBody";
@@ -54,14 +58,27 @@ public class PollingUtils {
         return path;
     }
 
-    public static <T> T deserializeResponseSync(BinaryData data, ObjectSerializer serializer, TypeReference<T> type) {
+    public static <T> T deserializeResponseSync(BinaryData binaryData, ObjectSerializer serializer, TypeReference<T> typeReference) {
         T value;
-        if (data == null) {
+        if (binaryData == null) {
             value = null;
-        } else if (type.getJavaClass().isAssignableFrom(BinaryData.class)) {
-            value = type.getJavaClass().cast(data.toReplayableBinaryData());
+        } else if (typeReference.getJavaClass().isAssignableFrom(BinaryData.class)) {
+            value = typeReference.getJavaClass().cast(binaryData.toReplayableBinaryData());
         } else {
-            value = data.toObject(type, serializer);
+            value = binaryData.toObject(typeReference, serializer);
+        }
+        return value;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> Mono<T> deserializeResponse(BinaryData binaryData, ObjectSerializer serializer, TypeReference<T> typeReference) {
+        Mono<T> value;
+        if (binaryData == null) {
+            value = Mono.empty();
+        } else if (typeReference.getJavaClass().isAssignableFrom(BinaryData.class)) {
+            value = (Mono<T>) binaryData.toReplayableBinaryDataAsync();
+        } else {
+            value = binaryData.toObjectAsync(typeReference, serializer);
         }
         return value;
     }
