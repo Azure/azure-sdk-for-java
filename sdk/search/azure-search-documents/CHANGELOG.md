@@ -12,10 +12,6 @@
 - Search models added: `HybridCountAndFacetMode`, `HybridSearch`, `SearchScoreThreshold`, `VectorSimilarityThreshold`, 
  `VectorThreshold`, `VectorThresholdKind`, `VectorizableImageBinaryQuery`, `VectorizableImageUrlQuery`
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 
 - Sample added for creating a vector fields index with reduced dimensions.
