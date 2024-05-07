@@ -126,7 +126,7 @@ public final class CosmosAsyncClient implements Closeable {
         this.proactiveContainerInitConfig = builder.getProactiveContainerInitConfig();
         this.nonIdempotentWriteRetryPolicy = builder.getNonIdempotentWriteRetryPolicy();
         this.requestOptionsTransformer = builder.getRequestOptionsTransformer();
-        this.defaultCustomSerializer = builder.getCustomSerializer();
+        this.defaultCustomSerializer = builder.getCustomItemSerializer();
         CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig = builder.getEndToEndOperationConfig();
         SessionRetryOptions sessionRetryOptions = builder.getSessionRetryOptions();
 
