@@ -39,7 +39,6 @@ import com.azure.ai.openai.assistants.models.SubmitToolOutputsOptions;
 import com.azure.ai.openai.assistants.models.ThreadDeletionStatus;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
-import com.azure.ai.openai.assistants.models.ToolOutput;
 import com.azure.ai.openai.assistants.models.UpdateAssistantOptions;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -58,7 +57,6 @@ import java.util.Map;
 import java.util.Objects;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import com.azure.ai.openai.assistants.implementation.models.SubmitToolOutputsToRunRequest;
 import com.azure.ai.openai.assistants.implementation.streaming.OpenAIServerSentEvents;
 import com.azure.ai.openai.assistants.models.StreamUpdate;
 import java.nio.ByteBuffer;
@@ -3168,7 +3166,7 @@ public final class AssistantsAsyncClient {
     /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * byte[]
      * }</pre>
@@ -3230,8 +3228,9 @@ public final class AssistantsAsyncClient {
         // Generated convenience method for submitToolOutputsToRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
         toolOutputs.setStream(true);
-        Flux<ByteBuffer> responseStream = submitToolOutputsToRunWithResponse(threadId, runId, BinaryData.fromObject(toolOutputs), requestOptions)
-            .flatMapMany(response -> response.getValue().toFluxByteBuffer());
+        Flux<ByteBuffer> responseStream
+            = submitToolOutputsToRunWithResponse(threadId, runId, BinaryData.fromObject(toolOutputs), requestOptions)
+                .flatMapMany(response -> response.getValue().toFluxByteBuffer());
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(responseStream);
         return openAIServerSentEvents.getEvents();
     }
