@@ -113,7 +113,7 @@ public final class TextTranslationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -121,9 +121,9 @@ public final class TextTranslationClient {
      *     }
      * ]
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -190,7 +190,7 @@ public final class TextTranslationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -198,9 +198,9 @@ public final class TextTranslationClient {
      *     }
      * ]
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -256,7 +256,7 @@ public final class TextTranslationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -264,9 +264,9 @@ public final class TextTranslationClient {
      *     }
      * ]
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -307,7 +307,7 @@ public final class TextTranslationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -315,9 +315,9 @@ public final class TextTranslationClient {
      *     }
      * ]
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -375,7 +375,7 @@ public final class TextTranslationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -384,9 +384,9 @@ public final class TextTranslationClient {
      *     }
      * ]
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -885,7 +885,8 @@ public final class TextTranslationClient {
     /**
      * Find Sentence Boundaries.
      * <p>
-     * This method is used when you have multiple texts for which you want to find sentence boundaries and you want to provide
+     * This method is used when you have multiple texts for which you want to find sentence boundaries and you want to
+     * provide
      * client trace id.
      * </p>
      *
@@ -912,7 +913,8 @@ public final class TextTranslationClient {
     /**
      * Find Sentence Boundaries.
      * <p>
-     * This method is used when you have single text for which you want to find sentence boundaries and you want to provide
+     * This method is used when you have single text for which you want to find sentence boundaries and you want to
+     * provide
      * client trace id.
      * </p>
      *
@@ -1271,7 +1273,7 @@ public final class TextTranslationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     translation (Optional): {
