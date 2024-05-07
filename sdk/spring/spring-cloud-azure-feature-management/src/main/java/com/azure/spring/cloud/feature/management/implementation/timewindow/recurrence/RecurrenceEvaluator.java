@@ -137,7 +137,7 @@ public class RecurrenceEvaluator {
             for (int i = sortedDaysOfWeek.indexOf(dayWithMinOffset.getDayOfWeek()) + 1; i < sortedDaysOfWeek.size(); i++) {
                 dayWithMinOffset = firstDayOfMostRecentOccurrence.plusDays(
                     TimeWindowUtils.passingDaysOfWeek(sortedDaysOfWeek.get(i), pattern.getFirstDayOfWeek()));
-                if (now.isAfter(dayWithMinOffset)) {
+                if (now.isBefore(dayWithMinOffset)) {
                     break;
                 }
                 mostRecentOccurrence = dayWithMinOffset;
