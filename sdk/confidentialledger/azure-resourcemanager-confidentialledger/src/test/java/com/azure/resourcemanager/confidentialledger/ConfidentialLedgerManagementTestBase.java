@@ -11,6 +11,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import com.azure.resourcemanager.resources.ResourceManager;
@@ -22,6 +23,8 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,6 +36,15 @@ public class ConfidentialLedgerManagementTestBase extends TestProxyTestBase {
     private static TokenCredential credential;
     private static ResourceGroup testResourceGroup;
     private ConfidentialLedgerManagementOperations ledgerOperationsInstance;
+
+    @Override
+    protected void beforeTest() {
+        if (getTestMode() == TestMode.PLAYBACK) {
+            interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher()
+                .setIgnoredQueryParameters(Arrays.asList("api-version"))));
+        }
+    }
+
     @BeforeAll
     public static void setup() {
         // Authenticate

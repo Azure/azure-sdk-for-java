@@ -9,7 +9,9 @@ import com.azure.resourcemanager.hybridcompute.fluent.models.ExtensionValueInner
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List Extension Metadata response. */
+/**
+ * The List Extension Metadata response.
+ */
 @Immutable
 public final class ExtensionValueListResult {
     /*
@@ -18,13 +20,15 @@ public final class ExtensionValueListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ExtensionValueInner> value;
 
-    /** Creates an instance of ExtensionValueListResult class. */
+    /**
+     * Creates an instance of ExtensionValueListResult class.
+     */
     public ExtensionValueListResult() {
     }
 
     /**
      * Get the value property: The list of extension metadata.
-     *
+     * 
      * @return the value value.
      */
     public List<ExtensionValueInner> value() {
@@ -33,7 +37,7 @@ public final class ExtensionValueListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

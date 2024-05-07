@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class EventSubscriptionIdentity {
     /*
-     * The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created
-     * identity and a set of user-assigned identities. The type 'None' will remove any identity.
+     * The type of managed identity used. Can be either 'SystemAssigned' or 'UserAssigned'.
      */
     @JsonProperty(value = "type")
     private EventSubscriptionIdentityType type;
@@ -32,8 +31,7 @@ public final class EventSubscriptionIdentity {
     }
 
     /**
-     * Get the type property: The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both
-     * an implicitly created identity and a set of user-assigned identities. The type 'None' will remove any identity.
+     * Get the type property: The type of managed identity used. Can be either 'SystemAssigned' or 'UserAssigned'.
      * 
      * @return the type value.
      */
@@ -42,8 +40,7 @@ public final class EventSubscriptionIdentity {
     }
 
     /**
-     * Set the type property: The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both
-     * an implicitly created identity and a set of user-assigned identities. The type 'None' will remove any identity.
+     * Set the type property: The type of managed identity used. Can be either 'SystemAssigned' or 'UserAssigned'.
      * 
      * @param type the type value to set.
      * @return the EventSubscriptionIdentity object itself.

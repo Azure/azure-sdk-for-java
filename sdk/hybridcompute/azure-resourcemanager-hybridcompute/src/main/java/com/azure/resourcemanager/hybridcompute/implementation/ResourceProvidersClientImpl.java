@@ -31,22 +31,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public final class ResourceProvidersClientImpl implements ResourceProvidersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ResourceProvidersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final HybridComputeManagementClientImpl client;
 
     /**
      * Initializes an instance of ResourceProvidersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ResourceProvidersClientImpl(HybridComputeManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,25 +63,20 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @Host("{$host}")
     @ServiceInterface(name = "HybridComputeManagem")
     public interface ResourceProvidersService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/upgradeExtensions")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/upgradeExtensions")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> upgradeExtensions(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("machineName") String machineName,
+        Mono<Response<Flux<ByteBuffer>>> upgradeExtensions(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("machineName") String machineName,
             @BodyParam("application/json") MachineExtensionUpgrade extensionUpgradeParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * The operation to Upgrade Machine Extensions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
@@ -85,19 +86,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> upgradeExtensionsWithResponseAsync(
-        String resourceGroupName, String machineName, MachineExtensionUpgrade extensionUpgradeParameters) {
+    private Mono<Response<Flux<ByteBuffer>>> upgradeExtensionsWithResponseAsync(String resourceGroupName,
+        String machineName, MachineExtensionUpgrade extensionUpgradeParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -107,33 +104,22 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException("Parameter machineName is required and cannot be null."));
         }
         if (extensionUpgradeParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter extensionUpgradeParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter extensionUpgradeParameters is required and cannot be null."));
         } else {
             extensionUpgradeParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .upgradeExtensions(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            machineName,
-                            extensionUpgradeParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.upgradeExtensions(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, machineName, extensionUpgradeParameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation to Upgrade Machine Extensions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
@@ -144,22 +130,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> upgradeExtensionsWithResponseAsync(
-        String resourceGroupName,
-        String machineName,
-        MachineExtensionUpgrade extensionUpgradeParameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> upgradeExtensionsWithResponseAsync(String resourceGroupName,
+        String machineName, MachineExtensionUpgrade extensionUpgradeParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -169,30 +148,21 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException("Parameter machineName is required and cannot be null."));
         }
         if (extensionUpgradeParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter extensionUpgradeParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter extensionUpgradeParameters is required and cannot be null."));
         } else {
             extensionUpgradeParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .upgradeExtensions(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                machineName,
-                extensionUpgradeParameters,
-                accept,
-                context);
+        return service.upgradeExtensions(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, machineName, extensionUpgradeParameters, accept,
+            context);
     }
 
     /**
      * The operation to Upgrade Machine Extensions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
@@ -202,19 +172,17 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginUpgradeExtensionsAsync(
-        String resourceGroupName, String machineName, MachineExtensionUpgrade extensionUpgradeParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            upgradeExtensionsWithResponseAsync(resourceGroupName, machineName, extensionUpgradeParameters);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginUpgradeExtensionsAsync(String resourceGroupName, String machineName,
+        MachineExtensionUpgrade extensionUpgradeParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = upgradeExtensionsWithResponseAsync(resourceGroupName, machineName, extensionUpgradeParameters);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * The operation to Upgrade Machine Extensions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
@@ -225,22 +193,18 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginUpgradeExtensionsAsync(
-        String resourceGroupName,
-        String machineName,
-        MachineExtensionUpgrade extensionUpgradeParameters,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginUpgradeExtensionsAsync(String resourceGroupName, String machineName,
+        MachineExtensionUpgrade extensionUpgradeParameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            upgradeExtensionsWithResponseAsync(resourceGroupName, machineName, extensionUpgradeParameters, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = upgradeExtensionsWithResponseAsync(resourceGroupName, machineName, extensionUpgradeParameters, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * The operation to Upgrade Machine Extensions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
@@ -250,16 +214,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpgradeExtensions(
-        String resourceGroupName, String machineName, MachineExtensionUpgrade extensionUpgradeParameters) {
-        return this
-            .beginUpgradeExtensionsAsync(resourceGroupName, machineName, extensionUpgradeParameters)
+    public SyncPoller<PollResult<Void>, Void> beginUpgradeExtensions(String resourceGroupName, String machineName,
+        MachineExtensionUpgrade extensionUpgradeParameters) {
+        return this.beginUpgradeExtensionsAsync(resourceGroupName, machineName, extensionUpgradeParameters)
             .getSyncPoller();
     }
 
     /**
      * The operation to Upgrade Machine Extensions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
@@ -270,19 +233,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpgradeExtensions(
-        String resourceGroupName,
-        String machineName,
-        MachineExtensionUpgrade extensionUpgradeParameters,
-        Context context) {
-        return this
-            .beginUpgradeExtensionsAsync(resourceGroupName, machineName, extensionUpgradeParameters, context)
+    public SyncPoller<PollResult<Void>, Void> beginUpgradeExtensions(String resourceGroupName, String machineName,
+        MachineExtensionUpgrade extensionUpgradeParameters, Context context) {
+        return this.beginUpgradeExtensionsAsync(resourceGroupName, machineName, extensionUpgradeParameters, context)
             .getSyncPoller();
     }
 
     /**
      * The operation to Upgrade Machine Extensions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
@@ -292,16 +251,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> upgradeExtensionsAsync(
-        String resourceGroupName, String machineName, MachineExtensionUpgrade extensionUpgradeParameters) {
-        return beginUpgradeExtensionsAsync(resourceGroupName, machineName, extensionUpgradeParameters)
-            .last()
+    private Mono<Void> upgradeExtensionsAsync(String resourceGroupName, String machineName,
+        MachineExtensionUpgrade extensionUpgradeParameters) {
+        return beginUpgradeExtensionsAsync(resourceGroupName, machineName, extensionUpgradeParameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The operation to Upgrade Machine Extensions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
@@ -312,19 +270,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> upgradeExtensionsAsync(
-        String resourceGroupName,
-        String machineName,
-        MachineExtensionUpgrade extensionUpgradeParameters,
-        Context context) {
-        return beginUpgradeExtensionsAsync(resourceGroupName, machineName, extensionUpgradeParameters, context)
-            .last()
+    private Mono<Void> upgradeExtensionsAsync(String resourceGroupName, String machineName,
+        MachineExtensionUpgrade extensionUpgradeParameters, Context context) {
+        return beginUpgradeExtensionsAsync(resourceGroupName, machineName, extensionUpgradeParameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The operation to Upgrade Machine Extensions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
@@ -333,14 +287,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void upgradeExtensions(
-        String resourceGroupName, String machineName, MachineExtensionUpgrade extensionUpgradeParameters) {
+    public void upgradeExtensions(String resourceGroupName, String machineName,
+        MachineExtensionUpgrade extensionUpgradeParameters) {
         upgradeExtensionsAsync(resourceGroupName, machineName, extensionUpgradeParameters).block();
     }
 
     /**
      * The operation to Upgrade Machine Extensions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
@@ -350,11 +304,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void upgradeExtensions(
-        String resourceGroupName,
-        String machineName,
-        MachineExtensionUpgrade extensionUpgradeParameters,
-        Context context) {
+    public void upgradeExtensions(String resourceGroupName, String machineName,
+        MachineExtensionUpgrade extensionUpgradeParameters, Context context) {
         upgradeExtensionsAsync(resourceGroupName, machineName, extensionUpgradeParameters, context).block();
     }
 }

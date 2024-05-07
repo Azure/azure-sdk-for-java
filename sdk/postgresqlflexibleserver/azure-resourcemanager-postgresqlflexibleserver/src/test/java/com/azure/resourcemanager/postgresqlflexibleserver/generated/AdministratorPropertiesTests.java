@@ -24,7 +24,9 @@ public final class AdministratorPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AdministratorProperties model = new AdministratorProperties().withPrincipalType(PrincipalType.GROUP)
-            .withPrincipalName("nrbtcqqjnq").withObjectId("hqgnufooojywif").withTenantId("esaagdfm");
+            .withPrincipalName("nrbtcqqjnq")
+            .withObjectId("hqgnufooojywif")
+            .withTenantId("esaagdfm");
         model = BinaryData.fromObject(model).toObject(AdministratorProperties.class);
         Assertions.assertEquals(PrincipalType.GROUP, model.principalType());
         Assertions.assertEquals("nrbtcqqjnq", model.principalName());

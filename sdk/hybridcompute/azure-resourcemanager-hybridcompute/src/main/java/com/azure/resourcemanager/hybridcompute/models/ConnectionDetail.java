@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hybridcompute.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ConnectionDetail model. */
+/**
+ * The ConnectionDetail model.
+ */
 @Immutable
 public final class ConnectionDetail {
     /*
@@ -40,13 +42,15 @@ public final class ConnectionDetail {
     @JsonProperty(value = "memberName", access = JsonProperty.Access.WRITE_ONLY)
     private String memberName;
 
-    /** Creates an instance of ConnectionDetail class. */
+    /**
+     * Creates an instance of ConnectionDetail class.
+     */
     public ConnectionDetail() {
     }
 
     /**
      * Get the id property: Azure resource Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -55,7 +59,7 @@ public final class ConnectionDetail {
 
     /**
      * Get the privateIpAddress property: The private endpoint connection private ip address.
-     *
+     * 
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
@@ -64,7 +68,7 @@ public final class ConnectionDetail {
 
     /**
      * Get the linkIdentifier property: The private endpoint connection link identifier.
-     *
+     * 
      * @return the linkIdentifier value.
      */
     public String linkIdentifier() {
@@ -73,7 +77,7 @@ public final class ConnectionDetail {
 
     /**
      * Get the groupId property: The private endpoint connection group id.
-     *
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -82,7 +86,7 @@ public final class ConnectionDetail {
 
     /**
      * Get the memberName property: The private endpoint connection member name.
-     *
+     * 
      * @return the memberName value.
      */
     public String memberName() {
@@ -91,7 +95,7 @@ public final class ConnectionDetail {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

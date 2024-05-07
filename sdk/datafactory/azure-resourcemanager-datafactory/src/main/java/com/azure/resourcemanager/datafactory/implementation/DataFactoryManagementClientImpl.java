@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.datafactory.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -12,8 +13,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -41,8 +42,8 @@ import com.azure.resourcemanager.datafactory.fluent.ManagedVirtualNetworksClient
 import com.azure.resourcemanager.datafactory.fluent.OperationsClient;
 import com.azure.resourcemanager.datafactory.fluent.PipelineRunsClient;
 import com.azure.resourcemanager.datafactory.fluent.PipelinesClient;
-import com.azure.resourcemanager.datafactory.fluent.PrivateEndPointConnectionsClient;
 import com.azure.resourcemanager.datafactory.fluent.PrivateEndpointConnectionOperationsClient;
+import com.azure.resourcemanager.datafactory.fluent.PrivateEndPointConnectionsClient;
 import com.azure.resourcemanager.datafactory.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.datafactory.fluent.TriggerRunsClient;
 import com.azure.resourcemanager.datafactory.fluent.TriggersClient;
@@ -569,8 +570,8 @@ public final class DataFactoryManagementClientImpl implements DataFactoryManagem
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError = this.getSerializerAdapter().deserialize(errorBody, ManagementError.class,
-                            SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -611,7 +612,7 @@ public final class DataFactoryManagementClientImpl implements DataFactoryManagem
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

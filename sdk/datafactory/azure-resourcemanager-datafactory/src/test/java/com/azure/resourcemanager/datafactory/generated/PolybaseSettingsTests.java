@@ -15,7 +15,7 @@ public final class PolybaseSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PolybaseSettings model = BinaryData.fromString(
-            "{\"rejectType\":\"value\",\"rejectValue\":\"datagrqzwypwhfybflrp\",\"rejectSampleValue\":\"datagqqxe\",\"useTypeDefault\":\"dataghpsqvuised\",\"\":{\"btpvwx\":\"datavfjkxxnqrqdx\",\"zss\":\"datalsvicvpagwohkro\",\"jpiezthflgpsal\":\"datamlozjyovrllvhbgk\",\"wzpfbiqjrz\":\"datanan\"}}")
+            "{\"rejectType\":\"value\",\"rejectValue\":\"datakscrsbrhkd\",\"rejectSampleValue\":\"dataaxoajg\",\"useTypeDefault\":\"datacachsojgagey\",\"\":{\"gfxwynzbeemlsrtg\":\"datakkzkzprjqb\",\"dglpu\":\"datagcmutuk\"}}")
             .toObject(PolybaseSettings.class);
         Assertions.assertEquals(PolybaseSettingsRejectType.VALUE, model.rejectType());
     }
@@ -23,8 +23,10 @@ public final class PolybaseSettingsTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PolybaseSettings model = new PolybaseSettings().withRejectType(PolybaseSettingsRejectType.VALUE)
-            .withRejectValue("datagrqzwypwhfybflrp").withRejectSampleValue("datagqqxe")
-            .withUseTypeDefault("dataghpsqvuised").withAdditionalProperties(mapOf());
+            .withRejectValue("datakscrsbrhkd")
+            .withRejectSampleValue("dataaxoajg")
+            .withUseTypeDefault("datacachsojgagey")
+            .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(PolybaseSettings.class);
         Assertions.assertEquals(PolybaseSettingsRejectType.VALUE, model.rejectType());
     }

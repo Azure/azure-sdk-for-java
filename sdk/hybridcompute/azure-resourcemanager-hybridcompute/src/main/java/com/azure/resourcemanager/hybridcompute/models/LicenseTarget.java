@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Describes the license target server. */
+/**
+ * Describes the license target server.
+ */
 public final class LicenseTarget extends ExpandableStringEnum<LicenseTarget> {
-    /** Static value Windows Server 2012 for LicenseTarget. */
+    /**
+     * Static value Windows Server 2012 for LicenseTarget.
+     */
     public static final LicenseTarget WINDOWS_SERVER_2012 = fromString("Windows Server 2012");
 
-    /** Static value Windows Server 2012 R2 for LicenseTarget. */
+    /**
+     * Static value Windows Server 2012 R2 for LicenseTarget.
+     */
     public static final LicenseTarget WINDOWS_SERVER_2012_R2 = fromString("Windows Server 2012 R2");
 
     /**
      * Creates a new instance of LicenseTarget value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class LicenseTarget extends ExpandableStringEnum<LicenseTarget> {
 
     /**
      * Creates or finds a LicenseTarget from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LicenseTarget.
      */
@@ -38,7 +44,7 @@ public final class LicenseTarget extends ExpandableStringEnum<LicenseTarget> {
 
     /**
      * Gets known LicenseTarget values.
-     *
+     * 
      * @return known LicenseTarget values.
      */
     public static Collection<LicenseTarget> values() {

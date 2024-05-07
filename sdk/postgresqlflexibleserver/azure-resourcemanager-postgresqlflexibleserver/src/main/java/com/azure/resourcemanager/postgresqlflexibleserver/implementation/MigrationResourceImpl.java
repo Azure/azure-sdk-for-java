@@ -11,6 +11,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.Migratio
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CancelEnum;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.DbServerMetadata;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.LogicalReplicationOnSourceDbEnum;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrateRolesEnum;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationOption;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationResource;
@@ -68,6 +69,10 @@ public final class MigrationResourceImpl
 
     public MigrationStatus currentStatus() {
         return this.innerModel().currentStatus();
+    }
+
+    public String migrationInstanceResourceId() {
+        return this.innerModel().migrationInstanceResourceId();
     }
 
     public MigrationMode migrationMode() {
@@ -139,6 +144,10 @@ public final class MigrationResourceImpl
         return this.innerModel().migrationWindowEndTimeInUtc();
     }
 
+    public MigrateRolesEnum migrateRoles() {
+        return this.innerModel().migrateRoles();
+    }
+
     public StartDataMigrationEnum startDataMigration() {
         return this.innerModel().startDataMigration();
     }
@@ -208,14 +217,20 @@ public final class MigrationResourceImpl
     }
 
     public MigrationResource create() {
-        this.innerObject = serviceManager.serviceClient().getMigrations().createWithResponse(subscriptionId,
-            resourceGroupName, targetDbServerName, migrationName, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMigrations()
+            .createWithResponse(subscriptionId, resourceGroupName, targetDbServerName, migrationName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public MigrationResource create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getMigrations().createWithResponse(subscriptionId,
-            resourceGroupName, targetDbServerName, migrationName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMigrations()
+            .createWithResponse(subscriptionId, resourceGroupName, targetDbServerName, migrationName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
@@ -232,14 +247,20 @@ public final class MigrationResourceImpl
     }
 
     public MigrationResource apply() {
-        this.innerObject = serviceManager.serviceClient().getMigrations().updateWithResponse(subscriptionId,
-            resourceGroupName, targetDbServerName, migrationName, updateParameters, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMigrations()
+            .updateWithResponse(subscriptionId, resourceGroupName, targetDbServerName, migrationName, updateParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public MigrationResource apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getMigrations().updateWithResponse(subscriptionId,
-            resourceGroupName, targetDbServerName, migrationName, updateParameters, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMigrations()
+            .updateWithResponse(subscriptionId, resourceGroupName, targetDbServerName, migrationName, updateParameters,
+                context)
+            .getValue();
         return this;
     }
 
@@ -254,15 +275,18 @@ public final class MigrationResourceImpl
     }
 
     public MigrationResource refresh() {
-        this.innerObject = serviceManager.serviceClient().getMigrations()
+        this.innerObject = serviceManager.serviceClient()
+            .getMigrations()
             .getWithResponse(subscriptionId, resourceGroupName, targetDbServerName, migrationName, Context.NONE)
             .getValue();
         return this;
     }
 
     public MigrationResource refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getMigrations()
-            .getWithResponse(subscriptionId, resourceGroupName, targetDbServerName, migrationName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMigrations()
+            .getWithResponse(subscriptionId, resourceGroupName, targetDbServerName, migrationName, context)
+            .getValue();
         return this;
     }
 
@@ -284,6 +308,11 @@ public final class MigrationResourceImpl
             this.updateParameters.withTags(tags);
             return this;
         }
+    }
+
+    public MigrationResourceImpl withMigrationInstanceResourceId(String migrationInstanceResourceId) {
+        this.innerModel().withMigrationInstanceResourceId(migrationInstanceResourceId);
+        return this;
     }
 
     public MigrationResourceImpl withMigrationMode(MigrationMode migrationMode) {
@@ -398,6 +427,16 @@ public final class MigrationResourceImpl
     public MigrationResourceImpl withMigrationWindowEndTimeInUtc(OffsetDateTime migrationWindowEndTimeInUtc) {
         this.innerModel().withMigrationWindowEndTimeInUtc(migrationWindowEndTimeInUtc);
         return this;
+    }
+
+    public MigrationResourceImpl withMigrateRoles(MigrateRolesEnum migrateRoles) {
+        if (isInCreateMode()) {
+            this.innerModel().withMigrateRoles(migrateRoles);
+            return this;
+        } else {
+            this.updateParameters.withMigrateRoles(migrateRoles);
+            return this;
+        }
     }
 
     public MigrationResourceImpl withStartDataMigration(StartDataMigrationEnum startDataMigration) {

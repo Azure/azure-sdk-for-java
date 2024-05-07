@@ -262,6 +262,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
         List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
         entities.forEach(entity -> {
+            markAuditedIfConfigured(entity);
             generateIdIfNullAndAutoGenerationEnabled(entity, domainType);
             JsonNode originalItem = mappingCosmosConverter.writeJsonNode(entity);
             PartitionKey partitionKey = new PartitionKey(information.getPartitionKeyFieldValue(entity));

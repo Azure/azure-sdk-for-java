@@ -12,7 +12,9 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.annotation.DoNotRecord;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -24,12 +26,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CallDialogAsyncAutomatedLiveTests extends CallAutomationAutomatedLiveTestBase {
 
+    @DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires environment to be set up")
+    @Disabled("Disabling this for now as there is service issue with this test case")
     public void dialogActionInACallAutomatedTest(HttpClient httpClient) {
         /* Test case:Start and Stop Dialog on ACS to ACS call
          * 1. create a CallAutomationClient.

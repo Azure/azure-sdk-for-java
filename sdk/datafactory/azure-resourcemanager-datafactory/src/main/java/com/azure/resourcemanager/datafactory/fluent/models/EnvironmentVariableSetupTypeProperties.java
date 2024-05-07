@@ -78,12 +78,14 @@ public final class EnvironmentVariableSetupTypeProperties {
      */
     public void validate() {
         if (variableName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property variableName in model EnvironmentVariableSetupTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property variableName in model EnvironmentVariableSetupTypeProperties"));
         }
         if (variableValue() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property variableValue in model EnvironmentVariableSetupTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property variableValue in model EnvironmentVariableSetupTypeProperties"));
         }
     }
 

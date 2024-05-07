@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hybridcompute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the Machine Extension Target Version Properties. */
+/**
+ * Describes the Machine Extension Target Version Properties.
+ */
 @Fluent
 public final class ExtensionTargetProperties {
     /*
@@ -16,13 +18,15 @@ public final class ExtensionTargetProperties {
     @JsonProperty(value = "targetVersion")
     private String targetVersion;
 
-    /** Creates an instance of ExtensionTargetProperties class. */
+    /**
+     * Creates an instance of ExtensionTargetProperties class.
+     */
     public ExtensionTargetProperties() {
     }
 
     /**
      * Get the targetVersion property: Properties for the specified Extension to Upgrade.
-     *
+     * 
      * @return the targetVersion value.
      */
     public String targetVersion() {
@@ -31,7 +35,7 @@ public final class ExtensionTargetProperties {
 
     /**
      * Set the targetVersion property: Properties for the specified Extension to Upgrade.
-     *
+     * 
      * @param targetVersion the targetVersion value to set.
      * @return the ExtensionTargetProperties object itself.
      */
@@ -42,7 +46,7 @@ public final class ExtensionTargetProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

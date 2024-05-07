@@ -25,8 +25,8 @@ public final class LakeHouseTableDatasetTypeProperties {
     }
 
     /**
-     * Get the table property: The name of Microsoft Fabric LakeHouse Table. Type: string (or Expression with
-     * resultType string).
+     * Get the table property: The name of Microsoft Fabric LakeHouse Table. Type: string (or Expression with resultType
+     * string).
      * 
      * @return the table value.
      */
@@ -35,8 +35,8 @@ public final class LakeHouseTableDatasetTypeProperties {
     }
 
     /**
-     * Set the table property: The name of Microsoft Fabric LakeHouse Table. Type: string (or Expression with
-     * resultType string).
+     * Set the table property: The name of Microsoft Fabric LakeHouse Table. Type: string (or Expression with resultType
+     * string).
      * 
      * @param table the table value to set.
      * @return the LakeHouseTableDatasetTypeProperties object itself.

@@ -13,7 +13,9 @@ import com.azure.resourcemanager.devcenter.models.VirtualNetworkType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of a Pool. These properties can be updated after the resource has been created. */
+/**
+ * Properties of a Pool. These properties can be updated after the resource has been created.
+ */
 @Fluent
 public class PoolUpdateProperties {
     /*
@@ -29,8 +31,7 @@ public class PoolUpdateProperties {
     private String networkConnectionName;
 
     /*
-     * Specifies the license type indicating the caller has already acquired licenses for the Dev Boxes that will be
-     * created.
+     * Specifies the license type indicating the caller has already acquired licenses for the Dev Boxes that will be created.
      */
     @JsonProperty(value = "licenseType")
     private LicenseType licenseType;
@@ -48,8 +49,7 @@ public class PoolUpdateProperties {
     private StopOnDisconnectConfiguration stopOnDisconnect;
 
     /*
-     * Indicates whether Dev Boxes in this pool are created with single sign on enabled. The also requires that single
-     * sign on be enabled on the tenant.
+     * Indicates whether Dev Boxes in this pool are created with single sign on enabled. The also requires that single sign on be enabled on the tenant.
      */
     @JsonProperty(value = "singleSignOnStatus")
     private SingleSignOnStatus singleSignOnStatus;
@@ -72,13 +72,15 @@ public class PoolUpdateProperties {
     @JsonProperty(value = "managedVirtualNetworkRegions")
     private List<String> managedVirtualNetworkRegions;
 
-    /** Creates an instance of PoolUpdateProperties class. */
+    /**
+     * Creates an instance of PoolUpdateProperties class.
+     */
     public PoolUpdateProperties() {
     }
 
     /**
      * Get the devBoxDefinitionName property: Name of a Dev Box definition in parent Project of this Pool.
-     *
+     * 
      * @return the devBoxDefinitionName value.
      */
     public String devBoxDefinitionName() {
@@ -87,7 +89,7 @@ public class PoolUpdateProperties {
 
     /**
      * Set the devBoxDefinitionName property: Name of a Dev Box definition in parent Project of this Pool.
-     *
+     * 
      * @param devBoxDefinitionName the devBoxDefinitionName value to set.
      * @return the PoolUpdateProperties object itself.
      */
@@ -98,7 +100,7 @@ public class PoolUpdateProperties {
 
     /**
      * Get the networkConnectionName property: Name of a Network Connection in parent Project of this Pool.
-     *
+     * 
      * @return the networkConnectionName value.
      */
     public String networkConnectionName() {
@@ -107,7 +109,7 @@ public class PoolUpdateProperties {
 
     /**
      * Set the networkConnectionName property: Name of a Network Connection in parent Project of this Pool.
-     *
+     * 
      * @param networkConnectionName the networkConnectionName value to set.
      * @return the PoolUpdateProperties object itself.
      */
@@ -119,7 +121,7 @@ public class PoolUpdateProperties {
     /**
      * Get the licenseType property: Specifies the license type indicating the caller has already acquired licenses for
      * the Dev Boxes that will be created.
-     *
+     * 
      * @return the licenseType value.
      */
     public LicenseType licenseType() {
@@ -129,7 +131,7 @@ public class PoolUpdateProperties {
     /**
      * Set the licenseType property: Specifies the license type indicating the caller has already acquired licenses for
      * the Dev Boxes that will be created.
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the PoolUpdateProperties object itself.
      */
@@ -141,7 +143,7 @@ public class PoolUpdateProperties {
     /**
      * Get the localAdministrator property: Indicates whether owners of Dev Boxes in this pool are added as local
      * administrators on the Dev Box.
-     *
+     * 
      * @return the localAdministrator value.
      */
     public LocalAdminStatus localAdministrator() {
@@ -151,7 +153,7 @@ public class PoolUpdateProperties {
     /**
      * Set the localAdministrator property: Indicates whether owners of Dev Boxes in this pool are added as local
      * administrators on the Dev Box.
-     *
+     * 
      * @param localAdministrator the localAdministrator value to set.
      * @return the PoolUpdateProperties object itself.
      */
@@ -162,7 +164,7 @@ public class PoolUpdateProperties {
 
     /**
      * Get the stopOnDisconnect property: Stop on disconnect configuration settings for Dev Boxes created in this pool.
-     *
+     * 
      * @return the stopOnDisconnect value.
      */
     public StopOnDisconnectConfiguration stopOnDisconnect() {
@@ -171,7 +173,7 @@ public class PoolUpdateProperties {
 
     /**
      * Set the stopOnDisconnect property: Stop on disconnect configuration settings for Dev Boxes created in this pool.
-     *
+     * 
      * @param stopOnDisconnect the stopOnDisconnect value to set.
      * @return the PoolUpdateProperties object itself.
      */
@@ -183,7 +185,7 @@ public class PoolUpdateProperties {
     /**
      * Get the singleSignOnStatus property: Indicates whether Dev Boxes in this pool are created with single sign on
      * enabled. The also requires that single sign on be enabled on the tenant.
-     *
+     * 
      * @return the singleSignOnStatus value.
      */
     public SingleSignOnStatus singleSignOnStatus() {
@@ -193,7 +195,7 @@ public class PoolUpdateProperties {
     /**
      * Set the singleSignOnStatus property: Indicates whether Dev Boxes in this pool are created with single sign on
      * enabled. The also requires that single sign on be enabled on the tenant.
-     *
+     * 
      * @param singleSignOnStatus the singleSignOnStatus value to set.
      * @return the PoolUpdateProperties object itself.
      */
@@ -204,7 +206,7 @@ public class PoolUpdateProperties {
 
     /**
      * Get the displayName property: The display name of the pool.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -213,7 +215,7 @@ public class PoolUpdateProperties {
 
     /**
      * Set the displayName property: The display name of the pool.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the PoolUpdateProperties object itself.
      */
@@ -225,7 +227,7 @@ public class PoolUpdateProperties {
     /**
      * Get the virtualNetworkType property: Indicates whether the pool uses a Virtual Network managed by Microsoft or a
      * customer provided network.
-     *
+     * 
      * @return the virtualNetworkType value.
      */
     public VirtualNetworkType virtualNetworkType() {
@@ -235,7 +237,7 @@ public class PoolUpdateProperties {
     /**
      * Set the virtualNetworkType property: Indicates whether the pool uses a Virtual Network managed by Microsoft or a
      * customer provided network.
-     *
+     * 
      * @param virtualNetworkType the virtualNetworkType value to set.
      * @return the PoolUpdateProperties object itself.
      */
@@ -247,7 +249,7 @@ public class PoolUpdateProperties {
     /**
      * Get the managedVirtualNetworkRegions property: The regions of the managed virtual network (required when
      * managedNetworkType is Managed).
-     *
+     * 
      * @return the managedVirtualNetworkRegions value.
      */
     public List<String> managedVirtualNetworkRegions() {
@@ -257,7 +259,7 @@ public class PoolUpdateProperties {
     /**
      * Set the managedVirtualNetworkRegions property: The regions of the managed virtual network (required when
      * managedNetworkType is Managed).
-     *
+     * 
      * @param managedVirtualNetworkRegions the managedVirtualNetworkRegions value to set.
      * @return the PoolUpdateProperties object itself.
      */
@@ -268,7 +270,7 @@ public class PoolUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

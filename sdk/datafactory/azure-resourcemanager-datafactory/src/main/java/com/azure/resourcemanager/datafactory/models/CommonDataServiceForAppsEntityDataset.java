@@ -7,6 +7,7 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.datafactory.fluent.models.CommonDataServiceForAppsEntityDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,10 +16,21 @@ import java.util.Map;
 /**
  * The Common Data Service for Apps entity dataset.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = CommonDataServiceForAppsEntityDataset.class,
+    visible = true)
 @JsonTypeName("CommonDataServiceForAppsEntity")
 @Fluent
 public final class CommonDataServiceForAppsEntityDataset extends Dataset {
+    /*
+     * Type of dataset.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "CommonDataServiceForAppsEntity";
+
     /*
      * Common Data Service for Apps entity dataset properties.
      */
@@ -29,6 +41,16 @@ public final class CommonDataServiceForAppsEntityDataset extends Dataset {
      * Creates an instance of CommonDataServiceForAppsEntityDataset class.
      */
     public CommonDataServiceForAppsEntityDataset() {
+    }
+
+    /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -104,8 +126,7 @@ public final class CommonDataServiceForAppsEntityDataset extends Dataset {
     }
 
     /**
-     * Get the entityName property: The logical name of the entity. Type: string (or Expression with resultType
-     * string).
+     * Get the entityName property: The logical name of the entity. Type: string (or Expression with resultType string).
      * 
      * @return the entityName value.
      */
@@ -114,8 +135,7 @@ public final class CommonDataServiceForAppsEntityDataset extends Dataset {
     }
 
     /**
-     * Set the entityName property: The logical name of the entity. Type: string (or Expression with resultType
-     * string).
+     * Set the entityName property: The logical name of the entity. Type: string (or Expression with resultType string).
      * 
      * @param entityName the entityName value to set.
      * @return the CommonDataServiceForAppsEntityDataset object itself.

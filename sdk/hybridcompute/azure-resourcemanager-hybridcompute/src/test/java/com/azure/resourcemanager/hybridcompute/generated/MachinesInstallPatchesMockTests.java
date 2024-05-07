@@ -6,11 +6,9 @@ package com.azure.resourcemanager.hybridcompute.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcompute.HybridComputeManager;
 import com.azure.resourcemanager.hybridcompute.models.LinuxParameters;
 import com.azure.resourcemanager.hybridcompute.models.MachineInstallPatchesParameters;
@@ -19,82 +17,43 @@ import com.azure.resourcemanager.hybridcompute.models.VMGuestPatchClassification
 import com.azure.resourcemanager.hybridcompute.models.VMGuestPatchClassificationWindows;
 import com.azure.resourcemanager.hybridcompute.models.VMGuestPatchRebootSetting;
 import com.azure.resourcemanager.hybridcompute.models.WindowsParameters;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class MachinesInstallPatchesMockTests {
     @Test
     public void testInstallPatches() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"status\":\"Succeeded\",\"installationActivityId\":\"vutpthjoxo\",\"rebootStatus\":\"Failed\",\"maintenanceWindowExceeded\":true,\"excludedPatchCount\":1976615224,\"notSelectedPatchCount\":791689891,\"pendingPatchCount\":1015646968,\"installedPatchCount\":2072188488,\"failedPatchCount\":1062811723,\"startDateTime\":\"2021-01-28T22:40:19Z\",\"lastModifiedDateTime\":\"2021-11-12T05:30:54Z\",\"startedBy\":\"User\",\"patchServiceUsed\":\"YUM\",\"osType\":\"Linux\"}";
 
-        String responseStr =
-            "{\"status\":\"InProgress\",\"installationActivityId\":\"lgy\",\"rebootStatus\":\"Completed\",\"maintenanceWindowExceeded\":false,\"excludedPatchCount\":1322513595,\"notSelectedPatchCount\":1107140158,\"pendingPatchCount\":1814921702,\"installedPatchCount\":1315761996,\"failedPatchCount\":624648984,\"startDateTime\":\"2021-09-03T17:34:04Z\",\"lastModifiedDateTime\":\"2021-08-10T19:53:45Z\",\"startedBy\":\"User\",\"patchServiceUsed\":\"WU\",\"osType\":\"Linux\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        HybridComputeManager manager = HybridComputeManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        MachineInstallPatchesResult response = manager.machines()
+            .installPatches("rk", "alywjhhgdn",
+                new MachineInstallPatchesParameters().withMaximumDuration(Duration.parse("PT175H6M53S"))
+                    .withRebootSetting(VMGuestPatchRebootSetting.ALWAYS)
+                    .withWindowsParameters(new WindowsParameters()
+                        .withClassificationsToInclude(Arrays.asList(VMGuestPatchClassificationWindows.SERVICE_PACK))
+                        .withKbNumbersToInclude(Arrays.asList("iloxggdufiq", "dieuzaofj", "hvcyyysfg", "otcubi"))
+                        .withKbNumbersToExclude(Arrays.asList("ipwoqonmacjek", "izsh", "vcimpev", "gmblrri"))
+                        .withExcludeKbsRequiringReboot(false)
+                        .withMaxPatchPublishDate(OffsetDateTime.parse("2021-02-03T11:24:04Z")))
+                    .withLinuxParameters(new LinuxParameters()
+                        .withClassificationsToInclude(Arrays.asList(VMGuestPatchClassificationLinux.OTHER,
+                            VMGuestPatchClassificationLinux.CRITICAL, VMGuestPatchClassificationLinux.CRITICAL,
+                            VMGuestPatchClassificationLinux.CRITICAL))
+                        .withPackageNameMasksToInclude(Arrays.asList("fscjfnynszquji", "dvoqyt"))
+                        .withPackageNameMasksToExclude(Arrays.asList("owbb"))),
+                com.azure.core.util.Context.NONE);
 
-        HybridComputeManager manager =
-            HybridComputeManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        MachineInstallPatchesResult response =
-            manager
-                .machines()
-                .installPatches(
-                    "ieuzaofjchvcyyy",
-                    "fgdo",
-                    new MachineInstallPatchesParameters()
-                        .withMaximumDuration("cubiipuipw")
-                        .withRebootSetting(VMGuestPatchRebootSetting.ALWAYS)
-                        .withWindowsParameters(
-                            new WindowsParameters()
-                                .withClassificationsToInclude(
-                                    Arrays
-                                        .asList(
-                                            VMGuestPatchClassificationWindows.FEATURE_PACK,
-                                            VMGuestPatchClassificationWindows.SECURITY))
-                                .withKbNumbersToInclude(Arrays.asList("k"))
-                                .withKbNumbersToExclude(Arrays.asList("shqvcimpev"))
-                                .withExcludeKbsRequiringReboot(true)
-                                .withMaxPatchPublishDate(OffsetDateTime.parse("2021-10-01T23:14:47Z")))
-                        .withLinuxParameters(
-                            new LinuxParameters()
-                                .withClassificationsToInclude(
-                                    Arrays
-                                        .asList(
-                                            VMGuestPatchClassificationLinux.CRITICAL,
-                                            VMGuestPatchClassificationLinux.OTHER,
-                                            VMGuestPatchClassificationLinux.CRITICAL))
-                                .withPackageNameMasksToInclude(Arrays.asList("xsmiccwrwfscjf"))
-                                .withPackageNameMasksToExclude(Arrays.asList("szqujizdvoq", "tiby"))),
-                    com.azure.core.util.Context.NONE);
     }
 }

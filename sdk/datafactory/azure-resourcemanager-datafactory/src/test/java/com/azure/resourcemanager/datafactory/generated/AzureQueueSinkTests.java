@@ -11,16 +11,18 @@ public final class AzureQueueSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureQueueSink model = BinaryData.fromString(
-            "{\"type\":\"AzureQueueSink\",\"writeBatchSize\":\"dataiottdawgkaohhtt\",\"writeBatchTimeout\":\"datahypidzjjjfcyskpn\",\"sinkRetryCount\":\"dataxoic\",\"sinkRetryWait\":\"datasmfvltbocqhv\",\"maxConcurrentConnections\":\"datam\",\"disableMetricsCollection\":\"datapvgri\",\"\":{\"fmfkuvybem\":\"datagrlgkoqbzrclarr\"}}")
+            "{\"type\":\"uxljiqyrwdmgr\",\"writeBatchSize\":\"datavewgvwmybokq\",\"writeBatchTimeout\":\"datahswbpjzoyzydlysz\",\"sinkRetryCount\":\"datapnwzpkisefy\",\"sinkRetryWait\":\"dataaumerkgmgqy\",\"maxConcurrentConnections\":\"datajqkasxiczv\",\"disableMetricsCollection\":\"dataoihcqxexbksa\",\"\":{\"gpszwvooxieyyww\":\"datacwyrtluujyesp\",\"fybktbviaqvzzszc\":\"dataiwiaqrc\",\"rxo\":\"dataw\",\"twwaxx\":\"datavygdefpy\"}}")
             .toObject(AzureQueueSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureQueueSink model = new AzureQueueSink().withWriteBatchSize("dataiottdawgkaohhtt")
-            .withWriteBatchTimeout("datahypidzjjjfcyskpn").withSinkRetryCount("dataxoic")
-            .withSinkRetryWait("datasmfvltbocqhv").withMaxConcurrentConnections("datam")
-            .withDisableMetricsCollection("datapvgri");
+        AzureQueueSink model = new AzureQueueSink().withWriteBatchSize("datavewgvwmybokq")
+            .withWriteBatchTimeout("datahswbpjzoyzydlysz")
+            .withSinkRetryCount("datapnwzpkisefy")
+            .withSinkRetryWait("dataaumerkgmgqy")
+            .withMaxConcurrentConnections("datajqkasxiczv")
+            .withDisableMetricsCollection("dataoihcqxexbksa");
         model = BinaryData.fromObject(model).toObject(AzureQueueSink.class);
     }
 }

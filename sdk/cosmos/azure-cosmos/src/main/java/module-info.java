@@ -20,7 +20,6 @@ module com.azure.cosmos {
     requires reactor.netty.core;
     requires reactor.netty.http;
     requires com.codahale.metrics;
-    requires com.fasterxml.jackson.module.afterburner;
     requires java.management;
     requires jdk.management;
     requires micrometer.core;

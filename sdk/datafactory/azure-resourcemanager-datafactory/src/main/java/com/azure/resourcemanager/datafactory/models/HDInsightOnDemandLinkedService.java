@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.HDInsightOnDemandLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,21 @@ import java.util.Map;
 /**
  * HDInsight ondemand linked service.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = HDInsightOnDemandLinkedService.class,
+    visible = true)
 @JsonTypeName("HDInsightOnDemand")
 @Fluent
 public final class HDInsightOnDemandLinkedService extends LinkedService {
+    /*
+     * Type of linked service.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "HDInsightOnDemand";
+
     /*
      * HDInsight ondemand linked service properties.
      */
@@ -31,6 +43,16 @@ public final class HDInsightOnDemandLinkedService extends LinkedService {
      * Creates an instance of HDInsightOnDemandLinkedService class.
      */
     public HDInsightOnDemandLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -131,8 +153,7 @@ public final class HDInsightOnDemandLinkedService extends LinkedService {
     }
 
     /**
-     * Get the version property: Version of the HDInsight cluster.  Type: string (or Expression with resultType
-     * string).
+     * Get the version property: Version of the HDInsight cluster.  Type: string (or Expression with resultType string).
      * 
      * @return the version value.
      */
@@ -141,8 +162,7 @@ public final class HDInsightOnDemandLinkedService extends LinkedService {
     }
 
     /**
-     * Set the version property: Version of the HDInsight cluster.  Type: string (or Expression with resultType
-     * string).
+     * Set the version property: Version of the HDInsight cluster.  Type: string (or Expression with resultType string).
      * 
      * @param version the version value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
@@ -181,8 +201,8 @@ public final class HDInsightOnDemandLinkedService extends LinkedService {
     }
 
     /**
-     * Get the hostSubscriptionId property: The customer’s subscription to host the cluster. Type: string (or
-     * Expression with resultType string).
+     * Get the hostSubscriptionId property: The customer’s subscription to host the cluster. Type: string (or Expression
+     * with resultType string).
      * 
      * @return the hostSubscriptionId value.
      */
@@ -191,8 +211,8 @@ public final class HDInsightOnDemandLinkedService extends LinkedService {
     }
 
     /**
-     * Set the hostSubscriptionId property: The customer’s subscription to host the cluster. Type: string (or
-     * Expression with resultType string).
+     * Set the hostSubscriptionId property: The customer’s subscription to host the cluster. Type: string (or Expression
+     * with resultType string).
      * 
      * @param hostSubscriptionId the hostSubscriptionId value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
@@ -329,8 +349,8 @@ public final class HDInsightOnDemandLinkedService extends LinkedService {
     }
 
     /**
-     * Get the clusterUsername property: The username to access the cluster. Type: string (or Expression with
-     * resultType string).
+     * Get the clusterUsername property: The username to access the cluster. Type: string (or Expression with resultType
+     * string).
      * 
      * @return the clusterUsername value.
      */
@@ -339,8 +359,8 @@ public final class HDInsightOnDemandLinkedService extends LinkedService {
     }
 
     /**
-     * Set the clusterUsername property: The username to access the cluster. Type: string (or Expression with
-     * resultType string).
+     * Set the clusterUsername property: The username to access the cluster. Type: string (or Expression with resultType
+     * string).
      * 
      * @param clusterUsername the clusterUsername value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
@@ -575,8 +595,8 @@ public final class HDInsightOnDemandLinkedService extends LinkedService {
     }
 
     /**
-     * Get the hdfsConfiguration property: Specifies the HDFS configuration parameters (hdfs-site.xml) for the
-     * HDInsight cluster.
+     * Get the hdfsConfiguration property: Specifies the HDFS configuration parameters (hdfs-site.xml) for the HDInsight
+     * cluster.
      * 
      * @return the hdfsConfiguration value.
      */
@@ -585,8 +605,8 @@ public final class HDInsightOnDemandLinkedService extends LinkedService {
     }
 
     /**
-     * Set the hdfsConfiguration property: Specifies the HDFS configuration parameters (hdfs-site.xml) for the
-     * HDInsight cluster.
+     * Set the hdfsConfiguration property: Specifies the HDFS configuration parameters (hdfs-site.xml) for the HDInsight
+     * cluster.
      * 
      * @param hdfsConfiguration the hdfsConfiguration value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
@@ -600,8 +620,8 @@ public final class HDInsightOnDemandLinkedService extends LinkedService {
     }
 
     /**
-     * Get the hiveConfiguration property: Specifies the hive configuration parameters (hive-site.xml) for the
-     * HDInsight cluster.
+     * Get the hiveConfiguration property: Specifies the hive configuration parameters (hive-site.xml) for the HDInsight
+     * cluster.
      * 
      * @return the hiveConfiguration value.
      */
@@ -610,8 +630,8 @@ public final class HDInsightOnDemandLinkedService extends LinkedService {
     }
 
     /**
-     * Set the hiveConfiguration property: Specifies the hive configuration parameters (hive-site.xml) for the
-     * HDInsight cluster.
+     * Set the hiveConfiguration property: Specifies the hive configuration parameters (hive-site.xml) for the HDInsight
+     * cluster.
      * 
      * @param hiveConfiguration the hiveConfiguration value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
@@ -700,8 +720,8 @@ public final class HDInsightOnDemandLinkedService extends LinkedService {
     }
 
     /**
-     * Get the yarnConfiguration property: Specifies the Yarn configuration parameters (yarn-site.xml) for the
-     * HDInsight cluster.
+     * Get the yarnConfiguration property: Specifies the Yarn configuration parameters (yarn-site.xml) for the HDInsight
+     * cluster.
      * 
      * @return the yarnConfiguration value.
      */
@@ -710,8 +730,8 @@ public final class HDInsightOnDemandLinkedService extends LinkedService {
     }
 
     /**
-     * Set the yarnConfiguration property: Specifies the Yarn configuration parameters (yarn-site.xml) for the
-     * HDInsight cluster.
+     * Set the yarnConfiguration property: Specifies the Yarn configuration parameters (yarn-site.xml) for the HDInsight
+     * cluster.
      * 
      * @param yarnConfiguration the yarnConfiguration value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
@@ -725,8 +745,8 @@ public final class HDInsightOnDemandLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -735,8 +755,8 @@ public final class HDInsightOnDemandLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
@@ -927,8 +947,9 @@ public final class HDInsightOnDemandLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model HDInsightOnDemandLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model HDInsightOnDemandLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

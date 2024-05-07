@@ -13,6 +13,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -30,6 +31,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.selfhelp.fluent.SolutionOperationsClient;
 import com.azure.resourcemanager.selfhelp.fluent.models.SolutionResourceInner;
 import com.azure.resourcemanager.selfhelp.models.SolutionPatchRequestBody;
+import com.azure.resourcemanager.selfhelp.models.SolutionWarmUpRequestBody;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -96,23 +98,28 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") SolutionPatchRequestBody solutionPatchRequestBody,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/{scope}/providers/Microsoft.Help/solutions/{solutionResourceName}/warmup")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> warmUp(@HostParam("$host") String endpoint,
+            @PathParam(value = "scope", encoded = true) String scope,
+            @PathParam("solutionResourceName") String solutionResourceName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SolutionWarmUpRequestBody solutionWarmUpRequestBody,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and
      * requiredInputs’ from discovery solutions. &lt;br/&gt; Azure solutions comprise a comprehensive library of
      * self-help resources that have been thoughtfully curated by Azure engineers to aid customers in resolving typical
-     * troubleshooting issues. These solutions encompass (1.) dynamic and context-aware diagnostics, guided
-     * troubleshooting wizards, and data visualizations, (2.) rich instructional video tutorials and illustrative
-     * diagrams and images, and (3.) thoughtfully assembled textual troubleshooting instructions. All these components
-     * are seamlessly converged into unified solutions tailored to address a specific support problem area. Each
-     * solution type may require one or more ‘requiredParameters’ that are required to execute the individual solution
-     * component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
-     * execution, and you might see an empty response. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:&lt;/b&gt; &lt;br/&gt;1.
-     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘parameters’ in the request body of
-     * Solutions API. &lt;br/&gt;2. ‘requiredParameters’ from the Solutions response is the same as ‘
-     * additionalParameters’ in the request for diagnostics &lt;br/&gt;3. ‘requiredParameters’ from the Solutions
-     * response is the same as ‘properties.parameters’ in the request for Troubleshooters.
+     * troubleshooting issues. These solutions encompass: &lt;br/&gt; (1.) Dynamic and context-aware diagnostics, guided
+     * troubleshooting wizards, and data visualizations. &lt;br/&gt; (2.) Rich instructional video tutorials and
+     * illustrative diagrams and images. &lt;br/&gt; (3.) Thoughtfully assembled textual troubleshooting instructions.
+     * &lt;br/&gt; All these components are seamlessly converged into unified solutions tailored to address a specific
+     * support problem area.
      * 
      * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
      * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
@@ -151,17 +158,11 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
      * Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and
      * requiredInputs’ from discovery solutions. &lt;br/&gt; Azure solutions comprise a comprehensive library of
      * self-help resources that have been thoughtfully curated by Azure engineers to aid customers in resolving typical
-     * troubleshooting issues. These solutions encompass (1.) dynamic and context-aware diagnostics, guided
-     * troubleshooting wizards, and data visualizations, (2.) rich instructional video tutorials and illustrative
-     * diagrams and images, and (3.) thoughtfully assembled textual troubleshooting instructions. All these components
-     * are seamlessly converged into unified solutions tailored to address a specific support problem area. Each
-     * solution type may require one or more ‘requiredParameters’ that are required to execute the individual solution
-     * component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
-     * execution, and you might see an empty response. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:&lt;/b&gt; &lt;br/&gt;1.
-     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘parameters’ in the request body of
-     * Solutions API. &lt;br/&gt;2. ‘requiredParameters’ from the Solutions response is the same as ‘
-     * additionalParameters’ in the request for diagnostics &lt;br/&gt;3. ‘requiredParameters’ from the Solutions
-     * response is the same as ‘properties.parameters’ in the request for Troubleshooters.
+     * troubleshooting issues. These solutions encompass: &lt;br/&gt; (1.) Dynamic and context-aware diagnostics, guided
+     * troubleshooting wizards, and data visualizations. &lt;br/&gt; (2.) Rich instructional video tutorials and
+     * illustrative diagrams and images. &lt;br/&gt; (3.) Thoughtfully assembled textual troubleshooting instructions.
+     * &lt;br/&gt; All these components are seamlessly converged into unified solutions tailored to address a specific
+     * support problem area.
      * 
      * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
      * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
@@ -200,17 +201,11 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
      * Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and
      * requiredInputs’ from discovery solutions. &lt;br/&gt; Azure solutions comprise a comprehensive library of
      * self-help resources that have been thoughtfully curated by Azure engineers to aid customers in resolving typical
-     * troubleshooting issues. These solutions encompass (1.) dynamic and context-aware diagnostics, guided
-     * troubleshooting wizards, and data visualizations, (2.) rich instructional video tutorials and illustrative
-     * diagrams and images, and (3.) thoughtfully assembled textual troubleshooting instructions. All these components
-     * are seamlessly converged into unified solutions tailored to address a specific support problem area. Each
-     * solution type may require one or more ‘requiredParameters’ that are required to execute the individual solution
-     * component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
-     * execution, and you might see an empty response. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:&lt;/b&gt; &lt;br/&gt;1.
-     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘parameters’ in the request body of
-     * Solutions API. &lt;br/&gt;2. ‘requiredParameters’ from the Solutions response is the same as ‘
-     * additionalParameters’ in the request for diagnostics &lt;br/&gt;3. ‘requiredParameters’ from the Solutions
-     * response is the same as ‘properties.parameters’ in the request for Troubleshooters.
+     * troubleshooting issues. These solutions encompass: &lt;br/&gt; (1.) Dynamic and context-aware diagnostics, guided
+     * troubleshooting wizards, and data visualizations. &lt;br/&gt; (2.) Rich instructional video tutorials and
+     * illustrative diagrams and images. &lt;br/&gt; (3.) Thoughtfully assembled textual troubleshooting instructions.
+     * &lt;br/&gt; All these components are seamlessly converged into unified solutions tailored to address a specific
+     * support problem area.
      * 
      * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
      * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
@@ -235,17 +230,11 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
      * Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and
      * requiredInputs’ from discovery solutions. &lt;br/&gt; Azure solutions comprise a comprehensive library of
      * self-help resources that have been thoughtfully curated by Azure engineers to aid customers in resolving typical
-     * troubleshooting issues. These solutions encompass (1.) dynamic and context-aware diagnostics, guided
-     * troubleshooting wizards, and data visualizations, (2.) rich instructional video tutorials and illustrative
-     * diagrams and images, and (3.) thoughtfully assembled textual troubleshooting instructions. All these components
-     * are seamlessly converged into unified solutions tailored to address a specific support problem area. Each
-     * solution type may require one or more ‘requiredParameters’ that are required to execute the individual solution
-     * component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
-     * execution, and you might see an empty response. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:&lt;/b&gt; &lt;br/&gt;1.
-     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘parameters’ in the request body of
-     * Solutions API. &lt;br/&gt;2. ‘requiredParameters’ from the Solutions response is the same as ‘
-     * additionalParameters’ in the request for diagnostics &lt;br/&gt;3. ‘requiredParameters’ from the Solutions
-     * response is the same as ‘properties.parameters’ in the request for Troubleshooters.
+     * troubleshooting issues. These solutions encompass: &lt;br/&gt; (1.) Dynamic and context-aware diagnostics, guided
+     * troubleshooting wizards, and data visualizations. &lt;br/&gt; (2.) Rich instructional video tutorials and
+     * illustrative diagrams and images. &lt;br/&gt; (3.) Thoughtfully assembled textual troubleshooting instructions.
+     * &lt;br/&gt; All these components are seamlessly converged into unified solutions tailored to address a specific
+     * support problem area.
      * 
      * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
      * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
@@ -270,17 +259,11 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
      * Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and
      * requiredInputs’ from discovery solutions. &lt;br/&gt; Azure solutions comprise a comprehensive library of
      * self-help resources that have been thoughtfully curated by Azure engineers to aid customers in resolving typical
-     * troubleshooting issues. These solutions encompass (1.) dynamic and context-aware diagnostics, guided
-     * troubleshooting wizards, and data visualizations, (2.) rich instructional video tutorials and illustrative
-     * diagrams and images, and (3.) thoughtfully assembled textual troubleshooting instructions. All these components
-     * are seamlessly converged into unified solutions tailored to address a specific support problem area. Each
-     * solution type may require one or more ‘requiredParameters’ that are required to execute the individual solution
-     * component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
-     * execution, and you might see an empty response. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:&lt;/b&gt; &lt;br/&gt;1.
-     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘parameters’ in the request body of
-     * Solutions API. &lt;br/&gt;2. ‘requiredParameters’ from the Solutions response is the same as ‘
-     * additionalParameters’ in the request for diagnostics &lt;br/&gt;3. ‘requiredParameters’ from the Solutions
-     * response is the same as ‘properties.parameters’ in the request for Troubleshooters.
+     * troubleshooting issues. These solutions encompass: &lt;br/&gt; (1.) Dynamic and context-aware diagnostics, guided
+     * troubleshooting wizards, and data visualizations. &lt;br/&gt; (2.) Rich instructional video tutorials and
+     * illustrative diagrams and images. &lt;br/&gt; (3.) Thoughtfully assembled textual troubleshooting instructions.
+     * &lt;br/&gt; All these components are seamlessly converged into unified solutions tailored to address a specific
+     * support problem area.
      * 
      * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
      * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
@@ -306,17 +289,11 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
      * Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and
      * requiredInputs’ from discovery solutions. &lt;br/&gt; Azure solutions comprise a comprehensive library of
      * self-help resources that have been thoughtfully curated by Azure engineers to aid customers in resolving typical
-     * troubleshooting issues. These solutions encompass (1.) dynamic and context-aware diagnostics, guided
-     * troubleshooting wizards, and data visualizations, (2.) rich instructional video tutorials and illustrative
-     * diagrams and images, and (3.) thoughtfully assembled textual troubleshooting instructions. All these components
-     * are seamlessly converged into unified solutions tailored to address a specific support problem area. Each
-     * solution type may require one or more ‘requiredParameters’ that are required to execute the individual solution
-     * component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
-     * execution, and you might see an empty response. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:&lt;/b&gt; &lt;br/&gt;1.
-     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘parameters’ in the request body of
-     * Solutions API. &lt;br/&gt;2. ‘requiredParameters’ from the Solutions response is the same as ‘
-     * additionalParameters’ in the request for diagnostics &lt;br/&gt;3. ‘requiredParameters’ from the Solutions
-     * response is the same as ‘properties.parameters’ in the request for Troubleshooters.
+     * troubleshooting issues. These solutions encompass: &lt;br/&gt; (1.) Dynamic and context-aware diagnostics, guided
+     * troubleshooting wizards, and data visualizations. &lt;br/&gt; (2.) Rich instructional video tutorials and
+     * illustrative diagrams and images. &lt;br/&gt; (3.) Thoughtfully assembled textual troubleshooting instructions.
+     * &lt;br/&gt; All these components are seamlessly converged into unified solutions tailored to address a specific
+     * support problem area.
      * 
      * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
      * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
@@ -337,17 +314,11 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
      * Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and
      * requiredInputs’ from discovery solutions. &lt;br/&gt; Azure solutions comprise a comprehensive library of
      * self-help resources that have been thoughtfully curated by Azure engineers to aid customers in resolving typical
-     * troubleshooting issues. These solutions encompass (1.) dynamic and context-aware diagnostics, guided
-     * troubleshooting wizards, and data visualizations, (2.) rich instructional video tutorials and illustrative
-     * diagrams and images, and (3.) thoughtfully assembled textual troubleshooting instructions. All these components
-     * are seamlessly converged into unified solutions tailored to address a specific support problem area. Each
-     * solution type may require one or more ‘requiredParameters’ that are required to execute the individual solution
-     * component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
-     * execution, and you might see an empty response. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:&lt;/b&gt; &lt;br/&gt;1.
-     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘parameters’ in the request body of
-     * Solutions API. &lt;br/&gt;2. ‘requiredParameters’ from the Solutions response is the same as ‘
-     * additionalParameters’ in the request for diagnostics &lt;br/&gt;3. ‘requiredParameters’ from the Solutions
-     * response is the same as ‘properties.parameters’ in the request for Troubleshooters.
+     * troubleshooting issues. These solutions encompass: &lt;br/&gt; (1.) Dynamic and context-aware diagnostics, guided
+     * troubleshooting wizards, and data visualizations. &lt;br/&gt; (2.) Rich instructional video tutorials and
+     * illustrative diagrams and images. &lt;br/&gt; (3.) Thoughtfully assembled textual troubleshooting instructions.
+     * &lt;br/&gt; All these components are seamlessly converged into unified solutions tailored to address a specific
+     * support problem area.
      * 
      * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
      * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
@@ -369,17 +340,11 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
      * Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and
      * requiredInputs’ from discovery solutions. &lt;br/&gt; Azure solutions comprise a comprehensive library of
      * self-help resources that have been thoughtfully curated by Azure engineers to aid customers in resolving typical
-     * troubleshooting issues. These solutions encompass (1.) dynamic and context-aware diagnostics, guided
-     * troubleshooting wizards, and data visualizations, (2.) rich instructional video tutorials and illustrative
-     * diagrams and images, and (3.) thoughtfully assembled textual troubleshooting instructions. All these components
-     * are seamlessly converged into unified solutions tailored to address a specific support problem area. Each
-     * solution type may require one or more ‘requiredParameters’ that are required to execute the individual solution
-     * component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
-     * execution, and you might see an empty response. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:&lt;/b&gt; &lt;br/&gt;1.
-     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘parameters’ in the request body of
-     * Solutions API. &lt;br/&gt;2. ‘requiredParameters’ from the Solutions response is the same as ‘
-     * additionalParameters’ in the request for diagnostics &lt;br/&gt;3. ‘requiredParameters’ from the Solutions
-     * response is the same as ‘properties.parameters’ in the request for Troubleshooters.
+     * troubleshooting issues. These solutions encompass: &lt;br/&gt; (1.) Dynamic and context-aware diagnostics, guided
+     * troubleshooting wizards, and data visualizations. &lt;br/&gt; (2.) Rich instructional video tutorials and
+     * illustrative diagrams and images. &lt;br/&gt; (3.) Thoughtfully assembled textual troubleshooting instructions.
+     * &lt;br/&gt; All these components are seamlessly converged into unified solutions tailored to address a specific
+     * support problem area.
      * 
      * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
      * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
@@ -401,17 +366,11 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
      * Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and
      * requiredInputs’ from discovery solutions. &lt;br/&gt; Azure solutions comprise a comprehensive library of
      * self-help resources that have been thoughtfully curated by Azure engineers to aid customers in resolving typical
-     * troubleshooting issues. These solutions encompass (1.) dynamic and context-aware diagnostics, guided
-     * troubleshooting wizards, and data visualizations, (2.) rich instructional video tutorials and illustrative
-     * diagrams and images, and (3.) thoughtfully assembled textual troubleshooting instructions. All these components
-     * are seamlessly converged into unified solutions tailored to address a specific support problem area. Each
-     * solution type may require one or more ‘requiredParameters’ that are required to execute the individual solution
-     * component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
-     * execution, and you might see an empty response. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:&lt;/b&gt; &lt;br/&gt;1.
-     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘parameters’ in the request body of
-     * Solutions API. &lt;br/&gt;2. ‘requiredParameters’ from the Solutions response is the same as ‘
-     * additionalParameters’ in the request for diagnostics &lt;br/&gt;3. ‘requiredParameters’ from the Solutions
-     * response is the same as ‘properties.parameters’ in the request for Troubleshooters.
+     * troubleshooting issues. These solutions encompass: &lt;br/&gt; (1.) Dynamic and context-aware diagnostics, guided
+     * troubleshooting wizards, and data visualizations. &lt;br/&gt; (2.) Rich instructional video tutorials and
+     * illustrative diagrams and images. &lt;br/&gt; (3.) Thoughtfully assembled textual troubleshooting instructions.
+     * &lt;br/&gt; All these components are seamlessly converged into unified solutions tailored to address a specific
+     * support problem area.
      * 
      * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
      * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
@@ -432,17 +391,11 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
      * Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and
      * requiredInputs’ from discovery solutions. &lt;br/&gt; Azure solutions comprise a comprehensive library of
      * self-help resources that have been thoughtfully curated by Azure engineers to aid customers in resolving typical
-     * troubleshooting issues. These solutions encompass (1.) dynamic and context-aware diagnostics, guided
-     * troubleshooting wizards, and data visualizations, (2.) rich instructional video tutorials and illustrative
-     * diagrams and images, and (3.) thoughtfully assembled textual troubleshooting instructions. All these components
-     * are seamlessly converged into unified solutions tailored to address a specific support problem area. Each
-     * solution type may require one or more ‘requiredParameters’ that are required to execute the individual solution
-     * component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
-     * execution, and you might see an empty response. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:&lt;/b&gt; &lt;br/&gt;1.
-     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘parameters’ in the request body of
-     * Solutions API. &lt;br/&gt;2. ‘requiredParameters’ from the Solutions response is the same as ‘
-     * additionalParameters’ in the request for diagnostics &lt;br/&gt;3. ‘requiredParameters’ from the Solutions
-     * response is the same as ‘properties.parameters’ in the request for Troubleshooters.
+     * troubleshooting issues. These solutions encompass: &lt;br/&gt; (1.) Dynamic and context-aware diagnostics, guided
+     * troubleshooting wizards, and data visualizations. &lt;br/&gt; (2.) Rich instructional video tutorials and
+     * illustrative diagrams and images. &lt;br/&gt; (3.) Thoughtfully assembled textual troubleshooting instructions.
+     * &lt;br/&gt; All these components are seamlessly converged into unified solutions tailored to address a specific
+     * support problem area.
      * 
      * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
      * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
@@ -465,17 +418,11 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
      * Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and
      * requiredInputs’ from discovery solutions. &lt;br/&gt; Azure solutions comprise a comprehensive library of
      * self-help resources that have been thoughtfully curated by Azure engineers to aid customers in resolving typical
-     * troubleshooting issues. These solutions encompass (1.) dynamic and context-aware diagnostics, guided
-     * troubleshooting wizards, and data visualizations, (2.) rich instructional video tutorials and illustrative
-     * diagrams and images, and (3.) thoughtfully assembled textual troubleshooting instructions. All these components
-     * are seamlessly converged into unified solutions tailored to address a specific support problem area. Each
-     * solution type may require one or more ‘requiredParameters’ that are required to execute the individual solution
-     * component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
-     * execution, and you might see an empty response. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:&lt;/b&gt; &lt;br/&gt;1.
-     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘parameters’ in the request body of
-     * Solutions API. &lt;br/&gt;2. ‘requiredParameters’ from the Solutions response is the same as ‘
-     * additionalParameters’ in the request for diagnostics &lt;br/&gt;3. ‘requiredParameters’ from the Solutions
-     * response is the same as ‘properties.parameters’ in the request for Troubleshooters.
+     * troubleshooting issues. These solutions encompass: &lt;br/&gt; (1.) Dynamic and context-aware diagnostics, guided
+     * troubleshooting wizards, and data visualizations. &lt;br/&gt; (2.) Rich instructional video tutorials and
+     * illustrative diagrams and images. &lt;br/&gt; (3.) Thoughtfully assembled textual troubleshooting instructions.
+     * &lt;br/&gt; All these components are seamlessly converged into unified solutions tailored to address a specific
+     * support problem area.
      * 
      * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
      * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
@@ -495,17 +442,11 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
      * Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and
      * requiredInputs’ from discovery solutions. &lt;br/&gt; Azure solutions comprise a comprehensive library of
      * self-help resources that have been thoughtfully curated by Azure engineers to aid customers in resolving typical
-     * troubleshooting issues. These solutions encompass (1.) dynamic and context-aware diagnostics, guided
-     * troubleshooting wizards, and data visualizations, (2.) rich instructional video tutorials and illustrative
-     * diagrams and images, and (3.) thoughtfully assembled textual troubleshooting instructions. All these components
-     * are seamlessly converged into unified solutions tailored to address a specific support problem area. Each
-     * solution type may require one or more ‘requiredParameters’ that are required to execute the individual solution
-     * component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
-     * execution, and you might see an empty response. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:&lt;/b&gt; &lt;br/&gt;1.
-     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘parameters’ in the request body of
-     * Solutions API. &lt;br/&gt;2. ‘requiredParameters’ from the Solutions response is the same as ‘
-     * additionalParameters’ in the request for diagnostics &lt;br/&gt;3. ‘requiredParameters’ from the Solutions
-     * response is the same as ‘properties.parameters’ in the request for Troubleshooters.
+     * troubleshooting issues. These solutions encompass: &lt;br/&gt; (1.) Dynamic and context-aware diagnostics, guided
+     * troubleshooting wizards, and data visualizations. &lt;br/&gt; (2.) Rich instructional video tutorials and
+     * illustrative diagrams and images. &lt;br/&gt; (3.) Thoughtfully assembled textual troubleshooting instructions.
+     * &lt;br/&gt; All these components are seamlessly converged into unified solutions tailored to address a specific
+     * support problem area.
      * 
      * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
      * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
@@ -906,5 +847,130 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
     public SolutionResourceInner update(String scope, String solutionResourceName,
         SolutionPatchRequestBody solutionPatchRequestBody, Context context) {
         return updateAsync(scope, solutionResourceName, solutionPatchRequestBody, context).block();
+    }
+
+    /**
+     * Warm up the solution resource by preloading asynchronous diagnostics results into cache.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
+     * @param solutionResourceName Solution resource Name.
+     * @param solutionWarmUpRequestBody The required request body for warming up a solution resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> warmUpWithResponseAsync(String scope, String solutionResourceName,
+        SolutionWarmUpRequestBody solutionWarmUpRequestBody) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (scope == null) {
+            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
+        }
+        if (solutionResourceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter solutionResourceName is required and cannot be null."));
+        }
+        if (solutionWarmUpRequestBody != null) {
+            solutionWarmUpRequestBody.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.warmUp(this.client.getEndpoint(), scope, solutionResourceName,
+                this.client.getApiVersion(), solutionWarmUpRequestBody, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Warm up the solution resource by preloading asynchronous diagnostics results into cache.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
+     * @param solutionResourceName Solution resource Name.
+     * @param solutionWarmUpRequestBody The required request body for warming up a solution resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> warmUpWithResponseAsync(String scope, String solutionResourceName,
+        SolutionWarmUpRequestBody solutionWarmUpRequestBody, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (scope == null) {
+            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
+        }
+        if (solutionResourceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter solutionResourceName is required and cannot be null."));
+        }
+        if (solutionWarmUpRequestBody != null) {
+            solutionWarmUpRequestBody.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.warmUp(this.client.getEndpoint(), scope, solutionResourceName, this.client.getApiVersion(),
+            solutionWarmUpRequestBody, accept, context);
+    }
+
+    /**
+     * Warm up the solution resource by preloading asynchronous diagnostics results into cache.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
+     * @param solutionResourceName Solution resource Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> warmUpAsync(String scope, String solutionResourceName) {
+        final SolutionWarmUpRequestBody solutionWarmUpRequestBody = null;
+        return warmUpWithResponseAsync(scope, solutionResourceName, solutionWarmUpRequestBody)
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Warm up the solution resource by preloading asynchronous diagnostics results into cache.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
+     * @param solutionResourceName Solution resource Name.
+     * @param solutionWarmUpRequestBody The required request body for warming up a solution resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> warmUpWithResponse(String scope, String solutionResourceName,
+        SolutionWarmUpRequestBody solutionWarmUpRequestBody, Context context) {
+        return warmUpWithResponseAsync(scope, solutionResourceName, solutionWarmUpRequestBody, context).block();
+    }
+
+    /**
+     * Warm up the solution resource by preloading asynchronous diagnostics results into cache.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
+     * @param solutionResourceName Solution resource Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void warmUp(String scope, String solutionResourceName) {
+        final SolutionWarmUpRequestBody solutionWarmUpRequestBody = null;
+        warmUpWithResponse(scope, solutionResourceName, solutionWarmUpRequestBody, Context.NONE);
     }
 }

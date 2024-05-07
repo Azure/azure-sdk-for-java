@@ -7,11 +7,13 @@ import com.azure.communication.callautomation.implementation.models.Communicatio
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModelKind;
 import com.azure.communication.callautomation.implementation.models.CommunicationUserIdentifierModel;
+import com.azure.communication.callautomation.implementation.models.MicrosoftTeamsAppIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.MicrosoftTeamsUserIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.common.CommunicationCloudEnvironment;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.MicrosoftTeamsAppIdentifier;
 import com.azure.communication.common.MicrosoftTeamsUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.communication.common.UnknownIdentifier;
@@ -64,6 +66,16 @@ public class CommunicationIdentifierConverter {
                     .fromString(teamsUserIdentifierModel.getCloud().toString()));
         }
 
+        if (kind == CommunicationIdentifierModelKind.MICROSOFT_TEAMS_APP
+            && identifier.getMicrosoftTeamsApp() != null) {
+            MicrosoftTeamsAppIdentifierModel teamsUserIdentifierModel = identifier.getMicrosoftTeamsApp();
+            Objects.requireNonNull(teamsUserIdentifierModel.getAppId(), "'AppId' of the CommunicationIdentifierModel cannot be null.");
+            Objects.requireNonNull(teamsUserIdentifierModel.getCloud(), "'Cloud' of the CommunicationIdentifierModel cannot be null.");
+            Objects.requireNonNull(rawId, "'RawID' of the CommunicationIdentifierModel cannot be null.");
+            return new MicrosoftTeamsAppIdentifier(teamsUserIdentifierModel.getAppId(),
+                CommunicationCloudEnvironment.fromString(teamsUserIdentifierModel.getCloud().toString()));
+        }
+
         Objects.requireNonNull(rawId, "'RawID' of the CommunicationIdentifierModel cannot be null.");
         return new UnknownIdentifier(rawId);
     }
@@ -104,6 +116,16 @@ public class CommunicationIdentifierConverter {
                         teamsUserIdentifier.getCloudEnvironment().toString())));
         }
 
+        if (identifier instanceof MicrosoftTeamsAppIdentifier) {
+            MicrosoftTeamsAppIdentifier teamsAppIdentifier = (MicrosoftTeamsAppIdentifier) identifier;
+            return new CommunicationIdentifierModel()
+                .setRawId(teamsAppIdentifier.getRawId())
+                .setMicrosoftTeamsApp(new MicrosoftTeamsAppIdentifierModel()
+                    .setAppId(teamsAppIdentifier.getAppId())
+                    .setCloud(CommunicationCloudEnvironmentModel.fromString(
+                        teamsAppIdentifier.getCloudEnvironment().toString())));
+        }
+
         if (identifier instanceof UnknownIdentifier) {
             UnknownIdentifier unknownIdentifier = (UnknownIdentifier) identifier;
             return new CommunicationIdentifierModel().setRawId(unknownIdentifier.getId());
@@ -116,6 +138,7 @@ public class CommunicationIdentifierConverter {
         CommunicationUserIdentifierModel communicationUser = identifier.getCommunicationUser();
         PhoneNumberIdentifierModel phoneNumber = identifier.getPhoneNumber();
         MicrosoftTeamsUserIdentifierModel microsoftTeamsUser = identifier.getMicrosoftTeamsUser();
+        MicrosoftTeamsAppIdentifierModel microsoftTeamsApp = identifier.getMicrosoftTeamsApp();
 
         ArrayList<String> presentProperties = new ArrayList<>();
         if (communicationUser != null) {
@@ -126,6 +149,9 @@ public class CommunicationIdentifierConverter {
         }
         if (microsoftTeamsUser != null) {
             presentProperties.add(microsoftTeamsUser.getClass().getName());
+        }
+        if (microsoftTeamsApp != null) {
+            presentProperties.add(microsoftTeamsApp.getClass().getName());
         }
 
         if (presentProperties.size() > 1) {
@@ -146,6 +172,9 @@ public class CommunicationIdentifierConverter {
         }
         if (identifier.getMicrosoftTeamsUser() != null) {
             return CommunicationIdentifierModelKind.MICROSOFT_TEAMS_USER;
+        }
+        if (identifier.getMicrosoftTeamsApp() != null) {
+            return CommunicationIdentifierModelKind.MICROSOFT_TEAMS_APP;
         }
         return CommunicationIdentifierModelKind.UNKNOWN;
     }

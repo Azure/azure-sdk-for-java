@@ -12,16 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ParameterSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ParameterSpecification model = BinaryData.fromString("{\"type\":\"Int\",\"defaultValue\":\"datasmond\"}")
-            .toObject(ParameterSpecification.class);
-        Assertions.assertEquals(ParameterType.INT, model.type());
+        ParameterSpecification model
+            = BinaryData.fromString("{\"type\":\"Float\",\"defaultValue\":\"dataoievseotgqrlltm\"}")
+                .toObject(ParameterSpecification.class);
+        Assertions.assertEquals(ParameterType.FLOAT, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ParameterSpecification model
-            = new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datasmond");
+            = new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataoievseotgqrlltm");
         model = BinaryData.fromObject(model).toObject(ParameterSpecification.class);
-        Assertions.assertEquals(ParameterType.INT, model.type());
+        Assertions.assertEquals(ParameterType.FLOAT, model.type());
     }
 }

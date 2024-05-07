@@ -17,8 +17,8 @@ public final class EnvironmentDefinitionImpl implements EnvironmentDefinition {
 
     private final com.azure.resourcemanager.devcenter.DevCenterManager serviceManager;
 
-    EnvironmentDefinitionImpl(
-        EnvironmentDefinitionInner innerObject, com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
+    EnvironmentDefinitionImpl(EnvironmentDefinitionInner innerObject,
+        com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

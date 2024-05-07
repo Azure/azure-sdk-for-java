@@ -5,21 +5,24 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A representation of the available options for the Azure OpenAI optical character recognition (OCR) enhancement.
  */
 @Immutable
-public final class AzureChatOCREnhancementConfiguration {
+public final class AzureChatOCREnhancementConfiguration
+    implements JsonSerializable<AzureChatOCREnhancementConfiguration> {
 
     /*
      * Specifies whether the enhancement is enabled.
      */
     @Generated
-    @JsonProperty(value = "enabled")
-    private boolean enabled;
+    private final boolean enabled;
 
     /**
      * Creates an instance of AzureChatOCREnhancementConfiguration class.
@@ -27,8 +30,7 @@ public final class AzureChatOCREnhancementConfiguration {
      * @param enabled the enabled value to set.
      */
     @Generated
-    @JsonCreator
-    public AzureChatOCREnhancementConfiguration(@JsonProperty(value = "enabled") boolean enabled) {
+    public AzureChatOCREnhancementConfiguration(boolean enabled) {
         this.enabled = enabled;
     }
 
@@ -40,5 +42,42 @@ public final class AzureChatOCREnhancementConfiguration {
     @Generated
     public boolean isEnabled() {
         return this.enabled;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureChatOCREnhancementConfiguration from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureChatOCREnhancementConfiguration if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureChatOCREnhancementConfiguration.
+     */
+    @Generated
+    public static AzureChatOCREnhancementConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean enabled = false;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("enabled".equals(fieldName)) {
+                    enabled = reader.getBoolean();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new AzureChatOCREnhancementConfiguration(enabled);
+        });
     }
 }

@@ -5,62 +5,60 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Optional settings to control how fields are processed when using a configured Azure Search resource.
  */
 @Fluent
-public final class AzureSearchIndexFieldMappingOptions {
+public final class AzureSearchIndexFieldMappingOptions
+    implements JsonSerializable<AzureSearchIndexFieldMappingOptions> {
 
     /*
      * The name of the index field to use as a title.
      */
     @Generated
-    @JsonProperty(value = "title_field")
     private String titleField;
 
     /*
      * The name of the index field to use as a URL.
      */
     @Generated
-    @JsonProperty(value = "url_field")
     private String urlField;
 
     /*
      * The name of the index field to use as a filepath.
      */
     @Generated
-    @JsonProperty(value = "filepath_field")
     private String filepathField;
 
     /*
      * The names of index fields that should be treated as content.
      */
     @Generated
-    @JsonProperty(value = "content_fields")
     private List<String> contentFields;
 
     /*
      * The separator pattern that content fields should use.
      */
     @Generated
-    @JsonProperty(value = "content_fields_separator")
     private String contentFieldsSeparator;
 
     /*
      * The names of fields that represent vector data.
      */
     @Generated
-    @JsonProperty(value = "vector_fields")
     private List<String> vectorFields;
 
     /*
      * The names of fields that represent image vector data.
      */
     @Generated
-    @JsonProperty(value = "image_vector_fields")
     private List<String> imageVectorFields;
 
     /**
@@ -222,5 +220,66 @@ public final class AzureSearchIndexFieldMappingOptions {
     public AzureSearchIndexFieldMappingOptions setImageVectorFields(List<String> imageVectorFields) {
         this.imageVectorFields = imageVectorFields;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("title_field", this.titleField);
+        jsonWriter.writeStringField("url_field", this.urlField);
+        jsonWriter.writeStringField("filepath_field", this.filepathField);
+        jsonWriter.writeArrayField("content_fields", this.contentFields,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("content_fields_separator", this.contentFieldsSeparator);
+        jsonWriter.writeArrayField("vector_fields", this.vectorFields,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("image_vector_fields", this.imageVectorFields,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureSearchIndexFieldMappingOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureSearchIndexFieldMappingOptions if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureSearchIndexFieldMappingOptions.
+     */
+    @Generated
+    public static AzureSearchIndexFieldMappingOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureSearchIndexFieldMappingOptions deserializedAzureSearchIndexFieldMappingOptions
+                = new AzureSearchIndexFieldMappingOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("title_field".equals(fieldName)) {
+                    deserializedAzureSearchIndexFieldMappingOptions.titleField = reader.getString();
+                } else if ("url_field".equals(fieldName)) {
+                    deserializedAzureSearchIndexFieldMappingOptions.urlField = reader.getString();
+                } else if ("filepath_field".equals(fieldName)) {
+                    deserializedAzureSearchIndexFieldMappingOptions.filepathField = reader.getString();
+                } else if ("content_fields".equals(fieldName)) {
+                    List<String> contentFields = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureSearchIndexFieldMappingOptions.contentFields = contentFields;
+                } else if ("content_fields_separator".equals(fieldName)) {
+                    deserializedAzureSearchIndexFieldMappingOptions.contentFieldsSeparator = reader.getString();
+                } else if ("vector_fields".equals(fieldName)) {
+                    List<String> vectorFields = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureSearchIndexFieldMappingOptions.vectorFields = vectorFields;
+                } else if ("image_vector_fields".equals(fieldName)) {
+                    List<String> imageVectorFields = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureSearchIndexFieldMappingOptions.imageVectorFields = imageVectorFields;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedAzureSearchIndexFieldMappingOptions;
+        });
     }
 }

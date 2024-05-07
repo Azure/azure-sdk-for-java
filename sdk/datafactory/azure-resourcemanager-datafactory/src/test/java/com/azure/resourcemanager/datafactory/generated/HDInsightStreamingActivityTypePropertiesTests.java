@@ -17,36 +17,34 @@ public final class HDInsightStreamingActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HDInsightStreamingActivityTypeProperties model = BinaryData.fromString(
-            "{\"storageLinkedServices\":[{\"referenceName\":\"fawfeeatvnmm\",\"parameters\":{\"gwtcll\":\"datawfqrykikh\",\"fohtsmkf\":\"datawaz\"}},{\"referenceName\":\"oxbavfseh\",\"parameters\":{\"qszn\":\"dataqion\",\"o\":\"databi\",\"dteyvpv\":\"dataexjcrw\"}},{\"referenceName\":\"cqjgwtiasfbp\",\"parameters\":{\"seh\":\"dataxxxhbrysns\",\"wqg\":\"dataegvwbykrndxbkv\",\"qyedhyfncwiyfzu\":\"datafhl\",\"ccgtujiwzbzed\":\"databsaaxstnziv\"}}],\"arguments\":[\"dataygjhclny\",\"dataktc\",\"datamct\"],\"getDebugInfo\":\"Always\",\"mapper\":\"databrxmxqskemtajjf\",\"reducer\":\"datak\",\"input\":\"dataqpgbticn\",\"output\":\"datadubocmjiib\",\"filePaths\":[\"datawalhaw\",\"dataptiqfu\",\"dataavtapcxsmap\"],\"fileLinkedService\":{\"referenceName\":\"mmwylrv\",\"parameters\":{\"mcbtumt\":\"dataelpuxhku\",\"hyqexujll\":\"datarcvo\"}},\"combiner\":\"dataeegvqbsythycdck\",\"commandEnvironment\":[\"dataommgfwx\",\"datahrcmg\"],\"defines\":{\"senyehmwzgfanke\":\"datagosclhjgckkbn\",\"g\":\"datalorosa\"}}")
+            "{\"storageLinkedServices\":[{\"referenceName\":\"bvf\",\"parameters\":{\"gfdsrngy\":\"datahhzmxptkbehpyw\"}}],\"arguments\":[\"datazqwcmmolpfcvvk\",\"datannyksskuscdnn\"],\"getDebugInfo\":\"Failure\",\"mapper\":\"datata\",\"reducer\":\"datayrhttjtqwwlaxh\",\"input\":\"datajwpc\",\"output\":\"datatwywhrzntmzzzavx\",\"filePaths\":[\"datakexspoiq\",\"dataukytteai\"],\"fileLinkedService\":{\"referenceName\":\"wopkov\",\"parameters\":{\"yqmgvqthlim\":\"dataaigdvcbylds\"}},\"combiner\":\"datazr\",\"commandEnvironment\":[\"datagyon\"],\"defines\":{\"sijcjnbtgfitpx\":\"dataxwldktphn\",\"ngj\":\"datakb\",\"fzkujgeppxiyo\":\"databbyqvbd\"}}")
             .toObject(HDInsightStreamingActivityTypeProperties.class);
-        Assertions.assertEquals("fawfeeatvnmm", model.storageLinkedServices().get(0).referenceName());
-        Assertions.assertEquals(HDInsightActivityDebugInfoOption.ALWAYS, model.getDebugInfo());
-        Assertions.assertEquals("mmwylrv", model.fileLinkedService().referenceName());
+        Assertions.assertEquals("bvf", model.storageLinkedServices().get(0).referenceName());
+        Assertions.assertEquals(HDInsightActivityDebugInfoOption.FAILURE, model.getDebugInfo());
+        Assertions.assertEquals("wopkov", model.fileLinkedService().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HDInsightStreamingActivityTypeProperties model = new HDInsightStreamingActivityTypeProperties()
-            .withStorageLinkedServices(Arrays.asList(
-                new LinkedServiceReference().withReferenceName("fawfeeatvnmm")
-                    .withParameters(mapOf("gwtcll", "datawfqrykikh", "fohtsmkf", "datawaz")),
-                new LinkedServiceReference().withReferenceName("oxbavfseh")
-                    .withParameters(mapOf("qszn", "dataqion", "o", "databi", "dteyvpv", "dataexjcrw")),
-                new LinkedServiceReference().withReferenceName("cqjgwtiasfbp")
-                    .withParameters(mapOf("seh", "dataxxxhbrysns", "wqg", "dataegvwbykrndxbkv", "qyedhyfncwiyfzu",
-                        "datafhl", "ccgtujiwzbzed", "databsaaxstnziv"))))
-            .withArguments(Arrays.asList("dataygjhclny", "dataktc", "datamct"))
-            .withGetDebugInfo(HDInsightActivityDebugInfoOption.ALWAYS).withMapper("databrxmxqskemtajjf")
-            .withReducer("datak").withInput("dataqpgbticn").withOutput("datadubocmjiib")
-            .withFilePaths(Arrays.asList("datawalhaw", "dataptiqfu", "dataavtapcxsmap"))
-            .withFileLinkedService(new LinkedServiceReference().withReferenceName("mmwylrv")
-                .withParameters(mapOf("mcbtumt", "dataelpuxhku", "hyqexujll", "datarcvo")))
-            .withCombiner("dataeegvqbsythycdck").withCommandEnvironment(Arrays.asList("dataommgfwx", "datahrcmg"))
-            .withDefines(mapOf("senyehmwzgfanke", "datagosclhjgckkbn", "g", "datalorosa"));
+            .withStorageLinkedServices(Arrays.asList(new LinkedServiceReference().withReferenceName("bvf")
+                .withParameters(mapOf("gfdsrngy", "datahhzmxptkbehpyw"))))
+            .withArguments(Arrays.asList("datazqwcmmolpfcvvk", "datannyksskuscdnn"))
+            .withGetDebugInfo(HDInsightActivityDebugInfoOption.FAILURE)
+            .withMapper("datata")
+            .withReducer("datayrhttjtqwwlaxh")
+            .withInput("datajwpc")
+            .withOutput("datatwywhrzntmzzzavx")
+            .withFilePaths(Arrays.asList("datakexspoiq", "dataukytteai"))
+            .withFileLinkedService(new LinkedServiceReference().withReferenceName("wopkov")
+                .withParameters(mapOf("yqmgvqthlim", "dataaigdvcbylds")))
+            .withCombiner("datazr")
+            .withCommandEnvironment(Arrays.asList("datagyon"))
+            .withDefines(mapOf("sijcjnbtgfitpx", "dataxwldktphn", "ngj", "datakb", "fzkujgeppxiyo", "databbyqvbd"));
         model = BinaryData.fromObject(model).toObject(HDInsightStreamingActivityTypeProperties.class);
-        Assertions.assertEquals("fawfeeatvnmm", model.storageLinkedServices().get(0).referenceName());
-        Assertions.assertEquals(HDInsightActivityDebugInfoOption.ALWAYS, model.getDebugInfo());
-        Assertions.assertEquals("mmwylrv", model.fileLinkedService().referenceName());
+        Assertions.assertEquals("bvf", model.storageLinkedServices().get(0).referenceName());
+        Assertions.assertEquals(HDInsightActivityDebugInfoOption.FAILURE, model.getDebugInfo());
+        Assertions.assertEquals("wopkov", model.fileLinkedService().referenceName());
     }
 
     // Use "Map.of" if available

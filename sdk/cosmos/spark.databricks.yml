@@ -59,7 +59,7 @@ stages:
           targetType: inline
           script: python -m pip install --upgrade pip setuptools wheel databricks-cli
       - task: Bash@3
-        displayName: Connect to Databricks workspace
+        displayName: 'Connect to Databricks workspace $(DatabricksEndpoint)'
         inputs:
           targetType: inline
           script: >-

@@ -13,18 +13,19 @@ public final class AzureDataLakeStoreWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureDataLakeStoreWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"AzureDataLakeStoreWriteSettings\",\"expiryDateTime\":\"datarmtuprqt\",\"maxConcurrentConnections\":\"dataqkohupyajkde\",\"disableMetricsCollection\":\"dataarjv\",\"copyBehavior\":\"dataozfjbdyyxhjfzjb\",\"metadata\":[{\"name\":\"datalnbklhwri\",\"value\":\"datauljbhgzffe\"},{\"name\":\"datayoiaobbzcdlcc\",\"value\":\"datamvbhb\"}],\"\":{\"x\":\"databxolzin\",\"gzgsgzlbunmjha\":\"datafixrukwxcaagzlqo\",\"ysrreebj\":\"datafiyrywf\",\"dtykhsafrfv\":\"dataslbxfkiiarlldygf\"}}")
+            "{\"type\":\"gsxkyboysquygokh\",\"expiryDateTime\":\"dataopbabndwcfmzmqmg\",\"maxConcurrentConnections\":\"datatwcyigrhfevxypqu\",\"disableMetricsCollection\":\"dataojyxhhvoowrtcsuc\",\"copyBehavior\":\"dataawyiqzj\",\"metadata\":[{\"name\":\"datajnmpvsbludfbhzu\",\"value\":\"datapfbhihddiiuex\"}],\"\":{\"udmlqpward\":\"dataf\"}}")
             .toObject(AzureDataLakeStoreWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureDataLakeStoreWriteSettings model
-            = new AzureDataLakeStoreWriteSettings().withMaxConcurrentConnections("dataqkohupyajkde")
-                .withDisableMetricsCollection("dataarjv").withCopyBehavior("dataozfjbdyyxhjfzjb")
-                .withMetadata(Arrays.asList(new MetadataItem().withName("datalnbklhwri").withValue("datauljbhgzffe"),
-                    new MetadataItem().withName("datayoiaobbzcdlcc").withValue("datamvbhb")))
-                .withExpiryDateTime("datarmtuprqt");
+            = new AzureDataLakeStoreWriteSettings().withMaxConcurrentConnections("datatwcyigrhfevxypqu")
+                .withDisableMetricsCollection("dataojyxhhvoowrtcsuc")
+                .withCopyBehavior("dataawyiqzj")
+                .withMetadata(
+                    Arrays.asList(new MetadataItem().withName("datajnmpvsbludfbhzu").withValue("datapfbhihddiiuex")))
+                .withExpiryDateTime("dataopbabndwcfmzmqmg");
         model = BinaryData.fromObject(model).toObject(AzureDataLakeStoreWriteSettings.class);
     }
 }

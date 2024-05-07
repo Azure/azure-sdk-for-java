@@ -78,14 +78,16 @@ public final class ActiveDirectoryAdministratorImpl
     }
 
     public ActiveDirectoryAdministrator create() {
-        this.innerObject = serviceManager.serviceClient().getAdministrators().create(resourceGroupName, serverName,
-            objectId, createParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAdministrators()
+            .create(resourceGroupName, serverName, objectId, createParameters, Context.NONE);
         return this;
     }
 
     public ActiveDirectoryAdministrator create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAdministrators().create(resourceGroupName, serverName,
-            objectId, createParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAdministrators()
+            .create(resourceGroupName, serverName, objectId, createParameters, context);
         return this;
     }
 
@@ -98,14 +100,18 @@ public final class ActiveDirectoryAdministratorImpl
     }
 
     public ActiveDirectoryAdministrator refresh() {
-        this.innerObject = serviceManager.serviceClient().getAdministrators()
-            .getWithResponse(resourceGroupName, serverName, objectId, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAdministrators()
+            .getWithResponse(resourceGroupName, serverName, objectId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ActiveDirectoryAdministrator refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAdministrators()
-            .getWithResponse(resourceGroupName, serverName, objectId, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAdministrators()
+            .getWithResponse(resourceGroupName, serverName, objectId, context)
+            .getValue();
         return this;
     }
 

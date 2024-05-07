@@ -17,22 +17,19 @@ import java.util.List;
 @Fluent
 public final class IfConditionActivityTypeProperties {
     /*
-     * An expression that would evaluate to Boolean. This is used to determine the block of activities
-     * (ifTrueActivities or ifFalseActivities) that will be executed.
+     * An expression that would evaluate to Boolean. This is used to determine the block of activities (ifTrueActivities or ifFalseActivities) that will be executed.
      */
     @JsonProperty(value = "expression", required = true)
     private Expression expression;
 
     /*
-     * List of activities to execute if expression is evaluated to true. This is an optional property and if not
-     * provided, the activity will exit without any action.
+     * List of activities to execute if expression is evaluated to true. This is an optional property and if not provided, the activity will exit without any action.
      */
     @JsonProperty(value = "ifTrueActivities")
     private List<Activity> ifTrueActivities;
 
     /*
-     * List of activities to execute if expression is evaluated to false. This is an optional property and if not
-     * provided, the activity will exit without any action.
+     * List of activities to execute if expression is evaluated to false. This is an optional property and if not provided, the activity will exit without any action.
      */
     @JsonProperty(value = "ifFalseActivities")
     private List<Activity> ifFalseActivities;
@@ -44,8 +41,8 @@ public final class IfConditionActivityTypeProperties {
     }
 
     /**
-     * Get the expression property: An expression that would evaluate to Boolean. This is used to determine the block
-     * of activities (ifTrueActivities or ifFalseActivities) that will be executed.
+     * Get the expression property: An expression that would evaluate to Boolean. This is used to determine the block of
+     * activities (ifTrueActivities or ifFalseActivities) that will be executed.
      * 
      * @return the expression value.
      */
@@ -54,8 +51,8 @@ public final class IfConditionActivityTypeProperties {
     }
 
     /**
-     * Set the expression property: An expression that would evaluate to Boolean. This is used to determine the block
-     * of activities (ifTrueActivities or ifFalseActivities) that will be executed.
+     * Set the expression property: An expression that would evaluate to Boolean. This is used to determine the block of
+     * activities (ifTrueActivities or ifFalseActivities) that will be executed.
      * 
      * @param expression the expression value to set.
      * @return the IfConditionActivityTypeProperties object itself.
@@ -88,8 +85,8 @@ public final class IfConditionActivityTypeProperties {
     }
 
     /**
-     * Get the ifFalseActivities property: List of activities to execute if expression is evaluated to false. This is
-     * an optional property and if not provided, the activity will exit without any action.
+     * Get the ifFalseActivities property: List of activities to execute if expression is evaluated to false. This is an
+     * optional property and if not provided, the activity will exit without any action.
      * 
      * @return the ifFalseActivities value.
      */
@@ -98,8 +95,8 @@ public final class IfConditionActivityTypeProperties {
     }
 
     /**
-     * Set the ifFalseActivities property: List of activities to execute if expression is evaluated to false. This is
-     * an optional property and if not provided, the activity will exit without any action.
+     * Set the ifFalseActivities property: List of activities to execute if expression is evaluated to false. This is an
+     * optional property and if not provided, the activity will exit without any action.
      * 
      * @param ifFalseActivities the ifFalseActivities value to set.
      * @return the IfConditionActivityTypeProperties object itself.
@@ -116,8 +113,9 @@ public final class IfConditionActivityTypeProperties {
      */
     public void validate() {
         if (expression() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property expression in model IfConditionActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property expression in model IfConditionActivityTypeProperties"));
         } else {
             expression().validate();
         }

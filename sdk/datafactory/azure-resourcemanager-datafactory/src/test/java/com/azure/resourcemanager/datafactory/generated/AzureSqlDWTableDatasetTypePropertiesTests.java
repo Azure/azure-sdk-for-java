@@ -11,14 +11,16 @@ public final class AzureSqlDWTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureSqlDWTableDatasetTypeProperties model = BinaryData
-            .fromString("{\"tableName\":\"dataay\",\"schema\":\"datavwbzmfxlrymf\",\"table\":\"datalpiywqnpfydrfbg\"}")
+            .fromString("{\"tableName\":\"dataookju\",\"schema\":\"dataxezriw\",\"table\":\"dataewapcqksaaa\"}")
             .toObject(AzureSqlDWTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureSqlDWTableDatasetTypeProperties model = new AzureSqlDWTableDatasetTypeProperties().withTableName("dataay")
-            .withSchema("datavwbzmfxlrymf").withTable("datalpiywqnpfydrfbg");
+        AzureSqlDWTableDatasetTypeProperties model
+            = new AzureSqlDWTableDatasetTypeProperties().withTableName("dataookju")
+                .withSchema("dataxezriw")
+                .withTable("dataewapcqksaaa");
         model = BinaryData.fromObject(model).toObject(AzureSqlDWTableDatasetTypeProperties.class);
     }
 }

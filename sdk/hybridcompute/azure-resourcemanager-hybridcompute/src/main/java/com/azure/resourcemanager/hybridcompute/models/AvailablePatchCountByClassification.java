@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hybridcompute.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Summarization of patches available for installation on the machine by classification. */
+/**
+ * Summarization of patches available for installation on the machine by classification.
+ */
 @Immutable
 public final class AvailablePatchCountByClassification {
     /*
@@ -64,13 +66,15 @@ public final class AvailablePatchCountByClassification {
     @JsonProperty(value = "other", access = JsonProperty.Access.WRITE_ONLY)
     private Integer other;
 
-    /** Creates an instance of AvailablePatchCountByClassification class. */
+    /**
+     * Creates an instance of AvailablePatchCountByClassification class.
+     */
     public AvailablePatchCountByClassification() {
     }
 
     /**
      * Get the security property: Number of security patches available for installation.
-     *
+     * 
      * @return the security value.
      */
     public Integer security() {
@@ -79,7 +83,7 @@ public final class AvailablePatchCountByClassification {
 
     /**
      * Get the critical property: Number of critical patches available for installation.
-     *
+     * 
      * @return the critical value.
      */
     public Integer critical() {
@@ -88,7 +92,7 @@ public final class AvailablePatchCountByClassification {
 
     /**
      * Get the definition property: Number of definition patches available for installation.
-     *
+     * 
      * @return the definition value.
      */
     public Integer definition() {
@@ -97,7 +101,7 @@ public final class AvailablePatchCountByClassification {
 
     /**
      * Get the updateRollup property: Number of update Rollup patches available for installation.
-     *
+     * 
      * @return the updateRollup value.
      */
     public Integer updateRollup() {
@@ -106,7 +110,7 @@ public final class AvailablePatchCountByClassification {
 
     /**
      * Get the featurePack property: Number of feature pack patches available for installation.
-     *
+     * 
      * @return the featurePack value.
      */
     public Integer featurePack() {
@@ -115,7 +119,7 @@ public final class AvailablePatchCountByClassification {
 
     /**
      * Get the servicePack property: Number of service pack patches available for installation.
-     *
+     * 
      * @return the servicePack value.
      */
     public Integer servicePack() {
@@ -124,7 +128,7 @@ public final class AvailablePatchCountByClassification {
 
     /**
      * Get the tools property: Number of tools patches available for installation.
-     *
+     * 
      * @return the tools value.
      */
     public Integer tools() {
@@ -133,7 +137,7 @@ public final class AvailablePatchCountByClassification {
 
     /**
      * Get the updates property: Number of updates category patches available for installation.
-     *
+     * 
      * @return the updates value.
      */
     public Integer updates() {
@@ -142,7 +146,7 @@ public final class AvailablePatchCountByClassification {
 
     /**
      * Get the other property: Number of other patches available for installation.
-     *
+     * 
      * @return the other value.
      */
     public Integer other() {
@@ -151,7 +155,7 @@ public final class AvailablePatchCountByClassification {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

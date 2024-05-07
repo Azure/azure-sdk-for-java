@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -25,6 +26,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 public class ProxySelectorTest extends IntegrationTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(ProxySelectorTest.class);
+
     private static final int PROXY_PORT = 9002;
     private static final InetSocketAddress SIMPLE_PROXY_ADDRESS = new InetSocketAddress("localhost", PROXY_PORT);
     private ProxySelector defaultProxySelector;
@@ -78,7 +81,7 @@ public class ProxySelectorTest extends IntegrationTestBase {
             .expectErrorSatisfies(error -> {
                 // The message can vary because it is returned from proton-j, so we don't want to compare against that.
                 // This is a transient error from ExceptionUtil.java: line 67.
-                System.out.println("Error: " + error);
+                LOGGER.log(LogLevel.VERBOSE, () -> "Error", error);
             })
             .verify(TIMEOUT);
 

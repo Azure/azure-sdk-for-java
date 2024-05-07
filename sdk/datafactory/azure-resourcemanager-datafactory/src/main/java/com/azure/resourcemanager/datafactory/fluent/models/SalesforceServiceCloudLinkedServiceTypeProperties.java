@@ -14,16 +14,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SalesforceServiceCloudLinkedServiceTypeProperties {
     /*
-     * The URL of Salesforce Service Cloud instance. Default is 'https://login.salesforce.com'. To copy data from
-     * sandbox, specify 'https://test.salesforce.com'. To copy data from custom domain, specify, for example,
-     * 'https://[domain].my.salesforce.com'. Type: string (or Expression with resultType string).
+     * The URL of Salesforce Service Cloud instance. Default is 'https://login.salesforce.com'. To copy data from sandbox, specify 'https://test.salesforce.com'. To copy data from custom domain, specify, for example, 'https://[domain].my.salesforce.com'. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "environmentUrl")
     private Object environmentUrl;
 
     /*
-     * The username for Basic authentication of the Salesforce instance. Type: string (or Expression with resultType
-     * string).
+     * The username for Basic authentication of the Salesforce instance. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "username")
     private Object username;
@@ -53,8 +50,7 @@ public final class SalesforceServiceCloudLinkedServiceTypeProperties {
     private Object extendedProperties;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
@@ -198,8 +194,8 @@ public final class SalesforceServiceCloudLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -208,8 +204,8 @@ public final class SalesforceServiceCloudLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SalesforceServiceCloudLinkedServiceTypeProperties object itself.

@@ -11,7 +11,9 @@ import com.azure.resourcemanager.devcenter.models.SkuTier;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The resource model definition representing SKU for DevCenter resources. */
+/**
+ * The resource model definition representing SKU for DevCenter resources.
+ */
 @Fluent
 public final class DevCenterSkuInner extends Sku {
     /*
@@ -32,13 +34,15 @@ public final class DevCenterSkuInner extends Sku {
     @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
     private List<Capability> capabilities;
 
-    /** Creates an instance of DevCenterSkuInner class. */
+    /**
+     * Creates an instance of DevCenterSkuInner class.
+     */
     public DevCenterSkuInner() {
     }
 
     /**
      * Get the resourceType property: The name of the resource type.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -47,7 +51,7 @@ public final class DevCenterSkuInner extends Sku {
 
     /**
      * Get the locations property: SKU supported locations.
-     *
+     * 
      * @return the locations value.
      */
     public List<String> locations() {
@@ -56,42 +60,52 @@ public final class DevCenterSkuInner extends Sku {
 
     /**
      * Get the capabilities property: Collection of name/value pairs to describe the SKU capabilities.
-     *
+     * 
      * @return the capabilities value.
      */
     public List<Capability> capabilities() {
         return this.capabilities;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DevCenterSkuInner withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DevCenterSkuInner withTier(SkuTier tier) {
         super.withTier(tier);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DevCenterSkuInner withSize(String size) {
         super.withSize(size);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DevCenterSkuInner withFamily(String family) {
         super.withFamily(family);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DevCenterSkuInner withCapacity(Integer capacity) {
         super.withCapacity(capacity);
@@ -100,7 +114,7 @@ public final class DevCenterSkuInner extends Sku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -18,7 +18,7 @@ import java.io.IOException;
 public final class DevCenterProject implements JsonSerializable<DevCenterProject> {
 
     /*
-     * Name of the project
+     * Name of the project.
      */
     @Generated
     private String name;

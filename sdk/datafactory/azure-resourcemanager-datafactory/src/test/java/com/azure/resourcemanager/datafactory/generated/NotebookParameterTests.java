@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class NotebookParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NotebookParameter model = BinaryData.fromString("{\"value\":\"dataxyawtdsnvxhx\",\"type\":\"bool\"}")
-            .toObject(NotebookParameter.class);
-        Assertions.assertEquals(NotebookParameterType.BOOL, model.type());
+        NotebookParameter model
+            = BinaryData.fromString("{\"value\":\"datafkgzgveud\",\"type\":\"int\"}").toObject(NotebookParameter.class);
+        Assertions.assertEquals(NotebookParameterType.INT, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NotebookParameter model
-            = new NotebookParameter().withValue("dataxyawtdsnvxhx").withType(NotebookParameterType.BOOL);
+            = new NotebookParameter().withValue("datafkgzgveud").withType(NotebookParameterType.INT);
         model = BinaryData.fromObject(model).toObject(NotebookParameter.class);
-        Assertions.assertEquals(NotebookParameterType.BOOL, model.type());
+        Assertions.assertEquals(NotebookParameterType.INT, model.type());
     }
 }

@@ -257,8 +257,6 @@ stages:
 
               variables:
                 - template: /eng/pipelines/templates/variables/globals.yml
-                - name: DocValidationImageId
-                  value: azuresdkimages.azurecr.io/javarefautocr:latest
 
               strategy:
                 runOnce:
@@ -275,7 +273,11 @@ stages:
                       - download: current
                         displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
                         artifact: ${{parameters.ArtifactName}}
-                      # Pull and build the docker image.
+
+                      - template: /eng/pipelines/templates/steps/mvn-linux-repository-settings.yml
+
+                      - template: /eng/pipelines/templates/steps/install-rex-validation-tool.yml
+
                       - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
                         parameters:
                           PackageInfoLocations:
@@ -287,7 +289,6 @@ stages:
                           SparseCheckoutPaths:
                             - docs-ref-services/
                             - metadata/
-                          DocValidationImageId: "$(DocValidationImageId)"
 
           - ${{if ne(artifact.skipPublishDocGithubIo, 'true')}}:
             - deployment: PublishDocs
@@ -443,8 +444,6 @@ stages:
           os: linux
         variables:
           - template: /eng/pipelines/templates/variables/globals.yml
-          - name: DocValidationImageId
-            value: azuresdkimages.azurecr.io/javarefautocr:latest
         steps:
           - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
             parameters:
@@ -460,20 +459,10 @@ stages:
           - pwsh: |
               Get-ChildItem -Recurse $(Pipeline.Workspace)/${{parameters.ArtifactName}}/
             displayName: Show visible artifacts
-          # Docs daily updates is supposed to download packages from public feed repository, so we have to specify additional repositories in a POM or the profile.
-          # Here is maven documentation: https://maven.apache.org/guides/mini/guide-multiple-repositories.html
-          - powershell: |
-              # Linux mvn `setting.xml` is sitting under path `~/.m2/setting.xml`
-              Get-Command mvn
-              if (!(Test-Path '~/.m2/')) {
-                mkdir ~/.m2/
-              }
-              if (Test-Path '~/.m2/setting.xml') {
-                Write-Host "'setting.xml' exists. Overwriting the file to support multiple repositories."
-              }
-              Copy-Item "./eng/repo-docs/docms/daily.update.setting.xml" -Destination "~/.m2/settings.xml"
-            displayName: 'Configure mvn'
-            workingDirectory: $(Build.SourcesDirectory)
+
+          - template: /eng/pipelines/templates/steps/mvn-linux-repository-settings.yml
+
+          - template: /eng/pipelines/templates/steps/install-rex-validation-tool.yml
 
           - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
             parameters:
@@ -489,6 +478,5 @@ stages:
               SparseCheckoutPaths:
                 - docs-ref-services/
                 - metadata/
-              DocValidationImageId: "$(DocValidationImageId)"
 
           - template: /eng/common/pipelines/templates/steps/docsms-ensure-validation.yml

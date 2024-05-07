@@ -9,7 +9,9 @@ import com.azure.resourcemanager.hybridcompute.models.NetworkInterface;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes the network information on this machine. */
+/**
+ * Describes the network information on this machine.
+ */
 @Fluent
 public final class NetworkProfileInner {
     /*
@@ -18,13 +20,15 @@ public final class NetworkProfileInner {
     @JsonProperty(value = "networkInterfaces")
     private List<NetworkInterface> networkInterfaces;
 
-    /** Creates an instance of NetworkProfileInner class. */
+    /**
+     * Creates an instance of NetworkProfileInner class.
+     */
     public NetworkProfileInner() {
     }
 
     /**
      * Get the networkInterfaces property: The list of network interfaces.
-     *
+     * 
      * @return the networkInterfaces value.
      */
     public List<NetworkInterface> networkInterfaces() {
@@ -33,7 +37,7 @@ public final class NetworkProfileInner {
 
     /**
      * Set the networkInterfaces property: The list of network interfaces.
-     *
+     * 
      * @param networkInterfaces the networkInterfaces value to set.
      * @return the NetworkProfileInner object itself.
      */
@@ -44,7 +48,7 @@ public final class NetworkProfileInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

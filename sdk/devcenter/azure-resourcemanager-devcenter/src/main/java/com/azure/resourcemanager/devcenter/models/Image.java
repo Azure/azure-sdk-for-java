@@ -7,74 +7,76 @@ package com.azure.resourcemanager.devcenter.models;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.devcenter.fluent.models.ImageInner;
 
-/** An immutable client-side representation of Image. */
+/**
+ * An immutable client-side representation of Image.
+ */
 public interface Image {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the description property: The description of the image.
-     *
+     * 
      * @return the description value.
      */
     String description();
 
     /**
      * Gets the publisher property: The publisher of the image.
-     *
+     * 
      * @return the publisher value.
      */
     String publisher();
 
     /**
      * Gets the offer property: The name of the image offer.
-     *
+     * 
      * @return the offer value.
      */
     String offer();
 
     /**
      * Gets the sku property: The SKU name for the image.
-     *
+     * 
      * @return the sku value.
      */
     String sku();
 
     /**
      * Gets the recommendedMachineConfiguration property: The recommended machine configuration to use with the image.
-     *
+     * 
      * @return the recommendedMachineConfiguration value.
      */
     RecommendedMachineConfiguration recommendedMachineConfiguration();
 
     /**
      * Gets the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
@@ -82,14 +84,14 @@ public interface Image {
     /**
      * Gets the hibernateSupport property: Indicates whether this image has hibernate enabled. Not all images are
      * capable of supporting hibernation. To find out more see https://aka.ms/devbox/hibernate.
-     *
+     * 
      * @return the hibernateSupport value.
      */
     HibernateSupport hibernateSupport();
 
     /**
      * Gets the inner com.azure.resourcemanager.devcenter.fluent.models.ImageInner object.
-     *
+     * 
      * @return the inner object.
      */
     ImageInner innerModel();

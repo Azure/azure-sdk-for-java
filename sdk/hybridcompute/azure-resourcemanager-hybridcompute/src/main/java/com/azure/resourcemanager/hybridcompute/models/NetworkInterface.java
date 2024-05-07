@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes a network interface. */
+/**
+ * Describes a network interface.
+ */
 @Fluent
 public final class NetworkInterface {
     /*
@@ -17,13 +19,15 @@ public final class NetworkInterface {
     @JsonProperty(value = "ipAddresses")
     private List<IpAddress> ipAddresses;
 
-    /** Creates an instance of NetworkInterface class. */
+    /**
+     * Creates an instance of NetworkInterface class.
+     */
     public NetworkInterface() {
     }
 
     /**
      * Get the ipAddresses property: The list of IP addresses in this interface.
-     *
+     * 
      * @return the ipAddresses value.
      */
     public List<IpAddress> ipAddresses() {
@@ -32,7 +36,7 @@ public final class NetworkInterface {
 
     /**
      * Set the ipAddresses property: The list of IP addresses in this interface.
-     *
+     * 
      * @param ipAddresses the ipAddresses value to set.
      * @return the NetworkInterface object itself.
      */
@@ -43,7 +47,7 @@ public final class NetworkInterface {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
