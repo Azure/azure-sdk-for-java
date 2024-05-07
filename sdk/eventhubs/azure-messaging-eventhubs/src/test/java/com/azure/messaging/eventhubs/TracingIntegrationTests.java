@@ -46,10 +46,11 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.EVENT;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.CHECKPOINT;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.PROCESS;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.PUBLISH;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.RECEIVE;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.SETTLE;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.SEND;
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -66,7 +67,6 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     private static final byte[] CONTENTS_BYTES = "Some-contents".getBytes(StandardCharsets.UTF_8);
     private static final String PARTITION_ID = "0";
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
-    private static final AttributeKey<String> OPERATION_TYPE_ATTRIBUTE = AttributeKey.stringKey("messaging.operation.type");
     private static final AttributeKey<String> OPERATION_NAME_ATTRIBUTE = AttributeKey.stringKey("messaging.operation.name");
     private TestSpanProcessor spanProcessor;
     private EventHubProducerAsyncClient producer;
@@ -137,7 +137,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         AtomicReference<Span> receivedSpan = new AtomicReference<>();
 
         CountDownLatch latch = new CountDownLatch(2);
-        spanProcessor.notifyIfCondition(latch, span -> span == receivedSpan.get() || hasOperationName(span, PUBLISH));
+        spanProcessor.notifyIfCondition(latch, span -> span == receivedSpan.get() || hasOperationName(span, SEND));
         toClose(consumer
             .receiveFromPartition(PARTITION_ID, EventPosition.fromEnqueuedTime(testStartTime))
             .take(1)
@@ -155,9 +155,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
 
-        List<ReadableSpan> message = findSpans(spans, OperationName.CREATE);
+        List<ReadableSpan> message = findSpans(spans, EVENT);
         assertMessageSpan(message.get(0), data);
-        List<ReadableSpan> send = findSpans(spans, OperationName.PUBLISH);
+        List<ReadableSpan> send = findSpans(spans, SEND);
         assertSendSpan(send.get(0), Collections.singletonList(data));
 
         List<ReadableSpan> received = findSpans(spans, PROCESS).stream()
@@ -172,7 +172,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         AtomicReference<Span> receivedSpan = new AtomicReference<>();
 
         CountDownLatch latch = new CountDownLatch(2);
-        spanProcessor.notifyIfCondition(latch, span -> span == receivedSpan.get() || hasOperationName(span, PUBLISH));
+        spanProcessor.notifyIfCondition(latch, span -> span == receivedSpan.get() || hasOperationName(span, SEND));
         toClose(consumer
             .receive()
             .take(1)
@@ -190,9 +190,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
 
-        List<ReadableSpan> message = findSpans(spans, OperationName.CREATE);
+        List<ReadableSpan> message = findSpans(spans, EVENT);
         assertMessageSpan(message.get(0), data);
-        List<ReadableSpan> send = findSpans(spans, OperationName.PUBLISH);
+        List<ReadableSpan> send = findSpans(spans, SEND);
         assertSendSpan(send.get(0), Collections.singletonList(data));
 
         List<ReadableSpan> received = findSpans(spans, PROCESS).stream()
@@ -215,7 +215,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         createClients(otel);
 
         CountDownLatch latch = new CountDownLatch(2);
-        customSpanProcessor.notifyIfCondition(latch, span -> span == receivedSpan.get() || hasOperationName(span, PUBLISH));
+        customSpanProcessor.notifyIfCondition(latch, span -> span == receivedSpan.get() || hasOperationName(span, SEND));
 
         toClose(consumer.receive()
             .take(1)
@@ -233,12 +233,12 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         List<ReadableSpan> spans = customSpanProcessor.getEndedSpans();
 
-        List<ReadableSpan> message = findSpans(spans, OperationName.CREATE);
+        List<ReadableSpan> message = findSpans(spans, EVENT);
         assertMessageSpan(message.get(0), data);
-        List<ReadableSpan> send = findSpans(spans, OperationName.PUBLISH);
+        List<ReadableSpan> send = findSpans(spans, SEND);
         assertSendSpan(send.get(0), Collections.singletonList(data));
 
-        List<ReadableSpan> received = findSpans(spans, OperationName.PROCESS).stream()
+        List<ReadableSpan> received = findSpans(spans, PROCESS).stream()
             .filter(s -> s == receivedSpan.get()).collect(toList());
         assertConsumerSpan(received.get(0), receivedMessage.get());
     }
@@ -273,14 +273,14 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         assertTrue(latch.await(20, TimeUnit.SECONDS));
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
-        List<ReadableSpan> received = findSpans(spans, OperationName.PROCESS);
+        List<ReadableSpan> received = findSpans(spans, PROCESS);
         assertTrue(messageCount <= received.size());
     }
 
     @Test
     public void sendBuffered() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(3);
-        spanProcessor.notifyIfCondition(latch, span -> hasOperationName(span, PROCESS) || hasOperationName(span, PUBLISH));
+        spanProcessor.notifyIfCondition(latch, span -> hasOperationName(span, PROCESS) || hasOperationName(span, SEND));
 
         EventHubBufferedProducerAsyncClient bufferedProducer = toClose(new EventHubBufferedProducerClientBuilder()
             .connectionString(getConnectionString())
@@ -330,11 +330,11 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertTrue(latch.await(10, TimeUnit.SECONDS));
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
 
-        List<ReadableSpan> message = findSpans(spans, OperationName.CREATE);
+        List<ReadableSpan> message = findSpans(spans, EVENT);
         assertMessageSpan(message.get(0), event1);
         assertMessageSpan(message.get(1), event2);
 
-        List<ReadableSpan> send = findSpans(spans, OperationName.PUBLISH);
+        List<ReadableSpan> send = findSpans(spans, SEND);
         assertSendSpan(send.get(0), Arrays.asList(event1, event2));
         assertEquals(sendOptions.getPartitionId(), send.get(0).getAttribute(AttributeKey.stringKey("messaging.destination.partition.id")));
 
@@ -408,7 +408,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         AtomicReference<EventData> receivedMessage = new AtomicReference<>();
 
         CountDownLatch latch = new CountDownLatch(2);
-        spanProcessor.notifyIfCondition(latch, span -> span == currentInProcess.get() || hasOperationName(span, PUBLISH));
+        spanProcessor.notifyIfCondition(latch, span -> span == currentInProcess.get() || hasOperationName(span, SEND));
 
         StepVerifier.create(producer.send(data, new SendOptions().setPartitionId(PARTITION_ID)))
             .expectComplete()
@@ -437,10 +437,10 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertTrue(currentInProcess.get().getSpanContext().isValid());
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
 
-        List<ReadableSpan> message = findSpans(spans, OperationName.CREATE);
+        List<ReadableSpan> message = findSpans(spans, EVENT);
         assertMessageSpan(message.get(0), data);
 
-        List<ReadableSpan> send = findSpans(spans, OperationName.PUBLISH);
+        List<ReadableSpan> send = findSpans(spans, SEND);
         assertSendSpan(send.get(0), Collections.singletonList(data));
 
         List<ReadableSpan> processed = findSpans(spans, PROCESS)
@@ -450,7 +450,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertNull(processed.get(0).getAttribute(AttributeKey.stringKey("messaging.consumer.group.name")));
 
         SpanContext parentSpanContext = currentInProcess.get().getSpanContext();
-        List<ReadableSpan> checkpointed = findSpans(spans, SETTLE)
+        List<ReadableSpan> checkpointed = findSpans(spans, CHECKPOINT)
                 .stream().filter(c -> c.getParentSpanContext().getSpanId()
                         .equals(parentSpanContext.getSpanId())).collect(toList());
         assertEquals(1, checkpointed.size());
@@ -513,7 +513,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertTrue(processed.size() >= 2);
         assertConsumerSpan(processed.get(0), received.get(0));
 
-        List<ReadableSpan> checkpointed = findSpans(spans, SETTLE).stream().collect(toList());
+        List<ReadableSpan> checkpointed = findSpans(spans, CHECKPOINT).stream().collect(toList());
         for (int i = 1; i < processed.size(); i++) {
             assertConsumerSpan(processed.get(i), received.get(i));
             SpanContext parentSpanContext = processed.get(i).getSpanContext();
@@ -565,10 +565,10 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
 
-        List<ReadableSpan> messages = findSpans(spans, OperationName.CREATE);
+        List<ReadableSpan> messages = findSpans(spans, EVENT);
         assertMessageSpan(messages.get(0), message1);
         assertMessageSpan(messages.get(1), message2);
-        List<ReadableSpan> send = findSpans(spans, OperationName.PUBLISH);
+        List<ReadableSpan> send = findSpans(spans, SEND);
 
         assertSendSpan(send.get(0), Arrays.asList(message1, message2));
 
@@ -579,7 +579,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertConsumerSpan(processed.get(0), received.get(), StatusCode.UNSET);
 
         SpanContext parentSpanContext = currentInProcess.get().getSpanContext();
-        List<ReadableSpan> checkpointed = findSpans(spans, SETTLE)
+        List<ReadableSpan> checkpointed = findSpans(spans, CHECKPOINT)
                 .stream().filter(c -> c.getParentSpanContext().getSpanId()
                         .equals(parentSpanContext.getSpanId())).collect(toList());
         assertEquals(1, checkpointed.size());
@@ -591,7 +591,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         AtomicReference<Span> currentInProcess = new AtomicReference<>();
         AtomicReference<List<EventData>> received = new AtomicReference<>();
         CountDownLatch latch = new CountDownLatch(2);
-        spanProcessor.notifyIfCondition(latch, span -> span == currentInProcess.get() || hasOperationName(span, PUBLISH));
+        spanProcessor.notifyIfCondition(latch, span -> span == currentInProcess.get() || hasOperationName(span, SEND));
 
         StepVerifier.create(producer.send(data, new SendOptions().setPartitionId(PARTITION_ID)))
             .expectComplete()
@@ -627,7 +627,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertEquals(RuntimeException.class.getName(), processed.get(0).getAttribute(AttributeKey.stringKey("error.type")));
 
         SpanContext parentSpanContext = currentInProcess.get().getSpanContext();
-        List<ReadableSpan> checkpointed = findSpans(spans, SETTLE)
+        List<ReadableSpan> checkpointed = findSpans(spans, CHECKPOINT)
                 .stream().filter(c -> c.getParentSpanContext().getSpanId()
                         .equals(parentSpanContext.getSpanId())).collect(toList());
         assertEquals(1, checkpointed.size());
@@ -637,7 +637,6 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     private void assertMessageSpan(ReadableSpan actual, EventData message) {
         assertEquals(SpanKind.PRODUCER, actual.getKind());
         assertEquals(StatusCode.UNSET, actual.toSpanData().getStatus().getStatusCode());
-        assertEquals(OperationName.CREATE.getOperationType(), actual.getAttribute(OPERATION_TYPE_ATTRIBUTE));
         assertNull(actual.getAttribute(OPERATION_NAME_ATTRIBUTE));
         String traceparent = "00-" + actual.getSpanContext().getTraceId() + "-" + actual.getSpanContext().getSpanId() + "-01";
         assertEquals(message.getProperties().get("Diagnostic-Id"), traceparent);
@@ -647,7 +646,6 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     private void assertSendSpan(ReadableSpan actual, List<EventData> messages) {
         assertEquals(SpanKind.CLIENT, actual.getKind());
         assertEquals(StatusCode.UNSET, actual.toSpanData().getStatus().getStatusCode());
-        assertEquals("publish", actual.getAttribute(OPERATION_TYPE_ATTRIBUTE));
         assertEquals("send", actual.getAttribute(OPERATION_NAME_ATTRIBUTE));
         if (messages.size() > 1) {
             assertEquals(messages.size(), actual.getAttribute(AttributeKey.longKey("messaging.batch.message_count")));
@@ -666,7 +664,6 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertEquals(SpanKind.CONSUMER, actual.getKind());
         assertEquals(StatusCode.UNSET, actual.toSpanData().getStatus().getStatusCode());
         List<LinkData> links = actual.toSpanData().getLinks();
-        assertEquals("receive", actual.getAttribute(OPERATION_TYPE_ATTRIBUTE));
         assertNull(actual.getAttribute(OPERATION_NAME_ATTRIBUTE));
         if (messages.size() > 1) {
             assertEquals(messages.size(), actual.getAttribute(AttributeKey.longKey("messaging.batch.message_count")));
@@ -685,7 +682,6 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         SpanData spanData = actual.toSpanData();
         assertEquals(SpanKind.CONSUMER, actual.getKind());
         assertEquals(StatusCode.UNSET, spanData.getStatus().getStatusCode());
-        assertEquals("process", actual.getAttribute(OPERATION_TYPE_ATTRIBUTE));
         assertNull(actual.getAttribute(OPERATION_NAME_ATTRIBUTE));
         assertEquals(PARTITION_ID, actual.getAttribute(AttributeKey.stringKey("messaging.destination.partition.id")));
 
@@ -712,8 +708,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         assertEquals(SpanKind.CONSUMER, actual.getKind());
         assertEquals(status, actual.toSpanData().getStatus().getStatusCode());
-        assertEquals("process", actual.getAttribute(OPERATION_TYPE_ATTRIBUTE));
-        assertNull(actual.getAttribute(OPERATION_NAME_ATTRIBUTE));
+        assertEquals("process", actual.getAttribute(OPERATION_NAME_ATTRIBUTE));
         assertNotNull(actual.getAttribute(AttributeKey.stringKey("messaging.destination.partition.id")));
 
         List<EventData> receivedMessagesWithTraceContext = messages.stream().filter(m -> m.getProperties().containsKey("traceparent")).collect(toList());
@@ -737,7 +732,6 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     private void assertCheckpointSpan(ReadableSpan actual, SpanContext parent) {
         assertEquals(SpanKind.INTERNAL, actual.getKind());
         assertEquals(StatusCode.UNSET, actual.toSpanData().getStatus().getStatusCode());
-        assertEquals("settle", actual.getAttribute(OPERATION_TYPE_ATTRIBUTE));
         assertEquals("checkpoint", actual.getAttribute(OPERATION_NAME_ATTRIBUTE));
 
         assertEquals(parent.getTraceId(), actual.getSpanContext().getTraceId());
@@ -748,13 +742,13 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     private List<ReadableSpan> findSpans(List<ReadableSpan> spans, OperationName operationName) {
-        String spanName = String.format("%s %s", getEventHubName(), operationName.getFriendlyName());
+        String spanName = TestUtils.getSpanName(operationName, getEventHubName());
         return spans.stream()
             .filter(s -> s.getName().equals(spanName))
             .collect(toList());
     }
 
     private boolean hasOperationName(ReadableSpan span, OperationName operationName) {
-        return operationName.getOperationType().equals(span.getAttribute(OPERATION_TYPE_ATTRIBUTE));
+        return operationName.toString().equals(span.getAttribute(OPERATION_NAME_ATTRIBUTE));
     }
 }

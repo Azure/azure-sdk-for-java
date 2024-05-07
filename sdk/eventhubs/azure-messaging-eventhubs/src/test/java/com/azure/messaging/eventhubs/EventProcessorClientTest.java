@@ -58,7 +58,7 @@ import static com.azure.messaging.eventhubs.TestUtils.getSpanName;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.DIAGNOSTIC_ID_KEY;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_EVENTHUBS_MESSAGE_ENQUEUED_TIME;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.PROCESS;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.SETTLE;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.CHECKPOINT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
@@ -266,7 +266,7 @@ public class EventProcessorClientTest {
             }
         );
 
-        final String expectedSettleSpanName = getSpanName(SETTLE, EVENT_HUB_NAME);
+        final String expectedSettleSpanName = getSpanName(CHECKPOINT, EVENT_HUB_NAME);
         when(tracer.start(eq(expectedSettleSpanName), any(StartSpanOptions.class), any(Context.class))).thenAnswer(
                 invocation -> {
                     assertCheckpointStartOptions(invocation.getArgument(1, StartSpanOptions.class));
@@ -372,7 +372,7 @@ public class EventProcessorClientTest {
             }
         );
 
-        final String expectedCheckpointSpanName = getSpanName(SETTLE, EVENT_HUB_NAME);
+        final String expectedCheckpointSpanName = getSpanName(CHECKPOINT, EVENT_HUB_NAME);
         when(tracer.start(eq(expectedCheckpointSpanName), any(StartSpanOptions.class), any(Context.class))).thenAnswer(
                 invocation -> {
                     assertCheckpointStartOptions(invocation.getArgument(1, StartSpanOptions.class));
@@ -606,7 +606,7 @@ public class EventProcessorClientTest {
             }
         );
 
-        final String expectedSettleSpanName = getSpanName(SETTLE, EVENT_HUB_NAME);
+        final String expectedSettleSpanName = getSpanName(CHECKPOINT, EVENT_HUB_NAME);
         when(tracer.start(eq(expectedSettleSpanName), any(StartSpanOptions.class), any(Context.class))).thenAnswer(
                 invocation -> {
                     assertCheckpointStartOptions(invocation.getArgument(1, StartSpanOptions.class));

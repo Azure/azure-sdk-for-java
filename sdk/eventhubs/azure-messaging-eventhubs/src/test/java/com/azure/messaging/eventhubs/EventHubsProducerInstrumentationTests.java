@@ -36,8 +36,8 @@ import static com.azure.messaging.eventhubs.TestUtils.assertAllAttributes;
 import static com.azure.messaging.eventhubs.TestUtils.assertSpanStatus;
 import static com.azure.messaging.eventhubs.TestUtils.attributesToMap;
 import static com.azure.messaging.eventhubs.TestUtils.getSpanName;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.CREATE;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.PUBLISH;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.EVENT;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.SEND;
 import static io.opentelemetry.api.trace.SpanKind.CLIENT;
 import static io.opentelemetry.api.trace.SpanKind.PRODUCER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -179,7 +179,7 @@ public class EventHubsProducerInstrumentationTests {
                 .collect(Collectors.toList());
         assertEquals(1, publishSpans.size());
 
-        assertEquals(getSpanName(PUBLISH, ENTITY_NAME), publishSpans.get(0).getName());
+        assertEquals(getSpanName(SEND, ENTITY_NAME), publishSpans.get(0).getName());
         Map<String, Object> publishAttributes = attributesToMap(publishSpans.get(0).getAttributes());
         assertAllAttributes(FQDN, ENTITY_NAME, partitionId, null, expectedErrorType, publishAttributes);
         assertEquals(Long.valueOf(batchSize), publishAttributes.get("messaging.batch.message_count"));
@@ -187,7 +187,7 @@ public class EventHubsProducerInstrumentationTests {
 
         List<LinkData> links = publishSpans.get(0).getLinks();
         for (int i = 0; i < batchSize; i++) {
-            assertEquals(getSpanName(CREATE, ENTITY_NAME), eventSpans.get(i).getName());
+            assertEquals(getSpanName(EVENT, ENTITY_NAME), eventSpans.get(i).getName());
             Map<String, Object> eventAttributes = attributesToMap(eventSpans.get(i).getAttributes());
             assertAllAttributes(FQDN, ENTITY_NAME, null, null, null, eventAttributes);
             assertSpanStatus(null, eventSpans.get(i));

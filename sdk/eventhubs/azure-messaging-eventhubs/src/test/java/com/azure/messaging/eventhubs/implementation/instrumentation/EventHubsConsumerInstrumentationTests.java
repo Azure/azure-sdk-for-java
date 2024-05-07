@@ -71,7 +71,7 @@ import static com.azure.messaging.eventhubs.TestUtils.attributesToMap;
 import static com.azure.messaging.eventhubs.TestUtils.getSpanName;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.PROCESS;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.RECEIVE;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.SETTLE;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.CHECKPOINT;
 import static io.opentelemetry.api.trace.SpanKind.CONSUMER;
 import static io.opentelemetry.api.trace.SpanKind.INTERNAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -565,7 +565,7 @@ public class EventHubsConsumerInstrumentationTests {
     private SpanData assertCheckpointSpan(String partitionId, String expectedErrorType, String spanDescription) {
         assertEquals(1, spanProcessor.getEndedSpans().size());
         SpanData span = spanProcessor.getEndedSpans().get(0).toSpanData();
-        assertEquals(getSpanName(SETTLE, ENTITY_NAME), span.getName());
+        assertEquals(getSpanName(CHECKPOINT, ENTITY_NAME), span.getName());
         assertEquals(INTERNAL, span.getKind());
         Map<String, Object> attributes = attributesToMap(span.getAttributes());
         assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, expectedErrorType, attributes);

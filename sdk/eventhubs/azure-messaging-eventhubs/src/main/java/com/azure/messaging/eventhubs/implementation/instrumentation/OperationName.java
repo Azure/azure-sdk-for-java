@@ -3,45 +3,28 @@
 
 package com.azure.messaging.eventhubs.implementation.instrumentation;
 
-public final class OperationName {
-    // https://github.com/open-telemetry/semantic-conventions/blob/main/docs/messaging/messaging-spans.md#operation-names
-    public static final OperationName CREATE = new OperationName("create");
-    public static final OperationName PROCESS = new OperationName("process");
-    public static final OperationName PUBLISH = new OperationName("publish", "send");
-    public static final OperationName RECEIVE = new OperationName("receive");
-    public static final OperationName SETTLE = new OperationName("settle", "checkpoint");
+public enum OperationName {
+    EVENT("event"),
+    PROCESS("process"),
+    SEND("send"),
+    RECEIVE("receive"),
+    CHECKPOINT("checkpoint"),
 
     // TODO (limolkova) we should document and standardize EventHubs operation names across languages
     // https://github.com/open-telemetry/semantic-conventions/issues/750
-    public static final OperationName GET_EVENT_HUB_PROPERTIES = new OperationName("get_event_hub_properties");
-    public static final OperationName GET_PARTITION_PROPERTIES = new OperationName("get_partition_properties");
+    GET_EVENT_HUB_PROPERTIES("get_event_hub_properties"),
+    GET_PARTITION_PROPERTIES("get_partition_properties");
 
-    private final String operationType;
-    private final String operationName;
+    private final String value;
+    OperationName(String operationName) {
+        this.value = operationName;
+    }
 
     /**
-     * Creates a new instance of OperationName.
-     * @param operationType used in `messaging.operation` attribute. Must follow OpenTelemetry semantic conventions.
-     * @param operationName used in span name, should match EventHubs terminology.
+     * {@inheritDoc}
      */
-    private OperationName(String operationType, String operationName) {
-        this.operationType = operationType;
-        this.operationName = operationName;
-    }
-
-    public String getOperationType() {
-        return operationType;
-    }
-
-    public String getOperationName() {
-        return operationName;
-    }
-
-    public String getFriendlyName() {
-        return operationName == null ? operationType : operationName;
-    }
-
-    private OperationName(String operationType) {
-        this(operationType, null);
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

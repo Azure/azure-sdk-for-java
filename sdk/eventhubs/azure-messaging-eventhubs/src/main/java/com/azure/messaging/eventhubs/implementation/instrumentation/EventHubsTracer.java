@@ -32,14 +32,13 @@ import static com.azure.messaging.eventhubs.implementation.instrumentation.Instr
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_PARTITION_ID;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_EVENTHUBS_MESSAGE_ENQUEUED_TIME;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_OPERATION_NAME;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_OPERATION_TYPE;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_SYSTEM;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_SYSTEM_VALUE;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.SERVER_ADDRESS;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.TRACEPARENT_KEY;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.getErrorType;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.unwrap;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.CREATE;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.EVENT;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.PROCESS;
 
 public class EventHubsTracer {
@@ -105,9 +104,9 @@ public class EventHubsTracer {
         }
 
         // Starting the span makes the sampling decision (nothing is logged at this time)
-        StartSpanOptions startOptions = createStartOptions(SpanKind.PRODUCER, CREATE, null);
+        StartSpanOptions startOptions = createStartOptions(SpanKind.PRODUCER, EVENT, null);
 
-        Context eventSpanContext = tracer.start(getSpanName(CREATE), startOptions, eventContext);
+        Context eventSpanContext = tracer.start(getSpanName(EVENT), startOptions, eventContext);
 
         Exception exception = null;
         String error = null;
@@ -227,11 +226,7 @@ public class EventHubsTracer {
                 .setAttribute(MESSAGING_SYSTEM, MESSAGING_SYSTEM_VALUE)
                 .setAttribute(MESSAGING_DESTINATION_NAME, entityName)
                 .setAttribute(SERVER_ADDRESS, fullyQualifiedName)
-                .setAttribute(MESSAGING_OPERATION_TYPE, operationName.getOperationType());
-
-        if (operationName.getOperationName() != null) {
-            startOptions.setAttribute(MESSAGING_OPERATION_NAME, operationName.getOperationName());
-        }
+                .setAttribute(MESSAGING_OPERATION_NAME, operationName.toString());
 
         if (consumerGroup != null) {
             startOptions.setAttribute(MESSAGING_CONSUMER_GROUP_NAME, consumerGroup);
@@ -272,7 +267,7 @@ public class EventHubsTracer {
     }
 
     private String getSpanName(OperationName operationName) {
-        return entityName + " " + operationName.getFriendlyName();
+        return operationName.toString() + " " + entityName;
     }
 
     private static boolean canModifyApplicationProperties(Map<String, Object> applicationProperties) {

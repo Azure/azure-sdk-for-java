@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.SETTLE;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.CHECKPOINT;
 
 public final class InstrumentedCheckpointStore implements CheckpointStore {
     private final CheckpointStore checkpointStore;
@@ -62,7 +62,7 @@ public final class InstrumentedCheckpointStore implements CheckpointStore {
 
     private Context startSpan(String partitionId) {
         return tracer.isEnabled()
-                ? tracer.startSpan(SETTLE, tracer.createStartOptions(SpanKind.INTERNAL, SETTLE, partitionId), Context.NONE)
+                ? tracer.startSpan(CHECKPOINT, tracer.createStartOptions(SpanKind.INTERNAL, CHECKPOINT, partitionId), Context.NONE)
                 : Context.NONE;
     }
 }

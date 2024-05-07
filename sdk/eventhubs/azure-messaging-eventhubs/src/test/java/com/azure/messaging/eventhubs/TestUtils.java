@@ -198,7 +198,7 @@ public final class TestUtils {
     }
 
     public static String getSpanName(OperationName operation, String eventHubName) {
-        return String.format("%s %s", eventHubName, operation.getFriendlyName());
+        return String.format("%s %s", operation, eventHubName);
     }
 
     public static void assertAllAttributes(String hostname, String entityName, String partitionId, String consumerGroup, String errorType, Map<String, Object> attributes) {

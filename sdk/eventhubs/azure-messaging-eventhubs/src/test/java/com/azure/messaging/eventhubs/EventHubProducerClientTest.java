@@ -54,13 +54,13 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.messaging.eventhubs.TestUtils.getSpanName;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.DIAGNOSTIC_ID_KEY;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_NAME;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_OPERATION_TYPE;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_OPERATION_NAME;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_SYSTEM;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_SYSTEM_VALUE;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.SERVER_ADDRESS;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.TRACEPARENT_KEY;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.CREATE;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.PUBLISH;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.EVENT;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.SEND;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -190,7 +190,7 @@ public class EventHubProducerClientTest {
         when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), any(), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink));
 
-        final String expectedMessageSpanName = getSpanName(CREATE, EVENT_HUB_NAME);
+        final String expectedMessageSpanName = getSpanName(EVENT, EVENT_HUB_NAME);
         when(tracer1.start(eq(expectedMessageSpanName), any(), any(Context.class))).thenAnswer(
             invocation -> {
                 assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), SpanKind.PRODUCER, 0);
@@ -198,7 +198,7 @@ public class EventHubProducerClientTest {
                     .addData(SPAN_CONTEXT_KEY, "span");
             });
 
-        final String expectedSendSpanName = getSpanName(PUBLISH, EVENT_HUB_NAME);
+        final String expectedSendSpanName = getSpanName(SEND, EVENT_HUB_NAME);
         when(tracer1.start(eq(expectedSendSpanName), any(), any(Context.class))).thenAnswer(
             invocation -> {
                 assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), SpanKind.CLIENT, 1);
@@ -417,7 +417,7 @@ public class EventHubProducerClientTest {
             .thenReturn(Mono.just(sendLink));
 
         final AtomicReference<Integer> eventInd = new AtomicReference<>(0);
-        final String expectedMessageSpanName = getSpanName(CREATE, EVENT_HUB_NAME);
+        final String expectedMessageSpanName = getSpanName(EVENT, EVENT_HUB_NAME);
         when(tracer1.start(eq(expectedMessageSpanName), any(), any(Context.class))).thenAnswer(
             invocation -> {
                 assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), SpanKind.PRODUCER, 0);
@@ -425,7 +425,7 @@ public class EventHubProducerClientTest {
                     .addData(SPAN_CONTEXT_KEY, "span");
             });
 
-        final String expectedSendSpanName = getSpanName(PUBLISH, EVENT_HUB_NAME);
+        final String expectedSendSpanName = getSpanName(SEND, EVENT_HUB_NAME);
         when(tracer1.start(eq(expectedSendSpanName), any(), any(Context.class))).thenAnswer(
             invocation -> {
                 assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), SpanKind.CLIENT, 2);
@@ -606,7 +606,7 @@ public class EventHubProducerClientTest {
         assertEquals(EVENT_HUB_NAME, attributes.get(MESSAGING_DESTINATION_NAME));
         assertEquals(HOSTNAME, attributes.get(SERVER_ADDRESS));
         assertEquals(MESSAGING_SYSTEM_VALUE, attributes.get(MESSAGING_SYSTEM));
-        assertNotNull(attributes.get(MESSAGING_OPERATION_TYPE));
+        assertNotNull(attributes.get(MESSAGING_OPERATION_NAME));
 
         if (linkCount == 0) {
             assertNull(startOpts.getLinks());
