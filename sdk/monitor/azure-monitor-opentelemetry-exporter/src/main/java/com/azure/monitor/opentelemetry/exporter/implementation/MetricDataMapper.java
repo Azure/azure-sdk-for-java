@@ -45,7 +45,7 @@ public class MetricDataMapper {
 
     private static final ClientLogger logger = new ClientLogger(MetricDataMapper.class);
 
-    private static final Set<String> OTEL_STABLE_METRICS_TO_BREEZE = new HashSet<>();
+    private static final Set<String> OTEL_UNSTABLE_METRICS_TO_EXCLUDE = new HashSet<>();
     private static final String OTEL_INSTRUMENTATION_NAME_PREFIX = "io.opentelemetry";
     private static final Set<String> OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES = new HashSet<>(4);
     public static final AttributeKey<String> APPLICATIONINSIGHTS_INTERNAL_METRIC_NAME = AttributeKey.stringKey("applicationinsights.internal.metric_name");
@@ -54,25 +54,9 @@ public class MetricDataMapper {
     private final boolean captureHttpServer4xxAsError;
 
     static {
-        // HTTP stable metrics
-        OTEL_STABLE_METRICS_TO_BREEZE.add("http.server.request.duration");
-        OTEL_STABLE_METRICS_TO_BREEZE.add("http.client.request.duration");
-
-        // adding stable metrics from otel.instrumentation.runtime-telemetry
-        // link:
-        // https://github.com/open-telemetry/semantic-conventions/blob/main/docs/runtime/jvm-metrics.md
-        OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.memory.used");
-        OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.memory.committed");
-        OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.memory.limit");
-        OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.memory.used_after_last_gc");
-        OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.gc.duration");
-        OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.thread.count");
-        OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.class.loaded");
-        OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.class.unloaded");
-        OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.class.count");
-        OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.cpu.time");
-        OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.cpu.count");
-        OTEL_STABLE_METRICS_TO_BREEZE.add("jvm.cpu.recent_utilization");
+        // HTTP unstable metrics to be excluded via Otel auto instrumentation
+        OTEL_UNSTABLE_METRICS_TO_EXCLUDE.add("rpc.client.duration");
+        OTEL_UNSTABLE_METRICS_TO_EXCLUDE.add("rpc.server.duration");
 
         // Application Insights pre-aggregated standard metrics
         OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("http.server.request.duration");
@@ -105,9 +89,9 @@ public class MetricDataMapper {
                 preAggregatedStandardMetrics.forEach(consumer::accept);
             }
 
-            // emit stable metrics from the OpenTelemetry instrumentation libraries
+            // DO NOT emit unstable metrics from the OpenTelemetry auto instrumentation libraries
             // custom metrics are always emitted
-            if (!OTEL_STABLE_METRICS_TO_BREEZE.contains(metricData.getName())
+            if (OTEL_UNSTABLE_METRICS_TO_EXCLUDE.contains(metricData.getName())
                 && metricData.getInstrumentationScopeInfo().getName().startsWith(OTEL_INSTRUMENTATION_NAME_PREFIX)) {
                 return;
             }
