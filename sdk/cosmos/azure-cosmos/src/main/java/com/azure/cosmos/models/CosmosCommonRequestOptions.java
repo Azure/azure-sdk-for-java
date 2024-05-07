@@ -2,15 +2,18 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 
-public class CosmosCommonRequestOptions implements ICosmosCommonRequestOptions {
+public final class CosmosCommonRequestOptions implements ICosmosCommonRequestOptions {
 
-    protected CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig;
+    private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig;
 
     public CosmosCommonRequestOptions setCosmosEndToEndLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig) {
         this.endToEndOperationLatencyConfig = endToEndOperationLatencyPolicyConfig;
         return this;
     }
+
+    @Override
     public CosmosEndToEndOperationLatencyPolicyConfig getCosmosEndToEndLatencyPolicyConfig(){
         return this.endToEndOperationLatencyConfig;
     }
+    // Same for the other configs
 }

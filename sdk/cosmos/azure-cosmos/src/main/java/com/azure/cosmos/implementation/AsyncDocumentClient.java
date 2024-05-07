@@ -26,7 +26,6 @@ import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.CosmosRequestOptionsTransformer;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -38,7 +37,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 /**
  * Provides a client-side logical representation of the Azure Cosmos DB
@@ -109,8 +107,6 @@ public interface AsyncDocumentClient {
         private CosmosContainerProactiveInitConfig containerProactiveInitConfig;
         private CosmosItemSerializer defaultCustomSerializer;
 
-        private Consumer<CosmosRequestOptionsTransformer> requestOptionsWrapper;
-
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
                 this.serviceEndpoint = new URI(serviceEndpoint);
@@ -165,11 +161,6 @@ public interface AsyncDocumentClient {
          */
         public Builder withMasterKeyOrResourceToken(String masterKeyOrResourceToken) {
             this.masterKeyOrResourceToken = masterKeyOrResourceToken;
-            return this;
-        }
-
-        public Builder withDynamicConfig(Consumer<CosmosRequestOptionsTransformer> requestOptionsWrapper) {
-            this.requestOptionsWrapper = requestOptionsWrapper;
             return this;
         }
 

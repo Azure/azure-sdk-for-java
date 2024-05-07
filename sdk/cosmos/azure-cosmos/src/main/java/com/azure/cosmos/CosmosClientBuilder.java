@@ -181,8 +181,8 @@ public class CosmosClientBuilder implements
         return this;
     }
 
-    public CosmosClientBuilder setRequestOptionsTransformer(Consumer<CosmosRequestOptionsTransformer> callableRequestOptions) {
-        this.requestOptionsTransformer = callableRequestOptions;
+    public CosmosClientBuilder setRequestOptionsTransformer(Consumer<CosmosRequestOptionsTransformer> requestOptionsTransformer) {
+        this.requestOptionsTransformer = requestOptionsTransformer;
         return this;
     }
 

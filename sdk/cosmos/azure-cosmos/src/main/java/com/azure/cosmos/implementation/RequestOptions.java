@@ -10,6 +10,7 @@ import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
+import com.azure.cosmos.models.ICosmosCommonRequestOptions;
 import com.azure.cosmos.models.IndexingDirective;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.CosmosCommonRequestOptions;
@@ -25,7 +26,7 @@ import java.util.function.Supplier;
 /**
  * Encapsulates options that can be specified for a request issued to the Azure Cosmos DB database service.
  */
-public class RequestOptions extends CosmosCommonRequestOptions {
+public class RequestOptions implements ICosmosCommonRequestOptions {
     private Map<String, String> customOptions;
     private List<String> preTriggerInclude;
     private List<String> postTriggerInclude;
@@ -522,6 +523,15 @@ public class RequestOptions extends CosmosCommonRequestOptions {
         return ctxSupplierSnapshot.get();
     }
 
+    public void setCosmosEndToEndLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig) {
+        this.endToEndOperationLatencyConfig = endToEndOperationLatencyPolicyConfig;
+    }
+
+    @Override
+    public CosmosEndToEndOperationLatencyPolicyConfig getCosmosEndToEndLatencyPolicyConfig(){
+        return this.endToEndOperationLatencyConfig;
+    }
+
     public List<String> getExcludeRegions() {
         return this.excludeRegions;
     }
@@ -535,7 +545,7 @@ public class RequestOptions extends CosmosCommonRequestOptions {
     }
 
     public void override(CosmosCommonRequestOptions cosmosCommonRequestOptions) {
-        // null checks here
+        // only replace if not null
         this.endToEndOperationLatencyConfig = cosmosCommonRequestOptions.getCosmosEndToEndLatencyPolicyConfig();
     }
 

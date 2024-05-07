@@ -911,6 +911,7 @@ public final class CosmosAsyncClient implements Closeable {
                     return client.requestOptionsTransformer;
                 }
 
+                @Override
                 public CosmosItemSerializer getEffectiveItemSerializer(CosmosAsyncClient client, CosmosItemSerializer requestOptionsItemSerializer) {
                     return client.getEffectiveItemSerializer(requestOptionsItemSerializer);
                 }
