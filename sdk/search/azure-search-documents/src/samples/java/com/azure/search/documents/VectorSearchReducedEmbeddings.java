@@ -94,7 +94,7 @@ public class VectorSearchReducedEmbeddings {
      */
     public static SearchIndex defineVectorIndex() {
         String vectorSearchProfileName = "my-vector-profile";
-        String vectorSearchHnswConfig = "my-hsnw-vector-config";
+        String vectorSearchHnswConfig = "my-hnsw-vector-config";
         String deploymentId = "my-text-embedding-3-small";
         int modelDimensions = 256; // Here's the reduced model dimensions
         String indexName = "hotel";
