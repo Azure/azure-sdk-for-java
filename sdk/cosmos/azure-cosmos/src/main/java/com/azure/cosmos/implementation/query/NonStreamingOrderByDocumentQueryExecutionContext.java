@@ -71,23 +71,20 @@ public class NonStreamingOrderByDocumentQueryExecutionContext
         OrderbyRowComparer<Document> consumeComparer,
         UUID correlatedActivityId,
         boolean hasSelectValue,
-        final AtomicBoolean isQueryCancelledOnTimeout,
-        int maxPageSizePerPartition) {
+        final AtomicBoolean isQueryCancelledOnTimeout) {
         super(diagnosticsClientContext, client, resourceTypeEnum, Document.class, query, cosmosQueryRequestOptions,
             resourceLink, rewrittenQuery, correlatedActivityId, hasSelectValue, isQueryCancelledOnTimeout);
         this.consumeComparer = consumeComparer;
         this.tracker = new RequestChargeTracker();
         this.queryMetricMap = new ConcurrentHashMap<>();
         this.clientSideRequestStatistics = ConcurrentHashMap.newKeySet();
-        this.maxPageSizePerPartition = maxPageSizePerPartition;
     }
 
     public static Flux<IDocumentQueryExecutionComponent<Document>> createAsync(
         DiagnosticsClientContext diagnosticsClientContext,
         IDocumentQueryClient client,
         PipelinedDocumentQueryParams<Document> initParams,
-        DocumentCollection collection,
-        int maxPageSizePerPartition) {
+        DocumentCollection collection) {
 
         QueryInfo queryInfo = initParams.getQueryInfo();
 
@@ -102,8 +99,7 @@ public class NonStreamingOrderByDocumentQueryExecutionContext
             new OrderbyRowComparer<>(queryInfo.getOrderBy()),
             initParams.getCorrelatedActivityId(),
             queryInfo.hasSelectValue(),
-            initParams.isQueryCancelledOnTimeout(),
-            maxPageSizePerPartition);
+            initParams.isQueryCancelledOnTimeout());
 
         context.setTop(initParams.getTop());
 

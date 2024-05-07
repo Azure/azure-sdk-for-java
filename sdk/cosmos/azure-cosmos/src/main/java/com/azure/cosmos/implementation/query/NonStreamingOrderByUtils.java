@@ -1,7 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.QueryMetrics;
@@ -9,14 +12,12 @@ import com.azure.cosmos.implementation.RequestChargeTracker;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Flux;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.PriorityBlockingQueue;
 import java.util.function.Function;
 
 public class NonStreamingOrderByUtils {
@@ -38,7 +39,7 @@ public class NonStreamingOrderByUtils {
                 toNonStreamingOrderByQueryResultObservable(producer, tracker, queryMetricsMap, initialPageSize,
                     consumeComparer, clientSideRequestStatistics))
             .toArray(Flux[]::new);
-        return Flux.mergeOrdered(consumeComparer, fluxes);
+        return Flux.mergeComparingDelayError(1,consumeComparer, fluxes);
     }
 
     private static Flux<OrderByRowResult<Document>> toNonStreamingOrderByQueryResultObservable(DocumentProducer<Document> producer,
@@ -73,7 +74,7 @@ public class NonStreamingOrderByUtils {
 
         @Override
         public Flux<OrderByRowResult<Document>> apply(Flux<DocumentProducer<Document>.DocumentProducerFeedResponse> source) {
-            PriorityQueue<OrderByRowResult<Document>> priorityQueue = new PriorityQueue<>(consumeComparer);
+            PriorityBlockingQueue<OrderByRowResult<Document>> priorityQueue = new PriorityBlockingQueue<>(initialPageSize, consumeComparer);
 
             return source.flatMap(documentProducerFeedResponse -> {
                     clientSideRequestStatistics.addAll(
@@ -88,12 +89,17 @@ public class NonStreamingOrderByUtils {
                             r.toJson(),
                             documentProducerFeedResponse.sourceFeedRange,
                             null);
-                        if (priorityQueue.size() < initialPageSize) {
-                            priorityQueue.add(orderByRowResult);
+                        if (Configs.getMaxItemSizeForVectorSearchEnabled()) {
+                            if (priorityQueue.size() < initialPageSize) {
+                                priorityQueue.add(orderByRowResult);
+                            } else {
+                                priorityQueue.add(orderByRowResult);
+                                priorityQueue.poll();
+                            }
                         } else {
                             priorityQueue.add(orderByRowResult);
-                            priorityQueue.poll();
                         }
+
                     });
                     tracker.addCharge(documentProducerFeedResponse.pageResult.getRequestCharge());
                     // Returning an empty Flux since we are only processing and managing state here
