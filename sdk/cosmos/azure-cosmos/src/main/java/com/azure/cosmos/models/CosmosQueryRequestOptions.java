@@ -266,17 +266,6 @@ public class CosmosQueryRequestOptions {
     }
 
     /**
-     * Sets the maximum item size to fetch during non-streaming order by queries.
-     *
-     * @param maxItemSizeForVectorSearch the max number of items for vector search.
-     * return the CosmosQueryRequestOptions.
-     */
-    public CosmosQueryRequestOptions setMaxItemSizeForVectorSearch(Integer maxItemSizeForVectorSearch) {
-        this.actualRequestOptions.setMaxItemSizeForVectorSearch(maxItemSizeForVectorSearch);
-        return this;
-    }
-
-    /**
      * Gets the request continuation token.
      *
      * @return the request continuation.
